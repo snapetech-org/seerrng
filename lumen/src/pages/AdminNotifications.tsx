@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { EventChoices } from '../components/NotificationEventChoices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
@@ -41,6 +42,78 @@ const titles = {
   discord: 'Discord',
   slack: 'Slack',
   webhook: 'Webhook',
+};
+const rootNotificationChannels = new Set<Channel>([
+  'email',
+  'telegram',
+  'discord',
+]);
+const fieldMessageKeys: Partial<Record<Channel, Record<string, string>>> = {
+  email: {
+    senderName: 'senderName',
+    emailFrom: 'emailsender',
+    smtpHost: 'smtpHost',
+    smtpPort: 'smtpPort',
+    authUser: 'authUser',
+    authPass: 'authPass',
+    pgpPrivateKey: 'pgpPrivateKey',
+    pgpPassword: 'pgpPassword',
+  },
+  telegram: {
+    botAPI: 'botAPI',
+    botUsername: 'botUsername',
+    chatId: 'chatId',
+    messageThreadId: 'messageThreadId',
+  },
+  pushbullet: { accessToken: 'accessToken', channelTag: 'channelTag' },
+  pushover: {
+    accessToken: 'accessToken',
+    userToken: 'userToken',
+    sound: 'sound',
+  },
+  gotify: {
+    url: 'url',
+    token: 'token',
+    priority: 'priority',
+    locale: 'lumen.adminNotifications.notificationLocale',
+  },
+  ntfy: {
+    url: 'url',
+    topic: 'topic',
+    tags: 'tags',
+    locale: 'lumen.adminNotifications.notificationLocale',
+    username: 'username',
+    password: 'password',
+    token: 'token',
+  },
+  apprise: {
+    url: 'url',
+    configKey: 'configKey',
+    tag: 'tag',
+    locale: 'lumen.adminNotifications.notificationLocale',
+    username: 'username',
+    password: 'password',
+  },
+  discord: {
+    webhookUrl: 'webhookUrl',
+    botUsername: 'botUsername',
+    botAvatarUrl: 'botAvatarUrl',
+    webhookRoleId: 'webhookRoleId',
+    webhookThreadId: 'webhookThreadId',
+    locale: 'lumen.adminNotifications.notificationLocale',
+  },
+  slack: {
+    webhookUrl: 'webhookUrl',
+    workspaceId: 'workspaceId',
+    signingSecret: 'signingSecret',
+    requestManagerMappings: 'requestManagerMappings',
+    locale: 'lumen.adminNotifications.notificationLocale',
+  },
+  webhook: {
+    webhookUrl: 'webhookUrl',
+    authHeader: 'authheader',
+    jsonPayload: 'customJson',
+  },
 };
 const channels: Channel[] = [
   'email',
@@ -93,6 +166,25 @@ const webhookField = {
   label: 'Webhook URL',
   kind: 'password',
 } as const;
+
+function notificationMessageKey(channel: Channel, key: string) {
+  if (rootNotificationChannels.has(channel))
+    return `components.Settings.Notifications.${key}`;
+  const channelName =
+    channel === 'webpush'
+      ? 'WebPush'
+      : channel[0].toUpperCase() + channel.slice(1);
+  return `components.Settings.Notifications.Notifications${channelName}.${key}`;
+}
+
+function useAdminNotificationMessage() {
+  const { t } = useLumenLocale();
+  return useCallback(
+    (key: string, fallback: string, values?: Record<string, string | number>) =>
+      t(key, fallback, values),
+    [t]
+  );
+}
 const slackActionFields = [
   { key: 'workspaceId', label: 'Slack Workspace ID', kind: 'text' },
   { key: 'signingSecret', label: 'Slack Signing Secret', kind: 'password' },
@@ -164,20 +256,85 @@ const required = {
   slack: ['webhookUrl'],
   webhook: ['webhookUrl'],
 } as const;
+const settingsSavedMessage: Record<Channel, string> = {
+  email: 'emailsettingssaved',
+  webpush: 'webpushsettingssaved',
+  telegram: 'telegramsettingssaved',
+  pushbullet: 'pushbulletSettingsSaved',
+  pushover: 'pushoversettingssaved',
+  gotify: 'gotifysettingssaved',
+  ntfy: 'ntfysettingssaved',
+  apprise: 'apprisesettingssaved',
+  discord: 'discordsettingssaved',
+  slack: 'slacksettingssaved',
+  webhook: 'webhooksettingssaved',
+};
+const settingsFailedMessage: Record<Channel, string> = {
+  email: 'emailsettingsfailed',
+  webpush: 'webpushsettingsfailed',
+  telegram: 'telegramsettingsfailed',
+  pushbullet: 'pushbulletSettingsFailed',
+  pushover: 'pushoversettingsfailed',
+  gotify: 'gotifysettingsfailed',
+  ntfy: 'ntfysettingsfailed',
+  apprise: 'apprisesettingsfailed',
+  discord: 'discordsettingsfailed',
+  slack: 'slacksettingsfailed',
+  webhook: 'webhooksettingsfailed',
+};
+const testSuccessMessage: Record<Channel, string> = {
+  email: 'toastEmailTestSuccess',
+  webpush: 'toastWebPushTestSuccess',
+  telegram: 'toastTelegramTestSuccess',
+  pushbullet: 'toastPushbulletTestSuccess',
+  pushover: 'toastPushoverTestSuccess',
+  gotify: 'toastGotifyTestSuccess',
+  ntfy: 'toastNtfyTestSuccess',
+  apprise: 'toastAppriseTestSuccess',
+  discord: 'toastDiscordTestSuccess',
+  slack: 'toastSlackTestSuccess',
+  webhook: 'toastWebhookTestSuccess',
+};
+const testFailedMessage: Record<Channel, string> = {
+  email: 'toastEmailTestFailed',
+  webpush: 'toastWebPushTestFailed',
+  telegram: 'toastTelegramTestFailed',
+  pushbullet: 'toastPushbulletTestFailed',
+  pushover: 'toastPushoverTestFailed',
+  gotify: 'toastGotifyTestFailed',
+  ntfy: 'toastNtfyTestFailed',
+  apprise: 'toastAppriseTestFailed',
+  discord: 'toastDiscordTestFailed',
+  slack: 'toastSlackTestFailed',
+  webhook: 'toastWebhookTestFailed',
+};
 
-function webhookError(options: Configuration['options'], headers: Header[]) {
+function webhookError(
+  options: Configuration['options'],
+  headers: Header[],
+  message: (key: string, fallback: string) => string
+) {
   try {
     JSON.parse(String(options.jsonPayload ?? ''));
   } catch {
-    return 'Enter a valid JSON payload.';
+    return message(
+      'lumen.adminNotifications.validJson',
+      'Enter a valid JSON payload.'
+    );
   }
   if (headers.some(({ key, value }) => !key.trim() !== !value.trim()))
-    return 'Enter both a name and value for each custom header.';
+    return message(
+      notificationMessageKey('webhook', 'customHeadersIncomplete'),
+      'Enter both a name and value for each custom header.'
+    );
   if (
     options.authHeader &&
     headers.some(({ key }) => key.trim().toLowerCase() === 'authorization')
   )
-    return 'Use either the Authorization field or a custom Authorization header.';
+    return message(
+      notificationMessageKey('webhook', 'customHeadersAuthConflict'),
+      'Use either the Authorization field or a custom Authorization header.'
+    );
   return '';
 }
 
@@ -190,6 +347,7 @@ function AgentForm({
   endpoint: string;
   initial: Configuration;
 }) {
+  const n = useAdminNotificationMessage();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -202,12 +360,17 @@ function AgentForm({
     ? options.customHeaders
     : [];
   const headerError =
-    channel === 'webhook' ? webhookError(options, headers) : '';
+    channel === 'webhook' ? webhookError(options, headers, n) : '';
   const eventChannel = channel !== 'email' && channel !== 'webpush';
+  const formatError = useCallback(
+    (error: unknown, fallback: string) => friendlyError(error, fallback, n),
+    [n]
+  );
   const sounds = useApi<{ name: string; description: string }[]>(
     channel === 'pushover' && saved.options.accessToken
       ? '/settings/notifications/pushover/sounds'
-      : null
+      : null,
+    { formatError }
   );
   const supportsAuth = channel === 'ntfy' || channel === 'apprise';
   const authMode = options.authMethodUsernamePassword
@@ -310,7 +473,12 @@ function AgentForm({
       if (test) {
         await api(`${endpoint}/test`, request, 'empty');
         if (generation === sessionGeneration())
-          setNotice('Test notification sent.');
+          setNotice(
+            n(
+              notificationMessageKey(channel, testSuccessMessage[channel]),
+              'Test notification sent.'
+            )
+          );
       } else {
         const updated = await api<Configuration>(endpoint, request);
         if (generation !== sessionGeneration()) return;
@@ -333,14 +501,25 @@ function AgentForm({
           sounds.reload();
         invalidatePublicSettings();
         forget('/settings/public');
-        setNotice('Notification settings saved.');
+        setNotice(
+          n(
+            notificationMessageKey(channel, settingsSavedMessage[channel]),
+            'Notification settings saved.'
+          )
+        );
       }
     } catch {
       if (generation === sessionGeneration())
         setFailure(
-          test
-            ? 'Could not send the test notification. Check the settings and try again.'
-            : 'Could not save notification settings. Try again.'
+          n(
+            notificationMessageKey(
+              channel,
+              test ? testFailedMessage[channel] : settingsFailedMessage[channel]
+            ),
+            test
+              ? 'Could not send the test notification. Check the settings and try again.'
+              : 'Could not save notification settings. Try again.'
+          )
         );
     } finally {
       pending.current = false;
@@ -363,7 +542,12 @@ function AgentForm({
           ] as const
         ).map(([key, label]) => (
           <label className="set cfg-row" key={key}>
-            <span>{label}</span>
+            <span>
+              {n(
+                `components.Settings.Notifications.${key === 'enabled' ? 'agentenabled' : 'embedPoster'}`,
+                label
+              )}
+            </span>
             <input
               type="checkbox"
               checked={draft[key]}
@@ -388,15 +572,28 @@ function AgentForm({
             kind === 'password' ||
             kind === 'secret-multiline';
           const configured = secret && saved.options[key] === redacted;
+          const labelKey = fieldMessageKeys[channel]?.[key];
+          const localizedLabel = labelKey
+            ? n(
+                labelKey.startsWith('lumen.') ||
+                  labelKey.startsWith('components.')
+                  ? labelKey
+                  : notificationMessageKey(channel, labelKey),
+                label
+              )
+            : label;
           const displayed =
             secret && value === redacted ? '' : String(value ?? '');
           return (
             <div className="set cfg-row" key={key}>
               <span>
-                <label htmlFor={id}>{label}</label>
+                <label htmlFor={id}>{localizedLabel}</label>
                 {configured && (
                   <small>
-                    Credential saved. Enter a replacement or clear it.
+                    {n(
+                      'lumen.adminNotifications.credentialSaved',
+                      'Credential saved. Enter a replacement or clear it.'
+                    )}
                   </small>
                 )}
               </span>
@@ -441,7 +638,9 @@ function AgentForm({
                   disabled={busy || value === ''}
                   onClick={() => setOptions({ [key]: '' })}
                 >
-                  Clear {label}
+                  {n('lumen.adminNotifications.clearField', 'Clear {field}', {
+                    field: localizedLabel,
+                  })}
                 </button>
               )}
             </div>
@@ -450,7 +649,12 @@ function AgentForm({
         {channel === 'email' && (
           <>
             <label className="set cfg-row">
-              <span>SMTP Encryption</span>
+              <span>
+                {n(
+                  'components.Settings.Notifications.encryption',
+                  'SMTP Encryption'
+                )}
+              </span>
               <select
                 className="cfg-select"
                 value={encryption}
@@ -463,15 +667,46 @@ function AgentForm({
                   })
                 }
               >
-                <option value="default">Automatic</option>
-                <option value="implicit">Implicit TLS</option>
-                <option value="required">Require STARTTLS</option>
-                <option value="none">None</option>
+                <option value="default">
+                  {n(
+                    'components.Settings.Notifications.encryptionDefault',
+                    'Automatic'
+                  )}
+                </option>
+                <option value="implicit">
+                  {n(
+                    'components.Settings.Notifications.encryptionImplicitTls',
+                    'Implicit TLS'
+                  )}
+                </option>
+                <option value="required">
+                  {n(
+                    'components.Settings.Notifications.encryptionOpportunisticTls',
+                    'Require STARTTLS'
+                  )}
+                </option>
+                <option value="none">
+                  {n(
+                    'components.Settings.Notifications.encryptionNone',
+                    'None'
+                  )}
+                </option>
               </select>
             </label>
             {emailSwitches.map(([key, label]) => (
               <label className="set cfg-row" key={key}>
-                <span>{label}</span>
+                <span>
+                  {n(
+                    `components.Settings.Notifications.${
+                      {
+                        userEmailRequired: 'userEmailRequired',
+                        usePublicLogo: 'usePublicLogo',
+                        allowSelfSigned: 'allowselfsigned',
+                      }[key]
+                    }`,
+                    label
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   checked={options[key] === true}
@@ -486,7 +721,12 @@ function AgentForm({
         )}
         {channel === 'webhook' && (
           <label className="set cfg-row">
-            <span>Support URL Variables</span>
+            <span>
+              {n(
+                notificationMessageKey('webhook', 'supportVariables'),
+                'Support URL Variables'
+              )}
+            </span>
             <input
               type="checkbox"
               disabled={busy}
@@ -505,7 +745,15 @@ function AgentForm({
             ] as const
           ).map(([key, label]) => (
             <label className="set cfg-row" key={key}>
-              <span>{label}</span>
+              <span>
+                {n(
+                  notificationMessageKey(
+                    'discord',
+                    key === 'enableMentions' ? key : 'useUserLocale'
+                  ),
+                  label
+                )}
+              </span>
               <input
                 type="checkbox"
                 disabled={busy}
@@ -518,7 +766,12 @@ function AgentForm({
           ))}
         {channel === 'slack' && (
           <label className="set cfg-row">
-            <span>Enable Request Approval Actions</span>
+            <span>
+              {n(
+                notificationMessageKey('slack', 'requestActionsEnabled'),
+                'Enable Request Approval Actions'
+              )}
+            </span>
             <input
               type="checkbox"
               disabled={busy}
@@ -531,7 +784,9 @@ function AgentForm({
         )}
         {supportsAuth && (
           <label className="set cfg-row">
-            <span>Authentication</span>
+            <span>
+              {n('lumen.adminNotifications.authentication', 'Authentication')}
+            </span>
             <select
               className="cfg-select"
               disabled={busy}
@@ -545,17 +800,31 @@ function AgentForm({
                 })
               }
             >
-              <option value="none">None</option>
-              <option value="password">Username and Password</option>
+              <option value="none">
+                {n('lumen.adminNotifications.none', 'None')}
+              </option>
+              <option value="password">
+                {n(
+                  notificationMessageKey(channel, 'usernamePasswordAuth'),
+                  'Username and Password'
+                )}
+              </option>
               {channel === 'ntfy' && (
-                <option value="token">Access Token</option>
+                <option value="token">
+                  {n(
+                    notificationMessageKey(channel, 'tokenAuth'),
+                    'Access Token'
+                  )}
+                </option>
               )}
             </select>
           </label>
         )}
         {channel === 'ntfy' && (
           <label className="set cfg-row">
-            <span>Priority</span>
+            <span>
+              {n(notificationMessageKey('ntfy', 'priority'), 'Priority')}
+            </span>
             <select
               className="cfg-select"
               value={Number(options.priority || 3)}
@@ -564,17 +833,38 @@ function AgentForm({
                 setOptions({ priority: Number(event.target.value) })
               }
             >
-              <option value={1}>Minimum</option>
-              <option value={2}>Low</option>
-              <option value={3}>Default</option>
-              <option value={4}>High</option>
-              <option value={5}>Urgent</option>
+              <option value={1}>
+                {n(
+                  notificationMessageKey('ntfy', 'priorityMinimum'),
+                  'Minimum'
+                )}
+              </option>
+              <option value={2}>
+                {n(notificationMessageKey('ntfy', 'priorityLow'), 'Low')}
+              </option>
+              <option value={3}>
+                {n(
+                  notificationMessageKey('ntfy', 'priorityDefault'),
+                  'Default'
+                )}
+              </option>
+              <option value={4}>
+                {n(notificationMessageKey('ntfy', 'priorityHigh'), 'High')}
+              </option>
+              <option value={5}>
+                {n(notificationMessageKey('ntfy', 'priorityUrgent'), 'Urgent')}
+              </option>
             </select>
           </label>
         )}
         {channel === 'telegram' && (
           <label className="set cfg-row">
-            <span>Send Silently</span>
+            <span>
+              {n(
+                'components.Settings.Notifications.sendSilently',
+                'Send Silently'
+              )}
+            </span>
             <input
               type="checkbox"
               disabled={busy}
@@ -587,14 +877,26 @@ function AgentForm({
         )}
         {channel === 'webhook' && (
           <>
-            <p className="note">Custom Headers</p>
+            <p className="note">
+              {n(
+                notificationMessageKey('webhook', 'customHeaders'),
+                'Custom Headers'
+              )}
+            </p>
             <div className="setlist">
               {headers.map((header, index) => (
                 <div key={index} className="set cfg-row">
                   <input
                     className="cfg-input"
-                    aria-label={`Header ${index + 1} Name`}
-                    placeholder="Header Name"
+                    aria-label={n(
+                      'lumen.adminNotifications.headerName',
+                      'Header {number} Name',
+                      { number: index + 1 }
+                    )}
+                    placeholder={n(
+                      notificationMessageKey('webhook', 'customHeadersKey'),
+                      'Header Name'
+                    )}
                     disabled={busy}
                     value={header.key}
                     onChange={(event) =>
@@ -614,12 +916,27 @@ function AgentForm({
                   <input
                     className="cfg-input"
                     type="password"
-                    aria-label={`Header ${index + 1} Value`}
+                    aria-label={n(
+                      'lumen.adminNotifications.headerValue',
+                      'Header {number} Value',
+                      { number: index + 1 }
+                    )}
                     autoComplete="new-password"
                     maxLength={4096}
                     disabled={busy}
                     placeholder={
-                      header.value === redacted ? 'Saved value' : 'Header Value'
+                      header.value === redacted
+                        ? n(
+                            'lumen.adminNotifications.savedValue',
+                            'Saved value'
+                          )
+                        : n(
+                            notificationMessageKey(
+                              'webhook',
+                              'customHeadersValue'
+                            ),
+                            'Header Value'
+                          )
                     }
                     value={header.value === redacted ? '' : header.value}
                     onChange={(event) =>
@@ -644,7 +961,11 @@ function AgentForm({
                       })
                     }
                   >
-                    Remove Header {index + 1}
+                    {n(
+                      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove',
+                      'Remove'
+                    )}{' '}
+                    {index + 1}
                   </button>
                 </div>
               ))}
@@ -660,7 +981,10 @@ function AgentForm({
                   })
                 }
               >
-                Add Header
+                {n(
+                  notificationMessageKey('webhook', 'customHeadersAdd'),
+                  'Add Header'
+                )}
               </button>
             </div>
             {headerError && (
@@ -672,14 +996,24 @@ function AgentForm({
         )}
         {channel === 'pushover' && (
           <label className="set cfg-row">
-            <span>Notification Sound</span>
+            <span>
+              {n(
+                notificationMessageKey('pushover', 'sound'),
+                'Notification Sound'
+              )}
+            </span>
             <select
               className="cfg-select"
               value={String(options.sound ?? '')}
               disabled={busy}
               onChange={(event) => setOptions({ sound: event.target.value })}
             >
-              <option value="">Device Default</option>
+              <option value="">
+                {n(
+                  notificationMessageKey('pushover', 'deviceDefault'),
+                  'Device Default'
+                )}
+              </option>
               {typeof options.sound === 'string' &&
                 options.sound &&
                 !sounds.data?.some(({ name }) => name === options.sound) && (
@@ -698,39 +1032,59 @@ function AgentForm({
         <ServiceNote
           error={sounds.error}
           what="Pushover sounds"
+          title={n(
+            'lumen.adminNotifications.loadPushoverSoundsFailure',
+            'Could not load Pushover sounds.'
+          )}
+          retryLabel={n('lumen.adminNotifications.retry', 'Retry')}
           retry={sounds.reload}
         />
       )}
       {eventChannel && (
         <>
-          <p className="note">Notification Events</p>
+          <p className="note">
+            {n(
+              'lumen.adminNotifications.notificationEvents',
+              'Notification Events'
+            )}
+          </p>
           <EventChoices
             mask={draft.types ?? 0}
             disabled={busy}
             change={(types) => update({ ...draft, types })}
           />
           {draft.enabled && !draft.types && (
-            <p className="note">Select at least one notification event.</p>
+            <p className="note">
+              {n(
+                notificationMessageKey(channel, 'validationTypes'),
+                'Select at least one notification event.'
+              )}
+            </p>
           )}
           {!valid && (
             <p className="note">
-              Set the channel credentials and destination before enabling or
-              testing notifications.
+              {n(
+                'lumen.adminNotifications.channelCredentialsRequired',
+                'Set the channel credentials and destination before enabling or testing notifications.'
+              )}
             </p>
           )}
         </>
       )}
       {slackActions && (
         <p className="note">
-          Enter one Slack user ID=SeerrNG user ID mapping per line. Each mapped
-          user needs request management permission. Select Request awaiting
-          approval to include approval actions in notifications.
+          {n(
+            notificationMessageKey('slack', 'requestManagerMappingsTip'),
+            'Enter one Slack user ID=SeerrNG user ID mapping per line. Each mapped user needs request management permission. Select Request awaiting approval to include approval actions in notifications.'
+          )}
         </p>
       )}
       {!valid && channel === 'email' && (
         <p className="note">
-          Enter a sender name and email, SMTP host, and port to enable or test
-          email.
+          {n(
+            'components.Settings.Notifications.validationEmail',
+            'Enter a sender name and email, SMTP host, and port to enable or test email.'
+          )}
         </p>
       )}
       {failure && (
@@ -754,7 +1108,9 @@ function AgentForm({
             (draft.enabled && (!valid || (eventChannel && !draft.types)))
           }
         >
-          Save {titles[channel]}
+          {n('lumen.adminNotifications.saveChannel', 'Save {channel}', {
+            channel: titles[channel],
+          })}
         </button>
         <button
           className="btn btn-quiet btn-sm"
@@ -762,7 +1118,9 @@ function AgentForm({
           disabled={busy || !valid || !!headerError}
           onClick={() => void submit(true)}
         >
-          Send {titles[channel]} Test
+          {n('lumen.adminNotifications.sendTest', 'Send {channel} Test', {
+            channel: titles[channel],
+          })}
         </button>
       </div>
     </form>
@@ -770,19 +1128,34 @@ function AgentForm({
 }
 
 function AgentSection({ channel }: { channel: Channel }) {
+  const n = useAdminNotificationMessage();
   const endpoint = `/settings/notifications/${channel}`;
-  const { data, error, reload } = useApi<Configuration>(endpoint);
+  const formatError = useCallback(
+    (error: unknown, fallback: string) => friendlyError(error, fallback, n),
+    [n]
+  );
+  const { data, error, reload } = useApi<Configuration>(endpoint, {
+    formatError,
+  });
   return (
     <Section title={titles[channel]} id={channel}>
       {channel === 'webpush' && (
         <p className="note">
-          Test delivery requires a browser subscribed to Web Push on your
-          account.
+          {n(
+            'lumen.adminNotifications.testDeliveryWebPush',
+            'Test delivery requires a browser subscribed to Web Push on your account.'
+          )}
         </p>
       )}
       <ServiceNote
         error={error}
         what={`${titles[channel]} settings`}
+        title={n(
+          'lumen.adminNotifications.loadChannelFailure',
+          'Could not load {channel} settings.',
+          { channel: titles[channel] }
+        )}
+        retryLabel={n('lumen.adminNotifications.retry', 'Retry')}
         retry={reload}
       />
       {data ? (
@@ -790,7 +1163,7 @@ function AgentSection({ channel }: { channel: Channel }) {
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading settings…
+            {n('components.Persius.loading', 'Loading settings…')}
           </p>
         )
       )}

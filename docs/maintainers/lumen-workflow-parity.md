@@ -140,23 +140,24 @@ headings; localizing those controls remains open. Evidence is retained at
 
 Shared notification event selectors on the administration and user notification
 pages now use SeerrNG's localized English, French, and Arabic event labels. The
-administrator notification page shell now also localizes its heading, account
-return link, channel navigation label, and channel fallback actions in English,
-French, and Arabic. Four viewport cases pass for each non-English locale, while
-the existing channel fixture still verifies independent event masks, credential
-redaction, save behavior, and no horizontal overflow. Administrator
-provider-specific fields, options, feedback, and validation messages remain
-English-only, so this does not close the notification-page localization gap.
-French desktop and Arabic phone candidate captures were compared with the
-English baseline at 1440 and 390 CSS pixels; no clipping or horizontal overflow
-was introduced. The mobile navigation continues to cover part of the tall
-configuration page as before. Browser fixtures
-confirmed the same event masks and save behavior at desktop, phone, Android, and
-tablet sizes. French and Arabic baseline/candidate captures were compared at
-1440, 390, 412, and 834 CSS pixels; the existing form geometry is preserved and
-the current mobile navigation overlap is unchanged. Evidence is retained at
-`seerrng-admin-users-localization-20261120/event-labels/`.
-
+administrator notification page now localizes its shell, channel forms,
+provider-specific fields and options, validation and feedback, and recoverable
+load failures. It uses SeerrNG's message catalog for native channel copy and
+Lumen translations for channel actions and recovery controls in English,
+French, and Arabic. English channel settings, save/test behavior, and
+independent event masks pass at desktop, iPhone, Android, and tablet sizes.
+French and Arabic provider-label and form checks pass, as do recoverable
+load-error/retry checks in all three locales across all four viewports. The
+tests cover every channel's provider labels and verify a failed email-settings
+request recovers through Retry without looping or losing the form. Existing
+form geometry and no-horizontal-overflow checks pass; the fixed mobile
+navigation still overlaps part of the tall configuration page. Actual provider
+save/readback and delivery remain unverified against a live SeerrNG instance.
+The focused admin notifications browser suite is in
+`lumen/tests/browser/admin-notifications.spec.ts`. Visual captures are retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-notifications-20261121/`;
+the English baseline and French/Arabic candidate renders were compared at 1440,
+834, 412, and 390 CSS pixels.
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request
 progress and lifecycle filters, then uses the requested book format to select

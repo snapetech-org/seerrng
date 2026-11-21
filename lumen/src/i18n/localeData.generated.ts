@@ -1087,6 +1087,262 @@ export const localeData = [
         'يجب أن يكون معرّف الخيط/الموضوع عدداً صحيحاً موجباً',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'ويب بوش Web Push',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'تفعيل وكيل الإشعارات',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'تعذر حفظ إعدادات إعلام Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'تم حفظ إعدادات إعلام Apprise بنجاح.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'اسم الإعداد',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'كلمة السر',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'وسم',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'تعذر إرسال إشعار اختبار Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'تم إرسال إشعار اختبار Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'عنوان URL الجذر لـ Apprise API',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'اسم المستخدم',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'المصادقة باسم المستخدم وكلمة المرور',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'يجب أن تختار على الأقل نوع إخطار واحد.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'تفعيل الخدمة',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'تضمين الملصق',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'فشل حفظ إعدادات إشعارات Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'تم حفظ إعدادات إشعارات Gotify بنجاح!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'الأولوية',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'فشل إرسال إشعار اختبار Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'تم إرسال إشعار اختبار Gotify!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'رمز التطبيق',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'عنوان URL للخادم',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'يجب عليك اختيار نوع إشعار واحد على الأقل.',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'تفعيل الخدمة',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'تضمين الملصق',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'فشل حفظ إعدادات تنبيهات Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'تم حفظ إعدادات تنبيهات Ntfy بنجاح!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'كلمة السر',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'الأولوية',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'افتراضي',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'عالية',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow':
+        'منخفضة',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'الحد الأدنى',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'عاجلة',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'العلامات',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'فشل إرسال تنبيه تجريبي عبر Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'تم إرسال التنبيه التجريبي عبر Ntfy!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'الرمز',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'مصادقة بالرمز المميز',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'الموضوع',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'عنوان URL الجذر للخادم',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'اسم المستخدم',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'مصادقة باسم المستخدم وكلمة السر',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'يجب اختيار نوع واحد من الإشعارات على الأقل.',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'رمز الوصول',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'علامة القناة',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'فشل حفظ إعدادات تنبيه Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'تم حفظ إعدادات إشعارات Pushbullet بنجاح!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'فشل إرسال تنبيه تجريبي Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'تم إرسال إشعار تجريبي من Pushbullet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'يجب اختيار نوع واحد من الإشعارات على الأقل.',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'رمز API للتطبيق',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'تفعيل الوكيل',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'الصوت الافتراضي للجهاز',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'تضمين الملصق',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'فشل حفظ إعدادات تنبيه Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'تم حفظ إعدادات تنبيه Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'صوت التنبيه',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'فشل إرسال إشعار Pushover التجريبي.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'تم إرسال إشعار Pushover التجريبي!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'مفتاح مستخدم أو مجموعة',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'يجب اختيار نوع واحد من الإشعارات على الأقل.',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'تفعيل الوكيل',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'تضمين الملصق',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'تفعيل إجراءات الموافقة على الطلبات',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'تعيينات مديري الطلبات',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'إدخال واحد في كل سطر: معرّف مستخدم Slack (ID)=معرّف مستخدم SeerrNG (ID). يجب أن يمتلك كل مستخدم SeerrNG مُعيّن إذن إدارة الطلبات.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'سر توقيع Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'فشل حفظ إعدادات تنبيه Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'تم حفظ اعدادات Slack بنجاح!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'فشل ارسال تنبيه تجريبي الى Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'تم ارسال تنبيه تجريبي!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'يجب اختيار نوع واحد من الإشعارات على الأقل.',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'عنوان URL لخطاف الويب',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'معرّف مساحة عمل Slack (ID)',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'تفعيل الوكيل',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'تضمين الملصق',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'فشل إرسال إشعار Web Push التجريبي.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'تم إرسال إشعار Web Push التجريبي بنجاح!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'تعذّر حفظ إعدادات إشعارات الدفع عبر الويب.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'حُفظت إعدادات إشعارات الدفع عبر الويب بنجاح!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'تفعيل الوكيل',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'ترويسة التفويض',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'ترويسات مخصصة',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'إضافة ترويسة',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'لا يمكن استخدام ترويسة التفويض وترويسة تفويض مخصصة في الوقت نفسه. يُرجى إزالة إحداهما.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'يجب أن تحتوي جميع الترويسات على اسم وقيمة.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'اسم الترويسة',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'إزالة',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'قيمة الترويسة',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'حمولة JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'دعم متغيرات URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'فشل إرسال إشعار اختبار Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'تم إرسال إشعار اختبار Webhook!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'يجب اختيار نوع واحد من الإشعارات على الأقل.',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'عنوان URL لخطاف الويب',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'فشل حفظ إعدادات إشعارات Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'تم حفظ إعدادات إشعارات Webhook بنجاح!',
+      'components.Settings.Notifications.agentenabled': 'تفعيل خدمة الإشعارات',
+      'components.Settings.Notifications.allowselfsigned':
+        'السماح بالشهادات الموقعة ذاتيًا',
+      'components.Settings.Notifications.authPass': 'كلمة مرور SMTP',
+      'components.Settings.Notifications.authUser': 'اسم مستخدم SMTP',
+      'components.Settings.Notifications.botAPI': 'رمز تفويض البوت',
+      'components.Settings.Notifications.botAvatarUrl':
+        'عنوان URL لصورة الروبوت',
+      'components.Settings.Notifications.botUsername': 'اسم البوت',
+      'components.Settings.Notifications.chatId': 'معرّف المحادثة',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'فشل حفظ إعدادات الإعلام Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'تم حفظ إعدادات الإشعارات Discord بنجاح!',
+      'components.Settings.Notifications.emailsender': 'عنوان المرسل',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'فشل حفظ اعدادات تنبيه الايميل.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'تم حفظ اعدادات تنبيه الايميل بنجاح!',
+      'components.Settings.Notifications.embedPoster': 'تضمين الملصق',
+      'components.Settings.Notifications.enableMentions': 'تفعيل الإشارات',
+      'components.Settings.Notifications.encryption': 'وضع التشفير',
+      'components.Settings.Notifications.encryptionDefault':
+        'استخدم STARTTLS اذا كان متاحا',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'استخدم Implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'بدون تشفير',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'استخدم STARTTLS دائما',
+      'components.Settings.Notifications.messageThreadId':
+        'معرّف الخيط/الموضوع',
+      'components.Settings.Notifications.pgpPassword': 'كلمة سر PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'رمز PGP الخاص',
+      'components.Settings.Notifications.sendSilently': 'أرسل بشكل صامت',
+      'components.Settings.Notifications.senderName': 'اسم المرسل',
+      'components.Settings.Notifications.smtpHost': 'مضيف SMTP',
+      'components.Settings.Notifications.smtpPort': 'منفذ SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'فشل حفظ اعدادات تنبيه التليقرام.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'تم حفظ إعدادات التليقرام بنجاح!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'فشل إرسال إشعار اختبار Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord تم إرسال إخطار اختبار!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'فشل ارسال تنبيه تجريبي للإيميل.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'تم ارسال تنبيه تجريبي الى البريد الالكتروني!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'فشل ارسال التنبيه التجريبي للتليقرام.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'تم ارسال تنبيه تجريبي الى تلغرام!',
+      'components.Settings.Notifications.usePublicLogo':
+        'استخدم شعار Seerr العام بدلًا من شعار المثيل.',
+      'components.Settings.Notifications.useUserLocale':
+        'استخدم إعدادات اللغة والمنطقة لمستلم الإشعار.',
+      'components.Settings.Notifications.userEmailRequired':
+        'إلزام المستخدم بتقديم بريد إلكتروني',
+      'components.Settings.Notifications.validationEmail':
+        'يجب عليك كتابة عنوان بريد صحيح',
+      'components.Settings.Notifications.validationTypes':
+        'يجب اختيار نوع تنبيه واحد على الأقل',
+      'components.Settings.Notifications.webhookRoleId': 'معرّف دور التنبيه',
+      'components.Settings.Notifications.webhookThreadId': 'هوية الخيط',
+      'components.Settings.Notifications.webhookUrl': 'خطاف الويب URL',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -1311,6 +1567,28 @@ export const localeData = [
       'lumen.adminNotifications.channels': 'قنوات الإشعارات',
       'lumen.adminNotifications.allChannels': 'كل القنوات',
       'lumen.adminNotifications.unknownChannel': 'قناة إشعارات غير معروفة.',
+      'lumen.adminNotifications.authentication': 'المصادقة',
+      'lumen.adminNotifications.clearField': 'مسح {field}',
+      'lumen.adminNotifications.credentialSaved':
+        'تم حفظ بيانات الاعتماد. أدخل بديلاً أو امسحها.',
+      'lumen.adminNotifications.headerName': 'اسم الترويسة {number}',
+      'lumen.adminNotifications.headerValue': 'قيمة الترويسة {number}',
+      'lumen.adminNotifications.loadChannelFailure':
+        'تعذر تحميل إعدادات {channel}.',
+      'lumen.adminNotifications.loadPushoverSoundsFailure':
+        'تعذر تحميل أصوات Pushover.',
+      'lumen.adminNotifications.none': 'بلا',
+      'lumen.adminNotifications.notificationEvents': 'أحداث الإشعارات',
+      'lumen.adminNotifications.notificationLocale': 'لغة الإشعارات',
+      'lumen.adminNotifications.retry': 'إعادة المحاولة',
+      'lumen.adminNotifications.saveChannel': 'حفظ {channel}',
+      'lumen.adminNotifications.savedValue': 'قيمة محفوظة',
+      'lumen.adminNotifications.sendTest': 'إرسال اختبار {channel}',
+      'lumen.adminNotifications.testDeliveryWebPush':
+        'يتطلب اختبار التسليم اشتراك هذا الحساب في إشعارات Web Push عبر متصفح.',
+      'lumen.adminNotifications.validJson': 'أدخل محتوى JSON صالحاً.',
+      'lumen.adminNotifications.channelCredentialsRequired':
+        'أدخل بيانات اعتماد القناة ووجهتها قبل تفعيل الإشعارات أو اختبارها.',
       'lumen.admin.dest.libraryMigration': 'ترحيل المكتبة',
       'lumen.admin.dest.mediaLibraries': 'مكتبات خادم الوسائط',
       'lumen.admin.dest.categories': 'فئات الوسائط',
@@ -3083,6 +3361,214 @@ export const localeData = [
         'ID на разговора/темата трябва да е положително цяло число',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Настройките за известия чрез Gotify не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Настройките за известия чрез Gotify са запазени успешно!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Приоритет',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Тестовото известие чрез Gotify е изпратено!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Токен на приложението',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL адрес на сървъра',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Вграждане на постер',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Настройките за известия чрез ntfy не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Настройките за известия чрез ntfy са запазени успешно!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Парола',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Приоритет',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Неуспешно изпращане на тестово известие чрез ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Тестовото известие чрез ntfy е изпратено!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Токен',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Удостоверяване чрез токен',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Тема',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Базов URL адрес на сървъра',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Потребителско име',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Удостоверяване чрез потребителско име и парола',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Токен за достъп',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Етикет на канала',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Настройките за известия чрез Pushbullet не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Настройките за известия чрез Pushbullet са запазени успешно!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Тестовото известие чрез Pushbullet е изпратено!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'API токен на приложението',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Устройство по подразбиране',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Вграждане на постер',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Настройките за известия чрез Pushover не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Настройките за известия чрез Pushover са запазени успешно!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Звук на известието',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Тестовото известие чрез Pushover е изпратено!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Ключ на потребител или група',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Вграждане на постер',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Настройките за известия чрез Slack не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Настройките за известия чрез Slack са запазени успешно!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Тестовото известие чрез Slack е изпратено!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Вграждане на постер',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Неуспешно изпращане на тестово уеб push известие.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Тестовото уеб push известие е изпратено!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Настройките за уеб push известия не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Настройките за уеб push известия са запазени успешно!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Активиране на агента',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Заглавка за оторизация (Authorization Header)',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Потребителски заглавки (Custom Headers)',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Добавяне на заглавка',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Не можете да използвате едновременно стандартната заглавка за оторизация и потребителска такава. Моля, премахнете едната.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Всички заглавки трябва да имат както име, така и стойност',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Име на заглавката',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Премахване',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Стойност на заглавката',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON съдържание (Payload)',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Поддръжка на променливи в URL адреса',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Тестовото известие чрез Webhook е изпратено!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Настройките за известия чрез Webhook не успяха да се запазят.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Настройките за известия чрез Webhook са запазени успешно!',
+      'components.Settings.Notifications.agentenabled': 'Активиране на агента',
+      'components.Settings.Notifications.allowselfsigned':
+        'Разрешаване на самоподписани сертификати',
+      'components.Settings.Notifications.authPass': 'SMTP парола',
+      'components.Settings.Notifications.authUser': 'SMTP потребителско име',
+      'components.Settings.Notifications.botAPI': 'Токен за оторизация на бота',
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL адрес на аватара на бота',
+      'components.Settings.Notifications.botUsername':
+        'Потребителско име на бота',
+      'components.Settings.Notifications.chatId': 'Чат ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Настройките за известия чрез Discord не успяха да се запазят.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Настройките за известия чрез Discord са запазени успешно!',
+      'components.Settings.Notifications.emailsender': 'Имейл на изпращача',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Настройките за известия по имейл не успяха да се запазят.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Настройките за известия по имейл са запазени успешно!',
+      'components.Settings.Notifications.embedPoster': 'Вграждане на постер',
+      'components.Settings.Notifications.enableMentions':
+        'Активиране на споменаванията',
+      'components.Settings.Notifications.encryption': 'Метод на криптиране',
+      'components.Settings.Notifications.encryptionDefault':
+        'Използване на STARTTLS, ако е налично',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Използване на Implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'Няма',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Винаги използвай STARTTLS',
+      'components.Settings.Notifications.messageThreadId':
+        'ID на разговор/тема',
+      'components.Settings.Notifications.pgpPassword': 'PGP парола',
+      'components.Settings.Notifications.pgpPrivateKey': 'Частен PGP ключ',
+      'components.Settings.Notifications.sendSilently': 'Изпращане безшумно',
+      'components.Settings.Notifications.senderName': 'Име на изпращача',
+      'components.Settings.Notifications.smtpHost': 'SMTP хост',
+      'components.Settings.Notifications.smtpPort': 'SMTP порт',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Настройките за известия чрез Telegram не успяха да се запазят.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Настройките за известия чрез Telegram са запазени успешно!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Тестовото известие чрез Discord е изпратено!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Неуспешно изпращане на тестово известие по имейл.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Тестовото известие по имейл е изпратено!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Неуспешно изпращане на тестово известие чрез Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Тестовото известие чрез Telegram е изпратено!',
+      'components.Settings.Notifications.useUserLocale':
+        'Използвай езика на получателя',
+      'components.Settings.Notifications.userEmailRequired':
+        'Изискване на потребителски имейл',
+      'components.Settings.Notifications.validationEmail':
+        'Трябва да предоставите валиден имейл адрес',
+      'components.Settings.Notifications.validationTypes':
+        'Трябва да изберете поне един тип известие',
+      'components.Settings.Notifications.webhookRoleId': 'ID на ролята',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL',
     },
   },
   {
@@ -3374,6 +3860,221 @@ export const localeData = [
         'Heu de proporcionar un identificador de xat vàlid',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        "Activa l'agent",
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Pòster incrustat',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        "La configuració de notificacions de Gotify no s'ha pogut desar.",
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        "La configuració de notificacions de Gotify s'ha desat correctament!",
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritat',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Gotify.",
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        "S'ha enviat una notificació de prova de Gotify!",
+      'components.Settings.Notifications.NotificationsGotify.token':
+        "Testimoni d'aplicació",
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL del servidor',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Heu de seleccionar almenys un tipus de notificació',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Habilitar agent',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Incrusta el pòster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        "No s'ha pogut guardar la configuració de les notificacions Ntfy.",
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        "La configuració de les noficacions de Ntfy s'han guardat correctament!",
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Contrasenya',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioritat',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Etiquetes',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        "La notificació de prova de Ntfy no s'ha pogut enviar.",
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Notificació de prova Ntfy enviada!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        "Token d'autenticació",
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tema',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL arrel del servidor',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        "Nom d'usuari",
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        "Autenticació amb nom d'usuari i contrasenya",
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Has de seleccionar almenys un tipus de notificació',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        "Testimoni d'accés",
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Etiqueta de canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        "No s'ha pogut desar la configuració de notificacions de Pushbullet.",
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        "La configuració de les notificacions de pushbullet s'ha desat correctament!",
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        "No s'ha pogut enviar la notificació de prova Pushbullet.",
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        "S'ha enviat la notificació de prova Pushbullet!",
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Heu de seleccionar com a mínim un tipus de notificació',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        "Testimoni de l'API de l'aplicació",
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        "Activa l'agent",
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Dispositiu predeterminat',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Incrustar pòster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        "No s'ha pogut desar la configuració de les notificacions de Pushover.",
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        "La configuració de notificacions Pushover s'ha desat correctament!",
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'So de notificació',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Pushover.",
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        "S'ha enviat una notificació de prova de Pushover!",
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        "Clau d'usuari o grup",
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Heu de seleccionar com a mínim un tipus de notificació',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        "Activa l'agent",
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Incrustar pòster',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        "No s'ha pogut desar la configuració de notificacions Slack.",
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        "La configuració de notificacions Slack s'ha desat correctament!",
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Slack.",
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        "S'ha enviat la notificació de la prova de Slack!",
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Heu de seleccionar com a mínim un tipus de notificació',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL del Webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        "Activa l'agent",
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Incrustar pòster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Push Web.",
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        "S'ha enviat una notificació de prova de Push Web!",
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        "No s'ha pogut desar la configuració de notificacions de Push Web.",
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        "La configuració de notificacions de Push Web s'ha desat correctament!",
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        "Activa l'agent",
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        "Capçalera d'autorització",
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Capçaleres personalitzades',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Afegir capçalera',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        "No es poden utilitzar la capçalera d'autorització i la capçalera d'autorització personalitzada alhora. Si us plau, elimina'n una.",
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Totes les capçaleres han de tenir tant un nom com un valor',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nom de la capçalera',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Treure',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Valor de capçalera',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Payload de JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        "Admet variables d'URL",
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Webhook.",
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        "S'ha enviat una notificació de prova de Webhook!",
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Heu de seleccionar com a mínim un tipus de notificació',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL del Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        "No s'ha pogut desar la configuració de notificacions del Webhook.",
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        "La configuració de notificacions del Webhook s'ha desat correctament!",
+      'components.Settings.Notifications.agentenabled': "Activa l'agent",
+      'components.Settings.Notifications.allowselfsigned':
+        'Permet certificats autosignats',
+      'components.Settings.Notifications.authPass': 'Contrasenya SMTP',
+      'components.Settings.Notifications.authUser': "Nom d'usuari SMTP",
+      'components.Settings.Notifications.botAPI':
+        "Testimoni d'autorització del Bot",
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL de l’avatar del Bot',
+      'components.Settings.Notifications.botUsername': "Nom d'usuari del Bot",
+      'components.Settings.Notifications.chatId': 'Identificador del xat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        "No s'ha pogut desar la configuració de les notificacions de Discord.",
+      'components.Settings.Notifications.discordsettingssaved':
+        "La configuració de les notificacions de Discord s'ha desat correctament!",
+      'components.Settings.Notifications.emailsender': "Adreça de l'emissor",
+      'components.Settings.Notifications.emailsettingsfailed':
+        "No s'ha pogut desar la configuració de les notificacions per correu electrònic.",
+      'components.Settings.Notifications.emailsettingssaved':
+        "La configuració de les notificacions per correu electrònic s'ha desat correctament!",
+      'components.Settings.Notifications.embedPoster': 'Incrustar pòster',
+      'components.Settings.Notifications.enableMentions': 'Activa les mencions',
+      'components.Settings.Notifications.encryption': 'Mètode de xifratge',
+      'components.Settings.Notifications.encryptionDefault':
+        'Utilitzeu STARTTLS si està disponible',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Utilitzeu TLS implícit',
+      'components.Settings.Notifications.encryptionNone': 'Cap',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Utilitzeu sempre STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID del fil/tema',
+      'components.Settings.Notifications.pgpPassword': 'Contrasenya de PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Clau privada PGP',
+      'components.Settings.Notifications.sendSilently':
+        'Envia-ho silenciosament',
+      'components.Settings.Notifications.senderName': "Nom de l'emissor",
+      'components.Settings.Notifications.smtpHost': 'Amfitrió SMTP',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        "No s'ha pogut desar la configuració de les notificacions de Telegram.",
+      'components.Settings.Notifications.telegramsettingssaved':
+        "La configuració de les notificacions de Telegram s'ha desat correctament!",
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Discord.",
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        "S'ha enviat una notificació de prova de Discord!",
+      'components.Settings.Notifications.toastEmailTestFailed':
+        "No s'ha pogut enviar la notificació de prova per correu electrònic.",
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        "S'ha enviat una notificació de prova per correu electrònic!",
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        "No s'ha pogut enviar la notificació de prova de Telegram.",
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        "S'ha enviat la notificació de prova de Telegram!",
+      'components.Settings.Notifications.usePublicLogo':
+        'Utilitza el logotip públic de Seerr en lloc del logotip de la instància',
+      'components.Settings.Notifications.useUserLocale':
+        'Utilitza la configuració regional del destinatari de notificacions',
+      'components.Settings.Notifications.userEmailRequired':
+        "Requereix el correu electrònic de l'usuari",
+      'components.Settings.Notifications.validationEmail':
+        'Heu de proporcionar una adreça de correu electrònic vàlida',
+      'components.Settings.Notifications.validationTypes':
+        'Heu de seleccionar com a mínim un tipus de notificació',
+      'components.Settings.Notifications.webhookRoleId':
+        'ID de rol de notificació',
+      'components.Settings.Notifications.webhookThreadId': 'ID del fil',
+      'components.Settings.Notifications.webhookUrl': 'URL del Webhook',
     },
   },
   {
@@ -3783,6 +4484,214 @@ export const localeData = [
         'ID vlákna nebo tématu musí být kladné celé číslo',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Nastavení oznámení Gotify se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Nastavení oznámení Gotify úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priorita',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Testovací oznámení Gotify se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Testovací oznámení Gotify odesláno!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token aplikace',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'Adresa URL serveru',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Vložit plakát',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Nastavení oznámení ntfy se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Nastavení oznámení ntfy úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Heslo',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priorita',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Testovací oznámení ntfy se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Testovací oznámení ntfy odesláno!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Ověřování pomocí tokenu',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Téma',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Kořenová adresa URL serveru',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Uživatelské jméno',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Ověřování pomocí uživatelského jména a hesla',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Přístupový token',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Štítek kanálu',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Nastavení oznámení Pushbullet se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Nastavení oznámení Pushbullet úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Testovací oznámení Pushbullet se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Testovací oznámení Pushbullet odesláno!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API aplikace',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Výchozí zařízení',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Vložit plakát',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Nastavení oznámení Pushover se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Nastavení oznámení Pushover úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Zvuk oznámení',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Testovací oznámení Pushover se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Testovací oznámení Pushover odesláno!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Klíč uživatele nebo skupiny',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Vložit plakát',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Nastavení oznámení Slack se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Nastavení oznámení Slack bylo úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Testovací oznámení Slack se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Testovací oznámení Slack odesláno!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Vložit plakát',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Testovací oznámení web push se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Testovací oznámení web push odesláno!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Nastavení oznámení web push se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Nastavení oznámení web push bylo úspěšně uloženo!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Povolit agenta',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autorizační hlavička',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Vlastní hlavičky',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Přidat hlavičku',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Nelze použít jak autorizační hlavičku, tak vlastní autorizační hlavičku. Jednu odeberte.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Všechny hlavičky musí mít jak název, tak hodnotu',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Název hlavičky',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Odebrat',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Hodnota hlavičky',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON Payload',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Podporovat proměnné adres URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Testovací oznámení webhooku se nepodařilo odeslat.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Testovací oznámení Webhook odesláno!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Adresa URL webhooku',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Nastavení oznámení webhooku se nepodařilo uložit.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Nastavení oznámení webhooku bylo úspěšně uloženo!',
+      'components.Settings.Notifications.agentenabled': 'Povolit agenta',
+      'components.Settings.Notifications.allowselfsigned':
+        'Povolit certifikáty s vlastním podpisem',
+      'components.Settings.Notifications.authPass': 'Heslo SMTP',
+      'components.Settings.Notifications.authUser': 'Uživatelské jméno SMTP',
+      'components.Settings.Notifications.botAPI': 'Autorizační token bota',
+      'components.Settings.Notifications.botAvatarUrl':
+        'Adresa URL avatara bota',
+      'components.Settings.Notifications.botUsername': 'Uživatelské jméno bota',
+      'components.Settings.Notifications.chatId': 'ID chatu',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Nastavení oznámení Discord se nepodařilo uložit.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Nastavení oznámení Discord úspěšně uloženo!',
+      'components.Settings.Notifications.emailsender': 'Adresa odesílatele',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Nastavení e-mailových oznámení se nepodařilo uložit.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Nastavení e-mailových oznámení bylo úspěšně uloženo!',
+      'components.Settings.Notifications.embedPoster': 'Vložit plakát',
+      'components.Settings.Notifications.enableMentions': 'Povolit zmínky',
+      'components.Settings.Notifications.encryption': 'Metoda šifrování',
+      'components.Settings.Notifications.encryptionDefault':
+        'Použít STARTTLS, pokud je dostupné',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Použít implicitní TLS',
+      'components.Settings.Notifications.encryptionNone': 'Žádné',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Vždy použít STARTTLS',
+      'components.Settings.Notifications.messageThreadId':
+        'ID vlákna nebo tématu',
+      'components.Settings.Notifications.pgpPassword': 'Heslo PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Soukromý klíč PGP',
+      'components.Settings.Notifications.sendSilently': 'Odesílat potichu',
+      'components.Settings.Notifications.senderName': 'Jméno odesílatele',
+      'components.Settings.Notifications.smtpHost': 'Hostitel SMTP',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Nastavení oznámení Telegram se nepodařilo uložit.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Nastavení oznámení Telegram úspěšně uloženo!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Testovací oznámení Discord se nepodařilo odeslat.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Testovací oznámení Discord odesláno!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Testovací e-mailové oznámení se nepodařilo odeslat.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Testovací e-mailové oznámení odesláno!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Testovací oznámení Telegram se nepodařilo odeslat.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Testovací oznámení Telegram odesláno!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Použít veřejné logo Seerr namísto loga instance',
+      'components.Settings.Notifications.useUserLocale':
+        'Použít národní nastavení příjemce oznámení',
+      'components.Settings.Notifications.userEmailRequired':
+        'Vyžadovat e-mail uživatele',
+      'components.Settings.Notifications.validationEmail':
+        'Musíte zadat platnou e-mailovou adresu',
+      'components.Settings.Notifications.validationTypes':
+        'Musíte vybrat alespoň jeden typ oznámení',
+      'components.Settings.Notifications.webhookRoleId': 'ID role oznámení',
+      'components.Settings.Notifications.webhookUrl': 'Adresa URL webhooku',
     },
   },
   {
@@ -4188,6 +5097,216 @@ export const localeData = [
         "Tråd-/emne-ID'et skal være et positivt heltal",
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web-push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Indlejr plakat',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify-notifikationsindstillingerne kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify-notifikationsindstillinger er gemt!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritet',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify-testnotifikation sendt!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Applikationstoken',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server-URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Integrér plakat',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy-notifikationsindstillingerne kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy-notifikationsindstillinger er gemt!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Adgangskode',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioritet',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Tags',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy-testnotifikation sendt!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Token-godkendelse',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Emne',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Serverens rod-URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Brugernavn',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Brugernavn + adgangskode-godkendelse',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Adgangstoken',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanal-tag',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Indstillingerne for Pushbullet-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Indstillinger for Pushbullet-notifikationer er gemt!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet-testnotifikation sendt!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Applikations-API-token',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Enhedsstandard',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Integrér plakat',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Indstillinger for Pushover-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Indstillinger for Pushover-notifikationer gemt!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Notifikationslyd',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Kunne ikke sende en Pushover-testmeddelelse.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Notifikation om Pushover-test sendt!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Bruger- eller gruppenøgle',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Integrér plakat',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Indstillinger for Slack-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Indstillinger for Slack-notifikationer er gemt!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack-testnotifikation sendt!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Integrér plakat',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Web-push-testmeddelelsen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web-push-testmeddelelse sendt!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Indstillinger for web-push-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Indstillinger for web-push-notifikationer er gemt!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktivér agent',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autorisations-header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Brugerdefinerede headers',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Tilføj header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Du kan ikke bruge både Authorization-headeren og en brugerdefineret Authorization-header. Fjern venligst den ene.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Alle headers skal have både navn og værdi',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Header-navn',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Fjern',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Header-værdi',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON-indhold',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Understøttede URL-variabler',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook-testnotifikation sendt!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Indstillinger for webhook-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Indstillinger for webhook-notifikationer er gemt!',
+      'components.Settings.Notifications.agentenabled': 'Aktivér agent',
+      'components.Settings.Notifications.allowselfsigned':
+        'Tillad selvsignerede certifikater',
+      'components.Settings.Notifications.authPass': 'SMTP-adgangskode',
+      'components.Settings.Notifications.authUser': 'SMTP-brugernavn',
+      'components.Settings.Notifications.botAPI': 'Bot-autorisationstoken',
+      'components.Settings.Notifications.botAvatarUrl': 'Bot Avatar-URL',
+      'components.Settings.Notifications.botUsername': 'Bot-brugernavn',
+      'components.Settings.Notifications.chatId': 'Chat-ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Indstillinger for Discord-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Indstillinger for Discord-notifikationer er gemt!',
+      'components.Settings.Notifications.emailsender': 'Afsenderadresse',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Indstillinger for email-notifikationer kunne ikke gemmes.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Indstillinger for email-notifikationer er gemt!',
+      'components.Settings.Notifications.embedPoster': 'Integrér plakat',
+      'components.Settings.Notifications.enableMentions': 'Aktivér omtaler',
+      'components.Settings.Notifications.encryption': 'Krypteringsmetode',
+      'components.Settings.Notifications.encryptionDefault':
+        'Brug STARTTLS, hvis tilgængelig',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Brug implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'Ingen',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Brug altid STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'Tråd-/emne-ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP-adgangskode',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP privat nøgle',
+      'components.Settings.Notifications.sendSilently': 'Send lydløst',
+      'components.Settings.Notifications.senderName': 'Afsendernavn',
+      'components.Settings.Notifications.smtpHost': 'SMTP-vært',
+      'components.Settings.Notifications.smtpPort': 'SMTP-port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram-notifikationsindstillingerne kunne ikke gemmes.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram-notifikationsindstillinger gemt!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord-testnotifikation sendt!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Email-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Email-testnotifikation sendt!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram-testnotifikationen kunne ikke sendes.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram-testnotifikation sendt!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Brug Seerrs offentlige logo i stedet for instansens logo',
+      'components.Settings.Notifications.useUserLocale':
+        'Brug modtagerens sprogindstilling til notifikationer',
+      'components.Settings.Notifications.userEmailRequired':
+        'Kræv brugerens email',
+      'components.Settings.Notifications.validationEmail':
+        'Du skal angive en gyldig email-adresse',
+      'components.Settings.Notifications.validationTypes':
+        'Du skal vælge mindst én notifikationstype',
+      'components.Settings.Notifications.webhookRoleId': 'Meddelelsesrolle-ID',
+      'components.Settings.Notifications.webhookThreadId': 'Tråd-ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
     },
   },
   {
@@ -5337,6 +6456,263 @@ export const localeData = [
         'Die Thread-/Themen-ID muss eine positive ganze Zahl sein.',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web-Push',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise-Benachrichtigungseinstellungen erfolgreich gespeichert.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Konfigurationsname',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Passwort',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Tag',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise-Testbenachrichtigung gesendet.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Stamm-URL der Apprise API',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Benutzername',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Authentifizierung mit Benutzername und Passwort',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Sie müssen mindestens einen Benachrichtigungstyp auswählen.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Poster einbetten',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Die Gotify-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify-Benachrichtigungseinstellungen wurden erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priorität',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify-Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify-Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Anwendungs-Token',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server-URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Es muss mindestens eine Benachrichtigungsart ausgewählt werden',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poster einbetten',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Die Ntfy-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Passwort',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priorität',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Standard',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'hoch',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow':
+        'niedrig',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Minimum',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Dringend',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Schlagworte',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy-Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy-Test-Benachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Token-Authentifizierung',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Thema',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Basis-URL des Servers',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Benutzername',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Benutzername + Passwort-Authentifizierung',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Es muss mindestens eine Meldungsart ausgewählt werden',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Zugangstoken',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanal-Tag',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet Testbenachrichtigung fehlgeschlagen.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Es muss mindestens ein Benachrichtigungstyp ausgewählt sein',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'API-Token der Anwendung',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Standardsound des Geräts',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Poster einbetten',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Benachrichtigungston',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover-Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover-Testbenachrichtigung wurde gesendet!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Benutzer- oder Gruppenschlüssel',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Du musst mindestens einen Benachrichtigungstyp auswählen',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Poster einbetten',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Aktionen zur Anfragengenehmigung aktivieren',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Zuordnungen der Anfragemanager',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Eine Zuordnung pro Zeile: Slack-Benutzer-ID=SeerrNG-Benutzer-ID. Jeder zugeordnete SeerrNG-Benutzer benötigt die Berechtigung zur Anfragenverwaltung.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack-Signaturgeheimnis',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack Testbenachrichtigung fehlgeschlagen.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Du musst mindestens einen Benachrichtigungstypen auswählen',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack-Workspace-ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Agent aktivieren',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Poster einbetten',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Die Web-Push-Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web push Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Die Web-Push-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Die Web-Push-Benachrichtigungseinstellungen wurden erfolgreich gespeichert!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Dienst aktivieren',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autorisierungsheader',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Benutzerdefinierte Kopfzeilen',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Kopfzeile hinzufügen',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Der Authorization-Header und ein benutzerdefinierter Authorization-Header können nicht gleichzeitig verwendet werden. Bitte entfernen Sie einen davon.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Alle Header müssen sowohl einen Namen als auch einen Wert haben',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Kopfzeilenname',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Entfernen',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Header-Wert',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON-Inhalt',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Unterstützung von URL-Variablen',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook-Testbenachrichtigung konnte nicht gesendet werden.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook-Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Du musst mindestens einen Benachrichtigungstyp auswählen',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.agentenabled':
+        'Benachrichtigungsagent aktivieren',
+      'components.Settings.Notifications.allowselfsigned':
+        'Selbstsignierte Zertifikate erlauben',
+      'components.Settings.Notifications.authPass': 'SMTP-Passwort',
+      'components.Settings.Notifications.authUser': 'SMTP-Benutzername',
+      'components.Settings.Notifications.botAPI': 'Bot-Autorisierungstoken',
+      'components.Settings.Notifications.botAvatarUrl': 'Bot-Avatar-URL',
+      'components.Settings.Notifications.botUsername': 'Bot Benutzername',
+      'components.Settings.Notifications.chatId': 'Chat-ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.emailsender': 'Absenderadresse',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'E-Mail-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'E-Mail-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.embedPoster': 'Poster einbetten',
+      'components.Settings.Notifications.enableMentions':
+        'Erwähnungen aktivieren',
+      'components.Settings.Notifications.encryption': 'Verschlüsselungsmethode',
+      'components.Settings.Notifications.encryptionDefault':
+        'Verwende STARTTLS wenn verfügbar',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Benutze implizites TLS',
+      'components.Settings.Notifications.encryptionNone': 'Keine',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'STARTTLS immer verwenden',
+      'components.Settings.Notifications.messageThreadId': 'Thread-/Themen-ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP Passwort',
+      'components.Settings.Notifications.pgpPrivateKey':
+        'PGP Privater Schlüssel',
+      'components.Settings.Notifications.sendSilently': 'Lautlos senden',
+      'components.Settings.Notifications.senderName': 'Absendername',
+      'components.Settings.Notifications.smtpHost': 'SMTP-Host',
+      'components.Settings.Notifications.smtpPort': 'SMTP-Port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram-Benachrichtigungseinstellungen konnten nicht gespeichert werden.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram-Benachrichtigungseinstellungen erfolgreich gespeichert!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord Testbenachrichtigung fehlgeschlagen.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'E-Mail Testbenachrichtigung fehlgeschlagen.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'E-Mail Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram Testbenachrichtigung fehlgeschlagen.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram Testbenachrichtigung gesendet!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Verwenden Sie das öffentliche Seerr-Logo anstelle des Instanz-Logos',
+      'components.Settings.Notifications.useUserLocale':
+        'Gebietsschema des Benachrichtigungsempfängers verwenden',
+      'components.Settings.Notifications.userEmailRequired':
+        'Benutzer E-Mail erforderlich',
+      'components.Settings.Notifications.validationEmail':
+        'Du musst eine gültige E-Mail-Adresse angeben',
+      'components.Settings.Notifications.validationTypes':
+        'Es muss mindestens ein Benachrichtigungstyp ausgewählt werden',
+      'components.Settings.Notifications.webhookRoleId':
+        'Benachrichtigung Rollen ID',
+      'components.Settings.Notifications.webhookThreadId': 'Thread-ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
     },
   },
   {
@@ -6454,6 +7830,258 @@ export const localeData = [
         'The thread/topic ID must be a positive whole number',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise notification settings could not be saved.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise notification settings saved successfully.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Configuration Key',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Password',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Tag',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise test notification could not be sent.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise test notification sent.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API Root URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Username',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Username and Password Authentication',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'You must select at least one notification type.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Embed Poster',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priority',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify test notification failed to send.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify test notification sent!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Application Token',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Embed Poster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Password',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priority',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Default',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'High',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': 'Low',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Minimum',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Urgent',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Tags',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy test notification failed to send.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy test notification sent!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Token authentication',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Topic',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Server root URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Username',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Username + Password authentication',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Access Token',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Channel Tag',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet test notification failed to send.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet test notification sent!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Application API Token',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Device Default',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Embed Poster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Notification Sound',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover test notification failed to send.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover test notification sent!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'User or Group Key',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Embed Poster',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Enable request approval actions',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Request manager mappings',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'One per line: Slack user ID=SeerrNG user ID. Each mapped SeerrNG user must have request management permission.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack signing secret',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack test notification failed to send.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack test notification sent!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack workspace ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Embed Poster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Web push test notification failed to send.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web push test notification sent!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Web push notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Web push notification settings saved successfully!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Enable Agent',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Authorization Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Custom Headers',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Add Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Cannot use both Authorization Header and custom Authorization header. Please remove one.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'All headers must have both name and value',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Header Name',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Remove',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Header Value',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON Payload',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Support URL Variables',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook test notification failed to send.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook test notification sent!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook notification settings failed to save.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook notification settings saved successfully!',
+      'components.Settings.Notifications.agentenabled': 'Enable Agent',
+      'components.Settings.Notifications.allowselfsigned':
+        'Allow Self-Signed Certificates',
+      'components.Settings.Notifications.authPass': 'SMTP Password',
+      'components.Settings.Notifications.authUser': 'SMTP Username',
+      'components.Settings.Notifications.botAPI': 'Bot Authorization Token',
+      'components.Settings.Notifications.botAvatarUrl': 'Bot Avatar URL',
+      'components.Settings.Notifications.botUsername': 'Bot Username',
+      'components.Settings.Notifications.chatId': 'Chat ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord notification settings failed to save.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord notification settings saved successfully!',
+      'components.Settings.Notifications.emailsender': 'Sender Address',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Email notification settings failed to save.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Email notification settings saved successfully!',
+      'components.Settings.Notifications.embedPoster': 'Embed Poster',
+      'components.Settings.Notifications.enableMentions': 'Enable Mentions',
+      'components.Settings.Notifications.encryption': 'Encryption Method',
+      'components.Settings.Notifications.encryptionDefault':
+        'Use STARTTLS if available',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Use Implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'None',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Always use STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'Thread/Topic ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP Password',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP Private Key',
+      'components.Settings.Notifications.sendSilently': 'Send Silently',
+      'components.Settings.Notifications.senderName': 'Sender Name',
+      'components.Settings.Notifications.smtpHost': 'SMTP Host',
+      'components.Settings.Notifications.smtpPort': 'SMTP Port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram notification settings failed to save.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram notification settings saved successfully!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord test notification failed to send.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord test notification sent!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Email test notification failed to send.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Email test notification sent!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram test notification failed to send.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram test notification sent!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Use public Seerr logo instead of instance logo',
+      'components.Settings.Notifications.useUserLocale':
+        'Use Notification Recipient Locale',
+      'components.Settings.Notifications.userEmailRequired':
+        'Require user email',
+      'components.Settings.Notifications.validationEmail':
+        'You must provide a valid email address',
+      'components.Settings.Notifications.validationTypes':
+        'You must select at least one notification type',
+      'components.Settings.Notifications.webhookRoleId': 'Notification Role ID',
+      'components.Settings.Notifications.webhookThreadId': 'Thread ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -6618,6 +8246,28 @@ export const localeData = [
       'lumen.adminNotifications.allChannels': 'All Channels',
       'lumen.adminNotifications.unknownChannel':
         'Unknown notification channel.',
+      'lumen.adminNotifications.authentication': 'Authentication',
+      'lumen.adminNotifications.clearField': 'Clear {field}',
+      'lumen.adminNotifications.credentialSaved':
+        'Credential saved. Enter a replacement or clear it.',
+      'lumen.adminNotifications.headerName': 'Header {number} Name',
+      'lumen.adminNotifications.headerValue': 'Header {number} Value',
+      'lumen.adminNotifications.loadChannelFailure':
+        'Couldn’t load {channel} settings.',
+      'lumen.adminNotifications.loadPushoverSoundsFailure':
+        'Could not load Pushover sounds.',
+      'lumen.adminNotifications.none': 'None',
+      'lumen.adminNotifications.notificationEvents': 'Notification Events',
+      'lumen.adminNotifications.notificationLocale': 'Notification Locale',
+      'lumen.adminNotifications.retry': 'Retry',
+      'lumen.adminNotifications.saveChannel': 'Save {channel}',
+      'lumen.adminNotifications.savedValue': 'Saved value',
+      'lumen.adminNotifications.sendTest': 'Send {channel} Test',
+      'lumen.adminNotifications.testDeliveryWebPush':
+        'Test delivery requires a browser subscribed to Web Push on your account.',
+      'lumen.adminNotifications.validJson': 'Enter a valid JSON payload.',
+      'lumen.adminNotifications.channelCredentialsRequired':
+        'Set the channel credentials and destination before enabling or testing notifications.',
       'lumen.admin.dest.libraryMigration': 'Library Migration',
       'lumen.admin.dest.mediaLibraries': 'Media Server Libraries',
       'lumen.admin.dest.categories': 'Media Categories',
@@ -8270,6 +9920,157 @@ export const localeData = [
         'Πρέπει να δώσεις ένα έγκυρο αναγνωριστικό συνομιλίας',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Ενεργοποίηση Agent',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Οι ρυθμίσεις ειδοποιήσεων Gotify απέτυχαν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Οι ρυθμίσεις ειδοποιήσεων Gotify αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Η δοκιμαστική αποστολή ειδοποίησης Gotify απέτυχε.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Gotify στάλθηκε!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token εφαρμογής',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL διακομιστή',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Διακριτικό πρόσβασης',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Ετικέτα καναλιού',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Pushbullet δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Οι ρυθμίσεις για τις ειδοποιήσεις Pushbullet αποθηκεύτηκαν με επιτυχία!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Αποτυχία αποστολής δοκιμαστικής ειδοποιήσης Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Pushbullet εστάλη!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Διακριτικό API Εφαρμογής',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Ενεργοποίηση του Μεταφορέα',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Προεπιλογή συσκευής',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Pushover δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων Pushover αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Ήχος ειδοποίησης',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Αποτυχία αποστολής δοκιμαστικής ειδοποίησης Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Pushover εστάλη!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Κλειδί Χρήστη ή Ομάδας',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Ενεργοποίηση του Μεταφορέα',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Slack δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Οι ρυθμίσεις ειδοποιήσεων Slack αποθηκεύτηκαν με επιτυχία!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Αποτυχία αποστολής δοκιμαστικής ειδοποίησης Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Slack εστάλη!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Ενεργοποίηση του Μεταφορέα',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Η δοκιμαστική ειδοποιήση push δεν κατάφερε να σταλεί.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Η δοκιμαστική ειδοποίηση push εστάλη!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων push δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων push αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Ενεργοποίηση του Μεταφορέα',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Κεφαλίδα Εξουσιοδότησης',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON Φορτίο Πληροφοριών',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Η δοκιμαστική ειδοποίηση webhook δεν κατάφερε να σταλεί.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Η δοκιμαστική ειδοποίηση webhook εστάλη!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Webhook δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων Webhook αποθηκεύτηκαν με επιτυχία!',
+      'components.Settings.Notifications.agentenabled':
+        'Ενεργοποίηση του Μεταφορέα',
+      'components.Settings.Notifications.allowselfsigned':
+        'Επίτρεψε Αυτο-Υπογεγραμμένα Πιστοποιητικά',
+      'components.Settings.Notifications.authPass': 'Κωδικός πρόσβασης SMTP',
+      'components.Settings.Notifications.authUser': 'Όνομα χρήστη SMTP',
+      'components.Settings.Notifications.botAPI':
+        'Διακριτικό εξουσιοδότησης Bot',
+      'components.Settings.Notifications.botAvatarUrl':
+        'Σύνδεσμος για το Avatar του Bot',
+      'components.Settings.Notifications.botUsername': 'Όνομα χρήστη Bot',
+      'components.Settings.Notifications.chatId': 'Αναγνωριστικό συνομιλίας',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Discord δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων Discord αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.emailsender': 'Διεύθυνση αποστολέα',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων για το email δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων για το email αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.enableMentions':
+        'Ενεργοποίηση αναφορών',
+      'components.Settings.Notifications.encryption': 'Μέθοδος κρυπτογράφησης',
+      'components.Settings.Notifications.encryptionDefault':
+        'Χρήση STARTTLS αν υπάρχει',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Χρήση Implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'Καμιά',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Να χρησιμοποιείς πάντα το STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'Κωδικός πρόσβασης PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Ιδιωτικό κλειδί PGP',
+      'components.Settings.Notifications.sendSilently': 'Αθόρυβη Αποστολή',
+      'components.Settings.Notifications.senderName': 'Όνομα αποστολέα',
+      'components.Settings.Notifications.smtpHost':
+        'Κεντρικός υπολογιστής SMTP',
+      'components.Settings.Notifications.smtpPort': 'Θύρα SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Οι ρυθμίσεις των ειδοποιήσεων Telegram δεν κατάφεραν να αποθηκευτούν.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Οι ρυθμίσεις των ειδοποιήσεων Telegram αποθηκεύτηκαν επιτυχώς!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Η δοκιμαστική ειδοποίηση Discord δεν κατάφερε να σταλεί.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Discord εστάλη!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Η δοκιμαστική ειδοποίηση email δεν κατάφερε να σταλεί.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Η δοκιμαστική ειδοποίηση email εστάλη!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Η δοκιμαστική ειδοποίηση Telegram δεν κατάφερε να σταλεί.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Η δοκιμαστική ειδοποίηση Telegram εστάλη!',
+      'components.Settings.Notifications.validationEmail':
+        'Πρέπει να δώσεις μια έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείου',
+      'components.Settings.Notifications.validationTypes':
+        'Πρέπει να επιλέξετε τουλάχιστον έναν τύπο ειδοποιήσεων',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL',
     },
   },
   {
@@ -9422,6 +11223,266 @@ export const localeData = [
         'El ID de hilo/topic debe ser un número entero positivo',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Empuje web',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'No se pudieron guardar los ajustes de notificación de Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Los ajustes de notificación de Apprise se guardaron correctamente.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Nombre de configuración',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Contraseña',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Etiqueta',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'No se pudo enviar la notificación de prueba de Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Se envió la notificación de prueba de Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'URL raíz de la API de Apprise',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Nombre de usuario',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Autenticación con nombre de usuario y contraseña',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Incrustar póster',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'No se han podido guardar los ajustes de notificación de Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        '¡La configuración de notificaciones de Gotify se ha guardado correctamente!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioridad',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'No se ha podido enviar la notificación de prueba de Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        '¡Notificación de prueba de Gotify enviada!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token de aplicación',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL del servidor',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Insertar póster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'No se pudieron guardar los ajustes de notificación de Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        '¡La configuración de notificaciones de Ntfy se guardó correctamente!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Contraseña',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioridad',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Predeterminado',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'Alta',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': 'Baja',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Mínima',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Urgente',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Etiquetas',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'La notificación de prueba de Ntfy no se pudo enviar.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        '¡Notificación de prueba Ntfy enviada!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Autenticación por token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tema',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL raíz del servidor',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nombre de usuario',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autenticación de nombre de usuario y contraseña',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token de Acceso',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Etiqueta de canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Fallo al guardar los ajustes de la notificación Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        '¡Los ajustes de notificación Pushbullet se han guardado con éxito!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Fallo al enviar notificación de prueba de Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        '¡Notificación de prueba de Pushbullet enviada!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token de API de la aplicación',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Agente habilitado',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Sonido predeterminado del dispositivo',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Incrustar póster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'No se pudo guardar la configuración de notificaciones de Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        '¡Se han guardado los ajustes de notificación de Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Sonido de notificación',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Fallo al enviar la notificación de prueba de Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        '¡Notificación de prueba de Pushover enviada!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Clave de usuario o grupo',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Debes seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Incrustar póster',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Activar acciones de aprobación de solicitudes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Asignaciones de responsables de solicitudes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Una por línea: ID de usuario de Slack=ID de usuario de SeerrNG. Cada usuario de SeerrNG asignado debe tener permiso para gestionar solicitudes.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Clave de firma de Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Fallo al guardar ajustes de notificación de Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        '¡Ajustes de notificación de Slack guardados con éxito!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Fallo al enviar la notificación de prueba de Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        '¡Notificación de prueba de Slack enviada!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID del espacio de trabajo de Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Incrustar póster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Fallo al enviar la notificación de prueba de Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        '¡Notificación de prueba de Web Push enviada!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Fallo al guardar los ajustes de notificación de Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        '¡Ajustes de notificación de Web Push guardados con éxito!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Encabezado de autorización',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Cabeceras personalizadas',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Añadir cabecera',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'No se pueden usar a la vez la cabecera de autorización y una cabecera de autorización personalizada. Por favor, elimina una.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Todas las cabeceras deben tener tanto nombre como valor',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nombre de la cabecera',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Quitar',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Valor de cabecera',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Carga útil JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Soportar variables en la URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Fallo al enviar la notificación de prueba de Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        '¡Notificación de prueba de Webhook enviada!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Debes seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL del webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'No se pudo guardar la configuración de notificación de webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        '¡Configuración de notificación de webhook guardada con éxito!',
+      'components.Settings.Notifications.agentenabled':
+        'Habilitar el agente de notificaciones',
+      'components.Settings.Notifications.allowselfsigned':
+        'Permitir certificados autofirmados',
+      'components.Settings.Notifications.authPass': 'Contraseña SMTP',
+      'components.Settings.Notifications.authUser': 'Usuario SMTP',
+      'components.Settings.Notifications.botAPI':
+        'Token de Autorización del Bot',
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL del avatar del bot',
+      'components.Settings.Notifications.botUsername':
+        'Nombre de usuario del Bot',
+      'components.Settings.Notifications.chatId': 'ID de chat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Fallo al guardar ajustes de notificación de Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        '¡Ajustes de notificación de Discord guardados con éxito!',
+      'components.Settings.Notifications.emailsender':
+        'Dirección del Remitente',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Fallo al guardar ajustes de notificación de Email.',
+      'components.Settings.Notifications.emailsettingssaved':
+        '¡Ajustes de notificación de Email guardados con éxito!',
+      'components.Settings.Notifications.embedPoster': 'Incrustar poster',
+      'components.Settings.Notifications.enableMentions': 'Activar menciones',
+      'components.Settings.Notifications.encryption': 'Método de Encriptación',
+      'components.Settings.Notifications.encryptionDefault':
+        'Usa STARTTLS si está disponible',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Usa TLS Implícito',
+      'components.Settings.Notifications.encryptionNone': 'Ninguna',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Usa siempre STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID del hilo/tema',
+      'components.Settings.Notifications.pgpPassword': 'Contraseña de PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Clave Privada PGP',
+      'components.Settings.Notifications.sendSilently':
+        'Enviar silenciosamente',
+      'components.Settings.Notifications.senderName': 'Nombre del remitente',
+      'components.Settings.Notifications.smtpHost': 'Host SMTP',
+      'components.Settings.Notifications.smtpPort': 'Puerto SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'La configuración de notificaciones de Telegram no se pudo guardar.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        '¡Se han guardado los ajustes de notificación de Telegram con éxito!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Fallo al enviar notificación de prueba de Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        '¡Notificación de prueba enviada de Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Fallo al enviar la notificación de prueba por Email.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        '¡Notificación por Email de prueba enviada!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Fallo al enviar notificación de prueba de Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        '¡Notificación de Telegram enviada con éxito!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Usar el logotipo público de Seerr en lugar del logotipo de la instancia',
+      'components.Settings.Notifications.useUserLocale':
+        'Usar la configuración regional del destinatario de notificaciones',
+      'components.Settings.Notifications.userEmailRequired':
+        'Requerir email de usuario',
+      'components.Settings.Notifications.validationEmail':
+        'Debes indicar una dirección de email válida',
+      'components.Settings.Notifications.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.webhookRoleId':
+        'ID de rol de notificación',
+      'components.Settings.Notifications.webhookThreadId': 'ID de hilo',
+      'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
     },
   },
   {
@@ -10563,6 +12624,264 @@ export const localeData = [
         'El ID de hilo/topic debe ser un número entero positivo',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Empuje web',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise No se pueden guardar los ajustes de notificación.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise Ajustes de notificación guardados con éxito.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Clave de configuración',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Contraseña',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Etiqueta',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise No se puede enviar notificación de prueba.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Se envió la notificación de prueba de Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Informar sobre la raíz API URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Nombre de usuario',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Nombre de usuario y autenticación de contraseña',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Insertar cartel',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'No se han guardado los ajustes de notificación de Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        '¡La configuración de notificaciones de Gotify se ha guardado correctamente!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioridad',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'No se ha podido enviar la notificación de prueba de Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        '¡Notificación de prueba de Gotify enviada!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token de aplicación',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL del servidor',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Insertar cartel',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Los ajustes de notificación Ntfy no guardaron.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ajustes de notificación Ntfy guardados con éxito!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Contraseña',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioridad',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Predeterminado',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'Alto',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': 'Baja',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Mínimo',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Urgente',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Etiquetas',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy La notificación de prueba no envió.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy notificación de prueba enviada!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Simbólico',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'autenticación token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tema',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL de raíz del servidor',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nombre de usuario',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Nombre de usuario + autenticación de contraseña',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Debe seleccionar al menos un tipo de notificación',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token de Acceso',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Etiqueta de canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Fallo al guardar los ajustes de la notificación Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        '¡Los ajustes de notificación Pushbullet se han guardado con éxito!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Fallo al enviar notificación de prueba de Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        '¡Notificación de prueba de Pushbullet enviada!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token de aplicación API',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Agente habilitado',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Dispositivo predeterminado',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Insertar cartel',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'No se pudo guardar la configuración de notificaciones de Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        '¡Se han guardado los ajustes de notificación de Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Sonido de notificación',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Fallo al enviar la notificación de prueba de Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        '¡Notificación de prueba de Pushover enviada!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Clave de usuario o grupo',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Insertar cartel',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Activar acciones de aprobación de solicitudes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Asignaciones de responsables de solicitudes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Una por línea: ID de usuario de Slack=ID de usuario de SeerrNG. Cada usuario de SeerrNG asignado debe tener permiso para gestionar solicitudes.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Clave de firma de Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Fallo al guardar ajustes de notificación de Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        '¡Ajustes de notificación de Slack guardados con éxito!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Fallo al enviar la notificación de prueba de Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        '¡Notificación de prueba de Slack enviada!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID del espacio de trabajo de Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Insertar cartel',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Fallo al enviar la notificación de prueba de Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        '¡Notificación de prueba de Web Push enviada!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Fallo al guardar los ajustes de notificación de Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        '¡Ajustes de notificación de Web Push guardados con éxito!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Encabezado de autorización',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Aduaneros',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Añadir Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'No puede utilizar tanto el encabezado de autorización como el encabezado de autorización personalizada. Por favor, quita uno.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Todos los encabezados deben tener tanto nombre como valor',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nombre del encabezado',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Retirar',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Valor del encabezado',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Payload de JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Soporte URL Variables',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Fallo al enviar la notificación de prueba de Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        '¡Notificación de prueba de Webhook enviada!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'No se pudo guardar la configuración de notificación de webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        '¡Configuración de notificación de webhook guardada con éxito!',
+      'components.Settings.Notifications.agentenabled': 'Habilitar Agente',
+      'components.Settings.Notifications.allowselfsigned':
+        'Permitir certificados autofirmados',
+      'components.Settings.Notifications.authPass': 'Contraseña SMTP',
+      'components.Settings.Notifications.authUser': 'Usuario SMTP',
+      'components.Settings.Notifications.botAPI':
+        'Token de Autorización del Bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL del Bot Avatar',
+      'components.Settings.Notifications.botUsername':
+        'Nombre de usuario del Bot',
+      'components.Settings.Notifications.chatId': 'ID de chat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Fallo al guardar ajustes de notificación de Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        '¡Ajustes de notificación de Discord guardados con éxito!',
+      'components.Settings.Notifications.emailsender':
+        'Dirección del Remitente',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Fallo al guardar ajustes de notificación de Email.',
+      'components.Settings.Notifications.emailsettingssaved':
+        '¡Ajustes de notificación de Email guardados con éxito!',
+      'components.Settings.Notifications.embedPoster': 'Insertar cartel',
+      'components.Settings.Notifications.enableMentions': 'Activar menciones',
+      'components.Settings.Notifications.encryption': 'Método de Encriptación',
+      'components.Settings.Notifications.encryptionDefault':
+        'Usa STARTTLS si está disponible',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Usa TLS Implícito',
+      'components.Settings.Notifications.encryptionNone': 'Ninguna',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Usa siempre STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID del hilo/tema',
+      'components.Settings.Notifications.pgpPassword': 'Contraseña de PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Clave Privada PGP',
+      'components.Settings.Notifications.sendSilently':
+        'Enviar silenciosamente',
+      'components.Settings.Notifications.senderName': 'Nombre del remitente',
+      'components.Settings.Notifications.smtpHost': 'Host SMTP',
+      'components.Settings.Notifications.smtpPort': 'Puerto SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'La configuración de notificaciones de Telegram no se pudo guardar.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        '¡Se han guardado los ajustes de notificación de Telegram con éxito!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Fallo al enviar notificación de prueba de Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        '¡Notificación de prueba enviada de Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Fallo al enviar la notificación de prueba por Email.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        '¡Notificación por Email de prueba enviada!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Fallo al enviar notificación de prueba de Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        '¡Notificación de Telegram enviada con éxito!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Utilice el logotipo público de Seerr en lugar de logotipo de instancia',
+      'components.Settings.Notifications.useUserLocale':
+        'Use Notification Recipiente Locale',
+      'components.Settings.Notifications.userEmailRequired':
+        'Consultar correo electrónico del usuario',
+      'components.Settings.Notifications.validationEmail':
+        'Debes indicar una dirección de email válida',
+      'components.Settings.Notifications.validationTypes':
+        'Debes seleccionar, al menos, un tipo de notificación',
+      'components.Settings.Notifications.webhookRoleId':
+        'Notificación Papel ID',
+      'components.Settings.Notifications.webhookThreadId': 'ID del hilo',
+      'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
     },
   },
   {
@@ -10966,6 +13285,215 @@ export const localeData = [
         'Lõime/teema ID peab olema positiivne täisarv',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Veebitõuketeated',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify teavituste seaded on salvestatud!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioriteet',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Rakenduse pääsutõend (token)',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'Serveri URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Vali vähemalt üks teavituse tüüp',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Lisa poster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy teavituste seaded on salvestatud!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Parool',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioriteet',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsNtfy.token':
+        'Pääsutõend (token)',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Pääsutõendiga (token) autentimine',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Teema',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Serveri juur-URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Kasutajanimi',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Kasutajanimi + parool autentimine',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Vali vähemalt üks teavituse tüüp',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Pääsutõend (token)',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanali silt',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbulleti teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbulleti teavituste seaded on salvestatud!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbulleti testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbulleti testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Vali vähemalt üks teavituse tüüp',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Rakenduse API pääsutõend',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Seadme vaikeväärtus',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Lisa poster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushoveri teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushoveri teavituste seaded on salvestatud!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Teavituse heli',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushoveri testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushoveri testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Kasutaja või grupi võti',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Vali vähemalt üks teavituse tüüp',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Lisa plakat',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slacki teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slacki teavituste seaded on salvestatud!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slacki testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slacki testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Vali vähemalt üks teavituse tüüp',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhooki URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Lisa poster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Veebitõuketeavituse testteate saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Veebitõuketeavituse testteade on saadetud!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Veebitõuketeavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Veebitõuketeavituste seaded on edukalt salvestatud!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Luba agent',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autoriseerimise päis (Authorization Header)',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Kohandatud päised',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Lisa päis',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Ei saa kasutada korraga standardset Authorization-päist ja kohandatud Authorization-päist. Palun eemalda üks neist.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Kõikidel päistel peab olema täidetud nii nimi kui ka väärtus',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Päise nimi',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Eemalda',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Päise väärtus',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON-andmekogu (Payload)',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Toeta URL-i muutujaid',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Veebihaagi testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Veebihaagi testteavitus on saadetud!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Pead valima vähemalt ühe teavitustüübi',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Veebihaagi URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Veebihaagi teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Veebihaagi teavituste seaded on edukalt salvestatud!',
+      'components.Settings.Notifications.agentenabled': 'Luba agent',
+      'components.Settings.Notifications.allowselfsigned':
+        'Luba iseallkirjastatud sertifikaadid',
+      'components.Settings.Notifications.authPass': 'SMTP parool',
+      'components.Settings.Notifications.authUser': 'SMTP kasutajanimi',
+      'components.Settings.Notifications.botAPI':
+        'Boti autoriseerimistõend (token)',
+      'components.Settings.Notifications.botAvatarUrl': 'Boti avatari URL',
+      'components.Settings.Notifications.botUsername': 'Boti kasutajanimi',
+      'components.Settings.Notifications.chatId': 'Vestluse ID (Chat ID)',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discordi teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discordi teavituste seaded on edukalt salvestatud!',
+      'components.Settings.Notifications.emailsender': 'Saatja aadress',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'E-posti teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'E-posti teavituste seaded on edukalt salvestatud!',
+      'components.Settings.Notifications.embedPoster': 'Lisa poster',
+      'components.Settings.Notifications.enableMentions': 'Luba mainimised',
+      'components.Settings.Notifications.encryption': 'Krüpteerimismeetod',
+      'components.Settings.Notifications.encryptionDefault':
+        'Kasuta STARTTLS-i, kui see on saadaval',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Kasuta implitsiitset TLS-i (Implicit TLS)',
+      'components.Settings.Notifications.encryptionNone': 'Puudub',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Kasuta alati STARTTLS-i',
+      'components.Settings.Notifications.messageThreadId': 'Lõime/teema ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP parool',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP privaatvõti',
+      'components.Settings.Notifications.sendSilently': 'Saada hääletult',
+      'components.Settings.Notifications.senderName': 'Saatja nimi',
+      'components.Settings.Notifications.smtpHost':
+        'SMTP host (või SMTP server)',
+      'components.Settings.Notifications.smtpPort': 'SMTP port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegrami teavituste seadete salvestamine ebaõnnestus.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegrami teavituste seaded on edukalt salvestatud!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discordi testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discordi testteavitus on saadetud!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'E-posti testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'E-posti testteavitus on saadetud!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegrami testteavituse saatmine ebaõnnestus.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegrami testteavitus on saadetud!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Kasuta avalikku Seerri logo instantsi logo asemel',
+      'components.Settings.Notifications.useUserLocale':
+        'Kasuta teavituse saaja keelt',
+      'components.Settings.Notifications.userEmailRequired':
+        'Nõua kasutaja e-posti aadressi',
+      'components.Settings.Notifications.validationEmail':
+        'Pead sisestama kehtiva e-posti aadressi',
+      'components.Settings.Notifications.validationTypes':
+        'Pead valima vähemalt ühe teavitustüübi',
+      'components.Settings.Notifications.webhookRoleId': 'Teavituse rolli ID',
+      'components.Settings.Notifications.webhookUrl': 'Veebihaagi URL',
     },
   },
   {
@@ -11166,6 +13694,12 @@ export const localeData = [
         'Ilmoita muiden käyttäjien pyynnöistä jotka vaativat hyväksymisen.',
       'components.UserProfile.UserSettings.UserNotificationSettings.UserNotificationsWebPush.managedevices':
         'Hallinnoi laitteita',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioriteetti',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Salasana',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Käyttäjänimi',
     },
   },
   {
@@ -12320,6 +14854,267 @@ export const localeData = [
         "L'identifiant du fil de discussion doit être un nombre entier positif",
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Push Web',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        "Les paramètres de notification Apprise n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Paramètres de notification Apprise enregistrés avec succès.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Nom de la configuration',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Mot de passe',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Étiquette',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        "La notification de test Apprise n'a pas pu être envoyée.",
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Notification de test Apprise envoyée.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'URL racine de l’API Apprise',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        "Nom d'utilisateur",
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Authentification par nom d’utilisateur et mot de passe',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Vous devez sélectionner au moins un type de notification.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        "Intégrer l'affiche",
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        "Les paramètres de notification Gotify n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Paramètres de notification Gotify enregistrés !',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priorité',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'L’envoi de la notification de test Gotify a échoué.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Notification de test Gotify envoyée !',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        "Jeton d'application",
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL du serveur',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        "Intégrer l'affiche",
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        "Erreur lors de l'enregistrement des paramètres de notification Ntfy.",
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Les paramètres de notification Ntfy ont été enregistrés avec succès !',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Mot de passe',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priorité',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Par défaut',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'Élevée',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow':
+        'Faible',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Minimum',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Urgente',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Étiquettes',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        "La notification de test Ntfy n'a pas pu être envoyée.",
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Notification de test Ntfy envoyée !',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Jeton',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Authentification par token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Sujet',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL racine du serveur',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        "Nom d'utilisateur",
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        "Authentification par nom d'utilisateur + mot de passe",
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        "Jeton d'accès",
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Étiquette de canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        "Les paramètres de notification Pushbullet n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Paramètres de notification Pushbullet enregistrés !',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'L’envoi de la notification de test Pushbullet a échoué.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Notification de test Pushbullet envoyée !',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Jeton d’API de l’application',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Son par défaut de l’appareil',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        "Intégrer l'affiche",
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        "Les paramètres de notification Pushover n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Paramètres de notification Pushover enregistrés !',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Son de notification',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'L’envoi de la notification de test Pushover a échoué.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'La notification de test Pushover a été envoyée !',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        "Clé d'utilisateur ou de groupe",
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        "Intégrer l'affiche",
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Activer les actions d’approbation des demandes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Correspondances des responsables de demandes',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Une entrée par ligne : ID utilisateur Slack=ID utilisateur SeerrNG. Chaque utilisateur SeerrNG associé doit avoir l’autorisation de gérer les demandes.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Secret de signature Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        "Les paramètres de notification Slack n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Paramètres de notification Slack enregistrés !',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        "L'envoi de la notification test Slack a échoué.",
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Notification test Slack envoyée !',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL du webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID d’espace de travail Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        "Intégrer l'affiche",
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        "L'envoi de la notification de test push web a échoué.",
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Notification de test push web envoyée !',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        "Les paramètres de la notification push web n'ont pas été enregistrés.",
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Les paramètres de notification push web ont été enregistrés !',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        "Activer l'agent",
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        "En-tête d'autorisation",
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'En-têtes personnalisés',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Ajouter un en-tête',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        "Impossible d'utiliser à la fois l'en-tête d'autorisation et un en-tête d'autorisation personnalisé. Veuillez en supprimer un.",
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Tous les en-têtes doivent avoir un nom et une valeur',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        "Nom de l'en-tête",
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Retirer',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        "Valeur de l'en-tête",
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Données utiles JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Prendre en charge les variables d’URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        "L'envoi de la notification de test du webhook a échoué.",
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Notification de test du webhook envoyée !',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL du webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        "Échec de l'enregistrement des paramètres de notification du webhook.",
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Paramètres de notification webhook enregistrés !',
+      'components.Settings.Notifications.agentenabled':
+        'Activer l’agent de notification',
+      'components.Settings.Notifications.allowselfsigned':
+        'Autoriser les certificats autosignés',
+      'components.Settings.Notifications.authPass': 'Mot de passe SMTP',
+      'components.Settings.Notifications.authUser': "Nom d'utilisateur SMTP",
+      'components.Settings.Notifications.botAPI': "Jeton d'autorisation du bot",
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL de l’avatar du bot',
+      'components.Settings.Notifications.botUsername': 'Pseudonyme du bot',
+      'components.Settings.Notifications.chatId': 'ID de discussion',
+      'components.Settings.Notifications.discordsettingsfailed':
+        "Les paramètres de notification Discord n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.discordsettingssaved':
+        'Les paramètres de notification Discord ont été enregistrés !',
+      'components.Settings.Notifications.emailsender':
+        "Adresse de l'expéditeur",
+      'components.Settings.Notifications.emailsettingsfailed':
+        "Les paramètres de notification par e-mail n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.emailsettingssaved':
+        'Les paramètres de notification par e-mail ont été enregistrés !',
+      'components.Settings.Notifications.embedPoster': "Intégrer l'affiche",
+      'components.Settings.Notifications.enableMentions':
+        'Activer les mentions',
+      'components.Settings.Notifications.encryption': 'Méthode de chiffrement',
+      'components.Settings.Notifications.encryptionDefault':
+        'Utiliser STARTTLS si disponible',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Utiliser TLS implicite',
+      'components.Settings.Notifications.encryptionNone': 'Aucune',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Toujours utiliser STARTTLS',
+      'components.Settings.Notifications.messageThreadId':
+        'ID du fil de discussion',
+      'components.Settings.Notifications.pgpPassword': 'Mot de passe PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Clé privée PGP',
+      'components.Settings.Notifications.sendSilently':
+        'Envoyer silencieusement',
+      'components.Settings.Notifications.senderName': "Nom de l'expéditeur",
+      'components.Settings.Notifications.smtpHost': 'Hôte SMTP',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        "Les paramètres de notification Telegram n'ont pas pu être enregistrés.",
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Paramètres de notification Telegram enregistrés !',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        "Échec de l'envoi de la notification de test Discord.",
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Notification de test Discord envoyée !',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        "Échec de l'envoi de la notification de test par e-mail.",
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Notification de test par e-mail envoyée !',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        "L'envoi de la notification test à Telegram a échoué.",
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Notification de test Telegram envoyée !',
+      'components.Settings.Notifications.usePublicLogo':
+        "Utiliser le logo public de Seerr au lieu de celui de l'instance",
+      'components.Settings.Notifications.useUserLocale':
+        'Utiliser les paramètres régionaux du destinataire de la notification',
+      'components.Settings.Notifications.userEmailRequired':
+        'E-mail utilisateur requis',
+      'components.Settings.Notifications.validationEmail':
+        'Vous devez fournir un e-mail valide',
+      'components.Settings.Notifications.validationTypes':
+        'Vous devez sélectionner au moins un type de notification',
+      'components.Settings.Notifications.webhookRoleId':
+        'Identifiant de rôle de notification',
+      'components.Settings.Notifications.webhookThreadId': 'ID de thread',
+      'components.Settings.Notifications.webhookUrl': 'URL du webhook',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -12574,6 +15369,29 @@ export const localeData = [
       'lumen.adminNotifications.allChannels': 'Tous les canaux',
       'lumen.adminNotifications.unknownChannel':
         'Canal de notification inconnu.',
+      'lumen.adminNotifications.authentication': 'Authentification',
+      'lumen.adminNotifications.clearField': 'Effacer {field}',
+      'lumen.adminNotifications.credentialSaved':
+        'Identifiant enregistré. Saisissez un remplacement ou effacez-le.',
+      'lumen.adminNotifications.headerName': 'Nom de l’en-tête {number}',
+      'lumen.adminNotifications.headerValue': 'Valeur de l’en-tête {number}',
+      'lumen.adminNotifications.loadChannelFailure':
+        'Impossible de charger les paramètres de {channel}.',
+      'lumen.adminNotifications.loadPushoverSoundsFailure':
+        'Impossible de charger les sons Pushover.',
+      'lumen.adminNotifications.none': 'Aucune',
+      'lumen.adminNotifications.notificationEvents':
+        'Événements de notification',
+      'lumen.adminNotifications.notificationLocale': 'Langue des notifications',
+      'lumen.adminNotifications.retry': 'Réessayer',
+      'lumen.adminNotifications.saveChannel': 'Enregistrer {channel}',
+      'lumen.adminNotifications.savedValue': 'Valeur enregistrée',
+      'lumen.adminNotifications.sendTest': 'Envoyer un test {channel}',
+      'lumen.adminNotifications.testDeliveryWebPush':
+        'Pour tester la livraison, votre compte doit être abonné aux notifications Web Push sur un navigateur.',
+      'lumen.adminNotifications.validJson': 'Saisissez un contenu JSON valide.',
+      'lumen.adminNotifications.channelCredentialsRequired':
+        'Configurez les identifiants et la destination du canal avant d’activer ou de tester les notifications.',
       'lumen.admin.dest.libraryMigration': 'Migration de bibliothèque',
       'lumen.admin.dest.mediaLibraries': 'Bibliothèques du serveur multimédia',
       'lumen.admin.dest.categories': 'Catégories de médias',
@@ -14346,6 +17164,153 @@ export const localeData = [
         'Moraš navesti valjani chat ID',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktiviraj agenta',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Neuspjelo spremanje postavki Gotify obavijesti.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Neuspjelo slanje Gotify obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token programa',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL poslužitelja',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token za pristup',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Oznaka kanala',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Neuspjelo spremanje postavki Pushbullet obavijesti.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Neuspjelo slanje Pushbullet obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'API token programa',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aktiviraj agenta',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Zadane postavke uređaja',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Neuspjelo spremanje Pushover postavki obavijesti.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Zvuk obavijesti',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Neuspjelo slanje Pushover obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Ključ korisnika ili grupe',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aktiviraj agenta',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Neuspjelo spremanje Slack postavki obavijesti.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Neuspjelo slanje Slack obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktiviraj agenta',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Neuspjelo slanje Web push obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web push obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Neuspjelo spremanje Web push postavki obavijesti.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Web push postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktiviraj agenta',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Zaglavlje autorizacije',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON sadržaj',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Neuspjelo slanje Webhook obavijesti provjere.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook obavijest provjere je poslana!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Neuspjelo spremanje Webhook postavki obavijesti.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.agentenabled': 'Aktiviraj agenta',
+      'components.Settings.Notifications.allowselfsigned':
+        'Dozvoli samopotpisane certifikate',
+      'components.Settings.Notifications.authPass': 'SMTP lozinka',
+      'components.Settings.Notifications.authUser': 'SMTP korisničko ime',
+      'components.Settings.Notifications.botAPI': 'Token autorizacije bota',
+      'components.Settings.Notifications.botAvatarUrl': 'URL avatara bota',
+      'components.Settings.Notifications.botUsername': 'Korisničko ime bota',
+      'components.Settings.Notifications.chatId': 'Chat ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Neuspjelo spremanje Discord postavki za obavijesti.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.emailsender': 'Adresa pošiljatelja',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Neuspjelo spremanje e-mail postavki obavijesti.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'E-mail postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.enableMentions':
+        'Aktiviraj spominjanja',
+      'components.Settings.Notifications.encryption': 'Metoda šifriranja',
+      'components.Settings.Notifications.encryptionDefault':
+        'Koristi STARTTLS ako je dostupno',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Koristi implicitni TLS',
+      'components.Settings.Notifications.encryptionNone': 'Ništa',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Uvijek koristi STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'PGP lozinka',
+      'components.Settings.Notifications.pgpPrivateKey': 'Privatni PGP ključ',
+      'components.Settings.Notifications.sendSilently': 'Pošalji tiho',
+      'components.Settings.Notifications.senderName': 'Ime pošiljatelja',
+      'components.Settings.Notifications.smtpHost': 'SMTP računalo',
+      'components.Settings.Notifications.smtpPort': 'SMTP priključak',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Neuspjelo spremanje Telegram postavki obavijesti.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram postavke obavijesti su uspješno spremljene!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Neuspjelo slanje Discord obavijesti provjere.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord obavijest provjere je poslana!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Neuspjelo slanje e-mail obavijesti provjere.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'E-mail obavijest provjere je poslana!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Neuspjelo slanje Telegram obavijesti provjere.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram obavijest provjere je poslana!',
+      'components.Settings.Notifications.validationEmail':
+        'Moraš navesti valjanju e‑mail adresu',
+      'components.Settings.Notifications.validationTypes':
+        'Moraš odabrati barem jednu vrstu obavijesti',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL',
     },
   },
   {
@@ -14450,6 +17415,144 @@ export const localeData = [
         'קבלת התראות כאשר בקשות מדיה נכשלות להתווסף ל-Radarr או Sonarr.',
       'components.NotificationTypeSelector.usermediarequestedDescription':
         'קבלת התראות כאשר משתמשים אחרים מגישים בקשות מדיה חדשות שדורשות אישור.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'הפעל סוכן',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'הגדרות ההתראות של Gotify נכשלו להישמר.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'הגדרות ההתראות של Gotify נשמרו בהצלחה!',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'התראת הבדיקה של Gotify נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'התראת הבדיקה של Gotify נשלחה!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'אסימון יישום',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'כתובת URL של שרת',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'יש לבחור לפחות סוג התראות אחד',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'אסימון גישה',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'תג ערוץ',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'הגדרות ההתראות של Pushbullet נכשלו להישמר.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'הגדרות ההתראות של Pushbullet נשמרו בהצלחה!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'התראת הבדיקה של Pushbullet נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'התראת הבדיקה של Pushbullet נשלחה!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'יש לבחור לפחות סוג התראה אחד',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'אסימון API של היישום',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'הפעל סוכן',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'ברירת המחדל של המכשיר',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'הגדרות ההתראות של Pushover נכשלו להישמר.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'הגדרות ההתראות של Pushover נשמרו בהצלחה!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'צליל התראה',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'התראת הבדיקה של Pushover נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'התראת הבדיקה של Pushover נשלחה!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'מפתח משתמש או קבוצה',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'יש לבחור לפחות סוג התראה אחד',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'הפעל סוכן',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'הגדרות ההתראות של Slack נכשלו להישמר.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'הגדרות ההתראות של Slack נשמרו בהצלחה!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'התראת הבדיקה של Slack נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'התראת הבדיקה של Slack נשלחה!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'יש לבחור לפחות סוג התראה אחד',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL של ה-Webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'הפעל סוכן',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'התראת הבדיקה דרך הרשת נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'התראת הבדיקה דרך הרשת נשלחה!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'הגדרות ההתראות דרך הרשת נכשלו להשמר.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'הגדרות ההתראות דרך הרשת נשמרו בהצלחה!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'הפעל סוכן',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'כותרת עליונה של הרשאות',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'מטען JSON',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'התראת הבדיקה של ה-Webhook נכשלה להשלח.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'התראת הבדיקה של ה-Webhook נשלחה!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'יש לבחור לפחות סוג התראה אחד',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL של ה-Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'הגדרות ההתראות של ה-Webhook נכשלו להשמר.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'הגדרות ההתראות של ה-Webhook נשמרו בהצלחה!',
+      'components.Settings.Notifications.agentenabled': 'הפעל סוכן',
+      'components.Settings.Notifications.authPass': 'סיסמת SMTP',
+      'components.Settings.Notifications.authUser': 'שם משתמש SMTP',
+      'components.Settings.Notifications.botAPI': 'אסימון הרשאת בוט',
+      'components.Settings.Notifications.botAvatarUrl':
+        'כתובת URL של תמונת הבוט',
+      'components.Settings.Notifications.botUsername': 'שם משתמש של הבוט',
+      'components.Settings.Notifications.chatId': "מזהה צ'אט",
+      'components.Settings.Notifications.discordsettingsfailed':
+        'הגדרות ההתראות של Discord נכשלו להשמר.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'הגדרות ההתראות של Discord נשמרו בהצלחה!',
+      'components.Settings.Notifications.emailsender': 'כתובת מוען',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'הגדרות התראות ה-Email נכשלו להשמר.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'הגדרות התראות ה-Email נשמרו בהצלחה!',
+      'components.Settings.Notifications.enableMentions': 'הפעל תיוגים',
+      'components.Settings.Notifications.encryption': 'שיטת הצפנה',
+      'components.Settings.Notifications.encryptionDefault':
+        'שימוש ב-STARTTLS אם זמין',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'שימוש ב Implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'ללא',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'תמיד השתמש ב-STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'סיסמת PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'מפתח PGP פרטי',
+      'components.Settings.Notifications.sendSilently': 'שליחה בשקט',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'התראת בדיקה של Discord נשלחה!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'התראת הבדיקה דרך אימייל נכשלה להשלח.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'התראת בדיקה דרך אימייל נשלחה בהצלחה!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'התראת הבדיקה של Telegram נכשלה להשלח.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'התראת הבדיקה של Telegram נשלחה!',
+      'components.Settings.Notifications.userEmailRequired':
+        'דרוש אימייל משתמש',
+      'components.Settings.Notifications.validationEmail':
+        'יש לספק כתובת מייל תקינה',
+      'components.Settings.Notifications.validationTypes':
+        'יש לבחור לפחות סוג התראות אחד',
+      'components.Settings.Notifications.webhookUrl': 'URL של ה-Webhook',
     },
   },
   {
@@ -15563,6 +18666,258 @@ export const localeData = [
         'थ्रेड / टॉपिक आईडी एक सकारात्मक पूर्ण संख्या होना चाहिए',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'वेब पुश',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise सूचना सेटिंग सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise सूचना सेटिंग सफलतापूर्वक सहेजी गईं।',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'कॉन्फ़िगरेशन का नाम',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'पासवर्ड',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'टैग',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise परीक्षण सूचना नहीं भेजी जा सकी।',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise परीक्षण सूचना भेज दी गई।',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API का मूल URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'उपयोगकर्ता नाम',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'उपयोगकर्ता नाम और पासवर्ड प्रमाणीकरण',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा।',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'पोस्टर एम्बेड करें',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify की सूचना सेटिंग्स सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify की सूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'प्राथमिकता',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify परीक्षण सूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify परीक्षण सूचना भेजी गई!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'एप्लिकेशन टोकन',
+      'components.Settings.Notifications.NotificationsGotify.url': 'सर्वर URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'पोस्टर एम्बेड करें',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy सूचना सेटिंग्स सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy सूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'पासवर्ड',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'प्राथमिकता',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'डिफ़ॉल्ट',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'उच्च',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': 'कम',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'न्यूनतम',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'अत्यावश्यक',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'टैग',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy परीक्षण अधिसूचना भेजने में विफल रहा।',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy परीक्षण सूचना भेजी गई!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'टोकन',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'टोकन प्रमाणीकरण',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'विषय',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'सर्वर का मूल URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'उपयोगकर्ता नाम',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'उपयोगकर्ता नाम + पासवर्ड प्रमाणीकरण',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'पहुँच टोकन',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'चैनल टैग',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet की सूचना सेटिंग सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet की सूचना सेटिंग सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'पुशबलेट परीक्षण अधिसूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'एप्लिकेशन API टोकन',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'डिवाइस की डिफ़ॉल्ट ध्वनि',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'पोस्टर एम्बेड करें',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'पुशओवर अधिसूचना सेटिंग्स को बचाने में विफल रहा।',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover की सूचना सेटिंग सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'अधिसूचना ध्वनि',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover परीक्षण सूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'उपयोगकर्ता या समूह कुंजी',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'पोस्टर एम्बेड करें',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'अनुरोध मंज़ूरी कार्रवाइयाँ सक्षम करें',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'अनुरोध प्रबंधक मैपिंग',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'हर पंक्ति में एक: Slack user ID=SeerrNG user ID। मैप किए गए हर SeerrNG उपयोगकर्ता के पास अनुरोध प्रबंधित करने की अनुमति होनी चाहिए।',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack साइनिंग सीक्रेट',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'स्लैक अधिसूचना सेटिंग्स को बचाने में विफल रहा।',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack की सूचना सेटिंग सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'स्लैक परीक्षण अधिसूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'वेबहुक URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack वर्कस्पेस ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'पोस्टर एम्बेड करें',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'वेब पुश परीक्षण अधिसूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'वेब पुश परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'वेब पुश अधिसूचना सेटिंग्स सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'वेब पुश अधिसूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'एजेंट सक्षम करें',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'प्राधिकरण हैडर',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'कस्टम हैडर',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'हेडर जोड़ें',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'प्राधिकरण हैडर और कस्टम प्राधिकरण हैडर दोनों का उपयोग नहीं किया जा सकता। कृपया इनमें से एक हटाएँ।',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'सभी शीर्षलेखों का नाम और मूल्य दोनों होना चाहिए',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'हेडर का नाम',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'निकालें',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'हैडर वैल्यू',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON पेलोड',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL चर का समर्थन',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'वेबहुक परीक्षण अधिसूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'वेबहुक परीक्षण अधिसूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'वेबहुक URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'वेबहुक अधिसूचना सेटिंग्स सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'वेबहुक अधिसूचना सेटिंग्स सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.agentenabled':
+        'अधिसूचना एजेंट को सक्षम करें',
+      'components.Settings.Notifications.allowselfsigned':
+        'स्व-हस्ताक्षरित प्रमाणपत्रों की अनुमति दें',
+      'components.Settings.Notifications.authPass': 'SMTP पासवर्ड',
+      'components.Settings.Notifications.authUser': 'SMTP उपयोगकर्ता नाम',
+      'components.Settings.Notifications.botAPI': 'बॉट प्राधिकरण टोकन',
+      'components.Settings.Notifications.botAvatarUrl': 'बॉट अवतार URL',
+      'components.Settings.Notifications.botUsername': 'बॉट उपयोगकर्ता नाम',
+      'components.Settings.Notifications.chatId': 'चैट ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord की सूचना सेटिंग सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord की सूचना सेटिंग सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.emailsender': 'प्रेषक पता',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'ईमेल सूचना सेटिंग सहेजी नहीं जा सकीं।',
+      'components.Settings.Notifications.emailsettingssaved':
+        'ईमेल सूचना सेटिंग सफलतापूर्वक सहेजी गईं!',
+      'components.Settings.Notifications.embedPoster': 'एम्बेड पोस्टर',
+      'components.Settings.Notifications.enableMentions': 'उल्लेख सक्षम करें',
+      'components.Settings.Notifications.encryption': 'एन्क्रिप्शन विधि',
+      'components.Settings.Notifications.encryptionDefault':
+        'यदि उपलब्ध हो तो STARTTLS का उपयोग करें',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Implicit TLS का उपयोग करें',
+      'components.Settings.Notifications.encryptionNone': 'कोई नहीं',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'हमेशा STARTTLS का उपयोग करें',
+      'components.Settings.Notifications.messageThreadId': 'थ्रेड/टोपिक ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP पासवर्ड',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP निजी कुंजी',
+      'components.Settings.Notifications.sendSilently': 'चुपचाप भेजें',
+      'components.Settings.Notifications.senderName': 'प्रेषक का नाम',
+      'components.Settings.Notifications.smtpHost': 'SMTP होस्ट',
+      'components.Settings.Notifications.smtpPort': 'SMTP पोर्ट',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'टेलीग्राम अधिसूचना सेटिंग्स को बचाने में विफल रहा।',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'टेलीग्राम अधिसूचना सेटिंग्स ने सफलतापूर्वक बचाया!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord परीक्षण सूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord परीक्षण सूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'ईमेल परीक्षण सूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'ईमेल परीक्षण सूचना सफलतापूर्वक भेजी गई!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'टेलीग्राम परीक्षण अधिसूचना भेजने में विफल रही।',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'टेलीग्राम परीक्षण अधिसूचना भेजा!',
+      'components.Settings.Notifications.usePublicLogo':
+        'उदाहरण लोगो के बजाय सार्वजनिक Seerr लोगो का उपयोग करें',
+      'components.Settings.Notifications.useUserLocale':
+        'सूचना प्राप्तकर्ता की क्षेत्रीय सेटिंग का उपयोग करें',
+      'components.Settings.Notifications.userEmailRequired':
+        'उपयोगकर्ता ईमेल की आवश्यकता',
+      'components.Settings.Notifications.validationEmail':
+        'आपको एक वैध ईमेल पता प्रदान करना होगा',
+      'components.Settings.Notifications.validationTypes':
+        'आपको कम से कम एक अधिसूचना प्रकार का चयन करना होगा',
+      'components.Settings.Notifications.webhookRoleId': 'अधिसूचना रोल आईडी',
+      'components.Settings.Notifications.webhookThreadId': 'थ्रेड आईडी',
+      'components.Settings.Notifications.webhookUrl': 'वेबहुक URL',
     },
   },
   {
@@ -15974,6 +19329,218 @@ export const localeData = [
         'A szál/téma azonosítójának pozitív egész számnak kell lennie',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Poszter beágyazása',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'A Gotify értesítési beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify értesítési beállítások sikeresen mentve!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritás',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'A Gotify teszt értesítést nem sikerült elküldeni.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify teszt értesítés elküldve!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Alkalmazás Token',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'Szerver URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poszter beágyazása',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Az Ntfy értesítési beállítások mentése nem sikerült.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy értesítési beállítások sikeresen mentve!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Jelszó',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioritás',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy teszt értesítés küldése nem sikerült.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'NTFY tesztértesítés elküldve!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Token hitelesítés',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Topic',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Szerver gyökér URL-je',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Felhasználónév',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Felhasználónév + jelszó hitelesítés',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Hozzáférési Token (Access Token)',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Csatorna címke',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'A Pushbullet értesítési beállításainak mentése nem sikerült.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'A Pushbullet értesítési beállításainak mentése sikeresen megtörtént!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'A pushbullet teszt értesítését nem sikerült elküldeni.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Elküldtük a Pushbullet teszt értesítését!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Alkalmazás API Token',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Eszköz alapértelmezett',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Poszter beágyazása',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover az értesítési beállításokat nem sikerült menteni.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover értesítési beállítások sikeresen mentve!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Értesítési hang',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover tesztüzenet elküldése nem sikerült.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover teszt értesítés elküldve!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Felhasználói vagy csoportkulcs',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Poszter beágyazása',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'A Slack értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack értesítés beállításai sikeresen mentve!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'A Slack tesztértesítés elküldése sikertelen volt.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack teszt értesítés elküldve!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL-je',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Poszter beágyazása',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'A webes push tesztértesítés elküldése sikertelen volt.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web push teszt értesítés elküldve!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'A webes push-értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'A webes push-értesítés beállításai sikeresen mentésre kerültek!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Ügynök engedélyezése',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Engedélyezési fejléc',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Egyedi fejlécek',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Fejléc hozzáadása',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Nem használható egyszerre az Authorization fejléc és az egyedi Authorization fejléc. Kérjük, távolítsa el az egyiket.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Minden fejlécnek kell, hogy legyen neve és értéke',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Fejléc neve',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Eltávolítás',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Fejléc értéke',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON adatcsomag',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL-változók támogatása',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'A webhook tesztértesítés elküldése sikertelen volt.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook teszt értesítés elküldve!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL-je',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'A Webhook-értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook értesítés beállításai sikeresen mentve!',
+      'components.Settings.Notifications.agentenabled': 'Ügynök engedélyezése',
+      'components.Settings.Notifications.allowselfsigned':
+        'Önaláírt tanúsítványok engedélyezése',
+      'components.Settings.Notifications.authPass': 'SMTP jelszó',
+      'components.Settings.Notifications.authUser': 'SMTP felhasználónév',
+      'components.Settings.Notifications.botAPI': 'Bot engedélyezési token',
+      'components.Settings.Notifications.botAvatarUrl': 'Bot Avatar URL-je',
+      'components.Settings.Notifications.botUsername': 'Bot felhasználónév',
+      'components.Settings.Notifications.chatId': 'Chat ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'A Discord értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord értesítés beállítások sikeresen mentve!',
+      'components.Settings.Notifications.emailsender': 'Feladó címe',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Az e-mail értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Az e-mail értesítések beállításai sikeresen mentésre kerültek!',
+      'components.Settings.Notifications.embedPoster': 'Poszter beágyazása',
+      'components.Settings.Notifications.enableMentions':
+        'Említések Engedélyezése',
+      'components.Settings.Notifications.encryption': 'Titkosítási módszer',
+      'components.Settings.Notifications.encryptionDefault':
+        'Használja a STARTTLS-t, ha rendelkezésre áll',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Használja az Implicit TLS-t',
+      'components.Settings.Notifications.encryptionNone': 'Nincs',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Mindig használja a STARTTLS-t',
+      'components.Settings.Notifications.messageThreadId':
+        'Szál/Téma azonosító',
+      'components.Settings.Notifications.pgpPassword': 'PGP jelszó',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP privát kulcs',
+      'components.Settings.Notifications.sendSilently': 'Küldés csendben',
+      'components.Settings.Notifications.senderName': 'Küldő neve',
+      'components.Settings.Notifications.smtpHost': 'SMTP Hoszt',
+      'components.Settings.Notifications.smtpPort': 'SMTP port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'A Telegram-értesítés beállításait nem sikerült elmenteni.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram értesítés beállítások mentése sikeresen!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'A Discord tesztértesítés nem sikerült elküldeni.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord teszt értesítés elküldve!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Az e-mailes tesztértesítés nem sikerült elküldeni.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Email teszt értesítés elküldve!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'A Telegram tesztértesítés elküldése sikertelen volt.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram teszt értesítés elküldve!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Az egyedi logó helyett a Seerr nyilvános logóját használja',
+      'components.Settings.Notifications.useUserLocale':
+        'A címzett nyelvi beállításának használata',
+      'components.Settings.Notifications.userEmailRequired':
+        'Felhasználói email megadása kötelező',
+      'components.Settings.Notifications.validationEmail':
+        'Érvényes email címet kell megadnod',
+      'components.Settings.Notifications.validationTypes':
+        'Legalább egy értesítési típust ki kell választania',
+      'components.Settings.Notifications.webhookRoleId':
+        'Értesítési szerepkör azonosító',
+      'components.Settings.Notifications.webhookThreadId': 'Szál azonosító',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL-cím',
     },
   },
   {
@@ -17105,6 +20672,259 @@ export const localeData = [
         'ID thread / topik harus berupa keseluruhan positif',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Push Web',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Pengaturan notifikasi Apprise tidak dapat disimpan.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Pengaturan notifikasi Apprise berhasil disimpan.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Nama konfigurasi',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Sandi',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Tag',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Notifikasi tes Apprise tidak dapat dikirim.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Notifikasi uji Apprise berhasil dikirim.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'URL root API Apprise',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Nama pengguna',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Autentikasi dengan nama pengguna dan kata sandi',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Sematkan Poster',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Setelan notifikasi Gotify gagal disimpan.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Pengaturan notifikasi Gotify berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritas',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Notifikasi pengujian Gotify gagal dikirim.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Pemberitahuan tes Gotify terkirim!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token Aplikasi',
+      'components.Settings.Notifications.NotificationsGotify.url': 'URL Server',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Sematkan Poster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Pengaturan notifikasi Ntfy gagal disimpan.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Pengaturan pemberitahuan Ntfy berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Sandi',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioritas',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Bawaan',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'Tinggi',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow':
+        'Rendah',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Minimum',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Mendesak',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Tag',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Notifikasi tes Ntfy gagal dikirim.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Pemberitahuan tes Ntfy dikirim!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Otentikasi token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Topik',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL dasar server',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nama pengguna',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Otentikasi nama pengguna dan kata sandi',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token Akses',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Tag Saluran',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pengaturan notifikasi Pushbullet gagal disimpan.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pengaturan notifikasi Pushbullet berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Notifikasi uji Pushbullet gagal dikirim.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Notifikasi uji Pushbullet berhasil dikirim!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API aplikasi',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Suara bawaan perangkat',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Sematkan Poster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pengaturan pemberitahuan Pushover gagal disimpan.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pengaturan pemberitahuan Pushover berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Suara Pemberitahuan',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pemberitahuan tes Pushover gagal dikirim.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pemberitahuan tes Pushover dikirim!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Kunci Pengguna atau Grup',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Sematkan Poster',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Aktifkan tindakan persetujuan permintaan',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Pemetaan pengelola permintaan',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Satu per baris: ID pengguna Slack=ID pengguna SeerrNG. Setiap pengguna SeerrNG yang dipetakan harus memiliki izin pengelolaan permintaan.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Rahasia penandatanganan Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Pengaturan notifikasi Slack gagal disimpan.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Pengaturan notifikasi Slack berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Notifikasi uji Slack gagal dikirim.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Notifikasi uji Slack berhasil dikirim!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL Webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID ruang kerja Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Sematkan Poster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Notifikasi tes web gagal dikirim.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Pemberitahuan tes web dikirim!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Pengaturan pemberitahuan push web gagal disimpan.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Pengaturan notifikasi web push berhasil disimpan!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktifkan Agen',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Header Authorization',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Header khusus',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Tambah header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Header Otorisasi dan header Otorisasi khusus tidak dapat digunakan bersamaan. Hapus salah satunya.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Semua header harus memiliki nama dan nilai.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nama Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Hapus',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Nilai Header',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Muatan JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Dukungan variabel URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Notifikasi tes Webhook gagal dikirim.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Pemberitahuan tes Webhook dikirim!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Pengaturan pemberitahuan Webhook gagal disimpan.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Pengaturan pemberitahuan Webhook berhasil disimpan!',
+      'components.Settings.Notifications.agentenabled':
+        'Aktifkan agen pemberitahuan',
+      'components.Settings.Notifications.allowselfsigned':
+        'Izinkan sertifikat yang ditandatangani sendiri',
+      'components.Settings.Notifications.authPass': 'Sandi SMTP',
+      'components.Settings.Notifications.authUser': 'Nama Pengguna SMTP',
+      'components.Settings.Notifications.botAPI': 'Token Otorisasi Bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL untuk avatar bot',
+      'components.Settings.Notifications.botUsername': 'Nama Pengguna Bot',
+      'components.Settings.Notifications.chatId': 'ID Percakapan',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Pengaturan pemberitahuan Discord gagal disimpan.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Pengaturan pemberitahuan Discord berhasil disimpan!',
+      'components.Settings.Notifications.emailsender': 'Alamat Pengirim',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Pengaturan pemberitahuan surel gagal disimpan.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Pengaturan pemberitahuan surel berhasil disimpan!',
+      'components.Settings.Notifications.embedPoster': 'Sematkan Poster',
+      'components.Settings.Notifications.enableMentions': 'Aktifkan mention',
+      'components.Settings.Notifications.encryption': 'Metode Enkripsi',
+      'components.Settings.Notifications.encryptionDefault':
+        'Gunakan STARTTLS jika tersedia',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Gunakan Implisit TLS',
+      'components.Settings.Notifications.encryptionNone': 'Tanpa enkripsi',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Selalu gunakan STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID Thread / Topik',
+      'components.Settings.Notifications.pgpPassword': 'Sandi PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Kunci Pribadi PGP',
+      'components.Settings.Notifications.sendSilently': 'Kirim Diam-diam',
+      'components.Settings.Notifications.senderName': 'Nama Pengirim',
+      'components.Settings.Notifications.smtpHost': 'Host SMTP',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Pengaturan pemberitahuan Telegram gagal disimpan.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Pengaturan pemberitahuan Telegram berhasil disimpan!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Notifikasi pengujian Discord gagal dikirim.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord tes pemberitahuan dikirim!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Notifikasi tes surel gagal dikirim.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Pemberitahuan tes email dikirim!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Notifikasi tes Telegram gagal dikirim.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Pemberitahuan tes Telegram dikirim!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Gunakan logo Seerr publik daripada logo instance',
+      'components.Settings.Notifications.useUserLocale':
+        'Gunakan pengaturan bahasa dan wilayah penerima notifikasi',
+      'components.Settings.Notifications.userEmailRequired':
+        'Perlu surel pengguna',
+      'components.Settings.Notifications.validationEmail':
+        'Anda mesti memberikan alamat surel yang valid',
+      'components.Settings.Notifications.validationTypes':
+        'Anda harus memilih paling tidak satu tipe pemberitahuan',
+      'components.Settings.Notifications.webhookRoleId': 'ID Peran Notifikasi',
+      'components.Settings.Notifications.webhookThreadId': 'ID Thread',
+      'components.Settings.Notifications.webhookUrl': 'URL Webhook',
     },
   },
   {
@@ -17513,6 +21333,209 @@ export const localeData = [
         "L'ID del thread/argomento deve essere un numero intero positivo",
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Notifiche Web',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Abilita agente',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Impossibile salvare le impostazioni di notifica di Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Impostazioni di notifica Gotify salvate correttamente!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priorità',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Impossibile inviare la notifica di prova Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Notifica di prova Gotify inviata!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token applicazione',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Devi selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Abilita Agente',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poster incluso',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Salvataggio impostazioni notifiche Ntfy fallito.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Salvataggio impostazioni notifiche Ntfy effettuato con successo!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Password',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priorità',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Test invio notifica Ntfy fallito.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Notifica di test Ntfy inviata!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Autenticazione tramite token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Argomento',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL di root del server',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nome utente',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autenticazione tramite Nome utente + Password',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Devi selezionare almeno una tipologia di notifica',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token di accesso',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Tag del canale',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Impossibile salvare le impostazioni di Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Impostazioni di Pushover salvate correttamente!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Invio della notifica di prova Pushbullet non riuscito.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Notifica di prova Pushbullet inviata!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'È necessario selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API applicazione',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Abilita Agente',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Predefinito del dispositivo',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Includi Poster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Impossibile salvare le impostazioni di Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Impostazioni di Pushover salvate con successo!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Suono di notifica',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Impossibile inviare la notifica di prova Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Notifica di prova Pushover inviata!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Chiave utente o di gruppo',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'È necessario selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Abilita Agente',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Includi Poster',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Impossibile salvare le impostazioni di Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Impostazioni di Slack salvate con successo!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Invio della notifica di prova Slack non riuscito.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Notifica di prova con Slack inviata!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'È necessario selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Abilita Agente',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Includi Poster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Impossibile inviare la notifica di prova Web push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Notifica di prova web push inviata!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Impossibile salvare le impostazioni di notifica web.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Impostazioni di notifica web salvate con successo!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Abilita Agente',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Intestazione di autorizzazione',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Headers personalizzati',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Aggiungi Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        "Non è possibile usare contemporaneamente l'Header di Autorizzazione e l'Header di Autorizzazione personalizzato. Rimuovi uno dei due.",
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Tutti gli header devono avere nome e valore',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nome Header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Rimuovi',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Valore Header',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Payload JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Supporta le variabili URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Invio notifica di prova webhook non riuscito.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Notifica Webhook di prova inviata!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'È necessario selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL del webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Impossibile salvare le impostazioni di Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Impostazioni di Webhook salvate con successo!',
+      'components.Settings.Notifications.agentenabled': 'Abilita Agente',
+      'components.Settings.Notifications.allowselfsigned':
+        'Consenti i certificati autofirmati',
+      'components.Settings.Notifications.authPass': 'Password SMTP',
+      'components.Settings.Notifications.authUser': 'Nome utente SMTP',
+      'components.Settings.Notifications.botAPI': 'Token di autorizzazione bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL avatar bot',
+      'components.Settings.Notifications.botUsername': 'Username del Bot',
+      'components.Settings.Notifications.chatId': 'ID chat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Impossibile salvare le impostazioni di Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Impostazioni di Discord salvate con successo!',
+      'components.Settings.Notifications.emailsender': 'Indirizzo del mittente',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Impossibile salvare le impostazioni delle notifiche via posta elettronica.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Impostazioni delle notifiche via posta elettronica salvate con successo!',
+      'components.Settings.Notifications.embedPoster': 'Includi Poster',
+      'components.Settings.Notifications.enableMentions': 'Abilita menzioni',
+      'components.Settings.Notifications.encryption': 'Metodo di crittografia',
+      'components.Settings.Notifications.encryptionDefault':
+        'Usa STARTTLS se disponibile',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Usa TLS Implicito',
+      'components.Settings.Notifications.encryptionNone': 'Nessuna',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Usa sempre STARTTLS',
+      'components.Settings.Notifications.messageThreadId':
+        'Thread/ID Argomento',
+      'components.Settings.Notifications.pgpPassword': 'Password PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Chiave privata PGP',
+      'components.Settings.Notifications.sendSilently': 'Invia silenziosamente',
+      'components.Settings.Notifications.senderName': 'Nome del mittente',
+      'components.Settings.Notifications.smtpHost': 'Host SMTP',
+      'components.Settings.Notifications.smtpPort': 'Porta SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Impossibile salvare le impostazioni di Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Impostazioni di Telegram salvate con successo!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Invio della notifica di prova Discord non riuscito.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Notifica Discord di prova inviata!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Impossibile inviare la notifica email di prova.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Notifica email di prova inviata!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Impossibile inviare notifica di prova con Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Notifica di prova con Telegram inviata!',
+      'components.Settings.Notifications.userEmailRequired':
+        'Richiedi email utente',
+      'components.Settings.Notifications.validationEmail':
+        'È necessario fornire un indirizzo e-mail valido',
+      'components.Settings.Notifications.validationTypes':
+        'È necessario selezionare almeno un tipo di notifica',
+      'components.Settings.Notifications.webhookRoleId': 'ID ruolo di notifica',
+      'components.Settings.Notifications.webhookUrl': 'URL webhook',
     },
   },
   {
@@ -18636,6 +22659,259 @@ export const localeData = [
         'スレッド/トピック IDは正の整数にしてください',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Webプッシュ',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise 通知設定を保存できませんでした。',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise 通知設定が正常に保存されました。',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        '設定名',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'パスワード',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'タグ',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise テスト通知を送信できませんでした。',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise のテスト通知を送信しました。',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API ルート URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'ユーザー名',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'ユーザー名とパスワード認証',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        '少なくとも1つの通知タイプを選択する必要があります。',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'ポスターを埋め込む',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify の通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        '優先度',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify のテスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify のテスト通知を送信しました！',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'アプリケーショントークン',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'サーバーの URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        '通知の種類は一つ以上を選択してください',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'ポスターを埋め込む',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy 通知設定を保存できませんでした。',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'パスワード',
+      'components.Settings.Notifications.NotificationsNtfy.priority': '優先度',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'デフォルト',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh': '高',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': '低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        '最低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        '緊急',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'タグ',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy テスト通知が送信されました！',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'トークン',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'トークン認証',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'トピック',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'サーバのルートURL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'ユーザー名',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'ユーザー名 + パスワード認証',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'アクセストークン',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'チャンネルタグ',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet の通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet のテスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet のテスト通知が送信されました！',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'アプリケーションAPIトークン',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'デバイスのデフォルト',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'ポスターを埋め込む',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover の通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsPushover.sound': '通知音',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover のテスト通知が送信されました！',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'ユーザーまたはグループキー',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'ポスターを埋め込む',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'リクエスト承認アクションを有効にする',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'リクエスト管理者の対応付け',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        '1 行に 1 件：Slack ユーザー ID=SeerrNG ユーザー ID。対応付ける SeerrNG ユーザーにはリクエスト管理権限が必要です。',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack 署名シークレット',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack の通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack のテスト通知が送信されました！',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'ウェブフック URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack ワークスペース ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'ポスターを埋め込む',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Webプッシュ テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Webプッシュテスト通知を送信しました！',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Webプッシュ通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Webプッシュ通知設定が保存されました！',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'エージェントを有効にする',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Authorizationヘッダー',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'カスタムヘッダー',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'ヘッダーを追加',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'AuthorizationヘッダーとカスタムAuthorizationヘッダーの両方を使用することはできません。いずれか一方を削除してください。',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'すべてのヘッダーには名前と値の両方が必要です',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'ヘッダー名',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        '削除',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'ヘッダーの値',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSONペイロード',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL変数をサポート',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook テスト通知が送信されました！',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'ウェブフック URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook 通知設定を保存できませんでした。',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook 通知設定が保存されました！',
+      'components.Settings.Notifications.agentenabled':
+        '通知エージェントを有効にする',
+      'components.Settings.Notifications.allowselfsigned':
+        '自己署名証明書を許可する',
+      'components.Settings.Notifications.authPass': 'SMTP 認証パスワード',
+      'components.Settings.Notifications.authUser': 'SMTP ユーザー名',
+      'components.Settings.Notifications.botAPI': 'ボット認証トークン',
+      'components.Settings.Notifications.botAvatarUrl': 'ボットアバターのURL',
+      'components.Settings.Notifications.botUsername': 'ボットのユーザー名',
+      'components.Settings.Notifications.chatId': 'チャットID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord の通知設定が保存されました！',
+      'components.Settings.Notifications.emailsender': '配信元メールアドレス',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'メール通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.emailsettingssaved':
+        'メール通知設定が保存されました！',
+      'components.Settings.Notifications.embedPoster': 'ポスターを埋め込む',
+      'components.Settings.Notifications.enableMentions':
+        'メンションを有効にする',
+      'components.Settings.Notifications.encryption': '暗号化方式',
+      'components.Settings.Notifications.encryptionDefault':
+        '利用可能な場合は STARTTLS を使用する',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        '暗黙的TLSを使用する',
+      'components.Settings.Notifications.encryptionNone': 'なし',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        '常にSTARTTLSを使用する',
+      'components.Settings.Notifications.messageThreadId':
+        'スレッド/トピック ID',
+      'components.Settings.Notifications.pgpPassword': 'PGPパスワード',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP秘密鍵',
+      'components.Settings.Notifications.sendSilently': 'サイレント送信',
+      'components.Settings.Notifications.senderName': '送信者名',
+      'components.Settings.Notifications.smtpHost': 'SMTP ホスト',
+      'components.Settings.Notifications.smtpPort': 'SMTP ポート',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram の通知設定の保存に失敗しました。',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram の通知設定が保存されました！',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord のテスト通知が送信されました！',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'メールテスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'メールテスト通知が送信されました！',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram テスト通知の送信に失敗しました。',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram のテスト通知が送信されました！',
+      'components.Settings.Notifications.usePublicLogo':
+        'インスタンスロゴの代わりに公開されているSeerrロゴを使用する',
+      'components.Settings.Notifications.useUserLocale':
+        '通知受信者のロケールを使用する',
+      'components.Settings.Notifications.userEmailRequired':
+        'ユーザーのメールを必須にする',
+      'components.Settings.Notifications.validationEmail':
+        '有効なメールアドレスを入力してください',
+      'components.Settings.Notifications.validationTypes':
+        '通知タイプを1つ以上選択してください',
+      'components.Settings.Notifications.webhookRoleId': 'ロールIDの通知',
+      'components.Settings.Notifications.webhookThreadId': 'スレッドID',
+      'components.Settings.Notifications.webhookUrl': 'ウェブフック URL',
     },
   },
   {
@@ -19714,6 +23990,258 @@ export const localeData = [
         'thread/topic ID는 긍정적인 전체적인 수이어야 합니다',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         '웹 푸시',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise 알림 설정은 저장할 수 없습니다.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise 알림 설정이 성공적으로 저장되었습니다.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        '구성 이름',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        '비밀번호',
+      'components.Settings.Notifications.NotificationsApprise.tag': '태그',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Apprise 테스트 알림을 전송하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise 테스트 알림을 보냈습니다.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API 루트 URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        '사용자 이름',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        '사용자 이름 및 비밀번호 인증',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        '포스터 삽입',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        '우선순위',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        '애플리케이션 토큰',
+      'components.Settings.Notifications.NotificationsGotify.url': '서버 URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        '포스터 삽입',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        '비밀번호',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        '우선순위',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        '기본값',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        '높음',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': '낮음',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        '최소',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        '긴급',
+      'components.Settings.Notifications.NotificationsNtfy.tags': '태그',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy 테스트 알림이 전송되지 않았습니다.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsNtfy.token': '토큰',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        '토큰 인증',
+      'components.Settings.Notifications.NotificationsNtfy.topic': '주제',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        '서버 루트 URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        '사용자 이름',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        '사용자 이름 + 비밀번호 인증',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다.',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        '액세스 토큰',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        '채널 태그',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다.',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        '애플리케이션 API 토큰',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        '기기 기본 알림음',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        '포스터 포함',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        '알림 소리',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        '사용자 또는 그룹 키',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다.',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        '포스터 포함',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        '요청 승인 작업 활성화',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        '요청 관리자 매핑',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        '한 줄에 하나씩 입력하세요: Slack 사용자 ID=SeerrNG 사용자 ID. 매핑된 모든 SeerrNG 사용자는 요청 관리 권한이 있어야 합니다.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack 서명 비밀 키',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        '슬랙 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        '적어도 하나 이상의 알림 유형을 선택해야 합니다',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        '웹훅 URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack 워크스페이스 ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        '포스터 포함',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Web Push 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web Push 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Web Push 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Web Push 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        '에이전트 활성화',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Authorization 헤더',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        '사용자 지정 헤더',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        '헤더를 추가',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Authorization 헤더와 사용자 지정 Authorization 헤더를 동시에 사용할 수 없습니다. 둘 중 하나를 제거해 주세요.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        '모든 헤더는 이름과 값 모두 있어야 합니다.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        '헤더 이름',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        '삭제',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        '헤더 값',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON 페이로드',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL 변수 지원',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        '웹훅 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        '웹훅 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        '알림 유형을 하나 이상 선택해야 합니다.',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        '웹훅 URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        '웹훅 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        '웹훅 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.agentenabled': '알림 에이전트 활성화',
+      'components.Settings.Notifications.allowselfsigned':
+        '자체 서명된 인증서 허용',
+      'components.Settings.Notifications.authPass': 'SMTP 비밀번호',
+      'components.Settings.Notifications.authUser': 'SMTP 사용자 이름',
+      'components.Settings.Notifications.botAPI': '봇 인증 토큰',
+      'components.Settings.Notifications.botAvatarUrl': '봇 아바타 URL',
+      'components.Settings.Notifications.botUsername': '봇 사용자 이름',
+      'components.Settings.Notifications.chatId': '채팅 ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.emailsender': '발신자 주소',
+      'components.Settings.Notifications.emailsettingsfailed':
+        '이메일 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.emailsettingssaved':
+        '이메일 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.embedPoster': 'Embed 포스터',
+      'components.Settings.Notifications.enableMentions': '멘션 활성화',
+      'components.Settings.Notifications.encryption': '암호화 방식',
+      'components.Settings.Notifications.encryptionDefault':
+        '가능한 경우 STARTTLS 사용',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        '암시적 TLS 사용',
+      'components.Settings.Notifications.encryptionNone': '없음',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        '항상 STARTTLS 사용',
+      'components.Settings.Notifications.messageThreadId': '스레드/토픽 ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP 비밀번호',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP 개인 키',
+      'components.Settings.Notifications.sendSilently': '조용히 전송',
+      'components.Settings.Notifications.senderName': '발신자 이름',
+      'components.Settings.Notifications.smtpHost': 'SMTP 호스트',
+      'components.Settings.Notifications.smtpPort': 'SMTP 포트',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        '텔레그램 알림 설정을 저장하지 못했습니다.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        '텔레그램 알림 설정이 성공적으로 저장되었습니다!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        '이메일 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        '이메일 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        '텔레그램 테스트 알림을 보내지 못했습니다.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        '텔레그램 테스트 알림이 전송되었습니다!',
+      'components.Settings.Notifications.usePublicLogo':
+        '인스턴스 로고 대신 공개 Seerr 로고를 사용합니다.',
+      'components.Settings.Notifications.useUserLocale':
+        '알림 수신자의 언어 사용',
+      'components.Settings.Notifications.userEmailRequired':
+        '사용자 이메일 필수',
+      'components.Settings.Notifications.validationEmail':
+        '유효한 이메일 주소를 입력해야 합니다',
+      'components.Settings.Notifications.validationTypes':
+        '적어도 하나 이상의 알림 유형을 선택해야 합니다',
+      'components.Settings.Notifications.webhookRoleId': '알림 역할 ID',
+      'components.Settings.Notifications.webhookThreadId': '스레드 ID',
+      'components.Settings.Notifications.webhookUrl': '웹훅 URL',
     },
   },
   {
@@ -19863,6 +24391,9 @@ export const localeData = [
         'Gauti pranešimą kai kiti vartotojai pateikia naują medijos prašymą, kuriam reikalingas patvirtinimas.',
       'components.UserProfile.UserSettings.UserNotificationSettings.email':
         'El. paštas',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Įgalinti agentą',
+      'components.Settings.Notifications.encryptionNone': 'Joks',
     },
   },
   {
@@ -20125,6 +24656,149 @@ export const localeData = [
         'Du må oppgi en gyldig prat ID',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktiver Tjeneste',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Kunne ikke lagre instillingene for Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Innstillingene for Gotify ble lagret!',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Test-varsel ble sendt med Gotify!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Applikasjon/API-nøkkel',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'Vertsadresse',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Tilgangsnøkkel',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanal-merke',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Kunne ikke lagre instillingene for Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Innstillingene for Pushbullet ble lagret!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Test-varsel ble sendt med Pushbullet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Applikasjon/API-nøkkel',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aktiver Tjeneste',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Kunne ikke lagre instillingene for Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Innstillingene for Pushover ble lagret!',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover mislykkes å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Test-varsel ble sendt med Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Bruker- eller Gruppe-nøkkel',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aktiver Tjeneste',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Kunne ikke lagre instillingene for Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Innstillingene for Slack ble lagret!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Test-varsel ble sendt med Slack!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook-nettadresse',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktiver Tjeneste',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Web push mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Test-varsel ble sendt med Web Push!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Kunne ikke lagre instillingene for Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Innstillingene for Web Push ble lagret!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktiver Tjeneste',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autorisasjonshode',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON Payload',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Test-varsel ble sendt med Webhook!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook-adresse',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Kunne ikke lagre instillingene for Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Innstillingene for Webhook ble lagret!',
+      'components.Settings.Notifications.agentenabled': 'Aktiver Tjeneste',
+      'components.Settings.Notifications.allowselfsigned':
+        'Godta selvsignerte sertifikater',
+      'components.Settings.Notifications.authPass': 'SMTP Passord',
+      'components.Settings.Notifications.authUser': 'SMTP brukernavn',
+      'components.Settings.Notifications.botAPI': '"Bot" Autorisasjonsnøkkel',
+      'components.Settings.Notifications.botAvatarUrl':
+        'Nettdresse for "Bot" avatar',
+      'components.Settings.Notifications.botUsername': '"Bot" Brukernavn',
+      'components.Settings.Notifications.chatId': 'Chat ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Kunne ikke lagre instillingene for Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Innstillingene for Discord ble lagret!',
+      'components.Settings.Notifications.emailsender': 'Avsenderadresse',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Kunne ikke lagre instillingene for E-post.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Innstillingene for E-post ble lagret!',
+      'components.Settings.Notifications.enableMentions': 'Aktiver "Mentions"',
+      'components.Settings.Notifications.encryption': 'Krypteringsmetode',
+      'components.Settings.Notifications.encryptionDefault':
+        'Bruk STARTTLS om tilgjengelig',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Bruk Implisitt TLS',
+      'components.Settings.Notifications.encryptionNone': 'Ingen',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Alltid bruk STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'PGP-passord',
+      'components.Settings.Notifications.pgpPrivateKey': 'Privat PGP-nøkkel',
+      'components.Settings.Notifications.sendSilently': 'Send lydløst',
+      'components.Settings.Notifications.senderName': 'Avsendernavn',
+      'components.Settings.Notifications.smtpHost': 'SMTP-vert',
+      'components.Settings.Notifications.smtpPort': 'SMTP-port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Kunne ikke lagre instillingene for Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Innstillingene for Telegram ble lagret!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Test-varsel ble sendt med Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Mislykkes å sende test-varsel med E-post.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Test-varsel ble sendt med E-post!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram mislykkes med å sende test-varsel.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Test-varsel ble sendt med Telegram!',
+      'components.Settings.Notifications.validationEmail':
+        'Du må oppgi en gyldig E-postadresse',
+      'components.Settings.Notifications.validationTypes':
+        'Du må velge minst én varseltype',
+      'components.Settings.Notifications.webhookUrl': 'Webhook-nettadresse',
     },
   },
   {
@@ -20541,6 +25215,216 @@ export const localeData = [
         'Het thread-/topic-ID dient een positief geheel getal te zijn',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web-push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Dienst inschakelen',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Poster invoegen',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Instellingen voor meldingen Gotify niet opgeslagen.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Instellingen voor meldingen Gotify opgeslagen!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioriteit',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Testmelding Gotify niet verzonden.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Testmelding Gotify verzonden!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Toepassingstoken',
+      'components.Settings.Notifications.NotificationsGotify.url': 'URL server',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Agent inschakelen',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poster insluiten',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy notificatie-instellingen konden niet worden opgeslagen.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy notificatie-instellingen succesvol opgeslagen!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Wachtwoord',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioriteit',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Testmelding Ntfy niet verzonden.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Testmelding Ntfy verzonden!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Tokenauthenticatie',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Onderwerp',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Server root URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Gebruikersnaam',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Gebruikersnaam + Wachtwoord authenticatie',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Je moet minstens één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Toegangstoken',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanaal-tag',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Instellingen voor Pushbullet-meldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Instellingen voor Pushbullet-meldingen opgeslagen!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Testmelding Pushbullet niet verzonden.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Testmelding Pushbullet verzonden!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token toepassings-API',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Dienst inschakelen',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Apparaatstandaard',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Poster insluiten',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Instellingen voor Pushover-meldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Instellingen voor Pushover-meldingen opgeslagen!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Meldingsgeluid',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Testmelding Pushover niet verzonden.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Testmelding Pushover verzonden!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Gebruikers- of groepssleutel',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Dienst inschakelen',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Poster insluiten',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Instellingen voor Slack-meldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Instellingen voor Slack-meldingen opgeslagen!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Testmelding Slack niet verzonden.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Testmelding Slack verzonden!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Dienst inschakelen',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Poster insluiten',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Testmelding web-push niet verzonden.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Testmelding web-push verzonden!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Instellingen voor web-pushmeldingen zijn niet opgeslagen.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Instellingen voor web-pushmeldingen opgeslagen!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Dienst inschakelen',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Autorisatie-header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Aangepaste Headers',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Header toevoegen',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Het is niet mogelijk om zowel een Autorisatie-header als een aangepaste Autorisatie-header te gebruiken. Verwijder er alstublieft een.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Alle headers moeten zowel een naam als een waarde hebben',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Header-naam',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Verwijder',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Header-waarde',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON-payload',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL-variabelen ondersteunen',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Testmelding webhook niet verzonden.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Testmelding webhook verzonden!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Instellingen voor webhook-meldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Instellingen voor webhook-meldingen opgeslagen!',
+      'components.Settings.Notifications.agentenabled': 'Dienst inschakelen',
+      'components.Settings.Notifications.allowselfsigned':
+        'Self-signed certificaten toestaan',
+      'components.Settings.Notifications.authPass': 'SMTP-wachtwoord',
+      'components.Settings.Notifications.authUser': 'SMTP-gebruikersnaam',
+      'components.Settings.Notifications.botAPI': 'Bot-autorisatietoken',
+      'components.Settings.Notifications.botAvatarUrl': 'URL bot-avatar',
+      'components.Settings.Notifications.botUsername': 'Gebruikersnaam bot',
+      'components.Settings.Notifications.chatId': 'Chat-ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Instellingen voor Discord-meldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Instellingen voor Discord-meldingen opgeslagen!',
+      'components.Settings.Notifications.emailsender': 'E-mailadres afzender',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Instellingen voor e-mailmeldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Instellingen voor e-mailmeldingen opgeslagen!',
+      'components.Settings.Notifications.embedPoster': 'Poster insluiten',
+      'components.Settings.Notifications.enableMentions':
+        'Vermeldingen inschakelen',
+      'components.Settings.Notifications.encryption': 'Encryptiemethode',
+      'components.Settings.Notifications.encryptionDefault':
+        'STARTTLS gebruiken indien beschikbaar',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Impliciete TLS gebruiken',
+      'components.Settings.Notifications.encryptionNone': 'Geen',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Altijd STARTTLS gebruiken',
+      'components.Settings.Notifications.messageThreadId': 'Thread-/topic-ID',
+      'components.Settings.Notifications.pgpPassword': 'Wachtwoord PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Privésleutel PGP',
+      'components.Settings.Notifications.sendSilently': 'Stil verzenden',
+      'components.Settings.Notifications.senderName': 'Naam afzender',
+      'components.Settings.Notifications.smtpHost': 'SMTP-host',
+      'components.Settings.Notifications.smtpPort': 'SMTP-poort',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'De instellingen voor Telegrammeldingen konden niet opgeslagen worden.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Instellingen Telegrammeldingen opgeslagen!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Testmelding Discord niet verzonden.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Testmelding Discord verzonden!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Testmail niet verzonden.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Testmail verzonden!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Testmelding Telegram niet verzonden.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Testmelding Telegram verzonden!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Seerr-logo gebruiken in plaats van instantielogo',
+      'components.Settings.Notifications.useUserLocale':
+        'Landinstellingen van de ontvanger voor meldingen gebruiken',
+      'components.Settings.Notifications.userEmailRequired':
+        'Gebruikerse-mail vereisen',
+      'components.Settings.Notifications.validationEmail':
+        'Je moet een geldig e-mailadres opgeven',
+      'components.Settings.Notifications.validationTypes':
+        'Je moet ten minste één meldingstype selecteren',
+      'components.Settings.Notifications.webhookRoleId': 'Role-id melding',
+      'components.Settings.Notifications.webhookThreadId': 'Thread ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
     },
   },
   {
@@ -20954,6 +25838,218 @@ export const localeData = [
         'ID wątku/tematu musi być dodatnią liczbą całkowitą',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Dołącz plakat',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Ustawienia powiadomień Gotify zostały pomyślnie zapisane!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Priorytet',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Wysłano powiadomienie testowe Gotify!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token aplikacji',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'Adres URL serwera',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Osadź plakat',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ustawienia powiadomień Ntfy zostały pomyślnie zapisane!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Hasło',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Priorytet',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Powiadomienie o teście Ntfy zostało wysłane!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Uwierzytelnianie tokenem',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tytuł',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Główny adres URL serwera',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nazwa użytkownika',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autoryzacja za pomocą nazwy użytkownika i hasła',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token dostępu (Access Token)',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Tag kanału',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Nie udało się zapisać ustawień powiadomień Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Ustawienia powiadomień pushbullet zostały pomyślnie zapisane!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Powiadomienie testowe Pushbullet wysłane!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API aplikacji',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Domyślne urządzenie',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Dodaj plakat',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Ustawienia powiadomień Pushover zapisane pomyślnie!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Dźwięk powiadomień',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Powiadomienie testowe Pushover wysłane!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Klucz użytkownika lub grupy',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Dodaj plakat',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Ustawienia powiadomień Slack zapisane pomyślnie!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Wysłano powiadomienie testowe Slack!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL Webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Dodaj plakat',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Web push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Powiadomienie testowe web push wysłane!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Web Push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Ustawienia powiadomień web push zostały pomyślnie zapisane!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Włącz agenta',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Nagłówek autoryzacji',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Własne nagłówki',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Dodaj nagłówek',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Nie można używać jednocześnie nagłówka Authorization i własnego nagłówka Authorization. Usuń jeden z nich.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Wszystkie nagłówki muszą mieć zarówno nazwę, jak i wartość',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nazwa nagłówka',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Usuń',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Wartość nagłówka',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Payload JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Obsługa zmiennych URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Wysłano powiadomienie testowe webhook!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Ustawienia powiadomień webhook zostały pomyślnie zapisane!',
+      'components.Settings.Notifications.agentenabled': 'Włącz agenta',
+      'components.Settings.Notifications.allowselfsigned':
+        'Zezwalaj na certyfikaty z podpisem własnym',
+      'components.Settings.Notifications.authPass': 'Hasło SMTP',
+      'components.Settings.Notifications.authUser': 'Nazwa użytkownika SMTP',
+      'components.Settings.Notifications.botAPI': 'Token autoryzacji bota',
+      'components.Settings.Notifications.botAvatarUrl':
+        'Adres URL awatara bota',
+      'components.Settings.Notifications.botUsername': 'Nazwa użytkownika bota',
+      'components.Settings.Notifications.chatId':
+        'Identyfikator czatu (Chat ID)',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Ustawienia powiadomień Discorda zapisane pomyślnie!',
+      'components.Settings.Notifications.emailsender': 'Adres nadawcy',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień e-mail.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Ustawienia powiadomień e-mail zostały zapisane pomyślnie!',
+      'components.Settings.Notifications.embedPoster': 'Dodaj plakat',
+      'components.Settings.Notifications.enableMentions': 'Włącz wzmianki',
+      'components.Settings.Notifications.encryption': 'Metoda szyfrowania',
+      'components.Settings.Notifications.encryptionDefault':
+        'Użyj STARTTLS, jeśli jest dostępny',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Używanie niejawnego protokołu TLS',
+      'components.Settings.Notifications.encryptionNone': 'Brak',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Zawsze używaj STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID wątku/tematu',
+      'components.Settings.Notifications.pgpPassword': 'Hasło PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Klucz prywatny PGP',
+      'components.Settings.Notifications.sendSilently': 'Wysyłaj po cichu',
+      'components.Settings.Notifications.senderName': 'Nazwa nadawcy',
+      'components.Settings.Notifications.smtpHost': 'Host SMTP',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Nie udało się zapisać ustawień powiadomień Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Ustawienia powiadomień Telegram zostały zapisane pomyślnie!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Powiadomienie testowe Discord wysłane!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Nie udało się wysłać testowego powiadomienia e-mail.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Wysłano powiadomienie testowe e-mail!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Nie udało się wysłać powiadomienia testowego Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Wysłano powiadomienie testowe Telegram!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Użyj publicznego logo Seerr zamiast logo instancji',
+      'components.Settings.Notifications.useUserLocale':
+        'Użyj języka odbiorcy powiadomień',
+      'components.Settings.Notifications.userEmailRequired':
+        'Wymagaj adresu e-mail użytkownika',
+      'components.Settings.Notifications.validationEmail':
+        'Musisz podać poprawny adres e-mail',
+      'components.Settings.Notifications.validationTypes':
+        'Musisz wybrać co najmniej jeden typ powiadomienia',
+      'components.Settings.Notifications.webhookRoleId':
+        'Powiadomienie Role ID',
+      'components.Settings.Notifications.webhookThreadId': 'ID wątku',
+      'components.Settings.Notifications.webhookUrl': 'URL Webhook',
     },
   },
   {
@@ -22094,6 +27190,263 @@ export const localeData = [
         'A identificação do tópico deve ser um número inteiro positivo.',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push.',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Ativar agente',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'As configurações de notificação Apprise não puderam ser salvas.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Configurações de notificação Apprise salvas com sucesso.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Nome da configuração',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Senha',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Tag',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'A notificação de teste Apprise não pôde ser enviada.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Notificação de teste do Apprise enviada.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'URL raiz da API Apprise',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Nome de usuário',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Autenticação com nome de usuário e senha',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Você deve selecionar pelo menos um tipo de notificação.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Incorporar pôster',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Falha ao salvar configurações de notificação via Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Configurações de notificação via Gotify salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioridade',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Falha ao enviar notificação de teste via Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Notificação de teste via Gotify enviada!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token de aplicação',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL do Servidor',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Habilitar agente',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Incorporar pôster',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Não foi possível salvar as configurações de notificação Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Configuração de notificação Ntfy salva com sucesso!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Senha',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioridade',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Padrão',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh':
+        'Alta',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow':
+        'Baixa',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Mínima',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Urgente',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Etiquetas',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Falha ao enviar notificação de teste via Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Notificação de teste via Ntfy enviada!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Autenticação por token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tópico',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL raiz do servidor',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nome do usuário',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autenticação por nome de usuário e senha',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Você deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token de Acesso',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Tag do Canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Falha ao salvar as configurações de notificação do Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Configurações de notificação via Pushbullet salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Falha ao enviar notificação de teste via Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Notificação de teste via Pushbullet enviada!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token da API do aplicativo',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Som padrão do dispositivo',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Incluir pôster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Falha ao salvar configurações de notificação via Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Configurações de notificação via Pushover salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Som de notificação',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Falha ao enviar notificação de teste via Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Notificação de teste via Pushover enviada!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Chave do Usuário ou Grupo',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Incluir pôster',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Ativar ações de aprovação de solicitações',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Mapeamentos de gerentes de solicitações',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Um por linha: ID do usuário do Slack=ID do usuário do SeerrNG. Cada usuário SeerrNG mapeado precisa ter permissão para gerenciar solicitações.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Segredo de assinatura do Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Falha ao salvar configurações de notificação via Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Configurações de notificação via Slack salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Falha ao enviar notificação de teste via Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Notificação de teste via Slack enviada!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID do workspace do Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Incorporar pôster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Falha ao enviar notificação de teste via web push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Notificação de teste via web push enviada!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Falha ao salvar configurações de notificação via web push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Configurações de notificação via web push salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Habilitar Agente',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Cabeçalho de Autorização',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Cabeçalhos Personalizados',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Adicionar cabeçalho',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Não é possível usar o cabeçalho de autorização e um cabeçalho de autorização personalizado ao mesmo tempo. Remova um deles.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Todos os cabeçalhos devem ter nome e valor.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Nome do cabeçalho',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Remova',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Valor de Cabeçalho',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Conteúdo JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Suporte a variáveis de URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Falha ao enviar notificação de teste via webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Notificação de teste via webhook enviada!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL do webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Falha ao salvar configurações de notificação via Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Configurações de notificação via Webhook salvas com sucesso!',
+      'components.Settings.Notifications.agentenabled':
+        'Ativar agente de notificação',
+      'components.Settings.Notifications.allowselfsigned':
+        'Permitir certificados auto-assinados',
+      'components.Settings.Notifications.authPass': 'Senha SMTP',
+      'components.Settings.Notifications.authUser': 'Usuário SMTP',
+      'components.Settings.Notifications.botAPI': 'Token de Autorização do Bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL do avatar do bot',
+      'components.Settings.Notifications.botUsername': 'Usuário do Bot',
+      'components.Settings.Notifications.chatId': 'ID de Chat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Falha ao salvar configurações de notificação via Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Configurações de notificação via Discord salvas com sucesso!',
+      'components.Settings.Notifications.emailsender': 'Endereço do remetente',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Falha ao salvar configurações de notificação via e-mail.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Configurações de notificação via e-mail salvas com sucesso!',
+      'components.Settings.Notifications.embedPoster': 'Inserir Poster',
+      'components.Settings.Notifications.enableMentions': 'Habilitar Menções',
+      'components.Settings.Notifications.encryption': 'Método de Encriptação',
+      'components.Settings.Notifications.encryptionDefault':
+        'Usar STARTTLS se disponível',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Usar TLS Implícito',
+      'components.Settings.Notifications.encryptionNone': 'Nenhuma',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Sempre usar STARTTLS',
+      'components.Settings.Notifications.messageThreadId':
+        'ID da thread ou do tópico',
+      'components.Settings.Notifications.pgpPassword': 'Senha PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Chave PGP privada',
+      'components.Settings.Notifications.sendSilently':
+        'Enviar Silenciosamente',
+      'components.Settings.Notifications.senderName': 'Nome do Remetente',
+      'components.Settings.Notifications.smtpHost': 'Servidor SMTP',
+      'components.Settings.Notifications.smtpPort': 'Porta SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Falha ao salvar configurações de notificação via Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Configurações de notificação via Telegram salvas com sucesso!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Falha ao enviar notificação de teste via Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Notificação de teste via Discord enviada!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Falha ao enviar notificação de teste via e-mail.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Notificação de teste via e-mail enviada!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Falha ao enviar notificação de teste via Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Notificação de teste via Telegram enviada!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Use o logotipo do Seerr público em vez do logotipo da instância.',
+      'components.Settings.Notifications.useUserLocale':
+        'Use as configurações de idioma e região do destinatário da notificação.',
+      'components.Settings.Notifications.userEmailRequired':
+        'Requer o email do usuário',
+      'components.Settings.Notifications.validationEmail':
+        'Você deve prover um e-mail válido',
+      'components.Settings.Notifications.validationTypes':
+        'Você deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.webhookRoleId':
+        'Role ID da notificação',
+      'components.Settings.Notifications.webhookThreadId': 'ID do tópico',
+      'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
     },
   },
   {
@@ -22503,6 +27856,196 @@ export const localeData = [
         'O ID do tópico/thread deve ser um número inteiro positivo',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Ativar Agente',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Falha ao gravar configurações de notificação via Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Configurações de notificação via Gotify salvas com sucesso!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioridade',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Falha ao enviar notificação de teste via Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Notificação de teste via Gotify enviada!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token de Acesso',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL do Servidor',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Deve selecionar ao menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Ativar agente',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Incorporar cartaz',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Não foi possível guardar as definições de notificação Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Definições de notificação Ntfy guardadas com sucesso!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Palavra-passe',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Não foi possível enviar a notificação de teste Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Notificação de teste Ntfy enviada!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Autenticação por token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Tópico',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL raiz do servidor',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Nome de utilizador',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autenticação por nome de utilizador + palavra-passe',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token de acesso',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Tag do Canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Falha ao gravar as definições de notificação Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Definições de notificação Pushbullet gravadas com sucesso!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Falha ao enviar notificação de teste Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Notificação de teste Pushbullet enviada!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token de Aplicação API',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Ativar Agente',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Predefinição do dispositivo',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Incorporar cartaz',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Falha ao gravar as definições de notificação Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Definições de notificação Pushover gravadas com sucesso!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Som de notificação',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Falha ao enviar notificação de teste Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Notificação de teste Pushover enviada!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Chave de Utilizador ou Grupo',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Ativar Agente',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Incorporar cartaz',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Falha ao gravas as definições de notificação do Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Definições de notificação Slack gravadas com sucesso!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Falha ao enviar notificação de teste Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Notificação de teste Slack enviada!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Ativar Agente',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Incorporar cartaz',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Falha ao enviar notificação de teste web push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Notificação de teste web push enviada!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Falha ao gravar as definições de notificação web push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Definições de notificação web push gravadas com sucesso!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Ativar Agente',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Cabeçalho de Autorização',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Conteúdo JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Suportar variáveis de URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Falha ao enviar notificação de teste webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Notificação de teste webhook enviada!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL de Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Falha ao gravar as definições de notificação Webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Definições de notificação Webhook gravadas com sucesso!',
+      'components.Settings.Notifications.agentenabled': 'Ativar Agente',
+      'components.Settings.Notifications.allowselfsigned':
+        'Permitir Certificados Auto-Assinados',
+      'components.Settings.Notifications.authPass': 'Palavra-passe SMTP',
+      'components.Settings.Notifications.authUser': 'Utilizador SMTP',
+      'components.Settings.Notifications.botAPI': 'Token de Autorização do Bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL do Avatar do Bot',
+      'components.Settings.Notifications.botUsername': 'Utilizador do Bot',
+      'components.Settings.Notifications.chatId': 'ID do Chat',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Falha ao gravar das definições de notificação Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Definições de notificação Discord gravadas com sucesso!',
+      'components.Settings.Notifications.emailsender': 'Endereço do remetente',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Falha ao gravar das definições de notificação e-mail.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Definições de notificação e-mail gravadas com sucesso!',
+      'components.Settings.Notifications.embedPoster': 'Incorporar cartaz',
+      'components.Settings.Notifications.enableMentions': 'Ativar Menções',
+      'components.Settings.Notifications.encryption': 'Método de Encriptação',
+      'components.Settings.Notifications.encryptionDefault':
+        'Usar STARTTLS se disponível',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Usar TLS Implícito',
+      'components.Settings.Notifications.encryptionNone': 'Nenhuma',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Usar STARTTLS sempre',
+      'components.Settings.Notifications.messageThreadId':
+        'ID do tópico/thread',
+      'components.Settings.Notifications.pgpPassword': 'Palavra-passe PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Chave Privada PGP',
+      'components.Settings.Notifications.sendSilently':
+        'Enviar Silenciosamente',
+      'components.Settings.Notifications.senderName': 'Nome do Remetente',
+      'components.Settings.Notifications.smtpHost': 'Servidor SMTP',
+      'components.Settings.Notifications.smtpPort': 'Porta SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Falha ao gravar as definições de notificação Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Definições de notificação Telegram gravadas com sucesso!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Falha ao enviar notificação de teste Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Notificação de teste Discord enviada!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Falha ao enviar notificação de teste e-mail.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Notificação de teste e-mail enviada!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Falha ao enviar notificação de teste Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Notificação de teste Telegram enviada!',
+      'components.Settings.Notifications.userEmailRequired':
+        'Requer e-mail do utilizador',
+      'components.Settings.Notifications.validationEmail':
+        'Deve fornecer um e-mail válido',
+      'components.Settings.Notifications.validationTypes':
+        'Deve selecionar pelo menos um tipo de notificação',
+      'components.Settings.Notifications.webhookRoleId':
+        'ID de cargo de notificação',
+      'components.Settings.Notifications.webhookUrl': 'URL de Webhook',
     },
   },
   {
@@ -22671,6 +28214,163 @@ export const localeData = [
         'Primiți notificări când solicitările media nu pot fi adăugate la Radarr sau Sonarr.',
       'components.NotificationTypeSelector.usermediarequestedDescription':
         'Primiți notificări atunci când alți utilizatori trimit noi solicitări media care necesită aprobare.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Activați Agentul',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Setările de notificare Gotify nu au reușit să fie salvate.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Setările de notificare Gotify au fost salvate cu success!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritate',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Setările de notificare Gotify nu au reușit să fie trimise.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Testul de notificare Gotify a fost trimis!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token Aplicație',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Trebuie să selectați cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Activează Agent',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poster incorporat',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Setările pentru notificări Ntfy nu s-au putut salva.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Setările pentru notificări Ntfy au fost salvate cu succes!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Parolă',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Nu s-a putut transmite notificarea de test Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Testul de notificare Ntfy a fost trimis!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Autentificare cu token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Topic',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Baza URL-ului server-ului',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Username',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Autentificare cu username + parolă',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Trebuie să selectezi cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token Acces',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Etichetă Canal',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Setările de notificare Pushbullet nu au reușit să fie salvate.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Setările de notificare Pushbullet au fost salvate cu success!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Testul de notificări Pushbullet nu s-a putut trimite.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Testul de notificare Pushbullet a fost trimis!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Trebuie să selectați cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API Aplicație',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Activați Agentul',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Dispozitiv Implicit',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Poster incorporat',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Setările de notificare Pushover nu au reușit să fie salvate.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Setările de notificare Pushover au fost salvate cu success!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Sunet Notificare',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Testul de notificare Pushover nu s-a trimis cu succes.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Testul de notificare Pushover a fost trimis!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Cheie Utilizator sau Group',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Trebuie să selectați cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Activați Agentul',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Poster incorporat',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Setările de notificare Slack nu au reușit să fie salvate.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Setările de notificare Slack au fost salvate cu success!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Testul de notificare către Slack nu s-a trimis cu succes.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Testul de notificare către Slack a fost trimis!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Trebuie să selectezi cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Activează Agent',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Testul notificării push web nu s-a putut trimite cu succes.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Testul notificării push web a fost trimis!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Setările pentru notificarea push web nu s-au putut salva.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Setările pentru notificarea push web au fost salvate cu succes!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Activează Agent',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Header Autorizare',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Payload JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Suport pentru variabile in URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Testul de notificare webhook nu s-a trimis cu succes.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Notificarea de test webhook a fost trimisă cu succes!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Trebuie să selectezi cel puțin un tip de notificare',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Setările pentru notificarea webhook nu s-au putut salva.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Setările pentru notificarea webhook au fost salvate cu succes!',
+      'components.Settings.Notifications.agentenabled': 'Activează Agent',
+      'components.Settings.Notifications.allowselfsigned':
+        'Permite Certificate Self-Signed',
+      'components.Settings.Notifications.authPass': 'Parolă SMTP',
+      'components.Settings.Notifications.authUser': 'Username SMTP',
+      'components.Settings.Notifications.botAPI': 'Token Autorizare Bot',
+      'components.Settings.Notifications.botAvatarUrl': 'URL Avatar Bot',
+      'components.Settings.Notifications.botUsername': 'Username Bot',
+      'components.Settings.Notifications.chatId': 'ID conversație',
+      'components.Settings.Notifications.senderName': 'Nume Expeditor',
+      'components.Settings.Notifications.smtpPort': 'Port SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Setările notificării Telegram nu au putut fi salvate.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Setările notificării Telegram au fost salvate cu succes!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Testul notificării Discord nu s-a putut trimite cu succes.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Testul notificării Discord a fost trimis cu succes!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Testul notificării pe email nu a putut fi trimis cu succes.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Testul notificării pe email a fost trimis cu succes!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Testul notificării Telegram nu a putut fi trimis cu succes.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Testul notificării Telegram a fost trimis cu succes!',
+      'components.Settings.Notifications.userEmailRequired':
+        'Cere email-ul utilizatorului',
+      'components.Settings.Notifications.validationEmail':
+        'Trebuie să furnizezi o adresă de email validă',
+      'components.Settings.Notifications.webhookRoleId': 'ID rol notificare',
+      'components.Settings.Notifications.webhookUrl': 'URL webhook',
     },
   },
   {
@@ -23094,6 +28794,214 @@ export const localeData = [
         'ID треда/топика должно быть целым положительным числом',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Веб-push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Включить агент',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Добавлять постер',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Ошибка сохранения настроек Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Настройки уведомлений Gotify успешно сохранены!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Приоритет',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Ошибка отправки тестового уведомления Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Тестовое уведомление Gotify отправлено!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Токен приложения',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL сервера',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Вы должны выбрать как минимум один тип уведомления',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Включить агента',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Добавлять постер­',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Не удалось сохранить настройки Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Настройки Ntfy успешно сохранены!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Пароль',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Приоритет',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Не удалось отправить тестовое уведомление Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Тестовое уведомление Ntfy отправлено!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Токен',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Аутентификация по токену',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Топик',
+      'components.Settings.Notifications.NotificationsNtfy.url': 'URL сервера',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Имя пользователя',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Аутентификация по имени пользователя и паролю',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Необходимо выбрать хотя бы один тип уведомления',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Токен доступа',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Тег канала',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Не удалось сохранить настройки уведомлений Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Настройки уведомлений Pushbullet успешно сохранены!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Не удалось отправить тестовое уведомление в Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Тестовое уведомление отправлено в Pushbullet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Вы должны выбрать хотя бы один тип уведомлений',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Токен API приложения',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Активировать службу',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Устройство по умолчанию',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Добавлять постер',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Не удалось сохранить настройки уведомлений Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Настройки уведомлений Pushover успешно сохранены!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Звук уведомлений',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Не удалось отправить тестовое уведомление в Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Тестовое уведомление отправлено в Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Ключ пользователя или группы',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Вы должны выбрать хотя бы один тип уведомлений',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Активировать службу',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Добавлять постер',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Не удалось сохранить настройки уведомлений Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Настройки уведомлений Slack успешно сохранены!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Не удалось отправить тестовое уведомление в Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Тестовое уведомление отправлено в Slack!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Вы должны выбрать хотя бы один тип уведомлений',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL веб-перехватчика',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Активировать службу',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Добавлять постер',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Не удалось отправить тестовое веб-push-уведомление.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Тестовое веб-push-уведомление отправлено!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Не удалось сохранить настройки веб-push-уведомлений.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Настройки веб-push-уведомлений успешно сохранены!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Активировать службу',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Заголовок авторизации',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Заголовки запроса',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Добавить заголовок',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Нельзя одновременно использовать Заголовок для авторизации и заголовок Authorization. Пожалуйста, удалите один из них.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Все заголовки должны иметь название и значение',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Название заголовка',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Удалить',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Значение заголовка',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Полезная нагрузка JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Включить поддержку переменных в URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Не удалось отправить тестовое уведомление веб-перехватчику.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Тестовое уведомление веб-перехватчику отправлено!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Вы должны выбрать хотя бы один тип уведомлений',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL веб-перехватчика',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Не удалось сохранить настройки уведомлений веб-перехватчика.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Настройки уведомлений веб-перехватчика успешно сохранены!',
+      'components.Settings.Notifications.agentenabled': 'Активировать службу',
+      'components.Settings.Notifications.allowselfsigned':
+        'Разрешить самозаверенные сертификаты',
+      'components.Settings.Notifications.authPass': 'Пароль SMTP',
+      'components.Settings.Notifications.authUser': 'Имя пользователя SMTP',
+      'components.Settings.Notifications.botAPI': 'Токен авторизации бота',
+      'components.Settings.Notifications.botAvatarUrl': 'URL аватара бота',
+      'components.Settings.Notifications.botUsername': 'Имя бота',
+      'components.Settings.Notifications.chatId': 'ID чата',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Не удалось сохранить настройки уведомлений Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Настройки уведомлений Discord успешно сохранены!',
+      'components.Settings.Notifications.emailsender': 'Адрес отправителя',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Не удалось сохранить настройки уведомлений по электронной почте.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Настройки уведомлений по электронной почте успешно сохранены!',
+      'components.Settings.Notifications.embedPoster': 'Добавлять постер',
+      'components.Settings.Notifications.enableMentions': 'Включить упоминания',
+      'components.Settings.Notifications.encryption': 'Метод шифрования',
+      'components.Settings.Notifications.encryptionDefault':
+        'Использовать STARTTLS, если доступно',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Использовать неявный TLS',
+      'components.Settings.Notifications.encryptionNone': 'Без шифрования',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Всегда использовать STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'Идентификатор темы',
+      'components.Settings.Notifications.pgpPassword': 'Пароль PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Закрытый ключ PGP',
+      'components.Settings.Notifications.sendSilently': 'Отправлять без звука',
+      'components.Settings.Notifications.senderName': 'Имя отправителя',
+      'components.Settings.Notifications.smtpHost': 'SMTP-хост',
+      'components.Settings.Notifications.smtpPort': 'SMTP порт',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Не удалось сохранить настройки уведомлений Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Настройки уведомлений Telegram успешно сохранены!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Не удалось отправить тестовое уведомление в Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Тестовое уведомление отправлено в Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Не удалось отправить тестовое уведомление по электронной почте.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Тестовое уведомление отправлено по электронной почте!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Не удалось отправить тестовое уведомление в Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Тестовое уведомление отправлено в Telegram!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Использовать логотип Seerr вместо пользовательского логотипа',
+      'components.Settings.Notifications.useUserLocale':
+        'Использовать язык получателя уведомлений',
+      'components.Settings.Notifications.userEmailRequired':
+        'Требуется email пользователя',
+      'components.Settings.Notifications.validationEmail':
+        'Вы должны указать действительный адрес электронной почты',
+      'components.Settings.Notifications.validationTypes':
+        'Вы должны выбрать хотя бы один тип уведомлений',
+      'components.Settings.Notifications.webhookRoleId': 'ID роли уведомления',
+      'components.Settings.Notifications.webhookThreadId': 'ID треда',
+      'components.Settings.Notifications.webhookUrl': 'URL веб-перехватчика',
     },
   },
   {
@@ -23352,6 +29260,150 @@ export const localeData = [
         'Duhet të jepni një ID të vlefshme bisede',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktivizo agjentin',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Cilësimet e njoftimit të Gotify nuk u ruajtën.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Cilësimet e njoftimit Gotify u ruajtën me sukses!',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Njoftimi i testit Gotify nuk u dërgua.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'U dërgua njoftimi i testit Gotify!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Token e Aplikimit',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL e serverit',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Duhet të zgjedhësh të paktën një tip njoftimi',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Token Aksesimi',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Etiketa e kanalit',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Cilësimet e njoftimit Pushbullet nuk u ruajtën.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Cilësimet e njoftimit Pushbullet u ruajtën me sukses!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Njoftimi i testit Pushbullet dështoi të dërgohet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Njoftimi i testit pushbullet dërguar!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Duhet të zgjidhni të paktën një lloj njoftimi',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Token API i aplikacionit',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Ativizo Agjentin',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Cilësimet e njoftimit të Pushover nuk u ruajtën.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Cilësimet e njoftimit Pushover u ruajtën me sukses!',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Njoftimi i testit Pushover dështoi të dërgonte.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Njoftimi i testit Pushover është dërguar!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Çelësi i përdoruesit ose i grupit',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Duhet të zgjedhësh të paktën një tip njoftimi',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Ativizo Agjentin',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Cilësimet e njoftimit të Slack nuk u ruajtën.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Cilësimet e njoftimeve të Slack u ruajtën me sukses!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Njoftimi i testit të Slack dështoi të dërgohet.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'U dërgua njoftimi për testin e Slack!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Duhet të zgjidhni të paktën një lloj njoftimi',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL e webhook',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktivizo agjentin',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Njoftimi i testit në ueb dështoi të dërgohet.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'U dërgua njoftimi test në ueb!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Cilësimet e njoftimit në ueb nuk u ruajtën.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Cilësimet e njoftimit në ueb u ruajtën me sukses!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktivizo agjentin',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Header i autorizimit',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Ngarkesa JSON',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Njoftimi i testit Webhook dështoi të dërgonte.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'U dërgua njoftimi i testit webhook!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Duhet të zgjedhësh të paktën një tip njoftimi',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL e webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Rregullimet e njoftimit të Webhook dështuan të ruhen.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Cilësimet e njoftimit Webhook u ruajtën me sukses!',
+      'components.Settings.Notifications.agentenabled': 'Aktivizo agjentin',
+      'components.Settings.Notifications.allowselfsigned':
+        'Lejo çertifikatat e vetë-nënshkruara',
+      'components.Settings.Notifications.authPass': 'Fjalëkalimi SMTP',
+      'components.Settings.Notifications.authUser': 'Emri i përdoruesit SMTP',
+      'components.Settings.Notifications.botAPI': 'Token e Autorizimit të Bot',
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL-ja e Avatarit të Bot',
+      'components.Settings.Notifications.botUsername':
+        'Emri i përdoruesit të botit',
+      'components.Settings.Notifications.chatId': 'ID e bisedës',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Cilësimet e njoftimit të Diskordit nuk u ruajtën.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Cilësimet e njoftimit të Diskordit u ruajtën me sukses!',
+      'components.Settings.Notifications.emailsender': 'Adresa e dërguesit',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Cilësimet e njoftimit me email nuk u ruajtën.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Cilësimet e njoftimit me email u ruajtën me sukses!',
+      'components.Settings.Notifications.enableMentions': 'Aktivizo Përmendjet',
+      'components.Settings.Notifications.encryption': 'Metoda e kriptimit',
+      'components.Settings.Notifications.encryptionDefault':
+        'Përdorni STARTTLS nëse disponohet',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Përdorni TLS të nënkuptuar',
+      'components.Settings.Notifications.encryptionNone': 'Asnjë',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Përdorni gjithmonë STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'Fjalëkalimi PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Çelësi privat PGP',
+      'components.Settings.Notifications.sendSilently': 'Dërgo në heshtje',
+      'components.Settings.Notifications.senderName': 'Emri i dërguesit',
+      'components.Settings.Notifications.smtpHost': 'SMTP Host',
+      'components.Settings.Notifications.smtpPort': 'Porta SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Cilësimet e njoftimit të telegramit nuk u ruajtën.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Cilësimet e njoftimit të telegramit u ruajtën me sukses!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Njoftimi i testit të Discord nuk u dërgua.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Njoftimi i testit të Discord u dërgua!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Njoftimi i testit me email nuk u dërgua.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Njoftimi i testit me email u dërgua!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Njoftimi i testit telegram dështoi të dërgonte.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Njoftimi për testin e telegramit u dërgua!',
+      'components.Settings.Notifications.validationEmail':
+        'Ju duhet të jepni një adresë të vlefshme emaili',
+      'components.Settings.Notifications.validationTypes':
+        'Duhet të zgjidhni të paktën një lloj njoftimi',
+      'components.Settings.Notifications.webhookUrl': 'URL e Webhook',
     },
   },
   {
@@ -23467,6 +29519,51 @@ export const localeData = [
         'Pošalji notifikacije bez zvuka',
       'components.UserProfile.UserSettings.UserNotificationSettings.telegramChatId':
         'Chat-ID',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Pristupni token',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet probno obaveštenje poslato!',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Omogući agenta',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Omogući agenta',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook adresa',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Omogući agenta',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Omogući agenta',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Zaglavlje autorizacije',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON zadržaj',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook adresa',
+      'components.Settings.Notifications.agentenabled': 'Omogući agenta',
+      'components.Settings.Notifications.authPass': 'SMTP lozinka',
+      'components.Settings.Notifications.authUser': 'SMTP Korisničko ime',
+      'components.Settings.Notifications.botUsername': 'Bot korisničko ime',
+      'components.Settings.Notifications.chatId': 'Chat-ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord notifikacija za podešavanje nije uspešno sačuvana.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord notifikacija uspešno sačuvana!',
+      'components.Settings.Notifications.emailsender': 'Adresa pošiljaoca',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Email notifikacija nije uspešno sačuvana.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Email notifikacija uspešno sačuvana!',
+      'components.Settings.Notifications.encryptionNone': 'Nijedan',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Uvek koristi STARTTLS',
+      'components.Settings.Notifications.pgpPassword': 'PGP lozinka',
+      'components.Settings.Notifications.sendSilently': 'Pošalji tiho',
+      'components.Settings.Notifications.senderName': 'Ime pošiljaoca',
+      'components.Settings.Notifications.smtpHost': 'SMTP Host',
+      'components.Settings.Notifications.smtpPort': 'SMTP Port',
+      'components.Settings.Notifications.validationEmail':
+        'Morate uneti validnu email adresu',
+      'components.Settings.Notifications.webhookUrl': 'Webhook adresa',
     },
   },
   {
@@ -23877,6 +29974,218 @@ export const localeData = [
         'Tråd-/ämnes-ID måste vara ett positivt heltal',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Webbpush',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aktivera Gotify',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Inkludera affisch',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify-meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify-meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Prioritet',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Applikationstoken',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Server-URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Aktivera ntfy.sh',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Inkludera affisch',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy-meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy-meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Lösenord',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        'Prioritet',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Taggar',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Tokenbaserad autentisering',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Ämne',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Serverns rot-URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Användarnamn',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Användarnamn + lösenordsautentisering',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Åtkomsttoken',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanaltagg',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet-meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet-meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Applikation-API-token',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aktivera Pushover',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Enhetsstandard',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Inkludera affisch',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Meddelandeinställningarna för Pushover kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Inställningarna för Pushover-meddelanden sparades!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Meddelandeljud',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover-testmeddelandet kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Användar- eller gruppnyckel',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aktivera Slack',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Inkludera affisch',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Meddelandeinställningarna för Slack kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Meddelandeinställningarna för Slack sparades!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack-testmeddelandet kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aktivera Webbpush',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Inkludera affisch',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Webbpush-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Webbpush-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Webbpush-meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Webbpush-meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aktivera Webhook',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Auktoriseringrubrik (header)',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Anpassade headers',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Lägg till header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Du kan inte använda både Authorization-headern och en egen Authorization-header. Ta bort en av dem.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Alla headers måste ha både namn och värde',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Headernamn',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Ta bort',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Header-värde',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON-nyttolast',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Stödda URL-variabler',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook-testmeddelande skickat!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook-URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook-meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook-meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.agentenabled':
+        'Aktivera meddelandetjänst',
+      'components.Settings.Notifications.allowselfsigned':
+        'Tillåt självsignerade certifikat',
+      'components.Settings.Notifications.authPass': 'SMTP-lösenord',
+      'components.Settings.Notifications.authUser': 'SMTP-användarnamn',
+      'components.Settings.Notifications.botAPI': 'Botens auktoriseringstoken',
+      'components.Settings.Notifications.botAvatarUrl': 'Botens avatar-URL',
+      'components.Settings.Notifications.botUsername': 'Botens användarnamn',
+      'components.Settings.Notifications.chatId': 'Chatt-ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discords meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discords meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.emailsender': 'Avsändaradress',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'E-postmeddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'E-postmeddelandeinställningar har sparats!',
+      'components.Settings.Notifications.embedPoster': 'Inkludera affisch',
+      'components.Settings.Notifications.enableMentions':
+        'Aktivera omnämnanden',
+      'components.Settings.Notifications.encryption': 'Krypteringsmetod',
+      'components.Settings.Notifications.encryptionDefault':
+        'Använd STARTTLS om tillgängligt',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Använd implicit TLS',
+      'components.Settings.Notifications.encryptionNone': 'Ingen',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Använd alltid STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'Tråd-/ämnes-ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP-lösenord',
+      'components.Settings.Notifications.pgpPrivateKey': 'Privat PGP-nyckel',
+      'components.Settings.Notifications.sendSilently': 'Skicka tyst',
+      'components.Settings.Notifications.senderName': 'Avsändarens namn',
+      'components.Settings.Notifications.smtpHost': 'SMTP-värd',
+      'components.Settings.Notifications.smtpPort': 'SMTP-port',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegrams meddelandeinställningar kunde inte sparas.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegrams meddelandeinställningar har sparats!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord-testmeddelande skickat!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'E-posttestmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'E-posttestmeddelande skickat!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram-testmeddelande kunde inte skickas.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram-testmeddelande skickat!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Använd Seerrs offentliga logotyp istället för instansens logotyp',
+      'components.Settings.Notifications.useUserLocale':
+        'Använd mottagarens valda språk',
+      'components.Settings.Notifications.userEmailRequired':
+        'Kräv användarens e-postadress',
+      'components.Settings.Notifications.validationEmail':
+        'Du måste ange en giltig e-postadress',
+      'components.Settings.Notifications.validationTypes':
+        'Du måste välja minst en meddelandetyp',
+      'components.Settings.Notifications.webhookRoleId': 'Meddelanderoll-ID',
+      'components.Settings.Notifications.webhookThreadId': 'Tråd-ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook-URL',
     },
   },
   {
@@ -24282,6 +30591,212 @@ export const localeData = [
         'İş parçacığı/konu kimliği pozitif tam sayı olmalıdır',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Web Push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Öncelik',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Uygulama Tokeni',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Sunucu URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Poster Göm',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Şifre',
+      'components.Settings.Notifications.NotificationsNtfy.priority': 'Öncelik',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Token',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Token kimlik doğrulaması',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Konu',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Sunucu kök URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Kullanıcı Adı',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Kullanıcı Adı + Şifre kimlik doğrulaması',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Erişim Tokeni',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Kanal Etiketi',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Uygulama API Tokeni',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Cihaz Varsayılanı',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Poster Göm',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Bildirim Sesi',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Kullanıcı veya Grup Anahtarı',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Poster Göm',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Poster Göm',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Web push test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Web push test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Web push bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Web push bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Yetkilendirme Başlığı',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Özel Başlıklar',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Başlık Ekle',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Yetkilendirme Başlığı ve özel Yetkilendirme başlığı birlikte kullanılamaz. Lütfen birini kaldırın.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Tüm başlıkların hem adı hem de değeri olmalıdır',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Başlık Adı',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Kaldır',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Başlık Değeri',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON Yükü',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'URL Değişkenlerini Destekle',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook test bildirimi gönderildi!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.agentenabled': 'Aracıyı Etkinleştir',
+      'components.Settings.Notifications.allowselfsigned':
+        'Öz İmzalı Sertifikalara İzin Ver',
+      'components.Settings.Notifications.authPass': 'SMTP Şifresi',
+      'components.Settings.Notifications.authUser': 'SMTP Kullanıcı Adı',
+      'components.Settings.Notifications.botAPI': 'Bot Yetkilendirme Tokeni',
+      'components.Settings.Notifications.botAvatarUrl': 'Bot Avatar URL',
+      'components.Settings.Notifications.botUsername': 'Bot Kullanıcı Adı',
+      'components.Settings.Notifications.chatId': 'Sohbet Kimliği',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.emailsender': 'Gönderen Adresi',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'E-posta bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'E-posta bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.embedPoster': 'Poster Göm',
+      'components.Settings.Notifications.enableMentions':
+        'Bahsetmeleri Etkinleştir',
+      'components.Settings.Notifications.encryption': 'Şifreleme Yöntemi',
+      'components.Settings.Notifications.encryptionDefault':
+        'Mümkünse STARTTLS Kullan',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Örtük TLS Kullan',
+      'components.Settings.Notifications.encryptionNone': 'Yok',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Her Zaman STARTTLS Kullan',
+      'components.Settings.Notifications.messageThreadId':
+        'İş Parçacığı/Konu Kimliği',
+      'components.Settings.Notifications.pgpPassword': 'PGP Şifresi',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP Özel Anahtarı',
+      'components.Settings.Notifications.sendSilently': 'Sessizce Gönder',
+      'components.Settings.Notifications.senderName': 'Gönderen Adı',
+      'components.Settings.Notifications.smtpHost': 'SMTP Sunucusu',
+      'components.Settings.Notifications.smtpPort': 'SMTP Portu',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram bildirim ayarları kaydedilemedi.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram bildirim ayarları başarıyla kaydedildi!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord test bildirimi gönderildi!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'E-posta test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'E-posta test bildirimi gönderildi!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram test bildirimi gönderilemedi.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram test bildirimi gönderildi!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Örnek logosu yerine genel Seerr logosunu kullan',
+      'components.Settings.Notifications.useUserLocale':
+        'Bildirim Alıcısının Dilini Kullan',
+      'components.Settings.Notifications.userEmailRequired':
+        'Kullanıcı e-postası zorunlu',
+      'components.Settings.Notifications.validationEmail':
+        'Geçerli bir e-posta adresi girmelisiniz',
+      'components.Settings.Notifications.validationTypes':
+        'En az bir bildirim türü seçmelisiniz',
+      'components.Settings.Notifications.webhookRoleId': 'Bildirim Rol Kimliği',
+      'components.Settings.Notifications.webhookUrl': 'Webhook URL',
     },
   },
   {
@@ -24677,6 +31192,193 @@ export const localeData = [
         'ID теми/гілки повинен бути цілим додатним числом',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Веб-push',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Увімкнути агента',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Не вдалося зберегти налаштування сповіщень Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Налаштування сповіщень Gotify успішно збережено!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Пріоритет',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Не вдалося надіслати тестове сповіщення Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Тестове сповіщення Gotify надіслано!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Маркер програми',
+      'components.Settings.Notifications.NotificationsGotify.url': 'Сервер URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Необхідно вибрати принаймні один тип сповіщення',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Увімкнути агента',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Вбудувати постер',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Не вдалося зберегти налаштування сповіщень Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Налаштування сповіщень Ntfy успішно збережено!',
+      'components.Settings.Notifications.NotificationsNtfy.password': 'Пароль',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Не вдалося надіслати тестове сповіщення Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Тестове сповіщення Ntfy надіслано!',
+      'components.Settings.Notifications.NotificationsNtfy.token': 'Токен',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Автентифікація за токеном',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Тема',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'Кореневий URL сервера',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        "Ім'я користувача",
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        "Автентифікація за ім'ям та паролем",
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Ви повинні вибрати хоча б один тип сповіщення',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Токен доступу',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Тег каналу',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Не вдалося зберегти налаштування сповіщень Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Налаштування сповіщень Pushbullet успішно збережено!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Не вдалося надіслати тестове повідомлення до Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Тестове повідомлення надіслано в Pushbullet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Ви повинні вибрати хоча б один тип повідомлень',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Токен API програми',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Активувати службу',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Пристрій за замовчуванням',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Вбудувати постер',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Не вдалося зберегти налаштування сповіщень Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Параметри сповіщень Pushover успішно збережені!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Звук сповіщення',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Не вдалося надіслати тестове повідомлення Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Тестове повідомлення надіслано в Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Ключ користувача або групи',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Ви повинні вибрати хоча б один тип повідомлень',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Активувати службу',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Вбудувати постер',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Не вдалося зберегти налаштування повідомлень Slack.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Налаштування повідомлень Slack успішно збережено!',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Не вдалося надіслати тестове повідомлення до Slack.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Тестове повідомлення надіслано до Slack!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Ви повинні вибрати хоча б один тип повідомлень',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL веб-перехоплювача',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Активувати службу',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Вбудувати постер',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Не вдалося надіслати тестове веб-push-сповіщення.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Тестове веб-повідомлення надіслано!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Не вдалося зберегти налаштування веб-повідомлень.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Налаштування веб-повідомлень успішно збережено!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Активувати службу',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Заголовок авторизації',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Корисне навантаження JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Змінні URL підтримки',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Не вдалося надіслати тестове повідомлення веб-перехоплювачу.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Тестове повідомлення веб-перехоплювачу надіслано!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Ви повинні вибрати хоча б один тип повідомлень',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL веб-перехоплювача',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Не вдалося зберегти налаштування повідомлень веб-перехоплювача.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Налаштування повідомлень веб-перехоплювача успішно збережено!',
+      'components.Settings.Notifications.agentenabled': 'Активувати службу',
+      'components.Settings.Notifications.allowselfsigned':
+        'Дозволити самозавірені сертифікати',
+      'components.Settings.Notifications.authPass': 'Пароль SMTP',
+      'components.Settings.Notifications.authUser': "Ім'я користувача SMTP",
+      'components.Settings.Notifications.botAPI': 'Токен авторизації бота',
+      'components.Settings.Notifications.botAvatarUrl': 'URL аватара бота',
+      'components.Settings.Notifications.botUsername': "Ім'я бота",
+      'components.Settings.Notifications.chatId': 'ID чату',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Не вдалося зберегти налаштування повідомлень Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Налаштування повідомлень Discord успішно збережено!',
+      'components.Settings.Notifications.emailsender': 'Адреса відправника',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Не вдалося зберегти налаштування повідомлень електронною поштою.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Налаштування повідомлень електронною поштою успішно збережено!',
+      'components.Settings.Notifications.embedPoster': 'Вбудувати постер',
+      'components.Settings.Notifications.enableMentions':
+        'Увімкнути згадування',
+      'components.Settings.Notifications.encryption': 'Метод шифрування',
+      'components.Settings.Notifications.encryptionDefault':
+        'Використовувати STARTTLS, якщо доступно',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Використовувати неявний TLS',
+      'components.Settings.Notifications.encryptionNone': 'Без шифрування',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Завжди використовувати STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'ID теми/гілки',
+      'components.Settings.Notifications.pgpPassword': 'Пароль PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Закритий ключ PGP',
+      'components.Settings.Notifications.sendSilently': 'Надсилати без звуку',
+      'components.Settings.Notifications.senderName': "Ім'я відправника",
+      'components.Settings.Notifications.smtpHost': 'SMTP-хост',
+      'components.Settings.Notifications.smtpPort': 'SMTP порт',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Не вдалося зберегти налаштування сповіщень Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Налаштування сповіщень Telegram успішно збережено!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Не вдалося надіслати тестове повідомлення до Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Тестове повідомлення надіслано до Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Не вдалося надіслати тестове повідомлення електронною поштою.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Тестове повідомлення надіслано електронною поштою!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Не вдалося надіслати тестове повідомлення до Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Тестове повідомлення надіслано до Telegram!',
+      'components.Settings.Notifications.userEmailRequired':
+        'Потрібен email користувача',
+      'components.Settings.Notifications.validationEmail':
+        'Ви повинні вказати дійсну адресу електронної пошти',
+      'components.Settings.Notifications.validationTypes':
+        'Ви повинні вибрати хоча б один тип повідомлень',
+      'components.Settings.Notifications.webhookRoleId':
+        'ID ролі для сповіщень',
+      'components.Settings.Notifications.webhookUrl': 'URL веб-перехоплювача',
     },
   },
   {
@@ -25729,6 +32431,249 @@ export const localeData = [
         '线程/主题ID必须是正的整数',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         '网络推送',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        '启用代理程序',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise通知设置无法保存。',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise通知设置保存成功。',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        '配置名称',
+      'components.Settings.Notifications.NotificationsApprise.password': '密码',
+      'components.Settings.Notifications.NotificationsApprise.tag': '标签',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        '无法发送Apprise测试通知。',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise 测试通知已发送。',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API 根 URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        '用户名',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        '用户名和密码认证',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        '启用通知服务',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        '嵌入海报',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify通知设置保存成功！',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        '优先级',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify 测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify 测试通知已发送！',
+      'components.Settings.Notifications.NotificationsGotify.token': '应用令牌',
+      'components.Settings.Notifications.NotificationsGotify.url': '服务器 URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        '启用代理',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        '嵌入海报',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy 通知设置无法保存。',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy 通知设置已成功保存！',
+      'components.Settings.Notifications.NotificationsNtfy.password': '密码',
+      'components.Settings.Notifications.NotificationsNtfy.priority': '优先级',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        '默认',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh': '高',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': '低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        '最低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        '紧急',
+      'components.Settings.Notifications.NotificationsNtfy.tags': '标签',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy 测试通知未能发送。',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy 测试通知已发送！',
+      'components.Settings.Notifications.NotificationsNtfy.token': '令牌',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        '令牌认证',
+      'components.Settings.Notifications.NotificationsNtfy.topic': '主题',
+      'components.Settings.Notifications.NotificationsNtfy.url': '服务器根 URL',
+      'components.Settings.Notifications.NotificationsNtfy.username': '用户名',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        '用户名+密码认证',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        '访问令牌',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        '频道标签',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet 通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet 通知设置保存成功！',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet 测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet 测试通知已发送！',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        '应用程序 API 令牌',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        '启用代理',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        '设备默认音效',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        '嵌入海报',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover 通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover 通知设置保存成功！',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        '通知声音',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover 测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover 测试通知已发送！',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        '用户或群组密钥',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        '启用代理',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        '嵌入海报',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        '启用请求批准操作',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        '请求管理员映射',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        '每行一项：Slack 用户 ID=SeerrNG 用户 ID。每个映射的 SeerrNG 用户都必须拥有请求管理权限。',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack 签名密钥',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack 通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack 通知设置保存成功！',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack 测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack 测试通知已发送！',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        '网络钩子网址（URL）',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack 工作区 ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        '启用代理',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        '嵌入海报',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        '网络推送测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        '网络推送测试通知已发送！',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        '网络推送通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        '网络推送通知设置保存成功！',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        '启用代理',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        '授权标头',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        '自定义标头',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        '添加标头',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        '不能同时使用授权标头和自定义授权标头。请移除其中一个。',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        '所有标头都必须同时包含名称和值。',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        '标头名称',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        '删除',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        '标头值',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON 有效负载',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        '支持 URL 变量',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        '网络钩子测试通知发送失败。',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        '网络钩子测试通知已发送！',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        '您必须至少选择一种通知类型。',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        '网络钩子网址（URL）',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        '网络钩子通知设置保存失败。',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        '网络钩子通知设置保存成功！',
+      'components.Settings.Notifications.agentenabled': '启用通知代理服务',
+      'components.Settings.Notifications.allowselfsigned': '允许自签名证书',
+      'components.Settings.Notifications.authPass': 'SMTP 密码',
+      'components.Settings.Notifications.authUser': 'SMTP 用户名',
+      'components.Settings.Notifications.botAPI': '机器人授权令牌',
+      'components.Settings.Notifications.botAvatarUrl': '机器人头像 URL',
+      'components.Settings.Notifications.botUsername': '机器人用户名',
+      'components.Settings.Notifications.chatId': '聊天室 ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord 通知设置保存失败。',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord 通知设置保存成功！',
+      'components.Settings.Notifications.emailsender': '发件人电子邮件地址',
+      'components.Settings.Notifications.emailsettingsfailed':
+        '电子邮件通知设置保存失败。',
+      'components.Settings.Notifications.emailsettingssaved':
+        '电子邮件通知设置保存成功！',
+      'components.Settings.Notifications.embedPoster': '嵌入的海报',
+      'components.Settings.Notifications.enableMentions': '允许提及',
+      'components.Settings.Notifications.encryption': '加密方式',
+      'components.Settings.Notifications.encryptionDefault':
+        '如果可用，请使用 STARTTLS',
+      'components.Settings.Notifications.encryptionImplicitTls': '使用隐式 TLS',
+      'components.Settings.Notifications.encryptionNone': '不使用加密',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        '始终使用 STARTTLS',
+      'components.Settings.Notifications.messageThreadId': '主题/帖子 ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP 密码',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP 私钥',
+      'components.Settings.Notifications.sendSilently': '静音发送',
+      'components.Settings.Notifications.senderName': '发件人姓名',
+      'components.Settings.Notifications.smtpHost': 'SMTP 主机',
+      'components.Settings.Notifications.smtpPort': 'SMTP 端口',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram 通知设置保存失败。',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram 通知设置保存成功！',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord 测试通知发送失败。',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord 测试通知已发送！',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        '电子邮件测试通知发送失败。',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        '电子邮件测试通知已发送！',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram 测试通知发送失败。',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram 测试通知已发送！',
+      'components.Settings.Notifications.usePublicLogo':
+        '使用公共 Seerr 标志而不是实例标志',
+      'components.Settings.Notifications.useUserLocale':
+        '使用通知接收者的区域设置',
+      'components.Settings.Notifications.userEmailRequired':
+        '要求用户提供电子邮件地址',
+      'components.Settings.Notifications.validationEmail':
+        '请输入有效的电子邮件地址',
+      'components.Settings.Notifications.validationTypes':
+        '请至少选择一种通知类型',
+      'components.Settings.Notifications.webhookRoleId': '通知角色ID',
+      'components.Settings.Notifications.webhookThreadId': '线程 ID',
+      'components.Settings.Notifications.webhookUrl': '网络钩子网址（URL）',
     },
   },
   {
@@ -26780,6 +33725,251 @@ export const localeData = [
         '線程/ 主题 ID 必須是正整數',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         '網路推送',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        '啟用代理程式',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Apprise 通知設定無法儲存。',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Apprise 通知設定已成功儲存。',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        '設定名稱',
+      'components.Settings.Notifications.NotificationsApprise.password': '密碼',
+      'components.Settings.Notifications.NotificationsApprise.tag': '標籤',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        '無法傳送 Apprise 測試通知。',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Apprise 測試通知已傳送。',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'Apprise API 根 URL',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        '使用者名稱',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        '使用者名稱與密碼認證',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        '啟用通知服務',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        '嵌入海報',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Gotify 通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Gotify 通知設定儲存成功！',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        '優先等級',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Gotify 測試通知發送失敗。',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Gotify 測試通知已發送！',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        '應用程式令牌',
+      'components.Settings.Notifications.NotificationsGotify.url': '伺服器 URL',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        '請至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        '開啟代理',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        '嵌入海報',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Ntfy 通知設定無法儲存。',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Ntfy 通知設定已成功儲存！',
+      'components.Settings.Notifications.NotificationsNtfy.password': '密碼',
+      'components.Settings.Notifications.NotificationsNtfy.priority':
+        '優先順序',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        '預設',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh': '高',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': '低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        '最低',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        '緊急',
+      'components.Settings.Notifications.NotificationsNtfy.tags': '標籤',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Ntfy 測試通知傳送失敗。',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Ntfy 測試通知已送出！',
+      'components.Settings.Notifications.NotificationsNtfy.token': '令牌',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        '令牌驗證',
+      'components.Settings.Notifications.NotificationsNtfy.topic': '主題',
+      'components.Settings.Notifications.NotificationsNtfy.url': '伺服器根 URL',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        '使用者名稱',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        '使用者名稱 + 密碼認證',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        '存取權杖',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        '頻道標籤',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Pushbullet 通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Pushbullet 通知設定儲存成功！',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Pushbullet 測試通知發送失敗。',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Pushbullet 測試通知已發送！',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        '應用程式 API 令牌',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        '啟用代理',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        '裝置預設音效',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        '嵌入海報',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Pushover 通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Pushover 通知設定儲存成功！',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        '通知提示聲',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Pushover 測試通知發送失敗。',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Pushover 測試通知已發送！',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        '使用者或群組金鑰',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        '啟用代理',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        '嵌入海報',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        '啟用要求核准操作',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        '要求管理者對應',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        '每行一筆：Slack 使用者 ID=SeerrNG 使用者 ID。每位對應的 SeerrNG 使用者都必須具備要求管理權限。',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Slack 簽署密鑰',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Slack 通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Slack 通知設定儲存成功！',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Slack 測試通知發送失敗。',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Slack 測試通知已發送！',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'Slack 工作區 ID',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        '啟用代理',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        '嵌入海報',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        '網路推播測試通知傳送失敗。',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        '網路推播測試通知已傳送！',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        '網路推播通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        '網路推播通知設定儲存成功！',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        '啟用代理',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        '授權標頭',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        '自訂標頭',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        '新增標頭',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        '無法同時使用授權標頭和自訂授權標頭。請移除其中一個。',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        '所有標頭都必須同時包含名稱和值。',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        '標頭名稱',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        '移除',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        '標頭值',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'JSON 有效負載',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        '支援 URL 變數',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Webhook 測試通知發送失敗。',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Webhook 測試通知已發送！',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        '您必須至少選擇一種通知類型。',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'Webhook URL',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Webhook 通知設定儲存失敗。',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Webhook 通知設定儲存成功！',
+      'components.Settings.Notifications.agentenabled': '啟用通知代理服務',
+      'components.Settings.Notifications.allowselfsigned': '允許自簽憑證',
+      'components.Settings.Notifications.authPass': 'SMTP 密碼',
+      'components.Settings.Notifications.authUser': 'SMTP 使用者名稱',
+      'components.Settings.Notifications.botAPI': '機器人授權權杖',
+      'components.Settings.Notifications.botAvatarUrl': '機器人頭像 URL',
+      'components.Settings.Notifications.botUsername': '機器人使用者名稱',
+      'components.Settings.Notifications.chatId': '聊天室 ID',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Discord 通知設定儲存失敗。',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Discord 通知設定儲存成功！',
+      'components.Settings.Notifications.emailsender': '發件人電子郵件地址',
+      'components.Settings.Notifications.emailsettingsfailed':
+        '電子郵件通知設定儲存失敗。',
+      'components.Settings.Notifications.emailsettingssaved':
+        '電子郵件通知設定儲存成功！',
+      'components.Settings.Notifications.embedPoster': '嵌入海報',
+      'components.Settings.Notifications.enableMentions': '允許提及',
+      'components.Settings.Notifications.encryption': '加密方式',
+      'components.Settings.Notifications.encryptionDefault':
+        '若有提供，請使用 STARTTLS',
+      'components.Settings.Notifications.encryptionImplicitTls': '使用隱式 TLS',
+      'components.Settings.Notifications.encryptionNone': '不使用加密',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        '始終使用 STARTTLS',
+      'components.Settings.Notifications.messageThreadId': '討論串／主題 ID',
+      'components.Settings.Notifications.pgpPassword': 'PGP 密碼',
+      'components.Settings.Notifications.pgpPrivateKey': 'PGP 私鑰',
+      'components.Settings.Notifications.sendSilently': '靜音傳送',
+      'components.Settings.Notifications.senderName': '發件人名稱',
+      'components.Settings.Notifications.smtpHost': 'SMTP 主機',
+      'components.Settings.Notifications.smtpPort': 'SMTP 通訊埠',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Telegram 通知設定儲存失敗。',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Telegram 通知設定儲存成功！',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Discord 測試通知發送失敗。',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Discord 測試通知已發送！',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        '電子郵件測試通知發送失敗。',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        '電子郵件測試通知已發送！',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Telegram 測試通知發送失敗。',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Telegram 測試通知已發送！',
+      'components.Settings.Notifications.usePublicLogo':
+        '使用公開的 Seerr 標誌而不是實例標誌',
+      'components.Settings.Notifications.useUserLocale':
+        '使用通知接收者的地區設定',
+      'components.Settings.Notifications.userEmailRequired': '需要用戶電子郵件',
+      'components.Settings.Notifications.validationEmail':
+        '請輸入有效的電子郵件地址',
+      'components.Settings.Notifications.validationTypes':
+        '請至少選擇一種通知類型',
+      'components.Settings.Notifications.webhookRoleId': '通知角色 ID',
+      'components.Settings.Notifications.webhookThreadId': '討論串 ID',
+      'components.Settings.Notifications.webhookUrl': 'Webhook 網址',
     },
   },
   {
@@ -27901,6 +35091,260 @@ export const localeData = [
         'Chứng minh thư chủ chốt phải là một số nguyên dương',
       'components.UserProfile.UserSettings.UserNotificationSettings.webpush':
         'Đẩy Mạng',
+      'components.Settings.Notifications.NotificationsApprise.agentenabled':
+        'Bật tác tử',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingsfailed':
+        'Không thể lưu cài đặt thông báo Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.apprisesettingssaved':
+        'Cài đặt thông báo Apprise đã được lưu thành công.',
+      'components.Settings.Notifications.NotificationsApprise.configKey':
+        'Tên cấu hình',
+      'components.Settings.Notifications.NotificationsApprise.password':
+        'Mật khẩu',
+      'components.Settings.Notifications.NotificationsApprise.tag': 'Thẻ',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestFailed':
+        'Không thể gửi thông báo kiểm tra Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.toastAppriseTestSuccess':
+        'Đã gửi thông báo thử nghiệm Apprise.',
+      'components.Settings.Notifications.NotificationsApprise.url':
+        'URL gốc của API Apprise',
+      'components.Settings.Notifications.NotificationsApprise.username':
+        'Tên người dùng',
+      'components.Settings.Notifications.NotificationsApprise.usernamePasswordAuth':
+        'Xác thực bằng tên người dùng và mật khẩu',
+      'components.Settings.Notifications.NotificationsApprise.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo.',
+      'components.Settings.Notifications.NotificationsGotify.agentenabled':
+        'Bật dịch vụ thông báo',
+      'components.Settings.Notifications.NotificationsGotify.embedPoster':
+        'Nhúng áp phích',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingsfailed':
+        'Không lưu được cài đặt thông báo Gotify.',
+      'components.Settings.Notifications.NotificationsGotify.gotifysettingssaved':
+        'Cài đặt thông báo Gotify đã được lưu thành công!',
+      'components.Settings.Notifications.NotificationsGotify.priority':
+        'Mức ưu tiên',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestFailed':
+        'Thông báo kiểm tra Gotify không gửi được.',
+      'components.Settings.Notifications.NotificationsGotify.toastGotifyTestSuccess':
+        'Thông báo kiểm tra Gotify đã được gửi!',
+      'components.Settings.Notifications.NotificationsGotify.token':
+        'Mã thông báo ứng dụng',
+      'components.Settings.Notifications.NotificationsGotify.url':
+        'URL máy chủ',
+      'components.Settings.Notifications.NotificationsGotify.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsNtfy.agentenabled':
+        'Bật dịch vụ thông báo',
+      'components.Settings.Notifications.NotificationsNtfy.embedPoster':
+        'Nhúng áp phích',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingsfailed':
+        'Không thể lưu cài đặt thông báo Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.ntfysettingssaved':
+        'Cài đặt thông báo Ntfy đã được lưu thành công!',
+      'components.Settings.Notifications.NotificationsNtfy.password':
+        'Mật khẩu',
+      'components.Settings.Notifications.NotificationsNtfy.priority': 'Ưu tiên',
+      'components.Settings.Notifications.NotificationsNtfy.priorityDefault':
+        'Mặc định',
+      'components.Settings.Notifications.NotificationsNtfy.priorityHigh': 'Cao',
+      'components.Settings.Notifications.NotificationsNtfy.priorityLow': 'Thấp',
+      'components.Settings.Notifications.NotificationsNtfy.priorityMinimum':
+        'Tối thiểu',
+      'components.Settings.Notifications.NotificationsNtfy.priorityUrgent':
+        'Khẩn cấp',
+      'components.Settings.Notifications.NotificationsNtfy.tags': 'Thẻ',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestFailed':
+        'Không gửi được thông báo kiểm tra Ntfy.',
+      'components.Settings.Notifications.NotificationsNtfy.toastNtfyTestSuccess':
+        'Đã gửi thông báo kiểm tra Ntfy!',
+      'components.Settings.Notifications.NotificationsNtfy.token':
+        'Mã thông báo',
+      'components.Settings.Notifications.NotificationsNtfy.tokenAuth':
+        'Xác thực token',
+      'components.Settings.Notifications.NotificationsNtfy.topic': 'Chủ đề',
+      'components.Settings.Notifications.NotificationsNtfy.url':
+        'URL gốc của máy chủ',
+      'components.Settings.Notifications.NotificationsNtfy.username':
+        'Tên người dùng',
+      'components.Settings.Notifications.NotificationsNtfy.usernamePasswordAuth':
+        'Xác thực bằng tên người dùng và mật khẩu',
+      'components.Settings.Notifications.NotificationsNtfy.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsPushbullet.accessToken':
+        'Mã thông báo truy cập',
+      'components.Settings.Notifications.NotificationsPushbullet.channelTag':
+        'Thẻ kênh',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsFailed':
+        'Không thể lưu cài đặt thông báo Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.pushbulletSettingsSaved':
+        'Đã lưu cài đặt thông báo Pushbullet thành công!',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestFailed':
+        'Không thể gửi thông báo thử nghiệm Pushbullet.',
+      'components.Settings.Notifications.NotificationsPushbullet.toastPushbulletTestSuccess':
+        'Đã gửi thông báo kiểm tra Pushbullet!',
+      'components.Settings.Notifications.NotificationsPushbullet.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsPushover.accessToken':
+        'Mã thông báo API của ứng dụng',
+      'components.Settings.Notifications.NotificationsPushover.agentenabled':
+        'Bật tác nhân',
+      'components.Settings.Notifications.NotificationsPushover.deviceDefault':
+        'Âm thanh mặc định của thiết bị',
+      'components.Settings.Notifications.NotificationsPushover.embedPoster':
+        'Nhúng poster',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingsfailed':
+        'Không thể lưu cài đặt thông báo Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.pushoversettingssaved':
+        'Đã lưu cài đặt thông báo Pushover thành công!',
+      'components.Settings.Notifications.NotificationsPushover.sound':
+        'Âm thanh thông báo',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestFailed':
+        'Không thể gửi thông báo thử nghiệm Pushover.',
+      'components.Settings.Notifications.NotificationsPushover.toastPushoverTestSuccess':
+        'Đã gửi thông báo thử nghiệm Pushover!',
+      'components.Settings.Notifications.NotificationsPushover.userToken':
+        'Khóa người dùng hoặc nhóm',
+      'components.Settings.Notifications.NotificationsPushover.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsSlack.agentenabled':
+        'Bật tác nhân',
+      'components.Settings.Notifications.NotificationsSlack.embedPoster':
+        'Nhúng poster',
+      'components.Settings.Notifications.NotificationsSlack.requestActionsEnabled':
+        'Bật thao tác phê duyệt yêu cầu',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappings':
+        'Ánh xạ người quản lý yêu cầu',
+      'components.Settings.Notifications.NotificationsSlack.requestManagerMappingsTip':
+        'Mỗi dòng một mục: ID người dùng Slack=ID người dùng SeerrNG. Mỗi người dùng SeerrNG được ánh xạ phải có quyền quản lý yêu cầu.',
+      'components.Settings.Notifications.NotificationsSlack.signingSecret':
+        'Mã bí mật ký Slack',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingsfailed':
+        'Thiết lập thông báo Slack không thể lưu.',
+      'components.Settings.Notifications.NotificationsSlack.slacksettingssaved':
+        'Thiết lập thông báo Slack đã lưu thành công.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestFailed':
+        'Thông báo kiểm tra Slack không thể gửi.',
+      'components.Settings.Notifications.NotificationsSlack.toastSlackTestSuccess':
+        'Thông báo kiểm tra Slack đã gửi!',
+      'components.Settings.Notifications.NotificationsSlack.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsSlack.webhookUrl':
+        'URL webhook',
+      'components.Settings.Notifications.NotificationsSlack.workspaceId':
+        'ID không gian làm việc Slack',
+      'components.Settings.Notifications.NotificationsWebPush.agentenabled':
+        'Bật tác nhân',
+      'components.Settings.Notifications.NotificationsWebPush.embedPoster':
+        'Nhúng poster',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestFailed':
+        'Không thể gửi thông báo thử nghiệm web push.',
+      'components.Settings.Notifications.NotificationsWebPush.toastWebPushTestSuccess':
+        'Đã gửi thông báo thử nghiệm web push!',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingsfailed':
+        'Không thể lưu cài đặt thông báo web push.',
+      'components.Settings.Notifications.NotificationsWebPush.webpushsettingssaved':
+        'Đã lưu cài đặt thông báo web push thành công!',
+      'components.Settings.Notifications.NotificationsWebhook.agentenabled':
+        'Bật tác nhân',
+      'components.Settings.Notifications.NotificationsWebhook.authheader':
+        'Header ủy quyền',
+      'components.Settings.Notifications.NotificationsWebhook.customHeaders':
+        'Header tùy chỉnh',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAdd':
+        'Thêm header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersAuthConflict':
+        'Không thể dùng đồng thời header Authorization và header Authorization tùy chỉnh. Vui lòng xóa một trong hai.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersIncomplete':
+        'Mỗi header phải có cả tên và giá trị.',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersKey':
+        'Tên header',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersRemove':
+        'Bỏ',
+      'components.Settings.Notifications.NotificationsWebhook.customHeadersValue':
+        'Giá trị header',
+      'components.Settings.Notifications.NotificationsWebhook.customJson':
+        'Nội dung JSON',
+      'components.Settings.Notifications.NotificationsWebhook.supportVariables':
+        'Hỗ trợ biến URL',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestFailed':
+        'Không thể gửi thông báo thử nghiệm webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.toastWebhookTestSuccess':
+        'Đã gửi thông báo kiểm tra Webhook!',
+      'components.Settings.Notifications.NotificationsWebhook.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.NotificationsWebhook.webhookUrl':
+        'URL webhook',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingsfailed':
+        'Không thể lưu cài đặt thông báo webhook.',
+      'components.Settings.Notifications.NotificationsWebhook.webhooksettingssaved':
+        'Đã lưu cài đặt thông báo webhook thành công!',
+      'components.Settings.Notifications.agentenabled': 'Bật dịch vụ thông báo',
+      'components.Settings.Notifications.allowselfsigned':
+        'Cho phép chứng chỉ tự ký',
+      'components.Settings.Notifications.authPass': 'Mật khẩu SMTP',
+      'components.Settings.Notifications.authUser': 'Tên người dùng SMTP',
+      'components.Settings.Notifications.botAPI': 'Token ủy quyền của bot',
+      'components.Settings.Notifications.botAvatarUrl':
+        'URL ảnh đại diện của bot',
+      'components.Settings.Notifications.botUsername': 'Tên người dùng Bot',
+      'components.Settings.Notifications.chatId': 'ID trò chuyện',
+      'components.Settings.Notifications.discordsettingsfailed':
+        'Không lưu được cài đặt thông báo Discord.',
+      'components.Settings.Notifications.discordsettingssaved':
+        'Cài đặt thông báo Discord đã được lưu thành công!',
+      'components.Settings.Notifications.emailsender': 'Địa chỉ người gửi',
+      'components.Settings.Notifications.emailsettingsfailed':
+        'Không thể lưu cài đặt thông báo qua email.',
+      'components.Settings.Notifications.emailsettingssaved':
+        'Thiết lập thư điện tử đã lưu thành công.',
+      'components.Settings.Notifications.embedPoster': 'Nhúng áp phích',
+      'components.Settings.Notifications.enableMentions':
+        'Bật tính năng nhắc tên',
+      'components.Settings.Notifications.encryption': 'Phương pháp mã hóa',
+      'components.Settings.Notifications.encryptionDefault':
+        'Dùng STARTTLS nếu có',
+      'components.Settings.Notifications.encryptionImplicitTls':
+        'Sử dụng TLS ngầm định',
+      'components.Settings.Notifications.encryptionNone': 'Không có',
+      'components.Settings.Notifications.encryptionOpportunisticTls':
+        'Luôn sử dụng STARTTLS',
+      'components.Settings.Notifications.messageThreadId': 'Mã số Thread/Topic',
+      'components.Settings.Notifications.pgpPassword': 'Mật khẩu PGP',
+      'components.Settings.Notifications.pgpPrivateKey': 'Khóa riêng PGP',
+      'components.Settings.Notifications.sendSilently': 'Gửi âm thầm',
+      'components.Settings.Notifications.senderName': 'Tên người gửi',
+      'components.Settings.Notifications.smtpHost': 'Máy chủ SMTP',
+      'components.Settings.Notifications.smtpPort': 'Cổng SMTP',
+      'components.Settings.Notifications.telegramsettingsfailed':
+        'Không thể lưu cài đặt thông báo Telegram.',
+      'components.Settings.Notifications.telegramsettingssaved':
+        'Đã lưu cài đặt thông báo Telegram thành công!',
+      'components.Settings.Notifications.toastDiscordTestFailed':
+        'Không gửi được thông báo kiểm tra Discord.',
+      'components.Settings.Notifications.toastDiscordTestSuccess':
+        'Đã gửi thông báo kiểm tra Discord!',
+      'components.Settings.Notifications.toastEmailTestFailed':
+        'Không gửi được thông báo thử thư điện tử.',
+      'components.Settings.Notifications.toastEmailTestSuccess':
+        'Thông báo kiểm tra email đã được gửi!',
+      'components.Settings.Notifications.toastTelegramTestFailed':
+        'Không gửi được thông báo thử nghiệm qua Telegram.',
+      'components.Settings.Notifications.toastTelegramTestSuccess':
+        'Thông báo kiểm tra Telegram đã được gửi!',
+      'components.Settings.Notifications.usePublicLogo':
+        'Dùng logo công khai của Seerr thay cho logo của phiên bản đang chạy.',
+      'components.Settings.Notifications.useUserLocale':
+        'Dùng thiết lập ngôn ngữ và khu vực của người nhận thông báo',
+      'components.Settings.Notifications.userEmailRequired':
+        'Yêu cầu email người dùng',
+      'components.Settings.Notifications.validationEmail':
+        'Bạn phải cung cấp một địa chỉ thư điện tử hợp lệ',
+      'components.Settings.Notifications.validationTypes':
+        'Bạn phải chọn ít nhất một kiểu thông báo',
+      'components.Settings.Notifications.webhookRoleId': 'Thông báo ID vai trò',
+      'components.Settings.Notifications.webhookThreadId': 'Mã số Thread',
+      'components.Settings.Notifications.webhookUrl': 'URL webhook',
     },
   },
 ] as const;
