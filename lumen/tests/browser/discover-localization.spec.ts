@@ -289,3 +289,124 @@ test('administrator Discover row controls follow the account locale', async ({
       animations: 'disabled',
     });
 });
+
+test('Trending filters and recovery follow the account locale', async ({
+  page,
+}, info) => {
+  const language = (process.env.LUMEN_SETTINGS_LOCALE ?? 'en') as
+    'en' | 'fr' | 'ar';
+  const localeCopy = {
+    en: {
+      title: 'Trending',
+      media: 'Trending media',
+      window: 'Trending time window',
+      movies: 'Movies',
+      weekly: 'Weekly',
+      loadError: 'Couldn’t load trending titles',
+      retry: 'Retry',
+      empty: 'No trending titles found.',
+    },
+    fr: {
+      title: 'Tendances',
+      media: 'Médias tendance',
+      window: 'Période des tendances',
+      movies: 'Films',
+      weekly: 'Hebdomadaires',
+      loadError: 'Impossible de charger les tendances',
+      retry: 'Réessayer',
+      empty: 'Aucun titre tendance trouvé.',
+    },
+    ar: {
+      title: 'الرائج',
+      media: 'الوسائط الرائجة',
+      window: 'الفترة الزمنية للرواج',
+      movies: 'الأفلام',
+      weekly: 'أسبوعيًا',
+      loadError: 'تعذر تحميل العناوين الرائجة',
+      retry: 'إعادة المحاولة',
+      empty: 'لم يتم العثور على عناوين رائجة.',
+    },
+  }[language];
+  const copy = process.env.LUMEN_DISCOVER_BASELINE
+    ? {
+        title: 'Trending',
+        media: 'Trending Media',
+        window: 'Trending Time Window',
+        movies: 'Movies',
+        weekly: 'Weekly',
+        loadError: 'Couldn’t load trending titles',
+        retry: 'Retry',
+        empty: 'No trending titles found.',
+      }
+    : localeCopy;
+  const requests: string[] = [];
+  let failed = false;
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          displayName: 'Fixture User',
+          permissions: 2,
+          settings: {},
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: language } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          mediaServerType: 1,
+          movie4kEnabled: false,
+          series4kEnabled: false,
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          audiobookServiceEnabled: true,
+          enabledMediaCategories: {},
+        },
+      });
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
+    if (path === '/integrations/categories')
+      return route.fulfill({ json: { categories: { movie: true, tv: true } } });
+    if (path === '/discover/trending') {
+      requests.push(url.search);
+      if (!failed) {
+        failed = true;
+        return route.fulfill({ status: 503, json: {} });
+      }
+      return route.fulfill({
+        json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+      });
+    }
+    return route.fulfill({ json: [] });
+  });
+
+  await page.goto(
+    process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
+      ? '/lumen/trending'
+      : '/trending'
+  );
+  await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  await expect(page.getByRole('group', { name: copy.media })).toBeVisible();
+  await expect(page.getByRole('group', { name: copy.window })).toBeVisible();
+  await expect(page.getByText(copy.loadError)).toBeVisible();
+  await page.getByRole('button', { name: copy.retry }).click();
+  await expect(page.getByText(copy.empty)).toBeVisible();
+
+  await page.getByRole('button', { name: copy.movies, exact: true }).click();
+  await expect.poll(() => requests.at(-1)).toContain('mediaType=movie');
+  await page.getByRole('button', { name: copy.weekly, exact: true }).click();
+  await expect.poll(() => requests.at(-1)).toContain('timeWindow=week');
+  if (process.env.LUMEN_DISCOVER_CAPTURE)
+    await page.screenshot({
+      path: info.outputPath(`trending-${language}.png`),
+      fullPage: true,
+      animations: 'disabled',
+    });
+});
