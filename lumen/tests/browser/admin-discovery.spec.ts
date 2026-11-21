@@ -193,11 +193,13 @@ test('automatic blocklist settings preserve stored genres and save only changed 
   });
 
   await page.goto('/admin/discovery');
-  const movies = page.getByLabel('Blocklisted Movie Genres');
-  await expect(movies).toHaveValues(['99']);
-  await expect(movies.getByRole('option', { name: 'Genre #99' })).toHaveCount(
-    1
-  );
+  const movies = page.getByRole('group', { name: 'Blocklisted Movie Genres' });
+  const storedGenre = movies.getByRole('checkbox', { name: 'Genre #99' });
+  await expect(storedGenre).toHaveCount(1);
+  await expect(storedGenre).toBeChecked();
+  await expect(
+    movies.getByRole('checkbox', { name: 'Drama' })
+  ).not.toBeChecked();
   const tags = page.getByRole('textbox', {
     name: 'Blocklisted TMDB Keyword IDs',
   });
@@ -218,7 +220,10 @@ test('automatic blocklist settings preserve stored genres and save only changed 
   await expect(tags).toHaveValue('42,73,74');
   await expect(keyword).toHaveAttribute('aria-pressed', 'true');
   expect(writes).toEqual([]);
-  await page.getByLabel('Blocklisted TV Genres').selectOption('10765');
+  await page
+    .getByRole('group', { name: 'Blocklisted TV Genres' })
+    .getByRole('checkbox', { name: 'Sci-Fi & Fantasy' })
+    .check();
   await page
     .getByRole('spinbutton', { name: 'Limit Pages per Blocklist Tag or Genre' })
     .fill('0');
@@ -233,5 +238,5 @@ test('automatic blocklist settings preserve stored genres and save only changed 
       blocklistedTagsLimit: 0,
     },
   ]);
-  await expect(movies).toHaveValues(['99']);
+  await expect(storedGenre).toBeChecked();
 });

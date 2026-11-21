@@ -57,6 +57,7 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Instance Notifications' }).click();
+  await page.getByRole('link', { name: 'Open Email' }).click();
   await expect(page.getByLabel('SMTP Host', { exact: true })).toHaveValue('');
   await expect(page.getByLabel('SMTP Password', { exact: true })).toHaveValue(
     ''
@@ -77,11 +78,15 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   await save.click();
   await expect(page.getByText('Notification settings saved.')).toBeVisible();
   await page
+    .getByRole('navigation', { name: 'Notification Channels' })
+    .getByRole('link', { name: 'Web Push', exact: true })
+    .click();
+  await page
     .getByRole('checkbox', { name: 'Enable Notifications' })
     .last()
     .check();
   await page.getByRole('button', { name: 'Save Web Push' }).click();
-  await expect(page.getByText('Notification settings saved.')).toHaveCount(2);
+  await expect(page.getByText('Notification settings saved.')).toBeVisible();
   expect(writes.at(-1)).toEqual({
     path: 'webpush',
     body: { enabled: true, embedPoster: false, options: {} },
@@ -153,7 +158,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
     saved.push({ path: channel, body });
     return route.fulfill({ json: body });
   });
-  await page.goto('/admin/notifications');
+  await page.goto('/admin/notifications/telegram');
   const telegram = page.locator('#telegram');
   await expect(telegram.getByLabel('Bot Token', { exact: true })).toHaveValue(
     ''
@@ -169,7 +174,10 @@ test('messaging channels preserve credentials and independent event masks', asyn
   await expect(
     telegram.getByText('Notification settings saved.')
   ).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
+    await telegram.screenshot({ path: info.outputPath('telegram.png') });
 
+  await page.goto('/admin/notifications/pushbullet');
   const pushbullet = page.locator('#pushbullet');
   await pushbullet.getByLabel('Channel Tag').fill('household');
   await pushbullet.getByLabel('Media available').check();
@@ -178,6 +186,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
     pushbullet.getByText('Notification settings saved.')
   ).toBeVisible();
 
+  await page.goto('/admin/notifications/pushover');
   const pushover = page.locator('#pushover');
   await pushover.getByLabel('Notification Sound').selectOption('bell');
   await pushover.getByRole('button', { name: 'Save Pushover' }).click();
@@ -217,8 +226,6 @@ test('messaging channels preserve credentials and independent event masks', asyn
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
-  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
-    await telegram.screenshot({ path: info.outputPath('telegram.png') });
 });
 
 test('server notification channels save and test with their own options', async ({
@@ -283,7 +290,7 @@ test('server notification channels save and test with their own options', async 
       : route.fulfill({ json: body });
   });
 
-  await page.goto('/admin/notifications');
+  await page.goto('/admin/notifications/gotify');
   const gotify = page.locator('#gotify');
   await expect(gotify.getByLabel('Access Token', { exact: true })).toHaveValue(
     ''
@@ -292,6 +299,7 @@ test('server notification channels save and test with their own options', async 
   await gotify.getByRole('button', { name: 'Save Gotify' }).click();
   await expect(gotify.getByText('Notification settings saved.')).toBeVisible();
 
+  await page.goto('/admin/notifications/ntfy');
   const ntfy = page.locator('#ntfy');
   await ntfy.getByLabel('Authentication').selectOption('token');
   await expect(ntfy.getByLabel('Access Token', { exact: true })).toHaveValue(
@@ -300,7 +308,10 @@ test('server notification channels save and test with their own options', async 
   await ntfy.getByLabel('Tags').fill('bell,house');
   await ntfy.getByRole('button', { name: 'Send ntfy Test' }).click();
   await expect(ntfy.getByText('Test notification sent.')).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
+    await ntfy.screenshot({ path: info.outputPath('ntfy.png') });
 
+  await page.goto('/admin/notifications/apprise');
   const apprise = page.locator('#apprise');
   await apprise.getByLabel('Configuration Key').fill('bad key');
   await expect(
@@ -330,8 +341,6 @@ test('server notification channels save and test with their own options', async 
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
-  if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
-    await ntfy.screenshot({ path: info.outputPath('ntfy.png') });
 });
 
 test('Discord thread and Slack approval settings preserve saved secrets', async ({
@@ -383,7 +392,7 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
       ? route.fulfill({ status: 204 })
       : route.fulfill({ json: body });
   });
-  await page.goto('/admin/notifications');
+  await page.goto('/admin/notifications/discord');
   const discord = page.locator('#discord');
   await expect(discord.getByLabel('Webhook URL', { exact: true })).toHaveValue(
     ''
@@ -394,6 +403,7 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
   await discord.getByRole('button', { name: 'Save Discord' }).click();
   await expect(discord.getByText('Notification settings saved.')).toBeVisible();
 
+  await page.goto('/admin/notifications/slack');
   const slack = page.locator('#slack');
   await slack.getByLabel('Enable Request Approval Actions').check();
   const save = slack.getByRole('button', { name: 'Save Slack' });
@@ -485,7 +495,7 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
           },
         });
   });
-  await page.goto('/admin/notifications');
+  await page.goto('/admin/notifications/webhook');
   const section = page.locator('#webhook');
   const payload = section.getByLabel('JSON Payload');
   const save = section.getByRole('button', { name: 'Save Webhook' });

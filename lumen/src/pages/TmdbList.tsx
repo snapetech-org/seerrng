@@ -1,7 +1,6 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import type { Paged, TitleResult } from '../api';
 import { GridSkeleton, TitleCard } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
 
@@ -36,7 +35,6 @@ export default function TmdbList() {
           <Link className="chip" to="/">
             Discover
           </Link>
-          {validId && <CardTitleToggle kinds={['movie', 'tv']} />}
         </div>
       </ExtraHeader>
       {!validId && (

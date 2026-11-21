@@ -19,9 +19,8 @@ import {
   shortDate,
   TitleCard,
 } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfiguredDiscoverShelves } from '../components/ConfiguredDiscoverShelves';
-import { canUseShare } from '../components/detail';
+import { useShareAvailable } from '../components/detail';
 import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
 import {
@@ -137,6 +136,7 @@ export default function Discover() {
     preferencesReady && on.genres ? '/discover/genreslider/movie' : null
   );
   const { user } = useAuth();
+  const shareAvailable = useShareAvailable(user?.permissions);
   const recentAllowed = canSeeRecent(user?.permissions);
   const fresh = useNewOnPlex(preferencesReady && on.newOnPlex && recentAllowed);
   const extras = useExtras();
@@ -189,7 +189,7 @@ export default function Discover() {
             {CHIPS.filter(
               ([, , h]) =>
                 (books_ || (h !== '/books' && h !== '/audiobooks')) &&
-                (h !== '/share' || canUseShare(user?.permissions))
+                (h !== '/share' || shareAvailable)
             ).map(([i, t, h]) => (
               <Link key={h} className="chip" to={h}>
                 <Icon name={i} />
@@ -250,21 +250,6 @@ export default function Discover() {
           <Section
             title={`New on ${serverName}`}
             link={['See all', '/movies?show=plex']}
-            action={
-              fresh?.length ? (
-                <CardTitleToggle
-                  kinds={[
-                    ...new Set(
-                      fresh.map((item) =>
-                        item.mediaType === 'tv'
-                          ? ('tv' as const)
-                          : ('movie' as const)
-                      )
-                    ),
-                  ]}
-                />
-              ) : undefined
-            }
           >
             {fresh ? (
               <Rail restoreId="recent">
@@ -287,11 +272,7 @@ export default function Discover() {
         )}
 
       {preferencesReady && on.trendingMovies && !empty(movieCards) && (
-        <Section
-          title="Trending movies"
-          action={<CardTitleToggle kinds={['movie']} />}
-          link={['See all', '/movies']}
-        >
+        <Section title="Trending movies" link={['See all', '/movies']}>
           {movieCards ? (
             <Rail restoreId="movies">
               {movieCards.map((m) => (
@@ -307,11 +288,7 @@ export default function Discover() {
       )}
 
       {preferencesReady && on.popularSeries && !empty(seriesCards) && (
-        <Section
-          title="Popular series"
-          action={<CardTitleToggle kinds={['tv']} />}
-          link={['See all', '/series']}
-        >
+        <Section title="Popular series" link={['See all', '/series']}>
           {seriesCards ? (
             <Rail restoreId="series">
               {seriesCards.map((t) => (
@@ -330,11 +307,7 @@ export default function Discover() {
         books_ &&
         on.audiobooks &&
         !empty(audio.data ? withCovers(audio.data) : undefined) && (
-          <Section
-            title="Popular audiobooks"
-            action={<CardTitleToggle kinds={['book']} />}
-            link={['See all', '/audiobooks']}
-          >
+          <Section title="Popular audiobooks" link={['See all', '/audiobooks']}>
             {audio.data ? (
               <Rail restoreId="audiobooks">
                 {withCovers(audio.data).map((b) => (
@@ -353,11 +326,7 @@ export default function Discover() {
         books_ &&
         on.books &&
         !empty(books.data ? ebookCards : undefined) && (
-          <Section
-            title="Popular books"
-            action={<CardTitleToggle kinds={['book']} />}
-            link={['See all', '/books']}
-          >
+          <Section title="Popular books" link={['See all', '/books']}>
             {books.data ? (
               <Rail restoreId="books">
                 {ebookCards.map((b) => (
@@ -376,11 +345,7 @@ export default function Discover() {
         )}
 
       {preferencesReady && on.comingSoon && !empty(upcomingCards) && (
-        <Section
-          title="Coming soon"
-          action={<CardTitleToggle kinds={['movie']} />}
-          link={['See all', '/soon']}
-        >
+        <Section title="Coming soon" link={['See all', '/soon']}>
           {upcomingCards ? (
             <Rail restoreId="coming-soon">
               {upcomingCards.map((m) => (

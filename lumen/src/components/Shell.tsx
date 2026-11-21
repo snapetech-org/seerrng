@@ -33,7 +33,7 @@ import {
   canManageRequests,
   canRequestMovies,
   canUseRequestAccess,
-  canUseShare,
+  useShareAvailable,
 } from './detail';
 
 // scroll position of each history entry, for Back
@@ -99,6 +99,7 @@ export function Avatar({ className = 'avatar' }: { className?: string }) {
 
 export default function Shell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const shareAvailable = useShareAvailable(user?.permissions);
   const { t } = useLumenLocale();
   const liveTv = useLiveTvStatus();
   const { prefs } = usePrefs();
@@ -324,7 +325,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               {t(e.message, e.label)}
             </NavLink>
           ))}
-          {canUseShare(user?.permissions) && (
+          {shareAvailable && (
             <NavLink
               to="/share"
               className={({ isActive }) => (isActive ? 'active' : '')}

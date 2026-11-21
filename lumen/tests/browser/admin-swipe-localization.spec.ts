@@ -7,7 +7,7 @@ const translations = {
   en: {
     title: 'Swipe Discovery',
     pageTitle: 'Swipe Settings',
-    back: 'Back to Account',
+    back: 'Administration',
     description:
       'Swipe shows people a stack of movies, series, and books picked from their requests and swipes. Swiping right makes a normal request with the usual approval rules.',
     enabled: 'Enable Swipe',
@@ -34,7 +34,7 @@ const translations = {
   fr: {
     title: 'Découverte Swipe',
     pageTitle: 'Paramètres Swipe',
-    back: 'Retour au compte',
+    back: 'Administration',
     description:
       'Swipe propose des films, des séries et des livres selon vos demandes et vos choix précédents. Un balayage vers la droite crée une demande normale, soumise aux règles d’approbation habituelles.',
     enabled: 'Activer Swipe',
@@ -61,7 +61,7 @@ const translations = {
   ar: {
     title: 'اكتشاف Swipe',
     pageTitle: 'إعدادات Swipe',
-    back: 'العودة إلى الحساب',
+    back: 'الإدارة',
     description:
       'يعرض Swipe مجموعةً من الأفلام والمسلسلات والكتب استنادًا إلى طلباتك واختياراتك السابقة. يؤدي السحب إلى اليمين إلى إنشاء طلب عادي يخضع لقواعد الموافقة المعتادة.',
     enabled: 'تفعيل Swipe',

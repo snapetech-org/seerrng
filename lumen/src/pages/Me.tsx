@@ -4,12 +4,13 @@ import { isAdministrator, useAuth } from '../auth';
 import { useBlocklistNavigation } from '../blocklist';
 import AvatarContent from '../components/AvatarContent';
 import { Section } from '../components/cards';
+import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   canChooseRequestOptions,
   canRequestMovies,
   canUseRequestAccess,
-  canUseShare,
+  useShareAvailable,
 } from '../components/detail';
 import RequestLimits from '../components/RequestLimits';
 import { fullSeerrUrl } from '../components/Shell';
@@ -30,7 +31,7 @@ import {
   usePrefs,
   type DiscoverRow,
 } from '../settings';
-import { AdminLinks } from './AdminHome';
+import { AdminGroups } from './AdminHome';
 import { canSeeRecent } from './Discover';
 
 function Toggle({
@@ -88,6 +89,7 @@ function Toggle({
 export default function Me() {
   const { t } = useLumenLocale();
   const { user, signOut } = useAuth();
+  const shareAvailable = useShareAvailable(user?.permissions);
   const liveTv = useLiveTvStatus();
   const showBlocklist = useBlocklistNavigation();
   const toast = useToast();
@@ -179,11 +181,11 @@ export default function Me() {
               </Link>
             </div>
           </div>
-          <AdminLinks />
         </Section>
       )}
+      {isAdmin && <AdminGroups />}
 
-      {canUseShare(user?.permissions) && (
+      {shareAvailable && (
         <Section title={t('components.Layout.Sidebar.discover', 'Discover')}>
           <div className="setlist">
             <div className="set">
@@ -467,6 +469,7 @@ export default function Me() {
               ))}
             </div>
           </div>
+          <CardTitleToggle row kinds={['movie', 'tv', 'album', 'book']} />
         </div>
       </Section>
 

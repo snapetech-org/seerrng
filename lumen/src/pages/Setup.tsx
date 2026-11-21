@@ -443,7 +443,10 @@ export default function Setup() {
             </Link>
           )}
         </nav>
-        <div hidden={!!activeStep && activeStep !== 'libraries'}>
+        <div
+          className="setup-step"
+          hidden={!!activeStep && activeStep !== 'libraries'}
+        >
           <AdminMediaLibraries
             mediaServerType={settings.data.mediaServerType}
           />

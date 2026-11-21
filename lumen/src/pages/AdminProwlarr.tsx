@@ -471,7 +471,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
                     'Available Prowlarr categories'
                   )}
                 </summary>
-                <div className="setlist">
+                <div className="setlist picklist catalog">
                   {inventory.categoryCatalog.map(
                     ({ id, name, indexerCount }) => (
                       <div className="set" key={id}>
@@ -561,7 +561,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
                   </summary>
                   {openAssignments[key] && (
                     <div
-                      className="setlist"
+                      className="setlist picklist"
                       role="group"
                       aria-label={t(
                         'components.SettingsProwlarr.indexerAssignmentSelectLabel',
@@ -570,7 +570,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
                       )}
                     >
                       {ids.map((id) => (
-                        <label className="set cfg-row" key={id}>
+                        <label className="set pick" key={id}>
                           <span>
                             {names.get(id) ??
                               t('lumen.adminProwlarr.indexer', 'Indexer {id}', {
@@ -734,8 +734,8 @@ export default function AdminProwlarr({
         <header className="ph">
           <h1>{t('components.SettingsProwlarr.title', 'Prowlarr indexers')}</h1>
           <div className="toolbar">
-            <Link className="btn btn-quiet btn-sm" to="/me">
-              {t('lumen.adminProwlarr.backToYou', 'Back to You')}
+            <Link className="btn btn-quiet btn-sm" to="/admin">
+              {t('lumen.admin.title', 'Administration')}
             </Link>
           </div>
         </header>

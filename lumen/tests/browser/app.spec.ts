@@ -129,6 +129,7 @@ async function fixtures(page: Page) {
         mediaInfo: current === 'owner' ? available : { status: 1 },
       };
     } else if (path === '/service/radarr') body = [];
+    else if (path === '/resolve/capabilities') body = { enabled: true };
     else {
       unknown.push(`${request.method()} ${path}`);
       status = 404;
@@ -150,6 +151,12 @@ async function fixtures(page: Page) {
       release?.();
     },
   };
+}
+
+async function openMoreFilters(page: Page) {
+  const details = page.locator('details.more-filters');
+  if (!(await details.evaluate((el) => (el as HTMLDetailsElement).open)))
+    await details.locator('summary').click();
 }
 
 async function openMovie(page: Page) {
@@ -1148,6 +1155,24 @@ test('card title preferences save only changed categories and apply to posters',
   const hoverCapable = await page.evaluate(
     () => matchMedia('(hover: hover) and (pointer: fine)').matches
   );
+  // movie titles show by default
+  await expect(title).toBeVisible();
+
+  await page.goto('/me/account');
+  const movieSetting = page.getByRole('combobox', {
+    name: 'Movies',
+    exact: true,
+  });
+  await expect(movieSetting).toHaveValue('always');
+  await expect(
+    page.getByRole('combobox', { name: 'Books', exact: true })
+  ).toHaveValue('always');
+  await movieSetting.selectOption('hover');
+  await page.getByRole('button', { name: 'Save Card Titles' }).click();
+  await expect(page.getByText('Card title settings saved.')).toBeVisible();
+  expect(writes).toEqual([{ movie: 'hover' }]);
+
+  await page.goto('/movies');
   if (hoverCapable) {
     await expect(title).toBeHidden();
     await artLink.focus();
@@ -1156,26 +1181,10 @@ test('card title preferences save only changed categories and apply to posters',
     await expect(title).toBeVisible();
   }
 
-  await page.goto('/me/account');
-  const movieSetting = page.getByRole('combobox', {
-    name: 'Movies',
-    exact: true,
-  });
-  await expect(movieSetting).toHaveValue('hover');
-  await expect(
-    page.getByRole('combobox', { name: 'Books', exact: true })
-  ).toHaveValue('always');
-  await movieSetting.selectOption('always');
-  await page.getByRole('button', { name: 'Save Card Titles' }).click();
-  await expect(page.getByText('Card title settings saved.')).toBeVisible();
-  expect(writes).toEqual([{ movie: 'always' }]);
-
-  await page.goto('/movies');
-  await expect(title).toBeVisible();
-  const toggle = page.getByRole('button', {
-    name: 'Title View: Always show poster titles',
-  });
-  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  // Title View is a switch under Appearance on the You page
+  await page.goto('/me');
+  const toggle = page.getByRole('switch', { name: /Title View/ });
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
   reject = true;
   await toggle.click();
   await expect(
@@ -1183,17 +1192,17 @@ test('card title preferences save only changed categories and apply to posters',
       .getByRole('status')
       .filter({ hasText: 'Could not save card title settings' })
   ).toBeVisible();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(toggle).toHaveAttribute('aria-checked', 'false');
   reject = false;
   await toggle.click();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(toggle).toHaveAttribute('aria-checked', 'true');
   expect(writes).toEqual([
+    { movie: 'hover' },
     { movie: 'always' },
-    { movie: 'hover' },
-    { movie: 'hover' },
+    { movie: 'always' },
   ]);
-  if (hoverCapable) await expect(title).toBeHidden();
-  else await expect(title).toBeVisible();
+  await page.goto('/movies');
+  await expect(title).toBeVisible();
 });
 
 test('video credits remember scoped pins and leave failed saves retryable', async ({
@@ -1521,6 +1530,11 @@ test('instance request settings save only changed policy flags and retain failed
     })
   );
   await page.route('**/api/v1/settings/main', (route) => {
+    // Request Defaults reads the current settings when it opens
+    if (route.request().method() !== 'POST')
+      return route.fulfill({
+        json: { personMovieBulkRequestsEnabled: enabled, enable4k },
+      });
     const body = route.request().postDataJSON();
     writes.push(body);
     if (reject) return route.fulfill({ status: 503, json: {} });
@@ -1531,6 +1545,8 @@ test('instance request settings save only changed policy flags and retain failed
     });
   });
   await page.goto('/me/lumen');
+  await page.getByRole('link', { name: 'Request Defaults' }).click();
+  await expect(page).toHaveURL(/\/admin\/requests$/);
   const flag = page.getByRole('checkbox', {
     name: 'Bulk Movie Requests From Person Pages',
   });
@@ -1566,7 +1582,7 @@ test('instance request settings save only changed policy flags and retain failed
   ]);
   admin = false;
   await page.reload();
-  await expect(page.getByText('Admins only', { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/me$/);
   await expect(flag).toHaveCount(0);
 });
 
@@ -1597,6 +1613,8 @@ test('series specials follow the instance request policy', async ({ page }) => {
     })
   );
   await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() !== 'POST')
+      return route.fulfill({ json: { enableSpecialEpisodes: specials } });
     const body = route.request().postDataJSON();
     expect(body).toEqual({ enableSpecialEpisodes: true });
     specials = true;
@@ -1605,7 +1623,7 @@ test('series specials follow the instance request policy', async ({ page }) => {
   await page.goto('/tv/202');
   await expect(page.getByText('Season 1', { exact: true })).toBeVisible();
   await expect(page.getByText('Specials', { exact: true })).toHaveCount(0);
-  await page.goto('/me/lumen');
+  await page.goto('/admin/requests');
   await page
     .getByRole('checkbox', { name: 'Allow Special Episode Requests' })
     .check();
@@ -2406,9 +2424,10 @@ test('series discovery applies and clears decimal rating bounds', async ({
 }) => {
   await fixtures(page);
   await page.goto('/series?genre=18&excludeGenre=true');
+  await openMoreFilters(page);
   await page.getByLabel('Minimum Rating').fill('8.7');
   await page.getByLabel('Maximum Rating').fill('7.1');
-  const apply = page.getByRole('button', { name: 'Apply Rating' });
+  const apply = page.getByRole('button', { name: 'Apply Filters' });
   await expect(apply).toBeDisabled();
   await page.getByLabel('Minimum Rating').fill('6.2');
   const filtered = page.waitForRequest((request) => {
@@ -2424,7 +2443,9 @@ test('series discovery applies and clears decimal rating bounds', async ({
   await filtered;
   await page.reload();
   await expect(page.getByLabel('Minimum Rating')).toHaveValue('6.2');
-  await page.getByRole('button', { name: 'Clear Rating' }).click();
+  await page.getByLabel('Minimum Rating').fill('');
+  await page.getByLabel('Maximum Rating').fill('');
+  await apply.click();
   await expect(page).toHaveURL(/\/series\?genre=18&excludeGenre=true$/);
 });
 
@@ -2444,14 +2465,18 @@ test('series streaming exclusion sends the selected providers and region', async
     })
   );
   await page.goto('/series?genre=18');
+  await openMoreFilters(page);
   await page
     .getByRole('button', { name: 'Streaming Services', exact: true })
     .click();
   await expect(page.getByLabel('Streaming Region')).toHaveValue('GB');
   await page.getByLabel('Streaming Region').fill('ca');
-  await page
-    .getByLabel('Streaming Services', { exact: true })
-    .selectOption(['8', '9']);
+  const providers = page.getByRole('group', {
+    name: 'Streaming Services',
+    exact: true,
+  });
+  await providers.getByRole('checkbox', { name: 'Fixture Stream' }).check();
+  await providers.getByRole('checkbox', { name: 'Second Stream' }).check();
   await page.getByLabel('Provider Match').selectOption('exclude');
   const query = page.waitForRequest((request) => {
     const url = new URL(request.url());
@@ -2505,6 +2530,7 @@ test('discovery searches for subject tags and moves a tag between include and ex
     })
   );
   await page.goto('/movies?genre=18');
+  await openMoreFilters(page);
   await page.getByRole('button', { name: 'Subject Tags', exact: true }).click();
   await page.getByLabel('Find Subject Tags').fill('space');
   await page.getByRole('button', { name: 'Find Tags' }).click();
@@ -2562,9 +2588,10 @@ test('series release dates use first-air bounds and clear independently', async 
 }) => {
   await fixtures(page);
   await page.goto('/series?genre=18');
+  await openMoreFilters(page);
   await page.getByLabel('Released On or After').fill('2024-01-01');
   await page.getByLabel('Released On or Before').fill('2023-12-31');
-  const apply = page.getByRole('button', { name: 'Apply Release Dates' });
+  const apply = page.getByRole('button', { name: 'Apply Filters' });
   await expect(apply).toBeDisabled();
   await page.getByLabel('Released On or Before').fill('2024-12-31');
   const query = page.waitForRequest((request) => {
@@ -2581,7 +2608,9 @@ test('series release dates use first-air bounds and clear independently', async 
   await expect(page.getByLabel('Released On or After')).toHaveValue(
     '2024-01-01'
   );
-  await page.getByRole('button', { name: 'Clear Release Dates' }).click();
+  await page.getByLabel('Released On or After').fill('');
+  await page.getByLabel('Released On or Before').fill('');
+  await apply.click();
   await expect(page).toHaveURL(/\/series\?genre=18$/);
 });
 
@@ -2590,6 +2619,7 @@ test('movie runtime filters use minute bounds and clear independently', async ({
 }) => {
   await fixtures(page);
   await page.goto('/movies?genre=18');
+  await openMoreFilters(page);
   await page.getByLabel('Minimum Runtime (Minutes)').fill('90');
   await page.getByLabel('Maximum Runtime (Minutes)').fill('120');
   const query = page.waitForRequest((request) => {
@@ -2601,11 +2631,13 @@ test('movie runtime filters use minute bounds and clear independently', async ({
       url.searchParams.get('genre') === '18'
     );
   });
-  await page.getByRole('button', { name: 'Apply Runtime' }).click();
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await query;
   await page.reload();
   await expect(page.getByLabel('Maximum Runtime (Minutes)')).toHaveValue('120');
-  await page.getByRole('button', { name: 'Clear Runtime' }).click();
+  await page.getByLabel('Minimum Runtime (Minutes)').fill('');
+  await page.getByLabel('Maximum Runtime (Minutes)').fill('');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await expect(page).toHaveURL(/\/movies\?genre=18$/);
 });
 
@@ -2623,6 +2655,7 @@ test('explicit series vote counts override the Top rated default and reset clean
   });
   await page.goto('./series?sort=vote_average.desc');
   await defaultQuery;
+  await openMoreFilters(page);
   await page.getByLabel('Minimum Votes').fill('10');
   await page.getByLabel('Maximum Votes').fill('50');
   const query = page.waitForRequest((request) => {
@@ -2633,11 +2666,13 @@ test('explicit series vote counts override the Top rated default and reset clean
       url.searchParams.get('voteCountLte') === '50'
     );
   });
-  await page.getByRole('button', { name: 'Apply Vote Count' }).click();
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await query;
   await page.reload();
   await expect(page.getByLabel('Minimum Votes')).toHaveValue('10');
-  await page.getByRole('button', { name: 'Clear Vote Count' }).click();
+  await page.getByLabel('Minimum Votes').fill('');
+  await page.getByLabel('Maximum Votes').fill('');
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await expect(page).toHaveURL(/\/series\?sort=vote_average.desc$/);
 });
 
@@ -2649,6 +2684,7 @@ test('original language distinguishes all languages from the saved default', asy
     route.fulfill({ json: [{ iso_639_1: 'ja', english_name: 'Japanese' }] })
   );
   await page.goto('/series?genre=18');
+  await openMoreFilters(page);
   const language = page.getByLabel('Original Language', { exact: true });
   await language.selectOption({ label: 'Japanese' });
   await expect(page).toHaveURL(/language=ja/);
@@ -2675,6 +2711,7 @@ test('movie origin country sends the server filter and clears independently', as
     route.fulfill({ json: [{ iso_3166_1: 'CA', english_name: 'Canada' }] })
   );
   await page.goto('/movies?genre=18');
+  await openMoreFilters(page);
   const country = page.getByLabel('Country of Origin', { exact: true });
   const query = page.waitForRequest((request) => {
     const url = new URL(request.url());
@@ -2833,6 +2870,7 @@ test('movie studio search can select and exclude a studio', async ({
     route.fulfill({ json: { id: 42, name: 'Fixture Studio' } })
   );
   await page.goto('/movies?genre=18');
+  await openMoreFilters(page);
   await page.getByRole('button', { name: 'Production Studios' }).click();
   await page.getByLabel('Find Production Studios').fill('fixture');
   await page.getByRole('button', { name: 'Find Studios' }).click();
@@ -3756,6 +3794,7 @@ test('Classic comic discovery bookmarks restore catalogue filters and results', 
     .getByRole('button', { name: 'Back to Comics and Manga' })
     .click();
   await expect(page).toHaveURL(/\/comics$/);
+  await openMoreFilters(page);
   await expect(
     filterForm.getByRole('searchbox', { name: 'Publisher' })
   ).toHaveValue('');
@@ -4191,7 +4230,7 @@ test('native companion discovery filters retain genre matching and clear without
   const title = page.getByRole('searchbox', { name: 'Title', exact: true });
   await expect(title).toHaveValue('The Film');
   await title.fill('all');
-  await page.getByRole('button', { name: 'Apply Title' }).click();
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await expect.poll(() => reads.at(-1)?.get('search')).toBe('all');
   expect(reads.at(-1)?.get('genre')).toBe('18,35');
   await page.getByRole('button', { name: /clear discovery filters/i }).click();
@@ -6301,7 +6340,7 @@ test('Administration searches all settings and opens exact controls', async ({
   ).toHaveAttribute('href', '/admin/general#apiKey');
   await search.fill('uhd');
   await page.getByRole('link', { name: 'Open 4K Requests' }).click();
-  await expect(page).toHaveURL(/\/admin\/general#enable4k$/);
+  await expect(page).toHaveURL(/\/admin\/requests#enable4k$/);
 });
 
 test('Administration resolves the legacy Prowlarr bookmark fragment', async ({
@@ -6450,7 +6489,7 @@ test('General Settings saves default request quotas without changing other media
       },
     });
   });
-  await page.goto('/admin/general#default-request-quotas');
+  await page.goto('/admin/requests#default-request-quotas');
   await expect(
     page.getByRole('heading', { name: 'Default Request Quotas' })
   ).toBeInViewport();
@@ -6522,7 +6561,7 @@ test('General Settings confirms default permissions and preserves higher permiss
       },
     });
   });
-  await page.goto('/admin/general#default-request-quotas');
+  await page.goto('/admin/requests#default-request-quotas');
   await page.getByRole('link', { name: 'Default User Permissions' }).click();
   await expect(page).toHaveURL(/#default-user-permissions$/);
   await expect(
@@ -6902,6 +6941,7 @@ test('Users sets an Episode Queue default for the selected account', async ({
     return route.fulfill({ json: { defaultEpisodeCount: count } });
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await page
     .getByRole('button', { name: 'Episode Queue', exact: true })
     .click();
@@ -6946,6 +6986,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
     return route.fulfill({ json: quotas });
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await page.getByRole('button', { name: 'Request Quotas' }).click();
   await expect(
     page.getByText('Server default unlimited requests')
@@ -7007,6 +7048,7 @@ test('Users changes media categories and indexer visibility independently', asyn
     });
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await page
     .getByRole('button', { name: 'Media Categories', exact: true })
     .click();
@@ -7137,6 +7179,7 @@ test('Users delegates only held permissions and preserves high permission bits',
     return route.fulfill({ json: target });
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await page.getByRole('button', { name: 'Permissions', exact: true }).click();
   const settingsPermission = page.getByRole('checkbox', {
     name: 'Gérer les paramètres',
@@ -7219,6 +7262,10 @@ test('Users protects administrators and confirms deletion of the selected member
   await page.goto(testAppPath('/admin/users'));
   await expect(page.getByText('Second Admin')).toBeVisible();
   const remove = page.getByRole('button', { name: 'Delete User', exact: true });
+  await page.getByRole('link', { name: 'Manage Second Admin' }).click();
+  await expect(remove).toHaveCount(0);
+  await page.getByRole('link', { name: 'All Users' }).click();
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await expect(remove).toHaveCount(1);
   await remove.click();
   const dialog = page.getByRole('alertdialog', { name: 'Delete Viewer?' });
@@ -7351,6 +7398,7 @@ test('Users edits a username without writing other profile settings', async ({
     return route.fulfill({ json: { username } });
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Existing Viewer' }).click();
   await page.getByRole('button', { name: 'Edit Profile' }).click();
   await expect(page.getByLabel('Username')).toHaveValue('Existing Viewer');
   await page.getByLabel('Username').fill(' Renamed Viewer ');
@@ -7403,10 +7451,13 @@ test('Users edits local email and keeps Plex email provider-managed', async ({
     })
   );
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Plex Viewer' }).click();
   const plex = page.getByRole('listitem').filter({ hasText: 'Plex Viewer' });
   await plex.getByRole('button', { name: 'Edit Profile' }).click();
   await expect(plex.getByLabel('Username')).toHaveValue('Plex Viewer');
   await expect(plex.getByLabel('Email', { exact: true })).toHaveCount(0);
+  await page.getByRole('link', { name: 'All Users' }).click();
+  await page.getByRole('link', { name: 'Manage Local Viewer' }).click();
   const local = page.getByRole('listitem').filter({ hasText: 'Local Viewer' });
   await local.getByRole('button', { name: 'Edit Profile' }).click();
   await local.getByLabel('Email', { exact: true }).fill('new@example.test');
@@ -7446,6 +7497,10 @@ test('Users confirms a managed local password and clears the form after saving',
     exact: true,
   });
   await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Admin' }).click();
+  await expect(action).toHaveCount(0);
+  await page.getByRole('link', { name: 'All Users' }).click();
+  await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await expect(action).toHaveCount(1);
   await action.click();
   const password = page.getByLabel('New Local Password', { exact: true });
@@ -7741,20 +7796,21 @@ test('General Settings shortcuts scroll to their controls after settings load', 
       },
     })
   );
-  for (const [anchor, label, query, result] of [
-    ['enable4k', 'Enable 4K', 'uhd', '4K Requests'],
+  for (const [pagePath, anchor, label, query, result] of [
+    ['/admin/requests', 'enable4k', 'Enable 4K', 'uhd', '4K Requests'],
     [
+      '/admin/general',
       'spotifyClientId',
       'Spotify Client ID',
       'spotify client id',
       'Spotify Playlist Import',
     ],
-    ['apiKey', 'API Key', 'apikey', 'Application API Key'],
+    ['/admin/general', 'apiKey', 'API Key', 'apikey', 'Application API Key'],
   ] as const) {
     await page.goto('/admin');
     await page.getByRole('searchbox', { name: 'Search Settings' }).fill(query);
     await page.getByRole('link', { name: `Open ${result}` }).click();
-    await expect(page).toHaveURL(`/admin/general#${anchor}`);
+    await expect(page).toHaveURL(`${pagePath}#${anchor}`);
     const control = page.getByLabel(label, { exact: true });
     await expect(control).toBeInViewport({ ratio: 1 });
     await page.screenshot({ path: info.outputPath(`settings-${anchor}.png`) });
@@ -8028,10 +8084,11 @@ test('Discover and Movies apply visibility defaults while the library view still
       url.searchParams.get('search') === 'fixture'
     );
   });
+  await openMoreFilters(page);
   await page
     .getByRole('searchbox', { name: 'Title', exact: true })
     .fill('fixture');
-  await page.getByRole('button', { name: 'Apply Title' }).click();
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await librarySearch;
   await expect(page.getByRole('link', { name: 'Owned fixture' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Visible fixture' })).toHaveCount(
@@ -8085,11 +8142,12 @@ test('Discover and Movies apply visibility defaults while the library view still
   await expect(page.getByText('Nothing here', { exact: true })).toHaveCount(0);
   expect(invertedQueries).toEqual([]);
   await page.goto('./series?show=have&firstAirDateGte=2025-02-29');
+  await openMoreFilters(page);
   await expect(
     page.getByRole('alert').filter({ hasText: 'invalid date' })
   ).toBeVisible();
   expect(invertedQueries).toEqual([]);
-  await page.getByRole('button', { name: 'Clear Release Dates' }).click();
+  await page.getByRole('button', { name: 'Apply Filters' }).click();
   await expect(page).toHaveURL(/series\?show=have$/);
   await expect.poll(() => invertedQueries.length).toBe(1);
 });

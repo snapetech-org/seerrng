@@ -433,8 +433,8 @@ export default function AdminUsers() {
         <h1>Users</h1>
       </header>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          Administration
         </Link>
         {userId && (
           <Link className="btn btn-quiet btn-sm" to="/admin/users">
@@ -503,17 +503,20 @@ export default function AdminUsers() {
             );
           }}
         >
-          <label className="sel">
-            <span className="lbl">Search Users</span>
-            <input
-              className="cfg-json"
-              key={search}
-              name="q"
-              defaultValue={search}
-              maxLength={200}
-            />
-          </label>
-          <button className="btn btn-tonal btn-sm">Search</button>
+          <span className="toolbar-search">
+            <label className="search">
+              <input
+                key={search}
+                name="q"
+                type="search"
+                aria-label="Search Users"
+                placeholder="Search Users"
+                defaultValue={search}
+                maxLength={200}
+              />
+            </label>
+            <button className="btn btn-tonal btn-sm">Search</button>
+          </span>
           <label className="sel">
             <span className="lbl">Sort By</span>
             <select
@@ -554,7 +557,7 @@ export default function AdminUsers() {
           {data.results
             .filter((user) => !target || user.id === target)
             .map((user) => (
-              <li className="set" key={user.id}>
+              <li className="set user-row" key={user.id}>
                 <div>
                   <Link className="go" to={`/household/${user.id}`}>
                     {user.displayName}
@@ -595,259 +598,337 @@ export default function AdminUsers() {
                     Requests
                   </Link>
                 )}
-                <button
-                  className="btn btn-quiet btn-sm"
-                  aria-expanded={queueUser === user.id}
-                  onClick={() =>
-                    setQueueUser(queueUser === user.id ? undefined : user.id)
-                  }
-                >
-                  Episode Queue
-                </button>
-                {queueUser === user.id && (
-                  <ManagedEpisodeQueue id={user.id} name={user.displayName} />
-                )}
-                {actor &&
-                  actor.id !== user.id &&
-                  (actor.id === 1 || (user.permissions & 2) === 0) && (
-                    <>
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-expanded={quotaUser === user.id}
-                        onClick={() =>
-                          setQuotaUser(
-                            quotaUser === user.id ? undefined : user.id
-                          )
-                        }
-                      >
-                        Request Quotas
-                      </button>
-                      {quotaUser === user.id && <ManagedQuotas id={user.id} />}
-                    </>
-                  )}
-                {(user.permissions & 2) === 0 && (
-                  <>
+                {userId ? (
+                  <div className="user-manage">
                     <button
                       className="btn btn-quiet btn-sm"
-                      aria-expanded={categoryUser === user.id}
+                      aria-expanded={queueUser === user.id}
                       onClick={() =>
-                        setCategoryUser(
-                          categoryUser === user.id ? undefined : user.id
+                        setQueueUser(
+                          queueUser === user.id ? undefined : user.id
                         )
                       }
                     >
-                      Media Categories
+                      Episode Queue
                     </button>
-                    {categoryUser === user.id && (
-                      <ManagedMediaCategories id={user.id} />
-                    )}
-                  </>
-                )}
-                {actor &&
-                  (actor.id === user.id ||
-                    actor.id === 1 ||
-                    (user.permissions & 2) === 0) && (
-                    <>
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-expanded={maturityUser === user.id}
-                        onClick={() =>
-                          setMaturityUser(
-                            maturityUser === user.id ? undefined : user.id
-                          )
-                        }
-                      >
-                        Maturity Limits
-                      </button>
-                      {maturityUser === user.id && (
-                        <ManagedMaturity id={user.id} />
-                      )}
-                    </>
-                  )}
-                {actor &&
-                  user.id !== 1 &&
-                  actor.id !== user.id &&
-                  (actor.id === 1 || (user.permissions & 2) === 0) && (
-                    <>
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-expanded={permissionsUser === user.id}
-                        onClick={() =>
-                          setPermissionsUser(
-                            permissionsUser === user.id ? undefined : user.id
-                          )
-                        }
-                      >
-                        Permissions
-                      </button>
-                      {permissionsUser === user.id && (
-                        <ManagedPermissions
+                    {queueUser === user.id && (
+                      <div className="user-panel" data-title="Episode Queue">
+                        <ManagedEpisodeQueue
                           id={user.id}
                           name={user.displayName}
-                          actorId={actor.id}
-                          actorPermissions={actor.permissions}
-                          onSaved={reload}
                         />
-                      )}
-                    </>
-                  )}
-                {actor &&
-                  (actor.id === user.id ||
-                    actor.id === 1 ||
-                    (user.permissions & 2) === 0) && (
-                    <>
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-expanded={profileUser === user.id}
-                        onClick={() =>
-                          setProfileUser(
-                            profileUser === user.id ? undefined : user.id
-                          )
-                        }
-                      >
-                        Edit Profile
-                      </button>
-                      {profileUser === user.id && (
-                        <EditProfile
-                          id={user.id}
-                          canEditEmail={canEditUserEmail(user)}
-                          onSaved={reload}
-                        />
-                      )}
-                    </>
-                  )}
-                {isAdministrator(actor?.permissions) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={loginLinksUser === user.id}
-                      onClick={() =>
-                        setLoginLinksUser((current) =>
-                          current === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Sign-in Links
-                    </button>
-                    {loginLinksUser === user.id && (
-                      <ManagedLoginLinks key={user.id} id={user.id} />
+                      </div>
                     )}
-                  </>
-                )}
-                {canSetUserPassword(user) && (
-                  <>
-                    <button
-                      className="btn btn-quiet btn-sm"
-                      aria-expanded={passwordUser === user.id}
-                      onClick={() =>
-                        setPasswordUser(
-                          passwordUser === user.id ? undefined : user.id
-                        )
-                      }
-                    >
-                      Set Local Password
-                    </button>
-                    {passwordUser === user.id && (
-                      <ManagedPassword id={user.id} name={user.displayName} />
-                    )}
-                  </>
-                )}
-                <button
-                  className="btn btn-quiet btn-sm"
-                  aria-expanded={tvAccessUser === user.id}
-                  onClick={() =>
-                    setTvAccessUser(
-                      tvAccessUser === user.id ? undefined : user.id
-                    )
-                  }
-                >
-                  TV Request Access
-                </button>
-                {tvAccessUser === user.id && <ManagedTvAccess id={user.id} />}
-                <button
-                  className="btn btn-quiet btn-sm"
-                  aria-expanded={linkedUser === user.id}
-                  onClick={() =>
-                    setLinkedUser(linkedUser === user.id ? undefined : user.id)
-                  }
-                >
-                  Linked Accounts
-                </button>
-                {linkedUser === user.id && (
-                  <ManagedLinkedAccounts
-                    id={user.id}
-                    media={
-                      provider === 'Plex' && user.plexId
-                        ? {
-                            key: 'plex',
-                            name: provider,
-                            username: user.plexUsername,
-                          }
-                        : (provider === 'Jellyfin' || provider === 'Emby') &&
-                            user.jellyfinUserId
-                          ? {
-                              key: 'jellyfin',
-                              name: provider,
-                              username: user.jellyfinUsername,
-                            }
-                          : undefined
-                    }
-                    canUnlink={
-                      !!actor &&
-                      (actor.id === user.id ||
-                        actor.id === 1 ||
-                        (user.permissions & 2) === 0) &&
-                      canManageAuthentication(user)
-                    }
-                    onSaved={reload}
-                  />
-                )}
-                {actor &&
-                  (actor.id === user.id ||
-                    actor.id === 1 ||
-                    (user.permissions & 2) === 0) && (
-                    <>
-                      <button
-                        className="btn btn-quiet btn-sm"
-                        aria-expanded={notificationUser === user.id}
-                        onClick={() =>
-                          setNotificationUser(
-                            notificationUser === user.id ? undefined : user.id
-                          )
-                        }
-                      >
-                        Notification Settings
-                      </button>
-                      {notificationUser === user.id && (
-                        <div>
-                          <Suspense
-                            fallback={
-                              <p className="note" role="status">
-                                Loading notification settings…
-                              </p>
+                    {actor &&
+                      actor.id !== user.id &&
+                      (actor.id === 1 || (user.permissions & 2) === 0) && (
+                        <>
+                          <button
+                            className="btn btn-quiet btn-sm"
+                            aria-expanded={quotaUser === user.id}
+                            onClick={() =>
+                              setQuotaUser(
+                                quotaUser === user.id ? undefined : user.id
+                              )
                             }
                           >
-                            <UserNotifications
-                              id={user.id}
-                              manageBrowser={actor.id === user.id}
-                            />
-                          </Suspense>
-                        </div>
+                            Request Quotas
+                          </button>
+                          {quotaUser === user.id && (
+                            <div
+                              className="user-panel"
+                              data-title="Request Quotas"
+                            >
+                              <ManagedQuotas id={user.id} />
+                            </div>
+                          )}
+                        </>
                       )}
-                    </>
-                  )}
-                {canDelete(user) && (
-                  <button
-                    className="btn btn-quiet btn-sm"
-                    disabled={removing}
-                    onClick={() => {
-                      setNotice('');
-                      setRemoveError('');
-                      setRemove(user);
-                    }}
+                    {(user.permissions & 2) === 0 && (
+                      <>
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          aria-expanded={categoryUser === user.id}
+                          onClick={() =>
+                            setCategoryUser(
+                              categoryUser === user.id ? undefined : user.id
+                            )
+                          }
+                        >
+                          Media Categories
+                        </button>
+                        {categoryUser === user.id && (
+                          <div
+                            className="user-panel"
+                            data-title="Media Categories"
+                          >
+                            <ManagedMediaCategories id={user.id} />
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {actor &&
+                      (actor.id === user.id ||
+                        actor.id === 1 ||
+                        (user.permissions & 2) === 0) && (
+                        <>
+                          <button
+                            className="btn btn-quiet btn-sm"
+                            aria-expanded={maturityUser === user.id}
+                            onClick={() =>
+                              setMaturityUser(
+                                maturityUser === user.id ? undefined : user.id
+                              )
+                            }
+                          >
+                            Maturity Limits
+                          </button>
+                          {maturityUser === user.id && (
+                            <div
+                              className="user-panel"
+                              data-title="Maturity Limits"
+                            >
+                              <ManagedMaturity id={user.id} />
+                            </div>
+                          )}
+                        </>
+                      )}
+                    {actor &&
+                      user.id !== 1 &&
+                      actor.id !== user.id &&
+                      (actor.id === 1 || (user.permissions & 2) === 0) && (
+                        <>
+                          <button
+                            className="btn btn-quiet btn-sm"
+                            aria-expanded={permissionsUser === user.id}
+                            onClick={() =>
+                              setPermissionsUser(
+                                permissionsUser === user.id
+                                  ? undefined
+                                  : user.id
+                              )
+                            }
+                          >
+                            Permissions
+                          </button>
+                          {permissionsUser === user.id && (
+                            <div
+                              className="user-panel"
+                              data-title="Permissions"
+                            >
+                              <ManagedPermissions
+                                id={user.id}
+                                name={user.displayName}
+                                actorId={actor.id}
+                                actorPermissions={actor.permissions}
+                                onSaved={reload}
+                              />
+                            </div>
+                          )}
+                        </>
+                      )}
+                    {actor &&
+                      (actor.id === user.id ||
+                        actor.id === 1 ||
+                        (user.permissions & 2) === 0) && (
+                        <>
+                          <button
+                            className="btn btn-quiet btn-sm"
+                            aria-expanded={profileUser === user.id}
+                            onClick={() =>
+                              setProfileUser(
+                                profileUser === user.id ? undefined : user.id
+                              )
+                            }
+                          >
+                            Edit Profile
+                          </button>
+                          {profileUser === user.id && (
+                            <div
+                              className="user-panel"
+                              data-title="Edit Profile"
+                            >
+                              <EditProfile
+                                id={user.id}
+                                canEditEmail={canEditUserEmail(user)}
+                                onSaved={reload}
+                              />
+                            </div>
+                          )}
+                        </>
+                      )}
+                    {isAdministrator(actor?.permissions) && (
+                      <>
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          aria-expanded={loginLinksUser === user.id}
+                          onClick={() =>
+                            setLoginLinksUser((current) =>
+                              current === user.id ? undefined : user.id
+                            )
+                          }
+                        >
+                          Sign-in Links
+                        </button>
+                        {loginLinksUser === user.id && (
+                          <div
+                            className="user-panel"
+                            data-title="Sign-in Links"
+                          >
+                            <ManagedLoginLinks key={user.id} id={user.id} />
+                          </div>
+                        )}
+                      </>
+                    )}
+                    {canSetUserPassword(user) && (
+                      <>
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          aria-expanded={passwordUser === user.id}
+                          onClick={() =>
+                            setPasswordUser(
+                              passwordUser === user.id ? undefined : user.id
+                            )
+                          }
+                        >
+                          Set Local Password
+                        </button>
+                        {passwordUser === user.id && (
+                          <div
+                            className="user-panel"
+                            data-title="Set Local Password"
+                          >
+                            <ManagedPassword
+                              id={user.id}
+                              name={user.displayName}
+                            />
+                          </div>
+                        )}
+                      </>
+                    )}
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={tvAccessUser === user.id}
+                      onClick={() =>
+                        setTvAccessUser(
+                          tvAccessUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      TV Request Access
+                    </button>
+                    {tvAccessUser === user.id && (
+                      <div
+                        className="user-panel"
+                        data-title="TV Request Access"
+                      >
+                        <ManagedTvAccess id={user.id} />
+                      </div>
+                    )}
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      aria-expanded={linkedUser === user.id}
+                      onClick={() =>
+                        setLinkedUser(
+                          linkedUser === user.id ? undefined : user.id
+                        )
+                      }
+                    >
+                      Linked Accounts
+                    </button>
+                    {linkedUser === user.id && (
+                      <div className="user-panel" data-title="Linked Accounts">
+                        <ManagedLinkedAccounts
+                          id={user.id}
+                          media={
+                            provider === 'Plex' && user.plexId
+                              ? {
+                                  key: 'plex',
+                                  name: provider,
+                                  username: user.plexUsername,
+                                }
+                              : (provider === 'Jellyfin' ||
+                                    provider === 'Emby') &&
+                                  user.jellyfinUserId
+                                ? {
+                                    key: 'jellyfin',
+                                    name: provider,
+                                    username: user.jellyfinUsername,
+                                  }
+                                : undefined
+                          }
+                          canUnlink={
+                            !!actor &&
+                            (actor.id === user.id ||
+                              actor.id === 1 ||
+                              (user.permissions & 2) === 0) &&
+                            canManageAuthentication(user)
+                          }
+                          onSaved={reload}
+                        />
+                      </div>
+                    )}
+                    {actor &&
+                      (actor.id === user.id ||
+                        actor.id === 1 ||
+                        (user.permissions & 2) === 0) && (
+                        <>
+                          <button
+                            className="btn btn-quiet btn-sm"
+                            aria-expanded={notificationUser === user.id}
+                            onClick={() =>
+                              setNotificationUser(
+                                notificationUser === user.id
+                                  ? undefined
+                                  : user.id
+                              )
+                            }
+                          >
+                            Notification Settings
+                          </button>
+                          {notificationUser === user.id && (
+                            <div
+                              className="user-panel"
+                              data-title="Notification Settings"
+                            >
+                              <Suspense
+                                fallback={
+                                  <p className="note" role="status">
+                                    Loading notification settings…
+                                  </p>
+                                }
+                              >
+                                <UserNotifications
+                                  id={user.id}
+                                  manageBrowser={actor.id === user.id}
+                                />
+                              </Suspense>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    {canDelete(user) && (
+                      <button
+                        className="btn btn-quiet btn-sm"
+                        disabled={removing}
+                        onClick={() => {
+                          setNotice('');
+                          setRemoveError('');
+                          setRemove(user);
+                        }}
+                      >
+                        Delete User
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    className="btn btn-tonal btn-sm"
+                    to={`/admin/users/${user.id}`}
+                    aria-label={`Manage ${user.displayName}`}
                   >
-                    Delete User
-                  </button>
+                    Manage
+                  </Link>
                 )}
               </li>
             ))}

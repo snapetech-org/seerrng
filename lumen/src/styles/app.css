@@ -1746,6 +1746,7 @@ a.person:hover {
 }
 .setlist {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2341,4 +2342,652 @@ a.brand {
     padding-left: calc(16px + env(safe-area-inset-left));
     padding-right: calc(16px + env(safe-area-inset-right));
   }
+}
+
+/* ---------- Settings and toolbar consistency ----------
+   One look for every settings page: on/off settings are switches, fields inside a
+   labelled pill have no second box, dropdown lists follow the theme, and stacked
+   toolbars and save buttons keep the same spacing everywhere. */
+
+/* On/off settings: a native checkbox drawn as the same switch as .sw */
+.set input[type='checkbox'],
+.cfg-on input[type='checkbox'],
+.cfg-lock input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  margin: 0;
+  width: 46px;
+  height: 28px;
+  border-radius: 14px;
+  background:
+    radial-gradient(
+        circle closest-side,
+        #fff calc(100% - 1.5px),
+        transparent 100%
+      )
+      no-repeat 3px 50% / 22px 22px,
+    var(--surface-3);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: pointer;
+  transition:
+    background-position 0.2s var(--ease),
+    background-color 0.2s;
+}
+.set input[type='checkbox']:checked,
+.cfg-on input[type='checkbox']:checked,
+.cfg-lock input[type='checkbox']:checked {
+  background-color: var(--accent);
+  background-position: 21px 50%;
+  box-shadow: none;
+}
+.set input[type='checkbox']:disabled,
+.cfg-on input[type='checkbox']:disabled,
+.cfg-lock input[type='checkbox']:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.set input[type='checkbox']:focus-visible,
+.cfg-on input[type='checkbox']:focus-visible,
+.cfg-lock input[type='checkbox']:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* Picking items from a list (services, categories) keeps a checkbox */
+.pick input[type='checkbox'] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
+}
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--accent);
+}
+/* the switch sits beside its label however long the description is */
+.set.cfg-row:has(> input[type='checkbox']) {
+  flex-wrap: nowrap;
+}
+.set.toggle-row {
+  flex-wrap: nowrap;
+}
+.toggle-row > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Dropdown lists follow the theme instead of the browser's white list */
+select option,
+select optgroup {
+  background-color: var(--surface-2);
+  color: var(--ink);
+}
+select.cfg-input,
+.cfg-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-3) 50%),
+    linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+/* A field inside a labelled pill (.sel) has no box of its own */
+.sel .lbl {
+  white-space: nowrap;
+}
+.sel :is(.cfg-input, .cfg-select, .cfg-json),
+.sel
+  input:is(
+    [type='text'],
+    [type='search'],
+    [type='number'],
+    [type='email'],
+    [type='url'],
+    [type='password'],
+    :not([type])
+  ) {
+  height: 34px;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 6ch;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+.sel input[type='number'] {
+  flex: 0 0 auto;
+  width: 8ch;
+}
+.sel input[type='search'],
+.sel input:is([type='text'], :not([type])) {
+  width: 220px;
+}
+.sel:focus-within {
+  border-color: var(--accent);
+}
+
+/* Stacked toolbars and a header's toolbar sit 14px apart, not a full section apart */
+.view
+  > :is(.ph, h1, .toolbar, nav.toolbar, form.toolbar)
+  + :is(.toolbar, nav.toolbar, form.toolbar) {
+  margin-top: -18px;
+}
+/* a search field in a toolbar shares the row instead of taking the whole width */
+.toolbar > .search,
+.toolbar > label.search {
+  flex: 1 1 260px;
+  max-width: 520px;
+  height: 40px;
+}
+
+/* Pages that put a bare h1 at the top get the standard page title */
+.view > h1 {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-top: 2px;
+}
+
+/* Save buttons and notes after a settings list keep a gap; nested sections breathe */
+.setlist + :is(.btn, .toolbar, p, form, small, .note) {
+  margin-top: 12px;
+}
+section section,
+.setlist + section,
+.setlist + .sec-head {
+  margin-top: 28px;
+}
+/* a search field and its button inside a filter toolbar take the rest of the row */
+.toolbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 320px;
+  max-width: 560px;
+}
+.toolbar-search .search {
+  flex: 1 1 auto;
+  height: 40px;
+}
+.ph-row > .chip {
+  margin-left: auto;
+  align-self: center;
+}
+@media (max-width: 640px) {
+  /* phones: filter dropdowns sit two to a row and shorten long values */
+  .toolbar > .sel {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    overflow: hidden;
+  }
+  .toolbar > .sel select {
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+  .toolbar > .sel .lbl {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 0 1 auto;
+  }
+  .toolbar > .sel select,
+  .toolbar > .sel input {
+    flex: 1 1 auto;
+  }
+  .toolbar-search {
+    flex-basis: 100%;
+  }
+}
+.chip[aria-current='page'] {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+/* Administration home: groups side by side on wide screens */
+.admin-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
+  gap: 28px 24px;
+  align-items: start;
+}
+.admin-groups > section {
+  margin: 0;
+}
+/* Long pick lists (streaming services, categories): a compact grid of checkboxes
+   that scrolls inside its box instead of running down the page */
+.picklist {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  max-height: min(60vh, 480px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.picklist > .set {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  min-height: 44px;
+  padding: 8px 12px;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -1px var(--line),
+    inset -1px 0 var(--line);
+}
+.picklist > .set + .set {
+  border-top: 0;
+}
+.picklist > .set b {
+  font-size: 14px;
+  font-weight: 600;
+}
+.picklist > .set:has(input:checked) {
+  background: var(--accent-soft);
+}
+.picklist.catalog > .set {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  cursor: default;
+}
+/* Discovery: everyday filters in one row, the rest in a "More Filters" panel */
+.filters-clear {
+  margin-left: auto;
+}
+.more-filters > .filter-grid {
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+.range-filter > .sel {
+  flex: 0 1 260px;
+}
+.range-filter > .sel input {
+  width: auto;
+  flex: 1 1 auto;
+}
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 560px), 1fr));
+  gap: 12px 24px;
+}
+.range-grid > .range-filter > .sel {
+  flex: 1 1 200px;
+}
+.more-filters .filter-grid > .toolbar + .toolbar {
+  margin-top: -4px;
+}
+/* Users: the list shows who each person is; their settings open on their own page */
+.user-manage {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 4px;
+}
+.user-manage > :not(.btn) {
+  flex: 1 1 100%;
+}
+/* Permissions: grouped, two or three columns of switches on wide screens */
+.perm-groups {
+  display: grid;
+  gap: 18px;
+}
+.perm-group > h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 8px;
+}
+.perm-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+.perm-grid > .set {
+  flex-wrap: nowrap;
+  box-shadow:
+    inset 0 -1px var(--line),
+    inset -1px 0 var(--line);
+}
+.perm-grid > .set + .set {
+  border-top: 0;
+}
+.user-row {
+  justify-content: flex-start;
+}
+.user-row > div:first-child {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.user-row > div:nth-child(2) {
+  flex: 0 0 130px;
+}
+/* sub-headings inside a settings section */
+section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 20px 0 6px;
+}
+section .sec-head + h3,
+section > h3:first-child {
+  margin-top: 0;
+}
+/* a heading or sub-section after a list's buttons starts a new block */
+:is(section, form)
+  :is(.setlist, .toolbar, form)
+  + :is(h2, h3, section, .sec-head) {
+  margin-top: 28px;
+}
+/* section titles keep their links and actions together on the right */
+.sec-head > h2 {
+  margin-right: auto;
+}
+/* a list row with a cover: small cover on the left, text takes the rest */
+.set > .poster {
+  flex: 0 0 64px;
+  width: 64px;
+}
+.set > .poster + div {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  /* when a settings row wraps on a phone, its field uses the full width */
+  .cfg-row > :is(.cfg-input, .cfg-select, select, textarea, .cfg-json) {
+    flex: 1 1 100%;
+  }
+  .sec-head {
+    flex-wrap: wrap;
+  }
+}
+.ph > :is(a, button).chip {
+  justify-self: start;
+}
+.sel:has(> input[type='checkbox']) {
+  justify-content: flex-start;
+  cursor: pointer;
+}
+@media (max-width: 640px) {
+  /* a labelled dropdown keeps the whole row so its label is never cut off */
+  .toolbar > .sel:has(> .lbl) {
+    flex-basis: 100%;
+  }
+}
+/* the open panel's button stays highlighted and panels open below the buttons */
+.user-manage > .btn[aria-expanded='true'] {
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+}
+.user-manage > :not(.btn) {
+  order: 1;
+  margin-top: 8px;
+}
+
+/* ---------- Vertical rhythm ----------
+   Blocks inside a section, a plain form or an open panel never touch: 12px between
+   blocks, 20px before a sub-heading, 28px before a nested section. Pages that are
+   embedded in another page (Setup Guide steps) get the same spacing as the page grid. */
+section:not([class]) > * + *,
+form:not([class]) > * + *,
+details.adv[open] > :not(summary) + * {
+  margin-top: 12px;
+}
+details.adv[open] > summary + * {
+  margin-top: 12px;
+}
+section:not([class]) > .sec-head + * {
+  margin-top: 0;
+}
+section:not([class]) > * + h3,
+form:not([class]) > * + h3 {
+  margin-top: 20px;
+}
+section:not([class]) > * + section,
+form:not([class]) > * + section {
+  margin-top: 28px;
+}
+:not(.view)
+  > :is(.ph, section, details.adv, .setlist, nav, .toolbar, form)
+  + :is(section, details.adv) {
+  margin-top: 28px;
+}
+:not(.view) > .ph + * {
+  margin-top: 16px;
+}
+/* user Manage page: each open panel is a titled card */
+.user-panel {
+  padding: 14px;
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.user-panel::before {
+  content: attr(data-title);
+  display: block;
+  font-size: 16px;
+  font-weight: 750;
+  margin-bottom: 10px;
+}
+.user-panel > * + * {
+  margin-top: 12px;
+}
+.user-panel .setlist {
+  background: var(--surface);
+}
+/* Setup Guide: embedded settings pages use section-sized titles and no back link */
+:is(.setup-step, details.adv) .ph h1 {
+  font-size: 24px;
+}
+:is(.setup-step, details.adv) .ph .toolbar:has(> a[href='/admin']:only-child) {
+  display: none;
+}
+/* a settings row whose control is a whole list: the list sits under the label */
+.set.cfg-stack {
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+.set.cfg-stack > .picklist {
+  background: var(--surface-2);
+}
+/* a one-column pick list row: checkbox first, then the text */
+.set.pick-row {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+.set.pick-row > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.picklist > .set > span {
+  min-width: 0;
+}
+/* fields inside labelled pills shrink on narrow screens instead of pushing the page wider */
+.sel input:is([type='search'], [type='text'], :not([type])) {
+  width: 14em;
+  max-width: 100%;
+}
+.sel > * {
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .user-row > div:first-child,
+  .user-row > div:nth-child(2) {
+    flex: 1 1 100%;
+  }
+  .user-row,
+  .user-manage,
+  .user-panel {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .user-panel .toolbar > .sel {
+    flex-basis: 100%;
+  }
+}
+/* More Filters: labelled fields in a grid, label above each box */
+.adv-form > .toolbar {
+  margin-top: 14px;
+}
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 14px 16px;
+  align-items: start;
+}
+.field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.field > .lbl {
+  padding: 0;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+.field > :is(.cfg-input, .cfg-select, select) {
+  width: 100%;
+  flex: none;
+}
+.field small[role='alert'] {
+  color: var(--bad, #f87171);
+  font-size: 12px;
+}
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.range-inputs > .cfg-input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.range-inputs > span {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.range-inputs > .cfg-input {
+  width: 0;
+}
+@media (max-width: 640px) {
+  .ph-row:has(> .chip) {
+    flex-wrap: wrap;
+  }
+  .ph-row > .chip {
+    order: 3;
+    margin-left: 0;
+  }
+}
+.cfg-row > :is(.cfg-input, .cfg-select, select) {
+  min-width: 0;
+  max-width: 100%;
+}
+/* a date range needs room for two full dates */
+.range-inputs > input[type='date'] {
+  min-width: 140px;
+}
+@media (min-width: 720px) {
+  .field-grid > .field:has(input[type='date']) {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 480px) {
+  .range-inputs:has(input[type='date']) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .range-inputs:has(input[type='date']) > input {
+    width: 100%;
+    min-width: 0;
+  }
+  .range-inputs:has(input[type='date']) > span {
+    align-self: flex-start;
+  }
+}
+/* dialogs without a poster: the title and text use the whole width */
+.sheet .pk-head:not(:has(> .p)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Buttons never touch the block above or below them, wherever they sit
+   (plain expanding sections, panels, sheets). The page grid already spaces its own children. */
+:not(
+    .view,
+    .toolbar,
+    .toolbar-search,
+    .chips,
+    .seg,
+    .sel,
+    .set,
+    .pk-foot,
+    .sec-head
+  )
+  > :is(div, ul, ol, section, fieldset, form, table, details, p, dl)
+  + :is(.toolbar, .btn, form.toolbar) {
+  margin-top: 12px;
+}
+:not(
+    .view,
+    .toolbar,
+    .toolbar-search,
+    .chips,
+    .seg,
+    .sel,
+    .set,
+    .pk-foot,
+    .sec-head
+  )
+  > :is(.toolbar, .btn)
+  + :is(
+    div:not(.toolbar),
+    ul,
+    ol,
+    section,
+    fieldset,
+    form:not(.toolbar),
+    table,
+    details,
+    dl
+  ) {
+  margin-top: 12px;
+}
+details:not(.adv)[open] > * + * {
+  margin-top: 10px;
+}
+/* inside dialogs, plain list rows pick items (seasons, episodes, titles): checkboxes */
+.sheet .set:not(.cfg-row) input[type='checkbox'] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
+}
+.sheet .set:not(.cfg-row) label:has(> input[type='checkbox']) {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }

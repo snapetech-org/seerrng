@@ -187,8 +187,8 @@ export default function AdminDiscovery() {
       <header className="ph">
         <h1>{t('lumen.adminDiscovery.title', 'Discovery Integrations')}</h1>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            {t('lumen.adminDiscovery.back', 'Back to Account')}
+          <Link className="btn btn-quiet btn-sm" to="/admin">
+            {t('lumen.admin.title', 'Administration')}
           </Link>
         </div>
       </header>

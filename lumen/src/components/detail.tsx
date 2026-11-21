@@ -495,6 +495,15 @@ export const canViewAllRequests = (permissions?: number) =>
 export const canUseRequestAccess = (permissions?: number) =>
   (permissionBits(permissions) & REQUEST_ACCESS) !== 0;
 export const canUseShare = canUseRequestAccess;
+
+/** Share & Identify links show only while the server has Share to Request turned on. */
+export function useShareAvailable(permissions?: number) {
+  const allowed = canUseShare(permissions);
+  const caps = useApi<{ enabled: boolean }>(
+    allowed ? '/resolve/capabilities' : null
+  );
+  return allowed && caps.data?.enabled !== false;
+}
 export const canRequestMusic = (permissions?: number) =>
   (BigInt(permissionBits(permissions)) &
     (ADMIN_REQUEST | 32n | 4294967296n)) !==

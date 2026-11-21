@@ -190,8 +190,8 @@ export default function AdminCategories({
             )}
           </h1>
           <div className="toolbar">
-            <Link className="btn btn-quiet btn-sm" to="/me">
-              {t('lumen.adminCategories.backToAccount', 'Back to Account')}
+            <Link className="btn btn-quiet btn-sm" to="/admin">
+              {t('lumen.admin.title', 'Administration')}
             </Link>
           </div>
         </header>

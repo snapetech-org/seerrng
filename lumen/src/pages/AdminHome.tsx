@@ -51,11 +51,13 @@ const destinationMessages: Record<string, string> = {
   'Spotify Playlist Import': 'lumen.admin.dest.spotifyImport',
   'Steam Library Import': 'lumen.admin.dest.steamImport',
   'Default Request Quotas': 'lumen.admin.dest.quotas',
+  'Request Defaults': 'lumen.admin.dest.requestDefaults',
 };
 
 const destinations = [
   ['Setup Guide', '/setup?guide=1'],
   ['General Settings', '/admin/general'],
+  ['Request Defaults', '/admin/requests'],
   ['Network Settings', '/admin/network'],
   ['Connection Hosts', '/admin/connection-hosts'],
   ['Prowlarr Settings', '/admin/prowlarr'],
@@ -135,8 +137,85 @@ const groupMessages: Record<string, string> = {
   'tools-other': 'lumen.admin.group.systemServices',
 };
 
+// The Administration home lists every page once, grouped by what it is for.
+const homeGroups = [
+  [
+    'general',
+    'General',
+    [
+      '/setup?guide=1',
+      '/admin/general',
+      '/admin/requests',
+      '/admin/users',
+      '/admin/notifications',
+      '/admin/categories',
+      '/me/lumen',
+      '/admin/network',
+    ],
+  ],
+  [
+    'requests',
+    'Requests and Discovery',
+    [
+      '/admin/override-rules',
+      '/admin/discovery',
+      '/admin/metadata',
+      '/admin/recognition',
+      '/admin/swipe',
+    ],
+  ],
+  [
+    'servers',
+    'Media Servers and Readers',
+    [
+      '/admin/media-libraries',
+      '/admin/library-migration',
+      '/admin/jellystat',
+      '/admin/navidrome',
+      '/admin/audiobookshelf',
+      '/admin/kavita',
+      '/admin/reader-delivery',
+    ],
+  ],
+  [
+    'downloads',
+    'Indexers and Downloads',
+    ['/admin/prowlarr', '/admin/download-clients', '/admin/connection-hosts'],
+  ],
+  [
+    'tv-movies',
+    'TV and Movies',
+    [
+      '/admin/radarr',
+      '/admin/sonarr',
+      '/admin/tunerr',
+      '/admin/sportarr',
+      '/admin/whisparr',
+    ],
+  ],
+  [
+    'books',
+    'Books, Audiobooks and Comics',
+    [
+      '/admin/readarr',
+      '/admin/lazylibrarian',
+      '/admin/readmeabook',
+      '/admin/mylar',
+      '/admin/kapowarr',
+      '/admin/backissue',
+    ],
+  ],
+  ['music', 'Music', ['/admin/lidarr', '/admin/soulseek']],
+  ['software', 'Software and Games', ['/admin/software-acquisition']],
+  [
+    'system',
+    'System',
+    ['/admin/jobs', '/admin/logs', '/admin/caches', '/admin/about'],
+  ],
+] as const;
+
 const shortcuts = [
-  ['4K Requests', '/admin/general#enable4k', '4k uhd ultra hd'],
+  ['4K Requests', '/admin/requests#enable4k', '4k uhd ultra hd'],
   ['Application API Key', '/admin/general#apiKey', 'apikey token'],
   [
     'Download Client Refresh Interval',
@@ -155,7 +234,7 @@ const shortcuts = [
   ],
   [
     'Default Request Quotas',
-    '/admin/general#default-request-quotas',
+    '/admin/requests#default-request-quotas',
     'limit limits quotas',
   ],
   [
@@ -167,8 +246,13 @@ const shortcuts = [
 
 export function AdminLinks({
   pages,
+  paths,
   terms = [],
-}: { pages?: readonly string[]; terms?: readonly string[] } = {}) {
+}: {
+  pages?: readonly string[];
+  paths?: readonly string[];
+  terms?: readonly string[];
+} = {}) {
   const { t } = useLumenLocale();
   const localizedLabel = (label: string) =>
     t(destinationMessages[label] ?? '', label);
@@ -183,9 +267,13 @@ export function AdminLinks({
           `${label} ${localizedLabel(label)} ${aliases ?? ''}`.toLowerCase();
         return terms.every((term) => searchable.includes(term));
       })
-    : destinations.filter(
-        ([, path]) => !pages || pages.includes(path.slice('/admin/'.length))
-      );
+    : paths
+      ? paths.flatMap((target) =>
+          destinations.filter(([, path]) => path === target)
+        )
+      : destinations.filter(
+          ([, path]) => !pages || pages.includes(path.slice('/admin/'.length))
+        );
 
   if (!entries.length)
     return (
@@ -211,6 +299,20 @@ export function AdminLinks({
   );
 }
 
+/** Every settings page once, grouped by what it is for (Administration home and You). */
+export function AdminGroups() {
+  const { t } = useLumenLocale();
+  return (
+    <div className="admin-groups">
+      {homeGroups.map(([key, label, paths]) => (
+        <Section key={key} title={t(`lumen.admin.home.${key}`, label)}>
+          <AdminLinks paths={paths} />
+        </Section>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminHome() {
   const { t } = useLumenLocale();
   const [params] = useSearchParams();
@@ -228,27 +330,26 @@ export default function AdminHome() {
         <h1>{t('lumen.admin.title', 'Administration')}</h1>
       </header>
       <div className="toolbar">
-        <label className="sel">
-          <span className="lbl">
-            {t('lumen.admin.searchSettings', 'Search Settings')}
-          </span>
+        <label className="search">
+          <Icon name="search" size="sm" />
           <input
-            className="cfg-input"
             type="search"
             value={search}
+            aria-label={t('lumen.admin.searchSettings', 'Search Settings')}
+            placeholder={t('lumen.admin.searchSettings', 'Search Settings')}
             onChange={(event) => setSearch(event.target.value)}
           />
         </label>
       </div>
       <nav
-        className="toolbar"
+        className="chips wrap"
         aria-label={t(
           'lumen.admin.administrationCategories',
           'Administration Categories'
         )}
       >
         <Link
-          className="btn btn-quiet btn-sm"
+          className="chip"
           to="/admin"
           onClick={() => setSearch('')}
           aria-current={!group ? 'page' : undefined}
@@ -257,7 +358,7 @@ export default function AdminHome() {
         </Link>
         {Object.entries(serviceGroups).map(([key, { label }]) => (
           <Link
-            className="btn btn-quiet btn-sm"
+            className="chip"
             key={key}
             to={`/admin?serviceCategory=${key}`}
             onClick={() => setSearch('')}
@@ -267,17 +368,19 @@ export default function AdminHome() {
           </Link>
         ))}
       </nav>
-      <Section
-        title={
-          terms.length
-            ? t('lumen.admin.searchResults', 'Search Results')
-            : group
-              ? t(groupMessages[category], group.label)
-              : t('lumen.admin.settingsTools', 'Settings and Tools')
-        }
-      >
-        <AdminLinks pages={group?.pages} terms={terms} />
-      </Section>
+      {terms.length || group ? (
+        <Section
+          title={
+            terms.length
+              ? t('lumen.admin.searchResults', 'Search Results')
+              : t(groupMessages[category], group!.label)
+          }
+        >
+          <AdminLinks pages={group?.pages} terms={terms} />
+        </Section>
+      ) : (
+        <AdminGroups />
+      )}
     </>
   );
 }

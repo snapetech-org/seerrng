@@ -116,8 +116,8 @@ export default function AdminAbout() {
         </h1>
       </header>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          {t('lumen.adminAbout.backToAccount', 'Back to Account')}
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <ServiceNote

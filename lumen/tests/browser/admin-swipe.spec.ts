@@ -124,7 +124,9 @@ test('Swipe settings test the provider and save enablement without resending its
     expect(write).not.toHaveProperty('aiApiKey');
   }
   expect(writes).toHaveLength(2);
-  await page.getByRole('link', { name: 'Back to Account' }).click();
+  await page.getByRole('link', { name: 'Administration', exact: true }).click();
+  await expect(page).toHaveURL(/\/admin$/);
+  await page.goto(testAppPath('/me'));
   await expect(
     page.getByRole('link', { name: 'Open Swipe', exact: true })
   ).toBeVisible();

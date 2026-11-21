@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { csrfHeaders } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
-import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import { useToast } from '../components/toast';
 import { isCompanionBrandingPath, parseCompanionConfig } from '../configImport';
 import { embedded, lumenAdminUrl } from '../deployment';
@@ -443,7 +442,19 @@ export default function LumenSettings() {
         )
       )}
 
-      <InstanceRequestSettings />
+      <Section title="Instance Request Settings">
+        <div className="setlist">
+          <div className="set">
+            <span>
+              <b>4K, partial series and episode rules</b>
+              <small>These are SeerrNG server settings for everyone.</small>
+            </span>
+            <Link className="go" to="/admin/requests">
+              Request Defaults <Icon name="chev" size="sm" />
+            </Link>
+          </div>
+        </div>
+      </Section>
 
       <Section title="Sign-in and media server">
         <div className="setlist">

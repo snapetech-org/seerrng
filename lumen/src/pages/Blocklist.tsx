@@ -101,10 +101,11 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
   const working = useRef(false);
   const args = new URLSearchParams({
     ...filters,
-    search: query,
     take: String(PAGE_SIZE),
     skip: String((page - 1) * PAGE_SIZE),
   });
+  // SeerrNG rejects an empty search parameter, so only send one with text
+  if (query) args.set('search', query);
   const { data, error, reload, refresh } = useApi<Response>(
     '/blocklist?' + args.toString()
   );

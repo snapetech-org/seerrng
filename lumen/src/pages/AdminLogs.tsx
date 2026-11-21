@@ -123,8 +123,8 @@ function LogViewer({ storageKey }: { storageKey: string }) {
         <h1>{t('lumen.adminLogs.title', 'System Logs')}</h1>
       </header>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          {t('lumen.adminLogs.backToAccount', 'Back to Account')}
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          {t('lumen.admin.title', 'Administration')}
         </Link>
         <button className="btn btn-tonal btn-sm" onClick={reload}>
           {t('lumen.adminLogs.refresh', 'Refresh')}

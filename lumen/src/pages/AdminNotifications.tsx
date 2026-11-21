@@ -6,6 +6,7 @@ import { EventChoices } from '../components/NotificationEventChoices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { Icon } from '../icons';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -805,25 +806,23 @@ export default function AdminNotifications() {
       <header className="ph">
         <h1>Instance Notifications</h1>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+          <Link className="btn btn-quiet btn-sm" to="/admin">
+            Administration
           </Link>
         </div>
       </header>
-      <nav className="toolbar" aria-label="Notification Channels">
-        {channel && (
-          <Link className="btn btn-quiet btn-sm" to="/admin/notifications">
-            All Channels
-          </Link>
-        )}
+      <nav className="chips wrap" aria-label="Notification Channels">
+        <Link
+          className="chip"
+          to="/admin/notifications"
+          aria-current={!channel ? 'page' : undefined}
+        >
+          All Channels
+        </Link>
         {channels.map((item) => (
           <Link
             key={item}
-            className={
-              item === selected
-                ? 'btn btn-tonal btn-sm'
-                : 'btn btn-quiet btn-sm'
-            }
+            className="chip"
             to={`/admin/notifications/${item}`}
             aria-current={item === selected ? 'page' : undefined}
           >
@@ -838,7 +837,26 @@ export default function AdminNotifications() {
           Unknown notification channel.
         </p>
       ) : (
-        channels.map((item) => <AgentSection key={item} channel={item} />)
+        <Section title="Channels">
+          <p className="note">
+            Pick a channel to set it up. Each channel has its own events and
+            test message.
+          </p>
+          <div className="setlist">
+            {channels.map((item) => (
+              <div className="set" key={item}>
+                <b>{titles[item]}</b>
+                <Link
+                  className="go"
+                  to={`/admin/notifications/${item}`}
+                  aria-label={`Open ${titles[item]}`}
+                >
+                  Open <Icon name="chev" size="sm" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </Section>
       )}
     </>
   );

@@ -7,7 +7,6 @@ import {
   MoreOnScroll,
   TitleCard,
 } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import {
   discoveryVisibility,
@@ -84,9 +83,6 @@ export default function Trending() {
               </button>
             ))}
           </div>
-          <CardTitleToggle
-            kinds={mediaType === 'all' ? ['movie', 'tv'] : [mediaType]}
-          />
         </div>
       </ExtraHeader>
       {empty && (

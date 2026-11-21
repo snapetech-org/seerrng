@@ -180,8 +180,8 @@ export default function AdminJobs() {
         <h1>{t('lumen.adminJobs.title', 'Scheduled Jobs')}</h1>
       </header>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          {t('lumen.adminJobs.backToAccount', 'Back to Account')}
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          {t('lumen.admin.title', 'Administration')}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/admin/caches">
           {t('lumen.adminJobs.systemCaches', 'System Caches')}

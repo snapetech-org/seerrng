@@ -13,7 +13,7 @@ test('About and release history follow the saved locale', async ({ page }) => {
   const translated = {
     en: {
       title: 'About SeerrNG',
-      back: 'Back to Account',
+      back: 'Administration',
       info: 'Server Information',
       update: 'Update available',
       support: 'Support and Releases',
@@ -34,7 +34,7 @@ test('About and release history follow the saved locale', async ({ page }) => {
     },
     fr: {
       title: 'À propos de SeerrNG',
-      back: 'Retour au compte',
+      back: 'Administration',
       info: 'Informations du serveur',
       update: 'Mise à jour disponible',
       support: 'Assistance et versions',
@@ -55,7 +55,7 @@ test('About and release history follow the saved locale', async ({ page }) => {
     },
     ar: {
       title: 'حول SeerrNG',
-      back: 'العودة إلى الحساب',
+      back: 'الإدارة',
       info: 'معلومات الخادم',
       update: 'يتوفر تحديث',
       support: 'الدعم والإصدارات',
@@ -79,7 +79,7 @@ test('About and release history follow the saved locale', async ({ page }) => {
     ? {
         ...translated,
         title: 'About SeerrNG',
-        back: 'Back to Account',
+        back: 'Administration',
         info: 'Server Information',
         update: 'Update available',
         support: 'Support and Releases',

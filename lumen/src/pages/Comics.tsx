@@ -277,48 +277,6 @@ export function Comics() {
           under Settings › General. You can still browse manga.
         </div>
       )}
-      <form
-        className="toolbar"
-        aria-label="Comics Catalogue Filters"
-        key={catalogFilters.toString()}
-        onSubmit={(event) => {
-          event.preventDefault();
-          const data = new FormData(event.currentTarget);
-          const next = new URLSearchParams({ catalog: '1' });
-          for (const { key } of COMIC_CATALOG_FIELDS) {
-            const value = String(data.get(key) ?? '').trim();
-            if (value) next.set(key, value);
-          }
-          setP(next, { replace: true });
-        }}
-      >
-        {COMIC_CATALOG_FIELDS.map((field) => (
-          <label className="sel" key={field.key}>
-            <span className="lbl">{field.label}</span>
-            <input
-              className="cfg-input"
-              type={'min' in field ? 'number' : 'search'}
-              name={field.key}
-              defaultValue={catalogFilters.get(field.key) ?? ''}
-              min={'min' in field ? field.min : undefined}
-              max={'max' in field ? field.max : undefined}
-              maxLength={'maxLength' in field ? field.maxLength : undefined}
-            />
-          </label>
-        ))}
-        <button type="submit" className="btn btn-tonal btn-sm">
-          Search Comics Catalogue
-        </button>
-        {catalogMode && (
-          <button
-            type="button"
-            className="chip"
-            onClick={() => setP({}, { replace: true })}
-          >
-            Back to Comics and Manga
-          </button>
-        )}
-      </form>
       {!catalogMode && (
         <div className="toolbar">
           <div className="seg" role="group" aria-label="Type">
@@ -433,6 +391,54 @@ export function Comics() {
           )}
         </div>
       )}
+      <details className="adv more-filters" open={catalogMode || undefined}>
+        <summary>Search the Comics Catalogue</summary>
+        <div className="filter-grid">
+          <form
+            className="toolbar range-filter"
+            aria-label="Comics Catalogue Filters"
+            key={catalogFilters.toString()}
+            onSubmit={(event) => {
+              event.preventDefault();
+              const data = new FormData(event.currentTarget);
+              const next = new URLSearchParams({ catalog: '1' });
+              for (const { key } of COMIC_CATALOG_FIELDS) {
+                const value = String(data.get(key) ?? '').trim();
+                if (value) next.set(key, value);
+              }
+              setP(next, { replace: true });
+            }}
+          >
+            {COMIC_CATALOG_FIELDS.map((field) => (
+              <label className="sel" key={field.key}>
+                <span className="lbl">{field.label}</span>
+                <input
+                  className="cfg-input"
+                  type={'min' in field ? 'number' : 'search'}
+                  name={field.key}
+                  defaultValue={catalogFilters.get(field.key) ?? ''}
+                  min={'min' in field ? field.min : undefined}
+                  max={'max' in field ? field.max : undefined}
+                  maxLength={'maxLength' in field ? field.maxLength : undefined}
+                />
+              </label>
+            ))}
+            <button type="submit" className="btn btn-tonal btn-sm">
+              <span aria-hidden="true">Search Catalogue</span>
+              <span className="sr-only">Search Comics Catalogue</span>
+            </button>
+            {catalogMode && (
+              <button
+                type="button"
+                className="chip"
+                onClick={() => setP({}, { replace: true })}
+              >
+                Back to Comics and Manga
+              </button>
+            )}
+          </form>
+        </div>
+      </details>
       {!filtered && (
         <>
           <ComicRail

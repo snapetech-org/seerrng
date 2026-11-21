@@ -3,7 +3,6 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import {
   canRequestMusic,
   canUseRequestAccess,
@@ -273,7 +272,6 @@ export function Music() {
         />
       </ExtraHeader>
       <div className="toolbar">
-        <CardTitleToggle kinds={['album']} />
         <Link className="btn btn-quiet btn-sm" to="/track-requests">
           Track Requests
         </Link>

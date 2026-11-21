@@ -293,7 +293,7 @@ export default function AdminRecognition() {
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Back to Administration
+          Administration
         </Link>
       </div>
       <ServiceNote

@@ -655,7 +655,7 @@ export default function AdminOverrideRules() {
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Back to Administration
+          Administration
         </Link>
         <button
           className="btn btn-tonal btn-sm"
