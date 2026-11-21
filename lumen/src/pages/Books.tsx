@@ -10,7 +10,6 @@ import {
   RailSkeleton,
   Section,
 } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import { canUseRequestAccess } from '../components/detail';
 import { GenrePicker } from '../components/GenrePicker';
 import { Avatar } from '../components/Shell';
@@ -407,11 +406,7 @@ function BookRow({
   // the library row is a bonus: no access to it just leaves it out
   if (row.error && owned) return null;
   return (
-    <Section
-      title={title}
-      link={link}
-      action={books.length ? <CardTitleToggle kinds={['book']} /> : undefined}
-    >
+    <Section title={title} link={link}>
       {row.data ? (
         <Rail>
           {books.map((b) => (
@@ -652,7 +647,6 @@ function BooksGrid({
             Clear Subject
           </button>
         )}
-        <CardTitleToggle kinds={['book']} />
         <LibrarySeg show={show} pick={upd} />
         {show !== 'have' && <SortMenu sort={sort} pick={setSort} />}
         {show !== 'have' && (

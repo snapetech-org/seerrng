@@ -3,7 +3,7 @@ import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
-import { permissionOptions } from '../permissionOptions';
+import { groupKey, permissionGroups } from '../permissionOptions';
 import { ConfirmSheet } from './ConfirmSheet';
 import { ServiceNote } from './extra';
 
@@ -154,35 +154,46 @@ export default function ManagedPermissions({
             <p className="note">Administrators have all permissions.</p>
           )}
           <div
-            className="setlist"
+            className="perm-groups"
             role="group"
             aria-label="Explicit Permissions"
           >
-            {permissionOptions.map(([bit, label, messageKey]) => {
-              const checked = (current & bit) !== 0n;
-              const disabled =
-                busy ||
-                !editable ||
-                (bit === 2n && actorId !== 1) ||
-                (!admin && (held & bit) === 0n) ||
-                (bit !== 2n && targetAdmin);
-              return (
-                <label className="set" key={label}>
-                  <span>{t(messageKey, label)}</span>
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    disabled={disabled}
-                    onChange={(event) => {
-                      setNotice('');
-                      setDraft(
-                        event.target.checked ? current | bit : current & ~bit
-                      );
-                    }}
-                  />
-                </label>
-              );
-            })}
+            {permissionGroups.map(([group, options]) => (
+              <div className="perm-group" key={group}>
+                <h3>
+                  {t(`lumen.permissions.group.${groupKey(group)}`, group)}
+                </h3>
+                <div className="setlist perm-grid">
+                  {options.map(([bit, label, messageKey]) => {
+                    const checked = (current & bit) !== 0n;
+                    const disabled =
+                      busy ||
+                      !editable ||
+                      (bit === 2n && actorId !== 1) ||
+                      (!admin && (held & bit) === 0n) ||
+                      (bit !== 2n && targetAdmin);
+                    return (
+                      <label className="set" key={label}>
+                        <span>{t(messageKey, label)}</span>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          disabled={disabled}
+                          onChange={(event) => {
+                            setNotice('');
+                            setDraft(
+                              event.target.checked
+                                ? current | bit
+                                : current & ~bit
+                            );
+                          }}
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
           <div className="toolbar">
             <label className="sel">

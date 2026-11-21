@@ -150,7 +150,7 @@ for (const permissions of [32, 2]) {
       if (path === '/settings/public')
         return route.fulfill({ json: { mediaServerType: 1 } });
       if (path === '/resolve/capabilities')
-        return route.fulfill({ json: { enabled: false } });
+        return route.fulfill({ json: { enabled: true } });
       if (path === '/user/1/settings/main')
         return route.fulfill({ json: { enabledMediaCategories: {} } });
       if (path === '/discover/genreslider/movie')

@@ -96,6 +96,7 @@ const Swipe = lazy(() => import('./pages/Swipe'));
 const AdminConnectionHosts = lazy(() => import('./pages/AdminConnectionHosts'));
 const AdminNetwork = lazy(() => import('./pages/AdminNetwork'));
 const AdminGeneral = lazy(() => import('./pages/AdminGeneral'));
+const AdminRequestDefaults = lazy(() => import('./pages/AdminRequestDefaults'));
 const AdminCategories = lazy(() => import('./pages/AdminCategories'));
 const AdminCaches = lazy(() => import('./pages/AdminCaches'));
 const AdminJobs = lazy(() => import('./pages/AdminJobs'));
@@ -661,6 +662,24 @@ function App() {
                   }
                 >
                   <AdminGeneral />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/requests"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading request defaults…
+                    </p>
+                  }
+                >
+                  <AdminRequestDefaults />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

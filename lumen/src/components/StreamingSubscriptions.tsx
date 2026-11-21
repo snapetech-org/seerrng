@@ -190,11 +190,16 @@ export function StreamingSubscriptions({
           >
             {t('lumen.account.clearShown', 'Clear Shown')}
           </button>
+          <span className="count">
+            {t('lumen.account.selectedCount', '{count} selected', {
+              count: draft.size,
+            })}
+          </span>
         </div>
         {visible.length > 0 ? (
-          <div className="setlist">
+          <div className="setlist picklist">
             {visible.map(({ id, name }) => (
-              <label className="set cfg-row" key={id}>
+              <label className="set pick" key={id}>
                 <b>{name}</b>
                 <input
                   type="checkbox"

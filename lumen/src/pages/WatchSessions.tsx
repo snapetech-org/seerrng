@@ -182,14 +182,14 @@ function SessionForm({
             Loading movie genres…
           </p>
         )}
-        <div className="setlist">
+        <div className="setlist picklist">
           {[
             ...availableGenres,
             ...genreIds
               .filter((id) => !availableGenres.some((genre) => genre.id === id))
               .map((id) => ({ id, name: `Genre ${id}` })),
           ].map(({ id, name }) => (
-            <label className="set cfg-row" key={id}>
+            <label className="set pick" key={id}>
               <span>{name}</span>
               <input
                 type="checkbox"

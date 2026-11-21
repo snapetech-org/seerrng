@@ -106,9 +106,13 @@ export default function ImportMediaServerUsers({
         <p className="note">No new users to import.</p>
       )}
       {!!eligible.length && (
-        <div className="setlist" role="group" aria-label={`${provider} users`}>
+        <div
+          className="setlist picklist"
+          role="group"
+          aria-label={`${provider} users`}
+        >
           {eligible.map((user) => (
-            <label className="set" key={user.id}>
+            <label className="set pick" key={user.id}>
               <span>
                 <b>{user.title || user.username}</b>
                 {user.isImported && <small>Already Imported</small>}

@@ -449,7 +449,7 @@ function MigrationForm({ services }: { services: Service[] }) {
             {filtered
               .slice(visiblePage * pageSize, (visiblePage + 1) * pageSize)
               .map((author) => (
-                <label className="set cfg-row" key={author.id}>
+                <label className="set pick pick-row" key={author.id}>
                   <span>
                     <b>{author.name}</b>
                     <small>
@@ -583,8 +583,8 @@ export default function AdminLibraryMigration() {
       <header className="ph">
         <h1>Bookshelf Library Path Migration</h1>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+          <Link className="btn btn-quiet btn-sm" to="/admin">
+            Administration
           </Link>
         </div>
       </header>

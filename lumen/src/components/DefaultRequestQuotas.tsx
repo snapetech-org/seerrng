@@ -107,19 +107,17 @@ export default function DefaultRequestQuotas({
         'Default User Categories',
         '/admin/categories#default-user-categories',
       ]}
+      action={
+        showPermissionsLink ? (
+          <Link to="#default-user-permissions">Default User Permissions</Link>
+        ) : undefined
+      }
     >
       <p className="note">
         Default quotas apply to accounts without an override. A request limit of
         0 allows unlimited requests. With a positive limit, 0 quota days counts
         requests across all time.
       </p>
-      {showPermissionsLink && (
-        <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="#default-user-permissions">
-            Default User Permissions
-          </Link>
-        </div>
-      )}
       <form
         className="toolbar"
         onSubmit={(event) => {

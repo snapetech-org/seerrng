@@ -91,29 +91,36 @@ export function StreamingDiscoveryFilter({
         )}
       </div>
       <div className="setlist">
-        <label className="set cfg-row">
+        <div className="set cfg-stack">
           <span>
             <b>Streaming Services</b>
-            <small>Select up to 50 services.</small>
+            <small>
+              Select up to 50 services. {draftProviders.length} selected.
+            </small>
           </span>
-          <select
+          <div
+            className="setlist picklist"
+            role="group"
             aria-label="Streaming Services"
-            multiple
-            size={5}
-            value={draftProviders}
-            onChange={(event) =>
-              setProviders(
-                Array.from(event.target.selectedOptions, ({ value }) => value)
-              )
-            }
           >
             {[...options].map(([id, name]) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
+              <label className="set pick" key={id}>
+                <b>{name}</b>
+                <input
+                  type="checkbox"
+                  checked={draftProviders.includes(id)}
+                  onChange={(event) =>
+                    setProviders(
+                      event.target.checked
+                        ? [...draftProviders, id]
+                        : draftProviders.filter((item) => item !== id)
+                    )
+                  }
+                />
+              </label>
             ))}
-          </select>
-        </label>
+          </div>
+        </div>
       </div>
       {validRegion && !catalog.data && !catalog.error && (
         <p className="note" role="status">

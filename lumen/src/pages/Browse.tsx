@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { MediaStatus, type Genre, type TitleResult } from '../api';
 import { useAuth } from '../auth';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
-import { CardTitleToggle } from '../components/CardTitleToggle';
 import { ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
@@ -91,80 +90,119 @@ const RANGE_FILTERS = {
   },
 };
 
-function RangeFilter({
-  kind = 'rating',
-  min,
-  max,
-  invalidSaved = false,
+const ADVANCED_RANGES = [
+  ['dates', 'Release Date'],
+  ['rating', 'TMDB Rating'],
+  ['runtime', 'Runtime (Minutes)'],
+  ['votes', 'Vote Count'],
+] as const;
+type AdvancedRange = (typeof ADVANCED_RANGES)[number][0];
+type AdvancedValues = { search: string } & Record<
+  AdvancedRange,
+  [string, string]
+>;
+
+// Title and range filters in one labelled form with a single Apply button.
+function AdvancedFilters({
+  values,
+  invalidSavedDate,
   apply,
+  children,
 }: {
-  kind?: keyof typeof RANGE_FILTERS;
-  min: string;
-  max: string;
-  invalidSaved?: boolean;
-  apply: (min: string, max: string) => void;
+  values: AdvancedValues;
+  invalidSavedDate: boolean;
+  apply: (values: AdvancedValues) => void;
+  children: ReactNode;
 }) {
-  const [low, setLow] = useState(min);
-  const [high, setHigh] = useState(max);
-  const filter = RANGE_FILTERS[kind];
-  const reversed =
-    !!low &&
-    !!high &&
-    (kind === 'dates' ? low > high : Number(low) > Number(high));
+  const [draft, setDraft] = useState(values);
+  const reversed = (kind: AdvancedRange) => {
+    const [low, high] = draft[kind];
+    return (
+      !!low &&
+      !!high &&
+      (kind === 'dates' ? low > high : Number(low) > Number(high))
+    );
+  };
+  const blocked = ADVANCED_RANGES.some(([kind]) => reversed(kind));
   return (
     <form
-      className="toolbar"
-      aria-label={filter.label}
+      className="adv-form"
+      aria-label="More Filters"
       onSubmit={(event) => {
         event.preventDefault();
-        if (!reversed) apply(filter.normalize(low), filter.normalize(high));
+        if (blocked) return;
+        const next: AdvancedValues = { ...draft, search: draft.search.trim() };
+        for (const [kind] of ADVANCED_RANGES) {
+          const normalize = RANGE_FILTERS[kind].normalize;
+          next[kind] = [normalize(draft[kind][0]), normalize(draft[kind][1])];
+        }
+        apply(next);
       }}
     >
-      <label className="sel">
-        <span className="lbl">{filter.low}</span>
-        <input
-          className="cfg-input"
-          {...filter.input}
-          value={low}
-          onChange={(event) => setLow(event.target.value)}
-        />
-      </label>
-      <label className="sel">
-        <span className="lbl">{filter.high}</span>
-        <input
-          className="cfg-input"
-          {...filter.input}
-          value={high}
-          onChange={(event) => setHigh(event.target.value)}
-        />
-      </label>
-      <button className="btn btn-tonal btn-sm" disabled={reversed}>
-        Apply {filter.name}
-      </button>
-      {(invalidSaved || min || max || low || high) && (
-        <button
-          className="btn btn-quiet btn-sm"
-          type="button"
-          onClick={() => {
-            setLow('');
-            setHigh('');
-            apply('', '');
-          }}
-        >
-          Clear {filter.name}
+      <div className="field-grid">
+        <label className="field">
+          <span className="lbl">Title</span>
+          <input
+            className="cfg-input"
+            name="search"
+            type="search"
+            maxLength={512}
+            value={draft.search}
+            onChange={(event) =>
+              setDraft({ ...draft, search: event.target.value })
+            }
+          />
+        </label>
+        {children}
+        {ADVANCED_RANGES.map(([kind, label]) => {
+          const filter = RANGE_FILTERS[kind];
+          const [low, high] = draft[kind];
+          return (
+            <fieldset className="field" key={kind}>
+              <legend className="lbl">{label}</legend>
+              <div className="range-inputs">
+                <input
+                  className="cfg-input"
+                  aria-label={filter.low}
+                  placeholder="From"
+                  {...filter.input}
+                  value={low}
+                  onChange={(event) =>
+                    setDraft({ ...draft, [kind]: [event.target.value, high] })
+                  }
+                />
+                <span aria-hidden="true">to</span>
+                <input
+                  className="cfg-input"
+                  aria-label={filter.high}
+                  placeholder="To"
+                  {...filter.input}
+                  value={high}
+                  onChange={(event) =>
+                    setDraft({ ...draft, [kind]: [low, event.target.value] })
+                  }
+                />
+              </div>
+              {reversed(kind) && (
+                <small role="alert">
+                  The lower bound must be at or below the upper bound.
+                </small>
+              )}
+              {kind === 'dates' && invalidSavedDate && !reversed(kind) && (
+                <small role="alert">
+                  The saved date filter contains an invalid date. Enter a valid
+                  date or clear the filter.
+                </small>
+              )}
+            </fieldset>
+          );
+        })}
+      </div>
+      <div className="toolbar">
+        <button className="btn btn-primary btn-sm" disabled={blocked}>
+          Apply Filters
         </button>
-      )}
-      {reversed && (
-        <p className="note" role="alert">
-          The lower bound must be at or below the upper bound.
-        </p>
-      )}
-      {invalidSaved && !reversed && (
-        <p className="note" role="alert">
-          The saved date filter contains an invalid date. Enter a valid date or
-          clear the filter.
-        </p>
-      )}
+      </div>
     </form>
   );
 }
@@ -612,6 +650,26 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     setShowProviders(false);
     setP(next, { replace: true });
   };
+  // the advanced filters start open when one of them is in use
+  const moreFilters =
+    [
+      'search',
+      'certification',
+      'certificationGte',
+      'certificationLte',
+      'language',
+      'country',
+      'voteAverageGte',
+      'voteAverageLte',
+      'withRuntimeGte',
+      'withRuntimeLte',
+      'voteCountGte',
+      'voteCountLte',
+      'keywords',
+      'excludeKeywords',
+      'watchProviders',
+      'studio',
+    ].some((param) => p.has(param)) || !!(start || end);
   const word = kind === 'movie' ? 'Movies' : 'Series';
   const followedGenre =
     !excludeGenre && picked.length === 1
@@ -647,33 +705,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <span className="ph-text">Search {word.toLowerCase()}…</span>
         </Link>
       </header>
-      <form
-        key={`${kind}:${search}:${filterReset}`}
-        className="toolbar"
-        aria-label="Filter by Title"
-        onSubmit={(event) => {
-          event.preventDefault();
-          const value = String(
-            new FormData(event.currentTarget).get('search') ?? ''
-          ).trim();
-          const next = new URLSearchParams(p);
-          if (value) next.set('search', value);
-          else next.delete('search');
-          setP(next, { replace: true });
-        }}
-      >
-        <label className="sel">
-          <span className="lbl">Title</span>
-          <input
-            className="cfg-input"
-            name="search"
-            type="search"
-            maxLength={512}
-            defaultValue={search}
-          />
-        </label>
-        <button className="btn btn-tonal btn-sm">Apply Title</button>
-      </form>
       <div className="toolbar">
         {canViewFollowing(user?.permissions) && (
           <>
@@ -717,16 +748,66 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             )}
           </>
         )}
-        <button
-          className="btn btn-tonal btn-sm"
-          type="button"
-          aria-disabled={!hasFilters}
-          onClick={() => {
-            if (hasFilters) clearFilters();
+        <div className="seg" role="group" aria-label="Availability">
+          {[
+            ['all', 'All'],
+            ['have', `On ${serverName()}`],
+            ['not', `Not on ${serverName()}`],
+          ].map(([v, t]) => (
+            <button
+              key={v}
+              aria-pressed={show === v}
+              onClick={() => upd('show', v)}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+        {qualityEnabled && (show === 'have' || show === 'not') && (
+          <label className="sel">
+            <span className="lbl">Availability Quality</span>
+            <select
+              aria-label="Availability Quality"
+              value={quality}
+              onChange={(event) =>
+                upd('quality', event.target.value === '4k' ? '4k' : '')
+              }
+            >
+              <option value="hd">HD</option>
+              <option value="4k">4K</option>
+            </select>
+          </label>
+        )}
+        <label className="sel">
+          <span className="lbl">Sort</span>
+          <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
+            {SORTS[kind].map(([v, t]) => (
+              <option key={v} value={v}>
+                {libraryFirst && v === 'popularity.desc' ? 'Library Order' : t}
+              </option>
+            ))}
+          </select>
+        </label>
+        <GenrePicker
+          options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
+          picked={picked}
+          onChange={(next) => {
+            const n = new URLSearchParams(p);
+            if (next.length) n.set('genre', next.join(','));
+            else n.delete('genre');
+            // All genres starts over: the match switch goes back to any
+            if (!next.length) {
+              n.delete('match');
+              n.delete('excludeGenre');
+            }
+            setP(n, { replace: true });
           }}
-        >
-          Clear Discovery Filters
-        </button>
+          match={{ all: matchAll, set: setMatch }}
+          exclusion={{
+            active: excludeGenre,
+            toggle: () => upd('excludeGenre', excludeGenre ? '' : 'true'),
+          }}
+        />
         {kind === 'tv' && (
           <label className="sel">
             <span className="lbl">Network</span>
@@ -770,16 +851,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             Clear Studio {studioLabel}
           </button>
         )}
-        {kind === 'movie' && (
-          <button
-            className="chip"
-            type="button"
-            aria-expanded={showStudios}
-            onClick={() => setShowStudios(!showStudios)}
-          >
-            Production Studios
-          </button>
-        )}
         {studio && (
           <button
             className="chip"
@@ -790,7 +861,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             Exclude Studio
           </button>
         )}
-        <CardTitleToggle kinds={[kind]} />
         {(keywords || excludeKeywords) && (
           <button
             className="chip"
@@ -805,46 +875,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             Clear Subject Tag
           </button>
         )}
-        <div className="seg" role="group" aria-label="Availability">
-          {[
-            ['all', 'All'],
-            ['have', `On ${serverName()}`],
-            ['not', `Not on ${serverName()}`],
-          ].map(([v, t]) => (
-            <button
-              key={v}
-              aria-pressed={show === v}
-              onClick={() => upd('show', v)}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        {qualityEnabled && (show === 'have' || show === 'not') && (
-          <label className="sel">
-            <span className="lbl">Availability Quality</span>
-            <select
-              aria-label="Availability Quality"
-              value={quality}
-              onChange={(event) =>
-                upd('quality', event.target.value === '4k' ? '4k' : '')
-              }
-            >
-              <option value="hd">HD</option>
-              <option value="4k">4K</option>
-            </select>
-          </label>
-        )}
-        <label className="sel">
-          <span className="lbl">Sort</span>
-          <select value={sort} onChange={(e) => upd('sort', e.target.value)}>
-            {SORTS[kind].map(([v, t]) => (
-              <option key={v} value={v}>
-                {libraryFirst && v === 'popularity.desc' ? 'Library Order' : t}
-              </option>
-            ))}
-          </select>
-        </label>
         {kind === 'tv' && (
           <>
             <label className="sel">
@@ -882,260 +912,258 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
             </button>
           </>
         )}
-        <label className="sel">
-          <span className="lbl">Content Rating</span>
-          <select
-            value={certificationRange ? 'range' : certification}
-            onChange={(event) => {
+        <button
+          className="btn btn-quiet btn-sm filters-clear"
+          aria-label="Clear Discovery Filters"
+          type="button"
+          aria-disabled={!hasFilters}
+          onClick={() => {
+            if (hasFilters) clearFilters();
+          }}
+        >
+          Clear Filters
+        </button>
+      </div>
+      <details className="adv more-filters" open={moreFilters || undefined}>
+        <summary>More Filters</summary>
+        <div className="filter-grid">
+          <AdvancedFilters
+            key={[
+              kind,
+              filterReset,
+              search,
+              savedStart,
+              savedEnd,
+              minRating,
+              maxRating,
+              minRuntime,
+              maxRuntime,
+              minVotes,
+              maxVotes,
+            ].join(':')}
+            values={{
+              search,
+              dates: [start, end],
+              rating: [minRating, maxRating],
+              runtime: [minRuntime, maxRuntime],
+              votes: [minVotes, maxVotes],
+            }}
+            invalidSavedDate={invalidSavedDate}
+            apply={(values) => {
               const next = new URLSearchParams(p);
-              for (const key of [
-                'certification',
-                'certificationGte',
-                'certificationLte',
-                'certificationCountry',
-                'certificationMode',
-              ])
-                next.delete(key);
-              if (event.target.value) {
-                next.set('certification', event.target.value);
-                next.set('certificationCountry', 'US');
-              }
+              const put = (key: string, value: string) => {
+                if (value) next.set(key, value);
+                else next.delete(key);
+              };
+              put('search', values.search);
+              put(startKey, values.dates[0]);
+              put(endKey, values.dates[1]);
+              put('voteAverageGte', values.rating[0]);
+              put('voteAverageLte', values.rating[1]);
+              put('withRuntimeGte', values.runtime[0]);
+              put('withRuntimeLte', values.runtime[1]);
+              put('voteCountGte', values.votes[0]);
+              put('voteCountLte', values.votes[1]);
               setP(next, { replace: true });
             }}
           >
-            <option value="">Any Rating</option>
-            {certificationRange && (
-              <option value="range" disabled>
-                {certificationFilters.certificationGte || 'Any'} to{' '}
-                {certificationFilters.certificationLte || 'Any'}
-              </option>
+            <label className="field">
+              <span className="lbl">Content Rating</span>
+              <select
+                className="cfg-select"
+                value={certificationRange ? 'range' : certification}
+                onChange={(event) => {
+                  const next = new URLSearchParams(p);
+                  for (const key of [
+                    'certification',
+                    'certificationGte',
+                    'certificationLte',
+                    'certificationCountry',
+                    'certificationMode',
+                  ])
+                    next.delete(key);
+                  if (event.target.value) {
+                    next.set('certification', event.target.value);
+                    next.set('certificationCountry', 'US');
+                  }
+                  setP(next, { replace: true });
+                }}
+              >
+                <option value="">Any Rating</option>
+                {certificationRange && (
+                  <option value="range" disabled>
+                    {certificationFilters.certificationGte || 'Any'} to{' '}
+                    {certificationFilters.certificationLte || 'Any'}
+                  </option>
+                )}
+                {certification &&
+                  (!ratingOptions.includes(certification) ||
+                    (certificationCountry &&
+                      certificationCountry !== 'US')) && (
+                    <option value={certification}>
+                      {certification}
+                      {certificationCountry
+                        ? ' (' + certificationCountry + ')'
+                        : ''}
+                    </option>
+                  )}
+                {ratingOptions
+                  .filter(
+                    (value) =>
+                      value !== certification ||
+                      !certificationCountry ||
+                      certificationCountry === 'US'
+                  )
+                  .map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <label className="field">
+              <span className="lbl">Original Language</span>
+              <select
+                className="cfg-select"
+                aria-label="Original Language"
+                value={language}
+                onChange={(event) => {
+                  const next = new URLSearchParams(p);
+                  if (event.target.value)
+                    next.set('language', event.target.value);
+                  else next.delete('language');
+                  setP(next, { replace: true });
+                }}
+              >
+                <option value="">Use Saved Default</option>
+                <option value="all">All Languages</option>
+                {language &&
+                  language !== 'all' &&
+                  !languageOptions.some(
+                    (option) => option.iso_639_1 === language
+                  ) && <option value={language}>{language}</option>}
+                {languageOptions.map(({ iso_639_1, english_name }) => (
+                  <option key={iso_639_1} value={iso_639_1}>
+                    {english_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              <span className="lbl">Country of Origin</span>
+              <select
+                className="cfg-select"
+                aria-label="Country of Origin"
+                value={country}
+                onChange={(event) => upd('country', event.target.value)}
+              >
+                <option value="">Any Country</option>
+                {country &&
+                  !countryOptions.some(
+                    ({ iso_3166_1 }) => iso_3166_1 === country
+                  ) && <option value={country}>{country}</option>}
+                {countryOptions.map(({ iso_3166_1, english_name }) => (
+                  <option key={iso_3166_1} value={iso_3166_1}>
+                    {english_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </AdvancedFilters>
+          <div className="toolbar" role="group" aria-label="Browse By">
+            <Link
+              className="chip"
+              to={kind === 'movie' ? '/movies/genres' : '/series/genres'}
+            >
+              Browse Genres
+            </Link>
+            {kind === 'movie' && (
+              <button
+                className="chip"
+                type="button"
+                aria-expanded={showStudios}
+                onClick={() => setShowStudios(!showStudios)}
+              >
+                Production Studios
+              </button>
             )}
-            {certification &&
-              (!ratingOptions.includes(certification) ||
-                (certificationCountry && certificationCountry !== 'US')) && (
-                <option value={certification}>
-                  {certification}
-                  {certificationCountry
-                    ? ' (' + certificationCountry + ')'
-                    : ''}
-                </option>
-              )}
-            {ratingOptions
-              .filter(
-                (value) =>
-                  value !== certification ||
-                  !certificationCountry ||
-                  certificationCountry === 'US'
-              )
-              .map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-          </select>
-        </label>
-        <label className="sel">
-          <span className="lbl">Original Language</span>
-          <select
-            aria-label="Original Language"
-            value={language}
-            onChange={(event) => {
-              const next = new URLSearchParams(p);
-              if (event.target.value) next.set('language', event.target.value);
-              else next.delete('language');
-              setP(next, { replace: true });
-            }}
-          >
-            <option value="">Use Saved Default</option>
-            <option value="all">All Languages</option>
-            {language &&
-              language !== 'all' &&
-              !languageOptions.some(
-                (option) => option.iso_639_1 === language
-              ) && <option value={language}>{language}</option>}
-            {languageOptions.map(({ iso_639_1, english_name }) => (
-              <option key={iso_639_1} value={iso_639_1}>
-                {english_name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="sel">
-          <span className="lbl">Country of Origin</span>
-          <select
-            aria-label="Country of Origin"
-            value={country}
-            onChange={(event) => upd('country', event.target.value)}
-          >
-            <option value="">Any Country</option>
-            {country &&
-              !countryOptions.some(
-                ({ iso_3166_1 }) => iso_3166_1 === country
-              ) && <option value={country}>{country}</option>}
-            {countryOptions.map(({ iso_3166_1, english_name }) => (
-              <option key={iso_3166_1} value={iso_3166_1}>
-                {english_name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <GenrePicker
-          options={genres.map((g) => ({ value: String(g.id), label: g.name }))}
-          picked={picked}
-          onChange={(next) => {
-            const n = new URLSearchParams(p);
-            if (next.length) n.set('genre', next.join(','));
-            else n.delete('genre');
-            // All genres starts over: the match switch goes back to any
-            if (!next.length) {
-              n.delete('match');
-              n.delete('excludeGenre');
-            }
-            setP(n, { replace: true });
-          }}
-          match={{ all: matchAll, set: setMatch }}
-          exclusion={{
-            active: excludeGenre,
-            toggle: () => upd('excludeGenre', excludeGenre ? '' : 'true'),
-          }}
-        />
-      </div>
-      <div className="toolbar">
-        <Link
-          className="chip"
-          to={kind === 'movie' ? '/movies/genres' : '/series/genres'}
-        >
-          Browse Genres
-        </Link>
-        <button
-          type="button"
-          className="chip"
-          aria-expanded={showProviders}
-          onClick={() => setShowProviders(!showProviders)}
-        >
-          Streaming Services{providers.length ? ` (${providers.length})` : ''}
-        </button>
-      </div>
-      {showProviders && regionPending && (
-        <p className="note" role="status">
-          Loading streaming region…
-        </p>
-      )}
-      {showProviders && !regionPending && (
-        <StreamingDiscoveryFilter
-          key={`${region}:${providers.join('|')}:${excludeProviders}`}
-          kind={kind}
-          region={region}
-          providers={providers}
-          exclude={excludeProviders}
-          apply={(nextRegion, ids, exclude) => {
-            const next = new URLSearchParams(p);
-            next.delete('watchProviders');
-            next.delete('watchRegion');
-            next.delete('watchProviderMode');
-            if (ids.length) {
-              next.set('watchProviders', ids.join('|'));
-              next.set('watchRegion', nextRegion);
-              next.set('watchProviderMode', exclude ? 'exclude' : 'include');
-            }
-            setP(next, { replace: true });
-          }}
-        />
-      )}
-      <div className="toolbar">
-        <button
-          className="chip"
-          type="button"
-          aria-expanded={showTags}
-          onClick={() => setShowTags(!showTags)}
-        >
-          Subject Tags
-        </button>
-      </div>
-      {showTags && (
-        <SubjectTagFilter
-          included={keywords ? keywords.split(',') : []}
-          excluded={excludeKeywords ? excludeKeywords.split(',') : []}
-          apply={(included, excluded) => {
-            const next = new URLSearchParams(p);
-            if (included.length) next.set('keywords', included.join(','));
-            else next.delete('keywords');
-            if (excluded.length)
-              next.set('excludeKeywords', excluded.join(','));
-            else next.delete('excludeKeywords');
-            setP(next, { replace: true });
-          }}
-        />
-      )}
-      <ServiceNote
-        error={languages.error}
-        what="original languages"
-        retry={languages.reload}
-      />
-      <ServiceNote
-        error={countries.error}
-        what="countries"
-        retry={countries.reload}
-      />
-      {kind === 'movie' && showStudios && (
-        <StudioFilter studio={studio} select={(id) => upd('studio', id)} />
-      )}
-      <RangeFilter
-        kind="dates"
-        key={`${filterReset}:dates:${savedStart}:${savedEnd}`}
-        min={start}
-        max={end}
-        invalidSaved={invalidSavedDate}
-        apply={(min, max) => {
-          const next = new URLSearchParams(p);
-          if (min) next.set(startKey, min);
-          else next.delete(startKey);
-          if (max) next.set(endKey, max);
-          else next.delete(endKey);
-          setP(next, { replace: true });
-        }}
-      />
-      <RangeFilter
-        key={`${filterReset}:rating:${minRating}:${maxRating}`}
-        min={minRating}
-        max={maxRating}
-        apply={(min, max) => {
-          const next = new URLSearchParams(p);
-          if (min) next.set('voteAverageGte', min);
-          else next.delete('voteAverageGte');
-          if (max) next.set('voteAverageLte', max);
-          else next.delete('voteAverageLte');
-          setP(next, { replace: true });
-        }}
-      />
-      <RangeFilter
-        kind="runtime"
-        key={`${filterReset}:runtime:${minRuntime}:${maxRuntime}`}
-        min={minRuntime}
-        max={maxRuntime}
-        apply={(min, max) => {
-          const next = new URLSearchParams(p);
-          if (min) next.set('withRuntimeGte', min);
-          else next.delete('withRuntimeGte');
-          if (max) next.set('withRuntimeLte', max);
-          else next.delete('withRuntimeLte');
-          setP(next, { replace: true });
-        }}
-      />
-      <RangeFilter
-        kind="votes"
-        key={`${filterReset}:votes:${minVotes}:${maxVotes}`}
-        min={minVotes}
-        max={maxVotes}
-        apply={(min, max) => {
-          const next = new URLSearchParams(p);
-          if (min) next.set('voteCountGte', min);
-          else next.delete('voteCountGte');
-          if (max) next.set('voteCountLte', max);
-          else next.delete('voteCountLte');
-          setP(next, { replace: true });
-        }}
-      />
+            <button
+              type="button"
+              className="chip"
+              aria-expanded={showProviders}
+              onClick={() => setShowProviders(!showProviders)}
+            >
+              Streaming Services
+              {providers.length ? ` (${providers.length})` : ''}
+            </button>
+            <button
+              className="chip"
+              type="button"
+              aria-expanded={showTags}
+              onClick={() => setShowTags(!showTags)}
+            >
+              Subject Tags
+            </button>
+          </div>
+          {showProviders && regionPending && (
+            <p className="note" role="status">
+              Loading streaming region…
+            </p>
+          )}
+          {showProviders && !regionPending && (
+            <StreamingDiscoveryFilter
+              key={`${region}:${providers.join('|')}:${excludeProviders}`}
+              kind={kind}
+              region={region}
+              providers={providers}
+              exclude={excludeProviders}
+              apply={(nextRegion, ids, exclude) => {
+                const next = new URLSearchParams(p);
+                next.delete('watchProviders');
+                next.delete('watchRegion');
+                next.delete('watchProviderMode');
+                if (ids.length) {
+                  next.set('watchProviders', ids.join('|'));
+                  next.set('watchRegion', nextRegion);
+                  next.set(
+                    'watchProviderMode',
+                    exclude ? 'exclude' : 'include'
+                  );
+                }
+                setP(next, { replace: true });
+              }}
+            />
+          )}
+          {showTags && (
+            <SubjectTagFilter
+              included={keywords ? keywords.split(',') : []}
+              excluded={excludeKeywords ? excludeKeywords.split(',') : []}
+              apply={(included, excluded) => {
+                const next = new URLSearchParams(p);
+                if (included.length) next.set('keywords', included.join(','));
+                else next.delete('keywords');
+                if (excluded.length)
+                  next.set('excludeKeywords', excluded.join(','));
+                else next.delete('excludeKeywords');
+                setP(next, { replace: true });
+              }}
+            />
+          )}
+          <ServiceNote
+            error={languages.error}
+            what="original languages"
+            retry={languages.reload}
+          />
+          <ServiceNote
+            error={countries.error}
+            what="countries"
+            retry={countries.reload}
+          />
+          {kind === 'movie' && showStudios && (
+            <StudioFilter studio={studio} select={(id) => upd('studio', id)} />
+          )}
+        </div>
+      </details>
       {!items.length && (
         <ServiceNote
           error={list.error}

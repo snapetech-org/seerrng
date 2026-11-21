@@ -8,8 +8,11 @@ import { useToast } from './toast';
 
 export function CardTitleToggle({
   kinds,
+  row = false,
 }: {
   kinds: readonly CardTitleKind[];
+  /** a settings switch row (Appearance) instead of a chip */
+  row?: boolean;
 }) {
   const { user, refresh } = useAuth();
   const toast = useToast();
@@ -48,6 +51,33 @@ export function CardTitleToggle({
       setBusy(false);
     }
   }
+
+  if (row)
+    return (
+      <div
+        className={`set toggle-row ${busy ? 'locked' : ''}`}
+        role="switch"
+        aria-checked={always}
+        aria-disabled={busy}
+        tabIndex={busy ? -1 : 0}
+        onClick={() => void toggle()}
+        onKeyDown={(event) => {
+          if (event.key === ' ' || event.key === 'Enter') {
+            event.preventDefault();
+            void toggle();
+          }
+        }}
+      >
+        <span>
+          <b>Title View</b>
+          <small>
+            Show titles under posters for movies, series, music and books.
+            Account Settings has a choice per type.
+          </small>
+        </span>
+        <span className="sw" />
+      </div>
+    );
 
   return (
     <button

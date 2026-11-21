@@ -306,8 +306,8 @@ export default function AdminMetadata() {
       <header className="ph">
         <h1>Metadata Providers</h1>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+          <Link className="btn btn-quiet btn-sm" to="/admin">
+            Administration
           </Link>
         </div>
       </header>

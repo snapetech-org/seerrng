@@ -31,43 +31,39 @@ function GenreField({
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`);
   const selected = value ? value.split(',') : [];
   const catalog = Array.isArray(genres.data) ? genres.data : [];
+  const title =
+    kind === 'movie' ? 'Blocklisted Movie Genres' : 'Blocklisted TV Genres';
   return (
     <>
       <ServiceNote error={genres.error} what="genres" retry={genres.reload} />
-      <label className="set cfg-row">
-        <b>
-          {kind === 'movie'
-            ? 'Blocklisted Movie Genres'
-            : 'Blocklisted TV Genres'}
-        </b>
-        <select
-          multiple
-          size={5}
-          value={selected}
-          disabled={disabled || !Array.isArray(genres.data)}
-          onChange={(event) =>
-            onChange(
-              Array.from(
-                event.target.selectedOptions,
-                (option) => option.value
-              ).join(',')
-            )
-          }
-        >
-          {selected
-            .filter((id) => !catalog.some((genre) => String(genre.id) === id))
-            .map((id) => (
-              <option key={id} value={id}>
-                Genre #{id}
-              </option>
-            ))}
-          {catalog.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
+      <div className="set cfg-stack">
+        <b>{title}</b>
+        <div className="setlist picklist" role="group" aria-label={title}>
+          {[
+            ...selected
+              .filter((id) => !catalog.some((genre) => String(genre.id) === id))
+              .map((id) => ({ id, name: `Genre #${id}` })),
+            ...catalog.map(({ id, name }) => ({ id: String(id), name })),
+          ].map(({ id, name }) => (
+            <label className="set pick" key={id}>
+              <b>{name}</b>
+              <input
+                type="checkbox"
+                checked={selected.includes(id)}
+                disabled={disabled || !Array.isArray(genres.data)}
+                onChange={(event) =>
+                  onChange(
+                    (event.target.checked
+                      ? [...selected, id]
+                      : selected.filter((item) => item !== id)
+                    ).join(',')
+                  )
+                }
+              />
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </div>
     </>
   );
 }

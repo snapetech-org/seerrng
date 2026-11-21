@@ -334,8 +334,8 @@ export default function AdminSwipe() {
     <>
       <h1>{t('lumen.adminSwipe.pageTitle', 'Swipe Settings')}</h1>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          {t('lumen.adminConnectionHosts.backToAccount', 'Back to Account')}
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <p className="note">

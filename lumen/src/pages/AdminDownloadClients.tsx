@@ -469,8 +469,8 @@ export default function AdminDownloadClients({
         <>
           <h1>Download Client Settings</h1>
           <div className="toolbar">
-            <Link className="btn btn-quiet btn-sm" to="/me">
-              Back to Account
+            <Link className="btn btn-quiet btn-sm" to="/admin">
+              Administration
             </Link>
           </div>
         </>

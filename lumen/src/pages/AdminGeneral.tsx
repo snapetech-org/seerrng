@@ -4,15 +4,11 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import ApplicationApiKey from '../components/ApplicationApiKey';
 import { Section } from '../components/cards';
-import DefaultRequestQuotas, {
-  type DefaultQuotas,
-} from '../components/DefaultRequestQuotas';
-import DefaultUserPermissions from '../components/DefaultUserPermissions';
+import { type DefaultQuotas } from '../components/DefaultRequestQuotas';
 import DownloadPathMappings, {
   type DownloadPathMapping,
 } from '../components/DownloadPathMappings';
 import { ServiceNote } from '../components/extra';
-import { InstanceRequestSettings } from '../components/InstanceRequestSettings';
 import SpotifyCredentials from '../components/SpotifyCredentials';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -334,8 +330,11 @@ export default function AdminGeneral() {
       <header className="ph">
         <h1>General Settings</h1>
         <div className="toolbar">
-          <Link className="btn btn-quiet btn-sm" to="/me">
-            Back to Account
+          <Link className="btn btn-quiet btn-sm" to="/admin">
+            Administration
+          </Link>
+          <Link className="btn btn-quiet btn-sm" to="/admin/requests">
+            Request Defaults
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/categories">
             Media Categories
@@ -389,22 +388,6 @@ export default function AdminGeneral() {
           initial={settings.data.downloadPathMappings ?? []}
         />
       )}
-      <InstanceRequestSettings
-        anchorReady={Boolean(settings.data || settings.error)}
-      />
-      {settings.data?.defaultQuotas && (
-        <DefaultRequestQuotas
-          initial={settings.data.defaultQuotas}
-          showPermissionsLink={
-            typeof settings.data.defaultPermissions === 'number'
-          }
-        />
-      )}
-      {typeof settings.data?.defaultPermissions === 'number' &&
-        Number.isSafeInteger(settings.data.defaultPermissions) &&
-        settings.data.defaultPermissions >= 0 && (
-          <DefaultUserPermissions initial={settings.data.defaultPermissions} />
-        )}
     </>
   );
 }

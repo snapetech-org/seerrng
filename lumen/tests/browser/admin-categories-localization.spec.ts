@@ -15,7 +15,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   const translated = {
     en: {
       title: 'Media Categories',
-      back: 'Back to Account',
+      back: 'Administration',
       available: 'Available Categories',
       movie: 'Movies',
       series: 'Series',
@@ -49,7 +49,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
     },
     fr: {
       title: 'Catégories de médias',
-      back: 'Retour au compte',
+      back: 'Administration',
       available: 'Catégories disponibles',
       movie: 'Films',
       series: 'Séries',
@@ -84,7 +84,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
     },
     ar: {
       title: 'فئات الوسائط',
-      back: 'العودة إلى الحساب',
+      back: 'الإدارة',
       available: 'الفئات المتاحة',
       movie: 'أفلام',
       series: 'مسلسلات',
@@ -120,7 +120,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
     ? {
         ...translated,
         title: 'Media Categories',
-        back: 'Back to Account',
+        back: 'Administration',
         available: 'Available Categories',
         movie: 'Movies',
         series: 'Series',

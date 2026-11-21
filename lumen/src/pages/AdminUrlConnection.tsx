@@ -272,8 +272,8 @@ export default function AdminUrlConnection({
     <>
       <h1>{name} Settings</h1>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          Administration
         </Link>
       </div>
       <ServiceNote

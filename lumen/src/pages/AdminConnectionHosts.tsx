@@ -232,8 +232,8 @@ export default function AdminConnectionHosts() {
     <>
       <h1>{t('lumen.adminConnectionHosts.title', 'Connection Hosts')}</h1>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="/me">
-          {t('lumen.adminConnectionHosts.backToAccount', 'Back to Account')}
+        <Link className="btn btn-quiet btn-sm" to="/admin">
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <ServiceNote

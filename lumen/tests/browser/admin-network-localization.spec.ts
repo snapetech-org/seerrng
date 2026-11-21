@@ -6,7 +6,7 @@ const appPath = (path: string) => `${mount}${path}`;
 const translations = {
   en: {
     title: 'Network Settings',
-    back: 'Back to Account',
+    back: 'Administration',
     network: 'Network',
     dns: 'DNS Cache',
     proxy: 'Outbound Proxy',
@@ -35,7 +35,7 @@ const translations = {
   },
   fr: {
     title: 'Paramètres réseau',
-    back: 'Retour au compte',
+    back: 'Administration',
     network: 'Réseau',
     dns: 'Cache DNS',
     proxy: 'Proxy sortant',
@@ -65,7 +65,7 @@ const translations = {
   },
   ar: {
     title: 'إعدادات الشبكة',
-    back: 'العودة إلى الحساب',
+    back: 'الإدارة',
     network: 'الشبكة',
     dns: 'ذاكرة DNS المؤقتة',
     proxy: 'الوكيل الصادر',

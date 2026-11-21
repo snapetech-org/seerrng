@@ -223,8 +223,8 @@ export type CardTitleMode = 'hover' | 'always';
 export type CardTitleKind = 'movie' | 'tv' | 'album' | 'book';
 export type CardTitleSettings = Partial<Record<CardTitleKind, CardTitleMode>>;
 export const defaultCardTitleModes = {
-  movie: 'hover',
-  tv: 'hover',
+  movie: 'always',
+  tv: 'always',
   album: 'always',
   book: 'always',
 } satisfies Record<CardTitleKind, CardTitleMode>;

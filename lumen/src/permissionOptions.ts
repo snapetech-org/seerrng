@@ -119,3 +119,110 @@ export const permissionOptions = [
   ],
   [140737488355328n, 'Request Adult', 'components.PermissionEdit.requestAdult'],
 ] as const;
+
+// The same permissions grouped by what they control, for settings screens.
+const permissionGroupLabels = [
+  [
+    'Administration',
+    [
+      'Admin',
+      'Manage Settings',
+      'Manage Users',
+      'Manage Requests',
+      'Manage Issues',
+      'Manage Blocklist',
+      'Manage Downloads',
+    ],
+  ],
+  [
+    'Requests',
+    [
+      'Request',
+      'Request Movie',
+      'Request Series',
+      'Request Music',
+      'Request Book',
+      'Request Comic',
+      'Request Magazine',
+      'Request Sports',
+      'Request Adult',
+      'Request Advanced',
+      'Request View',
+      'Vote',
+    ],
+  ],
+  [
+    '4K',
+    [
+      'Request 4K',
+      'Request 4K Movie',
+      'Request 4K Series',
+      'Auto Approve 4K',
+      'Auto Approve 4K Movie',
+      'Auto Approve 4K Series',
+    ],
+  ],
+  [
+    'Auto-Approve',
+    [
+      'Auto Approve',
+      'Auto Approve Movie',
+      'Auto Approve Series',
+      'Auto Approve Music',
+      'Auto Approve Book',
+      'Auto Approve Comic',
+      'Auto Approve Magazine',
+      'Auto Approve Sports',
+      'Auto Approve Adult',
+    ],
+  ],
+  [
+    'Auto-Request from Watchlists',
+    [
+      'Auto Request',
+      'Auto Request Movie',
+      'Auto Request Series',
+      'Auto Request Music',
+      'Auto Request Book',
+      'Auto Request Comic',
+      'Auto Request Magazine',
+    ],
+  ],
+  [
+    'Issues and Visibility',
+    [
+      'View Issues',
+      'Create Issues',
+      'Recent View',
+      'Watchlist View',
+      'View Blocklist',
+    ],
+  ],
+] as const;
+
+type PermissionOption = (typeof permissionOptions)[number];
+
+export const permissionGroups: [string, PermissionOption[]][] = (() => {
+  const used = new Set<string>();
+  const groups: [string, PermissionOption[]][] = permissionGroupLabels.map(
+    ([group, labels]) => [
+      group,
+      labels.flatMap((name) => {
+        const option = permissionOptions.find(([, label]) => label === name);
+        if (!option) return [];
+        used.add(name);
+        return [option];
+      }),
+    ]
+  );
+  const other = permissionOptions.filter(([, label]) => !used.has(label));
+  if (other.length) groups.push(['Other', [...other]]);
+  return groups;
+})();
+
+/** stable message key part for a permission group title */
+export const groupKey = (group: string) =>
+  group
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');

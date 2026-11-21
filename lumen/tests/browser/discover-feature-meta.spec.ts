@@ -1,4 +1,10 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function openMoreFilters(page: Page) {
+  const details = page.locator('details.more-filters');
+  if (!(await details.evaluate((el) => (el as HTMLDetailsElement).open)))
+    await details.locator('summary').click();
+}
 
 const tv = {
   id: 7,
@@ -182,6 +188,7 @@ test('movie and series genre directories open the matching filtered browse', asy
     ['series', 'Series Genres', 'Drama', 18],
   ] as const) {
     await page.goto(`./${path}`);
+    await openMoreFilters(page);
     await page.getByRole('link', { name: 'Browse Genres' }).click();
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
     const tile = page.getByRole('link', { name: `Browse ${genre}` });

@@ -15,7 +15,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
   const translated = {
     en: {
       title: 'Connection Hosts',
-      back: 'Back to Account',
+      back: 'Administration',
       section: 'Saved Hosts',
       description:
         'Save hostnames or IP addresses to reuse in service settings. Reusing a saved address changes only the hostname or IP, without a scheme or port. It does not test or connect to the host.',
@@ -34,7 +34,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
     },
     fr: {
       title: 'Hôtes de connexion',
-      back: 'Retour au compte',
+      back: 'Administration',
       section: 'Hôtes enregistrés',
       description:
         'Enregistrez des noms d’hôte ou des adresses IP pour les réutiliser dans les paramètres des services. Une adresse enregistrée ne remplace que le nom d’hôte ou l’adresse IP, sans schéma ni port. La connexion n’est ni testée ni établie.',
@@ -53,7 +53,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
     },
     ar: {
       title: 'مضيفو الاتصال',
-      back: 'العودة إلى الحساب',
+      back: 'الإدارة',
       section: 'المضيفون المحفوظون',
       description:
         'احفظ أسماء المضيفين أو عناوين IP لإعادة استخدامها في إعدادات الخدمات. لا يغيّر استخدام عنوان محفوظ سوى اسم المضيف أو عنوان IP، من دون مخطط أو منفذ. لا يختبر الاتصال بالمضيف ولا يتصل به.',
@@ -75,7 +75,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
     ? {
         ...translated,
         title: 'Connection Hosts',
-        back: 'Back to Account',
+        back: 'Administration',
         section: 'Saved Hosts',
         description:
           'Save hostnames or IP addresses to reuse in service settings. Enter the address without a scheme or port.',

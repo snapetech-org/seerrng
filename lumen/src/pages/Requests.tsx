@@ -1039,7 +1039,7 @@ function RequesterFilter({
   }>(`/request/status/users?take=100&skip=${page * 100}`);
   const users = data?.results ?? [];
   return (
-    <div className="toolbar" role="group" aria-label="Requester filter">
+    <>
       <label className="sel">
         <span className="lbl">Requester</span>
         <select value={value} onChange={(event) => change(event.target.value)}>
@@ -1077,7 +1077,7 @@ function RequesterFilter({
           Retry Loading Users
         </button>
       )}
-    </div>
+    </>
   );
 }
 
@@ -1759,12 +1759,10 @@ export default function Requests() {
     <>
       <header className="ph">
         <div className="ph-row">
-          <div>
-            <h1>Requests</h1>
-            <Link className="chip" to="/book-series/requests">
-              Book Series Requests
-            </Link>
-          </div>
+          <h1>Requests</h1>
+          <Link className="chip" to="/book-series/requests">
+            Book Series Requests
+          </Link>
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <p className="sub">
@@ -1872,110 +1870,110 @@ export default function Requests() {
         </div>
       )}
       {everyone && (
-        <RequesterFilter
-          value={requester}
-          change={(value) => setRequestFilter('requestedBy', value)}
-        />
-      )}
-      {everyone && show !== 'software' && (
-        <div className="toolbar">
-          <label className="sel">
-            <span className="lbl">Media Type</span>
-            <select
-              value={mediaType}
-              onChange={(event) =>
-                setRequestFilter('mediaType', event.target.value)
-              }
-            >
-              {mediaTypes.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          {mediaType === 'book' && (
-            <label className="sel">
-              <span className="lbl">Book Format</span>
-              <select
-                value={bookFormat}
-                onChange={(event) =>
-                  setRequestFilter('bookFormat', event.target.value)
-                }
+        <div className="toolbar" role="group" aria-label="Request filters">
+          <RequesterFilter
+            value={requester}
+            change={(value) => setRequestFilter('requestedBy', value)}
+          />
+          {show !== 'software' && (
+            <>
+              <label className="sel">
+                <span className="lbl">Media Type</span>
+                <select
+                  value={mediaType}
+                  onChange={(event) =>
+                    setRequestFilter('mediaType', event.target.value)
+                  }
+                >
+                  {mediaTypes.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {mediaType === 'book' && (
+                <label className="sel">
+                  <span className="lbl">Book Format</span>
+                  <select
+                    value={bookFormat}
+                    onChange={(event) =>
+                      setRequestFilter('bookFormat', event.target.value)
+                    }
+                  >
+                    <option value="all">All formats</option>
+                    <option value="ebook">Ebook</option>
+                    <option value="audiobook">Audiobook</option>
+                  </select>
+                </label>
+              )}
+              <label className="sel">
+                <span className="lbl">Sort</span>
+                <select
+                  value={sortMode}
+                  onChange={(event) =>
+                    setRequestFilter('order', event.target.value)
+                  }
+                >
+                  {REQUEST_SORTS.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="sel">
+                <span className="lbl">Date Added</span>
+                <select
+                  value={timeFrame}
+                  onChange={(event) =>
+                    setRequestFilter('timeFrame', event.target.value)
+                  }
+                >
+                  {REQUEST_TIME_FRAMES.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <form
+                className="toolbar-search"
+                aria-label="Search media requests"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const value = new FormData(event.currentTarget).get('search');
+                  setRequestFilter(
+                    'search',
+                    typeof value === 'string' ? value.trim() : ''
+                  );
+                }}
               >
-                <option value="all">All formats</option>
-                <option value="ebook">Ebook</option>
-                <option value="audiobook">Audiobook</option>
-              </select>
-            </label>
+                <label className="search">
+                  <input
+                    key={search}
+                    name="search"
+                    type="search"
+                    aria-label="Search media requests"
+                    placeholder="Search media requests"
+                    maxLength={200}
+                    defaultValue={search}
+                  />
+                </label>
+                <button className="btn btn-tonal btn-sm">Search</button>
+                {search && (
+                  <button
+                    type="button"
+                    className="btn btn-quiet btn-sm"
+                    onClick={() => setRequestFilter('search', '')}
+                  >
+                    Clear Search
+                  </button>
+                )}
+              </form>
+            </>
           )}
-          <label className="sel">
-            <span className="lbl">Sort</span>
-            <select
-              value={sortMode}
-              onChange={(event) =>
-                setRequestFilter('order', event.target.value)
-              }
-            >
-              {REQUEST_SORTS.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="sel">
-            <span className="lbl">Date Added</span>
-            <select
-              value={timeFrame}
-              onChange={(event) =>
-                setRequestFilter('timeFrame', event.target.value)
-              }
-            >
-              {REQUEST_TIME_FRAMES.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
         </div>
-      )}
-      {everyone && show !== 'software' && (
-        <form
-          className="toolbar"
-          aria-label="Search media requests"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const value = new FormData(event.currentTarget).get('search');
-            setRequestFilter(
-              'search',
-              typeof value === 'string' ? value.trim() : ''
-            );
-          }}
-        >
-          <label className="search">
-            <input
-              key={search}
-              name="search"
-              type="search"
-              aria-label="Search media requests"
-              placeholder="Search media requests"
-              maxLength={200}
-              defaultValue={search}
-            />
-          </label>
-          <button className="btn btn-tonal btn-sm">Search</button>
-          {search && (
-            <button
-              type="button"
-              className="btn btn-quiet btn-sm"
-              onClick={() => setRequestFilter('search', '')}
-            >
-              Clear Search
-            </button>
-          )}
-        </form>
       )}
       {softwareView && (
         <div

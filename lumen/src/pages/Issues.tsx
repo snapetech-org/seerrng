@@ -258,8 +258,9 @@ function IssueList() {
     take: String(PAGE_SIZE),
     skip: String((page - 1) * PAGE_SIZE),
     filter: 'all',
-    search: submitted,
   });
+  // SeerrNG rejects an empty search parameter, so only send one with text
+  if (submitted) params.set('search', submitted);
   for (const { key, options } of issueFilters) {
     const value = bookmark.get(key);
     if (value && value !== 'all' && Object.hasOwn(options, value))

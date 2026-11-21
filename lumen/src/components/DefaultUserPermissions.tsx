@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useLumenLocale } from '../i18n';
-import { permissionOptions } from '../permissionOptions';
+import { groupKey, permissionGroups } from '../permissionOptions';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
 import { ConfirmSheet } from './ConfirmSheet';
@@ -76,24 +76,35 @@ export default function DefaultUserPermissions({
         {grantsAdmin && (
           <p className="note">This default grants full administrator access.</p>
         )}
-        <div className="setlist" role="group" aria-label="Default Permissions">
-          {permissionOptions.map(([bit, label, messageKey]) => (
-            <label className="set" key={label}>
-              <span>{t(messageKey, label)}</span>
-              <input
-                type="checkbox"
-                checked={(draft & bit) !== 0n}
-                disabled={busy || bit === 2n || grantsAdmin}
-                onChange={(event) => {
-                  const checked = event.target.checked;
-                  setDraft((current) =>
-                    checked ? current | bit : current & ~bit
-                  );
-                  setNotice('');
-                  setFailure('');
-                }}
-              />
-            </label>
+        <div
+          className="perm-groups"
+          role="group"
+          aria-label="Default Permissions"
+        >
+          {permissionGroups.map(([group, options]) => (
+            <div className="perm-group" key={group}>
+              <h3>{t(`lumen.permissions.group.${groupKey(group)}`, group)}</h3>
+              <div className="setlist perm-grid">
+                {options.map(([bit, label, messageKey]) => (
+                  <label className="set" key={label}>
+                    <span>{t(messageKey, label)}</span>
+                    <input
+                      type="checkbox"
+                      checked={(draft & bit) !== 0n}
+                      disabled={busy || bit === 2n || grantsAdmin}
+                      onChange={(event) => {
+                        const checked = event.target.checked;
+                        setDraft((current) =>
+                          checked ? current | bit : current & ~bit
+                        );
+                        setNotice('');
+                        setFailure('');
+                      }}
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
         {failure && (

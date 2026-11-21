@@ -43,7 +43,7 @@ test('a saved connection host can populate a service form', async ({
   await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(page.getByText('Connection hosts saved.')).toBeVisible();
   await page.screenshot({ path: info.outputPath('hosts.png'), fullPage: true });
-  await page.getByRole('link', { name: 'Back to Account' }).click();
+  await page.getByRole('link', { name: 'Administration', exact: true }).click();
   await page.getByRole('link', { name: 'Open Radarr Services' }).click();
   await page.getByRole('button', { name: 'Add Radarr' }).click();
   await page
