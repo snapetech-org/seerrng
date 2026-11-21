@@ -1406,6 +1406,21 @@ An isolated test verified that disabling one browser does not unsubscribe a
 different endpoint, another account's worker or the native worker. Secure
 browser interaction, mobile installation and live delivery remain open.
 
+### Personal notification localization increment
+
+The personal notification route and registered browser-device controls now
+follow the account locale. SeerrNG's notification catalog supplies translated
+channel fields, event labels, validation and save/removal feedback; Lumen's
+English, French and Arabic overrides cover its browser-device guidance and
+status messages. Save operations continue to write only the selected channel,
+and device removal remains confirmed and scoped to the signed-in account.
+
+Fixtures verify email event-only saves, OpenPGP key save/removal, Telegram
+forum-topic saves and browser-device deletion in desktop, iPhone, Android and
+tablet profiles. French and Arabic baseline/candidate screenshots cover the
+same widths. Live provider delivery, real secure-browser subscriptions,
+bundled `/lumen/` rendering and native visual comparison remain open.
+
 ### Personal discovery preferences increment
 
 Account Settings exposes Discover Region, Streaming Region and Original

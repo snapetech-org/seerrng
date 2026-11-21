@@ -11,7 +11,25 @@ import { PushDevices } from '../components/PushDevices';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
+
+const notificationMessagePrefix =
+  'components.UserProfile.UserSettings.UserNotificationSettings.';
+
+function useNotificationMessage() {
+  const { t } = useLumenLocale();
+  return (
+    key: string,
+    fallback: string,
+    values?: Record<string, string | number>
+  ) =>
+    t(
+      key.startsWith('lumen.') ? key : `${notificationMessagePrefix}${key}`,
+      fallback,
+      values
+    );
+}
 
 interface Preferences {
   emailEnabled?: boolean;
@@ -50,6 +68,7 @@ function EventForm({
   channel: 'email' | 'webpush';
   label: string;
 }) {
+  const n = useNotificationMessage();
   const [saved, setSaved] = useState(mask);
   const [draft, setDraft] = useState(mask);
   const [busy, setBusy] = useState(false);
@@ -71,15 +90,25 @@ function EventForm({
       });
       if (generation !== sessionGeneration()) return;
       if (result.notificationTypes?.[channel] !== draft) {
-        setError('Could not confirm the saved preferences. Try again.');
+        setError(
+          n(
+            `${channel}settingsfailed`,
+            'Could not confirm the saved preferences. Try again.'
+          )
+        );
         return;
       }
       forget(path);
       setSaved(draft);
-      setNotice(`${label} preferences saved.`);
+      setNotice(n(`${channel}settingssaved`, `${label} preferences saved.`));
     } catch {
       if (generation === sessionGeneration())
-        setError(`Could not save ${label} preferences. Try again.`);
+        setError(
+          n(
+            `${channel}settingsfailed`,
+            `Could not save ${label} preferences. Try again.`
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -93,7 +122,12 @@ function EventForm({
         void save();
       }}
     >
-      <p className="note">Choose which events send notifications.</p>
+      <p className="note">
+        {n(
+          'lumen.notifications.chooseEvents',
+          'Choose which events send notifications.'
+        )}
+      </p>
       <EventChoices mask={draft} disabled={busy} change={setDraft} />
       {notice && (
         <p className="note" role="status">
@@ -107,7 +141,13 @@ function EventForm({
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || draft === saved}>
-          {busy ? 'Saving…' : `Save ${label} Preferences`}
+          {busy
+            ? n('lumen.notifications.saving', 'Saving…')
+            : n(
+                'lumen.notifications.savePreferences',
+                'Save {label} Preferences',
+                { label }
+              )}
         </button>
       </div>
     </form>
@@ -121,6 +161,7 @@ function OpenPgpForm({
   path: string;
   configured: boolean;
 }) {
+  const n = useNotificationMessage();
   const [draft, setDraft] = useState('');
   const [hasKey, setHasKey] = useState(configured);
   const [busy, setBusy] = useState(false);
@@ -142,7 +183,9 @@ function OpenPgpForm({
         // nosemgrep: generic.secrets.security.detected-pgp-private-key-block.detected-pgp-private-key-block -- the armor header identifies private-key input for rejection
         value.includes('-----BEGIN PGP PRIVATE KEY BLOCK-----')
       ) {
-        setError('Paste an armored OpenPGP public key.');
+        setError(
+          n('validationPgpPublicKey', 'Paste an armored OpenPGP public key.')
+        );
         return;
       }
     }
@@ -162,7 +205,10 @@ function OpenPgpForm({
           : result.pgpKey !== value && result.pgpKey !== '[REDACTED]'
       ) {
         setError(
-          'Could not confirm the saved key. Reload settings and try again.'
+          n(
+            'lumen.notifications.confirmPublicKeyFailure',
+            'Could not confirm the saved key. Reload settings and try again.'
+          )
         );
         return;
       }
@@ -170,10 +216,19 @@ function OpenPgpForm({
       setHasKey(value !== null);
       setConfirmRemove(false);
       setDraft('');
-      setNotice(value === null ? 'Public key removed.' : 'Public key saved.');
+      setNotice(
+        value === null
+          ? n('lumen.notifications.publicKeyRemoved', 'Public key removed.')
+          : n('lumen.notifications.publicKeySaved', 'Public key saved.')
+      );
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save the public key. Try again.');
+        setError(
+          n(
+            'lumen.notifications.publicKeySaveFailure',
+            'Could not save the public key. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -189,12 +244,23 @@ function OpenPgpForm({
     >
       <p className="note">
         {hasKey
-          ? 'A public key is configured for notification email.'
-          : 'Add a public key to encrypt notification email.'}
+          ? n(
+              'lumen.notifications.publicKeyConfigured',
+              'A public key is configured for notification email.'
+            )
+          : n(
+              'lumen.notifications.addPublicKey',
+              'Add a public key to encrypt notification email.'
+            )}
       </p>
       <label>
         <span className="note">
-          {hasKey ? 'Replacement OpenPGP Public Key' : 'OpenPGP Public Key'}
+          {hasKey
+            ? n(
+                'lumen.notifications.replacementPublicKey',
+                'Replacement OpenPGP Public Key'
+              )
+            : n('pgpPublicKey', 'OpenPGP Public Key')}
         </span>
         <textarea
           className="cfg-json"
@@ -219,7 +285,10 @@ function OpenPgpForm({
       )}
       {confirmRemove && (
         <p className="note">
-          Remove the key and turn off OpenPGP encryption for your notifications?
+          {n(
+            'lumen.notifications.confirmRemovePublicKey',
+            'Remove the key and turn off OpenPGP encryption for your notifications?'
+          )}
         </p>
       )}
       <div className="toolbar">
@@ -231,7 +300,7 @@ function OpenPgpForm({
               disabled={busy}
               onClick={() => void save(null)}
             >
-              Confirm Remove Key
+              {n('lumen.notifications.confirmRemoveKey', 'Confirm Remove Key')}
             </button>
             <button
               className="btn btn-quiet"
@@ -239,13 +308,13 @@ function OpenPgpForm({
               disabled={busy}
               onClick={() => setConfirmRemove(false)}
             >
-              Keep Key
+              {n('lumen.notifications.keepKey', 'Keep Key')}
             </button>
           </>
         ) : (
           <>
             <button className="btn btn-tonal" disabled={busy || !key}>
-              Save Public Key
+              {n('lumen.notifications.savePublicKey', 'Save Public Key')}
             </button>
             {hasKey && (
               <button
@@ -254,7 +323,7 @@ function OpenPgpForm({
                 disabled={busy}
                 onClick={() => setConfirmRemove(true)}
               >
-                Remove Public Key
+                {n('lumen.notifications.removePublicKey', 'Remove Public Key')}
               </button>
             )}
           </>
@@ -274,6 +343,7 @@ function telegramValues(data: Preferences) {
 }
 
 function TelegramForm({ path, data }: { path: string; data: Preferences }) {
+  const n = useNotificationMessage();
   const [saved, setSaved] = useState(() => telegramValues(data));
   const [draft, setDraft] = useState(saved);
   const [busy, setBusy] = useState(false);
@@ -292,11 +362,18 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
     if (pending.current || !changed) return;
     setNotice('');
     if ((chatId || draft.mask !== 0) && !/^-?\d+$/.test(chatId)) {
-      setError('Enter a numeric Telegram chat ID.');
+      setError(
+        n('validationTelegramChatId', 'Enter a numeric Telegram chat ID.')
+      );
       return;
     }
     if (threadId && !/^\d+$/.test(threadId)) {
-      setError('Enter a numeric topic ID or leave it blank.');
+      setError(
+        n(
+          'validationTelegramMessageThreadId',
+          'Enter a numeric topic ID or leave it blank.'
+        )
+      );
       return;
     }
     const generation = sessionGeneration();
@@ -321,16 +398,26 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
         confirmed.silent !== draft.silent ||
         result.notificationTypes?.telegram !== draft.mask
       ) {
-        setError('Could not confirm the saved Telegram settings. Try again.');
+        setError(
+          n(
+            'telegramsettingsfailed',
+            'Could not confirm the saved Telegram settings. Try again.'
+          )
+        );
         return;
       }
       forget(path);
       setSaved(confirmed);
       setDraft(confirmed);
-      setNotice('Telegram settings saved.');
+      setNotice(n('telegramsettingssaved', 'Telegram settings saved.'));
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save Telegram settings. Try again.');
+        setError(
+          n(
+            'telegramsettingsfailed',
+            'Could not save Telegram settings. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -346,8 +433,10 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
       }}
     >
       <p className="note">
-        Start a conversation with the configured Telegram bot before enabling
-        notifications.
+        {n(
+          'lumen.notifications.telegramStartChat',
+          'Start a conversation with the configured Telegram bot before enabling notifications.'
+        )}
         {bot && /^[A-Za-z0-9_]+$/.test(bot) && (
           <>
             {' '}
@@ -357,14 +446,14 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
               target="_blank"
               rel="noreferrer"
             >
-              Open @{bot}
+              {n('lumen.notifications.openBot', 'Open @{bot}', { bot })}
             </a>
           </>
         )}
       </p>
       <div className="setlist">
         <label className="set cfg-row">
-          <b>Chat ID</b>
+          <b>{n('telegramChatId', 'Chat ID')}</b>
           <input
             className="cfg-input"
             type="text"
@@ -378,14 +467,19 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
         </label>
         <label className="set cfg-row">
           <span>
-            <b>Topic ID</b>
-            <small>Optional for forum topics.</small>
+            <b>{n('telegramMessageThreadId', 'Topic ID')}</b>
+            <small>
+              {n(
+                'lumen.notifications.optionalForumTopic',
+                'Optional for forum topics.'
+              )}
+            </small>
           </span>
           <input
             className="cfg-input"
             type="text"
             inputMode="numeric"
-            aria-label="Topic ID"
+            aria-label={n('telegramMessageThreadId', 'Topic ID')}
             maxLength={128}
             value={draft.threadId}
             disabled={busy}
@@ -395,7 +489,7 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
           />
         </label>
         <label className="set cfg-row">
-          <b>Send Silently</b>
+          <b>{n('sendSilently', 'Send Silently')}</b>
           <input
             type="checkbox"
             checked={draft.silent}
@@ -406,7 +500,12 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
           />
         </label>
       </div>
-      <p className="note">Choose the events to send to Telegram.</p>
+      <p className="note">
+        {n(
+          'lumen.notifications.telegramEvents',
+          'Choose the events to send to Telegram.'
+        )}
+      </p>
       <EventChoices
         mask={draft.mask}
         disabled={busy}
@@ -424,7 +523,9 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || !changed}>
-          {busy ? 'Saving…' : 'Save Telegram Settings'}
+          {busy
+            ? n('lumen.notifications.saving', 'Saving…')
+            : n('lumen.notifications.saveTelegram', 'Save Telegram Settings')}
         </button>
       </div>
     </form>
@@ -432,6 +533,7 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
 }
 
 function DiscordForm({ path, data }: { path: string; data: Preferences }) {
+  const n = useNotificationMessage();
   const enabledMask = data.discordEnabledTypes ?? 0;
   const [saved, setSaved] = useState(() => ({
     ids: (data.discordIds ?? []).join('\n'),
@@ -460,11 +562,21 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
           BigInt(id) > 18_446_744_073_709_551_615n
       )
     ) {
-      setError('Enter up to ten valid Discord user IDs, one per line.');
+      setError(
+        n(
+          'lumen.notifications.discordIdLimit',
+          'Enter up to ten valid Discord user IDs, one per line.'
+        )
+      );
       return;
     }
     if (draft.mask && !ids.length) {
-      setError('Enter at least one Discord user ID to receive mentions.');
+      setError(
+        n(
+          'lumen.notifications.discordIdRequired',
+          'Enter at least one Discord user ID to receive mentions.'
+        )
+      );
       return;
     }
     const generation = sessionGeneration();
@@ -484,17 +596,27 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
         result.discordIds?.join('\n') !== normalizedIds ||
         result.notificationTypes?.discord !== draft.mask
       ) {
-        setError('Could not confirm the saved Discord settings. Try again.');
+        setError(
+          n(
+            'discordsettingsfailed',
+            'Could not confirm the saved Discord settings. Try again.'
+          )
+        );
         return;
       }
       forget(path);
       const confirmed = { ids: normalizedIds, mask: draft.mask };
       setSaved(confirmed);
       setDraft(confirmed);
-      setNotice('Discord settings saved.');
+      setNotice(n('discordsettingssaved', 'Discord settings saved.'));
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save Discord settings. Try again.');
+        setError(
+          n(
+            'discordsettingsfailed',
+            'Could not save Discord settings. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -509,7 +631,7 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
       }}
     >
       <label>
-        <span className="note">Discord User IDs</span>
+        <span className="note">{n('discordId', 'Discord User IDs')}</span>
         <textarea
           className="cfg-json"
           rows={4}
@@ -521,8 +643,10 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
         />
       </label>
       <p className="note">
-        Enter one user ID per line. The server controls which events can send
-        mentions.
+        {n(
+          'lumen.notifications.discordIdTip',
+          'Enter one user ID per line. The server controls which events can send mentions.'
+        )}
       </p>
       {enabledMask !== 0 && (
         <EventChoices
@@ -544,7 +668,9 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || !changed}>
-          {busy ? 'Saving…' : 'Save Discord Settings'}
+          {busy
+            ? n('lumen.notifications.saving', 'Saving…')
+            : n('lumen.notifications.saveDiscord', 'Save Discord Settings')}
         </button>
       </div>
     </form>
@@ -552,6 +678,7 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
 }
 
 function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
+  const n = useNotificationMessage();
   const [configured, setConfigured] = useState(!!data.pushbulletAccessToken);
   const [saved, setSaved] = useState(data.notificationTypes?.pushbullet ?? 0);
   const [mask, setMask] = useState(saved);
@@ -572,7 +699,10 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
       (replacement === '[REDACTED]' || (mask && !configured && !replacement))
     ) {
       setError(
-        'Enter a Pushbullet access token to enable notification events.'
+        n(
+          'validationPushbulletAccessToken',
+          'Enter a Pushbullet access token to enable notification events.'
+        )
       );
       return;
     }
@@ -600,7 +730,10 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
         !!result.pushbulletAccessToken !== expectedConfigured
       ) {
         setError(
-          'Could not confirm the saved Pushbullet settings. Reload settings and try again.'
+          n(
+            'pushbulletsettingsfailed',
+            'Could not confirm the saved Pushbullet settings. Reload settings and try again.'
+          )
         );
         return;
       }
@@ -610,10 +743,15 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
       setMask(nextMask);
       setToken('');
       setRemove(false);
-      setNotice('Pushbullet settings saved.');
+      setNotice(n('pushbulletsettingssaved', 'Pushbullet settings saved.'));
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save Pushbullet settings. Try again.');
+        setError(
+          n(
+            'pushbulletsettingsfailed',
+            'Could not save Pushbullet settings. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -629,7 +767,14 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
     >
       <div className="setlist">
         <label className="set cfg-row">
-          <b>{configured ? 'Replacement Access Token' : 'Access Token'}</b>
+          <b>
+            {configured
+              ? n(
+                  'lumen.notifications.replacementAccessToken',
+                  'Replacement Access Token'
+                )
+              : n('pushbulletAccessToken', 'Access Token')}
+          </b>
           <input
             className="cfg-input"
             type="password"
@@ -642,7 +787,12 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
         </label>
         {configured && (
           <label className="set cfg-row">
-            <b>Remove Token and Disable Pushbullet Events</b>
+            <b>
+              {n(
+                'lumen.notifications.removePushbulletToken',
+                'Remove Token and Disable Pushbullet Events'
+              )}
+            </b>
             <input
               type="checkbox"
               checked={remove}
@@ -654,8 +804,10 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
       </div>
       {configured && (
         <p className="note">
-          An access token is configured. Leave the replacement field empty to
-          keep it.
+          {n(
+            'lumen.notifications.keepPushbulletToken',
+            'An access token is configured. Leave the replacement field empty to keep it.'
+          )}
         </p>
       )}
       <EventChoices
@@ -675,7 +827,12 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || !changed}>
-          {busy ? 'Saving…' : 'Save Pushbullet Settings'}
+          {busy
+            ? n('lumen.notifications.saving', 'Saving…')
+            : n(
+                'lumen.notifications.savePushbullet',
+                'Save Pushbullet Settings'
+              )}
         </button>
       </div>
     </form>
@@ -691,6 +848,7 @@ function PushoverForm({
   id: number;
   data: Preferences;
 }) {
+  const n = useNotificationMessage();
   const [saved, setSaved] = useState(() => ({
     application: !!data.pushoverApplicationToken,
     user: !!data.pushoverUserKey,
@@ -733,7 +891,10 @@ function PushoverForm({
         (draft.mask !== 0 && !(saved.user || userKey)))
     ) {
       setError(
-        'Enter a 30-character application token and user or group key to enable Pushover events.'
+        n(
+          'lumen.notifications.validationPushoverCredentials',
+          'Enter a 30-character application token and user or group key to enable Pushover events.'
+        )
       );
       return;
     }
@@ -768,7 +929,12 @@ function PushoverForm({
         (result.pushoverSound ?? '') !== next.sound ||
         result.notificationTypes?.pushover !== next.mask
       ) {
-        setError('Could not confirm the saved Pushover settings. Try again.');
+        setError(
+          n(
+            'pushoversettingsfailed',
+            'Could not confirm the saved Pushover settings. Try again.'
+          )
+        );
         return;
       }
       forget(path);
@@ -781,10 +947,15 @@ function PushoverForm({
       });
       setRemove(false);
       if (application && soundPath) sounds.reload();
-      setNotice('Pushover settings saved.');
+      setNotice(n('pushoversettingssaved', 'Pushover settings saved.'));
     } catch {
       if (generation === sessionGeneration())
-        setError('Could not save Pushover settings. Try again.');
+        setError(
+          n(
+            'pushoversettingsfailed',
+            'Could not save Pushover settings. Try again.'
+          )
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -799,14 +970,20 @@ function PushoverForm({
       }}
     >
       <p className="note">
-        Leave the credential fields empty to keep configured credentials.
+        {n(
+          'lumen.notifications.keepPushoverCredentials',
+          'Leave the credential fields empty to keep configured credentials.'
+        )}
       </p>
       <div className="setlist">
         <label className="set cfg-row">
           <b>
             {saved.application
-              ? 'Replacement Application Token'
-              : 'Application Token'}
+              ? n(
+                  'lumen.notifications.replacementApplicationToken',
+                  'Replacement Application Token'
+                )
+              : n('pushoverApplicationToken', 'Application Token')}
           </b>
           <input
             className="cfg-input"
@@ -822,7 +999,12 @@ function PushoverForm({
         </label>
         <label className="set cfg-row">
           <b>
-            {saved.user ? 'Replacement User or Group Key' : 'User or Group Key'}
+            {saved.user
+              ? n(
+                  'lumen.notifications.replacementUserKey',
+                  'Replacement User or Group Key'
+                )
+              : n('pushoverUserKey', 'User or Group Key')}
           </b>
           <input
             className="cfg-input"
@@ -838,7 +1020,12 @@ function PushoverForm({
         </label>
         {(saved.application || saved.user) && (
           <label className="set cfg-row">
-            <b>Remove Credentials and Disable Pushover Events</b>
+            <b>
+              {n(
+                'lumen.notifications.removePushoverCredentials',
+                'Remove Credentials and Disable Pushover Events'
+              )}
+            </b>
             <input
               type="checkbox"
               checked={remove}
@@ -850,7 +1037,7 @@ function PushoverForm({
       </div>
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Sound</span>
+          <span className="lbl">{n('sound', 'Sound')}</span>
           <select
             value={remove ? '' : draft.sound}
             disabled={busy || remove || (!sounds.data?.length && !draft.sound)}
@@ -858,7 +1045,7 @@ function PushoverForm({
               setDraft({ ...draft, sound: event.target.value })
             }
           >
-            <option value="">Device default</option>
+            <option value="">{n('deviceDefault', 'Device default')}</option>
             {draft.sound &&
               !sounds.data?.some(({ name }) => name === draft.sound) && (
                 <option value={draft.sound}>{draft.sound}</option>
@@ -874,7 +1061,7 @@ function PushoverForm({
       {soundPath && (
         <ServiceNote
           error={sounds.error}
-          what="Pushover sounds"
+          what={n('lumen.notifications.pushoverSounds', 'Pushover sounds')}
           retry={sounds.reload}
         />
       )}
@@ -895,7 +1082,9 @@ function PushoverForm({
       )}
       <div className="toolbar">
         <button className="btn btn-tonal" disabled={busy || !changed}>
-          {busy ? 'Saving…' : 'Save Pushover Settings'}
+          {busy
+            ? n('lumen.notifications.saving', 'Saving…')
+            : n('lumen.notifications.savePushover', 'Save Pushover Settings')}
         </button>
       </div>
     </form>
@@ -909,6 +1098,7 @@ export function UserNotifications({
   id: number;
   manageBrowser?: boolean;
 }) {
+  const n = useNotificationMessage();
   const { hash } = useLocation();
   const path = `/user/${id}/settings/notifications`;
   const { data, error, reload } = useApi<Preferences>(path);
@@ -933,15 +1123,15 @@ export function UserNotifications({
       : defaultMask;
   return (
     <>
-      <Section title="Email" id="notification-email">
+      <Section title={n('email', 'Email')} id="notification-email">
         <ServiceNote
           error={error}
-          what="notification settings"
+          what={n('notificationsettings', 'notification settings')}
           retry={reload}
         />
         {!data && !error && (
           <p className="note" role="status">
-            Loading notification settings…
+            {n('lumen.notifications.loading', 'Loading notification settings…')}
           </p>
         )}
         {data &&
@@ -952,9 +1142,9 @@ export function UserNotifications({
                 path={path}
                 mask={mask}
                 channel="email"
-                label="Email"
+                label={n('email', 'Email')}
               />
-              <Section title="OpenPGP">
+              <Section title={n('pgpPublicKey', 'OpenPGP')}>
                 <OpenPgpForm
                   path={path}
                   configured={!!data.pgpKey}
@@ -964,7 +1154,10 @@ export function UserNotifications({
             </>
           ) : (
             <p className="note">
-              Email notifications are disabled on this server.
+              {n(
+                'lumen.notifications.emailDisabled',
+                'Email notifications are disabled on this server.'
+              )}
             </p>
           ))}
       </Section>
@@ -1018,13 +1211,13 @@ export function UserNotifications({
         </Section>
       )}
       {data?.webPushEnabled && (
-        <Section title="Browser Push" id="notification-webpush">
+        <Section title={n('webpush', 'Browser Push')} id="notification-webpush">
           <EventForm
             key={data.notificationTypes?.webpush ?? defaultMask}
             path={path}
             mask={data.notificationTypes?.webpush ?? defaultMask}
             channel="webpush"
-            label="Browser Push"
+            label={n('webpush', 'Browser Push')}
           />
           {manageBrowser && <PushDevices id={id} />}
         </Section>
@@ -1034,15 +1227,16 @@ export function UserNotifications({
 }
 
 export default function NotificationSettings() {
+  const n = useNotificationMessage();
   const { user } = useAuth();
   return (
     <>
       <header className="ph">
-        <h1>Notification Settings</h1>
+        <h1>{n('notificationsettings', 'Notification Settings')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me/account">
-          Account Settings
+          {n('lumen.notifications.accountSettings', 'Account Settings')}
         </Link>
       </div>
       {user && <UserNotifications key={user.id} id={user.id} />}

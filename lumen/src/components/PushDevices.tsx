@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { api } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import {
   getBrowserPushSubscription,
   registerBrowserPush,
@@ -17,16 +18,33 @@ interface Device {
   createdAt: string;
 }
 
-function deviceName(agent?: string | null) {
-  if (!agent) return 'Browser device';
+function deviceName(agent?: string | null, generic = 'Browser device') {
+  if (!agent) return generic;
   if (/Edg(?:e|A|iOS)?\//.test(agent)) return 'Microsoft Edge';
   if (/(?:Firefox|FxiOS)\//.test(agent)) return 'Firefox';
   if (/(?:Chrome|CriOS)\//.test(agent)) return 'Chrome';
   if (/Safari\//.test(agent)) return 'Safari';
-  return 'Browser device';
+  return generic;
 }
 
 export function PushDevices({ id }: { id: number }) {
+  const { t, locale } = useLumenLocale();
+  const n = (
+    key: string,
+    fallback: string,
+    values?: Record<string, string | number>
+  ) =>
+    t(
+      key.startsWith('lumen.')
+        ? key
+        : `components.UserProfile.UserSettings.UserNotificationSettings.UserNotificationsWebPush.${key}`,
+      fallback,
+      values
+    );
+  const genericDeviceName = n(
+    'lumen.notifications.browserDeviceName',
+    'Browser device'
+  );
   const { data, error, reload } = useApi<Device[]>(
     `/user/${id}/pushSubscriptions`
   );
@@ -65,7 +83,12 @@ export function PushDevices({ id }: { id: number }) {
       const endpoint = await registerBrowserPush(id);
       if (endpoint) {
         setBrowserEndpoint(endpoint);
-        setNotice('This browser is registered.');
+        setNotice(
+          n(
+            'lumen.notifications.browserRegistered',
+            'This browser is registered.'
+          )
+        );
         reload();
       }
     } catch (cause) {
@@ -74,11 +97,20 @@ export function PushDevices({ id }: { id: number }) {
         setFailure(
           cause instanceof Error &&
             [
-              'Allow notifications in your browser to register this device.',
-              'Browser push registration is disabled. Check your notification preferences.',
+              n(
+                'lumen.notifications.allowBrowserNotifications',
+                'Allow notifications in your browser to register this device.'
+              ),
+              n(
+                'lumen.notifications.browserPushDisabled',
+                'Browser push registration is disabled. Check your notification preferences.'
+              ),
             ].includes(cause.message)
             ? cause.message
-            : 'Could not register this browser. Try again.'
+            : n(
+                'lumen.notifications.browserRegisterFailure',
+                'Could not register this browser. Try again.'
+              )
         );
       }
     } finally {
@@ -103,7 +135,9 @@ export function PushDevices({ id }: { id: number }) {
       if (generation !== sessionGeneration()) return;
       const endpoint = selection.endpoint;
       setSelection(null);
-      setNotice('Browser device removed.');
+      setNotice(
+        n('lumen.notifications.browserDeviceRemoved', 'Browser device removed.')
+      );
       try {
         if (await unsubscribeBrowserPush(id, endpoint))
           setBrowserEndpoint(null);
@@ -114,7 +148,12 @@ export function PushDevices({ id }: { id: number }) {
     } catch {
       if (generation === sessionGeneration()) {
         setSelection(null);
-        setFailure('Could not remove the browser device. Try again.');
+        setFailure(
+          n(
+            'lumen.notifications.browserRemoveFailure',
+            'Could not remove the browser device. Try again.'
+          )
+        );
       }
     } finally {
       pending.current = false;
@@ -124,9 +163,14 @@ export function PushDevices({ id }: { id: number }) {
 
   return (
     <>
-      <h3>Registered Browser Devices</h3>
+      <h3>{n('managedevices', 'Registered Browser Devices')}</h3>
       {currentDevice ? (
-        <p className="note">This browser is registered.</p>
+        <p className="note">
+          {n(
+            'lumen.notifications.browserRegistered',
+            'This browser is registered.'
+          )}
+        </p>
       ) : supportsBrowserPush() ? (
         <div className="toolbar">
           <button
@@ -134,36 +178,61 @@ export function PushDevices({ id }: { id: number }) {
             disabled={busy}
             onClick={() => void register()}
           >
-            Register This Browser
+            {n(
+              'lumen.notifications.registerThisBrowser',
+              'Register This Browser'
+            )}
           </button>
         </div>
       ) : (
         <p className="note">
-          Browser registration requires a compatible browser and a secure
-          connection.
+          {n(
+            'lumen.notifications.browserRegistrationRequirements',
+            'Browser registration requires a compatible browser and a secure connection.'
+          )}
         </p>
       )}
-      <ServiceNote error={error} what="browser devices" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={n('device', 'browser devices')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading browser devices…
+          {n(
+            'lumen.notifications.loadingBrowserDevices',
+            'Loading browser devices…'
+          )}
         </p>
       )}
       {data?.length === 0 && (
-        <p className="note">No browser devices are registered.</p>
+        <p className="note">
+          {n('nodevicestoshow', 'No browser devices are registered.')}
+        </p>
       )}
       {!!data?.length && (
         <ul className="setlist">
           {data.map((device) => (
             <li className="set cfg-row" key={device.endpoint}>
               <span>
-                <b>{deviceName(device.userAgent)}</b>
+                <b>{deviceName(device.userAgent, genericDeviceName)}</b>
                 {device.endpoint === browserEndpoint && (
-                  <small>This browser</small>
+                  <small>
+                    {n('lumen.notifications.thisBrowser', 'This browser')}
+                  </small>
                 )}
                 {Number.isFinite(Date.parse(device.createdAt)) && (
                   <small>
-                    Registered {new Date(device.createdAt).toLocaleString()}
+                    {n(
+                      'lumen.notifications.registeredAt',
+                      'Registered {date}',
+                      {
+                        date: new Intl.DateTimeFormat(locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                        }).format(new Date(device.createdAt)),
+                      }
+                    )}
                   </small>
                 )}
               </span>
@@ -173,8 +242,11 @@ export function PushDevices({ id }: { id: number }) {
                 onClick={() => setSelection(device)}
               >
                 {device.endpoint === browserEndpoint
-                  ? 'Disable This Browser'
-                  : 'Remove Device'}
+                  ? n(
+                      'lumen.notifications.disableThisBrowser',
+                      'Disable This Browser'
+                    )
+                  : n('deletesubscription', 'Remove Device')}
               </button>
             </li>
           ))}
@@ -192,9 +264,18 @@ export function PushDevices({ id }: { id: number }) {
       )}
       {selection && (
         <ConfirmSheet
-          title="Remove this browser device?"
-          body={`${deviceName(selection.userAgent)} will stop receiving SeerrNG push notifications.`}
-          confirm="Remove Device"
+          title={n(
+            'lumen.notifications.removeBrowserTitle',
+            'Remove this browser device?'
+          )}
+          body={n(
+            'lumen.notifications.removeBrowserBody',
+            '{device} will stop receiving SeerrNG push notifications.',
+            {
+              device: deviceName(selection.userAgent, genericDeviceName),
+            }
+          )}
+          confirm={n('deletesubscription', 'Remove Device')}
           busy={busy}
           onClose={dismiss}
           onConfirm={() => void remove()}

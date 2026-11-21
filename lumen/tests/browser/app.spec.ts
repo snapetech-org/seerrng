@@ -7587,7 +7587,9 @@ test('Managed notifications save for the selected user without touching browser 
     .first()
     .check();
   await page.getByRole('button', { name: 'Save Email Preferences' }).click();
-  await expect(page.getByText('Email preferences saved.')).toBeVisible();
+  await expect(
+    page.getByText('Email notification settings saved successfully!')
+  ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Registered Browser Devices' })
   ).toHaveCount(0);
