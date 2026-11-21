@@ -5021,8 +5021,19 @@ retention and retry, the changed-field payload, locale direction, and overflow
 at desktop, iPhone, Android, and tablet sizes. French desktop and Arabic phone
 captures were compared with the English baseline; existing panel geometry is
 retained. Other locales use English fallback. This change covers only the
-Application panel: Spotify, download-path, instance-request, quota, and
-permissions panels on this page still need their own localization and workflow
-parity review. Live settings save/readback against SeerrNG and independent
+Application panel; Download Copies, instance request policy, quotas, and
+permissions still need their own localization and workflow parity review. Live settings save/readback against SeerrNG and independent
 linguistic review remain open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/`.
+
+
+The Spotify credentials panel on `/admin/general` now localizes its heading,
+credential fields, setup guidance, saved-secret hint, removal control, and save
+feedback in English, French, and Arabic. Existing behavior still keeps the
+secret write-only after saving and submits only changed values. The browser
+fixture verifies the localized controls and the exact client ID/secret payload
+across desktop, iPhone, Android, and tablet. French desktop and Arabic phone
+candidate renders show the added guidance inside the existing field rows;
+Arabic shows the same fixed navigation overlap present in the English baseline.
+Live Spotify authorization and credential readback remain unverified, and the
+upstream Arabic Spotify labels have not had independent linguistic review.

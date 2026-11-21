@@ -1378,7 +1378,16 @@
     "lumen.adminGeneral.help.jellyfinQuickConnectOnly": "Use Quick Connect for Jellyfin sign-in and disable Jellyfin password and plugin sign-in.",
     "lumen.adminGeneral.keepSignIn": "Keep at least one sign-in method enabled.",
     "lumen.adminGeneral.mediaServerPasswordNeeded": "Users who rely on media server sign-in need a SeerrNG password to sign in.",
-    "lumen.adminGeneral.saveButton": "Save Application Settings"
+    "lumen.adminGeneral.saveButton": "Save Application Settings",
+    "lumen.adminGeneral.spotify.title": "Spotify Playlist Import",
+    "lumen.adminGeneral.spotify.clientIdHelp": "Create an application in the Spotify Developer Dashboard and copy its client ID.",
+    "lumen.adminGeneral.spotify.clientSecretHelp": "The Spotify client secret is stored in SeerrNG and never shown in full after saving.",
+    "lumen.adminGeneral.spotify.secretSaved": "A secret is saved. Leave blank to keep it.",
+    "lumen.adminGeneral.spotify.removeSecret": "Remove saved Spotify secret",
+    "lumen.adminGeneral.spotify.saveButton": "Save Spotify Credentials",
+    "lumen.adminGeneral.spotify.saved": "Spotify credentials saved.",
+    "lumen.adminGeneral.spotify.saveFailure": "Could not save Spotify credentials.",
+    "lumen.adminGeneral.spotify.confirmFailure": "Could not confirm saved Spotify credentials."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -2872,7 +2881,16 @@
     "lumen.adminGeneral.help.jellyfinQuickConnectOnly": "Utiliser Quick Connect pour Jellyfin et désactiver la connexion par mot de passe et par module.",
     "lumen.adminGeneral.keepSignIn": "Conservez au moins une méthode de connexion activée.",
     "lumen.adminGeneral.mediaServerPasswordNeeded": "Les personnes qui utilisent la connexion au serveur multimédia doivent définir un mot de passe SeerrNG.",
-    "lumen.adminGeneral.saveButton": "Enregistrer les paramètres de l’application"
+    "lumen.adminGeneral.saveButton": "Enregistrer les paramètres de l’application",
+    "lumen.adminGeneral.spotify.title": "Importation de playlists Spotify",
+    "lumen.adminGeneral.spotify.clientIdHelp": "Créez une application dans le tableau de bord Spotify Developer et copiez son identifiant client.",
+    "lumen.adminGeneral.spotify.clientSecretHelp": "يتم تخزين السر في SeerrNG ولا يُعرض كاملًا بعد الحفظ.",
+    "lumen.adminGeneral.spotify.secretSaved": "Un secret est enregistré. Laissez le champ vide pour le conserver.",
+    "lumen.adminGeneral.spotify.removeSecret": "Supprimer le secret Spotify enregistré",
+    "lumen.adminGeneral.spotify.saveButton": "Enregistrer les identifiants Spotify",
+    "lumen.adminGeneral.spotify.saved": "Identifiants Spotify enregistrés.",
+    "lumen.adminGeneral.spotify.saveFailure": "Impossible d’enregistrer les identifiants Spotify.",
+    "lumen.adminGeneral.spotify.confirmFailure": "Impossible de confirmer l’enregistrement des identifiants Spotify."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -4370,6 +4388,15 @@
     "lumen.adminGeneral.help.jellyfinQuickConnectOnly": "استخدام Quick Connect لتسجيل الدخول إلى Jellyfin وتعطيل تسجيل الدخول بكلمة المرور أو المكوّن الإضافي.",
     "lumen.adminGeneral.keepSignIn": "أبقِ طريقة تسجيل دخول واحدة على الأقل مفعّلة.",
     "lumen.adminGeneral.mediaServerPasswordNeeded": "يحتاج المستخدمون الذين يعتمدون على تسجيل الدخول عبر خادم الوسائط إلى كلمة مرور SeerrNG.",
-    "lumen.adminGeneral.saveButton": "حفظ إعدادات التطبيق"
+    "lumen.adminGeneral.saveButton": "حفظ إعدادات التطبيق",
+    "lumen.adminGeneral.spotify.title": "استيراد قوائم تشغيل Spotify",
+    "lumen.adminGeneral.spotify.clientIdHelp": "أنشئ تطبيقًا في لوحة مطوري Spotify وانسخ معرّف العميل.",
+    "lumen.adminGeneral.spotify.clientSecretHelp": "يُخزَّن السر في SeerrNG ولا يُعرض كاملًا بعد الحفظ.",
+    "lumen.adminGeneral.spotify.secretSaved": "يوجد سر محفوظ. اترك الحقل فارغًا للاحتفاظ به.",
+    "lumen.adminGeneral.spotify.removeSecret": "إزالة سر Spotify المحفوظ",
+    "lumen.adminGeneral.spotify.saveButton": "حفظ بيانات اعتماد Spotify",
+    "lumen.adminGeneral.spotify.saved": "تم حفظ بيانات اعتماد Spotify.",
+    "lumen.adminGeneral.spotify.saveFailure": "تعذر حفظ بيانات اعتماد Spotify.",
+    "lumen.adminGeneral.spotify.confirmFailure": "تعذر تأكيد حفظ بيانات اعتماد Spotify."
   }
 }

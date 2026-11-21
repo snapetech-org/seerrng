@@ -2295,5 +2295,16 @@
   "lumen.adminGeneral.help.jellyfinQuickConnectOnly",
   "lumen.adminGeneral.keepSignIn",
   "lumen.adminGeneral.mediaServerPasswordNeeded",
-  "lumen.adminGeneral.saveButton"
+  "lumen.adminGeneral.saveButton",
+  "components.Settings.SettingsMain.spotifyClientId",
+  "components.Settings.SettingsMain.spotifyClientSecret",
+  "lumen.adminGeneral.spotify.title",
+  "lumen.adminGeneral.spotify.clientIdHelp",
+  "lumen.adminGeneral.spotify.clientSecretHelp",
+  "lumen.adminGeneral.spotify.secretSaved",
+  "lumen.adminGeneral.spotify.removeSecret",
+  "lumen.adminGeneral.spotify.saveButton",
+  "lumen.adminGeneral.spotify.saved",
+  "lumen.adminGeneral.spotify.saveFailure",
+  "lumen.adminGeneral.spotify.confirmFailure"
 ]

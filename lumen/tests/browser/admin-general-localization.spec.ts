@@ -9,6 +9,9 @@ const labels = {
     field: 'Application Title',
     interface: 'Default Interface',
     save: 'Save Application Settings',
+    spotifyId: 'Spotify Client ID',
+    spotifySecret: 'Spotify Client Secret',
+    spotifySave: 'Save Spotify Credentials',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -18,6 +21,9 @@ const labels = {
     field: 'Titre de l’application',
     interface: 'Interface par défaut',
     save: 'Enregistrer les paramètres de l’application',
+    spotifyId: 'Spotify ID client',
+    spotifySecret: 'Code secret client Spotify',
+    spotifySave: 'Enregistrer les identifiants Spotify',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -27,6 +33,9 @@ const labels = {
     field: 'عنوان التطبيق',
     interface: 'الواجهة الافتراضية',
     save: 'حفظ إعدادات التطبيق',
+    spotifyId: 'معرف العميل Spotify',
+    spotifySecret: 'Spotify سر العميل',
+    spotifySave: 'حفظ بيانات اعتماد Spotify',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -38,6 +47,8 @@ test('general application settings localize and recover failed saves', async ({
   const text = labels[locale as keyof typeof labels] ?? labels.en;
   let failOnce = true;
   let title = 'SeerrNG';
+  let spotifyClientId = '';
+  let spotifyClientSecret = '';
   const writes: Record<string, unknown>[] = [];
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
@@ -60,10 +71,16 @@ test('general application settings localize and recover failed saves', async ({
         }
         if (typeof body.applicationTitle === 'string')
           title = body.applicationTitle;
+        if (typeof body.spotifyClientId === 'string')
+          spotifyClientId = body.spotifyClientId;
+        if (typeof body.spotifyClientSecret === 'string')
+          spotifyClientSecret = body.spotifyClientSecret;
       }
       return route.fulfill({
         json: {
           applicationTitle: title,
+          spotifyClientId,
+          spotifyClientSecret,
           applicationUrl: 'https://seerr.example.test',
           youtubeUrl: '',
           cacheImages: true,
@@ -116,6 +133,25 @@ test('general application settings localize and recover failed saves', async ({
     { applicationTitle: 'Household SeerrNG' },
     { applicationTitle: 'Household SeerrNG' },
   ]);
+  await page.getByLabel(new RegExp(text.spotifyId)).fill('spotify-client');
+  await page.getByLabel(new RegExp(text.spotifySecret)).fill('spotify-secret');
+  await page
+    .getByRole('button', { name: text.spotifySave, exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      locale === 'fr'
+        ? 'Identifiants Spotify enregistrés.'
+        : locale === 'ar'
+          ? 'تم حفظ بيانات اعتماد Spotify.'
+          : 'Spotify credentials saved.',
+      { exact: true }
+    )
+  ).toBeVisible();
+  expect(writes[2]).toMatchObject({
+    spotifyClientId: 'spotify-client',
+    spotifyClientSecret: 'spotify-secret',
+  });
   const widths = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,
     viewport: document.documentElement.clientWidth,

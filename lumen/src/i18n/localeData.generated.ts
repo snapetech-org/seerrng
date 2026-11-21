@@ -1345,6 +1345,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'خطاف الويب URL',
       'components.MovieDetails.addtowatchlist': 'إضافة إلى قائمة المشاهدة',
       'components.MovieDetails.removefromwatchlist': 'إزالة من قائمة المشاهدة',
+      'components.Settings.SettingsMain.spotifyClientId': 'معرف العميل Spotify',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify سر العميل',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.you': 'أنت',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -3029,6 +3032,20 @@ export const localeData = [
       'lumen.adminGeneral.mediaServerPasswordNeeded':
         'يحتاج المستخدمون الذين يعتمدون على تسجيل الدخول عبر خادم الوسائط إلى كلمة مرور SeerrNG.',
       'lumen.adminGeneral.saveButton': 'حفظ إعدادات التطبيق',
+      'lumen.adminGeneral.spotify.title': 'استيراد قوائم تشغيل Spotify',
+      'lumen.adminGeneral.spotify.clientIdHelp':
+        'أنشئ تطبيقًا في لوحة مطوري Spotify وانسخ معرّف العميل.',
+      'lumen.adminGeneral.spotify.clientSecretHelp':
+        'يُخزَّن السر في SeerrNG ولا يُعرض كاملًا بعد الحفظ.',
+      'lumen.adminGeneral.spotify.secretSaved':
+        'يوجد سر محفوظ. اترك الحقل فارغًا للاحتفاظ به.',
+      'lumen.adminGeneral.spotify.removeSecret': 'إزالة سر Spotify المحفوظ',
+      'lumen.adminGeneral.spotify.saveButton': 'حفظ بيانات اعتماد Spotify',
+      'lumen.adminGeneral.spotify.saved': 'تم حفظ بيانات اعتماد Spotify.',
+      'lumen.adminGeneral.spotify.saveFailure':
+        'تعذر حفظ بيانات اعتماد Spotify.',
+      'lumen.adminGeneral.spotify.confirmFailure':
+        'تعذر تأكيد حفظ بيانات اعتماد Spotify.',
     },
   },
   {
@@ -6808,6 +6825,9 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Zur Merkliste hinzufügen',
       'components.MovieDetails.removefromwatchlist':
         'Von der Merkliste entfernen',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify-Client-ID',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify-Client-Secret',
     },
   },
   {
@@ -8179,6 +8199,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'Webhook URL',
       'components.MovieDetails.addtowatchlist': 'Add To Watchlist',
       'components.MovieDetails.removefromwatchlist': 'Remove From Watchlist',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify Client ID',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify Client Secret',
       'lumen.status.queued': 'Queued',
       'lumen.status.shared': 'Available to Other Users',
       'lumen.status.partlyInLibrary': 'Partly in library',
@@ -9819,6 +9842,20 @@ export const localeData = [
       'lumen.adminGeneral.mediaServerPasswordNeeded':
         'Users who rely on media server sign-in need a SeerrNG password to sign in.',
       'lumen.adminGeneral.saveButton': 'Save Application Settings',
+      'lumen.adminGeneral.spotify.title': 'Spotify Playlist Import',
+      'lumen.adminGeneral.spotify.clientIdHelp':
+        'Create an application in the Spotify Developer Dashboard and copy its client ID.',
+      'lumen.adminGeneral.spotify.clientSecretHelp':
+        'The Spotify client secret is stored in SeerrNG and never shown in full after saving.',
+      'lumen.adminGeneral.spotify.secretSaved':
+        'A secret is saved. Leave blank to keep it.',
+      'lumen.adminGeneral.spotify.removeSecret': 'Remove saved Spotify secret',
+      'lumen.adminGeneral.spotify.saveButton': 'Save Spotify Credentials',
+      'lumen.adminGeneral.spotify.saved': 'Spotify credentials saved.',
+      'lumen.adminGeneral.spotify.saveFailure':
+        'Could not save Spotify credentials.',
+      'lumen.adminGeneral.spotify.confirmFailure':
+        'Could not confirm saved Spotify credentials.',
     },
   },
   {
@@ -11657,6 +11694,10 @@ export const localeData = [
         'Añadir a la lista de seguimiento',
       'components.MovieDetails.removefromwatchlist':
         'Eliminar de la lista de seguimiento',
+      'components.Settings.SettingsMain.spotifyClientId':
+        'Spotify ID de cliente',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify Secreto del cliente',
     },
   },
   {
@@ -13060,6 +13101,10 @@ export const localeData = [
         'Añadir a la lista de vigilancia',
       'components.MovieDetails.removefromwatchlist':
         'Eliminar de la lista de vigilancia',
+      'components.Settings.SettingsMain.spotifyClientId':
+        'Spotify ID de cliente',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify Secreto del cliente',
     },
   },
   {
@@ -15301,6 +15346,9 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Ajouter à la liste de suivi',
       'components.MovieDetails.removefromwatchlist':
         'Supprimer de la liste de suivi',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify ID client',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Code secret client Spotify',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.you': 'Vous',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -17166,6 +17214,22 @@ export const localeData = [
         'Les personnes qui utilisent la connexion au serveur multimédia doivent définir un mot de passe SeerrNG.',
       'lumen.adminGeneral.saveButton':
         'Enregistrer les paramètres de l’application',
+      'lumen.adminGeneral.spotify.title': 'Importation de playlists Spotify',
+      'lumen.adminGeneral.spotify.clientIdHelp':
+        'Créez une application dans le tableau de bord Spotify Developer et copiez son identifiant client.',
+      'lumen.adminGeneral.spotify.clientSecretHelp':
+        'يتم تخزين السر في SeerrNG ولا يُعرض كاملًا بعد الحفظ.',
+      'lumen.adminGeneral.spotify.secretSaved':
+        'Un secret est enregistré. Laissez le champ vide pour le conserver.',
+      'lumen.adminGeneral.spotify.removeSecret':
+        'Supprimer le secret Spotify enregistré',
+      'lumen.adminGeneral.spotify.saveButton':
+        'Enregistrer les identifiants Spotify',
+      'lumen.adminGeneral.spotify.saved': 'Identifiants Spotify enregistrés.',
+      'lumen.adminGeneral.spotify.saveFailure':
+        'Impossible d’enregistrer les identifiants Spotify.',
+      'lumen.adminGeneral.spotify.confirmFailure':
+        'Impossible de confirmer l’enregistrement des identifiants Spotify.',
     },
   },
   {
@@ -19196,6 +19260,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'वेबहुक URL',
       'components.MovieDetails.addtowatchlist': 'देखने की सूची में जोड़ें',
       'components.MovieDetails.removefromwatchlist': 'देखने की सूची से हटाएँ',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify क्लाइंट ID',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify क्लाइंट गुप्त',
     },
   },
   {
@@ -21209,6 +21276,9 @@ export const localeData = [
       'components.MovieDetails.addtowatchlist': 'Tambahkan ke daftar tontonan',
       'components.MovieDetails.removefromwatchlist':
         'Hapus dari daftar tontonan',
+      'components.Settings.SettingsMain.spotifyClientId': 'ID Klien Spotify',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Rahasia Klien Spotify',
     },
   },
   {
@@ -23202,6 +23272,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'ウェブフック URL',
       'components.MovieDetails.addtowatchlist': 'ウォッチリストに追加',
       'components.MovieDetails.removefromwatchlist': 'ウォッチリストから削除',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotifyクライアントシークレット',
     },
   },
   {
@@ -24534,6 +24607,10 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': '웹훅 URL',
       'components.MovieDetails.addtowatchlist': '관심 목록에 추가',
       'components.MovieDetails.removefromwatchlist': '관심 목록에서 제거',
+      'components.Settings.SettingsMain.spotifyClientId':
+        'Spotify 클라이언트 ID',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify 클라이언트 비밀',
     },
   },
   {
@@ -27751,6 +27828,10 @@ export const localeData = [
         'Adicionar a Lista para Assistir',
       'components.MovieDetails.removefromwatchlist':
         'Remover da Lista para Assistir',
+      'components.Settings.SettingsMain.spotifyClientId':
+        'ID do Cliente Spotify',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Segredo do Cliente Spotify',
     },
   },
   {
@@ -32998,6 +33079,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': '网络钩子网址（URL）',
       'components.MovieDetails.addtowatchlist': '添加到待看列表',
       'components.MovieDetails.removefromwatchlist': '从待看列表中移除',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify 客户端机密',
     },
   },
   {
@@ -34296,6 +34380,9 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'Webhook 網址',
       'components.MovieDetails.addtowatchlist': '加入待看清單',
       'components.MovieDetails.removefromwatchlist': '從待看清單移除',
+      'components.Settings.SettingsMain.spotifyClientId': 'Spotify 客户身份',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Spotify 客户端机密',
     },
   },
   {
@@ -35673,6 +35760,10 @@ export const localeData = [
       'components.Settings.Notifications.webhookUrl': 'URL webhook',
       'components.MovieDetails.addtowatchlist': 'Thêm vào danh sách xem',
       'components.MovieDetails.removefromwatchlist': 'Xóa khỏi danh sách xem',
+      'components.Settings.SettingsMain.spotifyClientId':
+        'ID khách hàng Spotify',
+      'components.Settings.SettingsMain.spotifyClientSecret':
+        'Bí mật khách hàng Spotify',
     },
   },
 ] as const;
