@@ -96,6 +96,12 @@ production and sixteen against the production Express `/lumen/` mount. These
 fixtures do not replace live multi-device verification against a running
 SeerrNG instance, which remains open.
 
+### Movie detail actions and facts
+
+Movie detail now localizes its primary request and 4K actions, theater and 4K playback copy, fact labels, related-title links, and streaming-policy confirmation controls in English, French, and Arabic. Provider values, server names, certification, release-kind names, and media status values remain data-driven. Request authorization and submission behavior are unchanged.
+
+The detail browser fixture passes in all three locales on desktop, iPhone, Android, and tablet (12 cases). It checks the request action, original-language/runtime fact labels, shared request options and disclosures, tag toggling, saved locale, and page overflow. French desktop and Arabic phone captures were inspected. A matched pre-change comparison, bundled production mount, and a TV-detail-specific localization matrix remain unverified; dynamic provider values and live request behavior are not covered. Evidence: `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-options-20261121/movie-detail/`.
+
 ### Movie and TV request option localization
 
 The shared request-options disclosure on movie and TV detail pages now localizes its title, loading and no-server copy, requester, server, quality profile, folder, language and season-order controls, default labels, quota override, and request tags in English, French, and Arabic. Shared cast/crew and subject-tag disclosures also localize their headings, expand/collapse actions, browse controls, saved-open buttons, and preference-failure feedback; trailer actions use the active locale. Server names, quality profile names, folders, metadata values, permission checks, and request payloads remain supplied by their existing owners.

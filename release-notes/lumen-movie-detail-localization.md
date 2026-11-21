@@ -1,0 +1,1 @@
+Lumen movie details now localize request actions, playback availability copy, fact headings, related-title links, and streaming-policy confirmation controls in English, French, and Arabic. Request behavior and provider values are unchanged.

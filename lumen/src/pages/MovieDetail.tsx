@@ -48,6 +48,7 @@ import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings, useVisibleMediaRefresh } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { useTitleRegions } from '../streamingRegion';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
@@ -73,6 +74,7 @@ function movieCurrency(value?: number) {
 }
 
 export default function MovieDetail() {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const { id } = useParams();
   const [quality] = useSearchParams();
@@ -259,10 +261,13 @@ export default function MovieDetail() {
     >
       <Icon name="plus" />
       {requireApproval
-        ? 'Request Approval'
+        ? t('lumen.movie.action.requestApproval', 'Request Approval')
         : unreleased
-          ? 'Request · downloads on release'
-          : 'Request'}
+          ? t(
+              'lumen.movie.action.requestOnRelease',
+              'Request · downloads on release'
+            )
+          : t('lumen.movie.action.request', 'Request')}
     </button>
   );
   // offered whether or not the HD copy is here or requested: they're separate files
@@ -274,7 +279,9 @@ export default function MovieDetail() {
         onClick={() => request(true)}
       >
         <Icon name="plus" />
-        {requireApproval ? 'Request 4K Approval' : 'Request 4K'}
+        {requireApproval
+          ? t('lumen.movie.action.request4kApproval', 'Request 4K Approval')
+          : t('lumen.movie.action.request4k', 'Request 4K')}
       </button>
     ) : null;
   const trailerBtn = trailer ? <TrailerButton href={trailer} /> : null;
@@ -287,7 +294,11 @@ export default function MovieDetail() {
         poster={tmdbImg(m.posterPath)}
         title={m.title || ''}
         line={[
-          unreleased ? 'In theaters ' + shortDate(date) : date.slice(0, 4),
+          unreleased
+            ? t('lumen.movie.theaters', 'In theaters {date}', {
+                date: shortDate(date),
+              })
+            : date.slice(0, 4),
           certification && <span className="cert">{certification}</span>,
           fmtRun(m.runtime),
           m.genres
@@ -301,7 +312,10 @@ export default function MovieDetail() {
         <ServiceNote error={error} what="this movie" retry={reload} />
         {selected4k && !fourKPlayback?.href && (
           <p className="note" role="status">
-            4K playback is unavailable.
+            {t(
+              'lumen.movie.playbackUnavailable',
+              '4K playback is unavailable.'
+            )}
           </p>
         )}
         <div className="dstatus">
@@ -406,17 +420,26 @@ export default function MovieDetail() {
           <aside>
             <Facts
               rows={[
-                ['Streaming Providers', streamingProviders],
                 [
-                  'Original Language',
+                  t(
+                    'lumen.movie.fact.streamingProviders',
+                    'Streaming Providers'
+                  ),
+                  streamingProviders,
+                ],
+                [
+                  t('lumen.movie.fact.originalLanguage', 'Original Language'),
                   originalLanguageLink(m.originalLanguage, '/movies'),
                 ],
                 [
-                  'Production Countries',
+                  t(
+                    'lumen.movie.fact.productionCountries',
+                    'Production Countries'
+                  ),
                   productionCountryLinks(m.productionCountries, '/movies'),
                 ],
                 [
-                  'Production Studios',
+                  t('lumen.movie.fact.productionStudios', 'Production Studios'),
                   m.productionCompanies?.length
                     ? m.productionCompanies.map(({ id, name }, index) => (
                         <span key={`${id}:${index}`}>
@@ -432,12 +455,20 @@ export default function MovieDetail() {
                       ))
                     : null,
                 ],
-                ['Status', m.status],
-                ['Runtime', fmtRun(m.runtime)],
-                ['Budget', movieCurrency(m.budget)],
-                ['Revenue', movieCurrency(m.revenue)],
+                [t('lumen.movie.fact.status', 'Status'), m.status],
+                [t('lumen.movie.fact.runtime', 'Runtime'), fmtRun(m.runtime)],
                 [
-                  releaseDates.size > 1 ? 'Release Dates' : 'Released',
+                  t('lumen.movie.fact.budget', 'Budget'),
+                  movieCurrency(m.budget),
+                ],
+                [
+                  t('lumen.movie.fact.revenue', 'Revenue'),
+                  movieCurrency(m.revenue),
+                ],
+                [
+                  releaseDates.size > 1
+                    ? t('lumen.movie.fact.releaseDates', 'Release Dates')
+                    : t('lumen.movie.fact.released', 'Released'),
                   releaseDates.size
                     ? [...releaseDates.values()].map(
                         ({ label, date }, index) => (
@@ -452,10 +483,10 @@ export default function MovieDetail() {
                       ? `${shortDate(date, false)}, ${date.slice(0, 4)}`
                       : '',
                 ],
-                ['Director', director],
-                ['Rated', certification],
+                [t('lumen.movie.fact.director', 'Director'), director],
+                [t('lumen.movie.fact.rated', 'Rated'), certification],
                 [
-                  'Collection',
+                  t('lumen.movie.fact.collection', 'Collection'),
                   m.collection && (
                     <Link to={`/collection/${m.collection.id}`}>
                       {m.collection.name}
@@ -470,8 +501,8 @@ export default function MovieDetail() {
                         ? fourKLabel
                         : ''
                       : has4k
-                        ? 'Requested'
-                        : 'Not yet'
+                        ? t('lumen.movie.fact.requested', 'Requested')
+                        : t('lumen.movie.fact.notYet', 'Not yet')
                     : '',
                 ],
               ]}
@@ -479,9 +510,13 @@ export default function MovieDetail() {
           </aside>
         </div>
         <Section
-          title="Related Titles"
+          title={t('lumen.movie.relatedTitles', 'Related Titles')}
           link={['Recommendations', `/movie/${id}/recommendations`]}
-          action={<Link to={`/movie/${id}/similar`}>Similar Movies</Link>}
+          action={
+            <Link to={`/movie/${id}/similar`}>
+              {t('lumen.movie.similar', 'Similar Movies')}
+            </Link>
+          }
         >
           <div className="toolbar">
             <AssociationLink mediaType="movie" id={id} />
@@ -503,10 +538,10 @@ export default function MovieDetail() {
       </ActionBar>
       {override?.movieId === m.id && (
         <ConfirmSheet
-          title="Streaming Request Policy"
+          title={t('lumen.movie.policy.title', 'Streaming Request Policy')}
           body={override.message}
-          confirm="Request Anyway"
-          cancel="Cancel"
+          confirm={t('lumen.movie.policy.requestAnyway', 'Request Anyway')}
+          cancel={t('lumen.movie.policy.cancel', 'Cancel')}
           onClose={() => setOverride(undefined)}
           onConfirm={() =>
             submit({ ...override.options, bypassStreamingRequestPolicy: true })

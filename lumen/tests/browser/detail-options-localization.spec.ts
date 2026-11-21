@@ -8,6 +8,9 @@ const locales = [
     server: 'Server',
     quality: 'Quality',
     folder: 'Folder',
+    request: 'Request',
+    originalLanguage: 'Original Language',
+    runtime: 'Runtime',
     cast: 'Starring',
     showAll: 'Show All 11 Credits',
     showFewer: 'Show Fewer Credits',
@@ -20,6 +23,9 @@ const locales = [
     server: 'Serveur',
     quality: 'Qualité',
     folder: 'Dossier',
+    request: 'Demander',
+    originalLanguage: 'Langue originale',
+    runtime: 'Durée',
     cast: 'Avec',
     showAll: 'Afficher les 11 crédits',
     showFewer: 'Afficher moins de crédits',
@@ -32,6 +38,9 @@ const locales = [
     server: 'الخادم',
     quality: 'الجودة',
     folder: 'المجلد',
+    request: 'طلب',
+    originalLanguage: 'اللغة الأصلية',
+    runtime: 'المدة',
     cast: 'بطولة',
     showAll: 'عرض كل الاعتمادات (11)',
     showFewer: 'عرض اعتمادات أقل',
@@ -65,6 +74,8 @@ for (const locale of locales) {
             title: 'Fixture Film',
             overview: 'A fixture.',
             genres: [],
+            runtime: 100,
+            originalLanguage: 'en',
             mediaInfo: {},
             credits: {
               cast: Array.from({ length: 11 }, (_, index) => ({
@@ -92,6 +103,13 @@ for (const locale of locales) {
       return route.fulfill({ json: { results: [] } });
     });
     await page.goto(`${mount}/movie/550`);
+    await expect(
+      page.getByRole('button', { name: locale.request, exact: true }).first()
+    ).toBeVisible();
+    await expect(
+      page.locator('dt', { hasText: locale.originalLanguage })
+    ).toBeVisible();
+    await expect(page.locator('dt', { hasText: locale.runtime })).toBeVisible();
     await page.getByText(locale.title, { exact: true }).click();
     await expect(page.getByLabel(locale.server)).toBeVisible();
     await expect(page.getByLabel(locale.quality)).toBeVisible();
