@@ -2010,6 +2010,25 @@ export const localeData = [
       'lumen.keywordResults.page': 'صفحة الوسوم {page}',
       'lumen.keywordResults.pageTotal': ' من {total}',
       'lumen.keywordResults.next': 'صفحة وسوم الموضوع التالية',
+      'lumen.streamingPolicy.title': 'سياسة الطلب وفق الاشتراكات',
+      'lumen.streamingPolicy.what': 'سياسة الطلب وفق الاشتراكات',
+      'lumen.streamingPolicy.loading': 'جارٍ تحميل سياسة الطلب…',
+      'lumen.streamingPolicy.enabled': 'تفعيل سياسة الطلب وفق الاشتراكات',
+      'lumen.streamingPolicy.description':
+        'تطبيق إجراء بناءً على خدمات البث التي يشترك فيها مقدم الطلب.',
+      'lumen.streamingPolicy.when': 'عندما يكون العنوان',
+      'lumen.streamingPolicy.available': 'متاحًا ضمن اشتراكاته',
+      'lumen.streamingPolicy.unavailable': 'غير متاح ضمن اشتراكاته',
+      'lumen.streamingPolicy.action': 'إجراء الطلب',
+      'lumen.streamingPolicy.reject': 'رفض',
+      'lumen.streamingPolicy.pending': 'يتطلب موافقة',
+      'lumen.streamingPolicy.approve': 'موافقة',
+      'lumen.streamingPolicy.rejectionMessage': 'رسالة الرفض',
+      'lumen.streamingPolicy.allowOverride': 'السماح بالاستثناءات لكل مستخدم',
+      'lumen.streamingPolicy.save': 'حفظ سياسة الطلب',
+      'lumen.streamingPolicy.saved': 'تم حفظ سياسة الطلب.',
+      'lumen.streamingPolicy.saveFailure': 'تعذر حفظ سياسة الطلب.',
+      'lumen.streamingPolicy.confirmFailure': 'تعذر تأكيد حفظ سياسة الطلب.',
     },
   },
   {
@@ -5758,6 +5777,27 @@ export const localeData = [
       'lumen.keywordResults.page': 'Tag page {page}',
       'lumen.keywordResults.pageTotal': ' of {total}',
       'lumen.keywordResults.next': 'Next Tag Page',
+      'lumen.streamingPolicy.title': 'Streaming Request Policy',
+      'lumen.streamingPolicy.what': 'streaming request policy',
+      'lumen.streamingPolicy.loading': 'Loading streaming request policy…',
+      'lumen.streamingPolicy.enabled': 'Enable Streaming Request Policy',
+      'lumen.streamingPolicy.description':
+        'Apply an action based on the requester’s streaming subscriptions.',
+      'lumen.streamingPolicy.when': 'When the title is',
+      'lumen.streamingPolicy.available': 'Available on their subscriptions',
+      'lumen.streamingPolicy.unavailable': 'Unavailable on their subscriptions',
+      'lumen.streamingPolicy.action': 'Request action',
+      'lumen.streamingPolicy.reject': 'Reject',
+      'lumen.streamingPolicy.pending': 'Require approval',
+      'lumen.streamingPolicy.approve': 'Approve',
+      'lumen.streamingPolicy.rejectionMessage': 'Rejection message',
+      'lumen.streamingPolicy.allowOverride': 'Allow per-user overrides',
+      'lumen.streamingPolicy.save': 'Save Streaming Request Policy',
+      'lumen.streamingPolicy.saved': 'Streaming request policy saved.',
+      'lumen.streamingPolicy.saveFailure':
+        'Could not save streaming request policy.',
+      'lumen.streamingPolicy.confirmFailure':
+        'Could not confirm the saved streaming request policy.',
     },
   },
   {
@@ -10305,6 +10345,31 @@ export const localeData = [
       'lumen.keywordResults.page': 'Page {page} des balises',
       'lumen.keywordResults.pageTotal': ' sur {total}',
       'lumen.keywordResults.next': 'Page suivante de balises',
+      'lumen.streamingPolicy.title':
+        'Politique de demande selon les abonnements',
+      'lumen.streamingPolicy.what':
+        'la politique de demande selon les abonnements',
+      'lumen.streamingPolicy.loading': 'Chargement de la politique de demande…',
+      'lumen.streamingPolicy.enabled':
+        'Activer la politique selon les abonnements',
+      'lumen.streamingPolicy.description':
+        'Appliquer une action selon les services de diffusion auxquels la personne est abonnée.',
+      'lumen.streamingPolicy.when': 'Quand le titre est',
+      'lumen.streamingPolicy.available': 'Disponible sur ses services',
+      'lumen.streamingPolicy.unavailable': 'Indisponible sur ses services',
+      'lumen.streamingPolicy.action': 'Action de demande',
+      'lumen.streamingPolicy.reject': 'Refuser',
+      'lumen.streamingPolicy.pending': 'Exiger une approbation',
+      'lumen.streamingPolicy.approve': 'Approuver',
+      'lumen.streamingPolicy.rejectionMessage': 'Message de refus',
+      'lumen.streamingPolicy.allowOverride':
+        'Autoriser les dérogations par utilisateur',
+      'lumen.streamingPolicy.save': 'Enregistrer la politique de demande',
+      'lumen.streamingPolicy.saved': 'Politique de demande enregistrée.',
+      'lumen.streamingPolicy.saveFailure':
+        'Impossible d’enregistrer la politique de demande.',
+      'lumen.streamingPolicy.confirmFailure':
+        'Impossible de confirmer l’enregistrement de la politique de demande.',
     },
   },
   {

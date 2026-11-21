@@ -2544,6 +2544,24 @@ widths; the underlying controls and spacing were unchanged. Live keyword and
 genre provider results remain unverified. Evidence is retained at
 `seerrng-admin-blocklist-localization-20261120`.
 
+### Streaming Request Policy
+
+The Discovery administration policy editor now localizes its enable switch,
+subscription conditions, request actions, rejection message, per-user override,
+loading state, and save feedback in English, French, and Arabic. Conditional
+fields continue to match the selected action, and saving still requires a
+server readback that matches the draft. The browser fixtures cover disabled
+and enabled states, rejection-message visibility, changed values, failed-save
+retention, and successful retry.
+
+Twelve standalone and twelve production-asset `/lumen/` cases passed across the
+four viewport projects. The Discovery administration and movie-request policy
+regression suites passed 20 cases. English baseline and candidate captures were
+rendered at matching desktop, phone, Android, and tablet sizes and reviewed at
+desktop and phone widths. Live user-subscription decisions remain unverified.
+Evidence is retained at
+`seerrng-streaming-policy-localization-20261120`.
+
 ### Instance Media Categories
 
 Administrators can change the instance category switches in Lumen, with
