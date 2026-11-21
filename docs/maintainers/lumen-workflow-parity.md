@@ -5131,3 +5131,9 @@ localized category notice and make no title-search or catalog request; mixed
 trending results are filtered to the categories the user can access. The
 Search regression passes on desktop, iPhone, Android, and tablet, with evidence
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/search-category-routes/`.
+Trending and person-detail destinations also wait for enabled movie or series
+categories before loading. The all-off fixture now visits both destinations,
+checks the category notice, and confirms no trending or person metadata request
+is sent across all four browser viewport projects. The complete admin-options
+browser file passes with 359 tests and one existing skip on the same viewport
+matrix. Both standalone Lumen and packaged `/lumen/` production builds succeed.

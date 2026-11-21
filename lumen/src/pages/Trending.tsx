@@ -13,6 +13,7 @@ import {
   discoveryVisibility,
   showDiscoveryTitle,
 } from '../discoveryVisibility';
+import { useExtras } from '../extras';
 import { usePaged, usePublicSettings } from '../hooks';
 import { PersonCard } from './People';
 
@@ -29,12 +30,29 @@ const identity = (item: VideoSearchResult) => `${item.mediaType}:${item.id}`;
 
 export default function Trending() {
   const [params, setParams] = useSearchParams();
+  const extras = useExtras();
+  const categoriesReady = extras.ready;
+  const movieEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
   const media = params.get('mediaType');
-  const mediaType = media === 'movie' || media === 'tv' ? media : 'all';
+  const requestedMediaType =
+    media === 'movie' || media === 'tv' ? media : 'all';
+  const mediaType =
+    requestedMediaType === 'movie' && !movieEnabled
+      ? tvEnabled
+        ? 'tv'
+        : 'all'
+      : requestedMediaType === 'tv' && !tvEnabled
+        ? movieEnabled
+          ? 'movie'
+          : 'all'
+        : requestedMediaType;
   const timeWindow = params.get('timeWindow') === 'week' ? 'week' : 'day';
   const query = new URLSearchParams({ mediaType, timeWindow });
   const list = usePaged<VideoSearchResult>(
-    `/discover/trending?${query}`,
+    categoriesReady && (movieEnabled || tvEnabled)
+      ? `/discover/trending?${query}`
+      : null,
     identity
   );
   const { user } = useAuth();
@@ -46,6 +64,8 @@ export default function Trending() {
     (item) =>
       item.mediaType === 'collection' ||
       item.mediaType === 'person' ||
+      (item.mediaType === 'movie' && movieEnabled) ||
+      (item.mediaType === 'tv' && tvEnabled) ||
       showDiscoveryTitle(item, visibility)
   );
   const empty = items.length === 0;
@@ -61,16 +81,23 @@ export default function Trending() {
       <ExtraHeader title="Trending">
         <div className="toolbar">
           <div className="seg" role="group" aria-label="Trending Media">
-            {mediaOptions.map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={mediaType === value}
-                onClick={() => select('mediaType', value)}
-              >
-                {label}
-              </button>
-            ))}
+            {mediaOptions
+              .filter(
+                ([value]) =>
+                  value === 'all' ||
+                  (value === 'movie' && movieEnabled) ||
+                  (value === 'tv' && tvEnabled)
+              )
+              .map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={mediaType === value}
+                  onClick={() => select('mediaType', value)}
+                >
+                  {label}
+                </button>
+              ))}
           </div>
           <div className="seg" role="group" aria-label="Trending Time Window">
             {windows.map(([value, label]) => (

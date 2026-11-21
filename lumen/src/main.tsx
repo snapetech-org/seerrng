@@ -256,7 +256,7 @@ function App() {
               </ExtraRoute>
             }
           />
-          <Route path="/trending" element={<Trending />} />
+          <Route path="/trending" element={<MediaCategoryRoute categories={['movie', 'tv']}><Trending /></MediaCategoryRoute>} />
           <Route
             path="/associations/:mediaType/:id"
             element={<Associations />}
@@ -336,7 +336,7 @@ function App() {
             path="/movie/:id/recommendations"
             element={<MediaCategoryRoute categories={['movie']}><RelatedVideo media="movie" relation="recommendations" /></MediaCategoryRoute>}
           />
-          <Route path="/person/:id" element={<PersonDetail />} />
+          <Route path="/person/:id" element={<MediaCategoryRoute categories={['movie', 'tv']}><PersonDetail /></MediaCategoryRoute>} />
           <Route path="/tv/:id" element={<MediaCategoryRoute categories={['tv']}><TvDetail /></MediaCategoryRoute>} />
           <Route
             path="/tv/:id/similar"
