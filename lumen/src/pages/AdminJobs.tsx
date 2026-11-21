@@ -5,6 +5,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 interface Job {
   id: string;
@@ -37,14 +38,34 @@ const frequencies: Record<
   },
 };
 
-function frequencyLabel(interval: string, value: number) {
+function frequencyLabel(
+  interval: string,
+  value: number,
+  locale: string,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
   if (interval === 'seconds' && value === 45) {
-    return 'At Seconds 0 and 45 Each Minute';
+    return t(
+      'lumen.adminJobs.frequency.atSeconds',
+      'At Seconds 0 and 45 Each Minute'
+    );
   }
   if (interval === 'days') {
-    return value === 1 ? 'Daily at 01:00' : `Every ${value} Days of the Month`;
+    if (value === 1)
+      return t('lumen.adminJobs.frequency.daily', 'Daily at 01:00');
+    const category = new Intl.PluralRules(locale).select(value);
+    return t(
+      `lumen.adminJobs.frequency.days.${category}`,
+      'Every {count} Days of the Month',
+      { count: value }
+    );
   }
-  return `Every ${value} ${value === 1 ? interval.slice(0, -1) : interval}`;
+  const category = new Intl.PluralRules(locale).select(value);
+  return t(
+    `lumen.adminJobs.frequency.${interval}.${category}`,
+    `Every {count} ${interval}`,
+    { count: value }
+  );
 }
 
 function ScheduleFrequency({
@@ -52,11 +73,15 @@ function ScheduleFrequency({
   schedule,
   disabled,
   onChange,
+  locale,
+  t,
 }: {
   interval: string;
   schedule: string;
   disabled: boolean;
   onChange: (schedule: string) => void;
+  locale: string;
+  t: ReturnType<typeof useLumenLocale>['t'];
 }) {
   if (!Object.hasOwn(frequencies, interval)) return null;
   const { values, cron } = frequencies[interval];
@@ -67,18 +92,20 @@ function ScheduleFrequency({
   const current = values.find((value) => cron(value) === normalized);
   return (
     <label className="sel">
-      <span className="lbl">Frequency</span>
+      <span className="lbl">
+        {t('lumen.adminJobs.frequency.label', 'Frequency')}
+      </span>
       <select
         value={current ?? ''}
         disabled={disabled}
         onChange={(event) => onChange(cron(Number(event.target.value)))}
       >
         <option value="" disabled>
-          Custom Schedule
+          {t('lumen.adminJobs.frequency.custom', 'Custom Schedule')}
         </option>
         {values.map((value) => (
           <option key={value} value={value}>
-            {frequencyLabel(interval, value)}
+            {frequencyLabel(interval, value, locale, t)}
           </option>
         ))}
       </select>
@@ -87,13 +114,21 @@ function ScheduleFrequency({
 }
 
 type Pending = { job: Job; action: 'run' | 'cancel' | 'enabled' };
-function actionLabel({ job, action }: Pending) {
-  if (action === 'run') return 'Run Now';
-  if (action === 'cancel') return 'Cancel Job';
-  return job.enabled ? 'Disable Schedule' : 'Enable Schedule';
+function actionLabel(
+  { job, action }: Pending,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (action === 'run')
+    return t('components.Settings.SettingsJobsCache.runnow', 'Run Now');
+  if (action === 'cancel')
+    return t('components.Settings.SettingsJobsCache.canceljob', 'Cancel Job');
+  return job.enabled
+    ? t('lumen.adminJobs.disableSchedule', 'Disable Schedule')
+    : t('lumen.adminJobs.enableSchedule', 'Enable Schedule');
 }
 
 export default function AdminJobs() {
+  const { locale, t } = useLumenLocale();
   const { data, error, reload } = useApi<Job[]>('/settings/jobs', {
     keepDuringRefresh: true,
   });
@@ -125,7 +160,12 @@ export default function AdminJobs() {
       });
       setEdit(undefined);
     } catch (error) {
-      setFailure(friendlyError(error, 'The job could not be updated.'));
+      setFailure(
+        friendlyError(
+          error,
+          t('lumen.adminJobs.updateFailure', 'The job could not be updated.')
+        )
+      );
     } finally {
       setPending(undefined);
       setBusy(false);
@@ -137,24 +177,28 @@ export default function AdminJobs() {
   return (
     <>
       <header className="ph">
-        <h1>Scheduled Jobs</h1>
+        <h1>{t('lumen.adminJobs.title', 'Scheduled Jobs')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/me">
-          Back to Account
+          {t('lumen.adminJobs.backToAccount', 'Back to Account')}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/admin/caches">
-          System Caches
+          {t('lumen.adminJobs.systemCaches', 'System Caches')}
         </Link>
         <button
           className="btn btn-quiet btn-sm"
           disabled={busy}
           onClick={reload}
         >
-          Refresh
+          {t('lumen.adminJobs.refresh', 'Refresh')}
         </button>
       </div>
-      <ServiceNote error={error} what="scheduled jobs" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.adminJobs.scheduledJobs', 'scheduled jobs')}
+        retry={reload}
+      />
       {failure && (
         <p className="note" role="alert">
           {failure}
@@ -162,10 +206,14 @@ export default function AdminJobs() {
       )}
       {!data && !error && (
         <p className="note" role="status">
-          Loading scheduled jobs…
+          {t('lumen.adminJobs.loading', 'Loading scheduled jobs…')}
         </p>
       )}
-      {data?.length === 0 && <p className="note">No scheduled jobs.</p>}
+      {data?.length === 0 && (
+        <p className="note">
+          {t('lumen.adminJobs.empty', 'No scheduled jobs.')}
+        </p>
+      )}
       {!!data?.length && (
         <ul className="setlist">
           {data.map((job) => (
@@ -173,13 +221,32 @@ export default function AdminJobs() {
               <div>
                 <b>{job.name}</b>
                 <small>
-                  {job.type === 'process' ? 'Process' : 'Command'} ·{' '}
-                  {job.running ? 'Running' : 'Idle'} ·{' '}
-                  {job.enabled ? 'Enabled' : 'Disabled'}
+                  {t(
+                    `components.Settings.SettingsJobsCache.${job.type}`,
+                    job.type === 'process' ? 'Process' : 'Command'
+                  )}{' '}
+                  ·{' '}
+                  {job.running
+                    ? t('lumen.adminJobs.running', 'Running')
+                    : t('lumen.adminJobs.idle', 'Idle')}{' '}
+                  ·{' '}
+                  {job.enabled
+                    ? t(
+                        'components.Settings.SettingsJobsCache.enabled',
+                        'Enabled'
+                      )
+                    : t(
+                        'components.Settings.SettingsJobsCache.disabled',
+                        'Disabled'
+                      )}
                 </small>
                 {job.enabled && job.nextExecutionTime && (
                   <small>
-                    Next run {new Date(job.nextExecutionTime).toLocaleString()}
+                    {t('lumen.adminJobs.nextRun', 'Next run {date}', {
+                      date: new Date(job.nextExecutionTime).toLocaleString(
+                        locale
+                      ),
+                    })}
                   </small>
                 )}
                 <small>{job.cronSchedule}</small>
@@ -200,9 +267,13 @@ export default function AdminJobs() {
                     schedule={edit.schedule}
                     disabled={busy}
                     onChange={(schedule) => setEdit({ job, schedule })}
+                    locale={locale}
+                    t={t}
                   />
                   <label className="sel">
-                    <span className="lbl">Cron Schedule</span>
+                    <span className="lbl">
+                      {t('lumen.adminJobs.cronSchedule', 'Cron Schedule')}
+                    </span>
                     <input
                       className="cfg-json"
                       value={edit.schedule}
@@ -221,7 +292,7 @@ export default function AdminJobs() {
                       edit.schedule.trim() === job.cronSchedule
                     }
                   >
-                    Save Schedule
+                    {t('lumen.adminJobs.saveSchedule', 'Save Schedule')}
                   </button>
                   <button
                     className="btn btn-quiet btn-sm"
@@ -229,7 +300,7 @@ export default function AdminJobs() {
                     disabled={busy}
                     onClick={() => setEdit(undefined)}
                   >
-                    Cancel Editing
+                    {t('lumen.adminJobs.cancelEditing', 'Cancel Editing')}
                   </button>
                 </form>
               ) : (
@@ -242,7 +313,7 @@ export default function AdminJobs() {
                         setEdit({ job, schedule: job.cronSchedule })
                       }
                     >
-                      Edit Schedule
+                      {t('lumen.adminJobs.editSchedule', 'Edit Schedule')}
                     </button>
                   )}
                   <button
@@ -250,7 +321,7 @@ export default function AdminJobs() {
                     disabled={busy}
                     onClick={() => setPending({ job, action: 'enabled' })}
                   >
-                    {actionLabel({ job, action: 'enabled' })}
+                    {actionLabel({ job, action: 'enabled' }, t)}
                   </button>
                   <button
                     className="btn btn-tonal btn-sm"
@@ -264,9 +335,12 @@ export default function AdminJobs() {
                   >
                     {job.running
                       ? job.canCancel === false
-                        ? 'Cancellation Unavailable'
-                        : 'Cancel Job'
-                      : 'Run Now'}
+                        ? t(
+                            'lumen.adminJobs.cancellationUnavailable',
+                            'Cancellation Unavailable'
+                          )
+                        : actionLabel({ job, action: 'cancel' }, t)
+                      : actionLabel({ job, action: 'run' }, t)}
                   </button>
                 </div>
               )}
@@ -276,10 +350,10 @@ export default function AdminJobs() {
       )}
       {pending && (
         <ConfirmSheet
-          title={`${actionLabel(pending)}?`}
+          title={`${actionLabel(pending, t)}?`}
           body={pending.job.name}
-          confirm={actionLabel(pending)}
-          cancel="Go Back"
+          confirm={actionLabel(pending, t)}
+          cancel={t('lumen.adminJobs.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() =>
             void save(

@@ -527,6 +527,22 @@ horizontal overflow. Evidence is retained in
 Live log-service behavior, independent linguistic review, and native-matched
 visual acceptance remain open.
 
+Administrator Scheduled Jobs now follow the saved account locale for job
+states, next-run dates, confirmations, scheduling controls, and recovery
+feedback. SeerrNG's native jobs catalog supplies process, command, enabled,
+disabled, run, and cancel labels; Lumen localizes the remaining scheduler
+controls and uses plural-aware seconds, minutes, hours, and days descriptions.
+The existing run/cancel confirmation, cron request, schedule readback, and
+periodic refresh behavior are retained. The eight existing job workflow cases
+and eight English/French/Arabic locale cases pass in standalone and bundled
+Lumen across desktop, iPhone, Android, and tablet. French desktop and Arabic
+iPhone baseline/candidate renders were inspected; content wraps within the
+existing job card and tested viewport widths have no horizontal overflow.
+Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-jobs-localization-20261120/`.
+Live scheduler effects, independent linguistic review, and native-matched
+visual acceptance remain open.
+
 The same Manage Requests permission now exposes a Search Prowlarr shortcut in
 movie, TV, ebook, audiobook, album, artist, comic, magazine, and game details.
 The shortcut prefills the media category and title without submitting a search.
