@@ -15,7 +15,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | --- | --- | --- | --- |
 | Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls now sync through the authenticated SeerrNG user settings API. | Finish per-category provider gating, filter and paging edges, empty/error states, and native-matched visual acceptance. Verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. | Verify live acquisition and imports, remaining catalog/content actions, complete focused-link management, and native-matched and bundled acceptance. |
-| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. | Complete remaining cross-provider mutations, combined-list ownership cases, delegated sharing, and native-matched/bundled acceptance. |
+| Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. My Media supports account recovery, private identity mapping packs, tracking updates, and resumable scans. Delegated Watchlists and ambiguous combined-list ownership are covered. | Verify live provider mutations, determine whether a separate delegated library-sharing workflow exists in native SeerrNG, and complete native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request progress and management actions, including supported 4K paths. | Audit exact title and edition identity, series and episode selection, over-quota approval, request history, retry and explicit Sonarr mapping, cleanup, and delegated actions. Compare each media category independently. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
@@ -549,10 +549,14 @@ Production `/lumen/` rendering and native-matched visual comparison remain open.
 Lumen serves `/library` in both deployments and exposes My Media in desktop
 navigation and under You. It lists libraries from connected Plex, Jellyfin,
 Emby, Trakt, AniList, and Simkl accounts, preserves server cursors, and opens
-only confirmed catalog identities. Linking accounts, identity repair
-and mapping packs, provider tracking writes, and library sharing remain open.
-The dedicated personal and delegated Watchlist flows now pass in standalone and
-bundled browser suites. Narrow and bundled visual acceptance remains open.
+only confirmed catalog identities. Linked-account return/recovery, identity
+repair and private mapping packs, provider tracking writes, episode progress,
+and resumable scans have fixture-backed coverage. Personal and delegated
+Watchlists preserve combined-list ownership and have standalone and bundled
+fixture coverage. The native route audit has not yet established whether a
+separate delegated library-sharing workflow exists; household Games sharing is
+a separate workflow. Live provider effects and matched native/bundled visual
+acceptance remain open.
 
 Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
 Plex connection. It selected the first visible library, linked the matched
@@ -5210,6 +5214,6 @@ Arabic. Baseline and candidate renders were compared at desktop and phone sizes
 for French and Arabic; layout geometry and horizontal fit remain stable. The
 screenshots and Playwright results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/my-media-localized/`.
-Live tracking-provider effects, production Express `/lumen/` verification,
-delegated library-sharing behavior, and matched native visual acceptance remain
-open.
+Live tracking-provider effects, production Express `/lumen/` verification for
+My Media, delegated library-sharing behavior if that capability exists in
+native SeerrNG, and matched native visual acceptance remain open.
