@@ -36,8 +36,11 @@ defaults. Save and load failures remain visible with a retry action.
 Route and migration tests pass for validation, authenticated persistence,
 readback, reset, and upgrade-safe schema changes. Browser fixtures pass across
 desktop, iPhone, Android, and tablet for server precedence, admin locks,
-reload, reset, and failed-save retry. Standalone production build and TypeScript
-checks pass. Live multi-device and bundled production-mount checks remain open.
+reload, reset, failed-save retry, and account readback from a separate browser
+profile with stale local preferences. Sixteen cases passed against standalone
+production and sixteen against the production Express `/lumen/` mount. These
+fixtures do not replace live multi-device verification against a running
+SeerrNG instance, which remains open.
 
 Request lifecycle status is already implemented and no longer an open Lumen
 gap. Lumen opts into SeerrNG's owner-scoped status projection for request

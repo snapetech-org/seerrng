@@ -5,8 +5,8 @@ const appPath = (path: string) => `${mount}${path}`;
 const apiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
 
-async function fixture(page: Page) {
-  const profile: Record<string, unknown> = {
+async function fixture(page: Page, sharedProfile?: Record<string, unknown>) {
+  const profile: Record<string, unknown> = sharedProfile ?? {
     locale: 'en',
     lumenPreferences: {
       theme: 'light',
@@ -60,6 +60,47 @@ async function fixture(page: Page) {
   );
   return { profile, writes };
 }
+
+test('account preferences are read by a separate browser profile', async ({
+  page,
+}) => {
+  const { profile, writes } = await fixture(page);
+  await page.goto(appPath('/me'));
+  const narrator = page.getByRole('switch', {
+    name: /Choose audiobook narrators/,
+  });
+  await expect(narrator).toHaveAttribute('aria-checked', 'false');
+  await narrator.click();
+  await expect
+    .poll(() => profile.lumenPreferences)
+    .toMatchObject({
+      narratorChoice: true,
+    });
+
+  const secondContext = await page.context().browser()!.newContext();
+  try {
+    const secondPage = await secondContext.newPage();
+    await fixture(secondPage, profile);
+    await secondPage.addInitScript(() => {
+      localStorage.setItem(
+        'lumen-prefs:4',
+        JSON.stringify({ narratorChoice: false, theme: 'dark' })
+      );
+    });
+    await secondPage.goto(appPath('/me'));
+    await expect(
+      secondPage.getByRole('switch', { name: /Choose audiobook narrators/ })
+    ).toHaveAttribute('aria-checked', 'true');
+    await expect(
+      secondPage.getByRole('group', { name: 'Theme' }).getByRole('button', {
+        name: 'Light',
+      })
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(writes).toHaveLength(1);
+  } finally {
+    await secondContext.close();
+  }
+});
 
 test('server preferences override browser copies, retain admin locks, and survive reload', async ({
   page,
