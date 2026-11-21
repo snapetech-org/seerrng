@@ -5,7 +5,10 @@ const locale = process.env.LUMEN_ADMIN_USERS_LOCALE ?? 'en';
 const labels = {
   en: {
     title: 'Users',
-    back: 'Back to Account',
+    administration: 'Administration',
+    allUsers: 'All Users',
+    manage: 'Manage',
+    manageUser: 'Manage Demo User',
     searchUsers: 'Search Users',
     sortBy: 'Sort By',
     sortDirection: 'Sort Direction',
@@ -80,7 +83,10 @@ const labels = {
   },
   fr: {
     title: 'Utilisateurs',
-    back: 'Retour au compte',
+    administration: 'Administration',
+    allUsers: 'Tous les utilisateurs',
+    manage: 'Gérer',
+    manageUser: 'Gérer Demo User',
     searchUsers: 'Rechercher des utilisateurs',
     sortBy: 'Trier par',
     sortDirection: 'Ordre de tri',
@@ -161,7 +167,10 @@ const labels = {
   },
   ar: {
     title: 'المستخدمون',
-    back: 'العودة إلى الحساب',
+    administration: 'الإدارة',
+    allUsers: 'جميع المستخدمين',
+    manage: 'إدارة',
+    manageUser: 'إدارة Demo User',
     searchUsers: 'البحث عن المستخدمين',
     sortBy: 'الترتيب حسب',
     sortDirection: 'اتجاه الترتيب',
@@ -403,7 +412,7 @@ test('user directory and local-account creation use the saved locale and retain 
     page.getByRole('heading', { name: copy.title, exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: copy.back, exact: true })
+    page.getByRole('link', { name: copy.administration, exact: true })
   ).toBeVisible();
   await expect(page.getByLabel(copy.searchUsers)).toBeVisible();
   await expect(page.getByLabel(copy.sortBy)).toBeVisible();
@@ -412,14 +421,27 @@ test('user directory and local-account creation use the saved locale and retain 
   await expect(
     page.getByText(copy.requestCount, { exact: true })
   ).toBeVisible();
+  await expect(page.getByText(copy.manage, { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: copy.manageUser, exact: true })
+  ).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute(
     'dir',
     locale === 'ar' ? 'rtl' : 'ltr'
   );
 
+  await page.getByRole('link', { name: copy.manageUser, exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`${mount}/admin/users/2$`));
+  await expect(
+    page.getByRole('link', { name: copy.allUsers, exact: true })
+  ).toBeVisible();
   await page
     .getByRole('button', { name: copy.episodeQueue, exact: true })
     .click();
+  await expect(page.locator('.user-panel')).toHaveAttribute(
+    'data-title',
+    copy.episodeQueue
+  );
   await expect(page.getByLabel(copy.episodesAhead)).toHaveValue('2');
   await page.getByLabel(copy.episodesAhead).selectOption('3');
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
@@ -527,6 +549,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page.getByRole('button', { name: copy.saveQuota, exact: true }).click();
   await expect(page.getByText(copy.quotaSaved, { exact: true })).toBeVisible();
 
+  await page.getByRole('link', { name: copy.allUsers, exact: true }).click();
   await page
     .getByRole('button', { name: copy.importUsers, exact: true })
     .click();
@@ -575,6 +598,7 @@ test('user directory and local-account creation use the saved locale and retain 
     .getByRole('button', { name: copy.closeImport, exact: true })
     .click();
 
+  await page.getByRole('link', { name: copy.manageUser, exact: true }).click();
   await page
     .getByRole('button', { name: copy.linkedAccounts, exact: true })
     .click();
@@ -616,6 +640,7 @@ test('user directory and local-account creation use the saved locale and retain 
   }
 
   if (process.env.LUMEN_ADMIN_USERS_CAPTURE) {
+    await page.getByRole('link', { name: copy.allUsers, exact: true }).click();
     await page.screenshot({
       path: `${process.env.LUMEN_ADMIN_USERS_CAPTURE}-directory-${page.viewportSize()!.width}.png`,
     });
@@ -630,6 +655,9 @@ test('user directory and local-account creation use the saved locale and retain 
     await page.getByRole('button', { name: copy.cancel, exact: true }).click();
   }
 
+  if (new URL(page.url()).pathname.endsWith('/2')) {
+    await page.getByRole('link', { name: copy.allUsers, exact: true }).click();
+  }
   await page
     .getByRole('button', { name: copy.createLocalUser, exact: true })
     .click();

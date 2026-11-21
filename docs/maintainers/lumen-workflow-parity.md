@@ -5677,3 +5677,22 @@ and candidate captures show no layout or geometry changes. Evidence is retained 
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/`.
 Live association-provider responses and independent translation review remain
 unverified.
+
+### Admin Users localization
+
+The Lumen Admin Users directory and managed-user editor now use the saved
+English, French, or Arabic locale for the Administration and All Users route
+links, search controls, Manage accessible name, management-section controls,
+panel titles, and notification-loading state. This closes a prominent display
+gap without changing user routes, API calls, or existing authorization checks.
+
+The localized directory, create-user and media-server import forms, and
+management actions were exercised in all three locales at desktop, iPhone,
+Android, and tablet sizes in standalone and production-style embedded builds
+(24 cases per deployment). English baseline/candidate screenshots are pixel
+identical for the directory, create form, import, and opened management panels
+at desktop and iPhone sizes; French and Arabic renders were inspected at those
+sizes, including Arabic RTL. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/adminusers-visual/`.
+Independent linguistic review, provider-backed import verification, and the
+remaining Administration destination pages are still open parity work.

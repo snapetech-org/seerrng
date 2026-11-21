@@ -496,7 +496,7 @@ export default function AdminUsers() {
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.admin.title', 'Administration')}
         </Link>
         {userId && (
           <Link className="btn btn-quiet btn-sm" to="/admin/users">
@@ -575,13 +575,15 @@ export default function AdminUsers() {
                 key={search}
                 name="q"
                 type="search"
-                aria-label="Search Users"
-                placeholder="Search Users"
+                aria-label={t('lumen.adminUsers.searchUsers', 'Search Users')}
+                placeholder={t('lumen.adminUsers.searchUsers', 'Search Users')}
                 defaultValue={search}
                 maxLength={200}
               />
             </label>
-            <button className="btn btn-tonal btn-sm">Search</button>
+            <button className="btn btn-tonal btn-sm">
+              {t('lumen.adminUsers.search', 'Search')}
+            </button>
           </span>
           <label className="sel">
             <span className="lbl">
@@ -711,10 +713,16 @@ export default function AdminUsers() {
                         )
                       }
                     >
-                      Episode Queue
+                      {t('lumen.adminUsers.episodeQueue', 'Episode Queue')}
                     </button>
                     {queueUser === user.id && (
-                      <div className="user-panel" data-title="Episode Queue">
+                      <div
+                        className="user-panel"
+                        data-title={t(
+                          'lumen.adminUsers.episodeQueue',
+                          'Episode Queue'
+                        )}
+                      >
                         <ManagedEpisodeQueue
                           id={user.id}
                           name={user.displayName}
@@ -734,12 +742,18 @@ export default function AdminUsers() {
                               )
                             }
                           >
-                            Request Quotas
+                            {t(
+                              'lumen.adminUsers.requestQuotas',
+                              'Request Quotas'
+                            )}
                           </button>
                           {quotaUser === user.id && (
                             <div
                               className="user-panel"
-                              data-title="Request Quotas"
+                              data-title={t(
+                                'lumen.adminUsers.requestQuotas',
+                                'Request Quotas'
+                              )}
                             >
                               <ManagedQuotas id={user.id} />
                             </div>
@@ -757,12 +771,18 @@ export default function AdminUsers() {
                             )
                           }
                         >
-                          Media Categories
+                          {t(
+                            'lumen.adminUsers.mediaCategories',
+                            'Media Categories'
+                          )}
                         </button>
                         {categoryUser === user.id && (
                           <div
                             className="user-panel"
-                            data-title="Media Categories"
+                            data-title={t(
+                              'lumen.adminUsers.mediaCategories',
+                              'Media Categories'
+                            )}
                           >
                             <ManagedMediaCategories id={user.id} />
                           </div>
@@ -783,12 +803,18 @@ export default function AdminUsers() {
                               )
                             }
                           >
-                            Maturity Limits
+                            {t(
+                              'lumen.adminUsers.maturityLimits',
+                              'Maturity Limits'
+                            )}
                           </button>
                           {maturityUser === user.id && (
                             <div
                               className="user-panel"
-                              data-title="Maturity Limits"
+                              data-title={t(
+                                'lumen.adminUsers.maturityLimits',
+                                'Maturity Limits'
+                              )}
                             >
                               <ManagedMaturity id={user.id} />
                             </div>
@@ -811,12 +837,15 @@ export default function AdminUsers() {
                               )
                             }
                           >
-                            Permissions
+                            {t('lumen.adminUsers.permissions', 'Permissions')}
                           </button>
                           {permissionsUser === user.id && (
                             <div
                               className="user-panel"
-                              data-title="Permissions"
+                              data-title={t(
+                                'lumen.adminUsers.permissions',
+                                'Permissions'
+                              )}
                             >
                               <ManagedPermissions
                                 id={user.id}
@@ -843,12 +872,15 @@ export default function AdminUsers() {
                               )
                             }
                           >
-                            Edit Profile
+                            {t('lumen.adminUsers.editProfile', 'Edit Profile')}
                           </button>
                           {profileUser === user.id && (
                             <div
                               className="user-panel"
-                              data-title="Edit Profile"
+                              data-title={t(
+                                'lumen.adminUsers.editProfile',
+                                'Edit Profile'
+                              )}
                             >
                               <EditProfile
                                 id={user.id}
@@ -870,12 +902,15 @@ export default function AdminUsers() {
                             )
                           }
                         >
-                          Sign-in Links
+                          {t('lumen.adminUsers.signInLinks', 'Sign-in Links')}
                         </button>
                         {loginLinksUser === user.id && (
                           <div
                             className="user-panel"
-                            data-title="Sign-in Links"
+                            data-title={t(
+                              'lumen.adminUsers.signInLinks',
+                              'Sign-in Links'
+                            )}
                           >
                             <ManagedLoginLinks key={user.id} id={user.id} />
                           </div>
@@ -893,12 +928,18 @@ export default function AdminUsers() {
                             )
                           }
                         >
-                          Set Local Password
+                          {t(
+                            'lumen.adminUsers.setLocalPassword',
+                            'Set Local Password'
+                          )}
                         </button>
                         {passwordUser === user.id && (
                           <div
                             className="user-panel"
-                            data-title="Set Local Password"
+                            data-title={t(
+                              'lumen.adminUsers.setLocalPassword',
+                              'Set Local Password'
+                            )}
                           >
                             <ManagedPassword
                               id={user.id}
@@ -917,12 +958,18 @@ export default function AdminUsers() {
                         )
                       }
                     >
-                      TV Request Access
+                      {t(
+                        'lumen.adminUsers.tvRequestAccess',
+                        'TV Request Access'
+                      )}
                     </button>
                     {tvAccessUser === user.id && (
                       <div
                         className="user-panel"
-                        data-title="TV Request Access"
+                        data-title={t(
+                          'lumen.adminUsers.tvRequestAccess',
+                          'TV Request Access'
+                        )}
                       >
                         <ManagedTvAccess id={user.id} />
                       </div>
@@ -936,10 +983,16 @@ export default function AdminUsers() {
                         )
                       }
                     >
-                      Linked Accounts
+                      {t('lumen.adminUsers.linkedAccounts', 'Linked Accounts')}
                     </button>
                     {linkedUser === user.id && (
-                      <div className="user-panel" data-title="Linked Accounts">
+                      <div
+                        className="user-panel"
+                        data-title={t(
+                          'lumen.adminUsers.linkedAccounts',
+                          'Linked Accounts'
+                        )}
+                      >
                         <ManagedLinkedAccounts
                           id={user.id}
                           media={
@@ -986,17 +1039,26 @@ export default function AdminUsers() {
                               )
                             }
                           >
-                            Notification Settings
+                            {t(
+                              'lumen.adminUsers.notificationSettings',
+                              'Notification Settings'
+                            )}
                           </button>
                           {notificationUser === user.id && (
                             <div
                               className="user-panel"
-                              data-title="Notification Settings"
+                              data-title={t(
+                                'lumen.adminUsers.notificationSettings',
+                                'Notification Settings'
+                              )}
                             >
                               <Suspense
                                 fallback={
                                   <p className="note" role="status">
-                                    Loading notification settings…
+                                    {t(
+                                      'lumen.adminUsers.notificationsLoading',
+                                      'Loading notification settings…'
+                                    )}
                                   </p>
                                 }
                               >
@@ -1019,7 +1081,7 @@ export default function AdminUsers() {
                           setRemove(user);
                         }}
                       >
-                        Delete User
+                        {t('lumen.adminUsers.deleteUser', 'Delete User')}
                       </button>
                     )}
                   </div>
@@ -1027,9 +1089,13 @@ export default function AdminUsers() {
                   <Link
                     className="btn btn-tonal btn-sm"
                     to={`/admin/users/${user.id}`}
-                    aria-label={`Manage ${user.displayName}`}
+                    aria-label={t(
+                      'lumen.adminUsers.manageUser',
+                      'Manage {name}',
+                      { name: user.displayName }
+                    )}
                   >
-                    Manage
+                    {t('lumen.adminUsers.manage', 'Manage')}
                   </Link>
                 )}
               </li>

@@ -1596,6 +1596,8 @@
   "lumen.adminUsers.keepUser",
   "lumen.adminUsers.linkedAccounts",
   "lumen.adminUsers.loading",
+  "lumen.adminUsers.manage",
+  "lumen.adminUsers.manageUser",
   "lumen.adminUsers.maturityLimits",
   "lumen.adminUsers.mediaCategories",
   "lumen.adminUsers.nextPage",
