@@ -2413,7 +2413,9 @@ export default function Requests() {
               setPages((n) => n + 1);
             }}
           >
-            {loadingMore ? 'Loading…' : 'Show more'}
+            {loadingMore
+              ? t('lumen.requests.page.loadingMore', 'Loading…')
+              : t('lumen.requests.page.showMore', 'Show more')}
           </button>
         </div>
       )}

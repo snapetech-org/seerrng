@@ -4632,6 +4632,8 @@
   "lumen.requests.page.loadEveryoneFailed",
   "lumen.requests.page.loadOwnFailed",
   "lumen.requests.page.retry",
+  "lumen.requests.page.loadingMore",
+  "lumen.requests.page.showMore",
   "lumen.requests.page.whichRequests",
   "lumen.requests.page.softwareFilters",
   "lumen.requests.page.category",

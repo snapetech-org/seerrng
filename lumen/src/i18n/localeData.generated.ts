@@ -5669,6 +5669,8 @@ export const localeData = [
         'أعد المحاولة للتحقق من سجل طلبات الجميع.',
       'lumen.requests.page.loadOwnFailed': 'أعد المحاولة للتحقق من سجل طلباتك.',
       'lumen.requests.page.retry': 'إعادة المحاولة',
+      'lumen.requests.page.loadingMore': 'جارٍ التحميل…',
+      'lumen.requests.page.showMore': 'عرض المزيد',
       'lumen.requests.page.whichRequests': 'الطلبات المعروضة',
       'lumen.requests.page.softwareFilters': 'عوامل تصفية طلبات البرامج',
       'lumen.requests.page.category': 'الفئة',
@@ -15468,6 +15470,8 @@ export const localeData = [
       'lumen.requests.page.loadOwnFailed':
         'Try again to check your request history.',
       'lumen.requests.page.retry': 'Retry',
+      'lumen.requests.page.loadingMore': 'Loading…',
+      'lumen.requests.page.showMore': 'Show more',
       'lumen.requests.page.whichRequests': 'Which requests',
       'lumen.requests.page.softwareFilters': 'Software request filters',
       'lumen.requests.page.category': 'Category',
@@ -26184,6 +26188,8 @@ export const localeData = [
       'lumen.requests.page.loadOwnFailed':
         'Réessayez pour consulter votre historique des demandes.',
       'lumen.requests.page.retry': 'Réessayer',
+      'lumen.requests.page.loadingMore': 'Chargement…',
+      'lumen.requests.page.showMore': 'Afficher plus',
       'lumen.requests.page.whichRequests': 'Quelles demandes',
       'lumen.requests.page.softwareFilters':
         'Filtres des demandes de logiciels',

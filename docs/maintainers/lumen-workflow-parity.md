@@ -6565,3 +6565,21 @@ captures were inspected after scrolling the requested season into view; the
 badge copy changes without modifying the row geometry. Live request state and
 independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-season-status-localization-20261122/`.
+
+### Request list paging localization
+
+The Requests page's incremental list control now localizes both its idle
+“Show more” label and its in-flight “Loading…” label in English, French, and
+Arabic. Paging size, list queries, loaded request rows, and authorization are
+unchanged.
+
+Twelve standalone browser cases pass across the three locales and desktop,
+iPhone, Android, and tablet. French and Arabic also pass in the bundled
+`/lumen/` build across the same viewport matrix. The fixture holds the expanded
+page response to verify the loading label before confirming the new rows load.
+French desktop baseline and candidate captures were compared; the translated
+label is the only visible change and the page remains within the viewport.
+Viewport overflow checks pass for the tested locales and layouts. Live
+request-list behavior and independent linguistic review remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/`.
