@@ -972,7 +972,7 @@ export default function TvDetail() {
                       {requested &&
                         (shared || (st !== 'have' && st !== 'part')) && (
                           <Pill k="wait" icon="clock">
-                            Requested
+                            {translate('lumen.status.requested', 'Requested')}
                           </Pill>
                         )}
                     </div>

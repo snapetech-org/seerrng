@@ -6530,3 +6530,16 @@ were reviewed in French; the translated actions fit the existing controls and
 the card/detail geometry is unchanged. Live server links and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-media-labels-20261122/`.
+
+### Requested-season badge localization
+
+The requested-season badge on TV detail pages now uses the shared localized
+request-status message in English, French, and Arabic. Request eligibility,
+season locks, and status calculations are unchanged.
+
+Twelve candidate and twelve baseline browser cases pass across desktop, iPhone,
+Android, and tablet for all three locales. Matched French desktop and phone
+captures were inspected after scrolling the requested season into view; the
+badge copy changes without modifying the row geometry. Live request state and
+independent linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-season-status-localization-20261122/`.

@@ -312,3 +312,75 @@ for (const language of locales) {
     ]);
   });
 }
+
+for (const language of locales) {
+  test(`requested TV season status follows ${language.tag} locale`, async ({
+    page,
+  }) => {
+    const baseline = process.env.LUMEN_TV_SEASON_STATUS_BASELINE === '1';
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = apiPath(new URL(route.request().url()).pathname);
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, displayName: 'Viewer', permissions: 2 },
+        });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale: language.tag } });
+      if (path === '/settings/public')
+        return route.fulfill({ json: { partialRequestsEnabled: true } });
+      if (path === '/tv/84774')
+        return route.fulfill({
+          json: {
+            id: 84774,
+            name: 'Requested season fixture',
+            externalIds: { tvdbId: 81 },
+            overview: 'Season status.',
+            genres: [],
+            firstAirDate: '2022-09-01',
+            contentRatings: { results: [] },
+            seasons: [
+              {
+                seasonNumber: 1,
+                episodeCount: 2,
+                name: 'Season 1',
+                airDate: '2022-09-01',
+              },
+            ],
+            numberOfSeasons: 1,
+            mediaInfo: {
+              status: 2,
+              seasons: [],
+              requests: [
+                {
+                  id: 84774,
+                  status: 2,
+                  is4k: false,
+                  seasons: [{ seasonNumber: 1, status: 2 }],
+                },
+              ],
+            },
+          },
+        });
+      return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
+    });
+    await page.goto(appPath('/tv/84774'));
+    const season = page.locator('.srow').filter({ hasText: 'Season 1' });
+    await expect(season).toBeVisible();
+    await expect(season).toContainText(
+      baseline
+        ? 'Requested'
+        : { en: 'Requested', fr: 'Demandé', ar: 'تم طلبه' }[language.tag]
+    );
+    await season.scrollIntoViewIfNeeded();
+    const width = page.viewportSize()?.width;
+    const captureDir = process.env.LUMEN_TV_SEASON_STATUS_CAPTURE_DIR;
+    if (captureDir && (width === 1440 || width === 390))
+      await page.screenshot({
+        path: `${captureDir}/${language.tag}-${width}.png`,
+      });
+  });
+}
