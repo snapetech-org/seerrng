@@ -20,6 +20,7 @@ import {
   useOwnedBooks,
   usePaged,
 } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 import { BookSeriesResults } from './BookSeriesSearch';
@@ -50,6 +51,18 @@ const SORT_TITLES: Record<string, string> = {
   editions: 'Most editions',
   'editions.asc': 'Fewest editions',
   random: 'Random',
+};
+const SORT_HEADING_KEYS: Record<string, string> = {
+  ranked: 'popular',
+  trending: 'trending',
+  newest: 'new',
+  'rating.desc': 'topRated',
+  'rating.asc': 'lowestRatedHeading',
+  oldest: 'oldest',
+  'ranked.asc': 'leastPopularHeading',
+  editions: 'mostEditionsHeading',
+  'editions.asc': 'fewestEditionsHeading',
+  random: 'random',
 };
 // genres that work for both catalogues: SeerrNG sends the genre to Open Library as a
 // subject: clause (ebooks) and matches it, case-insensitively, against each ChaptarrNG
@@ -114,6 +127,7 @@ const SCREENFUL = 18;
 // With nothing in the address the page is a set of rows (like Comics/Manga); each row's
 // "See all" opens the full list with that sort, ?sort= (and ?show=, ?genre=) in the address.
 export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
+  const { t } = useLumenLocale();
   const [p] = useSearchParams();
   const { user } = useAuth();
   const { prefs } = usePrefs();
@@ -171,9 +185,18 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
     <p className="note" style={{ margin: '-4px 0 14px' }}>
       {audio
         ? prefs.narratorChoice
-          ? 'Lengths are the full unabridged recording. Open a book to pick the narrator.'
-          : 'Request goes straight through; the best available recording is used.'
-        : 'Ebooks arrive as EPUB, ready for Send to Kindle.'}
+          ? t(
+              'lumen.books.audiobookNarratorNote',
+              'Lengths are the full unabridged recording. Open a book to pick the narrator.'
+            )
+          : t(
+              'lumen.books.audiobookRequestNote',
+              'Request goes straight through; the best available recording is used.'
+            )
+        : t(
+            'lumen.books.ebookNote',
+            'Ebooks arrive as EPUB, ready for Send to Kindle.'
+          )}
     </p>
   );
 
@@ -182,37 +205,45 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
       <header className="ph">
         <div className="ph-row">
           <div>
-            <h1>{audio ? 'Audiobooks' : 'Books'}</h1>
+            <h1>
+              {audio
+                ? t('lumen.books.audiobooks', 'Audiobooks')
+                : t('lumen.books.books', 'Books')}
+            </h1>
           </div>
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <div className="toolbar">
           {canUseRequestAccess(user?.permissions) && (
             <Link className="btn btn-quiet btn-sm" to="/books/recommendations">
-              Book Recommendations
+              {t('lumen.books.recommendations', 'Book Recommendations')}
             </Link>
           )}
           <Link
             className="btn btn-quiet btn-sm"
             to={`/book-series?format=${format}`}
           >
-            Find a Book Series
+            {t('lumen.books.findSeries', 'Find a Book Series')}
           </Link>
         </div>
-        <div className="seg wide" role="group" aria-label="Format">
+        <div
+          className="seg wide"
+          role="group"
+          aria-label={t('lumen.books.format', 'Format')}
+        >
           <Link
             to={`/books${formatQuery('ebook')}`}
             aria-current={!audio ? 'page' : undefined}
           >
             <Icon name="book" size="sm" />
-            Ebooks
+            {t('lumen.books.ebooks', 'Ebooks')}
           </Link>
           <Link
             to={`/audiobooks${formatQuery('audiobook')}`}
             aria-current={audio ? 'page' : undefined}
           >
             <Icon name="headphones" size="sm" />
-            Audiobooks
+            {t('lumen.books.audiobooks', 'Audiobooks')}
           </Link>
         </div>
         <Link
@@ -221,7 +252,11 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
         >
           <Icon name="search" />
           <span className="ph-text">
-            Search {audio ? 'audiobooks and narrators' : 'books and authors'}…
+            {t('lumen.books.search', 'Search {catalog}…', {
+              catalog: audio
+                ? t('lumen.books.searchAudiobooks', 'audiobooks and narrators')
+                : t('lumen.books.searchBooks', 'books and authors'),
+            })}
           </span>
         </Link>
       </header>
@@ -242,12 +277,17 @@ function LibrarySeg({
   show: string;
   pick: (v: string) => void;
 }) {
+  const { t } = useLumenLocale();
   return (
-    <div className="seg" role="group" aria-label="Library">
+    <div
+      className="seg"
+      role="group"
+      aria-label={t('lumen.books.library', 'Library')}
+    >
       {[
-        ['all', 'All'],
-        ['have', 'In library'],
-        ['not', 'Not yet'],
+        ['all', t('lumen.books.all', 'All')],
+        ['have', t('lumen.books.inLibrary', 'In library')],
+        ['not', t('lumen.books.notYet', 'Not yet')],
       ].map(([v, t]) => (
         <button key={v} aria-pressed={show === v} onClick={() => pick(v)}>
           {t}
@@ -259,23 +299,36 @@ function LibrarySeg({
 
 // the Sort menu; the landing has no sort of its own, so it shows a prompt instead
 function SortMenu({ sort, pick }: { sort: string; pick: (v: string) => void }) {
+  const { t } = useLumenLocale();
+  const sortLabels: Record<string, string> = {
+    ranked: t('lumen.books.sort.popular', 'Popular'),
+    trending: t('lumen.books.sort.trending', 'Trending'),
+    newest: t('lumen.books.sort.newest', 'Newest'),
+    'rating.desc': t('lumen.books.sort.rating', 'Rating'),
+    'rating.asc': t('lumen.books.sort.lowestRated', 'Lowest Rated'),
+    oldest: t('lumen.books.sort.oldest', 'Oldest'),
+    'ranked.asc': t('lumen.books.sort.leastPopular', 'Least Popular'),
+    editions: t('lumen.books.sort.mostEditions', 'Most Editions'),
+    'editions.asc': t('lumen.books.sort.fewestEditions', 'Fewest Editions'),
+    random: t('lumen.books.sort.random', 'Random'),
+  };
   return (
     <label className="sel">
       {/* nothing picked yet (the landing): the menu itself says "Sort by…" */}
-      {sort && <span className="lbl">Sort</span>}
+      {sort && <span className="lbl">{t('lumen.books.sort', 'Sort')}</span>}
       <select
-        aria-label="Sort"
+        aria-label={t('lumen.books.sort', 'Sort')}
         value={sort}
         onChange={(e) => pick(e.target.value)}
       >
         {!sort && (
           <option value="" disabled hidden>
-            Sort by…
+            {t('lumen.books.sortBy', 'Sort by…')}
           </option>
         )}
-        {SORTS.map(([v, t]) => (
+        {SORTS.map(([v]) => (
           <option key={v} value={v}>
-            {t}
+            {sortLabels[v]}
           </option>
         ))}
       </select>
@@ -294,12 +347,13 @@ function BookGenres({
   pick: (v: string[]) => void;
   defaultOpen?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const extra = genres.filter((g) => !GENRES.includes(g));
   return (
     <GenrePicker
       options={[...extra, ...GENRES].map((g) => ({
         value: g,
-        label: genreLabel(g),
+        label: t(`lumen.books.genre.${g.replace(/\s+/g, '-')}`, genreLabel(g)),
       }))}
       picked={genres}
       onChange={pick}
@@ -317,6 +371,7 @@ function BooksLanding({
   format: 'ebook' | 'audiobook';
   note: ReactNode;
 }) {
+  const { t } = useLumenLocale();
   const [p, setP] = useSearchParams();
   const base = format === 'ebook' ? '/books' : '/audiobooks';
   const feed = `/discover/books?format=${format}`;
@@ -340,36 +395,36 @@ function BooksLanding({
       </section>
       {/* the same first page the owned list reads, so it is asked for once */}
       <BookRow
-        title="In your library"
+        title={t('lumen.books.inYourLibrary', 'In your library')}
         path={`/book/library?format=${format}&page=1`}
         format={format}
-        link={['See all', `${base}?show=have`]}
+        link={[t('lumen.books.seeAll', 'See all'), `${base}?show=have`]}
         owned
       />
       <BookRow
-        title="Trending"
+        title={t('lumen.books.sort.trending', 'Trending')}
         path={`${feed}&sortBy=trending`}
         format={format}
-        link={['See all', `${base}?sort=trending`]}
+        link={[t('lumen.books.seeAll', 'See all'), `${base}?sort=trending`]}
       />
       <BookRow
-        title="New releases"
+        title={t('lumen.books.newReleases', 'New releases')}
         path={`${feed}&sortBy=newest`}
         format={format}
-        link={['See all', `${base}?sort=newest`]}
+        link={[t('lumen.books.seeAll', 'See all'), `${base}?sort=newest`]}
       />
       <BookRow
-        title="Top rated"
+        title={t('lumen.books.topRated', 'Top rated')}
         path={`${feed}&sortBy=rating.desc`}
         format={format}
-        link={['See all', `${base}?sort=rating.desc`]}
+        link={[t('lumen.books.seeAll', 'See all'), `${base}?sort=rating.desc`]}
       />
       {/* Popular is the feed's default order: the same address Discover's row uses */}
       <BookRow
-        title="Popular"
+        title={t('lumen.books.sort.popular', 'Popular')}
         path={feed}
         format={format}
-        link={['See all', `${base}?sort=ranked`]}
+        link={[t('lumen.books.seeAll', 'See all'), `${base}?sort=ranked`]}
       />
     </>
   );
@@ -390,6 +445,7 @@ function BookRow({
   link: [string, string];
   owned?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const row = useApi<Paged<BookResult>>(path);
   const audio = format === 'audiobook';
   const raw = (Array.isArray(row.data?.results) ? row.data.results : [])
@@ -415,9 +471,9 @@ function BookRow({
         </Rail>
       ) : row.error ? (
         <div className="empty">
-          <span>Couldn’t load this row</span>
+          <span>{t('lumen.books.rowLoadError', 'Couldn’t load this row')}</span>
           <button className="btn btn-tonal btn-sm" onClick={row.reload}>
-            Retry
+            {t('lumen.books.retry', 'Retry')}
           </button>
         </div>
       ) : (
@@ -435,6 +491,7 @@ function BooksGrid({
   format: 'ebook' | 'audiobook';
   note: ReactNode;
 }) {
+  const { t } = useLumenLocale();
   const [p, setP] = useSearchParams();
   const location = useLocation();
   const show = p.get('show') || 'all';
@@ -448,34 +505,54 @@ function BooksGrid({
   const rawSubject = p.get('subject')?.trim() ?? '';
   const subject = show !== 'have' && rawSubject.length <= 512 ? rawSubject : '';
   const searchFields = [
-    { key: 'search', apiKey: 'query', label: 'Title' },
-    { key: 'author', apiKey: 'author', label: 'Author' },
+    {
+      key: 'search',
+      apiKey: 'query',
+      label: t('lumen.books.filter.title', 'Title'),
+    },
+    {
+      key: 'author',
+      apiKey: 'author',
+      label: t('lumen.books.filter.author', 'Author'),
+    },
     ...(format === 'audiobook'
-      ? [{ key: 'narrator', apiKey: 'narrator', label: 'Narrator' }]
+      ? [
+          {
+            key: 'narrator',
+            apiKey: 'narrator',
+            label: t('lumen.books.filter.narrator', 'Narrator'),
+          },
+        ]
       : []),
     {
       key: 'firstPublishYear',
       apiKey: 'firstPublishYear',
-      label: 'First Publish Year',
+      label: t('lumen.books.filter.firstPublishYear', 'First Publish Year'),
       pattern: '[0-9]{4}|before-1970',
       maxLength: 11,
-      hint: 'Four digits or before-1970',
+      hint: t(
+        'lumen.books.filter.firstPublishYearHint',
+        'Four digits or before-1970'
+      ),
     },
     {
       key: 'language',
       apiKey: 'language',
-      label: 'Book Language Code',
+      label: t('lumen.books.filter.language', 'Book Language Code'),
       pattern: '[a-z]{3}',
       maxLength: 3,
-      hint: 'Three-letter code, such as eng',
+      hint: t(
+        'lumen.books.filter.languageHint',
+        'Three-letter code, such as eng'
+      ),
     },
     {
       key: 'minRating',
       apiKey: 'minRating',
-      label: 'Minimum Book Rating',
+      label: t('lumen.books.filter.minimumRating', 'Minimum Book Rating'),
       pattern: '[1-4](\\.[05])?|5(\\.0)?',
       maxLength: 3,
-      hint: '1 to 5 in half-star steps',
+      hint: t('lumen.books.filter.ratingHint', '1 to 5 in half-star steps'),
     },
   ];
   const filters = new URLSearchParams();
@@ -559,7 +636,9 @@ function BooksGrid({
     if (v.length) n.set('genre', v.join(','));
     keepList(n);
   };
-  const noun = audio ? 'audiobooks' : 'ebooks';
+  const noun = audio
+    ? t('lumen.books.audiobooks', 'Audiobooks').toLowerCase()
+    : t('lumen.books.ebooks', 'Ebooks').toLowerCase();
   const setSort = (v: string) => {
     const n = new URLSearchParams(p);
     n.delete('sortBy');
@@ -572,20 +651,43 @@ function BooksGrid({
       <div className="sec-head">
         <h2>
           {show === 'have'
-            ? 'In your library'
+            ? t('lumen.books.inYourLibrary', 'In your library')
             : genres.length > 2
-              ? `${genres.length} genres · ${SORT_TITLES[sort]} ${noun}`
-              : [SORT_TITLES[sort], subject || genres.join(' & '), noun]
+              ? t(
+                  'lumen.books.genreSortHeading',
+                  '{count} genres · {sort} {catalog}',
+                  {
+                    count: genres.length,
+                    sort: t(
+                      `lumen.books.headingSort.${SORT_HEADING_KEYS[sort]}`,
+                      SORT_TITLES[sort]
+                    ),
+                    catalog: noun,
+                  }
+                )
+              : [
+                  t(
+                    `lumen.books.headingSort.${SORT_HEADING_KEYS[sort]}`,
+                    SORT_TITLES[sort]
+                  ),
+                  subject || genres.join(' & '),
+                  noun,
+                ]
                   .filter(Boolean)
                   .join(' ')}
         </h2>
-        <Link to={audio ? '/audiobooks' : '/books'}>Overview</Link>
+        <Link to={audio ? '/audiobooks' : '/books'}>
+          {t('lumen.books.overview', 'Overview')}
+        </Link>
       </div>
       {note}
       {search.length >= 2 && search.length <= 200 && (
         <Section
-          title="Book Series"
-          link={['View All Series Results', '/book-series?' + seriesQuery]}
+          title={t('lumen.books.bookSeries', 'Book Series')}
+          link={[
+            t('lumen.books.viewAllSeriesResults', 'View All Series Results'),
+            '/book-series?' + seriesQuery,
+          ]}
         >
           <BookSeriesResults query={search} format={format} limit={6} />
         </Section>
@@ -593,7 +695,7 @@ function BooksGrid({
       {show !== 'have' && (
         <form
           className="toolbar"
-          aria-label="Book Discovery Search"
+          aria-label={t('lumen.books.discoverySearch', 'Book Discovery Search')}
           key={format + ':' + filters}
           onSubmit={(event) => {
             event.preventDefault();
@@ -624,7 +726,7 @@ function BooksGrid({
             )
           )}
           <button className="btn btn-tonal btn-sm" type="submit">
-            Search Books
+            {t('lumen.books.searchBooksButton', 'Search Books')}
           </button>
           {filters.size > 0 && (
             <button
@@ -636,7 +738,7 @@ function BooksGrid({
                 keepList(next);
               }}
             >
-              Clear Book Search
+              {t('lumen.books.clearBookSearch', 'Clear Book Search')}
             </button>
           )}
         </form>
@@ -644,7 +746,7 @@ function BooksGrid({
       <div className="toolbar">
         {subject && (
           <button className="chip" type="button" onClick={() => setGenres([])}>
-            Clear Subject
+            {t('lumen.books.clearSubject', 'Clear Subject')}
           </button>
         )}
         <LibrarySeg show={show} pick={upd} />
@@ -662,7 +764,7 @@ function BooksGrid({
       </div>
       {list.error && !items.length && (
         <div className="empty">
-          <b>Couldn’t load books</b>
+          <b>{t('lumen.books.loadError', 'Couldn’t load books')}</b>
           {list.error}
         </div>
       )}
@@ -670,18 +772,32 @@ function BooksGrid({
         <div className="empty" role="alert">
           <b>
             {library?.unavailable
-              ? 'Library Check Unavailable'
-              : 'Library Check Incomplete'}
+              ? t(
+                  'lumen.books.libraryCheckUnavailable',
+                  'Library Check Unavailable'
+                )
+              : t(
+                  'lumen.books.libraryCheckIncomplete',
+                  'Library Check Incomplete'
+                )}
           </b>
           {library?.unavailable
-            ? 'Refresh the page to try the library check again.'
-            : 'The library exceeds the check limit. Not yet results are hidden to avoid mislabeling owned books.'}
+            ? t(
+                'lumen.books.libraryCheckRetry',
+                'Refresh the page to try the library check again.'
+              )
+            : t(
+                'lumen.books.libraryCheckLimit',
+                'The library exceeds the check limit. Not yet results are hidden to avoid mislabeling owned books.'
+              )}
         </div>
       )}
       {unknownCount > 0 && !incompleteLibrary && (
         <div className="note" role="status">
-          Some books on this page are hidden because their library status could
-          not be confirmed. Switch to All to review them.
+          {t(
+            'lumen.books.libraryStatusUnknown',
+            'Some books on this page are hidden because their library status could not be confirmed. Switch to All to review them.'
+          )}
         </div>
       )}
       {!list.loading &&
@@ -694,8 +810,12 @@ function BooksGrid({
         items.length === 0 && (
           <div className="empty">
             {show === 'have'
-              ? `No ${audio ? 'audiobooks' : 'ebooks'} are available in this library.`
-              : 'No books match this view.'}
+              ? t(
+                  'lumen.books.noFormatInLibrary',
+                  'No {format} are available in this library.',
+                  { format: noun }
+                )
+              : t('lumen.books.noMatches', 'No books match this view.')}
           </div>
         )}
       {((waiting && !library) || (list.loading && list.page === 0)) &&
@@ -713,16 +833,16 @@ function BooksGrid({
         <div className="more-scroll" aria-live="polite">
           {list.error && list.retry ? (
             <>
-              Couldn’t load more.{' '}
+              {t('lumen.books.loadMoreError', 'Couldn’t load more.')}{' '}
               <button className="btn btn-tonal btn-sm" onClick={list.retry}>
-                Retry
+                {t('lumen.books.retry', 'Retry')}
               </button>
             </>
           ) : list.loading ? (
-            'Loading more…'
+            t('lumen.books.loadingMore', 'Loading more…')
           ) : (
             <button className="btn btn-tonal btn-sm" onClick={list.more}>
-              Load more books
+              {t('lumen.books.loadMoreBooks', 'Load more books')}
             </button>
           )}
         </div>
@@ -735,7 +855,7 @@ function BooksGrid({
               void list.more();
             }}
           >
-            Load more books
+            {t('lumen.books.loadMoreBooks', 'Load more books')}
           </button>
         </div>
       ) : (

@@ -6116,3 +6116,24 @@ pixel-by-pixel state comparison is not meaningful. The candidate shows the
 restored data view with no horizontal overflow. Live catalogue data and
 independent language review remain unverified. Baseline and candidate evidence
 is retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/franchise/`.
+
+### Books and Audiobooks discovery localization
+
+The Books and Audiobooks discovery page now follows the saved English, French,
+or Arabic locale for format navigation, book-series and recommendation links,
+landing notes, library and sort controls, genre choices, search filters, row
+recovery, pagination, and empty or incomplete-library messages. Sort and genre
+query values, book catalogue requests, ownership checks, and paging behavior
+remain unchanged. The original English full-list heading terms (such as “New”
+and “Top rated”) are preserved separately from the sort-menu labels.
+
+Twelve locale cases and twelve existing library-row, list-return, and
+filter-navigation regression cases pass across desktop, iPhone, Android, and
+tablet (24 total); another twelve localized cases passed while capturing
+French desktop and Arabic phone states. Production build and i18n checks pass.
+Matched pre-change and candidate renders were inspected at 1440 CSS px and
+390 CSS px; translated labels wrap within existing controls and the page has no
+horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/books/`.
+Live catalogue and library-provider behavior and independent language review
+remain unverified.
