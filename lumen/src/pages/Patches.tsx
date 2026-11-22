@@ -15,6 +15,7 @@ import {
 } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const KINDS = {
   translation: 'Translations',
@@ -79,6 +80,7 @@ function gameLink(key?: string, category = 'retro', platform?: string | null) {
 }
 
 export default function Patches() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const [params, setParams] = useSearchParams();
   const search = (params.get('q') ?? '').trim().slice(0, 200);
@@ -120,20 +122,28 @@ export default function Patches() {
       : null;
   const error =
     loadError ||
-    (response && !data ? 'Invalid patch catalogue response.' : null);
+    (response && !data
+      ? t(
+          'lumen.patches.invalidCatalogResponse',
+          'Invalid patch catalogue response.'
+        )
+      : null);
   const nextCursor =
     typeof data?.nextCursor === 'string' ? data.nextCursor : undefined;
 
   return (
     <>
-      <ExtraHeader title="Translations and Hacks" />
+      <ExtraHeader title={t('lumen.patches.title', 'Translations and Hacks')} />
       {catalogKey && (
         <div className="toolbar">
           <p className="note">
-            Showing projects for the selected game and console.
+            {t(
+              'lumen.patches.filteredContext',
+              'Showing projects for the selected game and console.'
+            )}
           </p>
           <Link className="btn btn-quiet btn-sm" to="/patches">
-            Browse All Projects
+            {t('lumen.patches.browseAll', 'Browse All Projects')}
           </Link>
         </div>
       )}
@@ -158,26 +168,36 @@ export default function Patches() {
           <input
             name="q"
             type="search"
-            aria-label="Search Titles"
+            aria-label={t('lumen.patches.searchTitles', 'Search Titles')}
             defaultValue={search}
             maxLength={200}
           />
         </label>
         <label className="sel">
-          <span className="lbl">Kind</span>
-          <select name="kind" aria-label="Kind" defaultValue={kind}>
-            <option value="">Any Kind</option>
+          <span className="lbl">{t('lumen.patches.kind', 'Kind')}</span>
+          <select
+            name="kind"
+            aria-label={t('lumen.patches.kind', 'Kind')}
+            defaultValue={kind}
+          >
+            <option value="">{t('lumen.patches.anyKind', 'Any Kind')}</option>
             {Object.entries(KINDS).map(([value, label]) => (
               <option key={value} value={value}>
-                {label}
+                {t(`lumen.patches.kind.${value}`, label)}
               </option>
             ))}
           </select>
         </label>
         <label className="sel">
-          <span className="lbl">Language</span>
-          <select name="language" aria-label="Language" defaultValue={language}>
-            <option value="">Any Language</option>
+          <span className="lbl">{t('lumen.patches.language', 'Language')}</span>
+          <select
+            name="language"
+            aria-label={t('lumen.patches.language', 'Language')}
+            defaultValue={language}
+          >
+            <option value="">
+              {t('lumen.patches.anyLanguage', 'Any Language')}
+            </option>
             {LANGUAGES.map((code) => (
               <option key={code} value={code}>
                 {code.toUpperCase()}
@@ -191,27 +211,36 @@ export default function Patches() {
             type="checkbox"
             defaultChecked={completeOnly}
           />{' '}
-          Completed Projects Only
+          {t('lumen.patches.completeOnly', 'Completed Projects Only')}
         </label>
         <button className="btn btn-tonal btn-sm" type="submit">
-          Apply Filters
+          {t('lumen.patches.applyFilters', 'Apply Filters')}
         </button>
       </form>
-      <ServiceNote error={error} what="patch catalogue" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.patches.catalog', 'patch catalogue')}
+        retry={reload}
+      />
       {!data && !error && (
         <p role="status" className="note">
-          Loading projects…
+          {t('lumen.patches.loadingProjects', 'Loading projects…')}
         </p>
       )}
       {data && !data.available && (
         <ServiceNote
-          error="This SeerrNG instance could not load the ROMarrNG patch catalogue."
-          what="patch catalogue"
+          error={t(
+            'lumen.patches.catalogUnavailable',
+            'This SeerrNG instance could not load the ROMarrNG patch catalogue.'
+          )}
+          what={t('lumen.patches.catalog', 'patch catalogue')}
           retry={reload}
         />
       )}
       {data?.available && data.results.length === 0 && (
-        <p className="note">No projects matched.</p>
+        <p className="note">
+          {t('lumen.patches.noMatches', 'No projects matched.')}
+        </p>
       )}
       {!!data?.results.length && (
         <ul className="setlist">
@@ -238,10 +267,19 @@ export default function Patches() {
                   <small>
                     {[
                       project.game.title,
-                      KINDS[project.kind],
+                      t(
+                        `lumen.patches.kind.${project.kind}`,
+                        KINDS[project.kind]
+                      ),
                       project.language?.toUpperCase(),
-                      STATUS[project.status],
-                      latest && `Latest ${latest.version}`,
+                      t(
+                        `lumen.patches.status.${project.status}`,
+                        STATUS[project.status]
+                      ),
+                      latest &&
+                        t('lumen.patches.latestVersion', 'Latest {version}', {
+                          version: latest.version,
+                        }),
                     ]
                       .filter(Boolean)
                       .join(' · ')}
@@ -251,12 +289,12 @@ export default function Patches() {
                 <div className="toolbar">
                   {detail && (
                     <Link className="go" to={detail}>
-                      Choose a Version
+                      {t('lumen.patches.chooseVersion', 'Choose a Version')}
                     </Link>
                   )}
                   {game && (
                     <Link className="go" to={game}>
-                      Open Game
+                      {t('lumen.patches.openGame', 'Open Game')}
                     </Link>
                   )}
                   {canViewFollowing(user?.permissions) && (
@@ -276,7 +314,10 @@ export default function Patches() {
         </ul>
       )}
       {(cursor || nextCursor) && (
-        <nav className="toolbar" aria-label="Patch Catalogue Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.patches.pages', 'Patch Catalogue Pages')}
+        >
           {cursor && (
             <button
               className="btn btn-quiet btn-sm"
@@ -287,7 +328,7 @@ export default function Patches() {
                 setParams(first);
               }}
             >
-              First Page
+              {t('lumen.patches.firstPage', 'First Page')}
             </button>
           )}
           {nextCursor && nextCursor !== cursor && (
@@ -300,7 +341,7 @@ export default function Patches() {
                 setParams(next);
               }}
             >
-              Next Page
+              {t('lumen.patches.nextPage', 'Next Page')}
             </button>
           )}
         </nav>
@@ -310,6 +351,7 @@ export default function Patches() {
 }
 
 export function PatchDetail() {
+  const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const [params, setParams] = useSearchParams();
   const { user } = useAuth();
@@ -321,7 +363,12 @@ export function PatchDetail() {
     isPatchProject(patch.data) && patch.data.id === id ? patch.data : null;
   const patchError =
     patch.error ||
-    (patch.data && !project ? 'Invalid patch project response.' : null);
+    (patch.data && !project
+      ? t(
+          'lumen.patches.invalidProjectResponse',
+          'Invalid patch project response.'
+        )
+      : null);
   const category = params.get('category') === 'modern' ? 'modern' : 'retro';
   const key = project?.game.catalogKey;
   const link = gameLink(
@@ -398,11 +445,16 @@ export function PatchDetail() {
       setRequestId(result.request.id);
       setReceipt(
         result.request.status === 'pending'
-          ? 'Waiting for approval'
-          : 'Patch requested'
+          ? t('lumen.patches.waitingApproval', 'Waiting for approval')
+          : t('lumen.patches.requested', 'Patch requested')
       );
     } catch (error) {
-      toast(friendlyError(error, 'Couldn’t request this patch'));
+      toast(
+        friendlyError(
+          error,
+          t('lumen.patches.requestFailed', 'Couldn’t request this patch')
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -412,29 +464,33 @@ export function PatchDetail() {
   return (
     <>
       <ExtraHeader
-        title={project?.name ?? 'Patch Project'}
+        title={project?.name ?? t('lumen.patches.project', 'Patch Project')}
         sub={project?.game.title}
       >
         <div className="toolbar">
           <Link className="chip" to="/patches">
-            Browse Patches
+            {t('lumen.patches.browse', 'Browse Patches')}
           </Link>
           {link && (
             <Link className="chip" to={link}>
-              Open Game
+              {t('lumen.patches.openGame', 'Open Game')}
             </Link>
           )}
         </div>
       </ExtraHeader>
-      {!PATCH_ID.test(id) && <p className="note">Patch project not found.</p>}
+      {!PATCH_ID.test(id) && (
+        <p className="note">
+          {t('lumen.patches.notFound', 'Patch project not found.')}
+        </p>
+      )}
       <ServiceNote
         error={patchError}
-        what="patch project"
+        what={t('lumen.patches.project', 'patch project')}
         retry={patch.reload}
       />
       {PATCH_ID.test(id) && !project && !patchError && (
         <p className="note" role="status">
-          Loading patch project…
+          {t('lumen.patches.loadingProject', 'Loading patch project…')}
         </p>
       )}
       {project && (
@@ -442,9 +498,11 @@ export function PatchDetail() {
           {project.summary && <p className="note">{project.summary}</p>}
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Patch Version</span>
+              <span className="lbl">
+                {t('lumen.patches.version', 'Patch Version')}
+              </span>
               <select
-                aria-label="Patch Version"
+                aria-label={t('lumen.patches.version', 'Patch Version')}
                 value={version?.id ?? ''}
                 disabled={busy || Boolean(receipt)}
                 onChange={(event) => {
@@ -453,7 +511,9 @@ export function PatchDetail() {
                   setParams(next, { replace: true });
                 }}
               >
-                <option value="">Choose a version</option>
+                <option value="">
+                  {t('lumen.patches.chooseVersionOption', 'Choose a version')}
+                </option>
                 {project.versions.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.version}
@@ -464,9 +524,11 @@ export function PatchDetail() {
             {canRequest && link && (
               <>
                 <label className="sel">
-                  <span className="lbl">Game Type</span>
+                  <span className="lbl">
+                    {t('lumen.patches.gameType', 'Game Type')}
+                  </span>
                   <select
-                    aria-label="Game Type"
+                    aria-label={t('lumen.patches.gameType', 'Game Type')}
                     value={category}
                     disabled={busy || Boolean(receipt)}
                     onChange={(event) => {
@@ -478,14 +540,20 @@ export function PatchDetail() {
                       setParams(next, { replace: true });
                     }}
                   >
-                    <option value="retro">{GAME_LABEL.retro}</option>
-                    <option value="modern">{GAME_LABEL.modern}</option>
+                    <option value="retro">
+                      {t('lumen.patches.retroGames', GAME_LABEL.retro)}
+                    </option>
+                    <option value="modern">
+                      {t('lumen.patches.modernGames', GAME_LABEL.modern)}
+                    </option>
                   </select>
                 </label>
                 <label className="sel">
-                  <span className="lbl">System</span>
+                  <span className="lbl">
+                    {t('lumen.patches.system', 'System')}
+                  </span>
                   <select
-                    aria-label="System"
+                    aria-label={t('lumen.patches.system', 'System')}
                     value={targetSystem?.slug ?? ''}
                     disabled={busy || Boolean(receipt) || !systems.length}
                     onChange={(event) => {
@@ -496,7 +564,9 @@ export function PatchDetail() {
                       setParams(next, { replace: true });
                     }}
                   >
-                    <option value="">Choose a system</option>
+                    <option value="">
+                      {t('lumen.patches.chooseSystem', 'Choose a system')}
+                    </option>
                     {systems.map((option) => (
                       <option key={option.slug} value={option.slug}>
                         {option.name}
@@ -510,38 +580,57 @@ export function PatchDetail() {
           {version?.notes && <p className="note">{version.notes}</p>}
           {versionId && !version && (
             <p className="note">
-              This patch version is no longer listed. Choose another version.
+              {t(
+                'lumen.patches.versionRemoved',
+                'This patch version is no longer listed. Choose another version.'
+              )}
             </p>
           )}
           {version && !version.base?.available && (
-            <p className="note">The required base revision is unavailable.</p>
+            <p className="note">
+              {t(
+                'lumen.patches.baseUnavailable',
+                'The required base revision is unavailable.'
+              )}
+            </p>
           )}
           {canRequest && (
             <>
               {!link && (
                 <p className="note">
-                  This project has no supported game catalogue identity.
+                  {t(
+                    'lumen.patches.gameIdentityUnavailable',
+                    'This project has no supported game catalogue identity.'
+                  )}
                 </p>
               )}
               <ServiceNote
                 error={
                   game.error ||
                   (game.data && !matchingGame
-                    ? 'The catalogue returned a different base game.'
+                    ? t(
+                        'lumen.patches.gameMismatch',
+                        'The catalogue returned a different base game.'
+                      )
                     : null)
                 }
-                what="associated game"
+                what={t('lumen.patches.associatedGame', 'associated game')}
                 retry={game.reload}
               />
               {matchingGame && !systems.length && (
                 <p className="note">
-                  No compatible system was found in this game type.
+                  {t(
+                    'lumen.patches.noCompatibleSystem',
+                    'No compatible system was found in this game type.'
+                  )}
                 </p>
               )}
               {!!systems.length && system && !targetSystem && (
                 <p className="note">
-                  The selected console is incompatible with this patch. Choose a
-                  compatible system.
+                  {t(
+                    'lumen.patches.systemIncompatible',
+                    'The selected console is incompatible with this patch. Choose a compatible system.'
+                  )}
                 </p>
               )}
               <div className="toolbar">
@@ -552,7 +641,7 @@ export function PatchDetail() {
                     disabled={busy || Boolean(receipt)}
                     onChange={(event) => setKeepOriginal(event.target.checked)}
                   />{' '}
-                  Keep Original
+                  {t('lumen.patches.keepOriginal', 'Keep Original')}
                 </label>
                 <button
                   className="btn btn-primary"
@@ -560,7 +649,7 @@ export function PatchDetail() {
                   disabled={!ready || busy || Boolean(receipt)}
                   onClick={() => void submit()}
                 >
-                  Request Patch
+                  {t('lumen.patches.requestPatch', 'Request Patch')}
                 </button>
               </div>
               {!!requestId && (
@@ -568,7 +657,7 @@ export function PatchDetail() {
                   className="chip"
                   to={`/requests?softwareRequestId=${requestId}`}
                 >
-                  Request History
+                  {t('lumen.patches.requestHistory', 'Request History')}
                 </Link>
               )}
               {receipt && (

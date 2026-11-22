@@ -193,6 +193,14 @@ test('a Following update opens its exact patch version and submits only with a c
         return route.fulfill({
           json: { id: 1, displayName: 'Player', permissions: 32 },
         });
+      case '/settings/public':
+        return route.fulfill({
+          json: {
+            softwareEnabled: true,
+            romarrEnabled: true,
+            enabledMediaCategories: { game: true, modern: true, retro: true },
+          },
+        });
       case '/follow/events':
         return route.fulfill({
           json: {
