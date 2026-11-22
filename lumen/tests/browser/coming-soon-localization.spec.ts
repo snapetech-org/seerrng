@@ -96,6 +96,14 @@ test('Coming Soon localizes its feed and preserves movie request submission', as
       timeZone: 'UTC',
     }).format(new Date('2026-12-01T00:00:00Z')) + ' 2026'
   );
+  const calendarLink = page.getByRole('link', {
+    name: text('Release Calendar', 'Calendrier des sorties', 'تقويم الإصدارات'),
+  });
+  if (candidate) {
+    await expect(calendarLink).toHaveAttribute('href', '/calendar');
+  } else {
+    await expect(calendarLink).toHaveCount(0);
+  }
   const item = page.locator('.si').filter({ hasText: 'Example Movie' });
   await expect(item).toContainText(text('Movie', 'Film', 'فيلم'));
   await expect(

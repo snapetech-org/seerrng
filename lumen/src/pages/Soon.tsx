@@ -324,6 +324,11 @@ export default function Soon() {
           </div>
         ) : null
       )}
+      <div className="more-scroll">
+        <Link className="btn btn-quiet" to="/calendar">
+          {t('lumen.me.releaseCalendar', 'Release Calendar')}
+        </Link>
+      </div>
     </>
   );
 }
