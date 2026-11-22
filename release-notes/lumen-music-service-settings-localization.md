@@ -1,0 +1,1 @@
+Lumen's Navidrome and Jellystat administration screens now follow the saved interface language in English, French, and Arabic. The connection-test, credential-redaction, library-scan, and confirmed-disconnect workflows remain intact.

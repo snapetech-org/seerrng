@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Provider = 'navidrome' | 'jellystat';
@@ -28,11 +29,17 @@ function Connection({
   provider: Provider;
   initial: Settings | null;
 }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const endpoint = `/settings/${provider}`;
   const navidrome = provider === 'navidrome';
   const secretField = navidrome ? 'password' : 'apiKey';
-  const secretLabel = navidrome ? 'Password' : 'API Key';
+  const secretLabel = t(
+    navidrome
+      ? 'lumen.adminUrlConnection.password'
+      : 'lumen.adminUrlConnection.apiKey',
+    navidrome ? 'Password' : 'API Key'
+  );
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState({
     ...(initial ?? empty),
@@ -91,10 +98,22 @@ function Connection({
       if (generation === sessionGeneration()) {
         setNotice(
           action === 'test'
-            ? `${name} connection verified.`
+            ? t(
+                'lumen.adminUrlConnection.connectionVerified',
+                '{provider} connection verified.',
+                { provider: name }
+              )
             : action === 'save'
-              ? `${name} settings saved.`
-              : `${name} disconnected.`
+              ? t(
+                  'lumen.adminUrlConnection.settingsSaved',
+                  '{provider} settings saved.',
+                  { provider: name }
+                )
+              : t(
+                  'lumen.adminUrlConnection.disconnected',
+                  '{provider} disconnected.',
+                  { provider: name }
+                )
         );
       }
     } catch (failure) {
@@ -102,7 +121,11 @@ function Connection({
         setError(
           failure instanceof ApiError
             ? failure.message
-            : `Could not complete the ${name} action.`
+            : t(
+                'lumen.adminUrlConnection.actionFailure',
+                'Could not complete the {provider} action.',
+                { provider: name }
+              )
         );
     } finally {
       pending.current = false;
@@ -111,7 +134,13 @@ function Connection({
   }
 
   return (
-    <Section title={`${name} Connection`}>
+    <Section
+      title={t(
+        'lumen.adminUrlConnection.sectionTitle',
+        '{provider} Connection',
+        { provider: name }
+      )}
+    >
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -120,7 +149,7 @@ function Connection({
       >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Server URL</span>
+            <span>{t('lumen.adminUrlConnection.serverUrl', 'Server URL')}</span>
             <input
               className="cfg-input"
               type="url"
@@ -132,7 +161,7 @@ function Connection({
           </label>
           {navidrome && (
             <label className="set cfg-row">
-              <span>Username</span>
+              <span>{t('lumen.adminUrlConnection.username', 'Username')}</span>
               <input
                 className="cfg-input"
                 maxLength={256}
@@ -153,7 +182,10 @@ function Connection({
               value={draft[secretField] ?? ''}
               placeholder={
                 saved?.[secretField]
-                  ? `Saved ${secretLabel.toLowerCase()}`
+                  ? t(
+                      'lumen.adminUrlConnection.savedCredential',
+                      'Saved Credential'
+                    )
                   : undefined
               }
               onChange={(event) =>
@@ -163,7 +195,12 @@ function Connection({
           </label>
           {navidrome && (
             <label className="set cfg-row">
-              <span>Enable Library Scan</span>
+              <span>
+                {t(
+                  'lumen.adminUrlConnection.enableLibraryScan',
+                  'Enable Library Scan'
+                )}
+              </span>
               <input
                 type="checkbox"
                 disabled={busy}
@@ -192,14 +229,14 @@ function Connection({
             disabled={busy || !ready}
             onClick={() => void submit('test')}
           >
-            Test Connection
+            {t('lumen.adminUrlConnection.testConnection', 'Test Connection')}
           </button>
           <button
             type="submit"
             className="btn btn-primary btn-sm"
             disabled={busy || !ready || !dirty}
           >
-            Save Changes
+            {t('lumen.adminUrlConnection.saveChanges', 'Save Changes')}
           </button>
           {saved && !confirm && (
             <button
@@ -208,15 +245,22 @@ function Connection({
               disabled={busy}
               onClick={() => setConfirm(true)}
             >
-              Disconnect
+              {t('lumen.adminUrlConnection.disconnect', 'Disconnect')}
             </button>
           )}
         </div>
         {confirm && (
           <>
             <p className="note">
-              Disconnect {name}
-              {navidrome && ' and stop future library scans'}?
+              {t(
+                navidrome
+                  ? 'lumen.adminUrlConnection.disconnectWithScans'
+                  : 'lumen.adminUrlConnection.disconnectConfirm',
+                navidrome
+                  ? 'Disconnect {provider} and stop future library scans?'
+                  : 'Disconnect {provider}?',
+                { provider: name }
+              )}
             </p>
             <div className="toolbar">
               <button
@@ -225,7 +269,10 @@ function Connection({
                 disabled={busy}
                 onClick={() => void submit('disconnect')}
               >
-                Confirm Disconnect
+                {t(
+                  'lumen.adminUrlConnection.confirmDisconnect',
+                  'Confirm Disconnect'
+                )}
               </button>
               <button
                 type="button"
@@ -233,7 +280,10 @@ function Connection({
                 disabled={busy}
                 onClick={() => setConfirm(false)}
               >
-                Keep Connection
+                {t(
+                  'lumen.adminUrlConnection.keepConnection',
+                  'Keep Connection'
+                )}
               </button>
             </div>
           </>
@@ -248,6 +298,7 @@ export default function AdminUrlConnection({
 }: {
   provider: Provider;
 }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const endpoint = `/settings/${provider}`;
   const [settings, setSettings] = useState<Settings | null>();
@@ -264,21 +315,38 @@ export default function AdminUrlConnection({
         if (current()) setSettings(value);
       })
       .catch(() => {
-        if (current()) setError(`Could not load the ${name} connection.`);
+        if (current())
+          setError(
+            t(
+              'lumen.adminUrlConnection.loadFailure',
+              'Could not load the {provider} connection.',
+              { provider: name }
+            )
+          );
       });
     return () => controller.abort();
-  }, [attempt, endpoint, name]);
+  }, [attempt, endpoint, name, t]);
   return (
     <>
-      <h1>{name} Settings</h1>
+      <h1>
+        {t('lumen.adminUrlConnection.pageTitle', '{provider} Settings', {
+          provider: name,
+        })}
+      </h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.nav.administration', 'Administration')}
         </Link>
       </div>
       <ServiceNote
         what={`${name} settings`}
+        title={t(
+          'lumen.adminUrlConnection.loadFailureTitle',
+          'Couldn’t Load {provider} Settings',
+          { provider: name }
+        )}
         error={error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={() => {
           setError(null);
           setAttempt((value) => value + 1);
@@ -289,7 +357,13 @@ export default function AdminUrlConnection({
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading {name} settings…
+            {t(
+              'lumen.adminUrlConnection.loading',
+              'Loading {provider} settings…',
+              {
+                provider: name,
+              }
+            )}
           </p>
         )
       )}

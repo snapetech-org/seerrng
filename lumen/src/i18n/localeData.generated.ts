@@ -2336,6 +2336,32 @@ export const localeData = [
       'lumen.adminSettings.uploading': 'جارٍ الرفع…',
       'lumen.adminSettings.you': 'أنت',
       'lumen.adminSwipe.pageTitle': 'إعدادات Swipe',
+      'lumen.adminUrlConnection.actionFailure': 'تعذر إكمال إجراء {provider}.',
+      'lumen.adminUrlConnection.apiKey': 'مفتاح API',
+      'lumen.adminUrlConnection.confirmDisconnect': 'تأكيد قطع الاتصال',
+      'lumen.adminUrlConnection.connectionVerified':
+        'تم التحقق من اتصال {provider}.',
+      'lumen.adminUrlConnection.disconnect': 'قطع الاتصال',
+      'lumen.adminUrlConnection.disconnectConfirm':
+        'قطع الاتصال بـ {provider}؟',
+      'lumen.adminUrlConnection.disconnectWithScans':
+        'قطع الاتصال بـ {provider} وإيقاف فحوصات المكتبة المستقبلية؟',
+      'lumen.adminUrlConnection.disconnected': 'تم قطع الاتصال بـ {provider}.',
+      'lumen.adminUrlConnection.enableLibraryScan': 'تفعيل فحص المكتبة',
+      'lumen.adminUrlConnection.keepConnection': 'الإبقاء على الاتصال',
+      'lumen.adminUrlConnection.loadFailure': 'تعذر تحميل اتصال {provider}.',
+      'lumen.adminUrlConnection.loadFailureTitle':
+        'تعذر تحميل إعدادات {provider}',
+      'lumen.adminUrlConnection.loading': 'جارٍ تحميل إعدادات {provider}…',
+      'lumen.adminUrlConnection.pageTitle': 'إعدادات {provider}',
+      'lumen.adminUrlConnection.password': 'كلمة المرور',
+      'lumen.adminUrlConnection.saveChanges': 'حفظ التغييرات',
+      'lumen.adminUrlConnection.savedCredential': 'بيانات اعتماد محفوظة',
+      'lumen.adminUrlConnection.sectionTitle': 'اتصال {provider}',
+      'lumen.adminUrlConnection.serverUrl': 'عنوان URL للخادم',
+      'lumen.adminUrlConnection.settingsSaved': 'تم حفظ إعدادات {provider}.',
+      'lumen.adminUrlConnection.testConnection': 'اختبار الاتصال',
+      'lumen.adminUrlConnection.username': 'اسم المستخدم',
       'lumen.adminUsers.allUsers': 'جميع المستخدمين',
       'lumen.adminUsers.ascending': 'تصاعدي',
       'lumen.adminUsers.backToAccount': 'العودة إلى الحساب',
@@ -10663,6 +10689,33 @@ export const localeData = [
       'lumen.adminSettings.uploading': 'Uploading…',
       'lumen.adminSettings.you': 'You',
       'lumen.adminSwipe.pageTitle': 'Swipe Settings',
+      'lumen.adminUrlConnection.actionFailure':
+        'Could not complete the {provider} action.',
+      'lumen.adminUrlConnection.apiKey': 'API Key',
+      'lumen.adminUrlConnection.confirmDisconnect': 'Confirm Disconnect',
+      'lumen.adminUrlConnection.connectionVerified':
+        '{provider} connection verified.',
+      'lumen.adminUrlConnection.disconnect': 'Disconnect',
+      'lumen.adminUrlConnection.disconnectConfirm': 'Disconnect {provider}?',
+      'lumen.adminUrlConnection.disconnectWithScans':
+        'Disconnect {provider} and stop future library scans?',
+      'lumen.adminUrlConnection.disconnected': '{provider} disconnected.',
+      'lumen.adminUrlConnection.enableLibraryScan': 'Enable Library Scan',
+      'lumen.adminUrlConnection.keepConnection': 'Keep Connection',
+      'lumen.adminUrlConnection.loadFailure':
+        'Could not load the {provider} connection.',
+      'lumen.adminUrlConnection.loadFailureTitle':
+        'Couldn’t Load {provider} Settings',
+      'lumen.adminUrlConnection.loading': 'Loading {provider} settings…',
+      'lumen.adminUrlConnection.pageTitle': '{provider} Settings',
+      'lumen.adminUrlConnection.password': 'Password',
+      'lumen.adminUrlConnection.saveChanges': 'Save Changes',
+      'lumen.adminUrlConnection.savedCredential': 'Saved Credential',
+      'lumen.adminUrlConnection.sectionTitle': '{provider} Connection',
+      'lumen.adminUrlConnection.serverUrl': 'Server URL',
+      'lumen.adminUrlConnection.settingsSaved': '{provider} settings saved.',
+      'lumen.adminUrlConnection.testConnection': 'Test Connection',
+      'lumen.adminUrlConnection.username': 'Username',
       'lumen.adminUsers.allUsers': 'All Users',
       'lumen.adminUsers.ascending': 'Ascending',
       'lumen.adminUsers.backToAccount': 'Back to Account',
@@ -19511,6 +19564,36 @@ export const localeData = [
       'lumen.adminSettings.uploading': 'Téléversement…',
       'lumen.adminSettings.you': 'Vous',
       'lumen.adminSwipe.pageTitle': 'Paramètres Swipe',
+      'lumen.adminUrlConnection.actionFailure':
+        'Impossible de terminer l’action {provider}.',
+      'lumen.adminUrlConnection.apiKey': 'Clé API',
+      'lumen.adminUrlConnection.confirmDisconnect': 'Confirmer la déconnexion',
+      'lumen.adminUrlConnection.connectionVerified':
+        'Connexion à {provider} vérifiée.',
+      'lumen.adminUrlConnection.disconnect': 'Déconnecter',
+      'lumen.adminUrlConnection.disconnectConfirm': 'Déconnecter {provider} ?',
+      'lumen.adminUrlConnection.disconnectWithScans':
+        'Déconnecter {provider} et arrêter les prochaines analyses de la bibliothèque ?',
+      'lumen.adminUrlConnection.disconnected': '{provider} déconnecté.',
+      'lumen.adminUrlConnection.enableLibraryScan':
+        'Activer l’analyse de la bibliothèque',
+      'lumen.adminUrlConnection.keepConnection': 'Garder la connexion',
+      'lumen.adminUrlConnection.loadFailure':
+        'Impossible de charger la connexion {provider}.',
+      'lumen.adminUrlConnection.loadFailureTitle':
+        'Impossible de charger les paramètres {provider}',
+      'lumen.adminUrlConnection.loading':
+        'Chargement des paramètres {provider}…',
+      'lumen.adminUrlConnection.pageTitle': 'Paramètres de {provider}',
+      'lumen.adminUrlConnection.password': 'Mot de passe',
+      'lumen.adminUrlConnection.saveChanges': 'Enregistrer les modifications',
+      'lumen.adminUrlConnection.savedCredential': 'Identifiant enregistré',
+      'lumen.adminUrlConnection.sectionTitle': 'Connexion à {provider}',
+      'lumen.adminUrlConnection.serverUrl': 'URL du serveur',
+      'lumen.adminUrlConnection.settingsSaved':
+        'Paramètres de {provider} enregistrés.',
+      'lumen.adminUrlConnection.testConnection': 'Tester la connexion',
+      'lumen.adminUrlConnection.username': 'Nom d’utilisateur',
       'lumen.adminUsers.allUsers': 'Tous les utilisateurs',
       'lumen.adminUsers.ascending': 'Croissant',
       'lumen.adminUsers.backToAccount': 'Retour au compte',

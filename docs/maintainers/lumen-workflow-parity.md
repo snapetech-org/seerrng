@@ -5758,3 +5758,23 @@ Live requests to Anthropic, an OpenAI-compatible server, Tesseract, and
 independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/recognition-browser-standalone/`,
 `.../recognition-browser-embedded/`, and `.../recognition-visual/`.
+
+### Navidrome and Jellystat settings localization
+
+The shared Navidrome and Jellystat connection screen now follows the saved
+locale for titles, URL and credential fields, Navidrome library-scan control,
+test/save/disconnect actions, confirmations, and workflow status messages in
+English, French, and Arabic. The provider-specific password/API-key fields,
+masked-credential reuse, scan setting, and confirmed DELETE behavior remain
+unchanged.
+
+The browser suite verifies each provider's save, test using the masked saved
+credential, cancel and confirm disconnect, and field reset. It passes 24 cases
+in standalone Lumen and 24 in the bundled `/lumen/` mount over three locales and
+four viewport presets. English baseline/candidate captures are pixel-identical
+for both providers at desktop and iPhone sizes. French desktop and Arabic
+iPhone renders were inspected in the bundled app. Live Navidrome/Jellystat
+connections, provider persistence, and independent translation review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/url-connection-standalone-final/`,
+`.../url-connection-embedded/`, and `.../url-connection-visual/`.
