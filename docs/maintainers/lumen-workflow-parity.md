@@ -6079,6 +6079,19 @@ Evidence is retained under
 `.../media-libraries-browser-embedded-final/`,
 `.../media-libraries-visual/`, and `.../media-libraries-locales-saved-host/`.
 
+A follow-up locale regression added a Plex book library to the route matrix and
+found that its row subtitle still hardcoded “Audiobooks” despite the existing
+translated label. The row now uses the shared English, French, or Arabic
+message. Baseline and candidate French desktop and iPhone captures show only
+the intended subtitle change; page geometry and the existing mobile navigation
+overlay are unchanged. The full admin media-library suite passes 48 cases in
+standalone Lumen across the four viewport projects, and the updated
+localization matrix passes 12 cases in the production Express `/lumen/` mount.
+Matching French desktop and iPhone captures were inspected in both deployments.
+The label fits without changing row geometry or causing horizontal overflow.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-audiobook-label-20261122/`.
+
 ### Metadata provider administration localization
 
 The Lumen Metadata Providers page and shared metadata credential form now

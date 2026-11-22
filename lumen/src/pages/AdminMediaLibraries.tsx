@@ -225,7 +225,10 @@ function MediaLibraries({
                     <b>{library.name}</b>
                     <small>
                       {provider === 'plex' && library.type === 'book'
-                        ? 'Audiobooks'
+                        ? t(
+                            'lumen.adminMediaLibraries.audiobooks',
+                            'Audiobooks'
+                          )
                         : t(
                             `lumen.adminMediaLibraries.type.${library.type}`,
                             {

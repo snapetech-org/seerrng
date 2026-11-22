@@ -7,6 +7,7 @@ const locales = {
     host: 'Server Hostname',
     hostPicker: 'Saved Connection Host',
     libraries: 'Plex Libraries',
+    audiobooks: 'Audiobooks',
     scan: 'Full Library Scan',
     start: 'Start Full Scan',
   },
@@ -16,6 +17,7 @@ const locales = {
     host: 'Nom d’hôte du serveur',
     hostPicker: 'Hôte de connexion enregistré',
     libraries: 'Bibliothèques Plex',
+    audiobooks: 'Livres audio',
     scan: 'Analyse complète de la bibliothèque',
     start: 'Lancer l’analyse complète',
   },
@@ -25,6 +27,7 @@ const locales = {
     host: 'اسم مضيف الخادم',
     hostPicker: 'مضيف اتصال محفوظ',
     libraries: 'مكتبات Plex',
+    audiobooks: 'الكتب الصوتية',
     scan: 'فحص المكتبة بالكامل',
     start: 'بدء الفحص الكامل',
   },
@@ -64,6 +67,12 @@ for (const [locale, copy] of Object.entries(locales)) {
             apiKey: '[REDACTED]',
             libraries: [
               { id: 'tv', name: 'Shows', type: 'show', enabled: true },
+              {
+                id: 'audiobooks',
+                name: 'Audiobook Library',
+                type: 'book',
+                enabled: true,
+              },
             ],
           },
         });
@@ -107,6 +116,17 @@ for (const [locale, copy] of Object.entries(locales)) {
     await expect(
       page.getByRole('heading', { name: copy.libraries })
     ).toBeVisible();
+    if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+      await page.screenshot({
+        path: info.outputPath('media-libraries.png'),
+        fullPage: true,
+      });
+    await expect(
+      page
+        .locator('.cfg-row')
+        .filter({ hasText: 'Audiobook Library' })
+        .locator('small')
+    ).toHaveText(copy.audiobooks);
     await expect(page.getByRole('heading', { name: copy.scan })).toBeVisible();
     await expect(page.getByRole('button', { name: copy.start })).toBeEnabled();
     await page.getByRole('button', { name: copy.start }).click();
@@ -115,10 +135,5 @@ for (const [locale, copy] of Object.entries(locales)) {
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
-    if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
-      await page.screenshot({
-        path: info.outputPath('media-libraries.png'),
-        fullPage: true,
-      });
   });
 }
