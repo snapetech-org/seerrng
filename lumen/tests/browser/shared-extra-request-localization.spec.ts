@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const locales = {
   en: {
     music: 'Request album',
@@ -35,7 +38,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
       const url = new URL(request.url());
-      const path = url.pathname.slice('/api/v1'.length);
+      const path = url.pathname
+        .replace(/^\/lumen(?=\/)/, '')
+        .slice('/api/v1'.length);
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions: 2 } });
       if (path === '/settings/public')
@@ -91,7 +96,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     });
 
     const copy = locales[locale];
-    await page.goto('/music/42');
+    await page.goto(appPath('/music/42'));
     const musicRequest = page.getByRole('button', { name: copy.music });
     await expect(musicRequest).toBeVisible();
     if (capture)
@@ -107,7 +112,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         path: `${capture}-${locale}-music-submitted.png`,
       });
 
-    await page.goto('/adult/42');
+    await page.goto(appPath('/adult/42'));
     const adultRequest = page.getByRole('button', {
       name: copy.request,
       exact: true,
