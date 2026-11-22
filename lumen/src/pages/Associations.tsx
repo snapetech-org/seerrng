@@ -280,7 +280,7 @@ export function CollectionAssociations({
   mediaType,
   parts,
 }: {
-  mediaType: 'movie' | 'tv' | 'album';
+  mediaType: 'movie' | 'tv' | 'album' | 'book';
   parts: { id: string | number }[];
 }) {
   const { t } = useLumenLocale();

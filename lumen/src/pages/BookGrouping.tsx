@@ -12,6 +12,7 @@ import { DetailTop } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import ReaderShelf from '../components/ReaderShelf';
 import { useApi } from '../hooks';
+import { CollectionAssociations } from './Associations';
 import BookSeriesCatalog from './BookSeriesCatalog';
 
 interface Author {
@@ -368,6 +369,13 @@ function SeriesDetail({ id }: { id: string }) {
           <ReaderShelf
             target={{ type: 'book-series', id: data.id, name: data.title }}
           />
+          {books.length > 0 && (
+            <CollectionAssociations
+              key={books.map(({ id }) => id).join(',')}
+              mediaType="book"
+              parts={books}
+            />
+          )}
         </div>
         {data.description && <p className="ov">{data.description}</p>}
         {books.length > 0 ? (

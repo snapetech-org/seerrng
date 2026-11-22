@@ -6197,6 +6197,25 @@ and independent language review remains unverified. Screenshots and test
 results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-detail-localization-20261121/test-results/`.
 
+### Book-series collection associations
+
+Lumen's native SeerrNG association graph now also appears on book-series detail
+pages. Expanding the existing collection-association disclosure checks the
+series' member books through the authenticated book-association endpoint,
+deduplicates and ranks related results through the shared owner, and links
+eligible related books back to their detail pages. Empty series do not expose
+the action. Existing identity validation and collection-association behavior
+for movie, TV, and music collections remain unchanged.
+
+The author/series workflow browser fixture verifies both member-book reads and
+the related-book destination across desktop, iPhone, Android, and tablet. The
+initial disclosure-closed page was compared at matching desktop and iPhone
+viewports against the pre-change render; the novel expanded association state
+was inspected in the candidate and remains content-dependent. The fixture does
+not exercise a live association database or external provider. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-localization-20261122/`.
+
 ### Following actions localization
 
 The shared Follow control now takes its default label from the saved locale.
