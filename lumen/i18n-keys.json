@@ -4392,6 +4392,7 @@
   "lumen.tvEpisodeRequest.expandAll",
   "lumen.tvEpisodeRequest.loadFailure",
   "lumen.tvEpisodeRequest.loadFailureBody",
+  "lumen.tvEpisodeRequest.loadFailurePartialBody",
   "lumen.tvEpisodeRequest.loading",
   "lumen.tvEpisodeRequest.open",
   "lumen.tvEpisodeRequest.requestAnyway",

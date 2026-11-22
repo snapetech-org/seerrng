@@ -5415,6 +5415,8 @@ export const localeData = [
       'lumen.tvEpisodeRequest.loadFailure': 'تعذر تحميل الحلقات',
       'lumen.tvEpisodeRequest.loadFailureBody':
         'تعذر تحميل بعض تفاصيل المواسم.',
+      'lumen.tvEpisodeRequest.loadFailurePartialBody':
+        'لا تزال تفاصيل بعض المواسم غير متاحة. تبقى حلقات المواسم المحمّلة معروضة؛ أعد المحاولة لتحميل التفاصيل الناقصة.',
       'lumen.tvEpisodeRequest.loading': 'جارٍ تحميل الحلقات…',
       'lumen.tvEpisodeRequest.open': 'طلب الحلقات',
       'lumen.tvEpisodeRequest.requestAnyway': 'الطلب على أي حال',
@@ -14958,6 +14960,8 @@ export const localeData = [
       'lumen.tvEpisodeRequest.loadFailure': 'Could not load episodes',
       'lumen.tvEpisodeRequest.loadFailureBody':
         'Some season details could not be loaded.',
+      'lumen.tvEpisodeRequest.loadFailurePartialBody':
+        'Some season details remain unavailable. Episodes from loaded seasons are still shown; retry to load the missing details.',
       'lumen.tvEpisodeRequest.loading': 'Loading episodes…',
       'lumen.tvEpisodeRequest.open': 'Request Episodes',
       'lumen.tvEpisodeRequest.requestAnyway': 'Request Anyway',
@@ -25364,6 +25368,8 @@ export const localeData = [
         'Impossible de charger les épisodes',
       'lumen.tvEpisodeRequest.loadFailureBody':
         'Certaines informations de saison n’ont pas pu être chargées.',
+      'lumen.tvEpisodeRequest.loadFailurePartialBody':
+        'Les détails de certaines saisons restent indisponibles. Les épisodes des saisons chargées restent affichés ; réessayez pour charger les détails manquants.',
       'lumen.tvEpisodeRequest.loading': 'Chargement des épisodes…',
       'lumen.tvEpisodeRequest.open': 'Demander des épisodes',
       'lumen.tvEpisodeRequest.requestAnyway': 'Demander quand même',

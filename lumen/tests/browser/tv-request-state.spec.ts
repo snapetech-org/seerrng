@@ -617,17 +617,16 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
   );
   await page.goto(appPath('/tv/84773?episode=3#season-15'));
   const batchQueries: string[] = [];
-  let batchAttempts = 0;
+  let retrying = false;
   await page.route('**/api/v1/tv/84773/seasons?*', (route) => {
     const requested =
       new URL(route.request().url()).searchParams.get('seasonNumbers') ?? '';
     batchQueries.push(requested);
-    batchAttempts++;
     return route.fulfill({
       json: requested
         .split(',')
         .map(Number)
-        .filter((seasonNumber) => batchAttempts > 1 || seasonNumber !== 15)
+        .filter((seasonNumber) => retrying || seasonNumber !== 15)
         .map((seasonNumber) => ({
           seasonNumber,
           episodes:
@@ -647,6 +646,8 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
   await open.click();
   const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
   await expect(sheet.getByText('Could not load episodes')).toBeVisible();
+  const initialBatchCount = batchQueries.length;
+  retrying = true;
   await sheet.getByRole('button', { name: 'Retry' }).click();
   await expect(
     sheet.getByRole('button', { name: 'Request Selected Episodes' })
@@ -657,10 +658,7 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
     exact: true,
   });
   await expect(selectedEpisode).toBeChecked();
-  expect(batchQueries).toEqual([
-    largeSeriesSeasons.map(({ seasonNumber }) => seasonNumber).join(','),
-    '15',
-  ]);
+  expect(batchQueries.slice(initialBatchCount)).toEqual(['15']);
   await sheet
     .getByRole('button', { name: 'Request Selected Episodes' })
     .click();
@@ -676,6 +674,92 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
         is4k: false,
         seasons: [15],
         seasonRequests: [{ seasonNumber: 15, episodeNumbers: [3] }],
+      },
+    },
+  ]);
+});
+
+test('partial large-series metadata still permits exact requests from loaded seasons', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  const largeSeriesSeasons = Array.from({ length: 15 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  const batchQueries: string[] = [];
+  await show(
+    page,
+    {},
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true },
+    largeSeriesSeasons
+  );
+  await page.route('**/api/v1/tv/84773/seasons?*', (route) => {
+    const requested =
+      new URL(route.request().url()).searchParams.get('seasonNumbers') ?? '';
+    batchQueries.push(requested);
+    return route.fulfill({
+      json: requested
+        .split(',')
+        .map(Number)
+        .filter((seasonNumber) => seasonNumber !== 15)
+        .map((seasonNumber) => ({
+          seasonNumber,
+          episodes: [
+            {
+              episodeNumber: 1,
+              name: `Loaded Season ${seasonNumber} Episode`,
+            },
+          ],
+        })),
+    });
+  });
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(sheet.getByRole('alert')).toContainText(
+    'Episodes from loaded seasons are still shown'
+  );
+  await sheet.getByText('Season 14', { exact: true }).click();
+  const loadedEpisode = sheet.getByRole('checkbox', {
+    name: 'E1 Loaded Season 14 Episode',
+    exact: true,
+  });
+  await expect(loadedEpisode).toBeEnabled();
+  await loadedEpisode.check();
+  const submit = sheet.getByRole('button', {
+    name: 'Request Selected Episodes',
+    exact: true,
+  });
+  await expect(submit).toBeEnabled();
+  if (process.env.LUMEN_TV_PARTIAL_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_TV_PARTIAL_CAPTURE}-${info.project.name}.png`,
+      fullPage: true,
+    });
+  }
+  expect(batchQueries.length).toBeGreaterThanOrEqual(1);
+  expect(batchQueries).toEqual(
+    batchQueries.map(() =>
+      largeSeriesSeasons.map(({ seasonNumber }) => seasonNumber).join(',')
+    )
+  );
+  await submit.click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [14],
+        seasonRequests: [{ seasonNumber: 14, episodeNumbers: [1] }],
       },
     },
   ]);

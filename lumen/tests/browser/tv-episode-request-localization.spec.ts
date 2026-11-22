@@ -14,6 +14,12 @@ const locales = [
     retry: 'Retry',
     submit: 'Request Selected Episodes',
     close: 'Close',
+    seasonOne: 'Season 1',
+    partialFailure:
+      'Some season details remain unavailable. Episodes from loaded seasons are still shown; retry to load the missing details.',
+    selectSeasonTwo: 'Season 2',
+    missingSeasonOneEpisode: 'E2 Missing Episode',
+    missingSeasonTwoEpisode: 'E1 Missing Season 2 Episode',
   },
   {
     tag: 'fr',
@@ -23,6 +29,12 @@ const locales = [
     retry: 'Réessayer',
     submit: 'Demander les épisodes sélectionnés',
     close: 'Fermer',
+    seasonOne: 'Season 1',
+    partialFailure:
+      'Les détails de certaines saisons restent indisponibles. Les épisodes des saisons chargées restent affichés ; réessayez pour charger les détails manquants.',
+    selectSeasonTwo: 'Season 2',
+    missingSeasonOneEpisode: 'E2 Missing Episode',
+    missingSeasonTwoEpisode: 'E1 Missing Season 2 Episode',
   },
   {
     tag: 'ar',
@@ -32,6 +44,12 @@ const locales = [
     retry: 'إعادة المحاولة',
     submit: 'طلب الحلقات المحددة',
     close: 'إغلاق',
+    seasonOne: 'Season 1',
+    partialFailure:
+      'لا تزال تفاصيل بعض المواسم غير متاحة. تبقى حلقات المواسم المحمّلة معروضة؛ أعد المحاولة لتحميل التفاصيل الناقصة.',
+    selectSeasonTwo: 'Season 2',
+    missingSeasonOneEpisode: 'E2 Missing Episode',
+    missingSeasonTwoEpisode: 'E1 Missing Season 2 Episode',
   },
 ];
 
@@ -40,7 +58,7 @@ for (const language of locales) {
     page,
   }) => {
     const posts: unknown[] = [];
-    let seasonLoads = 0;
+    let retrying = false;
     const failureCopy = process.env.LUMEN_BASELINE_CAPTURE
       ? 'Couldn’t load episodes'
       : language.loadFailure;
@@ -83,7 +101,7 @@ for (const language of locales) {
             },
           });
         case '/tv/84773/seasons':
-          if (++seasonLoads === 1)
+          if (!retrying)
             return route.fulfill({
               status: 503,
               json: { message: 'Temporary metadata failure' },
@@ -126,6 +144,7 @@ for (const language of locales) {
         path: `${process.env.LUMEN_CAPTURE}-failed.png`,
       });
     }
+    retrying = true;
     await sheet
       .getByRole('button', { name: language.retry, exact: true })
       .click();
@@ -154,5 +173,142 @@ for (const language of locales) {
       },
     ]);
     await expect(sheet).toHaveCount(0);
+  });
+
+  test(`TV episode requests preserve usable seasons during ${language.tag} partial recovery`, async ({
+    page,
+  }, info) => {
+    const posts: unknown[] = [];
+    const batchQueries: string[] = [];
+    let retrying = false;
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const url = new URL(request.url());
+      const path = apiPath(url.pathname);
+      if (request.method() !== 'GET') posts.push(request.postDataJSON());
+      switch (path) {
+        case '/auth/me':
+          return route.fulfill({
+            json: { id: 1, displayName: 'Viewer', permissions: 2 },
+          });
+        case '/user/1/settings/main':
+          return route.fulfill({ json: { locale: language.tag } });
+        case '/settings/public':
+          return route.fulfill({ json: { partialRequestsEnabled: true } });
+        case '/tv/84773':
+          return route.fulfill({
+            json: {
+              id: 84773,
+              name: 'The Rings of Power',
+              externalIds: { tvdbId: 80 },
+              overview: 'Rings.',
+              genres: [],
+              firstAirDate: '2022-09-01',
+              contentRatings: { results: [] },
+              seasons: [1, 2].map((seasonNumber) => ({
+                seasonNumber,
+                episodeCount: 2,
+                name: `Season ${seasonNumber}`,
+                airDate: '2022-09-01',
+              })),
+              numberOfSeasons: 2,
+              mediaInfo: { seasons: [], requests: [] },
+            },
+          });
+        case '/tv/84773/seasons': {
+          const requested = url.searchParams.get('seasonNumbers') ?? '';
+          batchQueries.push(requested);
+          if (!retrying)
+            return route.fulfill({
+              json: [
+                {
+                  seasonNumber: 1,
+                  episodes: [
+                    {
+                      episodeNumber: 1,
+                      name: 'Owned Episode',
+                      sonarrAvailability: { hd: true, fourK: false },
+                    },
+                    { episodeNumber: 2, name: 'Missing Episode' },
+                  ],
+                },
+              ],
+            });
+          return route.fulfill({
+            json: [
+              {
+                seasonNumber: 2,
+                episodes: [
+                  { episodeNumber: 1, name: 'Missing Season 2 Episode' },
+                ],
+              },
+            ],
+          });
+        }
+        case '/request':
+          return route.fulfill({ json: { id: 44, status: 1 } });
+        default:
+          return route.fulfill({ json: { results: [] } });
+      }
+    });
+
+    await page.goto(appPath('/tv/84773'));
+    await page
+      .getByRole('button', { name: language.open, exact: true })
+      .click();
+    const sheet = page.getByRole('dialog', { name: language.open });
+    await sheet.getByText(language.seasonOne, { exact: true }).click();
+    const firstSeasonEpisode = sheet.getByRole('checkbox', {
+      name: language.missingSeasonOneEpisode,
+      exact: true,
+    });
+    if (process.env.LUMEN_PARTIAL_INITIAL_CAPTURE) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_PARTIAL_INITIAL_CAPTURE}-${language.tag}-${info.project.name}.png`,
+      });
+    }
+    await expect(sheet.getByRole('alert')).toContainText(
+      language.partialFailure
+    );
+    await expect(firstSeasonEpisode).toBeEnabled();
+    await firstSeasonEpisode.check();
+    if (process.env.LUMEN_PARTIAL_CAPTURE) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_PARTIAL_CAPTURE}-${language.tag}-${info.project.name}.png`,
+      });
+    }
+    const beforeRetry = batchQueries.length;
+    retrying = true;
+    await sheet
+      .getByRole('button', { name: language.retry, exact: true })
+      .click();
+    await expect.poll(() => batchQueries.length).toBeGreaterThan(beforeRetry);
+    expect(batchQueries.slice(beforeRetry)).toEqual(['2']);
+    await sheet.getByText(language.selectSeasonTwo, { exact: true }).click();
+    const secondSeasonEpisode = sheet.getByRole('checkbox', {
+      name: language.missingSeasonTwoEpisode,
+      exact: true,
+    });
+    await secondSeasonEpisode.check();
+    await expect(firstSeasonEpisode).toBeChecked();
+    await sheet
+      .getByRole('button', { name: language.submit, exact: true })
+      .click();
+    await expect.poll(() => posts.length).toBe(1);
+    expect(posts).toEqual([
+      {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [1, 2],
+        seasonRequests: [
+          { seasonNumber: 1, episodeNumbers: [2] },
+          { seasonNumber: 2, episodeNumbers: [1] },
+        ],
+      },
+    ]);
   });
 }

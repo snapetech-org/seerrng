@@ -131,10 +131,10 @@ export default function TvEpisodeRequestSheet({
     };
   }, [retryCount, seasonKey, seasonNumbers, tvId]);
   const quality = is4k ? 'fourK' : 'hd';
-  const complete =
-    !loading &&
-    !loadError &&
-    seasons.every(({ seasonNumber }) => episodesBySeason.has(seasonNumber));
+  const hasLoadedSeasons = seasons.some(({ seasonNumber }) =>
+    episodesBySeason.has(seasonNumber)
+  );
+  const canSelectLoadedEpisodes = !loading && hasLoadedSeasons;
   const eligible = (seasonNumber: number, episode: Episode) =>
     Number.isSafeInteger(episode.episodeNumber) &&
     episode.episodeNumber > 0 &&
@@ -174,7 +174,7 @@ export default function TvEpisodeRequestSheet({
             <button
               className="btn btn-tonal btn-sm"
               type="button"
-              disabled={!complete || busy || !!streamingOverride}
+              disabled={!canSelectLoadedEpisodes || busy || !!streamingOverride}
               onClick={() =>
                 setOpenSeasons(
                   new Set(seasons.map(({ seasonNumber }) => seasonNumber))
@@ -193,7 +193,7 @@ export default function TvEpisodeRequestSheet({
             <button
               className="btn btn-quiet btn-sm"
               type="button"
-              disabled={busy || !complete || !picked.size}
+              disabled={busy || loading || !picked.size}
               onClick={() => setPicked(new Map())}
             >
               {t('lumen.tvEpisodeRequest.clearSelection', 'Clear Selection')}
@@ -216,10 +216,15 @@ export default function TvEpisodeRequestSheet({
             retryLabel={t('lumen.account.retry', 'Retry')}
             error={
               loadError
-                ? t(
-                    'lumen.tvEpisodeRequest.loadFailureBody',
-                    'Some season details could not be loaded.'
-                  )
+                ? hasLoadedSeasons
+                  ? t(
+                      'lumen.tvEpisodeRequest.loadFailurePartialBody',
+                      'Some season details remain unavailable. Episodes from loaded seasons are still shown; retry to load the missing details.'
+                    )
+                  : t(
+                      'lumen.tvEpisodeRequest.loadFailureBody',
+                      'Some season details could not be loaded.'
+                    )
                 : null
             }
             retry={() => setRetryCount((count) => count + 1)}
@@ -298,7 +303,7 @@ export default function TvEpisodeRequestSheet({
                               disabled={
                                 busy ||
                                 !!streamingOverride ||
-                                !complete ||
+                                loading ||
                                 !available
                               }
                               checked={
@@ -346,7 +351,7 @@ export default function TvEpisodeRequestSheet({
             <button
               type="button"
               className="btn btn-primary"
-              disabled={busy || !complete || !selections.length}
+              disabled={busy || loading || !selections.length}
               onClick={() =>
                 streamingOverride
                   ? void streamingOverride.confirm()
