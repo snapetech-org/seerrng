@@ -1,0 +1,1 @@
+Lumen's Software Acquisition administration route now localizes service configuration, emulation catalog and platform mapping controls, Steam key management, and save/test feedback in English, French, and Arabic. Provider APIs, credential redaction, saved connection selection, and mapping behavior are unchanged.

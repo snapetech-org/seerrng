@@ -5865,3 +5865,19 @@ portion of the tall form, and that pre-existing behavior remains. Screenshot
 evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/tunerr-locale/`. Native-matched baseline comparison, bundled Express mount verification,
 live Tunerr/Sportarr behavior, and independent linguistic review remain open.
+
+### Software acquisition administration localization
+
+The Lumen Software Acquisition route now localizes service connection controls,
+emulation catalog selection and system grouping, IGDB platform matching,
+Steam key management, and save/test feedback in English, French, and Arabic.
+Provider names and catalog values remain domain identifiers. API payloads,
+credential redaction, Saved Connection Host behavior, test endpoints, and
+mapping persistence are unchanged.
+
+The browser fixtures cover saved-locale headings/fields, RTL and overflow, plus
+the existing saved-connection, API-key, catalog/system mapping, and failed-save
+recovery workflow in English, French, and Arabic across desktop, iPhone,
+Android, and tablet (12 cases). The Vite standalone build was used. A matched
+pre-change visual comparison and bundled Express mount remain unverified, as do
+live provider behavior and independent linguistic review.

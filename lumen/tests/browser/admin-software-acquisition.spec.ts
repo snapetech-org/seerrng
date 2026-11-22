@@ -1,5 +1,97 @@
 import { expect, test } from '@playwright/test';
 
+for (const [locale, labels] of [
+  [
+    'fr',
+    {
+      title: 'Acquisition de logiciels',
+      host: 'ROMarrNG Nom d’hôte',
+      catalog: 'Catalogue d’émulation',
+      save: 'Enregistrer les modifications',
+    },
+  ],
+  [
+    'ar',
+    {
+      title: 'اقتناء البرامج',
+      host: 'ROMarrNG اسم المضيف',
+      catalog: 'كتالوج المحاكاة',
+      save: 'حفظ التغييرات',
+    },
+  ],
+] as const) {
+  test(`software acquisition settings follow the saved ${locale} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen/, '')
+        .slice(7);
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/settings/software-acquisition')
+        return route.fulfill({
+          json: {
+            romarr: {
+              hostname: 'fixture-romarr',
+              port: 6868,
+              baseUrl: '',
+              useSsl: false,
+              apiKeyConfigured: false,
+            },
+            questarr: {
+              hostname: '',
+              port: 3000,
+              baseUrl: '',
+              useSsl: false,
+              apiKeyConfigured: false,
+            },
+            emulationCatalogProvider: 'questarr',
+            emulationSystemGroups: {},
+            emulationPlatformMappings: {},
+            steamApiKeyConfigured: false,
+          },
+        });
+      if (path === '/request/software/catalog/systems')
+        return route.fulfill({
+          json: { results: [{ slug: 'nes', name: 'NES' }] },
+        });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto('/admin/software-acquisition');
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(
+      page.getByRole('heading', { name: labels.title, exact: true })
+    ).toBeVisible();
+    await expect(page.getByLabel(labels.host)).toHaveValue('fixture-romarr');
+    await expect(
+      page.getByRole('heading', { name: labels.catalog, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: labels.save })
+    ).toBeDisabled();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    const captureDir = process.env.LUMEN_SOFTWARE_CAPTURE_DIR;
+    if (captureDir)
+      await page.screenshot({
+        path: `${captureDir}/${locale}-${page.viewportSize()?.width}.png`,
+        fullPage: true,
+      });
+  });
+}
+
 test('software acquisition tests a saved connection, preserves keys and saves system mappings', async ({
   page,
 }, info) => {

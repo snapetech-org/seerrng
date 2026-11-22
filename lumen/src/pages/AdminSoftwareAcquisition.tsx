@@ -6,6 +6,7 @@ import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const path = '/settings/software-acquisition';
 const providers = { romarr: 'ROMarrNG', questarr: 'QuestarrNG' } as const;
@@ -74,6 +75,7 @@ interface Preview {
 }
 
 function Editor({ initial }: { initial: Settings }) {
+  const { t } = useLumenLocale();
   const { hash } = useLocation();
   useEffect(() => {
     if (hash === '#steam-library-import')
@@ -165,11 +167,20 @@ function Editor({ initial }: { initial: Settings }) {
           provider,
           text: [
             `${providers[provider]} connected using integration API v${tested.apiVersion}.`,
-            tested.capabilities?.catalog && 'IGDB catalog ready.',
+            tested.capabilities?.catalog &&
+              t('lumen.software.igdbReady', 'IGDB catalog ready.'),
             tested.capabilities?.datCatalog &&
-              `DAT catalog ready for ${tested.datCatalogPlatformCount ?? 0} systems.`,
+              t(
+                'lumen.software.datReady',
+                'DAT catalog ready for {count} systems.',
+                { count: tested.datCatalogPlatformCount ?? 0 }
+              ),
             tested.unmatchedDatNames?.length &&
-              `Unmatched DAT names include ${tested.unmatchedDatNames.join(', ')}.`,
+              t(
+                'lumen.software.unmatchedDat',
+                'Unmatched DAT names include {names}.',
+                { names: tested.unmatchedDatNames.join(', ') }
+              ),
           ]
             .filter(Boolean)
             .join(' '),
@@ -194,12 +205,23 @@ function Editor({ initial }: { initial: Settings }) {
         reset(result);
         systems.reload();
         if (showPreview) preview.reload();
-        setNotice({ text: 'Software acquisition settings saved.' });
+        setNotice({
+          text: t(
+            'lumen.software.saved',
+            'Software acquisition settings saved.'
+          ),
+        });
       }
     } catch (failure) {
       setNotice({
         provider,
-        text: friendlyError(failure, 'Software acquisition operation failed.'),
+        text: friendlyError(
+          failure,
+          t(
+            'lumen.software.operationFailed',
+            'Software acquisition operation failed.'
+          )
+        ),
         error: true,
       });
     } finally {
@@ -233,7 +255,7 @@ function Editor({ initial }: { initial: Settings }) {
               ).map(([key, label, max]) => (
                 <label className="set cfg-row" key={key}>
                   <span>
-                    {name} {label}
+                    {name} {t(`lumen.software.${key}`, label)}
                   </span>
                   <input
                     className="cfg-input"
@@ -247,7 +269,9 @@ function Editor({ initial }: { initial: Settings }) {
                 </label>
               ))}
               <label className="set cfg-row">
-                <span>{name} Port</span>
+                <span>
+                  {name} {t('lumen.software.port', 'Port')}
+                </span>
                 <input
                   className="cfg-input"
                   type="number"
@@ -262,7 +286,9 @@ function Editor({ initial }: { initial: Settings }) {
                 />
               </label>
               <label className="set cfg-row">
-                <span>Use HTTPS for {name}</span>
+                <span>
+                  {t('lumen.software.useHttpsFor', 'Use HTTPS for')} {name}
+                </span>
                 <input
                   type="checkbox"
                   checked={draft.useSsl}
@@ -273,14 +299,18 @@ function Editor({ initial }: { initial: Settings }) {
                 />
               </label>
               <label className="set cfg-row">
-                <span>{name} API Key</span>
+                <span>
+                  {name} {t('lumen.software.apiKey', 'API Key')}
+                </span>
                 <input
                   className="cfg-input"
                   type="password"
                   autoComplete="new-password"
                   maxLength={2048}
                   placeholder={
-                    saved[provider].apiKeyConfigured ? 'Saved' : undefined
+                    saved[provider].apiKeyConfigured
+                      ? t('lumen.software.savedKey', 'Saved')
+                      : undefined
                   }
                   disabled={busy || draft.clear}
                   value={draft.apiKey}
@@ -291,7 +321,10 @@ function Editor({ initial }: { initial: Settings }) {
               </label>
               {saved[provider].apiKeyConfigured && (
                 <label className="set cfg-row">
-                  <span>Remove Saved {name} API Key</span>
+                  <span>
+                    {t('lumen.software.removeSaved', 'Remove Saved')} {name}{' '}
+                    {t('lumen.software.apiKey', 'API Key')}
+                  </span>
                   <input
                     type="checkbox"
                     checked={draft.clear}
@@ -310,7 +343,8 @@ function Editor({ initial }: { initial: Settings }) {
                 disabled={busy || !draft.hostname.trim() || draft.clear}
                 onClick={() => void run(provider)}
               >
-                Test {name} Connection
+                {t('lumen.software.test', 'Test')} {name}{' '}
+                {t('lumen.software.connection', 'Connection')}
               </button>
             </div>
             {notice?.provider === provider && (
@@ -321,10 +355,10 @@ function Editor({ initial }: { initial: Settings }) {
           </Section>
         );
       })}
-      <Section title="Emulation Catalog">
+      <Section title={t('lumen.software.catalog', 'Emulation Catalog')}>
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Catalog Source</span>
+            <span>{t('lumen.software.catalogSource', 'Catalog Source')}</span>
             <select
               className="cfg-select"
               value={catalog}
@@ -338,14 +372,19 @@ function Editor({ initial }: { initial: Settings }) {
           </label>
         </div>
         <ServiceNote
-          what="supported systems"
+          what={t('lumen.software.systems', 'supported systems')}
           error={systems.error}
           retry={systems.reload}
         />
         {!!systems.data?.unmatchedDatNames?.length && (
           <p className="note">
-            Unmatched DAT names include{' '}
-            {systems.data.unmatchedDatNames.join(', ')}.
+            {t(
+              'lumen.software.unmatchedDat',
+              'Unmatched DAT names include {names}.',
+              {
+                names: systems.data.unmatchedDatNames.join(', '),
+              }
+            )}
           </p>
         )}
         {systemList.length > 0 && (
@@ -366,14 +405,20 @@ function Editor({ initial }: { initial: Settings }) {
                     }))
                   }
                 >
-                  Assign All to {group === 'retro' ? 'Retro' : 'Modern'}
+                  {t('lumen.software.assignAll', 'Assign All to')}{' '}
+                  {t(
+                    `lumen.software.${group}`,
+                    group === 'retro' ? 'Retro' : 'Modern'
+                  )}
                 </button>
               ))}
             </div>
             <div className="setlist">
               {systemList.map((system) => (
                 <label className="set cfg-row" key={system.slug}>
-                  <span>{system.name} Group</span>
+                  <span>
+                    {system.name} {t('lumen.software.group', 'Group')}
+                  </span>
                   <select
                     className="cfg-select"
                     value={groups[system.slug] ?? ''}
@@ -388,9 +433,15 @@ function Editor({ initial }: { initial: Settings }) {
                       });
                     }}
                   >
-                    <option value="">Unassigned</option>
-                    <option value="retro">Retro</option>
-                    <option value="modern">Modern</option>
+                    <option value="">
+                      {t('lumen.software.unassigned', 'Unassigned')}
+                    </option>
+                    <option value="retro">
+                      {t('lumen.software.retro', 'Retro')}
+                    </option>
+                    <option value="modern">
+                      {t('lumen.software.modern', 'Modern')}
+                    </option>
                   </select>
                 </label>
               ))}
@@ -398,7 +449,9 @@ function Editor({ initial }: { initial: Settings }) {
           </>
         )}
       </Section>
-      <Section title="IGDB Platform Matching">
+      <Section
+        title={t('lumen.software.platformMatching', 'IGDB Platform Matching')}
+      >
         <div className="toolbar">
           <button
             className="btn btn-tonal btn-sm"
@@ -408,7 +461,7 @@ function Editor({ initial }: { initial: Settings }) {
               showPreview ? preview.reload() : setShowPreview(true)
             }
           >
-            Preview Platform Matches
+            {t('lumen.software.preview', 'Preview Platform Matches')}
           </button>
         </div>
         <ServiceNote
@@ -418,7 +471,7 @@ function Editor({ initial }: { initial: Settings }) {
         />
         {showPreview && !preview.data && !preview.error && (
           <p className="note" role="status">
-            Loading platform matches…
+            {t('lumen.software.loadingMatches', 'Loading platform matches…')}
           </p>
         )}
         {preview.data && (
@@ -428,7 +481,9 @@ function Editor({ initial }: { initial: Settings }) {
               const selected = mappings[system.slug];
               return (
                 <label className="set cfg-row" key={system.slug}>
-                  <span>{system.name} Platform</span>
+                  <span>
+                    {system.name} {t('lumen.software.platform', 'Platform')}
+                  </span>
                   <select
                     className="cfg-select"
                     value={selected ?? ''}
@@ -446,12 +501,19 @@ function Editor({ initial }: { initial: Settings }) {
                     <option value="">
                       {system.automaticMatch
                         ? `Automatic · ${system.automaticMatch.name}`
-                        : 'No Automatic Match'}
+                        : t(
+                            'lumen.software.noAutomaticMatch',
+                            'No Automatic Match'
+                          )}
                     </option>
                     {selected &&
                       !platforms.some(({ id }) => id === selected) && (
                         <option value={selected}>
-                          Saved Platform {selected} Unavailable
+                          {t(
+                            'lumen.software.savedPlatformUnavailable',
+                            'Saved Platform {id} Unavailable',
+                            { id: selected }
+                          )}
                         </option>
                       )}
                     {platforms.map((platform) => (
@@ -466,24 +528,33 @@ function Editor({ initial }: { initial: Settings }) {
           </div>
         )}
       </Section>
-      <Section title="Steam Library Import" id="steam-library-import">
+      <Section
+        title={t('lumen.software.steamImport', 'Steam Library Import')}
+        id="steam-library-import"
+      >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Steam Web API Key</span>
+            <span>{t('lumen.software.steamKey', 'Steam Web API Key')}</span>
             <input
               className="cfg-input"
               type="password"
               autoComplete="new-password"
               maxLength={2048}
               value={steamKey}
-              placeholder={saved.steamApiKeyConfigured ? 'Saved' : undefined}
+              placeholder={
+                saved.steamApiKeyConfigured
+                  ? t('lumen.software.savedKey', 'Saved')
+                  : undefined
+              }
               disabled={busy || removeSteam}
               onChange={(event) => setSteamKey(event.target.value)}
             />
           </label>
           {saved.steamApiKeyConfigured && (
             <label className="set cfg-row">
-              <span>Remove Saved Steam Key</span>
+              <span>
+                {t('lumen.software.removeSteamKey', 'Remove Saved Steam Key')}
+              </span>
               <input
                 type="checkbox"
                 checked={removeSteam}
@@ -510,7 +581,7 @@ function Editor({ initial }: { initial: Settings }) {
               setNotice(undefined);
             }}
           >
-            Discard Changes
+            {t('lumen.software.discard', 'Discard Changes')}
           </button>
         )}
         <button
@@ -518,7 +589,7 @@ function Editor({ initial }: { initial: Settings }) {
           type="submit"
           disabled={busy || !dirty}
         >
-          Save Changes
+          {t('lumen.software.save', 'Save Changes')}
         </button>
       </div>
     </form>
@@ -526,19 +597,20 @@ function Editor({ initial }: { initial: Settings }) {
 }
 
 export default function AdminSoftwareAcquisition() {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   return (
     <>
       <header className="ph">
-        <h1>Software Acquisition</h1>
+        <h1>{t('lumen.software.title', 'Software Acquisition')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <ServiceNote
-        what="software acquisition settings"
+        what={t('lumen.software.settings', 'software acquisition settings')}
         error={settings.error}
         retry={settings.reload}
       />
@@ -547,7 +619,10 @@ export default function AdminSoftwareAcquisition() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading software acquisition settings…
+            {t(
+              'lumen.software.loading',
+              'Loading software acquisition settings…'
+            )}
           </p>
         )
       )}
