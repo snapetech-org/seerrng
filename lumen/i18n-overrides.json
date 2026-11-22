@@ -3160,7 +3160,18 @@
     "lumen.trackRequests.status.completed": "Downloaded",
     "lumen.trackRequests.status.failed": "Failed",
     "lumen.trackRequests.status.declined": "Declined",
-    "lumen.trackRequests.status.cancelled": "Cancelled"
+    "lumen.trackRequests.status.cancelled": "Cancelled",
+    "lumen.tmdbList.title": "TMDB List",
+    "lumen.tmdbList.discover": "Discover",
+    "lumen.tmdbList.invalidId": "Invalid TMDB list ID.",
+    "lumen.tmdbList.what": "TMDB list",
+    "lumen.tmdbList.loadFailed": "Could not load TMDB list",
+    "lumen.tmdbList.retry": "Retry",
+    "lumen.tmdbList.empty": "No titles on this page.",
+    "lumen.tmdbList.pages": "TMDB List Pages",
+    "lumen.tmdbList.previousPage": "Previous Page",
+    "lumen.tmdbList.pageNumber": "Page {page}",
+    "lumen.tmdbList.nextPage": "Next Page"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -6482,7 +6493,18 @@
     "lumen.trackRequests.status.completed": "Téléchargé",
     "lumen.trackRequests.status.failed": "Échec",
     "lumen.trackRequests.status.declined": "Refusé",
-    "lumen.trackRequests.status.cancelled": "Annulé"
+    "lumen.trackRequests.status.cancelled": "Annulé",
+    "lumen.tmdbList.title": "Liste TMDB",
+    "lumen.tmdbList.discover": "Découvrir",
+    "lumen.tmdbList.invalidId": "Identifiant de liste TMDB non valide.",
+    "lumen.tmdbList.what": "liste TMDB",
+    "lumen.tmdbList.loadFailed": "Impossible de charger la liste TMDB",
+    "lumen.tmdbList.retry": "Réessayer",
+    "lumen.tmdbList.empty": "Aucun titre sur cette page.",
+    "lumen.tmdbList.pages": "Pages de la liste TMDB",
+    "lumen.tmdbList.previousPage": "Page précédente",
+    "lumen.tmdbList.pageNumber": "Page {page}",
+    "lumen.tmdbList.nextPage": "Page suivante"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -9808,6 +9830,17 @@
     "lumen.trackRequests.status.completed": "تم التنزيل",
     "lumen.trackRequests.status.failed": "فشل",
     "lumen.trackRequests.status.declined": "مرفوض",
-    "lumen.trackRequests.status.cancelled": "أُلغي"
+    "lumen.trackRequests.status.cancelled": "أُلغي",
+    "lumen.tmdbList.title": "قائمة TMDB",
+    "lumen.tmdbList.discover": "اكتشف",
+    "lumen.tmdbList.invalidId": "معرّف قائمة TMDB غير صالح.",
+    "lumen.tmdbList.what": "قائمة TMDB",
+    "lumen.tmdbList.loadFailed": "تعذر تحميل قائمة TMDB",
+    "lumen.tmdbList.retry": "إعادة المحاولة",
+    "lumen.tmdbList.empty": "لا توجد عناوين في هذه الصفحة.",
+    "lumen.tmdbList.pages": "صفحات قائمة TMDB",
+    "lumen.tmdbList.previousPage": "الصفحة السابقة",
+    "lumen.tmdbList.pageNumber": "الصفحة {page}",
+    "lumen.tmdbList.nextPage": "الصفحة التالية"
   }
 }

@@ -2483,6 +2483,18 @@ passed. The browser fixture covers exact media links for a shared numeric
 ID, retry, and an empty page. Configured Discover shelves, live provider
 results and matched visual comparisons remain open.
 
+The list page also follows the saved English, French, or Arabic locale for
+its Discover link, invalid-ID and empty states, retry action, and pagination
+controls. URL-backed page state and the existing endpoint are unchanged.
+Twelve saved-locale cases plus the existing public-list identity and paging
+checks pass across desktop, iPhone, Android, and tablet (20 cases). English
+baseline and candidate screenshots match pixel-for-pixel at 1440 × 900 and
+390 × 844. French desktop and Arabic phone captures were inspected for RTL,
+wrapping, and overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/tmdb-list-visual/`.
+Bundled Express mount, live TMDB results, and independent linguistic review
+remain open.
+
 Configured public TMDB lists now appear as Discover shelves. Lumen reads
 the same enabled list definitions as native SeerrNG, preserves their
 order relative to one another, and loads each list as it approaches the
