@@ -192,6 +192,21 @@ export function statusLabel(
   if (s.word === 'Blocklisted') return t('lumen.status.blocklisted', s.word);
   if (s.word === 'In library') return t('lumen.status.inLibrary', s.word);
   if (s.word === 'Requested') return t('lumen.status.requested', s.word);
+  if (s.word === 'Waiting for approval')
+    return t('lumen.status.waitingApproval', s.word);
+  if (s.word === 'Approved') return t('lumen.status.approved', s.word);
+  if (s.word === 'Searching') return t('lumen.status.searching', s.word);
+  if (s.word === 'Importing') return t('lumen.status.importing', s.word);
+  if (s.word === 'Checking library')
+    return t('lumen.status.checkingLibrary', s.word);
+  if (s.word === 'Couldn’t get it') return t('lumen.status.couldntGet', s.word);
+  if (s.word === 'Declined') return t('lumen.status.declined', s.word);
+  if (s.word === 'Cancelled') return t('lumen.status.cancelled', s.word);
+  if (s.word === 'Unavailable') return t('lumen.status.unavailable', s.word);
+  if (s.word === 'Status unavailable')
+    return t('lumen.status.statusUnavailable', s.word);
+  if (s.word === 'Different edition in library')
+    return t('lumen.status.differentEdition', s.word);
   if (s.word === 'Downloading') return t('lumen.status.downloading', s.word);
   if (s.word === 'Complete') return t('lumen.status.complete', s.word);
   if (s.word === 'Queued') return t('lumen.status.queued', s.word);
@@ -203,6 +218,11 @@ export function statusLabel(
   if (onServer)
     return t('lumen.status.onServer', 'On {server}', {
       server: onServer[1],
+    });
+  const on4kServer = /^4K on (.+)$/.exec(s.word);
+  if (on4kServer)
+    return t('lumen.status.on4kServer', '4K on {server}', {
+      server: on4kServer[1],
     });
   const partlyOnServer = /^Partly on (.+)$/.exec(s.word);
   if (partlyOnServer)

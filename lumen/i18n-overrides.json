@@ -3615,7 +3615,20 @@
     "lumen.requests.page.noActiveRequests": "No active requests",
     "lumen.requests.page.findSomething": "Find something on",
     "lumen.requests.page.discover": "Discover",
-    "lumen.requests.page.period": "."
+    "lumen.requests.page.period": ".",
+    "lumen.status.waitingApproval": "Waiting for approval",
+    "lumen.status.approved": "Approved",
+    "lumen.status.searching": "Searching",
+    "lumen.status.importing": "Importing",
+    "lumen.status.checkingLibrary": "Checking library",
+    "lumen.status.couldntGet": "Couldn’t get it",
+    "lumen.status.declined": "Declined",
+    "lumen.status.cancelled": "Cancelled",
+    "lumen.status.unavailable": "Unavailable",
+    "lumen.status.statusUnavailable": "Status unavailable",
+    "lumen.status.differentEdition": "Different edition in library",
+    "lumen.status.on4kServer": "4K on {server}",
+    "lumen.status.overQuota": "Over quota"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7392,7 +7405,20 @@
     "lumen.requests.page.noActiveRequests": "Aucune demande en cours",
     "lumen.requests.page.findSomething": "Découvrez des contenus dans",
     "lumen.requests.page.discover": "Découvrir",
-    "lumen.requests.page.period": "."
+    "lumen.requests.page.period": ".",
+    "lumen.status.waitingApproval": "En attente d’approbation",
+    "lumen.status.approved": "Approuvé",
+    "lumen.status.searching": "Recherche en cours",
+    "lumen.status.importing": "Importation en cours",
+    "lumen.status.checkingLibrary": "Vérification de la bibliothèque",
+    "lumen.status.couldntGet": "Impossible à obtenir",
+    "lumen.status.declined": "Refusé",
+    "lumen.status.cancelled": "Annulé",
+    "lumen.status.unavailable": "Indisponible",
+    "lumen.status.statusUnavailable": "Statut indisponible",
+    "lumen.status.differentEdition": "Édition différente dans la bibliothèque",
+    "lumen.status.on4kServer": "4K sur {server}",
+    "lumen.status.overQuota": "Quota dépassé"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11173,6 +11199,19 @@
     "lumen.requests.page.noActiveRequests": "لا توجد طلبات نشطة",
     "lumen.requests.page.findSomething": "ابحث عن محتوى في",
     "lumen.requests.page.discover": "اكتشف",
-    "lumen.requests.page.period": "."
+    "lumen.requests.page.period": ".",
+    "lumen.status.waitingApproval": "بانتظار الموافقة",
+    "lumen.status.approved": "تمت الموافقة",
+    "lumen.status.searching": "جارٍ البحث",
+    "lumen.status.importing": "جارٍ الاستيراد",
+    "lumen.status.checkingLibrary": "جارٍ التحقق من المكتبة",
+    "lumen.status.couldntGet": "تعذر الحصول عليه",
+    "lumen.status.declined": "مرفوض",
+    "lumen.status.cancelled": "ملغى",
+    "lumen.status.unavailable": "غير متاح",
+    "lumen.status.statusUnavailable": "الحالة غير متاحة",
+    "lumen.status.differentEdition": "إصدار مختلف في المكتبة",
+    "lumen.status.on4kServer": "بدقة 4K على {server}",
+    "lumen.status.overQuota": "تجاوز الحصة"
   }
 }

@@ -6394,3 +6394,22 @@ reports the existing catalog backlog. Live-provider behavior and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-filter-localization-20261122/`
 and `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-manager-display-20261122/`.
+
+### Shared request lifecycle status localization
+
+Lumen now translates shared request lifecycle labels in English, French, and
+Arabic, including approval, search, import, library-check, failure, declined,
+cancelled, unavailable, different-edition, 4K-server, and over-quota states.
+The shared card status owner applies to Requests, detail and discovery cards,
+and household request previews. Queue and download progress keep their existing
+localized formatting, and provider-supplied status details remain intact.
+Request state, filtering, retry, and authorization behavior are unchanged.
+
+The lifecycle fixture passes on desktop, iPhone, Android, and tablet in all
+three locales (12 cases). Existing shared poster-status coverage passes in the
+same matrix (12 cases). Matched baseline/candidate request-list captures at
+desktop and iPhone sizes were reviewed for English, French, and Arabic; the
+status text changes while card geometry is preserved, and no locale overflows
+the viewport. Live provider responses and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-status-localization-20261122/`.

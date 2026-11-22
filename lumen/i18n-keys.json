@@ -4642,5 +4642,18 @@
   "lumen.requests.page.noActiveRequests",
   "lumen.requests.page.findSomething",
   "lumen.requests.page.discover",
-  "lumen.requests.page.period"
+  "lumen.requests.page.period",
+  "lumen.status.waitingApproval",
+  "lumen.status.approved",
+  "lumen.status.searching",
+  "lumen.status.importing",
+  "lumen.status.checkingLibrary",
+  "lumen.status.couldntGet",
+  "lumen.status.declined",
+  "lumen.status.cancelled",
+  "lumen.status.unavailable",
+  "lumen.status.statusUnavailable",
+  "lumen.status.differentEdition",
+  "lumen.status.on4kServer",
+  "lumen.status.overQuota"
 ]

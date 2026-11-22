@@ -300,13 +300,14 @@ export function RequestStatusPills({
   request: RequestItem;
   status: ReturnType<typeof requestRowStatus>;
 }) {
+  const { t } = useLumenLocale();
   return (
     <>
       <Pill k={status.k} icon={status.ico}>
         <StatLabel s={status} />
       </Pill>
       {request.status === 1 && request.quotaException && (
-        <Pill k="wait">Over Quota</Pill>
+        <Pill k="wait">{t('lumen.status.overQuota', 'Over quota')}</Pill>
       )}
     </>
   );
