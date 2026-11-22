@@ -2799,6 +2799,24 @@ export const localeData = [
         'لا تدعم أي من الخدمات المُعدّة البحث عن سلاسل الكتب.',
       'lumen.bookSeries.updateFailed': 'تعذر تحديث متابعة السلسلة.',
       'lumen.bookSeries.viewBook': 'عرض الكتاب',
+      'lumen.seriesNarrators.collect': 'تفضيل {narrator}',
+      'lumen.seriesNarrators.complete': 'مجموعة كاملة',
+      'lumen.seriesNarrators.covered': '{covered} من أصل {total} مجلداً',
+      'lumen.seriesNarrators.description':
+        'قارن المجلدات المتاحة مع كل راوٍ، ثم تابع راوياً أو فضّل أداءً صوتياً.',
+      'lumen.seriesNarrators.follow': 'متابعة {narrator}',
+      'lumen.seriesNarrators.fullCast': 'أداء جماعي',
+      'lumen.seriesNarrators.heading': 'اجمع السلسلة بصوت راوٍ واحد',
+      'lumen.seriesNarrators.loadFailed': 'تعذر تحميل مقارنة الرواة.',
+      'lumen.seriesNarrators.missing': '{count} مجلدات مفقودة',
+      'lumen.seriesNarrators.otherPerformance':
+        '{count} مجلدات متاحة فقط بصوت راوٍ آخر',
+      'lumen.seriesNarrators.owned': '{count} متوفر بالفعل',
+      'lumen.seriesNarrators.saveFailed': 'تعذر حفظ تفضيل الراوي.',
+      'lumen.seriesNarrators.saved': 'أصبحت السلسلة تفضّل {narrator}.',
+      'lumen.seriesNarrators.waitOrPrefer':
+        'يمكنك انتظار المجلدات المفقودة بهذه الرواية أو قبول راوٍ آخر.',
+      'lumen.seriesNarrators.what': 'مقارنة الرواة',
       'lumen.books.all': 'الكل',
       'lumen.books.audiobookNarratorNote':
         'المدد تمثل التسجيل الكامل غير المختصر. افتح كتابًا لاختيار الراوي.',
@@ -12352,6 +12370,26 @@ export const localeData = [
         'No configured services support book series search.',
       'lumen.bookSeries.updateFailed': 'Could not update series monitoring.',
       'lumen.bookSeries.viewBook': 'View Book',
+      'lumen.seriesNarrators.collect': 'Collect With {narrator}',
+      'lumen.seriesNarrators.complete': 'Complete Set',
+      'lumen.seriesNarrators.covered': '{covered} of {total} volumes',
+      'lumen.seriesNarrators.description':
+        'Compare which volumes are available with each narrator, then follow or prefer a performance.',
+      'lumen.seriesNarrators.follow': 'Follow {narrator}',
+      'lumen.seriesNarrators.fullCast': 'Full Cast',
+      'lumen.seriesNarrators.heading': 'Collect This Series With One Narrator',
+      'lumen.seriesNarrators.loadFailed':
+        'Narrator comparison could not be loaded.',
+      'lumen.seriesNarrators.missing': '{count} volumes missing',
+      'lumen.seriesNarrators.otherPerformance':
+        '{count} volumes only exist with another narrator',
+      'lumen.seriesNarrators.owned': '{count} already owned',
+      'lumen.seriesNarrators.saveFailed':
+        'The narrator preference could not be saved.',
+      'lumen.seriesNarrators.saved': 'The series now prefers {narrator}.',
+      'lumen.seriesNarrators.waitOrPrefer':
+        'You can wait for missing volumes in this narration, or accept another narrator for them.',
+      'lumen.seriesNarrators.what': 'narrator comparison',
       'lumen.books.all': 'All',
       'lumen.books.audiobookNarratorNote':
         'Lengths are the full unabridged recording. Open a book to pick the narrator.',
@@ -22473,6 +22511,27 @@ export const localeData = [
       'lumen.bookSeries.updateFailed':
         'Impossible de modifier le suivi des séries.',
       'lumen.bookSeries.viewBook': 'Voir le livre',
+      'lumen.seriesNarrators.collect': 'Privilégier {narrator}',
+      'lumen.seriesNarrators.complete': 'Série complète',
+      'lumen.seriesNarrators.covered': '{covered} volume(s) sur {total}',
+      'lumen.seriesNarrators.description':
+        'Comparez les volumes disponibles pour chaque narrateur, puis suivez ou privilégiez une interprétation.',
+      'lumen.seriesNarrators.follow': 'Suivre {narrator}',
+      'lumen.seriesNarrators.fullCast': 'Distribution complète',
+      'lumen.seriesNarrators.heading': 'Choisir un narrateur pour cette série',
+      'lumen.seriesNarrators.loadFailed':
+        'Impossible de charger la comparaison des narrateurs.',
+      'lumen.seriesNarrators.missing': '{count} volume(s) manquant(s)',
+      'lumen.seriesNarrators.otherPerformance':
+        '{count} volume(s) existe(nt) uniquement avec un autre narrateur',
+      'lumen.seriesNarrators.owned': '{count} déjà dans la bibliothèque',
+      'lumen.seriesNarrators.saveFailed':
+        'Impossible d’enregistrer la préférence de narrateur.',
+      'lumen.seriesNarrators.saved':
+        'La série privilégie maintenant {narrator}.',
+      'lumen.seriesNarrators.waitOrPrefer':
+        'Vous pouvez attendre les volumes manquants dans cette narration ou accepter un autre narrateur.',
+      'lumen.seriesNarrators.what': 'comparaison des narrateurs',
       'lumen.books.all': 'Tout',
       'lumen.books.audiobookNarratorNote':
         'Les durées correspondent à l’enregistrement intégral. Ouvrez un livre pour choisir le narrateur.',

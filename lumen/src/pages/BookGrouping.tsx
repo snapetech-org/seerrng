@@ -11,6 +11,7 @@ import { BookCard, GridSkeleton, Section } from '../components/cards';
 import { DetailTop } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import ReaderShelf from '../components/ReaderShelf';
+import SeriesNarratorPlanner from '../components/SeriesNarratorPlanner';
 import { useApi } from '../hooks';
 import { CollectionAssociations } from './Associations';
 import BookSeriesCatalog from './BookSeriesCatalog';
@@ -352,39 +353,42 @@ function SeriesDetail({ id }: { id: string }) {
       left.title.localeCompare(right.title, undefined, { numeric: true })
   );
   return (
-    <article className="detail">
-      <DetailTop
-        title={data.title}
-        poster={bookArt(books[0]?.posterPath, 'L')}
-        whole
-        line={[books.length === 1 ? '1 book' : `${books.length} books`]}
-      />
-      <div className="dbody">
-        <div className="dstatus">
-          <BulkBookRequest
-            source={{ id: data.id, books }}
-            onComplete={series.reload}
-          />
-
-          <ReaderShelf
-            target={{ type: 'book-series', id: data.id, name: data.title }}
-          />
-          {books.length > 0 && (
-            <CollectionAssociations
-              key={books.map(({ id }) => id).join(',')}
-              mediaType="book"
-              parts={books}
+    <>
+      <article className="detail">
+        <DetailTop
+          title={data.title}
+          poster={bookArt(books[0]?.posterPath, 'L')}
+          whole
+          line={[books.length === 1 ? '1 book' : `${books.length} books`]}
+        />
+        <div className="dbody">
+          <div className="dstatus">
+            <BulkBookRequest
+              source={{ id: data.id, books }}
+              onComplete={series.reload}
             />
+
+            <ReaderShelf
+              target={{ type: 'book-series', id: data.id, name: data.title }}
+            />
+            {books.length > 0 && (
+              <CollectionAssociations
+                key={books.map(({ id }) => id).join(',')}
+                mediaType="book"
+                parts={books}
+              />
+            )}
+          </div>
+          {data.description && <p className="ov">{data.description}</p>}
+          {books.length > 0 ? (
+            <SeriesBooks books={books} />
+          ) : (
+            <Books books={books} title="Books in This Series" />
           )}
         </div>
-        {data.description && <p className="ov">{data.description}</p>}
-        {books.length > 0 ? (
-          <SeriesBooks books={books} />
-        ) : (
-          <Books books={books} title="Books in This Series" />
-        )}
-      </div>
-    </article>
+      </article>
+      <SeriesNarratorPlanner title={data.title} />
+    </>
   );
 }
 

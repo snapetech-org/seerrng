@@ -6302,3 +6302,18 @@ form-row owners. Existing author and series request contract tests were rerun.
 Live provider submission and independent linguistic review remain unverified.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-book-localization-20261122/`.
+
+### Book-series audiobook narrator planning
+
+Book-series detail now shows the native narrator coverage planner when
+audiobooks are enabled for both the server and the signed-in user. It reports
+coverage, owned and missing volumes, full-cast/complete sets, and alternate
+narration availability. Users can follow a narrator; only request managers see
+the action that saves a preferred narrator through the existing authorized
+API. This retains the separate ebook and audiobook category controls.
+
+Production build and focused book-grouping browser coverage passed across
+desktop, iPhone, Android, and tablet; matched baseline/candidate captures were
+inspected at desktop and iPhone sizes. Provider results and preference writes
+against a live server remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-series-narrator-planner-20261122/`.
