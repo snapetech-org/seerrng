@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { useToast } from './toast';
 
 interface FollowIdentity {
@@ -27,6 +28,7 @@ export default function FollowButton({
   subject: FollowIdentity;
   label?: string;
 }) {
+  const { t } = useLumenLocale();
   const follows = useApi<{ results: FollowRecord[] }>('/follow');
   const toast = useToast();
   const pending = useRef(false);
@@ -60,7 +62,13 @@ export default function FollowButton({
         setConfirmed(created);
       }
     } catch (error) {
-      toast(friendlyError(error, 'Couldn’t update Following'));
+      toast(
+        friendlyError(
+          error,
+          t('lumen.followButton.updateFailed', 'Couldn’t update Following'),
+          t
+        )
+      );
     } finally {
       pending.current = false;
       setSaving(false);
@@ -75,7 +83,11 @@ export default function FollowButton({
       aria-pressed={!loadError ? Boolean(match) : undefined}
       onClick={() => (loadError ? follows.reload() : void toggle())}
     >
-      {loadError ? 'Retry Follow Status' : match ? 'Following' : label}
+      {loadError
+        ? t('lumen.followButton.retryStatus', 'Retry Follow Status')
+        : match
+          ? t('lumen.followButton.following', 'Following')
+          : label}
     </button>
   );
 }

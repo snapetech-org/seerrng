@@ -6137,3 +6137,19 @@ horizontal overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/books/`.
 Live catalogue and library-provider behavior and independent language review
 remain unverified.
+
+### Book Detail localization
+
+Book Detail now localizes format choices, narrator selection and status,
+request and approval feedback, audiobook library actions, metadata labels,
+empty and error messages, and the shared follow control's retry and following
+states. The book IDs, edition selection, follow mutations, approval flow, and
+request payloads are unchanged. Twelve English, French, and Arabic browser
+cases pass across desktop, iPhone, Android, and tablet, including RTL and
+overflow checks. Another 40 existing book request, ownership, and narrator
+selection regression cases pass across the same viewports. French tablet and
+Arabic desktop renders were inspected; the Arabic layout remains within the
+viewport. Browser fixtures do not verify live catalogue or provider services,
+and independent language review remains unverified. Screenshots and test
+results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-detail-localization-20261121/test-results/`.

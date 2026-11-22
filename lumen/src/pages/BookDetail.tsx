@@ -40,6 +40,7 @@ import WatchlistButton from '../components/WatchlistButton';
 import { friendlyError } from '../errors';
 import { canViewFollowing } from '../followPermissions';
 import { dropBookStates, useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
@@ -52,7 +53,11 @@ interface BookRating {
   workId?: string;
 }
 
-function ratingLabel(rating: BookRating | null, book: BookDetails) {
+function ratingLabel(
+  rating: BookRating | null,
+  book: BookDetails,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
   const valid = (score: unknown, count: number): score is number =>
     typeof score === 'number' &&
     score >= 0 &&
@@ -68,7 +73,9 @@ function ratingLabel(rating: BookRating | null, book: BookDetails) {
     valid(score, rating.count)
   ) {
     const library = rating.source === 'openlibrary';
-    const source = library ? 'Open Library' : 'Bookshelf';
+    const source = library
+      ? t('lumen.bookDetail.openLibrary', 'Open Library')
+      : 'Bookshelf';
     const label = `${score.toFixed(1)}/5 · ${source}`;
     const work = rating.workId ?? book.id;
     return library && /^OL[0-9]+W$/.test(work) ? (
@@ -83,12 +90,12 @@ function ratingLabel(rating: BookRating | null, book: BookDetails) {
 
 const english = (e: Edition) =>
   !e.language || /^(en|eng|english|und)$/i.test(e.language);
-const who = (e: Edition) =>
+const who = (e: Edition, t: ReturnType<typeof useLumenLocale>['t']) =>
   e.narrators?.length
     ? e.narrators.length > 3
       ? `${e.narrators.slice(0, 3).join(', ')} +${e.narrators.length - 3}`
       : e.narrators.join(' & ')
-    : 'Narrator not listed';
+    : t('lumen.bookDetail.narratorNotListed', 'Narrator not listed');
 
 // SeerrNG lists catalogue copies it can't pin (no Hardcover edition id) with an empty id
 const pinnable = (e: Edition) => !!e.id && e.requestable !== false;
@@ -169,6 +176,7 @@ function hcFormId(id: string): string | null {
 }
 
 export default function BookDetail() {
+  const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const [p] = useSearchParams();
   const f: 'ebook' | 'audiobook' =
@@ -274,14 +282,21 @@ export default function BookDetail() {
     // only "not found" means there's no ebook; a rate limit or outage can be tried again
     return f === 'ebook' && first.errorStatus === 404 ? (
       <div className="empty">
-        <b>No ebook edition found</b>ChaptarrNG only knows this book as an
-        audiobook.{' '}
+        <b>{t('lumen.bookDetail.noEbookEdition', 'No ebook edition found')}</b>
+        {t(
+          'lumen.bookDetail.audiobookOnly',
+          'ChaptarrNG only knows this book as an audiobook.'
+        )}{' '}
         <Link to={formatHref('audiobook')} style={{ color: 'var(--accent)' }}>
-          See the audiobook
+          {t('lumen.bookDetail.seeAudiobook', 'See the audiobook')}
         </Link>
       </div>
     ) : (
-      <ServiceNote error={error} what="this book" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.bookDetail.thisBook', 'this book')}
+        retry={reload}
+      />
     );
   if (!b) return <div className="detail-loading" aria-busy="true" />;
 
@@ -332,11 +347,15 @@ export default function BookDetail() {
         method: 'POST',
         body: '{}',
       });
-      toast('Request approved');
+      toast(t('lumen.bookDetail.requestApproved', 'Request approved'));
       dropBookStates();
       reload();
     } catch (e) {
-      toast(e instanceof Error ? e.message : 'Couldn’t approve the request');
+      toast(
+        e instanceof Error
+          ? e.message
+          : t('lumen.bookDetail.approveFailed', 'Couldn’t approve the request')
+      );
     } finally {
       setBusy(false);
     }
@@ -353,12 +372,22 @@ export default function BookDetail() {
       setJustAsked((x) => new Set(x).add(narratorKey(row.narrators)));
       setPick(null);
       toast(
-        `Requested ${b.title} · ${who(row)}. It will arrive as a separate copy.`
+        t(
+          'lumen.bookDetail.requestedSeparateCopy',
+          'Requested {title} · {narrator}. It will arrive as a separate copy.',
+          { title: b.title, narrator: who(row, t) }
+        )
       );
       dropBookStates();
       first.refresh();
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(
+          e,
+          t('lumen.bookDetail.requestFailed', 'Request failed'),
+          t
+        )
+      );
     } finally {
       sending.current = false;
       setBusy(false);
@@ -386,22 +415,37 @@ export default function BookDetail() {
         setJustAsked((x) => new Set(x).add(narratorKey(chosenRow.narrators)));
       setPick(null);
       toast(
-        `Requested ${b.title} · ${audio ? (showNarr && chosenRow ? who(chosenRow) : 'audiobook') : 'ebook'}`
+        t('lumen.bookDetail.requested', 'Requested {title} · {format}', {
+          title: b.title,
+          format: audio
+            ? showNarr && chosenRow
+              ? who(chosenRow, t)
+              : t('lumen.bookDetail.audiobook', 'audiobook')
+            : t('lumen.bookDetail.ebook', 'ebook'),
+        })
       );
       dropBookStates(); // book cards elsewhere show the new request straight away
       first.refresh();
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(
+          e,
+          t('lumen.bookDetail.requestFailed', 'Request failed'),
+          t
+        )
+      );
     } finally {
       sending.current = false;
       setBusy(false);
     }
   };
   const label = !audio
-    ? 'Request ebook'
+    ? t('lumen.bookDetail.requestEbook', 'Request ebook')
     : showNarr && chosenRow
-      ? `Request · ${who(chosenRow)}`
-      : 'Request audiobook';
+      ? t('lumen.bookDetail.requestNarrator', 'Request · {narrator}', {
+          narrator: who(chosenRow, t),
+        })
+      : t('lumen.bookDetail.requestAudiobook', 'Request audiobook');
   // with the admin's Audiobookshelf address this opens the book there; without one it's a plain
   // "in your library" status rather than a button that does nothing
   const inAbs = (listening: boolean) => {
@@ -414,12 +458,20 @@ export default function BookDetail() {
     return href ? (
       <a className="btn btn-ok" href={href} target="_blank" rel="noopener">
         <Icon name={listening ? 'play' : 'book'} />
-        {listening ? 'Listen in Audiobookshelf' : 'Read in Audiobookshelf'}
+        {listening
+          ? t(
+              'lumen.bookDetail.listenInAudiobookshelf',
+              'Listen in Audiobookshelf'
+            )
+          : t(
+              'lumen.bookDetail.readInAudiobookshelf',
+              'Read in Audiobookshelf'
+            )}
       </a>
     ) : (
       <button className="btn btn-tonal" disabled>
         <Icon name="check" />
-        In your library
+        {t('lumen.bookDetail.inYourLibrary', 'In your library')}
       </button>
     );
   };
@@ -430,12 +482,14 @@ export default function BookDetail() {
   const main =
     b.mediaInfo?.status === MediaStatus.BLOCKLISTED ? (
       <button className="btn btn-tonal" disabled>
-        Blocklisted
+        {t('lumen.bookDetail.blocklisted', 'Blocklisted')}
       </button>
     ) : pendingRequest ? (
       <button className="btn btn-ok" disabled={busy} onClick={approve}>
         <Icon name="check" />
-        {busy ? 'Approving…' : 'Approve request'}
+        {busy
+          ? t('lumen.bookDetail.approving', 'Approving…')
+          : t('lumen.bookDetail.approveRequest', 'Approve request')}
       </button>
     ) : !mayRequest ? null : audio && showNarr && anotherMode ? (
       chosenRow ? (
@@ -445,14 +499,18 @@ export default function BookDetail() {
           onClick={requestAnother}
         >
           <Icon name="plus" />
-          Request another narrator · {who(chosenRow)}
+          {t(
+            'lumen.bookDetail.requestAnotherNarrator',
+            'Request another narrator · {narrator}',
+            { narrator: who(chosenRow, t) }
+          )}
         </button>
       ) : ownsAny ? (
         listen
       ) : (
         <button className="btn btn-tonal" disabled>
           <Icon name="clock" />
-          Requested
+          {t('lumen.bookDetail.requestedStatus', 'Requested')}
         </button>
       )
     ) : available ? (
@@ -492,9 +550,15 @@ export default function BookDetail() {
             ? `${series.title}${series.position ? ' #' + series.position : ''}`
             : '',
           b.firstPublishYear,
-          ratingLabel(ratings.data, b),
-          audio && longest ? fmtHrs(longest) + ' listen' : '',
-          audio ? 'Audiobook' : 'Ebook',
+          ratingLabel(ratings.data, b, t),
+          audio && longest
+            ? t('lumen.bookDetail.listenDuration', '{duration} listen', {
+                duration: fmtHrs(longest),
+              })
+            : '',
+          audio
+            ? t('lumen.bookDetail.audiobook', 'Audiobook')
+            : t('lumen.bookDetail.ebook', 'Ebook'),
         ]}
       />
       <div className="dbody">
@@ -506,9 +570,11 @@ export default function BookDetail() {
           >
             <b>
               <Icon name="book" size="sm" />
-              Ebook
+              {t('lumen.bookDetail.ebook', 'Ebook')}
             </b>
-            <small>EPUB, works with Kindle</small>
+            <small>
+              {t('lumen.bookDetail.ebookFormatHelp', 'EPUB, works with Kindle')}
+            </small>
           </Link>
           <Link
             replace
@@ -517,12 +583,26 @@ export default function BookDetail() {
           >
             <b>
               <Icon name="headphones" size="sm" />
-              Audiobook
+              {t('lumen.bookDetail.audiobook', 'Audiobook')}
             </b>
             <small>
               {narrData && rows.length
-                ? `${rows.length} narration${rows.length > 1 ? 's' : ''}${longest ? ' · ' + fmtHrs(longest) : ''}`
-                : 'Plays in Audiobookshelf'}
+                ? t(
+                    rows.length === 1
+                      ? 'lumen.bookDetail.narrationCountOne'
+                      : 'lumen.bookDetail.narrationCount',
+                    rows.length === 1
+                      ? '{count} narration{duration}'
+                      : '{count} narrations{duration}',
+                    {
+                      count: rows.length,
+                      duration: longest ? ' · ' + fmtHrs(longest) : '',
+                    }
+                  )
+                : t(
+                    'lumen.bookDetail.playsInAudiobookshelf',
+                    'Plays in Audiobookshelf'
+                  )}
             </small>
           </Link>
         </div>
@@ -550,7 +630,10 @@ export default function BookDetail() {
           {canViewFollowing(user?.permissions) && b.authorId && b.author && (
             <FollowButton
               key={b.authorId}
-              label="Follow New Releases"
+              label={t(
+                'lumen.bookDetail.followNewReleases',
+                'Follow New Releases'
+              )}
               subject={{
                 kind: 'author',
                 subjectKey: `author:${b.authorId}`,
@@ -571,50 +654,79 @@ export default function BookDetail() {
                 <div className="sec-head">
                   <h2>
                     {anotherMode
-                      ? 'Narrations'
+                      ? t('lumen.bookDetail.narrations', 'Narrations')
                       : noChoice
-                        ? 'Narrator'
-                        : 'Choose a narrator'}
+                        ? t('lumen.bookDetail.narrator', 'Narrator')
+                        : t(
+                            'lumen.bookDetail.chooseNarrator',
+                            'Choose a narrator'
+                          )}
                   </h2>
                   <span className="note">
                     {eds.data && rows.length
-                      ? `${rows.length} English recording${rows.length === 1 ? '' : 's'}`
+                      ? t(
+                          rows.length === 1
+                            ? 'lumen.bookDetail.englishRecordingOne'
+                            : 'lumen.bookDetail.englishRecordings',
+                          rows.length === 1
+                            ? '{count} English recording'
+                            : '{count} English recordings',
+                          { count: rows.length }
+                        )
                       : ''}
                   </span>
                 </div>
                 {anotherMode && eds.data && (
                   <p className="note" style={{ margin: '-4px 0 12px' }}>
                     {requestable.length
-                      ? 'You already have this audiobook. Pick another narrator to add it as a separate copy; nothing you have is replaced.'
-                      : 'Every narration we can request is already in the library or on its way.'}
+                      ? t(
+                          'lumen.bookDetail.chooseAdditionalNarrator',
+                          'You already have this audiobook. Pick another narrator to add it as a separate copy; nothing you have is replaced.'
+                        )
+                      : t(
+                          'lumen.bookDetail.allNarrationsOwned',
+                          'Every narration we can request is already in the library or on its way.'
+                        )}
                   </p>
                 )}
                 {!work && (
                   <p className="note">
-                    This listing has no narrator details. Requesting it gets the
-                    best available English recording.
+                    {t(
+                      'lumen.bookDetail.noNarratorDetails',
+                      'This listing has no narrator details. Requesting it gets the best available English recording.'
+                    )}
                   </p>
                 )}
                 {work && !eds.data && !eds.error && (
-                  <p className="note">Looking up recordings…</p>
+                  <p className="note">
+                    {t(
+                      'lumen.bookDetail.lookingUpRecordings',
+                      'Looking up recordings…'
+                    )}
+                  </p>
                 )}
                 {eds.error && (
                   <p className="note">
-                    Couldn’t load narrators ({eds.error}). You can still request
-                    the best available recording.
+                    {t(
+                      'lumen.bookDetail.narratorLoadError',
+                      'Couldn’t load narrators ({error}). You can still request the best available recording.',
+                      { error: eds.error }
+                    )}
                   </p>
                 )}
                 {noChoice && eds.data && (
                   <p className="note">
-                    No English recordings with narrator details were found.
-                    Requesting it gets the best available English recording.
+                    {t(
+                      'lumen.bookDetail.noEnglishNarrations',
+                      'No English recordings with narrator details were found. Requesting it gets the best available English recording.'
+                    )}
                   </p>
                 )}
                 {eds.data && !noChoice && (
                   <div
                     className="nlist"
                     role="radiogroup"
-                    aria-label="Narrations"
+                    aria-label={t('lumen.bookDetail.narrations', 'Narrations')}
                   >
                     {rows.map((r) => {
                       const st = stateOf(r);
@@ -655,7 +767,7 @@ export default function BookDetail() {
                             )}
                           </span>
                           <span>
-                            <div className="who">{who(r)}</div>
+                            <div className="who">{who(r, t)}</div>
                             <div className="det">
                               {[
                                 fmtHrs(r.durationSeconds),
@@ -663,36 +775,52 @@ export default function BookDetail() {
                                 r.releaseDate?.slice(0, 4),
                               ]
                                 .filter(Boolean)
-                                .join(' · ') || 'Details unknown'}
+                                .join(' · ') ||
+                                t(
+                                  'lumen.bookDetail.detailsUnknown',
+                                  'Details unknown'
+                                )}
                             </div>
                             <div className="tags">
                               {r.selected && !locked && !anotherMode && (
                                 <span className="tag rec">
                                   <Icon name="star" />
-                                  Recommended
+                                  {t(
+                                    'lumen.bookDetail.recommended',
+                                    'Recommended'
+                                  )}
                                 </span>
                               )}
                               {st === 'library' && (
                                 <span className="tag own">
                                   <Icon name="check" />
-                                  In library
+                                  {t(
+                                    'lumen.bookDetail.inYourLibrary',
+                                    'In your library'
+                                  )}
                                 </span>
                               )}
                               {st === 'requested' && (
                                 <span className="tag wait">
                                   <Icon name="clock" />
-                                  Requested
+                                  {t(
+                                    'lumen.bookDetail.requestedStatus',
+                                    'Requested'
+                                  )}
                                 </span>
                               )}
                               {locked && !st && (
                                 <span className="tag">
-                                  Can’t be requested yet
+                                  {t(
+                                    'lumen.bookDetail.cannotRequestYet',
+                                    'Can’t be requested yet'
+                                  )}
                                 </span>
                               )}
                               {(r.narrators?.length || 0) > 3 && (
                                 <span className="tag">
                                   <Icon name="user" />
-                                  Full cast
+                                  {t('lumen.bookDetail.fullCast', 'Full cast')}
                                 </span>
                               )}
                             </div>
@@ -725,12 +853,15 @@ export default function BookDetail() {
                           )}
                         </span>
                         <span>
-                          <div className="who">{who(l)}</div>
+                          <div className="who">{who(l, t)}</div>
                           <div className="det">{l.title}</div>
                           <div className="tags">
                             <span className="tag own">
                               <Icon name="check" />
-                              In library
+                              {t(
+                                'lumen.bookDetail.inYourLibrary',
+                                'In your library'
+                              )}
                             </span>
                           </div>
                         </span>
@@ -755,9 +886,17 @@ export default function BookDetail() {
                           <Icon name="spark" />
                         </span>
                         <span>
-                          <div className="who">Any English narrator</div>
+                          <div className="who">
+                            {t(
+                              'lumen.bookDetail.anyEnglishNarrator',
+                              'Any English narrator'
+                            )}
+                          </div>
                           <div className="det">
-                            Fastest. We grab the best copy we can find.
+                            {t(
+                              'lumen.bookDetail.fastestRecording',
+                              'Fastest. We grab the best copy we can find.'
+                            )}
                           </div>
                         </span>
                       </div>
@@ -783,8 +922,14 @@ export default function BookDetail() {
             ) : (
               <p className="ov">
                 {audio
-                  ? 'We’ll grab the best available unabridged recording.'
-                  : 'The ebook arrives as an EPUB in Audiobookshelf, ready to read or send to your Kindle.'}
+                  ? t(
+                      'lumen.bookDetail.bestUnabridgedRecording',
+                      'We’ll grab the best available unabridged recording.'
+                    )
+                  : t(
+                      'lumen.bookDetail.ebookInAudiobookshelf',
+                      'The ebook arrives as an EPUB in Audiobookshelf, ready to read or send to your Kindle.'
+                    )}
               </p>
             )}
             <div className="dacts pc">
@@ -796,7 +941,7 @@ export default function BookDetail() {
             <Facts
               rows={[
                 [
-                  'Series',
+                  t('lumen.bookDetail.series', 'Series'),
                   series?.id && series.title ? (
                     <Link to={`/book-series/${encodeURIComponent(series.id)}`}>
                       {series.title}
@@ -808,10 +953,16 @@ export default function BookDetail() {
                     ''
                   ),
                 ],
-                ['First published', b.firstPublishYear],
-                ['Listening time', audio && longest ? fmtHrs(longest) : ''],
                 [
-                  'Subjects',
+                  t('lumen.bookDetail.firstPublished', 'First published'),
+                  b.firstPublishYear,
+                ],
+                [
+                  t('lumen.bookDetail.listeningTime', 'Listening time'),
+                  audio && longest ? fmtHrs(longest) : '',
+                ],
+                [
+                  t('lumen.bookDetail.subjects', 'Subjects'),
                   (b.subjects || [])
                     .filter((t) => !FORMAT_TAG.test(t))
                     .slice(0, 4)
@@ -823,7 +974,11 @@ export default function BookDetail() {
         </div>
       </div>
       <ActionBar
-        title={audio ? 'Audiobook' : 'Ebook'}
+        title={
+          audio
+            ? t('lumen.bookDetail.audiobook', 'Audiobook')
+            : t('lumen.bookDetail.ebook', 'Ebook')
+        }
         meta={audio && longest ? fmtHrs(longest) : undefined}
       >
         {main}
