@@ -4787,5 +4787,20 @@
   "lumen.collectionPlayback.retry",
   "lumen.collectionPlayback.selectionLimit",
   "lumen.collectionPlayback.startedOn",
-  "lumen.collectionPlayback.title"
+  "lumen.collectionPlayback.title",
+  "lumen.requests.episodeQueue.defaultOption",
+  "lumen.requests.episodeQueue.cancel",
+  "lumen.requests.episodeQueue.saveFailure",
+  "lumen.requests.episodeQueue.title",
+  "lumen.requests.episodeQueue.saved",
+  "lumen.requests.episodeQueue.pendingHelp",
+  "lumen.requests.episodeQueue.loading",
+  "lumen.requests.episodeQueue.off",
+  "lumen.requests.episodeQueue.description",
+  "lumen.requests.episodeQueue.length",
+  "lumen.requests.episodeQueue.save",
+  "lumen.requests.episodeQueue.conflict",
+  "lumen.requests.episodeQueue.accountDefault",
+  "lumen.requests.episodeQueue.oneEpisode",
+  "lumen.requests.episodeQueue.multipleEpisodes"
 ]

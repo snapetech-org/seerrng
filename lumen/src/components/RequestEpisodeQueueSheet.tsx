@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api, ApiError, type RequestItem } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
@@ -37,6 +38,7 @@ export default function RequestEpisodeQueueSheet({
   saved: (setting: QueueSetting) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useLumenLocale();
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
@@ -81,8 +83,14 @@ export default function RequestEpisodeQueueSheet({
       if (generation === sessionGeneration()) {
         setFailure(
           err instanceof ApiError && err.status === 409
-            ? 'This request is no longer eligible for that queue setting. Reload the request and try again.'
-            : 'Could not confirm the Episode Queue change. Check the request before trying again.'
+            ? t(
+                'lumen.requests.episodeQueue.conflict',
+                'This request is no longer eligible for that queue setting. Reload the request and try again.'
+              )
+            : t(
+                'lumen.requests.episodeQueue.saveFailure',
+                'Could not confirm the Episode Queue change. Check the request before trying again.'
+              )
         );
       }
     } finally {
@@ -99,50 +107,81 @@ export default function RequestEpisodeQueueSheet({
         ref={ref}
         role="dialog"
         aria-modal="true"
-        aria-label="Episode Queue"
+        aria-label={t('lumen.requests.episodeQueue.title', 'Episode Queue')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>Episode Queue</h2>
+            <h2>{t('lumen.requests.episodeQueue.title', 'Episode Queue')}</h2>
             <p className="note">{title}</p>
           </header>
           <p className="note">
-            Queue length controls how many upcoming episodes playback keeps
-            requested. Existing requests and downloads stay in place.
+            {t(
+              'lumen.requests.episodeQueue.description',
+              'Queue length controls how many upcoming episodes playback keeps requested. Existing requests and downloads stay in place.'
+            )}
           </p>
           {request.status === 1 && (
             <p className="note">
-              For a pending request, choose one starting episode before
-              approval.
+              {t(
+                'lumen.requests.episodeQueue.pendingHelp',
+                'For a pending request, choose one starting episode before approval.'
+              )}
             </p>
           )}
           <ServiceNote
             error={error}
-            what="the account default"
+            what={t(
+              'lumen.requests.episodeQueue.accountDefault',
+              'the account default'
+            )}
             retry={reload}
           />
           {!data && !error && (
             <p className="note" role="status">
-              Loading the account default…
+              {t(
+                'lumen.requests.episodeQueue.loading',
+                'Loading the account default…'
+              )}
             </p>
           )}
           {data && (
             <label className="sel">
-              <span className="lbl">Queue Length</span>
+              <span className="lbl">
+                {t('lumen.requests.episodeQueue.length', 'Queue Length')}
+              </span>
               <select
-                aria-label="Queue Length"
+                aria-label={t(
+                  'lumen.requests.episodeQueue.length',
+                  'Queue Length'
+                )}
                 value={draft}
                 disabled={busy}
                 onChange={(event) => setDraft(Number(event.target.value))}
               >
                 <option value={-1}>
-                  Account default ({data.defaultEpisodeCount || 'off'})
+                  {t(
+                    'lumen.requests.episodeQueue.defaultOption',
+                    'Account default ({count})',
+                    {
+                      count:
+                        data.defaultEpisodeCount ||
+                        t('lumen.requests.episodeQueue.off', 'off'),
+                    }
+                  )}
                 </option>
-                <option value={0}>Off</option>
+                <option value={0}>
+                  {t('lumen.requests.episodeQueue.off', 'Off')}
+                </option>
                 {[1, 2, 3, 4, 5].map((count) => (
                   <option key={count} value={count}>
-                    {count} {count === 1 ? 'episode' : 'episodes'}
+                    {count === 1
+                      ? t('lumen.requests.episodeQueue.oneEpisode', '1 episode')
+                      : t(
+                          'lumen.requests.episodeQueue.multipleEpisodes',
+                          '{count} episodes',
+                          { count }
+                        )}
                   </option>
                 ))}
               </select>
@@ -155,14 +194,14 @@ export default function RequestEpisodeQueueSheet({
           )}
           <div className="pk-foot">
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
-              Cancel
+              {t('lumen.requests.episodeQueue.cancel', 'Cancel')}
             </button>
             <button
               className="btn btn-primary"
               disabled={busy || !data || draft === initial}
               onClick={() => void apply()}
             >
-              Save Episode Queue
+              {t('lumen.requests.episodeQueue.save', 'Save Episode Queue')}
             </button>
           </div>
         </div>

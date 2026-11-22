@@ -5850,6 +5850,27 @@ export const localeData = [
       'lumen.collectionPlayback.selectionLimit': 'اختر ١٬٠٠٠ فيلم أو أقل.',
       'lumen.collectionPlayback.startedOn': 'بدأ التشغيل على {device}.',
       'lumen.collectionPlayback.title': 'تشغيل المجموعة',
+      'lumen.requests.episodeQueue.defaultOption':
+        'إعداد الحساب الافتراضي ({count})',
+      'lumen.requests.episodeQueue.cancel': 'إلغاء',
+      'lumen.requests.episodeQueue.saveFailure':
+        'تعذر تأكيد تغيير قائمة انتظار الحلقات. تحقق من الطلب قبل المحاولة مجددًا.',
+      'lumen.requests.episodeQueue.title': 'قائمة انتظار الحلقات',
+      'lumen.requests.episodeQueue.saved': 'تم حفظ قائمة انتظار الحلقات.',
+      'lumen.requests.episodeQueue.pendingHelp':
+        'للطلبات المعلقة، اختر حلقة البداية قبل الموافقة.',
+      'lumen.requests.episodeQueue.loading':
+        'جارٍ تحميل إعداد الحساب الافتراضي…',
+      'lumen.requests.episodeQueue.off': 'متوقفة',
+      'lumen.requests.episodeQueue.description':
+        'يتحكم طول القائمة في عدد الحلقات القادمة التي تبقيها ميزة التشغيل ضمن الطلبات. تظل الطلبات والتنزيلات الحالية كما هي.',
+      'lumen.requests.episodeQueue.length': 'طول القائمة',
+      'lumen.requests.episodeQueue.save': 'حفظ قائمة انتظار الحلقات',
+      'lumen.requests.episodeQueue.conflict':
+        'لم يعد هذا الطلب مؤهلًا لإعداد القائمة هذا. أعد تحميل الطلب وحاول مجددًا.',
+      'lumen.requests.episodeQueue.accountDefault': 'إعداد الحساب الافتراضي',
+      'lumen.requests.episodeQueue.oneEpisode': 'حلقة واحدة',
+      'lumen.requests.episodeQueue.multipleEpisodes': '{count} حلقات',
     },
   },
   {
@@ -15666,6 +15687,25 @@ export const localeData = [
         'Select 1,000 movies or fewer.',
       'lumen.collectionPlayback.startedOn': 'Playback started on {device}.',
       'lumen.collectionPlayback.title': 'Play Collection',
+      'lumen.requests.episodeQueue.defaultOption': 'Account default ({count})',
+      'lumen.requests.episodeQueue.cancel': 'Cancel',
+      'lumen.requests.episodeQueue.saveFailure':
+        'Could not confirm the Episode Queue change. Check the request before trying again.',
+      'lumen.requests.episodeQueue.title': 'Episode Queue',
+      'lumen.requests.episodeQueue.saved': 'Episode Queue saved.',
+      'lumen.requests.episodeQueue.pendingHelp':
+        'For a pending request, choose one starting episode before approval.',
+      'lumen.requests.episodeQueue.loading': 'Loading the account default…',
+      'lumen.requests.episodeQueue.off': 'Off',
+      'lumen.requests.episodeQueue.description':
+        'Queue length controls how many upcoming episodes playback keeps requested. Existing requests and downloads stay in place.',
+      'lumen.requests.episodeQueue.length': 'Queue Length',
+      'lumen.requests.episodeQueue.save': 'Save Episode Queue',
+      'lumen.requests.episodeQueue.conflict':
+        'This request is no longer eligible for that queue setting. Reload the request and try again.',
+      'lumen.requests.episodeQueue.accountDefault': 'the account default',
+      'lumen.requests.episodeQueue.oneEpisode': '1 episode',
+      'lumen.requests.episodeQueue.multipleEpisodes': '{count} episodes',
     },
   },
   {
@@ -26406,6 +26446,28 @@ export const localeData = [
         'Sélectionnez 1 000 films ou moins.',
       'lumen.collectionPlayback.startedOn': 'Lecture lancée sur {device}.',
       'lumen.collectionPlayback.title': 'Lire la collection',
+      'lumen.requests.episodeQueue.defaultOption': 'Défaut du compte ({count})',
+      'lumen.requests.episodeQueue.cancel': 'Annuler',
+      'lumen.requests.episodeQueue.saveFailure':
+        'Impossible de confirmer la modification de la file d’attente des épisodes. Vérifiez la demande avant de réessayer.',
+      'lumen.requests.episodeQueue.title': 'File d’attente des épisodes',
+      'lumen.requests.episodeQueue.saved':
+        'File d’attente des épisodes enregistrée.',
+      'lumen.requests.episodeQueue.pendingHelp':
+        'Pour une demande en attente, choisissez un épisode de départ avant l’approbation.',
+      'lumen.requests.episodeQueue.loading':
+        'Chargement du réglage par défaut du compte…',
+      'lumen.requests.episodeQueue.off': 'Désactivée',
+      'lumen.requests.episodeQueue.description':
+        'La longueur de la file détermine le nombre d’épisodes à venir que la lecture conserve dans les demandes. Les demandes et téléchargements existants restent en place.',
+      'lumen.requests.episodeQueue.length': 'Longueur de la file',
+      'lumen.requests.episodeQueue.save': 'Enregistrer la file d’attente',
+      'lumen.requests.episodeQueue.conflict':
+        'Cette demande ne peut plus utiliser ce réglage. Rechargez la demande et réessayez.',
+      'lumen.requests.episodeQueue.accountDefault':
+        'le réglage par défaut du compte',
+      'lumen.requests.episodeQueue.oneEpisode': '1 épisode',
+      'lumen.requests.episodeQueue.multipleEpisodes': '{count} épisodes',
     },
   },
   {

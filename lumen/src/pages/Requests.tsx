@@ -2605,7 +2605,9 @@ export default function Requests() {
             setRows(patch);
             setOthers(patch);
             setQueueEdit(null);
-            toast('Episode Queue saved.');
+            toast(
+              t('lumen.requests.episodeQueue.saved', 'Episode Queue saved.')
+            );
             setTick((t) => t + 1);
           }}
         />

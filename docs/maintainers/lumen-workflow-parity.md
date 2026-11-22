@@ -6600,3 +6600,19 @@ independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/filters-baseline/`
 and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/filters-candidate/`.
+
+
+### Row-level Episode Queue editor localization
+
+The request-row Episode Queue editor now localizes its title, instructions,
+pending-request guidance, account-default loading and error messages, queue
+length options, save and cancel controls, and success feedback in English,
+French, and Arabic. The manager permission check, eligible request statuses,
+request endpoint, and submitted episode-count payload are unchanged. Twelve
+standalone browser cases pass across English, French, and Arabic on desktop,
+iPhone, Android, and tablet. Eight French and Arabic cases pass in the bundled
+`/lumen/` build across the same viewports. French desktop and iPhone baseline
+and candidate captures were inspected; the translated sheet fits its existing
+layout. Live server behavior and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-queue-localization-20261122/`.
