@@ -67,6 +67,99 @@ test('Indexer Search is absent from the You menu without permission', async ({
   ).toHaveCount(0);
 });
 
+test('unconfigured Prowlarr state exposes settings only to administrators', async ({
+  page,
+}, info) => {
+  const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_INDEXER_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_INDEXER_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const configureLabels = {
+    en: 'Open Prowlarr settings',
+    fr: 'Ouvrir les paramètres Prowlarr',
+    ar: 'افتح إعدادات Prowlarr',
+  } as const;
+  const connectionLabels = {
+    en: 'Prowlarr is not connected.',
+    fr: "Prowlarr n'est pas connecté.",
+    ar: 'Prowlarr غير متصل.',
+  } as const;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Administrator', permissions: 2 },
+      });
+    if (path === '/indexer-search/configuration')
+      return route.fulfill({ json: { configured: false, categories: [] } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/indexer-search'));
+  await expect(
+    page.getByText(connectionLabels[locale], { exact: true })
+  ).toBeVisible();
+  const settingsLink = page.getByRole('link', {
+    name: configureLabels[locale],
+    exact: true,
+  });
+  if (baseline) await expect(settingsLink).toHaveCount(0);
+  else {
+    await expect(settingsLink).toBeVisible();
+    await expect(settingsLink).toHaveAttribute(
+      'href',
+      appPath('/admin/prowlarr')
+    );
+  }
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/indexer-unconfigured-${baseline ? 'baseline' : 'candidate'}-${info.project.name}.png`,
+      fullPage: true,
+    });
+});
+
+test('Indexer Search does not expose Prowlarr settings to request managers', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Requester', permissions: 16 },
+      });
+    if (path === '/indexer-search/configuration')
+      return route.fulfill({ json: { configured: false, categories: [] } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/indexer-search'));
+  await expect(
+    page.getByText('Prowlarr is not connected.', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', {
+      name:
+        process.env.LUMEN_INDEXER_LOCALE === 'fr'
+          ? 'Ouvrir les paramètres Prowlarr'
+          : process.env.LUMEN_INDEXER_LOCALE === 'ar'
+            ? 'افتح إعدادات Prowlarr'
+            : 'Open Prowlarr settings',
+      exact: true,
+    })
+  ).toHaveCount(0);
+});
+
 test('indexer search honors enabled categories, submitted pagination and one-use handoff', async ({
   page,
 }) => {

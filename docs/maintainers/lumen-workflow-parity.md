@@ -7043,3 +7043,18 @@ Arabic desktop renders were inspected; Arabic direction and page overflow pass
 at all viewports. Live media-server discovery and independent linguistic
 review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-setup-localization-20261122/`.
+
+
+### Indexer Search setup navigation
+
+When Prowlarr is unconfigured, administrators now get a direct link to its
+settings from Lumen's Indexer Search page. The link reuses SeerrNG's existing
+localized label and points to the correct route in both standalone and bundled
+Lumen. Request managers without administrator permission do not see it.
+
+The full 40-case Indexer Search suite passes across desktop, iPhone, Android,
+and tablet in standalone and bundled deployments. French and Arabic admin and
+request-manager cases pass in both deployments. Matched before/after captures
+were reviewed at desktop and iPhone sizes. Prowlarr provider handoff remains
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-config-link-20261122/`.
