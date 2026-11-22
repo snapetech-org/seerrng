@@ -13,6 +13,13 @@ interface Episode {
   sonarrAvailability?: { hd: boolean; fourK: boolean };
 }
 
+interface SeasonEpisodes {
+  seasonNumber: number;
+  episodes: Episode[];
+}
+
+const SEASON_BATCH_SIZE = 20;
+
 export default function TvEpisodeRequestSheet({
   tvId,
   seasons,
@@ -82,49 +89,39 @@ export default function TvEpisodeRequestSheet({
         (number) => !episodesRef.current.has(number)
       );
       const failed: number[] = [];
-      const accept = (number: number, value: { episodes: Episode[] }) => {
-        if (!Array.isArray(value?.episodes)) {
-          failed.push(number);
-          return;
-        }
-        episodesRef.current = new Map(episodesRef.current).set(
-          number,
-          value.episodes
-        );
-        if (active) setEpisodesBySeason(new Map(episodesRef.current));
-      };
-      for (let index = 0; index < missing.length; index += 3) {
-        const batch = missing.slice(index, index + 3);
-        await Promise.all(
-          batch.map(async (number) => {
-            try {
-              accept(
-                number,
-                await api<{ episodes: Episode[] }>(
-                  `/tv/${tvId}/season/${number}`
-                )
-              );
-            } catch {
-              failed.push(number);
-            }
-          })
-        );
-      }
-      // Providers that reject parallel season lookups get one serial recovery pass.
-      const unresolved = [...new Set(failed)];
-      const stillMissing: number[] = [];
-      for (const number of unresolved) {
+      for (let index = 0; index < missing.length; index += SEASON_BATCH_SIZE) {
+        const batch = missing.slice(index, index + SEASON_BATCH_SIZE);
+        const query = new URLSearchParams({
+          seasonNumbers: batch.join(','),
+        });
         try {
-          accept(
-            number,
-            await api<{ episodes: Episode[] }>(`/tv/${tvId}/season/${number}`)
+          const values = await api<SeasonEpisodes[]>(
+            `/tv/${tvId}/seasons?${query}`
           );
+          const returned = new Map(
+            (Array.isArray(values) ? values : []).map((season) => [
+              season.seasonNumber,
+              season.episodes,
+            ])
+          );
+          for (const number of batch) {
+            const episodes = returned.get(number);
+            if (!Array.isArray(episodes)) {
+              failed.push(number);
+              continue;
+            }
+            episodesRef.current = new Map(episodesRef.current).set(
+              number,
+              episodes
+            );
+          }
+          if (active) setEpisodesBySeason(new Map(episodesRef.current));
         } catch {
-          stillMissing.push(number);
+          failed.push(...batch);
         }
       }
       if (active) {
-        setLoadError(stillMissing.length > 0);
+        setLoadError(failed.length > 0);
         setLoading(false);
       }
     };

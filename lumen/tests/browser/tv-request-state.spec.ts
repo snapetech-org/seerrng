@@ -489,19 +489,27 @@ test('TV detail can request missing episodes from a partly requested season', as
     undefined,
     { partialRequestsEnabled: true }
   );
-  await page.route('**/api/v1/tv/84773/season/1', (route) =>
+  await page.route('**/api/v1/tv/84773/seasons?*', (route) =>
     route.fulfill({
-      json: {
-        episodes: [
-          {
-            episodeNumber: 1,
-            name: 'Owned',
-            availabilitySources: [{ hd: true, fourK: false }],
-          },
-          { episodeNumber: 2, name: 'Pending' },
-          { episodeNumber: 3, name: 'Missing' },
-        ],
-      },
+      json: new URL(route.request().url()).searchParams
+        .get('seasonNumbers')!
+        .split(',')
+        .map(Number)
+        .map((seasonNumber) => ({
+          seasonNumber,
+          episodes:
+            seasonNumber === 1
+              ? [
+                  {
+                    episodeNumber: 1,
+                    name: 'Owned',
+                    availabilitySources: [{ hd: true, fourK: false }],
+                  },
+                  { episodeNumber: 2, name: 'Pending' },
+                  { episodeNumber: 3, name: 'Missing' },
+                ]
+              : [],
+        })),
     })
   );
   await page.route('**/api/v1/request', (route) => {
@@ -589,7 +597,7 @@ test('TV detail can request missing episodes from a partly requested season', as
   ]);
 });
 
-test('large-series episode metadata recovers failed seasons without losing the deep-linked episode', async ({
+test('large-series episode metadata uses one bounded batch and preserves deep-linked selection on retry', async ({
   page,
 }) => {
   const posts: RecordedPost[] = [];
@@ -608,30 +616,28 @@ test('large-series episode metadata recovers failed seasons without losing the d
     largeSeriesSeasons
   );
   await page.goto(appPath('/tv/84773?episode=3#season-15'));
-  const loadedSeasons: string[] = [];
-  await page.route('**/api/v1/tv/84773/season/*', (route) => {
-    const seasonNumber = new URL(route.request().url()).pathname
-      .split('/')
-      .at(-1)!;
-    loadedSeasons.push(seasonNumber);
-    if (
-      seasonNumber === '15' &&
-      loadedSeasons.filter((n) => n === '15').length === 1
-    )
-      return route.fulfill({
-        status: 503,
-        json: { message: 'Temporary metadata failure' },
-      });
+  const batchQueries: string[] = [];
+  let batchAttempts = 0;
+  await page.route('**/api/v1/tv/84773/seasons?*', (route) => {
+    const requested =
+      new URL(route.request().url()).searchParams.get('seasonNumbers') ?? '';
+    batchQueries.push(requested);
+    batchAttempts++;
     return route.fulfill({
-      json: {
-        episodes:
-          seasonNumber === '15'
-            ? [
-                { episodeNumber: 1, name: 'First episode' },
-                { episodeNumber: 3, name: 'Deep-linked episode' },
-              ]
-            : [],
-      },
+      json: requested
+        .split(',')
+        .map(Number)
+        .filter((seasonNumber) => batchAttempts > 1 || seasonNumber !== 15)
+        .map((seasonNumber) => ({
+          seasonNumber,
+          episodes:
+            seasonNumber === 15
+              ? [
+                  { episodeNumber: 1, name: 'First episode' },
+                  { episodeNumber: 3, name: 'Deep-linked episode' },
+                ]
+              : [],
+        })),
     });
   });
   const open = page.getByRole('button', {
@@ -640,6 +646,8 @@ test('large-series episode metadata recovers failed seasons without losing the d
   });
   await open.click();
   const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(sheet.getByText('Could not load episodes')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Retry' }).click();
   await expect(
     sheet.getByRole('button', { name: 'Request Selected Episodes' })
   ).toBeEnabled();
@@ -649,13 +657,10 @@ test('large-series episode metadata recovers failed seasons without losing the d
     exact: true,
   });
   await expect(selectedEpisode).toBeChecked();
-  expect(loadedSeasons.filter((number) => number === '15')).toEqual([
-    '15',
+  expect(batchQueries).toEqual([
+    largeSeriesSeasons.map(({ seasonNumber }) => seasonNumber).join(','),
     '15',
   ]);
-  expect(new Set(loadedSeasons)).toEqual(
-    new Set(largeSeriesSeasons.map(({ seasonNumber }) => String(seasonNumber)))
-  );
   await sheet
     .getByRole('button', { name: 'Request Selected Episodes' })
     .click();
@@ -689,19 +694,21 @@ test('the episode picker submits selections from multiple seasons together', asy
     { partialRequestsEnabled: true },
     seasons.filter(({ seasonNumber }) => seasonNumber > 0).slice(0, 2)
   );
-  await page.route('**/api/v1/tv/84773/season/*', (route) => {
-    const seasonNumber = Number(
-      new URL(route.request().url()).pathname.split('/').at(-1)
-    );
+  await page.route('**/api/v1/tv/84773/seasons?*', (route) => {
+    const seasonNumbers = new URL(route.request().url()).searchParams
+      .get('seasonNumbers')!
+      .split(',')
+      .map(Number);
     return route.fulfill({
-      json: {
+      json: seasonNumbers.map((seasonNumber) => ({
+        seasonNumber,
         episodes: [
           {
             episodeNumber: seasonNumber,
             name: `Season ${seasonNumber} episode`,
           },
         ],
-      },
+      })),
     });
   });
   await page
@@ -840,20 +847,28 @@ for (const scenario of ['eligible', 'owned season', 'owned episode']) {
       undefined,
       { partialRequestsEnabled: true }
     );
-    await page.route(`**/api/v1/tv/84773/season/${expected}`, (route) =>
+    await page.route('**/api/v1/tv/84773/seasons?*', (route) =>
       route.fulfill({
-        json: {
-          episodes: [
-            {
-              episodeNumber: 3,
-              name: 'Bookmarked Episode',
-              sonarrAvailability: {
-                hd: scenario === 'owned episode',
-                fourK: false,
-              },
-            },
-          ],
-        },
+        json: new URL(route.request().url()).searchParams
+          .get('seasonNumbers')!
+          .split(',')
+          .map(Number)
+          .map((seasonNumber) => ({
+            seasonNumber,
+            episodes:
+              seasonNumber === expected
+                ? [
+                    {
+                      episodeNumber: 3,
+                      name: 'Bookmarked Episode',
+                      sonarrAvailability: {
+                        hd: scenario === 'owned episode',
+                        fourK: false,
+                      },
+                    },
+                  ]
+                : [],
+          })),
       })
     );
     await page.goto(appPath('/tv/84773?episode=3#season-2'));

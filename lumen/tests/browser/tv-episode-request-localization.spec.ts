@@ -82,23 +82,26 @@ for (const language of locales) {
               mediaInfo: { seasons: [], requests: [] },
             },
           });
-        case '/tv/84773/season/1':
-          if (++seasonLoads <= 2)
+        case '/tv/84773/seasons':
+          if (++seasonLoads === 1)
             return route.fulfill({
               status: 503,
               json: { message: 'Temporary metadata failure' },
             });
           return route.fulfill({
-            json: {
-              episodes: [
-                {
-                  episodeNumber: 1,
-                  name: 'Owned Episode',
-                  sonarrAvailability: { hd: true, fourK: false },
-                },
-                { episodeNumber: 2, name: 'Missing Episode' },
-              ],
-            },
+            json: [
+              {
+                seasonNumber: 1,
+                episodes: [
+                  {
+                    episodeNumber: 1,
+                    name: 'Owned Episode',
+                    sonarrAvailability: { hd: true, fourK: false },
+                  },
+                  { episodeNumber: 2, name: 'Missing Episode' },
+                ],
+              },
+            ],
           });
         case '/request':
           return route.fulfill({ json: { id: 44, status: 1 } });
