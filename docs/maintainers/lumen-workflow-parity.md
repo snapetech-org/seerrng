@@ -1258,6 +1258,17 @@ history wait reason, stopped the queue, and restarted it with the same
 buffer. Native rendered comparison, bundled and mobile visual checks, live
 playback progression, bulk requests, and collection playback remain open.
 
+The queue sheet and its collection-detail entry now localize queue setup,
+quality and look-ahead choices, progress, waiting reasons, errors, and stop or
+restart actions in English, French, and Arabic. The lifecycle browser case
+checks persisted French locale, HD selection, buffer one, queue progress,
+stop, restart, and the submitted mutation. The collection suite passed 28
+cases across desktop, iPhone, Android, and tablet; the targeted localization
+flow also passed on desktop and iPhone. Native rendered comparison, bundled
+visual acceptance, live playback progression, bulk requests, and collection
+playback remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-queue-localization-20261122/`.
+
 ### Bulk movie collection requests increment
 
 Collection details offer a separate Request Collection sheet for eligible HD
