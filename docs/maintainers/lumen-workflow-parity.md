@@ -6110,5 +6110,9 @@ payloads are unchanged.
 Twelve locale cases passed across desktop, iPhone, Android, and tablet; the
 existing server-authorized curator workflow also passes in all four viewports.
 Overflow and locale direction are asserted, with French desktop and Arabic
-iPhone captures retained. Live catalogue data, matched pre-change visual
-comparison, and independent language review remain unverified.
+iPhone captures retained. Pre-change captures at the same locale and viewport
+showed that these routes only rendered an invalid-title error; therefore a
+pixel-by-pixel state comparison is not meaningful. The candidate shows the
+restored data view with no horizontal overflow. Live catalogue data and
+independent language review remain unverified. Baseline and candidate evidence
+is retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/franchise/`.
