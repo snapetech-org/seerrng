@@ -1,5 +1,8 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const testAppPath = (path: string) => `${testMount}${path}`;
+
 type RequestState =
   'pending' | 'failed' | 'approved' | 'downloading' | 'cancelled';
 
@@ -24,7 +27,9 @@ async function openHistory(
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice('/api/v1'.length);
+    const path = url.pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({
         json: {
@@ -98,7 +103,7 @@ async function openHistory(
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/requests?softwareRequestId=71');
+  await page.goto(testAppPath('/requests?softwareRequestId=71'));
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Fixture Software Request')).toBeVisible();
@@ -204,6 +209,42 @@ test('a request manager can cancel a downloading software request', async ({
     .poll(() => writes)
     .toEqual([
       { action: 'cancel', body: { confirmNoExistingDownload: false } },
+    ]);
+});
+
+test('uncertain cancellation requires explicit no-download confirmation', async ({
+  page,
+}) => {
+  let confirmationNeeded = true;
+  const { dialog, writes } = await openHistory(
+    page,
+    16,
+    2,
+    'downloading',
+    () => {
+      if (confirmationNeeded) {
+        confirmationNeeded = false;
+        return 'confirmation-required';
+      }
+      return 'ok';
+    }
+  );
+  await dialog.getByRole('button', { name: 'Cancel' }).click();
+  await dialog.getByRole('button', { name: 'Confirm Cancel' }).click();
+  await expect(
+    dialog.getByText(/Check the download client’s queue and history/)
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { action: 'cancel', body: { confirmNoExistingDownload: false } },
+  ]);
+  await dialog
+    .getByRole('button', { name: 'No Download Found — Cancel' })
+    .click();
+  await expect
+    .poll(() => writes)
+    .toEqual([
+      { action: 'cancel', body: { confirmNoExistingDownload: false } },
+      { action: 'cancel', body: { confirmNoExistingDownload: true } },
     ]);
 });
 
