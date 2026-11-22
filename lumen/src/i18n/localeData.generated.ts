@@ -15620,27 +15620,27 @@ export const localeData = [
       'lumen.collectionPlayback.createPlaylist': 'Create Playback Playlist',
       'lumen.collectionPlayback.device': 'Device',
       'lumen.collectionPlayback.deviceFailure':
-        'Could Not Confirm Playback. Check the Selected Device.',
+        'Could not confirm playback. Check the selected device.',
       'lumen.collectionPlayback.devices': 'Playback Devices',
       'lumen.collectionPlayback.devicesFailure':
         'Couldn’t Load Playback Devices',
-      'lumen.collectionPlayback.loadingDevices': 'Loading Playback Devices…',
+      'lumen.collectionPlayback.loadingDevices': 'Loading playback devices…',
       'lumen.collectionPlayback.noDevices':
-        'No Active, Authorized Devices Are Available.',
+        'No active, authorized devices are available.',
       'lumen.collectionPlayback.openPlaylist': 'Open Playlist',
       'lumen.collectionPlayback.playOnDevice': 'Play on Device',
       'lumen.collectionPlayback.playableMovies': 'Playable Movies',
       'lumen.collectionPlayback.playbackDevice': 'Playback Device',
       'lumen.collectionPlayback.playbackQuality': 'Playback Quality',
       'lumen.collectionPlayback.playlistFailure':
-        'Could Not Open a Playlist for This Selection.',
+        'Could not open a playlist for this selection.',
       'lumen.collectionPlayback.playlistWarning':
-        'Creating a Playlist Replaces the Media Server’s Current Selection Playlist.',
+        'Creating a playlist replaces the media server’s Current Selection playlist.',
       'lumen.collectionPlayback.quality': 'Quality',
       'lumen.collectionPlayback.retry': 'Retry',
       'lumen.collectionPlayback.selectionLimit':
-        'Select 1,000 Movies or Fewer.',
-      'lumen.collectionPlayback.startedOn': 'Playback Started on {device}.',
+        'Select 1,000 movies or fewer.',
+      'lumen.collectionPlayback.startedOn': 'Playback started on {device}.',
       'lumen.collectionPlayback.title': 'Play Collection',
     },
   },

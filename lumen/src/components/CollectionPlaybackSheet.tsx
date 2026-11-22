@@ -129,7 +129,7 @@ export default function CollectionPlaybackSheet({
           setNotice(
             t(
               'lumen.collectionPlayback.startedOn',
-              'Playback Started on {device}.',
+              'Playback started on {device}.',
               {
                 device: device.name,
               }
@@ -155,8 +155,8 @@ export default function CollectionPlaybackSheet({
               ? 'lumen.collectionPlayback.deviceFailure'
               : 'lumen.collectionPlayback.playlistFailure',
             onDevice
-              ? 'Could not Confirm Playback. Check the Selected Device.'
-              : 'Could Not Open a Playlist for This Selection.'
+              ? 'Could not confirm playback. Check the selected device.'
+              : 'Could not open a playlist for this selection.'
           )
         );
         if (onDevice) reload();
@@ -240,7 +240,7 @@ export default function CollectionPlaybackSheet({
             <p className="note">
               {t(
                 'lumen.collectionPlayback.selectionLimit',
-                'Select 1,000 Movies or Fewer.'
+                'Select 1,000 movies or fewer.'
               )}
             </p>
           )}
@@ -258,7 +258,7 @@ export default function CollectionPlaybackSheet({
             <p className="note" role="status">
               {t(
                 'lumen.collectionPlayback.loadingDevices',
-                'Loading Playback Devices…'
+                'Loading playback devices…'
               )}
             </p>
           )}
@@ -266,7 +266,7 @@ export default function CollectionPlaybackSheet({
             <p className="note">
               {t(
                 'lumen.collectionPlayback.noDevices',
-                'No Active, Authorized Devices Are Available.'
+                'No active, authorized devices are available.'
               )}
             </p>
           )}
@@ -310,7 +310,7 @@ export default function CollectionPlaybackSheet({
           <p className="note">
             {t(
               'lumen.collectionPlayback.playlistWarning',
-              'Creating a Playlist Replaces the Media Server’s Current Selection Playlist.'
+              'Creating a playlist replaces the media server’s Current Selection playlist.'
             )}
           </p>
           <div className="toolbar">
