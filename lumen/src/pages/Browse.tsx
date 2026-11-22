@@ -1452,6 +1452,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         more={list.more}
         error={items.length ? list.error : null}
         retry={list.retry}
+        labels={{
+          error: t('lumen.browse.loadMoreFailure', 'Couldn’t load more.'),
+          retry: t('lumen.account.retry', 'Retry'),
+          loading: t('lumen.browse.loadingMore', 'Loading more…'),
+        }}
       />
     </>
   );

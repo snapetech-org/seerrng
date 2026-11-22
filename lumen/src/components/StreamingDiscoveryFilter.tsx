@@ -103,15 +103,21 @@ export function StreamingDiscoveryFilter({
       <div className="setlist">
         <div className="set cfg-stack">
           <span>
-            <b>Streaming Services</b>
+            <b>{t('lumen.streamingFilter.services', 'Streaming Services')}</b>
             <small>
-              Select up to 50 services. {draftProviders.length} selected.
+              {t('lumen.streamingFilter.limit', 'Select up to 50 services.')}{' '}
+              {t('lumen.streamingFilter.selectedCount', 'Selected: {count}', {
+                count: draftProviders.length,
+              })}
             </small>
           </span>
           <div
             className="setlist picklist"
             role="group"
-            aria-label="Streaming Services"
+            aria-label={t(
+              'lumen.streamingFilter.services',
+              'Streaming Services'
+            )}
           >
             {[...options].map(([id, name]) => (
               <label className="set pick" key={id}>

@@ -3,11 +3,11 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test';
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const testAppPath = (path: string) => `${testMount}${path}`;
 
-async function capture(page: Page, info: TestInfo) {
+async function capture(page: Page, info: TestInfo, name = 'browse-ranges') {
   const directory = process.env.LUMEN_VISUAL_CAPTURE_DIR;
   if (!directory || !['desktop', 'iphone'].includes(info.project.name)) return;
   await page.screenshot({
-    path: `${directory}/browse-ranges-${info.project.name}.png`,
+    path: `${directory}/${name}-${info.project.name}.png`,
     animations: 'disabled',
   });
 }
@@ -72,11 +72,15 @@ test('movie and series range filters follow the account locale', async ({
           { iso_3166_1: 'US', english_name: 'United States' },
         ],
       });
+    if (path === '/watchproviders/movies' || path === '/watchproviders/tv')
+      return route.fulfill({ json: [{ id: 8, name: 'Fixture Stream' }] });
     return route.fulfill({ json: [] });
   });
 
   const wording = (en: string, fr: string, ar: string) =>
-    baseline || locale === 'en' ? en : locale === 'fr' ? fr : ar;
+    locale === 'en' ? en : locale === 'fr' ? fr : ar;
+  const streamingWording = (en: string, fr: string, ar: string) =>
+    baseline ? en : wording(en, fr, ar);
   for (const kind of ['movie', 'tv'] as const) {
     await page.goto(testAppPath(kind === 'movie' ? '/movies' : '/series'));
     await expect(
@@ -234,15 +238,14 @@ test('movie and series range filters follow the account locale', async ({
           ),
         })
         .click();
-      await expect(
-        page.getByRole('form', {
-          name: wording(
-            'Streaming Service Filter',
-            'Filtre des services de streaming',
-            'تصفية خدمات البث'
-          ),
-        })
-      ).toBeVisible();
+      const streamingForm = page.getByRole('form', {
+        name: wording(
+          'Streaming Service Filter',
+          'Filtre des services de streaming',
+          'تصفية خدمات البث'
+        ),
+      });
+      await expect(streamingForm).toBeVisible();
       await expect(
         page.getByText(
           wording(
@@ -253,6 +256,46 @@ test('movie and series range filters follow the account locale', async ({
           { exact: true }
         )
       ).toBeVisible();
+      await streamingForm.scrollIntoViewIfNeeded();
+      const providerGroup = streamingForm.getByRole('group', {
+        name: streamingWording(
+          'Streaming Services',
+          'Services de streaming',
+          'خدمات البث'
+        ),
+      });
+      const providerCheckbox = providerGroup.getByRole('checkbox', {
+        name: 'Fixture Stream',
+      });
+      await expect(providerCheckbox).toBeVisible();
+      await expect(
+        streamingForm.getByText(
+          streamingWording(
+            'Streaming Services',
+            'Services de streaming',
+            'خدمات البث'
+          ),
+          { exact: true }
+        )
+      ).toBeVisible();
+      const providerGuidance = streamingForm.locator(
+        '.cfg-stack > span > small'
+      );
+      const limit = streamingWording(
+        'Select up to 50 services.',
+        'Sélectionnez jusqu’à 50 services.',
+        'اختر ما يصل إلى 50 خدمة.'
+      );
+      await expect(providerGuidance).toHaveText(
+        `${limit} ${streamingWording('Selected: 0', 'Sélection : 0', 'المحدد: 0')}`
+      );
+      await providerCheckbox.scrollIntoViewIfNeeded();
+      await capture(page, info, 'streaming-filter');
+      await providerGroup.getByText('Fixture Stream', { exact: true }).click();
+      await expect(providerCheckbox).toBeChecked();
+      await expect(providerGuidance).toHaveText(
+        `${limit} ${streamingWording('Selected: 1', 'Sélection : 1', 'المحدد: 1')}`
+      );
       await page
         .getByRole('button', {
           name: wording('Subject Tags', 'Mots-clés', 'الوسوم'),
@@ -419,10 +462,10 @@ test('movie and series range filters follow the account locale', async ({
         path: '/music',
         button: wording(
           'Release Types: Any Release Type',
-          'Release Types : Any Release Type',
-          'Release Types: Any Release Type'
+          'Types de sorties : Tous les types de sorties',
+          'أنواع الإصدارات: أي نوع إصدار'
         ),
-        title: 'Release Types',
+        title: wording('Release Types', 'Types de sorties', 'أنواع الإصدارات'),
       },
       {
         path: '/comics',
@@ -436,7 +479,11 @@ test('movie and series range filters follow the account locale', async ({
     ]) {
       await page.goto(testAppPath(path));
       if (path === '/comics')
-        await page.getByRole('button', { name: 'Manga' }).click();
+        await page
+          .getByRole('button', {
+            name: wording('Manga', 'Manga', 'مانغا'),
+          })
+          .click();
       const picker = page.getByRole('button', { name: button });
       await expect(picker).toBeVisible();
       await picker.click();
@@ -519,4 +566,122 @@ test('Browse and genre loading errors follow the account locale', async ({
     .toBe(true);
   if (info.project.name === 'desktop' || info.project.name === 'iphone')
     await page.screenshot({ animations: 'disabled' });
+});
+
+test('Browse pagination loading and recovery follow the account locale', async ({
+  page,
+}, info) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_BROWSE_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_BROWSE_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
+  const wording = (en: string, fr: string, ar: string) =>
+    baseline || locale === 'en' ? en : locale === 'fr' ? fr : ar;
+  let pageTwoReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { enable4k: true } });
+    if (path === '/discover/movies') {
+      const number = Number(url.searchParams.get('page'));
+      if (number === 1)
+        return route.fulfill({
+          json: {
+            page: 1,
+            totalPages: 2,
+            totalResults: 2,
+            results: [
+              {
+                id: 101,
+                title: 'First Browse Film',
+                mediaType: 'movie',
+                posterPath: null,
+                releaseDate: '2020-01-01',
+              },
+            ],
+          },
+        });
+      pageTwoReads++;
+      if (pageTwoReads === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Page unavailable.' },
+        });
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return route.fulfill({
+        json: {
+          page: 2,
+          totalPages: 2,
+          totalResults: 2,
+          results: [
+            {
+              id: 102,
+              title: 'Second Browse Film',
+              mediaType: 'movie',
+              posterPath: null,
+              releaseDate: '2021-01-01',
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: [] });
+  });
+
+  await page.goto(testAppPath('/movies'));
+  await expect(
+    page.getByRole('link', { name: 'First Browse Film', exact: true })
+  ).toBeVisible();
+  const error = wording(
+    'Couldn’t load more.',
+    'Impossible de charger la suite.',
+    'تعذّر تحميل المزيد.'
+  );
+  const loading = wording(
+    'Loading more…',
+    'Chargement de la suite…',
+    'جارٍ تحميل المزيد…'
+  );
+  const alert = page.getByRole('alert').filter({ hasText: error });
+  await expect(alert).toBeVisible();
+  const retry = alert.getByRole('button', {
+    name: wording('Retry', 'Réessayer', 'إعادة المحاولة'),
+  });
+  await retry.scrollIntoViewIfNeeded();
+  if (['iphone', 'android'].includes(info.project.name)) {
+    const buttonBox = await retry.boundingBox();
+    const tabsBox = await page.locator('.tabbar').boundingBox();
+    expect(buttonBox).not.toBeNull();
+    expect(tabsBox).not.toBeNull();
+    expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(tabsBox!.y);
+  }
+  if (info.project.name === 'desktop' || info.project.name === 'iphone')
+    await capture(page, info, 'browse-pagination-error');
+  await retry.click();
+  const loadingMessage = page.getByText(loading, { exact: true });
+  await expect(loadingMessage).toBeVisible();
+  await loadingMessage.scrollIntoViewIfNeeded();
+  if (info.project.name === 'desktop' || info.project.name === 'iphone')
+    await capture(page, info, 'browse-pagination-loading');
+  await expect(
+    page.getByRole('link', { name: 'Second Browse Film', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'First Browse Film', exact: true })
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
 });

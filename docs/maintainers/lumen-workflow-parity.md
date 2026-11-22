@@ -873,6 +873,18 @@ search-hint, genre-directory heading, and dynamic language/country name
 localization are covered by the following increment. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-chrome-20261121/`.
 
+This follow-up closes the remaining user-facing streaming-provider helper copy:
+the group heading and accessible name, 50-provider guidance, and selected count
+now follow English, French, and Arabic. The same Browse screen now localizes
+the shared pagination failure, retry, and loading labels. Browser fixtures
+exercise zero-to-one provider selection and pagination failure/recovery across
+desktop, iPhone, Android, and tablet (36 standalone cases). English, French,
+and Arabic provider-filter and pagination screenshots were captured at desktop
+and phone sizes; Arabic RTL and the phone retry state were inspected. No CSS or
+layout changes were needed. This closes those filter and paging strings only;
+other non-filter Browse copy remains open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-browse-streaming-filter-20261122/`.
+
 ### Music discovery localization
 
 The Music discovery shell, search placeholder, sort menu, release type picker,
