@@ -300,6 +300,14 @@ body.is-detail .tabbar {
   cursor: pointer;
   outline: none;
 }
+.sel[data-layout='stacked'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+}
+.sel[data-layout='stacked'] select {
+  width: 100%;
+}
 .sel input[type='month'] {
   min-width: 0;
   border: 0;
@@ -1884,7 +1892,11 @@ body.is-detail .toast {
 .sheet .pk {
   padding: 18px var(--s5) calc(var(--s5) + env(safe-area-inset-bottom));
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
+}
+.sheet .pk > .toolbar {
+  min-width: 0;
 }
 .sheet .pk-head {
   display: grid;
@@ -2519,6 +2531,7 @@ select.cfg-input,
 .toolbar > label.search {
   flex: 1 1 260px;
   max-width: 520px;
+  min-width: 0;
   height: 40px;
 }
 

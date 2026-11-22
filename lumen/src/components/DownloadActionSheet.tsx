@@ -337,7 +337,7 @@ export function DownloadActionSheet({
                   ))}
                 </ul>
               )}
-              <label className="sel">
+              <label className="sel" data-layout="stacked">
                 <span className="lbl">{t('downloads.importMode')}</span>
                 <select
                   value={mode}
