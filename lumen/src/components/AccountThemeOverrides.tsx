@@ -82,7 +82,10 @@ export default function AccountThemeOverrides() {
     void save(changes);
   }
 
-  async function save(changes: Record<string, string | number | null>) {
+  async function save(
+    changes: Record<string, string | number | null>,
+    reset = false
+  ) {
     if (!user || pending.current || Object.keys(changes).length === 0) return;
     const generation = sessionGeneration();
     pending.current = true;
@@ -120,15 +123,20 @@ export default function AccountThemeOverrides() {
         return;
       }
       setDraft({});
+      if (reset) setSelectedPreset('');
       if (editingJson) openJson(readback ?? {});
       setNotice(
         t(
-          editingJson
-            ? 'pages.profile.advancedTheme.saved'
-            : 'lumen.account.themeColorsSaved',
-          editingJson
-            ? 'Your theme overrides were saved.'
-            : 'Theme colors saved.'
+          reset
+            ? 'lumen.account.themeOverridesReset'
+            : editingJson
+              ? 'pages.profile.advancedTheme.saved'
+              : 'lumen.account.themeColorsSaved',
+          reset
+            ? 'Theme overrides cleared.'
+            : editingJson
+              ? 'Your theme overrides were saved.'
+              : 'Theme colors saved.'
         )
       );
     } catch (cause) {
@@ -242,14 +250,31 @@ export default function AccountThemeOverrides() {
             'Applying a preset saves it to your account and keeps existing override values, which continue to take precedence.'
           )}
         </p>
-        <button
-          className="btn btn-quiet btn-sm"
-          type="button"
-          disabled={busy || !selectedPreset || invalid}
-          onClick={applyPreset}
-        >
-          {t('lumen.account.applyThemePreset', 'Apply Theme Preset')}
-        </button>
+        <div className="toolbar">
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={busy || !selectedPreset || invalid}
+            onClick={applyPreset}
+          >
+            {t('lumen.account.applyThemePreset', 'Apply Theme Preset')}
+          </button>
+          <button
+            className="btn btn-quiet btn-sm"
+            type="button"
+            disabled={busy || Object.keys(saved ?? {}).length === 0}
+            onClick={() =>
+              void save(
+                Object.fromEntries(
+                  Object.keys(saved ?? {}).map((key) => [key, null])
+                ),
+                true
+              )
+            }
+          >
+            {t('lumen.account.resetThemeOverrides', 'Reset Theme Overrides')}
+          </button>
+        </div>
       </div>
       <form
         onSubmit={(event) => {

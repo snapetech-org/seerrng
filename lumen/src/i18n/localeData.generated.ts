@@ -6631,6 +6631,8 @@ export const localeData = [
       'lumen.account.themePresetHelp':
         'يؤدي تطبيق الإعداد المسبق إلى حفظه في حسابك مع الاحتفاظ بقيم التجاوز الحالية التي تظل لها الأولوية.',
       'lumen.account.applyThemePreset': 'تطبيق الإعداد المسبق',
+      'lumen.account.resetThemeOverrides': 'إعادة تعيين تجاوزات المظهر',
+      'lumen.account.themeOverridesReset': 'تم مسح تجاوزات المظهر.',
     },
   },
   {
@@ -17346,6 +17348,8 @@ export const localeData = [
       'lumen.account.themePresetHelp':
         'Applying a preset saves it to your account and keeps existing override values, which continue to take precedence.',
       'lumen.account.applyThemePreset': 'Apply Theme Preset',
+      'lumen.account.resetThemeOverrides': 'Reset Theme Overrides',
+      'lumen.account.themeOverridesReset': 'Theme overrides cleared.',
     },
   },
   {
@@ -29139,6 +29143,10 @@ export const localeData = [
       'lumen.account.themePresetHelp':
         'L’application d’un préréglage l’enregistre dans votre compte et conserve les valeurs de remplacement existantes, qui restent prioritaires.',
       'lumen.account.applyThemePreset': 'Appliquer le préréglage',
+      'lumen.account.resetThemeOverrides':
+        'Réinitialiser les remplacements du thème',
+      'lumen.account.themeOverridesReset':
+        'Les remplacements du thème ont été effacés.',
     },
   },
   {

@@ -5471,5 +5471,7 @@
   "lumen.account.themePreset",
   "lumen.account.themePresetPlaceholder",
   "lumen.account.themePresetHelp",
-  "lumen.account.applyThemePreset"
+  "lumen.account.applyThemePreset",
+  "lumen.account.resetThemeOverrides",
+  "lumen.account.themeOverridesReset"
 ]

@@ -105,14 +105,16 @@ Lumen Account Settings now exposes SeerrNG's shared built-in advanced-theme
 preset picker. Applying a preset uses the same definition as native SeerrNG,
 saves its values through the authenticated per-user settings route, and keeps
 saved and currently edited token overrides as higher-priority values. English,
-French, and Arabic controls are included. Other users' settings and the active
-interface theme are unchanged.
+French, and Arabic controls are included. Users can also clear every saved
+override in one confirmed action. These actions affect only the signed-in user's
+settings.
 
-All 68 Account Settings browser cases pass across desktop, iPhone, Android, and
-tablet; the focused preset and theme-color cases also pass on the actual bundled
-`/lumen/` Express mount. The Lumen production TypeScript/Vite build passes. The
-behavior is fixture-tested. A live authenticated save against a production
-SeerrNG instance remains unverified. Matched baseline/candidate screenshots are retained at
+All 72 Account Settings browser cases pass across desktop, iPhone, Android, and
+tablet. Six focused preset, reset, and theme-color cases pass on the actual
+bundled `/lumen/` Express mount across desktop and iPhone. The Lumen production
+TypeScript/Vite build passes. These behaviors are fixture-tested. A live
+authenticated save against a production SeerrNG instance remains unverified.
+Matched baseline/candidate screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-theme-presets-20261122/`.
 
 ### Account language choices

@@ -656,6 +656,11 @@ test('account applies the shared built-in theme preset and preserves overrides',
     return route.fulfill({ json: {} });
   });
   await page.goto(appPath('./me/account#advanced-theme'));
+  await page.locator('#advanced-theme').scrollIntoViewIfNeeded();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${page.viewportSize()?.width}.png`,
+    });
   await page.getByLabel('Page Background').fill('#445566');
   await page.getByLabel('Built-in Theme Preset').selectOption('john-redesign');
   await page.getByRole('button', { name: 'Apply Theme Preset' }).click();
@@ -683,10 +688,50 @@ test('account applies the shared built-in theme preset and preserves overrides',
       () => document.documentElement.scrollWidth <= window.innerWidth
     )
   ).toBe(true);
-  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
-    await page.screenshot({
-      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${page.viewportSize()?.width}.png`,
-    });
+});
+
+test('account resets all saved theme overrides together', async ({ page }) => {
+  const overrides: Record<string, string | number> = {
+    preset: 'john-redesign',
+    '--theme-page-bg': '#112233',
+    '--theme-page-spotlight-strength': 0.5,
+  };
+  let submitted: Record<string, string | number | null> | undefined;
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          permissions: 32,
+          settings: { advancedThemeOverrides: overrides },
+        },
+      });
+    if (path === '/user/2/settings/advanced-theme') {
+      submitted = request.postDataJSON().changes;
+      for (const [key, value] of Object.entries(submitted ?? {})) {
+        if (typeof value === 'string' || typeof value === 'number')
+          overrides[key] = value;
+        else delete overrides[key];
+      }
+      return route.fulfill({ json: { advancedThemeOverrides: overrides } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(appPath('./me/account#advanced-theme'));
+  await page.getByRole('button', { name: 'Reset Theme Overrides' }).click();
+  await expect(page.getByText('Theme overrides cleared.')).toBeVisible();
+  expect(submitted).toEqual({
+    preset: null,
+    '--theme-page-bg': null,
+    '--theme-page-spotlight-strength': null,
+  });
+  expect(overrides).toEqual({});
+  await expect(page.getByLabel('Page Background')).toHaveValue('');
+  await expect(
+    page.getByRole('button', { name: 'Reset Theme Overrides' })
+  ).toBeDisabled();
 });
 
 test('account theme colors preserve stored overrides for other controls', async ({
