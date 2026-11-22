@@ -1164,6 +1164,8 @@ iPhone baseline/candidate renders were inspected; content wraps within the
 existing job card and tested viewport widths have no horizontal overflow.
 Evidence is retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-jobs-localization-20261120/`.
+The bundled save-recovery build and run record are retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-jobs-bundled-20261122/`.
 Live scheduler effects, independent linguistic review, and native-matched
 visual acceptance remain open.
 
