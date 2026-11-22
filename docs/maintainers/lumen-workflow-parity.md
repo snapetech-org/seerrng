@@ -7058,3 +7058,18 @@ request-manager cases pass in both deployments. Matched before/after captures
 were reviewed at desktop and iPhone sizes. Prowlarr provider handoff remains
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-config-link-20261122/`.
+
+
+### Indexer Search in-flight form parity
+
+While a search request is pending, Lumen now disables the search query field as
+well as the category selector. This matches native SeerrNG and prevents the
+visible query from changing while results for the submitted value are loading.
+Both controls become available again when the request completes.
+
+The delayed-search browser case verifies the disabled and restored states. The
+full 40-case Indexer Search suite passes in standalone and bundled Express
+`/lumen/` deployments across desktop, iPhone, Android, and tablet. Matched
+before/after screenshots at desktop and iPhone sizes show unchanged layout.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-lock-20261122/`.

@@ -313,9 +313,20 @@ test('changing indexer category clears stale results and is disabled while searc
   await page.getByRole('searchbox', { name: 'Search terms' }).fill('Dune');
   await page.getByRole('button', { name: 'Search indexers' }).click();
   await expect(category).toBeDisabled();
+  const query = page.getByRole('searchbox', { name: 'Search terms' });
+  const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
+  if (baseline) await expect(query).toBeEnabled();
+  else await expect(query).toBeDisabled();
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/indexer-searching-${baseline ? 'baseline' : 'candidate'}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
   completeSearch();
   await expect(page.getByText('movie result')).toBeVisible();
   await expect(category).toBeEnabled();
+  await expect(query).toBeEnabled();
 
   await category.selectOption('tv');
   await expect(page.getByText('movie result')).toHaveCount(0);

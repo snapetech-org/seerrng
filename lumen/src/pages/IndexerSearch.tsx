@@ -350,6 +350,7 @@ function SearchForm({
             )}
             maxLength={256}
             value={query}
+            disabled={searching}
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
