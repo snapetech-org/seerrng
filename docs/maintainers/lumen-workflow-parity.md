@@ -7073,3 +7073,19 @@ full 40-case Indexer Search suite passes in standalone and bundled Express
 before/after screenshots at desktop and iPhone sizes show unchanged layout.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-lock-20261122/`.
+
+
+### Content-restricted Adult navigation
+
+Lumen now applies SeerrNG's Adult content restriction rule to its shared
+visible-extra list. Restricted users no longer see Adult in the navigation,
+Discover shortcuts, or Search category choices. Explicit per-user settings
+override the instance default, and administrators keep the native default
+exemption. Server-side Adult permission checks remain authoritative.
+
+The 36-case Adult navigation permission suite passes in standalone and bundled
+Express `/lumen/` deployments across desktop, iPhone, Android, and tablet. It
+checks instance defaults, per-user overrides, administrator behavior, and
+existing Adult permissions. Matched desktop and iPhone baseline/candidate
+captures were inspected. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-menu-20261122/`.

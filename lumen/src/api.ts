@@ -240,6 +240,7 @@ export interface User {
   displayName: string;
   avatar?: string;
   permissions: number;
+  contentRestricted?: boolean | null;
   userType?: 1 | 2 | 3 | 4;
   warnings?: string[];
   tvSeasonWatchGateStatus?: string;

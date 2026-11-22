@@ -178,6 +178,7 @@ export interface PublicSettings {
   audiobookServiceEnabled: boolean;
   enabledMediaCategories?: Record<string, boolean>;
   adultEnabled?: boolean;
+  ageGate?: { defaultRestricted?: boolean };
 }
 export const usePublicSettings = () =>
   useApi<PublicSettings>('/settings/public').data;

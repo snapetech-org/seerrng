@@ -3,7 +3,7 @@
 // on every call, so a hidden page that someone opens by URL just explains it's off.
 import { useEffect, useState } from 'react';
 import { api, ApiError, type MediaInfo } from './api';
-import { useAuth } from './auth';
+import { isAdministrator, useAuth } from './auth';
 import { useApi, type PublicSettings } from './hooks';
 import type { IconName } from './icons';
 import { services } from './mediaServer';
@@ -173,6 +173,12 @@ export function useExtras() {
   // what this account may see: SeerrNG gives each user their own categories (an admin gets all
   // of them). Until that answers nothing is probed, so a hidden category is never asked for.
   const { user } = useAuth();
+  const contentRestricted = user
+    ? typeof user.contentRestricted === 'boolean'
+      ? user.contentRestricted
+      : !isAdministrator(user.permissions) &&
+        settings.data?.ageGate?.defaultRestricted === true
+    : false;
   const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
     user ? `/user/${user.id}/settings/main` : null
   );
@@ -263,7 +269,12 @@ export function useExtras() {
       setGamesWorking(null);
       setRecheck((n) => n + 1);
     },
-    list: EXTRAS.filter((e) => enabled(e.key) && working?.has(e.key)),
+    list: EXTRAS.filter(
+      (e) =>
+        enabled(e.key) &&
+        working?.has(e.key) &&
+        (e.key !== 'adult' || !contentRestricted)
+    ),
   };
 }
 
