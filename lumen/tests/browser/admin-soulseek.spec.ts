@@ -1,5 +1,77 @@
 import { expect, test } from '@playwright/test';
 
+for (const [locale, labels] of [
+  [
+    'fr',
+    {
+      title: 'Paramètres Soulseek',
+      host: 'Nom d’hôte ou adresse IP',
+      section: 'Connexion slskdN',
+      test: 'Tester la connexion',
+    },
+  ],
+  [
+    'ar',
+    {
+      title: 'إعدادات Soulseek',
+      host: 'اسم المضيف أو عنوان IP',
+      section: 'اتصال slskdN',
+      test: 'اختبار الاتصال',
+    },
+  ],
+] as const) {
+  test(`Soulseek settings follow the saved ${locale} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname;
+      if (path.endsWith('/auth/me'))
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path.endsWith('/user/1/settings/main'))
+        return route.fulfill({ json: { locale } });
+      if (path.endsWith('/settings/slskdn'))
+        return route.fulfill({
+          json: {
+            enabled: true,
+            hostname: 'slskd.internal',
+            port: 5030,
+            useSsl: false,
+            baseUrl: '',
+            searchFilter: '',
+            apiKeyConfigured: true,
+          },
+        });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto('/admin/soulseek');
+    await expect(
+      page.getByRole('heading', { name: labels.title })
+    ).toBeVisible();
+    await expect(page.getByLabel(labels.host)).toHaveValue('slskd.internal');
+    await expect(
+      page.getByRole('heading', { name: labels.section })
+    ).toBeVisible();
+    await expect(page.getByRole('button', { name: labels.test })).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    const captureDir = process.env.LUMEN_REQUEST_SERVICE_CAPTURE_DIR;
+    if (captureDir)
+      await page.screenshot({
+        path: `${captureDir}/soulseek-${locale}-${page.viewportSize()?.width}.png`,
+        fullPage: true,
+      });
+  });
+}
+
 test('Soulseek tests with the stored key and explicitly removes it when disabled', async ({
   page,
 }, info) => {

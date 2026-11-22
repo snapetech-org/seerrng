@@ -1,5 +1,86 @@
 import { expect, test } from '@playwright/test';
 
+for (const [locale, labels] of [
+  [
+    'fr',
+    {
+      title: 'Paramètres ReadMeABook',
+      section: 'Connexion ReadMeABook',
+      approvals: 'Demandes de livres audio en attente d’approbation',
+      dashboard: 'Tableau de bord des acquisitions',
+    },
+  ],
+  [
+    'ar',
+    {
+      title: 'إعدادات ReadMeABook',
+      section: 'اتصال ReadMeABook',
+      approvals: 'طلبات الكتب الصوتية بانتظار الموافقة',
+      dashboard: 'لوحة الاقتناء',
+    },
+  ],
+] as const) {
+  test(`ReadMeABook settings and operations follow the saved ${locale} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname;
+      if (path.endsWith('/auth/me'))
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path.endsWith('/user/1/settings/main'))
+        return route.fulfill({ json: { locale } });
+      if (path.endsWith('/settings/readmeabook'))
+        return route.fulfill({
+          json: {
+            enabled: true,
+            hostname: 'books.internal',
+            port: 3030,
+            useSsl: false,
+            baseUrl: '',
+            apiKeyConfigured: true,
+          },
+        });
+      if (path.endsWith('/readmeabook/admin/requests'))
+        return route.fulfill({ json: [] });
+      if (path.endsWith('/readmeabook/admin/dashboard'))
+        return route.fulfill({
+          json: { metrics: {}, activeDownloads: [], recentRequests: [] },
+        });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto('/admin/readmeabook');
+    await expect(
+      page.getByRole('heading', { name: labels.title })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.section })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.approvals })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.dashboard })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    const captureDir = process.env.LUMEN_REQUEST_SERVICE_CAPTURE_DIR;
+    if (captureDir)
+      await page.screenshot({
+        path: `${captureDir}/readmeabook-${locale}-${page.viewportSize()?.width}.png`,
+        fullPage: true,
+      });
+  });
+}
+
 test('ReadMeABook tests with the stored key and explicitly removes it when disabled', async ({
   page,
 }, info) => {

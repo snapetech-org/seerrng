@@ -1,0 +1,1 @@
+Lumen's Soulseek and ReadMeABook administration routes now localize service settings, saved-credential controls, connection test feedback, audiobook approval actions, and acquisition dashboard labels in English, French, and Arabic. Existing API payloads, credential redaction, and approval behavior are unchanged.

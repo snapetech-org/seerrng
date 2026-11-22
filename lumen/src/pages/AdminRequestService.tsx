@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Provider = 'slskdn' | 'readmeabook';
@@ -48,6 +49,7 @@ interface Approval {
 }
 
 function ReadMeABookOperations() {
+  const { t } = useLumenLocale();
   const approvals = useApi<Approval[]>(approvalsPath);
   const dashboard = useApi<
     Partial<Record<(typeof dashboardSections)[number][0], unknown>>
@@ -72,7 +74,10 @@ function ReadMeABookOperations() {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not update the audiobook request.'
+            : t(
+                'lumen.requestService.approvalFailed',
+                'Could not update the audiobook request.'
+              )
         );
     } finally {
       pending.current = false;
@@ -82,9 +87,19 @@ function ReadMeABookOperations() {
 
   return (
     <>
-      <Section title="Audiobook Requests Awaiting Approval">
+      <Section
+        title={t(
+          'lumen.requestService.approvals',
+          'Audiobook Requests Awaiting Approval'
+        )}
+      >
         <ServiceNote
-          what="audiobook approvals"
+          what={t('lumen.requestService.approvalWhat', 'audiobook approvals')}
+          title={t(
+            'lumen.requestService.approvalLoadError',
+            'Couldn’t load audiobook approvals'
+          )}
+          retryLabel={t('lumen.requestService.retry', 'Retry')}
           error={approvals.error}
           retry={approvals.reload}
         />
@@ -95,12 +110,18 @@ function ReadMeABookOperations() {
         )}
         {!approvals.data && !approvals.error && (
           <p className="note" role="status">
-            Loading audiobook requests…
+            {t(
+              'lumen.requestService.loadingApprovals',
+              'Loading audiobook requests…'
+            )}
           </p>
         )}
         {approvals.data?.length === 0 && (
           <p className="note">
-            No audiobook requests are waiting for approval.
+            {t(
+              'lumen.requestService.noApprovals',
+              'No audiobook requests are waiting for approval.'
+            )}
           </p>
         )}
         <div className="setlist">
@@ -119,40 +140,63 @@ function ReadMeABookOperations() {
                   type="button"
                   className="btn btn-primary btn-sm"
                   disabled={busy}
-                  aria-label={`Approve ${title}`}
+                  aria-label={t(
+                    'lumen.requestService.approveTitle',
+                    'Approve {title}',
+                    { title }
+                  )}
                   onClick={() => void decide(id, 'approve')}
                 >
-                  Approve
+                  {t('lumen.requestService.approve', 'Approve')}
                 </button>
                 <button
                   type="button"
                   className="btn btn-quiet btn-sm"
                   disabled={busy}
-                  aria-label={`Deny ${title}`}
+                  aria-label={t(
+                    'lumen.requestService.denyTitle',
+                    'Deny {title}',
+                    { title }
+                  )}
                   onClick={() => void decide(id, 'deny')}
                 >
-                  Deny
+                  {t('lumen.requestService.deny', 'Deny')}
                 </button>
               </div>
             </div>
           ))}
         </div>
       </Section>
-      <Section title="Acquisition Dashboard">
+      <Section
+        title={t('lumen.requestService.dashboard', 'Acquisition Dashboard')}
+      >
         <ServiceNote
-          what="the acquisition dashboard"
+          what={t(
+            'lumen.requestService.dashboardWhat',
+            'the acquisition dashboard'
+          )}
+          title={t(
+            'lumen.requestService.dashboardLoadError',
+            'Couldn’t load the acquisition dashboard'
+          )}
+          retryLabel={t('lumen.requestService.retry', 'Retry')}
           error={dashboard.error}
           retry={dashboard.reload}
         />
         {!dashboard.data && !dashboard.error && (
           <p className="note" role="status">
-            Loading the acquisition dashboard…
+            {t(
+              'lumen.requestService.loadingDashboard',
+              'Loading the acquisition dashboard…'
+            )}
           </p>
         )}
         {dashboard.data &&
           dashboardSections.map(([key, label]) => (
             <details className="adv" key={key}>
-              <summary>{label}</summary>
+              <summary>
+                {t(`lumen.requestService.dashboard.${key}`, label)}
+              </summary>
               <textarea
                 aria-label={label}
                 className="cfg-json"
@@ -173,6 +217,7 @@ function Connection({
   provider: Provider;
   initial: Settings;
 }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const endpoint = `/settings/${provider}`;
   const soulseek = provider === 'slskdn';
@@ -248,7 +293,9 @@ function Connection({
         if (generation !== sessionGeneration()) return;
         setSaved(response);
         reset(response);
-        setNotice(`${name} settings saved.`);
+        setNotice(
+          t('lumen.requestService.saved', '{name} settings saved.', { name })
+        );
       }
     } catch (failure) {
       if (generation === sessionGeneration())
@@ -256,8 +303,16 @@ function Connection({
           failure instanceof ApiError
             ? failure.message
             : test
-              ? `Could not test the ${name} connection.`
-              : `Could not save ${name} settings.`
+              ? t(
+                  'lumen.requestService.testFailed',
+                  'Could not test the {name} connection.',
+                  { name }
+                )
+              : t(
+                  'lumen.requestService.saveFailed',
+                  'Could not save {name} settings.',
+                  { name }
+                )
         );
     } finally {
       pending.current = false;
@@ -268,7 +323,12 @@ function Connection({
   return (
     <>
       <Section
-        title={soulseek ? 'slskdN Connection' : 'ReadMeABook Connection'}
+        title={t(
+          soulseek
+            ? 'lumen.requestService.soulseekConnection'
+            : 'lumen.requestService.readmeConnection',
+          soulseek ? 'slskdN Connection' : 'ReadMeABook Connection'
+        )}
       >
         <form
           onSubmit={(event) => {
@@ -278,8 +338,10 @@ function Connection({
         >
           {soulseek && (
             <p className="note">
-              Use a read-write slskdN API key for track requests. SongID
-              requires an administrator key.
+              {t(
+                'lumen.requestService.soulseekHelp',
+                'Use a read-write slskdN API key for track requests. SongID requires an administrator key.'
+              )}
             </p>
           )}
           <div className="setlist">
@@ -288,7 +350,13 @@ function Connection({
               onSelect={(hostname) => update({ hostname })}
             />
             <label className="set cfg-row">
-              <span>Enable {name} Requests</span>
+              <span>
+                {t(
+                  'lumen.requestService.enableRequests',
+                  'Enable {name} Requests',
+                  { name }
+                )}
+              </span>
               <input
                 type="checkbox"
                 disabled={busy}
@@ -300,7 +368,7 @@ function Connection({
               .filter(([key]) => soulseek || key !== 'searchFilter')
               .map(([key, label, length]) => (
                 <label className="set cfg-row" key={key}>
-                  <span>{label}</span>
+                  <span>{t(`lumen.requestService.field.${key}`, label)}</span>
                   <input
                     className="cfg-input"
                     maxLength={length}
@@ -311,7 +379,7 @@ function Connection({
                 </label>
               ))}
             <label className="set cfg-row">
-              <span>Port</span>
+              <span>{t('lumen.requestService.port', 'Port')}</span>
               <input
                 className="cfg-input"
                 type="number"
@@ -326,7 +394,7 @@ function Connection({
               />
             </label>
             <label className="set cfg-row">
-              <span>Use HTTPS</span>
+              <span>{t('lumen.requestService.https', 'Use HTTPS')}</span>
               <input
                 type="checkbox"
                 disabled={busy}
@@ -343,7 +411,11 @@ function Connection({
                 maxLength={soulseek ? 2048 : 4096}
                 disabled={busy || clearApiKey}
                 value={apiKey}
-                placeholder={saved.apiKeyConfigured ? 'Saved key' : undefined}
+                placeholder={
+                  saved.apiKeyConfigured
+                    ? t('lumen.requestService.savedKey', 'Saved key')
+                    : undefined
+                }
                 onChange={(event) => {
                   setApiKey(event.target.value);
                   clearFeedback();
@@ -352,7 +424,13 @@ function Connection({
             </label>
             {saved.apiKeyConfigured && (
               <label className="set cfg-row">
-                <span>Remove Saved {secretLabel}</span>
+                <span>
+                  {t('lumen.requestService.removeSaved', 'Remove Saved')}{' '}
+                  {t(
+                    `lumen.requestService.secret.${soulseek ? 'key' : 'token'}`,
+                    secretLabel
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   disabled={busy}
@@ -367,22 +445,40 @@ function Connection({
           </div>
           {draft.enabled && !credentials && (
             <p className="note">
-              An enabled connection requires a hostname and{' '}
-              {secretLabel.toLowerCase()}.
+              {t(
+                'lumen.requestService.credentialsRequired',
+                'An enabled connection requires a hostname and {credential}.',
+                {
+                  credential: t(
+                    `lumen.requestService.secret.${soulseek ? 'key' : 'token'}`,
+                    secretLabel
+                  ).toLowerCase(),
+                }
+              )}
             </p>
           )}
           {result && (
             <div className="note" role="status">
               <p>
                 {soulseek
-                  ? `Connected to slskdN ${result.version}.`
-                  : 'Connected to ReadMeABook.'}
+                  ? t(
+                      'lumen.requestService.soulseekConnected',
+                      'Connected to slskdN {version}.',
+                      { version: result.version ?? '' }
+                    )
+                  : t(
+                      'lumen.requestService.readmeConnected',
+                      'Connected to ReadMeABook.'
+                    )}
               </p>
               {result.features &&
                 features.map(([key, label]) => (
                   <p key={key}>
-                    {label}{' '}
-                    {result.features?.[key] ? 'available' : 'unavailable'}.
+                    {t(`lumen.requestService.feature.${key}`, label)}{' '}
+                    {result.features?.[key]
+                      ? t('lumen.requestService.available', 'available')
+                      : t('lumen.requestService.unavailable', 'unavailable')}
+                    .
                   </p>
                 ))}
             </div>
@@ -404,7 +500,7 @@ function Connection({
               disabled={busy || !validPort || !credentials}
               onClick={() => void submit(true)}
             >
-              Test Connection
+              {t('lumen.requestService.test', 'Test Connection')}
             </button>
             <button
               type="submit"
@@ -413,7 +509,7 @@ function Connection({
                 busy || !dirty || !validPort || (draft.enabled && !credentials)
               }
             >
-              Save Changes
+              {t('lumen.requestService.save', 'Save Changes')}
             </button>
             <button
               type="button"
@@ -421,7 +517,7 @@ function Connection({
               disabled={busy || !dirty}
               onClick={() => reset(saved)}
             >
-              Discard Changes
+              {t('lumen.requestService.discard', 'Discard Changes')}
             </button>
           </div>
         </form>
@@ -436,18 +532,27 @@ export default function AdminRequestService({
 }: {
   provider: Provider;
 }) {
+  const { t } = useLumenLocale();
   const name = names[provider];
   const settings = useApi<Settings>(`/settings/${provider}`);
   return (
     <>
-      <h1>{name} Settings</h1>
+      <h1>{t('lumen.requestService.title', '{name} Settings', { name })}</h1>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <ServiceNote
-        what={`${name} settings`}
+        what={t('lumen.requestService.settingsWhat', '{name} settings', {
+          name,
+        })}
+        title={t(
+          'lumen.requestService.settingsLoadError',
+          'Couldn’t load {name} settings',
+          { name }
+        )}
+        retryLabel={t('lumen.requestService.retry', 'Retry')}
         error={settings.error}
         retry={settings.reload}
       />
@@ -456,7 +561,9 @@ export default function AdminRequestService({
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading {name} settings…
+            {t('lumen.requestService.loading', 'Loading {name} settings…', {
+              name,
+            })}
           </p>
         )
       )}

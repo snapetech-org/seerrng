@@ -5881,3 +5881,23 @@ recovery workflow in English, French, and Arabic across desktop, iPhone,
 Android, and tablet (12 cases). The Vite standalone build was used. A matched
 pre-change visual comparison and bundled Express mount remain unverified, as do
 live provider behavior and independent linguistic review.
+
+### Request service administration localization
+
+The Lumen Soulseek and ReadMeABook settings pages now localize their
+connection forms, credential controls, test/save feedback, and provider feature
+states in English, French, and Arabic. ReadMeABook's audiobook approval queue
+and acquisition dashboard also localize their headings, empty/loading states,
+approve/deny actions, and load recovery. Provider endpoints, secret omission,
+settings persistence, and approval decisions are unchanged.
+
+The existing provider fixtures and new saved-locale fixtures pass 24 browser
+cases over desktop, iPhone, Android, and tablet. They cover stored-key tests,
+explicit key removal, partial connectivity status, audiobook approval/denial,
+dashboard data, French/Arabic labels, RTL, and overflow in the standalone
+production frontend. French desktop and Arabic iPhone candidates were inspected;
+the existing fixed mobile navigation covers part of the tall request-service
+form and operations view. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/request-service-locale/`.
+A matched native baseline, bundled Express mount, live provider round trips,
+and independent linguistic review remain unverified.
