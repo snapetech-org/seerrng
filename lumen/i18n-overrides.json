@@ -3662,7 +3662,8 @@
     "lumen.requests.row.season": "Season {seasons}",
     "lumen.requests.row.seasons": "Seasons {seasons}",
     "lumen.requests.row.seasonsNotFound": "{seasons} not found yet",
-    "lumen.requests.row.seasonNotFound": "{seasons} not found yet"
+    "lumen.requests.row.seasonNotFound": "{seasons} not found yet",
+    "lumen.requests.invalidLink": "This request link is invalid."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7486,7 +7487,8 @@
     "lumen.requests.row.season": "Saison {seasons}",
     "lumen.requests.row.seasons": "Saisons {seasons}",
     "lumen.requests.row.seasonsNotFound": "{seasons} introuvables pour le moment",
-    "lumen.requests.row.seasonNotFound": "{seasons} introuvable pour le moment"
+    "lumen.requests.row.seasonNotFound": "{seasons} introuvable pour le moment",
+    "lumen.requests.invalidLink": "Ce lien de demande n’est pas valide."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11314,6 +11316,7 @@
     "lumen.requests.row.season": "الموسم {seasons}",
     "lumen.requests.row.seasons": "المواسم {seasons}",
     "lumen.requests.row.seasonsNotFound": "{seasons} غير موجودة بعد",
-    "lumen.requests.row.seasonNotFound": "{seasons} غير موجود بعد"
+    "lumen.requests.row.seasonNotFound": "{seasons} غير موجود بعد",
+    "lumen.requests.invalidLink": "رابط الطلب هذا غير صالح."
   }
 }

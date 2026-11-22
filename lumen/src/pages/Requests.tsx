@@ -2516,7 +2516,7 @@ export default function Requests() {
       )}
       {requestParam !== null && !validRequestLink && (
         <p className="note" role="alert">
-          This request link is invalid.
+          {t('lumen.requests.invalidLink', 'This request link is invalid.')}
         </p>
       )}
       {validRequestLink && requestKey === 'softwareRequestId' && (

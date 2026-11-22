@@ -4689,5 +4689,6 @@
   "lumen.requests.row.season",
   "lumen.requests.row.seasons",
   "lumen.requests.row.seasonsNotFound",
-  "lumen.requests.row.seasonNotFound"
+  "lumen.requests.row.seasonNotFound",
+  "lumen.requests.invalidLink"
 ]

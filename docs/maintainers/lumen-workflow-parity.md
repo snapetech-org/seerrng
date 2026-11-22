@@ -6484,3 +6484,18 @@ within the existing row layout, and no viewport overflow was detected. Live
 metadata and independent linguistic review remain unverified. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-partial-status-20261122/`.
+
+### Invalid request-history link feedback localization
+
+Malformed numeric or textual request-history links now show a localized alert
+in English, French, and Arabic. The link validation rule and request lookup
+behavior remain unchanged.
+
+The fixture passes in twelve candidate and twelve baseline runs across desktop,
+iPhone, Android, and tablet in all three locales. The invalid-link alert is
+checked after the mocked request list loads, and the route is checked for
+horizontal overflow. Matched captures at 1440 CSS pixels and phone size were
+reviewed in French and Arabic; the alert changes text without altering the
+layout. Live link destinations and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-link-localization-20261122/`.

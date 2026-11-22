@@ -10,6 +10,7 @@ const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
 const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
 const rowBaseline = process.env.LUMEN_REQUEST_ROW_BASELINE === '1';
 const partialBaseline = process.env.LUMEN_REQUEST_PARTIAL_BASELINE === '1';
+const requestLinkBaseline = process.env.LUMEN_REQUEST_LINK_BASELINE === '1';
 
 const labels = {
   en: {
@@ -36,6 +37,7 @@ const labels = {
     fewMissing: 'A few episodes missing',
     seasonMissing: 'Season 1 not found yet',
     seasonsMissing: 'Seasons 1, 3–4 not found yet',
+    invalidLink: 'This request link is invalid.',
   },
   fr: {
     waiting: 'En attente d’approbation',
@@ -62,6 +64,7 @@ const labels = {
     fewMissing: 'Quelques épisodes sont manquants',
     seasonMissing: 'Saison 1 introuvable pour le moment',
     seasonsMissing: 'Saisons 1, 3–4 introuvables pour le moment',
+    invalidLink: 'Ce lien de demande n’est pas valide.',
   },
   ar: {
     waiting: 'بانتظار الموافقة',
@@ -87,6 +90,7 @@ const labels = {
     fewMissing: 'بعض الحلقات مفقودة',
     seasonMissing: 'الموسم 1 غير موجود بعد',
     seasonsMissing: 'المواسم 1, 3–4 غير موجودة بعد',
+    invalidLink: 'رابط الطلب هذا غير صالح.',
   },
 } as const;
 
@@ -480,4 +484,23 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   await expect(page.locator('.toast.show')).toContainText(
     moderationCopy.cancelledToast
   );
+
+  await page.goto('/requests?requestId=not-a-number');
+  const invalidLink = page.getByRole('alert');
+  await expect(invalidLink).toHaveText(
+    requestLinkBaseline
+      ? 'This request link is invalid.'
+      : labels[locale].invalidLink
+  );
+  await expect(page.locator('.rq')).toHaveCount(21);
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({
+      path: `${captureDir}/invalid-link-${locale}-${width}.png`,
+      fullPage: true,
+    });
 });

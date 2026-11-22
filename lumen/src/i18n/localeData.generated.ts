@@ -5734,6 +5734,7 @@ export const localeData = [
       'lumen.requests.row.seasons': 'المواسم {seasons}',
       'lumen.requests.row.seasonsNotFound': '{seasons} غير موجودة بعد',
       'lumen.requests.row.seasonNotFound': '{seasons} غير موجود بعد',
+      'lumen.requests.invalidLink': 'رابط الطلب هذا غير صالح.',
     },
   },
   {
@@ -15429,6 +15430,7 @@ export const localeData = [
       'lumen.requests.row.seasons': 'Seasons {seasons}',
       'lumen.requests.row.seasonsNotFound': '{seasons} not found yet',
       'lumen.requests.row.seasonNotFound': '{seasons} not found yet',
+      'lumen.requests.invalidLink': 'This request link is invalid.',
     },
   },
   {
@@ -26044,6 +26046,7 @@ export const localeData = [
         '{seasons} introuvables pour le moment',
       'lumen.requests.row.seasonNotFound':
         '{seasons} introuvable pour le moment',
+      'lumen.requests.invalidLink': 'Ce lien de demande n’est pas valide.',
     },
   },
   {
