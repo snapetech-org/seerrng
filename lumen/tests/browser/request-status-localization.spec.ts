@@ -7,6 +7,7 @@ const locale = ['en', 'fr', 'ar'].includes(
   : 'en';
 const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
 const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
+const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
 
 const labels = {
   en: {
@@ -227,6 +228,11 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
           'Status 601 won’t be fetched. You can ask for it again later.',
         confirmCancel: 'Cancel request',
         keep: 'Keep it',
+        declineTitle: 'Decline this request?',
+        declineButton: { en: 'Decline', fr: 'Refuser', ar: 'رفض' }[locale],
+        declineBody:
+          'Status 601 won’t be fetched, and the person who asked will see it was declined.',
+        confirmDecline: 'Decline request',
       }
     : {
         en: {
@@ -237,6 +243,11 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
             'Status 601 won’t be fetched. You can ask for it again later.',
           confirmCancel: 'Cancel request',
           keep: 'Keep it',
+          declineTitle: 'Decline this request?',
+          declineButton: 'Decline',
+          declineBody:
+            'Status 601 won’t be fetched, and the person who asked will see it was declined.',
+          confirmDecline: 'Decline request',
         },
         fr: {
           history: 'Historique',
@@ -246,6 +257,11 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
             'Status 601 ne sera pas téléchargé. Vous pourrez le demander à nouveau plus tard.',
           confirmCancel: 'Annuler la demande',
           keep: 'Conserver',
+          declineTitle: 'Refuser cette demande ?',
+          declineButton: 'Refuser',
+          declineBody:
+            'Status 601 ne sera pas récupéré et la personne qui l’a demandé verra qu’elle a été refusée.',
+          confirmDecline: 'Refuser la demande',
         },
         ar: {
           history: 'السجل',
@@ -254,6 +270,40 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
           cancelBody: 'لن يتم جلب Status 601. يمكنك طلبه مرة أخرى لاحقًا.',
           confirmCancel: 'إلغاء الطلب',
           keep: 'الاحتفاظ به',
+          declineTitle: 'رفض هذا الطلب؟',
+          declineButton: 'رفض',
+          declineBody: 'لن يتم جلب Status 601، وسيرى مقدم الطلب أنه رُفض.',
+          confirmDecline: 'رفض الطلب',
+        },
+      }[locale];
+  const moderationCopy = moderationBaseline
+    ? {
+        declineTitle: 'Decline this request?',
+        declineBody:
+          'Status 601 won’t be fetched, and the person who asked will see it was declined.',
+        confirmDecline: 'Decline request',
+        cancelledToast: 'Request cancelled',
+      }
+    : {
+        en: {
+          declineTitle: 'Decline this request?',
+          declineBody:
+            'Status 601 won’t be fetched, and the person who asked will see it was declined.',
+          confirmDecline: 'Decline request',
+          cancelledToast: 'Request cancelled',
+        },
+        fr: {
+          declineTitle: 'Refuser cette demande ?',
+          declineBody:
+            'Status 601 ne sera pas récupéré et la personne qui l’a demandé verra qu’elle a été refusée.',
+          confirmDecline: 'Refuser la demande',
+          cancelledToast: 'Demande annulée',
+        },
+        ar: {
+          declineTitle: 'رفض هذا الطلب؟',
+          declineBody: 'لن يتم جلب Status 601، وسيرى مقدم الطلب أنه رُفض.',
+          confirmDecline: 'رفض الطلب',
+          cancelledToast: 'تم إلغاء الطلب',
         },
       }[locale];
   const firstRow = page.locator('.rq').nth(0);
@@ -282,4 +332,49 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
       fullPage: false,
     });
   await dialog.getByRole('button', { name: actionCopy.keep }).click();
+
+  const everyoneLabel = { en: 'Everyone', fr: 'Tout le monde', ar: 'الجميع' }[
+    locale
+  ];
+  await page.locator('.seg button').filter({ hasText: everyoneLabel }).click();
+  const waitingRequest = page.locator('.rq').nth(0);
+  await waitingRequest
+    .getByRole('button', { name: actionCopy.declineButton })
+    .click();
+  const declineDialog = page.getByRole('alertdialog', {
+    name: moderationCopy.declineTitle,
+  });
+  await expect(declineDialog).toContainText(moderationCopy.declineBody);
+  await expect(
+    declineDialog.getByRole('button', { name: moderationCopy.confirmDecline })
+  ).toBeVisible();
+  await expect(
+    declineDialog.getByRole('button', { name: actionCopy.keep })
+  ).toBeVisible();
+  await declineDialog.evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations().map((animation) => animation.finished)
+    );
+  });
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({
+      path: `${captureDir}/moderation-${locale}-${width}.png`,
+      fullPage: false,
+    });
+  await declineDialog.getByRole('button', { name: actionCopy.keep }).click();
+  const allLabel = { en: 'All', fr: 'Toutes', ar: 'الكل' }[locale];
+  await page.locator('.seg button').filter({ hasText: allLabel }).click();
+  const cancellableRequest = page.locator('.rq').nth(0);
+  await cancellableRequest
+    .getByRole('button', { name: actionCopy.cancel })
+    .click();
+  const cancelDialog = page.getByRole('alertdialog', {
+    name: actionCopy.cancelTitle,
+  });
+  await cancelDialog
+    .getByRole('button', { name: actionCopy.confirmCancel })
+    .click();
+  await expect(page.locator('.toast.show')).toContainText(
+    moderationCopy.cancelledToast
+  );
 });

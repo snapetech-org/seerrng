@@ -1638,14 +1638,25 @@ export default function Requests() {
     try {
       if (how === 'remove') await api(`/request/${id}`, { method: 'DELETE' });
       else await api(`/request/${id}/${how}`, { method: 'POST', body: '{}' });
-      toast(
-        {
-          approve: 'Request approved',
-          decline: 'Request declined',
-          retry: 'Request sent again',
-          remove: 'Request removed',
-        }[how]
-      );
+      const successCopy = {
+        approve: {
+          key: 'lumen.requests.actions.approvedToast',
+          fallback: 'Request approved',
+        },
+        decline: {
+          key: 'lumen.requests.actions.declinedToast',
+          fallback: 'Request declined',
+        },
+        retry: {
+          key: 'lumen.requests.actions.retriedToast',
+          fallback: 'Request sent again',
+        },
+        remove: {
+          key: 'lumen.requests.actions.removedToast',
+          fallback: 'Request removed',
+        },
+      }[how];
+      toast(t(successCopy.key, successCopy.fallback));
       forget(`/request/status/${id}`);
       if (requestKey === 'requestId' && focusedId === id) {
         if (how === 'remove') closeHistory();
@@ -1653,7 +1664,15 @@ export default function Requests() {
       }
       setTick((t) => t + 1);
     } catch (e) {
-      toast(friendlyError(e, 'Couldn’t update the request'));
+      toast(
+        friendlyError(
+          e,
+          t(
+            'lumen.requests.actions.updateFailed',
+            'Couldn’t update the request'
+          )
+        )
+      );
     } finally {
       mutationInFlight.current = false;
       setActing(null);
@@ -1671,14 +1690,19 @@ export default function Requests() {
         });
       else await cancelRequest(id);
       if (id > 0) forget(`/request/status/${id}`);
-      toast('Request cancelled');
+      toast(t('lumen.requests.actions.cancelledToast', 'Request cancelled'));
       if (requestKey === 'requestId' && focusedId === id) closeHistory();
       // gone now, not after the list has refreshed
       const updateRows = ownSoftware ? setOthers : setRows;
       updateRows((list) => list && list.filter((x) => x.r.id !== id));
       setTick((t) => t + 1);
     } catch (e) {
-      toast(friendlyError(e, 'Couldn’t cancel'));
+      toast(
+        friendlyError(
+          e,
+          t('lumen.requests.actions.cancelFailed', 'Couldn’t cancel')
+        )
+      );
     } finally {
       mutationInFlight.current = false;
       setActing(null);
@@ -2343,10 +2367,29 @@ export default function Requests() {
             confirming.how === 'cancel'
               ? t('lumen.requests.actions.cancelTitle', 'Cancel this request?')
               : confirming.how === 'remove'
-                ? `Remove ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')}?`
+                ? t(
+                    'lumen.requests.actions.removeRequestTitle',
+                    'Remove {title}?',
+                    {
+                      title:
+                        confirming.title.trim() ||
+                        t('lumen.requestHistory.unknownTitle', 'this item'),
+                    }
+                  )
                 : confirming.how === 'removeMedia'
-                  ? `Remove ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} from the service?`
-                  : 'Decline this request?'
+                  ? t(
+                      'lumen.requests.actions.removeMediaTitle',
+                      'Remove {title} from the service?',
+                      {
+                        title:
+                          confirming.title.trim() ||
+                          t('lumen.requestHistory.unknownTitle', 'this item'),
+                      }
+                    )
+                  : t(
+                      'lumen.requests.actions.declineTitle',
+                      'Decline this request?'
+                    )
           }
           body={
             confirming.how === 'cancel'
@@ -2360,19 +2403,52 @@ export default function Requests() {
                   }
                 )
               : confirming.how === 'remove'
-                ? `This deletes the request for ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} for good. It can’t be undone.`
+                ? t(
+                    'lumen.requests.actions.removeRequestBody',
+                    'This deletes the request for {title} for good. It can’t be undone.',
+                    {
+                      title:
+                        confirming.title.trim() ||
+                        t('lumen.requestHistory.unknownTitle', 'this item'),
+                    }
+                  )
                 : confirming.how === 'removeMedia'
-                  ? `This removes the managed copy of ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')}. Its SeerrNG request and history will remain.`
-                  : `${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} won’t be fetched, and the person who asked will see it was declined.`
+                  ? t(
+                      'lumen.requests.actions.removeMediaBody',
+                      'This removes the managed copy of {title}. Its SeerrNG request and history will remain.',
+                      {
+                        title:
+                          confirming.title.trim() ||
+                          t('lumen.requestHistory.unknownTitle', 'this item'),
+                      }
+                    )
+                  : t(
+                      'lumen.requests.actions.declineBody',
+                      '{title} won’t be fetched, and the person who asked will see it was declined.',
+                      {
+                        title:
+                          confirming.title.trim() ||
+                          t('lumen.requestHistory.unknownTitle', 'this item'),
+                      }
+                    )
           }
           confirm={
             confirming.how === 'cancel'
               ? t('lumen.requests.actions.confirmCancel', 'Cancel request')
               : confirming.how === 'remove'
-                ? 'Remove request'
+                ? t(
+                    'lumen.requests.actions.confirmRemoveRequest',
+                    'Remove request'
+                  )
                 : confirming.how === 'removeMedia'
-                  ? 'Remove from Service'
-                  : 'Decline request'
+                  ? t(
+                      'lumen.requests.actions.confirmRemoveMedia',
+                      'Remove from Service'
+                    )
+                  : t(
+                      'lumen.requests.actions.confirmDecline',
+                      'Decline request'
+                    )
           }
           cancel={t('lumen.requests.actions.keep', 'Keep it')}
           onClose={() => setConfirming(null)}

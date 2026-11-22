@@ -6401,8 +6401,8 @@ The request list now localizes the request-history and cancel actions, and the
 pending-request confirmation sheet's title, explanation, confirm, and keep
 labels in English, French, and Arabic. The cancel path still calls the existing
 request cancellation API only after confirmation; request permissions and list
-state behavior are unchanged. Other moderation confirmations and mutation
-feedback remain separate parity work.
+state behavior are unchanged. The following moderation milestone covers the
+administrator review path and its mutation feedback.
 
 The status and cancel-confirmation fixture passes across desktop, iPhone,
 Android, and tablet in all three locales (12 candidate cases). Matched baseline
@@ -6411,6 +6411,24 @@ the Arabic mobile sheet settles above the bottom navigation and its translated
 copy and buttons fit. Live cancellation and independent linguistic review
 remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-action-localization-20261122/`.
+
+### Request moderation confirmation and feedback localization
+
+The manager-only request view now localizes decline, request removal, and
+managed-copy removal confirmation sheets, along with approval, decline, retry,
+removal, cancellation, and generic mutation failure feedback in English,
+French, and Arabic. The existing manager permission gate and request/media
+endpoints are unchanged. The localized decline confirmation includes the
+requester-facing consequence before the manager confirms.
+
+The manager review and cancellation fixture passes across desktop, iPhone,
+Android, and tablet in all three locales (12 candidate cases); it checks
+localized decline confirmation copy and cancellation success feedback without
+submitting the decline. Matched baseline/candidate captures were reviewed at
+desktop and iPhone sizes; the dialog remains usable in French and Arabic RTL.
+Live moderation and removal behavior and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-moderation-localization-20261122/`.
 
 ### Shared request lifecycle status localization
 
