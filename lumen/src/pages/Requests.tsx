@@ -1871,24 +1871,42 @@ export default function Requests() {
     <>
       <header className="ph">
         <div className="ph-row">
-          <h1>Requests</h1>
+          <h1>{t('lumen.requests.page.title', 'Requests')}</h1>
           <Link className="chip" to="/book-series/requests">
-            Book Series Requests
+            {t('lumen.requests.page.bookSeries', 'Book Series Requests')}
           </Link>
           <Avatar className="avatar ph-only-avatar" />
         </div>
         <p className="sub">
           {ownSoftware
-            ? 'Your software and game requests, newest first.'
+            ? t(
+                'lumen.requests.page.softwareSubtitle',
+                'Your software and game requests, newest first.'
+              )
             : everyone
               ? show === 'software'
-                ? 'Software and game requests from everyone, newest first.'
+                ? t(
+                    'lumen.requests.page.softwareEveryoneSubtitle',
+                    'Software and game requests from everyone, newest first.'
+                  )
                 : !priorityOrder
-                  ? 'Everyone’s requests in the selected order.'
+                  ? t(
+                      'lumen.requests.page.selectedOrderSubtitle',
+                      'Everyone’s requests in the selected order.'
+                    )
                   : show === 'all'
-                    ? 'Everyone’s requests: waiting ones first, then downloads, then the newest.'
-                    : 'Everyone’s requests, newest first.'
-              : 'Everything you’ve asked for, newest first.'}
+                    ? t(
+                        'lumen.requests.page.prioritySubtitle',
+                        'Everyone’s requests: waiting ones first, then downloads, then the newest.'
+                      )
+                    : t(
+                        'lumen.requests.page.everyoneSubtitle',
+                        'Everyone’s requests, newest first.'
+                      )
+              : t(
+                  'lumen.requests.page.ownSubtitle',
+                  'Everything you’ve asked for, newest first.'
+                )}
         </p>
       </header>
       {/* pull-to-refresh pill: fixed, so it never shifts the page layout */}
@@ -1902,17 +1920,29 @@ export default function Requests() {
       >
         <Icon name="refresh" size="sm" />
         {refreshing
-          ? 'Refreshing…'
+          ? t('lumen.requests.page.refreshing', 'Refreshing…')
           : pull.state === 'armed'
-            ? 'Release to refresh'
-            : 'Pull to refresh'}
+            ? t('lumen.requests.page.releaseToRefresh', 'Release to refresh')
+            : t('lumen.requests.page.pullToRefresh', 'Pull to refresh')}
       </div>
-      <div className="seg" role="group" aria-label="Show">
+      <div
+        className="seg"
+        role="group"
+        aria-label={t('lumen.requests.page.show', 'Show')}
+      >
         {[
-          ['active', 'Active', act.length],
-          ['ready', 'Ready', ready.length],
-          ['all', 'All', all.length],
-          ...(viewAll ? [['everyone', 'Everyone', waiting ?? '']] : []),
+          ['active', t('lumen.requests.page.active', 'Active'), act.length],
+          ['ready', t('lumen.requests.page.ready', 'Ready'), ready.length],
+          ['all', t('lumen.requests.page.all', 'All'), all.length],
+          ...(viewAll
+            ? [
+                [
+                  'everyone',
+                  t('lumen.requests.page.everyone', 'Everyone'),
+                  waiting ?? '',
+                ],
+              ]
+            : []),
         ].map(([v, t, n]) => (
           <button
             key={v as string}
@@ -1939,33 +1969,48 @@ export default function Requests() {
               setP(ownSoftware ? {} : { tab: 'software' }, { replace: true })
             }
           >
-            My Software
+            {t('lumen.requests.page.mySoftware', 'My Software')}
           </button>
         </div>
       )}
       {!shown && !(browseRequests ? othersError : ownError) && (
         <p className="note">
-          {everyone ? 'Loading everyone’s requests…' : 'Loading your requests…'}
+          {everyone
+            ? t(
+                'lumen.requests.page.loadingEveryone',
+                'Loading everyone’s requests…'
+              )
+            : t('lumen.requests.page.loadingOwn', 'Loading your requests…')}
         </p>
       )}
       {(browseRequests ? othersError : ownError) && (
         <div className="empty" role="alert">
-          <b>Couldn’t load requests</b>
+          <b>{t('lumen.requests.page.loadFailed', 'Couldn’t load requests')}</b>
           <p>
             {everyone
-              ? 'Try again to check everyone’s request history.'
-              : 'Try again to check your request history.'}
+              ? t(
+                  'lumen.requests.page.loadEveryoneFailed',
+                  'Try again to check everyone’s request history.'
+                )
+              : t(
+                  'lumen.requests.page.loadOwnFailed',
+                  'Try again to check your request history.'
+                )}
           </p>
           <button
             className="btn btn-tonal"
             onClick={() => setTick((t) => t + 1)}
           >
-            Retry
+            {t('lumen.requests.page.retry', 'Retry')}
           </button>
         </div>
       )}
       {everyone && (
-        <div className="chips wrap" role="group" aria-label="Which requests">
+        <div
+          className="chips wrap"
+          role="group"
+          aria-label={t('lumen.requests.page.whichRequests', 'Which requests')}
+        >
           {EVERYONE_FILTERS.map(([v, t, key]) => (
             <button
               key={v}
@@ -2123,10 +2168,15 @@ export default function Requests() {
         <div
           className="toolbar"
           role="group"
-          aria-label="Software request filters"
+          aria-label={t(
+            'lumen.requests.page.softwareFilters',
+            'Software request filters'
+          )}
         >
           <label className="sel">
-            <span className="lbl">Category</span>
+            <span className="lbl">
+              {t('lumen.requests.page.category', 'Category')}
+            </span>
             <select
               value={softwareCategory}
               onChange={(event) =>
@@ -2141,7 +2191,9 @@ export default function Requests() {
             </select>
           </label>
           <label className="sel">
-            <span className="lbl">Status</span>
+            <span className="lbl">
+              {t('lumen.requests.page.status', 'Status')}
+            </span>
             <select
               value={softwareStatus}
               onChange={(event) =>
@@ -2161,22 +2213,32 @@ export default function Requests() {
         <div className="empty">
           <b>
             {!softwareView && show === 'all'
-              ? 'No requests yet'
-              : 'Nothing here'}
+              ? t('lumen.requests.page.noRequestsYet', 'No requests yet')
+              : t('lumen.requests.page.nothingHere', 'Nothing here')}
           </b>
           {!softwareView && show === 'all'
-            ? 'Nobody has asked for anything.'
-            : 'No requests match this filter right now.'}
+            ? t(
+                'lumen.requests.page.nobodyRequested',
+                'Nobody has asked for anything.'
+              )
+            : t(
+                'lumen.requests.page.noFilterMatches',
+                'No requests match this filter right now.'
+              )}
         </div>
       )}
       {shown && !list.length && !browseRequests && (
         <div className="empty">
-          <b>{tab === 'ready' ? 'Nothing ready yet' : 'No active requests'}</b>
-          Find something on{' '}
+          <b>
+            {tab === 'ready'
+              ? t('lumen.requests.page.nothingReady', 'Nothing ready yet')
+              : t('lumen.requests.page.noActiveRequests', 'No active requests')}
+          </b>
+          {t('lumen.requests.page.findSomething', 'Find something on')}{' '}
           <Link to="/" style={{ color: 'var(--accent)' }}>
-            Discover
+            {t('lumen.requests.page.discover', 'Discover')}
           </Link>
-          .
+          {t('lumen.requests.page.period', '.')}
         </div>
       )}
       <div className="rqlist">

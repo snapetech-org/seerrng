@@ -8,6 +8,17 @@ const locale = ['en', 'fr', 'ar'].includes(
 const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
 const copy = {
   en: {
+    title: 'Requests',
+    bookSeries: 'Book Series Requests',
+    show: 'Show',
+    active: 'Active',
+    ready: 'Ready',
+    all: 'All',
+    everyone: 'Everyone',
+    loadFailed: 'Couldn’t load requests',
+    retry: 'Retry',
+    emptyTitle: 'No requests yet',
+    emptyBody: 'Nobody has asked for anything.',
     group: 'Media Filters',
     requester: 'Requester',
     allUsers: 'All Users',
@@ -28,6 +39,17 @@ const copy = {
     clear: 'Clear search',
   },
   fr: {
+    title: 'Demandes',
+    bookSeries: 'Demandes de séries de livres',
+    show: 'Afficher',
+    active: 'En cours',
+    ready: 'Prêtes',
+    all: 'Toutes',
+    everyone: 'Tout le monde',
+    loadFailed: 'Impossible de charger les demandes',
+    retry: 'Réessayer',
+    emptyTitle: 'Aucune demande pour le moment',
+    emptyBody: 'Personne n’a encore rien demandé.',
     group: 'Filtres pour médias',
     requester: 'Demandeur',
     allUsers: 'Tous les utilisateurs',
@@ -48,6 +70,17 @@ const copy = {
     clear: 'Effacer la recherche',
   },
   ar: {
+    title: 'الطلبات',
+    bookSeries: 'طلبات سلاسل الكتب',
+    show: 'عرض',
+    active: 'نشط',
+    ready: 'جاهز',
+    all: 'الكل',
+    everyone: 'الجميع',
+    loadFailed: 'تعذر تحميل الطلبات',
+    retry: 'إعادة المحاولة',
+    emptyTitle: 'لا توجد طلبات بعد',
+    emptyBody: 'لم يطلب أحد أي شيء.',
     group: 'عوامل تصفية الوسائط',
     requester: 'مقدم الطلب',
     allUsers: 'جميع المستخدمين',
@@ -72,6 +105,7 @@ const copy = {
 test('manager request filters follow the saved locale and keep URL behavior', async ({
   page,
 }, info) => {
+  let failRequests = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -93,6 +127,11 @@ test('manager request filters follow the saved locale and keep URL behavior', as
       return route.fulfill({
         json: { pageInfo: { page: 1, pages: 1 }, results: [] },
       });
+    if (failRequests && (path === '/request' || path === '/request/status'))
+      return route.fulfill({
+        status: 503,
+        json: { message: 'fixture failure' },
+      });
     if (path === '/request' || path === '/request/status')
       return route.fulfill({
         json: { pageInfo: { pages: 1, results: 0 }, results: [] },
@@ -101,22 +140,36 @@ test('manager request filters follow the saved locale and keep URL behavior', as
   });
 
   await page.goto('/requests?tab=everyone&mediaType=book');
-  const text = candidate
-    ? copy[locale]
-    : {
-        ...copy.en,
-        group: 'Request filters',
-        requester: 'Requester',
-        allUsers: 'Everyone',
-        allMedia: 'All media',
-        format: 'Book Format',
-        allFormats: 'All formats',
-        ebook: 'Ebook',
-        priority: 'Request priority',
-        newest: 'Newest first',
-        search: 'Search media requests',
-        clear: 'Clear Search',
-      };
+  const text = {
+    ...copy[locale],
+    ...(!candidate
+      ? {
+          title: 'Requests',
+          bookSeries: 'Book Series Requests',
+          show: 'Show',
+          active: 'Active',
+          ready: 'Ready',
+          all: 'All',
+          everyone: 'Everyone',
+          loadFailed: 'Couldn’t load requests',
+          retry: 'Retry',
+          emptyTitle: 'No requests yet',
+          emptyBody: 'Nobody has asked for anything.',
+        }
+      : {}),
+  };
+  await expect(
+    page.getByRole('heading', { name: text.title, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: text.bookSeries, exact: true })
+  ).toBeVisible();
+  const scope = page.getByRole('group', { name: text.show });
+  for (const label of [text.active, text.ready, text.all, text.everyone]) {
+    await expect(
+      scope.getByRole('button', { name: new RegExp(label) })
+    ).toBeVisible();
+  }
   const filters = page.getByRole('group', { name: text.group });
   await expect(filters).toBeVisible();
   await expect(
@@ -146,12 +199,36 @@ test('manager request filters follow the saved locale and keep URL behavior', as
   const search = filters.locator('input[type="search"]');
   await expect(search).toBeVisible();
   await expect(search).toHaveAttribute('placeholder', text.search);
-  if (['desktop', 'iphone'].includes(info.project.name)) {
+  const empty = page.locator('.empty').filter({ hasText: text.emptyTitle });
+  await expect(empty).toContainText(text.emptyBody);
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  ) {
     await page.screenshot({
       path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/${info.project.name}.png`,
       fullPage: true,
     });
   }
+
+  failRequests = true;
+  await page.reload();
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText(text.loadFailed);
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  ) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/${info.project.name}-error.png`,
+      fullPage: true,
+    });
+  }
+  failRequests = false;
+  await alert.getByRole('button', { name: text.retry }).click();
+  await expect(
+    page.locator('.empty').filter({ hasText: text.emptyTitle })
+  ).toContainText(text.emptyBody);
 
   await media.selectOption('music');
   await expect(page).toHaveURL(/mediaType=music/);
@@ -165,10 +242,11 @@ test('manager request filters follow the saved locale and keep URL behavior', as
   const hasHorizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth
   );
-  expect(hasHorizontalOverflow).toBe(
-    !candidate && info.project.name === 'iphone'
-  );
-  if (['desktop', 'iphone'].includes(info.project.name)) {
+  expect(hasHorizontalOverflow).toBe(false);
+  if (
+    process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  ) {
     await page.screenshot({
       path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/${info.project.name}-searched.png`,
       fullPage: true,

@@ -6371,21 +6371,26 @@ is unverified. Live submission and independent linguistic review are also
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-request-localization-20261122/`.
 
-### Requests manager filter localization and mobile search recovery
+### Requests manager display localization and mobile search recovery
 
-The Lumen Requests manager now localizes requester, media type, format, sort,
-date range, search, clear-search, and paging controls in English, French, and
-Arabic. Existing filter values and URL/API behavior are unchanged. On narrow
-screens, the search field wraps its clear action when needed; the shared search
-owner scopes this behavior to toolbars that contain a separate button, leaving
-the Admin Users search layout unchanged.
+The Lumen Requests manager now localizes its page heading, Book Series shortcut,
+scope tabs, helper text, refresh guidance, load failure and retry, empty state,
+requester/media/format/sort/date filters, search, clear-search, and paging
+controls in English, French, and Arabic. Existing filter values, URL/API
+behavior, and request authorization are unchanged. On narrow screens, the
+search field wraps its clear action when needed; the shared search owner scopes
+this behavior to toolbars with a separate button, leaving Admin Users unchanged.
+Some per-request status and action copy remains a separate parity item.
 
-Twelve browser cases pass across desktop, iPhone, Android, and tablet for all
-three locales. They verify translated labels/options, the existing URL filters,
-search/clear behavior, and no horizontal overflow after searching. A focused
-French iPhone Admin Users consumer check passed after the CSS was scoped.
-English desktop and iPhone baseline/candidate captures were inspected, as were
-French desktop and Arabic iPhone candidate captures. The standalone production
-build and localization checker pass; provider-backed requests and independent
+Twelve browser cases pass across desktop, iPhone, Android, and tablet in all
+three locales. They verify localized controls and empty/error/retry states,
+existing URL filters, search/clear behavior, and no horizontal overflow. English,
+French, and Arabic baseline/candidate captures were compared at desktop and
+iPhone sizes for the empty and failed-load states; English geometry is unchanged,
+and the French and Arabic layouts remain within the viewport. A focused French
+iPhone Admin Users consumer check passed after the shared CSS was scoped. The
+standalone and integrated production builds pass; the localization checker
+reports the existing catalog backlog. Live-provider behavior and independent
 linguistic review remain unverified. Evidence is retained at
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-filter-localization-20261122/`.
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-filter-localization-20261122/`
+and `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-manager-display-20261122/`.
