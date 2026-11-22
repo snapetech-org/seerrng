@@ -5750,6 +5750,14 @@ test('Track Requests scopes the queue and confirms manager approval and cancella
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { music: true },
+      },
+    })
+  );
   let approved = false;
   let cancelled = false;
   await page.route('**/api/v1/soulseek/status', (route) =>
@@ -6268,6 +6276,14 @@ test('Track Requests can browse history beyond the first page', async ({
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { music: true },
+      },
+    })
+  );
   await page.route('**/api/v1/soulseek/status', (route) =>
     route.fulfill({ json: { configured: true } })
   );

@@ -6,28 +6,18 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
-const labels = {
-  pending: 'Pending Approval',
-  searching: 'Searching',
-  completed: 'Downloaded',
-  failed: 'Failed',
-  declined: 'Declined',
-  cancelled: 'Cancelled',
-};
-const actions = {
-  approve: 'Approve',
-  decline: 'Decline',
-  cancel: 'Cancel Request',
-};
 const pageSize = 100;
+type Action = 'approve' | 'decline' | 'cancel';
+type TrackStatus =
+  'pending' | 'searching' | 'completed' | 'failed' | 'declined' | 'cancelled';
 
-type Action = keyof typeof actions;
 interface TrackRequest {
   id: number;
   title: string;
   artist: string;
-  status: keyof typeof labels;
+  status: TrackStatus;
   searchCount: number;
   lastMatchCount: number;
   lastError?: string;
@@ -35,6 +25,7 @@ interface TrackRequest {
 }
 
 export default function TrackRequests() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const permissions = user?.permissions ?? 0;
   const manage = (permissions & (2 | 16)) !== 0;
@@ -89,7 +80,15 @@ export default function TrackRequests() {
       if (action === 'cancel') await api(path, { method: 'DELETE' });
       else await api(`${path}/${action}`, { method: 'POST' });
     } catch (error) {
-      setFailure(friendlyError(error, 'The request could not be updated.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.trackRequests.updateFailed',
+            'The request could not be updated.'
+          )
+        )
+      );
     } finally {
       setConfirmation(undefined);
       setBusy(false);
@@ -101,25 +100,35 @@ export default function TrackRequests() {
   return (
     <>
       <header className="ph">
-        <h1>Track Requests</h1>
+        <h1>{t('lumen.trackRequests.title', 'Track Requests')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/music">
-          Back to Music
+          {t('lumen.trackRequests.backToMusic', 'Back to Music')}
         </Link>
         <Link className="btn btn-quiet btn-sm" to="/identify">
-          Identify a Song
+          {t('lumen.trackRequests.identifySong', 'Identify a Song')}
         </Link>
       </div>
       <ServiceNote
         error={service.error}
-        what="track request availability"
+        what={t(
+          'lumen.trackRequests.availability',
+          'track request availability'
+        )}
+        title={t(
+          'lumen.trackRequests.statusLoadFailed',
+          'Could not load track request status'
+        )}
+        retryLabel={t('lumen.trackRequests.retry', 'Retry')}
         retry={service.reload}
       />
       {service.data?.configured === false && (
         <p className="note">
-          Soulseek track requests are unavailable until an administrator
-          connects slskdN.
+          {t(
+            'lumen.trackRequests.unconfigured',
+            'Soulseek track requests are unavailable until an administrator connects slskdN.'
+          )}
         </p>
       )}
       {service.data?.configured && (
@@ -127,7 +136,9 @@ export default function TrackRequests() {
           <div className="toolbar">
             {canViewAll && (
               <label className="sel">
-                <span className="lbl">Scope</span>
+                <span className="lbl">
+                  {t('lumen.trackRequests.scope', 'Scope')}
+                </span>
                 <select
                   value={scope}
                   onChange={(event) => {
@@ -135,13 +146,19 @@ export default function TrackRequests() {
                     setSkip(0);
                   }}
                 >
-                  <option value="mine">My Requests</option>
-                  <option value="all">All Requests</option>
+                  <option value="mine">
+                    {t('lumen.trackRequests.myRequests', 'My Requests')}
+                  </option>
+                  <option value="all">
+                    {t('lumen.trackRequests.allRequests', 'All Requests')}
+                  </option>
                 </select>
               </label>
             )}
             <label className="sel">
-              <span className="lbl">Status</span>
+              <span className="lbl">
+                {t('lumen.trackRequests.status', 'Status')}
+              </span>
               <select
                 value={active ? 'active' : 'all'}
                 onChange={(event) => {
@@ -149,13 +166,20 @@ export default function TrackRequests() {
                   setSkip(0);
                 }}
               >
-                <option value="active">Active Only</option>
-                <option value="all">Show All</option>
+                <option value="active">
+                  {t('lumen.trackRequests.activeOnly', 'Active Only')}
+                </option>
+                <option value="all">
+                  {t('lumen.trackRequests.showAll', 'Show All')}
+                </option>
               </select>
             </label>
           </div>
           {(skip > 0 || (page && page.total > pageSize)) && (
-            <div className="toolbar" aria-label="Track request pages">
+            <div
+              className="toolbar"
+              aria-label={t('lumen.trackRequests.pages', 'Track request pages')}
+            >
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy || !skip}
@@ -163,9 +187,13 @@ export default function TrackRequests() {
                   setSkip((current) => Math.max(0, current - pageSize))
                 }
               >
-                Previous Page
+                {t('lumen.trackRequests.previousPage', 'Previous Page')}
               </button>
-              <span>Page {skip / pageSize + 1}</span>
+              <span>
+                {t('lumen.trackRequests.pageNumber', 'Page {page}', {
+                  page: skip / pageSize + 1,
+                })}
+              </span>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={
@@ -176,13 +204,18 @@ export default function TrackRequests() {
                 }
                 onClick={() => setSkip((current) => current + pageSize)}
               >
-                Next Page
+                {t('lumen.trackRequests.nextPage', 'Next Page')}
               </button>
             </div>
           )}
           <ServiceNote
             error={list.error}
-            what="track requests"
+            what={t('lumen.trackRequests.requests', 'track requests')}
+            title={t(
+              'lumen.trackRequests.loadFailed',
+              'Could not load track requests'
+            )}
+            retryLabel={t('lumen.trackRequests.retry', 'Retry')}
             retry={reload}
           />
           {failure && (
@@ -192,11 +225,16 @@ export default function TrackRequests() {
           )}
           {!list.data && !list.error && (
             <p className="note" role="status">
-              Loading track requests…
+              {t('lumen.trackRequests.loading', 'Loading track requests…')}
             </p>
           )}
           {list.data?.results.length === 0 && (
-            <p className="note">No track requests match these filters.</p>
+            <p className="note">
+              {t(
+                'lumen.trackRequests.empty',
+                'No track requests match these filters.'
+              )}
+            </p>
           )}
           {!!list.data?.results.length && (
             <ul className="setlist">
@@ -205,17 +243,31 @@ export default function TrackRequests() {
                   <div>
                     <b>{track.title}</b>
                     <small>
-                      {track.artist} · {labels[track.status]}
+                      {track.artist} ·{' '}
+                      {t(
+                        `lumen.trackRequests.status.${track.status}`,
+                        track.status
+                      )}
                     </small>
                     {scope === 'all' && track.requestedBy && (
                       <small>
-                        Requested by {track.requestedBy.displayName}
+                        {t(
+                          'lumen.trackRequests.requestedBy',
+                          'Requested by {name}',
+                          { name: track.requestedBy.displayName }
+                        )}
                       </small>
                     )}
                     {track.status === 'searching' && (
                       <small>
-                        Searches: {track.searchCount} · Last matches:{' '}
-                        {track.lastMatchCount}
+                        {t(
+                          'lumen.trackRequests.searchCounts',
+                          'Searches: {searches} · Last matches: {matches}',
+                          {
+                            searches: track.searchCount,
+                            matches: track.lastMatchCount,
+                          }
+                        )}
                       </small>
                     )}
                     {track.lastError && <small>{track.lastError}</small>}
@@ -230,7 +282,14 @@ export default function TrackRequests() {
                           disabled={busy}
                           onClick={() => setConfirmation({ track, action })}
                         >
-                          {actions[action]}
+                          {action === 'approve'
+                            ? t('lumen.trackRequests.approve', 'Approve')
+                            : action === 'decline'
+                              ? t('lumen.trackRequests.decline', 'Decline')
+                              : t(
+                                  'lumen.trackRequests.cancelRequest',
+                                  'Cancel Request'
+                                )}
                         </button>
                       ))}
                   </div>
@@ -242,10 +301,23 @@ export default function TrackRequests() {
       )}
       {confirmation && (
         <ConfirmSheet
-          title={`${actions[confirmation.action]}?`}
+          title={t('lumen.trackRequests.confirmTitle', 'Confirm {action}?', {
+            action:
+              confirmation.action === 'approve'
+                ? t('lumen.trackRequests.approve', 'Approve')
+                : confirmation.action === 'decline'
+                  ? t('lumen.trackRequests.decline', 'Decline')
+                  : t('lumen.trackRequests.cancelRequest', 'Cancel Request'),
+          })}
           body={confirmation.track.title}
-          confirm={actions[confirmation.action]}
-          cancel="Go Back"
+          confirm={
+            confirmation.action === 'approve'
+              ? t('lumen.trackRequests.approve', 'Approve')
+              : confirmation.action === 'decline'
+                ? t('lumen.trackRequests.decline', 'Decline')
+                : t('lumen.trackRequests.cancelRequest', 'Cancel Request')
+          }
+          cancel={t('lumen.trackRequests.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void apply()}
           onClose={() => {

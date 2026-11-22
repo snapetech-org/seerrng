@@ -5428,6 +5428,26 @@ fixtures verify the changed-flag payload and confirmed save across desktop,
 iPhone, Android, and tablet. Live server persistence and independent linguistic
 review remain open.
 
+### Track Requests localization
+
+The Track Requests route now follows the saved English, French, or Arabic
+locale for queue scope and status filters, lifecycle labels, pagination,
+requester and search counts, and manager approval/cancellation confirmation.
+Authorization checks and the existing GET, POST, and DELETE request behavior
+are unchanged.
+
+Twelve saved-locale cases pass across desktop, iPhone, Android, and tablet,
+including scoped queue loading and the confirmed cancellation route. The
+existing manager approval/cancellation and history pagination workflows also
+pass across all four viewports. The production build and i18n check pass.
+English baseline/candidate phone captures match pixel-for-pixel; desktop
+geometry matches with only small text antialias differences. French desktop
+and Arabic phone captures were inspected for wrapping, RTL, and overflow.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/track-requests-visual/`.
+Bundled Express mount, live Soulseek actions, and independent linguistic review
+remain open.
+
 Book Series Catalog and Requests now use the same saved locale for catalog
 loading and matching states, ongoing monitoring controls, request status, and
 manager actions. Request authorization, monitoring endpoints, catalog identity,
