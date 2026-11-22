@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const path = '/settings/tunerr';
 
@@ -88,6 +89,7 @@ const numberFields = [
 ] as const;
 
 function Editor({ initial }: { initial: Settings }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(() => toDraft(initial));
   const [password, setPassword] = useState('');
@@ -139,14 +141,16 @@ function Editor({ initial }: { initial: Settings }) {
         );
       } else if (action === 'connect') {
         await api(path + '/sportarr/connect', { method: 'POST' });
-        setNotice({ text: 'Sportarr feeds synchronized.' });
+        setNotice({
+          text: t('lumen.tunerr.feedsSynced', 'Sportarr feeds synchronized.'),
+        });
       } else {
         const result = await api<Settings>(path, { method: 'PUT', body });
         setSaved(result);
         setDraft(toDraft(result));
         setPassword('');
         setClear(false);
-        setNotice({ text: 'Tunerr settings saved.' });
+        setNotice({ text: t('lumen.tunerr.saved', 'Tunerr settings saved.') });
         window.dispatchEvent(new Event('lumen-livetv-updated'));
       }
     } catch (failure) {
@@ -158,7 +162,10 @@ function Editor({ initial }: { initial: Settings }) {
         setDiagnostics(failure.testResults as Diagnostics);
       } else {
         setNotice({
-          text: friendlyError(failure, 'Tunerr operation failed.'),
+          text: friendlyError(
+            failure,
+            t('lumen.tunerr.operationFailed', 'Tunerr operation failed.')
+          ),
           error: true,
         });
       }
@@ -171,7 +178,7 @@ function Editor({ initial }: { initial: Settings }) {
 
   return (
     <>
-      <Section title="Tunerr Connection">
+      <Section title={t('lumen.tunerr.connection', 'Tunerr Connection')}>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -180,7 +187,7 @@ function Editor({ initial }: { initial: Settings }) {
         >
           <div className="setlist">
             <label className="set cfg-row">
-              <span>Enable Tunerr</span>
+              <span>{t('lumen.tunerr.enable', 'Enable Tunerr')}</span>
               <input
                 type="checkbox"
                 checked={draft.enabled}
@@ -189,7 +196,7 @@ function Editor({ initial }: { initial: Settings }) {
               />
             </label>
             <label className="set cfg-row">
-              <span>Use HTTPS</span>
+              <span>{t('lumen.tunerr.https', 'Use HTTPS')}</span>
               <input
                 type="checkbox"
                 checked={draft.useSsl}
@@ -199,7 +206,7 @@ function Editor({ initial }: { initial: Settings }) {
             </label>
             {textFields.map(([key, label, maxLength]) => (
               <label className="set cfg-row" key={key}>
-                <span>{label}</span>
+                <span>{t(`lumen.tunerr.field.${key}`, label)}</span>
                 <input
                   className="cfg-input"
                   value={draft[key]}
@@ -211,7 +218,7 @@ function Editor({ initial }: { initial: Settings }) {
             ))}
             {numberFields.map(([key, label, min, max]) => (
               <label className="set cfg-row" key={key}>
-                <span>{label}</span>
+                <span>{t(`lumen.tunerr.field.${key}`, label)}</span>
                 <input
                   className="cfg-input"
                   type="number"
@@ -225,13 +232,17 @@ function Editor({ initial }: { initial: Settings }) {
               </label>
             ))}
             <label className="set cfg-row">
-              <span>Deck Password</span>
+              <span>{t('lumen.tunerr.password', 'Deck Password')}</span>
               <input
                 className="cfg-input"
                 type="password"
                 autoComplete="new-password"
                 value={password}
-                placeholder={saved.passwordConfigured ? 'Saved' : undefined}
+                placeholder={
+                  saved.passwordConfigured
+                    ? t('lumen.tunerr.savedPassword', 'Saved')
+                    : undefined
+                }
                 maxLength={2048}
                 disabled={busy || clear}
                 onChange={(event) => {
@@ -242,7 +253,9 @@ function Editor({ initial }: { initial: Settings }) {
             </label>
             {saved.passwordConfigured && (
               <label className="set cfg-row">
-                <span>Remove Saved Password</span>
+                <span>
+                  {t('lumen.tunerr.removePassword', 'Remove Saved Password')}
+                </span>
                 <input
                   type="checkbox"
                   checked={clear}
@@ -262,7 +275,7 @@ function Editor({ initial }: { initial: Settings }) {
               disabled={busy || !draft.hostname.trim()}
               onClick={() => void run('test')}
             >
-              Test Deck and Guide
+              {t('lumen.tunerr.test', 'Test Deck and Guide')}
             </button>
             {dirty && (
               <button
@@ -275,7 +288,7 @@ function Editor({ initial }: { initial: Settings }) {
                   setClear(false);
                 }}
               >
-                Discard Changes
+                {t('lumen.tunerr.discard', 'Discard Changes')}
               </button>
             )}
             <button
@@ -283,7 +296,7 @@ function Editor({ initial }: { initial: Settings }) {
               className="btn btn-primary btn-sm"
               disabled={busy || !dirty}
             >
-              Save Changes
+              {t('lumen.tunerr.save', 'Save Changes')}
             </button>
           </div>
         </form>
@@ -293,17 +306,22 @@ function Editor({ initial }: { initial: Settings }) {
           >
             <p className="note">
               {diagnostics.deck
-                ? 'Deck connected.'
-                : diagnostics.error || 'Deck unavailable.'}
+                ? t('lumen.tunerr.deckConnected', 'Deck connected.')
+                : diagnostics.error ||
+                  t('lumen.tunerr.deckUnavailable', 'Deck unavailable.')}
             </p>
             <p className="note">
               {diagnostics.guide
-                ? 'Guide connected.'
-                : diagnostics.guideError || 'Guide unavailable.'}
+                ? t('lumen.tunerr.guideConnected', 'Guide connected.')
+                : diagnostics.guideError ||
+                  t('lumen.tunerr.guideUnavailable', 'Guide unavailable.')}
             </p>
             {!!diagnostics.missingFeatures.length && (
               <p className="note">
-                Unavailable deck features include{' '}
+                {t(
+                  'lumen.tunerr.missingFeatures',
+                  'Unavailable deck features include'
+                )}{' '}
                 {diagnostics.missingFeatures.join(', ')}.
               </p>
             )}
@@ -315,7 +333,7 @@ function Editor({ initial }: { initial: Settings }) {
           </p>
         )}
       </Section>
-      <Section title="Sportarr Feeds">
+      <Section title={t('lumen.tunerr.sportarrFeeds', 'Sportarr Feeds')}>
         <ServiceNote
           what="Sportarr integration"
           error={integration.error}
@@ -324,19 +342,26 @@ function Editor({ initial }: { initial: Settings }) {
         {status ? (
           <div className="setlist">
             <div className="set">
-              <span>Sports Automation</span>
+              <span>
+                {t('lumen.tunerr.sportsAutomation', 'Sports Automation')}
+              </span>
               <b>
                 {status.tunerr.configured
-                  ? status.tunerr.sportsAutomation
-                  : 'Tunerr is not configured'}
+                  ? t(
+                      `lumen.tunerr.${status.tunerr.sportsAutomation === 'enabled' ? 'enabled' : status.tunerr.sportsAutomation === 'disabled' ? 'disabled' : 'unavailable'}`,
+                      status.tunerr.sportsAutomation
+                    )
+                  : t('lumen.tunerr.notConfigured', 'Tunerr is not configured')}
               </b>
             </div>
             {status.tunerr.sportsAutomation === 'enabled' && (
               <div className="set">
-                <span>Matched Events</span>
+                <span>{t('lumen.tunerr.matchedEvents', 'Matched Events')}</span>
                 <b>
-                  {status.tunerr.matchedEventCount ?? 0} of{' '}
-                  {status.tunerr.eventCount ?? 0}
+                  {t('lumen.tunerr.eventCount', '{matched} of {total}', {
+                    matched: status.tunerr.matchedEventCount ?? 0,
+                    total: status.tunerr.eventCount ?? 0,
+                  })}
                 </b>
               </div>
             )}
@@ -345,34 +370,42 @@ function Editor({ initial }: { initial: Settings }) {
               <b>
                 {status.sportarr.configured
                   ? status.sportarr.reachable === true
-                    ? 'Reachable'
+                    ? t('lumen.tunerr.reachable', 'Reachable')
                     : status.sportarr.reachable === false
-                      ? 'Unreachable'
-                      : 'Unchecked'
-                  : 'Not configured'}
+                      ? t('lumen.tunerr.unreachable', 'Unreachable')
+                      : t('lumen.tunerr.unchecked', 'Unchecked')
+                  : t('lumen.tunerr.notConfigured', 'Not configured')}
               </b>
             </div>
             <div className="set">
-              <span>Feed Link</span>
-              <b>{status.sportarr.feeds.linked ? 'Linked' : 'Unlinked'}</b>
+              <span>{t('lumen.tunerr.feedLink', 'Feed Link')}</span>
+              <b>
+                {status.sportarr.feeds.linked
+                  ? t('lumen.tunerr.linked', 'Linked')
+                  : t('lumen.tunerr.unlinked', 'Unlinked')}
+              </b>
             </div>
             {status.sportarr.feeds.source && (
               <div className="set">
-                <span>Tuner Source</span>
+                <span>{t('lumen.tunerr.tunerSource', 'Tuner Source')}</span>
                 <b>
                   {status.sportarr.feeds.source.hasError
-                    ? 'Needs attention'
-                    : `${status.sportarr.feeds.source.channelCount} channels`}
+                    ? t('lumen.tunerr.needsAttention', 'Needs attention')
+                    : t('lumen.tunerr.channels', '{count} channels', {
+                        count: status.sportarr.feeds.source.channelCount,
+                      })}
                 </b>
               </div>
             )}
             {status.sportarr.feeds.guide && (
               <div className="set">
-                <span>XMLTV Guide</span>
+                <span>{t('lumen.tunerr.xmltvGuide', 'XMLTV Guide')}</span>
                 <b>
                   {status.sportarr.feeds.guide.hasError
-                    ? 'Needs attention'
-                    : `${status.sportarr.feeds.guide.programCount} programs`}
+                    ? t('lumen.tunerr.needsAttention', 'Needs attention')
+                    : t('lumen.tunerr.programs', '{count} programs', {
+                        count: status.sportarr.feeds.guide.programCount,
+                      })}
                 </b>
               </div>
             )}
@@ -380,7 +413,7 @@ function Editor({ initial }: { initial: Settings }) {
         ) : (
           !integration.error && (
             <p className="note" role="status">
-              Checking Sportarr integration…
+              {t('lumen.tunerr.checking', 'Checking Sportarr integration…')}
             </p>
           )
         )}
@@ -391,7 +424,7 @@ function Editor({ initial }: { initial: Settings }) {
             disabled={busy}
             onClick={integration.reload}
           >
-            Refresh Status
+            {t('lumen.tunerr.refresh', 'Refresh Status')}
           </button>
           <button
             type="button"
@@ -400,8 +433,8 @@ function Editor({ initial }: { initial: Settings }) {
             onClick={() => void run('connect')}
           >
             {status?.sportarr.feeds.linked
-              ? 'Sync Sportarr Feeds'
-              : 'Connect Sportarr Feeds'}
+              ? t('lumen.tunerr.sync', 'Sync Sportarr Feeds')
+              : t('lumen.tunerr.connect', 'Connect Sportarr Feeds')}
           </button>
         </div>
       </Section>
@@ -410,19 +443,20 @@ function Editor({ initial }: { initial: Settings }) {
 }
 
 export default function AdminTunerr() {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   return (
     <>
       <header className="ph">
-        <h1>Tunerr Settings</h1>
+        <h1>{t('lumen.tunerr.title', 'Tunerr Settings')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.admin.title', 'Administration')}
         </Link>
       </div>
       <ServiceNote
-        what="Tunerr settings"
+        what={t('lumen.tunerr.settings', 'Tunerr settings')}
         error={settings.error}
         retry={settings.reload}
       />
@@ -431,7 +465,7 @@ export default function AdminTunerr() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading Tunerr settings…
+            {t('lumen.tunerr.loading', 'Loading Tunerr settings…')}
           </p>
         )
       )}

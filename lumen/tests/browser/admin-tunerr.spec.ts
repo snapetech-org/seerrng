@@ -1,5 +1,95 @@
 import { expect, test } from '@playwright/test';
 
+for (const [locale, labels] of [
+  [
+    'fr',
+    {
+      title: 'Paramètres Tunerr',
+      hostname: 'Nom d’hôte',
+      test: 'Tester Deck et le guide',
+      section: 'Flux Sportarr',
+    },
+  ],
+  [
+    'ar',
+    {
+      title: 'إعدادات Tunerr',
+      hostname: 'اسم المضيف',
+      test: 'اختبار Deck والدليل',
+      section: 'تغذيات Sportarr',
+    },
+  ],
+] as const) {
+  test(`Tunerr settings follow the saved ${locale} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen/, '')
+        .slice(7);
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/settings/tunerr/sportarr')
+        return route.fulfill({
+          json: {
+            tunerr: { configured: true, sportsAutomation: 'enabled' },
+            sportarr: {
+              configured: true,
+              reachable: true,
+              feeds: { linked: false },
+            },
+          },
+        });
+      if (path === '/settings/tunerr')
+        return route.fulfill({
+          json: {
+            enabled: true,
+            hostname: 'fixture',
+            useSsl: false,
+            baseUrl: '',
+            deckPort: 48879,
+            tunerPort: 5004,
+            guideUrl: '',
+            guideHours: 72,
+            sportarrBaseUrl: '',
+            username: 'fixture',
+            passwordConfigured: false,
+          },
+        });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto('/admin/tunerr');
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(
+      page.getByRole('heading', { name: labels.title, exact: true })
+    ).toBeVisible();
+    await expect(page.getByLabel(labels.hostname)).toHaveValue('fixture');
+    await expect(page.getByRole('button', { name: labels.test })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.section, exact: true })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    const captureDir = process.env.LUMEN_TUNERR_CAPTURE_DIR;
+    if (captureDir)
+      await page.screenshot({
+        path: `${captureDir}/${locale}-${page.viewportSize()?.width}.png`,
+        fullPage: true,
+      });
+  });
+}
+
 test('Tunerr settings test partial connectivity, preserve saved passwords, and link Sportarr', async ({
   page,
 }, info) => {

@@ -1,0 +1,1 @@
+Lumen's Tunerr and Sportarr settings now localize connection fields, diagnostics, integration status, and actions in English, French, and Arabic. Existing settings, password handling, connectivity tests, and feed synchronization behavior are unchanged.

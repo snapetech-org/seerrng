@@ -5848,3 +5848,20 @@ those viewports. The bundled Express `/lumen/` mount did not serve the Vite
 preview fixture and remains unverified. Native-matched visual captures, actual
 provider round trips, credential persistence, and independent linguistic review
 remain unverified; this UI milestone is incomplete until those checks pass.
+
+### Tunerr and Sportarr administration localization
+
+The Lumen Tunerr settings and Sportarr integration panels now localize their
+fields, save/test/connect actions, diagnostics, status values, and event/feed
+counts in English, French, and Arabic. Configuration payloads, password
+redaction, connectivity tests, authorization, and feed synchronization remain
+unchanged.
+
+The existing partial-connectivity, saved-password, and feed-link fixture plus
+saved-locale fixtures pass on standalone production across desktop, iPhone,
+Android, and tablet (12 cases). French desktop and Arabic iPhone candidate
+screens were inspected; the existing fixed mobile navigation overlays a middle
+portion of the tall form, and that pre-existing behavior remains. Screenshot
+evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/tunerr-locale/`. Native-matched baseline comparison, bundled Express mount verification,
+live Tunerr/Sportarr behavior, and independent linguistic review remain open.
