@@ -216,6 +216,58 @@ function UserSettingsBookmark() {
   return <Navigate to={`${destination}${search}`} replace />;
 }
 
+function ProfileWatchlistBookmark() {
+  const { search } = useLocation();
+  return <Navigate to={`/watchlist${search}`} replace />;
+}
+
+function ProfileBookmark() {
+  const { search } = useLocation();
+  return <Navigate to={`/me${search}`} replace />;
+}
+
+function ProfileSettingsBookmark() {
+  const { pathname, search } = useLocation();
+  const suffix = pathname.split('/profile/settings')[1] ?? '';
+  const parts = suffix.split('/').filter(Boolean);
+  const page = parts[0] ?? 'main';
+  const destinations: Record<string, string> = {
+    main: '/me/account',
+    password: '/me/account#password',
+    permissions: '/me/account#account-permissions',
+    'linked-accounts': '/me/account/linked-accounts',
+    'client-tokens': '/me/account/client-tokens',
+    'episode-queue': '/me/account/tv-requests',
+    'tv-request-access': '/me/account/tv-requests',
+  };
+  if (page === 'notifications') {
+    const channel = parts[1];
+    const anchor = [
+      'discord',
+      'email',
+      'pushbullet',
+      'pushover',
+      'telegram',
+      'webpush',
+    ].includes(channel ?? '')
+      ? `#notification-${channel}`
+      : '';
+    return (
+      <Navigate to={`/me/account/notifications${search}${anchor}`} replace />
+    );
+  }
+  const destination = destinations[page] ?? '/me/account';
+  const [path, anchor] = destination.split('#');
+  return (
+    <Navigate to={`${path}${search}${anchor ? `#${anchor}` : ''}`} replace />
+  );
+}
+
+function AdvancedThemeBookmark() {
+  const { search } = useLocation();
+  return <Navigate to={`/me/account${search}#advanced-theme`} replace />;
+}
+
 function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
   const { t } = useLumenLocale();
   return (
@@ -586,6 +638,19 @@ function App() {
             }
           />
           <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<ProfileBookmark />} />
+          <Route
+            path="/profile/watchlist"
+            element={<ProfileWatchlistBookmark />}
+          />
+          <Route
+            path="/profile/settings/*"
+            element={<ProfileSettingsBookmark />}
+          />
+          <Route
+            path="/profile/advanced-theme"
+            element={<AdvancedThemeBookmark />}
+          />
           <Route path="/household/:id" element={<HouseholdProfile />} />
           <Route path="/users/:userId" element={<UserProfileBookmark />} />
           <Route

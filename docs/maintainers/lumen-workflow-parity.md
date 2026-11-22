@@ -20,7 +20,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request history and lifecycle, title/edition identity, progress, permission-aware retry, explicit Sonarr season mapping, managed-copy cleanup that preserves history, and supported 4K paths. Lumen’s TV request state covers exact season and episode selection across multiple seasons, quota approval, destination-specific settings, bounded metadata recovery with selection preservation, and localized episode selection/recovery in English, French, and Arabic. Episode metadata requests are split into five-season client batches to keep provider work per request bounded; failed seasons retry independently, and episodes from completed batches stay selectable while later batches load. Submission waits for metadata completion and includes only selected episode identities. | Compare each media category independently; verify live season metadata and service handoff, and finish matched native visuals. Request-role fixtures cover own-request scope, household visibility, manager moderation, owner cancellation, category-authorized retry, season mapping, and managed-copy removal. Fixtures do not establish live provider timing or server handoff. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Verify mobile native-matched visuals. |
-| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Native `/users/:id` profile, request, watchlist, and settings bookmarks now redirect to Lumen equivalents with filters preserved and self/manager access enforced. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Finish remaining per-route failure recovery and role/state matrices; verify live authorization and provider persistence/readback, and complete native-matched visuals. |
+| Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Native `/users/:id` and `/profile/*` profile, request, watchlist, and settings bookmarks now redirect to Lumen equivalents with filters preserved and self/manager access enforced. Profile settings links target their existing account subsections, including notification-channel anchors. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Finish remaining per-route failure recovery and role/state matrices; verify live authorization and provider persistence/readback, and complete native-matched visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Native user profile route compatibility
@@ -29,18 +29,20 @@ Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens
 the household profile, `/users/:id/requests` opens that user's filtered request
 history, `/users/:id/watchlist` opens the delegated Watchlist, and
 `/users/:id/settings/*` maps to the signed-in account screen or the corresponding
-managed-user panel. Request filters and query parameters survive redirects, and
-the path user ID takes precedence over a conflicting legacy `userId` query.
-Malformed IDs fall back to safe Lumen destinations. Managed settings require
-administrator or user-manager permission; unauthorized viewers return to their
-own profile without loading target settings.
+managed-user panel. Native `/profile`, `/profile/watchlist`,
+`/profile/advanced-theme`, and `/profile/settings/*` bookmarks map to the Lumen
+profile, Watchlist, and account sections. Request filters and query parameters
+survive redirects, and the path user ID takes precedence over a conflicting
+legacy `userId` query. Malformed IDs fall back to safe Lumen destinations.
+Managed-user settings require administrator or user-manager permission;
+unauthorized viewers return to their own profile without loading target settings.
 
-Twenty browser cases pass in each standalone and bundled `/lumen/` build across
-desktop, iPhone, Android, and tablet. They cover profile/watchlist destinations,
-request filter preservation, self-settings routing, manager panel routing, and
-unauthorized no-read behavior. These mocks verify route mapping and client-side
-gates; server authorization remains authoritative and live provider/API behavior
-is outside this fixture.
+Twenty-eight browser cases pass in each standalone and bundled `/lumen/` build
+across desktop, iPhone, Android, and tablet. They cover profile/watchlist
+destinations, request filter preservation, self-settings and notification-channel
+routing, manager panel routing, and unauthorized no-read behavior. These mocks
+verify route mapping and client-side gates; server authorization remains
+authoritative and live provider/API behavior is outside this fixture.
 
 ### Magazine request sheet parity
 

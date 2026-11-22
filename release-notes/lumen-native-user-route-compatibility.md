@@ -5,4 +5,4 @@ area: lumen-navigation
 action: none
 breaking: false
 ---
-Native SeerrNG user-profile links for profiles, request history, watchlists, and account settings now open the matching Lumen screens, preserving filters and respecting account-management permissions.
+Native SeerrNG profile and user links for profiles, request history, watchlists, and account settings now open the matching Lumen screens, preserving filters and respecting account-management permissions.

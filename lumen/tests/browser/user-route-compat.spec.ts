@@ -98,3 +98,35 @@ test('malformed native user IDs fall back to safe Lumen routes', async ({
   await page.goto(appPath('/users/invalid/requests'));
   await expect(page).toHaveURL(new RegExp(`${mount}/requests$`));
 });
+
+test('native profile and settings bookmarks open the matching Lumen sections', async ({
+  page,
+}) => {
+  await authenticate(page, 32);
+  await page.goto(appPath('/profile?from=native'));
+  await expect(page).toHaveURL(new RegExp(`${mount}/me\\?from=native$`));
+
+  await page.goto(appPath('/profile/watchlist?mediaType=book&page=2'));
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/watchlist\\?mediaType=book&page=2$`)
+  );
+
+  await page.goto(appPath('/profile/settings/password?from=native'));
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/me/account\\?from=native#password$`)
+  );
+
+  await page.goto(
+    appPath('/profile/settings/notifications/telegram?from=native')
+  );
+  await expect(page).toHaveURL(
+    new RegExp(
+      `${mount}/me/account/notifications\\?from=native#notification-telegram$`
+    )
+  );
+
+  await page.goto(appPath('/profile/advanced-theme?from=native'));
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/me/account\\?from=native#advanced-theme$`)
+  );
+});
