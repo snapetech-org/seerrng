@@ -209,6 +209,7 @@ async function fixtures(
     mine = undefined as Record<string, boolean> | undefined,
     permissions = 2,
     config = {} as Record<string, unknown>,
+    locale = 'en',
   } = {}
 ) {
   const requested: unknown[] = [];
@@ -228,7 +229,7 @@ async function fixtures(
       });
     if (path === '/user/1/settings/main')
       return r.fulfill({
-        json: mine ? { enabledMediaCategories: mine } : {},
+        json: { ...(mine ? { enabledMediaCategories: mine } : {}), locale },
       });
     if (path === '/settings/public')
       return r.fulfill({
@@ -326,6 +327,54 @@ async function fixtures(
 
 const hoverable = (name: string) =>
   name === 'desktop' || name === 'tablet-mouse';
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`the Comics catalogue uses ${locale} copy without changing its filters`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, { locale });
+    await page.goto('/comics');
+    const copy = {
+      en: {
+        title: 'Comics/Manga',
+        catalogue: 'Search the Comics Catalogue',
+        type: 'Type',
+        sort: 'Sort',
+      },
+      fr: {
+        title: 'BD et mangas',
+        catalogue: 'Rechercher dans le catalogue de BD',
+        type: 'Type',
+        sort: 'Trier',
+      },
+      ar: {
+        title: 'القصص المصورة والمانغا',
+        catalogue: 'ابحث في فهرس القصص المصورة',
+        type: 'النوع',
+        sort: 'الترتيب',
+      },
+    }[locale];
+    await expect(page.locator('h1')).toHaveText(copy.title);
+    await expect(page.getByText(copy.catalogue)).toBeVisible();
+    await expect(page.getByRole('group', { name: copy.type })).toBeVisible();
+    await expect(page.getByText(copy.sort, { exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.dir)).toBe(
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    const captureDirectory = process.env.LUMEN_COMICS_CAPTURE_DIR;
+    if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name)) {
+      await writeFile(
+        `${captureDirectory}/${locale}-${info.project.name}.png`,
+        await page.screenshot({ fullPage: true })
+      );
+    }
+  });
+}
 
 test('the Comics page opens populated, with no search box of its own', async ({
   page,

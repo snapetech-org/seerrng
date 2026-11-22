@@ -6786,3 +6786,24 @@ inspected; the existing layout and controls remain intact. Live Whisparr
 behavior and independent linguistic review remain unverified. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-catalog-localization-20261122/`.
+
+### Comics and Manga catalog localization
+
+The Comics and Manga catalog now localizes its heading and guidance, type and
+library selectors, sorting and manga status controls, ComicVine catalog search
+filters, browse shelves, indexing progress and recovery, and empty states in
+English, French, and Arabic. The existing search URLs, selected filters,
+catalog paging and retry behavior, AniList manga results, ComicVine publisher
+filter, and request actions are unchanged. Provider-owned titles, publishers,
+genre names, and edition metadata remain as supplied by their catalogs.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet for all
+three locales, including RTL direction and horizontal-overflow checks. The
+complete Comics and Manga browser workflow passes 84 cases with 28 existing
+device skips. Matched English baseline/candidate captures at 360, 768, and
+1280 pixels were generated from the same fixture; the 360-pixel views were
+inspected. French and Arabic desktop and phone candidates were inspected. The
+catalog detail and issue pages still contain English-only UI copy and remain a
+separate localization gap. Live AniList/ComicVine behavior and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-comics-localization-20261122/`.

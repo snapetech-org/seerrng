@@ -155,6 +155,7 @@ function catalogComicWork(volume: Comic | ComicWork): ComicWork {
 // ---- comics and manga: manga from AniList, Western comics from ComicVine; one card per
 // work with its editions inside; searching is the top search bar's job ----
 export function Comics() {
+  const { t } = useLumenLocale();
   const [p, setP] = useSearchParams();
   const type = (['manga', 'comic'] as const).find((t) => t === p.get('type'));
   // All / In library / Not yet, as on Books: Not yet is the browse feed minus owned works
@@ -249,44 +250,66 @@ export function Comics() {
   const mangaOnly = (changes: Record<string, string | null>) =>
     upd({ ...changes, ...(type ? {} : { type: 'manga' }) });
   const noKey = landing.data?.comicVineConfigured === false;
-  const sorts = kind === 'comic' ? COMIC_SORTS : MANGA_SORTS;
+  const sorts = (kind === 'comic' ? COMIC_SORTS : MANGA_SORTS).map(
+    ([value, label]) => [value, t(`lumen.comics.sort.${value}`, label)] as const
+  );
   const gridTitle = catalogMode
-    ? 'Comics Catalogue'
+    ? t('lumen.comics.catalogue', 'Comics Catalogue')
     : show === 'library'
-      ? 'In your library'
+      ? t('lumen.comics.libraryGrid', 'In your library')
       : show === 'not'
-        ? 'Not in your library yet'
+        ? t('lumen.comics.notYetGrid', 'Not in your library yet')
         : kind === 'comic'
-          ? 'Western comics'
+          ? t('lumen.comics.western', 'Western comics')
           : picked.length || status || sort
-            ? 'Manga'
-            : 'Popular manga';
+            ? t('lumen.comics.manga', 'Manga')
+            : t('lumen.comics.popularManga', 'Popular manga');
 
   return (
     <ExtraGate k="comic">
       <ExtraHeader
-        title="Comics/Manga"
-        sub="Request a manga or comic series. New volumes and issues arrive as they come out; manga comes in its English edition unless you pick another."
+        title={t('lumen.comics.title', 'Comics and Manga')}
+        sub={t(
+          'lumen.comics.guidance',
+          'Request manga or comic series. New volumes and issues arrive as they are released; manga uses its English edition unless you choose another.'
+        )}
       >
         <Link className="search search-ph" to="/search?f=comic">
           <Icon name="search" />
-          <span className="ph-text">Search comics and manga…</span>
+          <span className="ph-text">
+            {t('lumen.comics.search', 'Search comics and manga…')}
+          </span>
         </Link>
       </ExtraHeader>
       {noKey && (
         <div className="empty">
-          <b>Requests need a ComicVine key</b>An admin can add one in SeerrNG
-          under Settings › General. You can still browse manga.
+          <b>
+            {t(
+              'components.Discover.DiscoverComics.noComicVineKey',
+              'Comic discovery requires a ComicVine API key configured in settings.'
+            )}
+          </b>
+          {t(
+            'lumen.comics.keyHelp',
+            'An admin can add one in SeerrNG under Settings › General. You can still browse manga.'
+          )}
         </div>
       )}
       {!catalogMode && (
         <div className="toolbar">
-          <div className="seg" role="group" aria-label="Type">
+          <div
+            className="seg"
+            role="group"
+            aria-label={t('lumen.comics.type', 'Type')}
+          >
             {(
               [
-                ['', 'All'],
-                ['manga', 'Manga'],
-                ['comic', 'Comics'],
+                ['', t('lumen.comics.all', 'All')],
+                ['manga', t('lumen.comics.manga', 'Manga')],
+                [
+                  'comic',
+                  t('components.Discover.DiscoverComics.comics', 'Comics'),
+                ],
               ] as const
             ).map(([v, t]) => (
               <button
@@ -306,12 +329,16 @@ export function Comics() {
               </button>
             ))}
           </div>
-          <div className="seg" role="group" aria-label="Library">
+          <div
+            className="seg"
+            role="group"
+            aria-label={t('lumen.comics.library', 'Library')}
+          >
             {(
               [
-                ['', 'All'],
-                ['library', 'In library'],
-                ['not', 'Not yet'],
+                ['', t('lumen.comics.all', 'All')],
+                ['library', t('lumen.comics.inLibrary', 'In library')],
+                ['not', t('lumen.comics.notYet', 'Not yet')],
               ] as const
             ).map(([v, t]) => (
               <button
@@ -325,7 +352,7 @@ export function Comics() {
           </div>
           {show !== 'library' && (
             <label className="sel">
-              <span className="lbl">Sort</span>
+              <span className="lbl">{t('lumen.comics.sort', 'Sort')}</span>
               <select
                 value={sort || sorts[0][0]}
                 onChange={(e) =>
@@ -352,25 +379,31 @@ export function Comics() {
           )}
           {kind === 'manga' && show !== 'library' && (
             <label className="sel">
-              <span className="lbl">Status</span>
+              <span className="lbl">{t('lumen.comics.status', 'Status')}</span>
               <select
                 value={status}
                 onChange={(e) => mangaOnly({ status: e.target.value || null })}
               >
-                <option value="">Any</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="finished">Finished</option>
+                <option value="">{t('lumen.comics.any', 'Any')}</option>
+                <option value="ongoing">
+                  {t('lumen.comics.ongoing', 'Ongoing')}
+                </option>
+                <option value="finished">
+                  {t('lumen.comics.finished', 'Finished')}
+                </option>
               </select>
             </label>
           )}
           {kind === 'comic' && !!publishers.length && (
             <label className="sel">
-              <span className="lbl">Publisher</span>
+              <span className="lbl">
+                {t('components.Discover.DiscoverComics.publisher', 'Publisher')}
+              </span>
               <select
                 value={publisher}
                 onChange={(e) => upd({ publisher: e.target.value || null })}
               >
-                <option value="">All</option>
+                <option value="">{t('lumen.comics.all', 'All')}</option>
                 {publishers.map((x) => (
                   <option key={x} value={x}>
                     {x}
@@ -394,11 +427,16 @@ export function Comics() {
         </div>
       )}
       <details className="adv more-filters" open={catalogMode || undefined}>
-        <summary>Search the Comics Catalogue</summary>
+        <summary>
+          {t('lumen.comics.searchCatalogue', 'Search the Comics Catalogue')}
+        </summary>
         <div className="filter-grid">
           <form
             className="toolbar range-filter"
-            aria-label="Comics Catalogue Filters"
+            aria-label={t(
+              'lumen.comics.catalogueFilters',
+              'Comics Catalogue Filters'
+            )}
             key={catalogFilters.toString()}
             onSubmit={(event) => {
               event.preventDefault();
@@ -413,7 +451,34 @@ export function Comics() {
           >
             {COMIC_CATALOG_FIELDS.map((field) => (
               <label className="sel" key={field.key}>
-                <span className="lbl">{field.label}</span>
+                <span className="lbl">
+                  {field.key === 'query'
+                    ? t(
+                        'components.Discover.DiscoverComics.search',
+                        field.label
+                      )
+                    : field.key === 'publisher'
+                      ? t(
+                          'components.Discover.DiscoverComics.publisher',
+                          field.label
+                        )
+                      : field.key === 'startYear'
+                        ? t(
+                            'components.Discover.DiscoverComics.startYear',
+                            field.label
+                          )
+                        : field.key === 'minIssues'
+                          ? t(
+                              'components.Discover.DiscoverComics.minIssues',
+                              field.label
+                            )
+                          : field.key === 'maxIssues'
+                            ? t(
+                                'components.Discover.DiscoverComics.maxIssues',
+                                field.label
+                              )
+                            : ''}
+                </span>
                 <input
                   className="cfg-input"
                   type={'min' in field ? 'number' : 'search'}
@@ -426,8 +491,18 @@ export function Comics() {
               </label>
             ))}
             <button type="submit" className="btn btn-tonal btn-sm">
-              <span aria-hidden="true">Search Catalogue</span>
-              <span className="sr-only">Search Comics Catalogue</span>
+              <span aria-hidden="true">
+                {t(
+                  'components.Discover.DiscoverComics.applyFilters',
+                  'Apply filters'
+                )}
+              </span>
+              <span className="sr-only">
+                {t(
+                  'components.Discover.DiscoverComics.searchComics',
+                  'Search Comics'
+                )}
+              </span>
             </button>
             {catalogMode && (
               <button
@@ -435,7 +510,7 @@ export function Comics() {
                 className="chip"
                 onClick={() => setP({}, { replace: true })}
               >
-                Back to Comics and Manga
+                {t('lumen.comics.back', 'Back to Comics and Manga')}
               </button>
             )}
           </form>
@@ -444,28 +519,34 @@ export function Comics() {
       {!filtered && (
         <>
           <ComicRail
-            title="Your comics & manga"
+            title={t('lumen.comics.yourLibrary', 'Your comics and manga')}
             works={landing.data?.library}
             loading={false}
-            link={['See all', '/comics?show=library']}
+            link={[t('lumen.comics.seeAll', 'See all'), '/comics?show=library']}
           />
           <ComicRail
-            title="Trending manga"
+            title={t('lumen.comics.trendingManga', 'Trending manga')}
             works={landing.data?.trending}
             loading={!landing.data && !landing.error}
-            link={['See all', '/comics?type=manga&sort=trending']}
+            link={[
+              t('lumen.comics.seeAll', 'See all'),
+              '/comics?type=manga&sort=trending',
+            ]}
           />
           <ComicRail
-            title="New manga"
+            title={t('lumen.comics.newManga', 'New manga')}
             works={landing.data?.newest}
             loading={!landing.data && !landing.error}
-            link={['See all', '/comics?type=manga&sort=newest']}
+            link={[
+              t('lumen.comics.seeAll', 'See all'),
+              '/comics?type=manga&sort=newest',
+            ]}
           />
           <ComicRail
-            title="Western comics"
+            title={t('lumen.comics.western', 'Western comics')}
             works={landing.data?.western}
             loading={false}
-            link={['See all', '/comics?type=comic']}
+            link={[t('lumen.comics.seeAll', 'See all'), '/comics?type=comic']}
           />
         </>
       )}
@@ -478,20 +559,34 @@ export function Comics() {
         )}
         {indexing && (
           <div className="empty" role="status">
-            <b>Comic catalogue indexing</b>
+            <b>
+              {t(
+                'components.Discover.DiscoverComics.indexing',
+                'Building comic index'
+              )}
+            </b>
             {typeof catalogueStatus.indexedResults === 'number' &&
               (catalogueStatus.expectedResults
-                ? `${catalogueStatus.indexedResults} of ${catalogueStatus.expectedResults} volumes indexed.`
-                : `${catalogueStatus.indexedResults} volumes indexed.`)}
+                ? t(
+                    'lumen.comics.indexedOf',
+                    '{indexed} of {expected} volumes indexed.',
+                    {
+                      indexed: catalogueStatus.indexedResults,
+                      expected: catalogueStatus.expectedResults,
+                    }
+                  )
+                : t('lumen.comics.indexed', '{indexed} volumes indexed.', {
+                    indexed: catalogueStatus.indexedResults,
+                  }))}
             {catalogueStatus.indexError &&
-              ' Indexing encountered a problem. SeerrNG will retry.'}
+              ` ${t('components.Discover.DiscoverComics.indexingRetry', 'The index is retrying after a provider response. Already indexed volumes are saved.')}`}
             <button
               className="btn btn-tonal btn-sm"
               type="button"
               onClick={recheckEmptyFirstPage}
               disabled={catalog.loading || catalog.page === 0}
             >
-              Check Again
+              {t('lumen.comics.checkAgain', 'Check again')}
             </button>
           </div>
         )}
@@ -503,31 +598,71 @@ export function Comics() {
           (catalogMode || show !== 'not' || list.done) && (
             <div className="empty">
               {catalogueStatus?.comicVineConfigured === false ? (
-                <b>The comic catalogue needs a ComicVine key</b>
+                <b>
+                  {t(
+                    'components.Discover.DiscoverComics.noComicVineKey',
+                    'Comic discovery requires a ComicVine API key configured in settings.'
+                  )}
+                </b>
               ) : catalogMode ? (
                 <>
-                  <b>No comics found</b>Try different filters or check whether
-                  the catalogue has finished indexing.
+                  <>
+                    <b>{t('lumen.comics.noComics', 'No comics found')}</b>
+                    {t(
+                      'lumen.comics.tryFilters',
+                      'Try different filters or check whether the catalogue has finished indexing.'
+                    )}
+                  </>
                 </>
               ) : show === 'library' ? (
                 <>
-                  <b>Nothing in the library yet</b>
-                  Request a series and it shows up here.
+                  <>
+                    <b>
+                      {t(
+                        'lumen.comics.libraryEmpty',
+                        'Nothing in the library yet'
+                      )}
+                    </b>
+                    {t(
+                      'lumen.comics.requestSeries',
+                      'Request a series and it will show up here.'
+                    )}
+                  </>
                 </>
               ) : show === 'not' ? (
                 <>
-                  <b>You have all of these</b>Try another genre, or switch to
-                  All.
+                  <>
+                    <b>{t('lumen.comics.allOwned', 'You have all of these')}</b>
+                    {t(
+                      'lumen.comics.tryGenre',
+                      'Try another genre, or switch to All.'
+                    )}
+                  </>
                 </>
               ) : kind === 'comic' ? (
                 <>
-                  <b>Western comics are still being catalogued</b>
-                  SeerrNG is reading ComicVine’s catalogue in the background.
-                  Use the search bar to find a series meanwhile.
+                  <>
+                    <b>
+                      {t(
+                        'lumen.comics.cataloguing',
+                        'Western comics are still being catalogued'
+                      )}
+                    </b>
+                    {t(
+                      'lumen.comics.cataloguingHint',
+                      'SeerrNG is reading ComicVine’s catalogue in the background. Use search to find a series meanwhile.'
+                    )}
+                  </>
                 </>
               ) : (
                 <>
-                  <b>Nothing here</b>Try another genre, or switch to All.
+                  <>
+                    <b>{t('lumen.comics.nothingHere', 'Nothing here')}</b>
+                    {t(
+                      'lumen.comics.tryGenre',
+                      'Try another genre, or switch to All.'
+                    )}
+                  </>
                 </>
               )}
             </div>
