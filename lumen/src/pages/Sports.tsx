@@ -157,17 +157,21 @@ export function Sports() {
   );
 }
 
-function leagueEventDate(value?: string, timeZone?: string) {
+function leagueEventDate(
+  value: string | undefined,
+  locale: string,
+  timeZone?: string
+) {
   const date = value ? new Date(value) : undefined;
-  if (!date || !Number.isFinite(date.getTime())) return 'Date not announced';
+  if (!date || !Number.isFinite(date.getTime())) return null;
   const options = { dateStyle: 'medium', timeStyle: 'short' } as const;
   try {
-    return new Intl.DateTimeFormat(undefined, {
+    return new Intl.DateTimeFormat(locale, {
       ...options,
       timeZone: timeZone || 'UTC',
     }).format(date);
   } catch {
-    return new Intl.DateTimeFormat(undefined, {
+    return new Intl.DateTimeFormat(locale, {
       ...options,
       timeZone: 'UTC',
     }).format(date);
@@ -175,6 +179,7 @@ function leagueEventDate(value?: string, timeZone?: string) {
 }
 
 function LeagueEvents({ id }: { id: string }) {
+  const { t, locale } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const requestedPage = params.get('eventPage') ?? '';
   const page = /^[1-9][0-9]{0,3}$/.test(requestedPage)
@@ -221,26 +226,38 @@ function LeagueEvents({ id }: { id: string }) {
 
   return (
     <Section
-      title="Events"
+      title={t('components.SportarrDetails.events', 'Events')}
       action={
         data?.eventsAvailable && Number.isFinite(data.totalRecords) ? (
           <span className="note">
-            {data.totalRecords} {data.totalRecords === 1 ? 'event' : 'events'}
+            {t('components.SportarrDetails.eventCount', '{count} events', {
+              count: new Intl.NumberFormat(locale).format(data.totalRecords),
+            })}
           </span>
         ) : undefined
       }
     >
-      <ServiceNote error={error} what="Sportarr events" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('components.SportarrDetails.events', 'Sportarr events')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading events…
+          {t('components.SportarrDetails.loadingEvents', 'Loading events…')}
         </p>
       )}
       {data && !beyondSchedule && !data.results.length && (
         <p className="note">
           {data.eventsAvailable
-            ? 'Sportarr has no events on this page.'
-            : 'Events appear once this league is monitored in Sportarr.'}
+            ? t(
+                'components.SportarrDetails.noEvents',
+                'Sportarr has no events on this page.'
+              )
+            : t(
+                'components.SportarrDetails.eventsAfterAdd',
+                'Events appear once this league is monitored in Sportarr.'
+              )}
         </p>
       )}
       {!beyondSchedule && !!data?.results.length && (
@@ -251,47 +268,74 @@ function LeagueEvents({ id }: { id: string }) {
                 <b>{event.title}</b>
                 <small>
                   <time dateTime={event.broadcastDate ?? event.eventDate}>
-                    {event.season ? `Season ${event.season} · ` : ''}
+                    {event.season
+                      ? `${t('components.SportarrDetails.season', 'Season')} ${event.season} · `
+                      : ''}
                     {leagueEventDate(
                       event.broadcastDate ?? event.eventDate,
+                      locale,
                       event.broadcastTimezone
-                    )}
+                    ) ??
+                      t(
+                        'components.SportarrDetails.noDate',
+                        'Date not announced'
+                      )}
                   </time>
                 </small>
               </div>
               <small>
                 {event.hasFile
                   ? [
-                      'In Library',
-                      event.fileCount > 1 ? `${event.fileCount} files` : '',
+                      t('lumen.status.inLibrary', 'In Library'),
+                      event.fileCount > 1
+                        ? t(
+                            'components.SportarrDetails.partCount',
+                            '{count} files',
+                            {
+                              count: new Intl.NumberFormat(locale).format(
+                                event.fileCount
+                              ),
+                            }
+                          )
+                        : '',
                       event.quality,
                     ]
                       .filter(Boolean)
                       .join(' · ')
                   : event.monitored
-                    ? 'Monitored'
-                    : 'Unmonitored'}
+                    ? t('components.SportarrDetails.monitored', 'Monitored')
+                    : t(
+                        'components.SportarrDetails.unmonitored',
+                        'Unmonitored'
+                      )}
               </small>
             </li>
           ))}
         </ul>
       )}
       {!beyondSchedule && (page > 1 || (lastPage ?? 0) > 1) && (
-        <nav className="toolbar" aria-label="Event Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('components.SportarrDetails.events', 'Event Pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
           >
-            Previous Page
+            {t('components.SportarrDetails.previousPage', 'Previous Page')}
           </button>
-          <span className="note">Page {page}</span>
+          <span className="note">
+            {t('components.SportarrDetails.page', 'Page {page}', {
+              page: new Intl.NumberFormat(locale).format(page),
+            })}
+          </span>
           <button
             className="btn btn-quiet btn-sm"
             disabled={lastPage === undefined || page >= lastPage}
             onClick={() => setPage(page + 1)}
           >
-            Next Page
+            {t('components.SportarrDetails.nextPage', 'Next Page')}
           </button>
         </nav>
       )}
@@ -309,7 +353,7 @@ function LeagueRequestSheet({
   done: () => void;
 }) {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
@@ -339,10 +383,10 @@ function LeagueRequestSheet({
   const unavailable = services.data?.length === 0;
   return (
     <ConfirmSheet
-      title="Follow League"
+      title={t('components.SportarrDetails.request', 'Request league')}
       body={league.title}
-      confirm="Send Request"
-      cancel="Cancel"
+      confirm={t('lumen.sports.sendRequest', 'Send Request')}
+      cancel={t('components.Common.ButtonHelp.cancel', 'Cancel')}
       busy={busy}
       confirmDisabled={
         quota.loading || restricted || !target?.requestable || unavailable
@@ -362,11 +406,24 @@ function LeagueRequestSheet({
             advanced ? serviceId : undefined
           );
           if ((result as { status?: number } | null)?.status === 4)
-            throw new Error('The league request failed.');
+            throw new Error(
+              t(
+                'components.RequestModal.Sportarr.requestError',
+                'The league request failed.'
+              )
+            );
           done();
-          toast('League requested');
+          toast(t('lumen.sports.requestedToast', 'League requested'));
         } catch (error) {
-          setRequestError(friendlyError(error, 'Request failed'));
+          setRequestError(
+            friendlyError(
+              error,
+              t(
+                'components.RequestModal.Sportarr.requestError',
+                'Request failed'
+              )
+            )
+          );
         } finally {
           submitting.current = false;
           setBusy(false);
@@ -375,26 +432,47 @@ function LeagueRequestSheet({
     >
       {target?.requestable && (
         <p className="note">
-          {autoApprove ? 'Automatically approved' : 'Approval required'}
+          {autoApprove
+            ? t('lumen.sports.autoApproved', 'Automatically approved')
+            : t('lumen.sports.approvalRequired', 'Approval required')}
         </p>
       )}
       {!!quota.status?.limit && (
         <p className="note" role={restricted ? 'status' : undefined}>
           {restricted
-            ? 'TV request quota reached.'
-            : `${quota.status.remaining ?? 0} of ${quota.status.limit} TV requests remaining.`}
-          {' TV seasons and sports leagues share this quota.'}
+            ? t('lumen.sports.quotaReached', 'TV request quota reached.')
+            : t(
+                'lumen.sports.quotaRemaining',
+                '{remaining} of {limit} TV requests remaining.',
+                {
+                  remaining: new Intl.NumberFormat(locale).format(
+                    quota.status.remaining ?? 0
+                  ),
+                  limit: new Intl.NumberFormat(locale).format(
+                    quota.status.limit
+                  ),
+                }
+              )}{' '}
+          {t(
+            'components.RequestModal.Sportarr.quotaHint',
+            'TV seasons and sports leagues share this quota.'
+          )}
         </p>
       )}
       {restricted && (
         <button className="chip" type="button" onClick={quota.reload}>
-          Recheck Quota
+          {t('lumen.sports.recheckQuota', 'Recheck Quota')}
         </button>
       )}
       {!!services.data?.length && (
         <div className="toolbar">
           <label className="sel">
-            <span className="lbl">Sportarr Service</span>
+            <span className="lbl">
+              {t(
+                'components.RequestModal.Sportarr.service',
+                'Sportarr service'
+              )}
+            </span>
             <select
               value={serviceId ?? ''}
               disabled={busy}
@@ -405,7 +483,9 @@ function LeagueRequestSheet({
                 );
               }}
             >
-              <option value="">Default Service</option>
+              <option value="">
+                {t('lumen.sports.defaultService', 'Default Service')}
+              </option>
               {services.data.map(({ id, name }) => (
                 <option key={id} value={id}>
                   {name}
@@ -422,7 +502,10 @@ function LeagueRequestSheet({
       )}
       {unavailable && (
         <p className="note" role="status">
-          No Sportarr service is configured.
+          {t(
+            'components.RequestModal.Sportarr.noService',
+            'No Sportarr service is configured.'
+          )}
         </p>
       )}
       {requestError && (
@@ -432,7 +515,10 @@ function LeagueRequestSheet({
       )}
       <ServiceNote
         error={destination.error}
-        what="the selected Sportarr service"
+        what={t(
+          'components.RequestModal.Sportarr.service',
+          'the selected Sportarr service'
+        )}
         retry={destination.reload}
       />
     </ConfirmSheet>
@@ -459,7 +545,12 @@ export function LeagueDetail() {
     return (
       <ExtraGate k="sports">
         <div className="empty">
-          <b>Couldn’t load this league</b>
+          <b>
+            {t(
+              'components.SportarrDetails.loadError',
+              'Couldn’t load this league'
+            )}
+          </b>
           {error}
         </div>
       </ExtraGate>
@@ -474,11 +565,15 @@ export function LeagueDetail() {
         type="button"
         onClick={() => setRequesting(true)}
       >
-        {l.requestable ? 'Follow league' : 'Choose Sportarr Service'}
+        {l.requestable
+          ? t('lumen.sports.followLeague', 'Follow league')
+          : t('lumen.sports.chooseService', 'Choose Sportarr Service')}
       </button>
     ) : s || requested === id ? (
       <button className="btn btn-tonal" disabled>
-        <StatLabel s={s ?? { word: 'Requested' }} />
+        <StatLabel
+          s={s ?? { word: t('lumen.status.requested', 'Requested') }}
+        />
       </button>
     ) : null;
   return (
@@ -513,8 +608,11 @@ export function LeagueDetail() {
             <aside>
               <Facts
                 rows={[
-                  ['Sport', l.sport],
-                  ['Country', l.country],
+                  [t('components.SportarrDetails.sport', 'Sport'), l.sport],
+                  [
+                    t('components.SportarrDetails.country', 'Country'),
+                    l.country,
+                  ],
                 ]}
               />
             </aside>
@@ -522,11 +620,17 @@ export function LeagueDetail() {
           {l.eventsAvailable ? (
             <LeagueEvents key={l.id} id={l.id} />
           ) : (
-            <Section title="Events">
+            <Section title={t('components.SportarrDetails.events', 'Events')}>
               <p className="note">
                 {l.libraryState === 'unmonitored'
-                  ? 'This league is in Sportarr but is not monitored. Enable monitoring in Sportarr to see its events here.'
-                  : 'Events appear after the league is added to Sportarr and monitoring is enabled.'}
+                  ? t(
+                      'lumen.sports.unmonitoredHint',
+                      'This league is in Sportarr but is not monitored. Enable monitoring in Sportarr to see its events here.'
+                    )
+                  : t(
+                      'components.SportarrDetails.eventsAfterAdd',
+                      'Events appear after the league is added to Sportarr and monitoring is enabled.'
+                    )}
               </p>
             </Section>
           )}

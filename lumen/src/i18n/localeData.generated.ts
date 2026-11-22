@@ -1491,6 +1491,74 @@ export const localeData = [
       'components.Requests.mediaFilters': 'عوامل تصفية الوسائط',
       'components.BookSeriesSearch.search': 'بحث',
       'components.Discover.DiscoverAdult.clearSearch': 'مسح البحث',
+      'components.Common.ButtonHelp.cancel': 'ألغي العمل الحالي',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'تم حفظ الطلب، لكن تعذّر على Sportarr إضافة هذا الدوري. راجع الطلب لمعرفة التفاصيل ثم أعد المحاولة.',
+      'components.RequestModal.Sportarr.cancelError':
+        'حدث شيء خاطئ في إلغاء هذا الطلب',
+      'components.RequestModal.Sportarr.cancelRequest': 'إلغاء الطلب',
+      'components.RequestModal.Sportarr.cancelSuccess': 'تم إلغاء طلب {title}.',
+      'components.RequestModal.Sportarr.close': 'إغلاق',
+      'components.RequestModal.Sportarr.countryLabel': 'البلد',
+      'components.RequestModal.Sportarr.defaultService': 'الافتراضي ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'تمت مراقبته بالفعل في Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'لم يتم إعداد خدمة Sportarr.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'هذا الدوري لا يمكن طلبه الآن',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'طلبك معلق بانتظار الموافقة.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'طلب رياضي قيد الانتظار',
+      'components.RequestModal.Sportarr.quotaHint':
+        'تتشارك مواسم المسلسلات التلفزيونية والدوريات الرياضية حصة طلبات التلفاز الخاصة بك.',
+      'components.RequestModal.Sportarr.requestError':
+        'حدث شيء خاطئ أثناء تقديم طلب الرياضة',
+      'components.RequestModal.Sportarr.requestFrom':
+        'طلب {username} بانتظار الموافقة.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong> تم الطلب بنجاح!',
+      'components.RequestModal.Sportarr.requested': 'مطلوب بالفعل',
+      'components.RequestModal.Sportarr.service': 'خدمة Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'الرياضة',
+      'components.RequestModal.Sportarr.status': 'الحالة',
+      'components.RequestModal.Sportarr.unmonitored':
+        'هذا الدوري موجود بالفعل في Sportarr لكنه غير مُراقب. فعِّله في Sportarr قبل طلبه هنا.',
+      'components.RequestModal.Sportarr.yearLabel': 'السنة',
+      'components.SportarrDetails.available': 'متاح',
+      'components.SportarrDetails.back': 'العودة إلى الرياضة',
+      'components.SportarrDetails.country': 'البلد',
+      'components.SportarrDetails.eventCount': '{count} أحداث',
+      'components.SportarrDetails.eventError': 'لا يمكن تحميل الأحداث',
+      'components.SportarrDetails.events': 'الأحداث',
+      'components.SportarrDetails.eventsAfterAdd':
+        'الأحداث تظهر هنا بعد أن يضاف هذا الدوري إلى سبورتر ويُمكن الرصد.',
+      'components.SportarrDetails.heading': 'تفاصيل الرابطة',
+      'components.SportarrDetails.loadError': 'تفاصيل العصبة لا يمكن تحميلها',
+      'components.SportarrDetails.loadErrorHint': 'حاول مرة أخرى في لحظة.',
+      'components.SportarrDetails.loadMore': 'المزيد من الأحداث',
+      'components.SportarrDetails.loading': 'تفاصيل الدوري',
+      'components.SportarrDetails.loadingEvents': 'تنظيم مناسبات',
+      'components.SportarrDetails.missing': 'لم يتم تحميلها',
+      'components.SportarrDetails.monitored': 'تم رصدها في الرياض',
+      'components.SportarrDetails.noDate': 'تاريخ الإعلان',
+      'components.SportarrDetails.noEvents':
+        '(سبورتر) لم يرصد أي أحداث لهذا الدوري بعد',
+      'components.SportarrDetails.noPermission':
+        'ليس لديكِ إذن لطلب هذا الإتحاد',
+      'components.SportarrDetails.partCount': '{count} الملفات',
+      'components.SportarrDetails.request': 'مكتب الطلب',
+      'components.SportarrDetails.requested': 'الطلب قيد النظر',
+      'components.SportarrDetails.requestedHint':
+        'هذا الدوري لديه بالفعل طلب نشط',
+      'components.SportarrDetails.retry': 'حاول مرة أخرى',
+      'components.SportarrDetails.season': 'موسم',
+      'components.SportarrDetails.sport': 'الرياضة',
+      'components.SportarrDetails.unmonitored':
+        'هذا الدوري في "سبورتيار" ولكنه غير مُراقب',
+      'components.SportarrDetails.unmonitoredHint':
+        'يمكن رصد هذا الدوري في سبورتر لرؤية أحداثه هنا',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
       'components.Layout.Sidebar.you': 'أنت',
@@ -5917,6 +5985,22 @@ export const localeData = [
       'lumen.sports.trySearch': 'جرّب اسم رياضة أو دوري أو بلد.',
       'lumen.sports.noLeagues': 'لم يتم العثور على دوريات',
       'lumen.sports.tryFullName': 'جرّب كتابة الاسم الكامل للدوري.',
+      'lumen.sports.sendRequest': 'إرسال الطلب',
+      'lumen.sports.autoApproved': 'تمت الموافقة تلقائيًا',
+      'lumen.sports.approvalRequired': 'الموافقة مطلوبة',
+      'lumen.sports.quotaReached': 'تم بلوغ حصة طلبات التلفاز.',
+      'lumen.sports.quotaRemaining':
+        'المتبقي {remaining} من {limit} طلبات تلفاز.',
+      'lumen.sports.recheckQuota': 'إعادة التحقق من الحصة',
+      'lumen.sports.defaultService': 'الخدمة الافتراضية',
+      'lumen.sports.followLeague': 'متابعة الدوري',
+      'lumen.sports.chooseService': 'اختيار خدمة Sportarr',
+      'components.SportarrDetails.previousPage': 'الصفحة السابقة',
+      'components.SportarrDetails.page': 'الصفحة {page}',
+      'components.SportarrDetails.nextPage': 'الصفحة التالية',
+      'lumen.sports.requestedToast': 'تم طلب الدوري',
+      'lumen.sports.unmonitoredHint':
+        'هذا الدوري موجود في Sportarr ولكنه غير مُراقب. فعّل المراقبة في Sportarr لرؤية أحداثه هنا.',
     },
   },
   {
@@ -9867,6 +9951,79 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Medienfilter',
       'components.BookSeriesSearch.search': 'Suchen',
       'components.Discover.DiscoverAdult.clearSearch': 'Suche löschen',
+      'components.Common.ButtonHelp.cancel':
+        'Streichen Sie die aktuelle Aktion.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'Die Anfrage wurde gespeichert, aber Sportarr konnte diese Liga nicht hinzufügen. Sehen Sie in der Anfrage nach Details und versuchen Sie es erneut.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Beim Abbrechen dieser Anfrage ist ein Fehler aufgetreten.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Anfrage stornieren',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'Der Antrag auf {title} wurde abgesagt.',
+      'components.RequestModal.Sportarr.close': 'Schließen',
+      'components.RequestModal.Sportarr.countryLabel': 'Land',
+      'components.RequestModal.Sportarr.defaultService': 'Standard ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Bereits überwacht in Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'Kein Sportarr-Service ist konfiguriert.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Diese Liga kann derzeit nicht beantragt werden.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Deine Anfrage wartet auf Genehmigung.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Ausstehende Sportanfrage',
+      'components.RequestModal.Sportarr.quotaHint':
+        'TV-Saisons und Sportligen teilen sich Ihre TV-Anfragequote.',
+      'components.RequestModal.Sportarr.requestError':
+        'Etwas ging schief, als die Sportanfrage eingereicht wurde.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'Die Anfrage von {username} muss noch genehmigt werden.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong> erfolgreich angefragt!',
+      'components.RequestModal.Sportarr.requested': 'Bereits angefordert',
+      'components.RequestModal.Sportarr.service': 'Sportarr-Service',
+      'components.RequestModal.Sportarr.sportLabel': 'Sport',
+      'components.RequestModal.Sportarr.status': 'Status',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Diese Liga ist bereits in Sportarr vorhanden, wird aber nicht überwacht. Aktivieren Sie die Liga in Sportarr, bevor Sie sie hier anfordern.',
+      'components.RequestModal.Sportarr.yearLabel': 'Jahr',
+      'components.SportarrDetails.available': 'Verfügbar',
+      'components.SportarrDetails.back': 'Zurück zum Sport',
+      'components.SportarrDetails.country': 'Land',
+      'components.SportarrDetails.eventCount': '{count} Ereignisse',
+      'components.SportarrDetails.eventError':
+        'Events konnten nicht geladen werden.',
+      'components.SportarrDetails.events': 'Veranstaltungen',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Veranstaltungen erscheinen hier, nachdem diese Liga zu Sportarr hinzugefügt und die Überwachung aktiviert wurde.',
+      'components.SportarrDetails.heading': 'Angaben zur Liga',
+      'components.SportarrDetails.loadError':
+        'Ligadetails konnten nicht geladen werden.',
+      'components.SportarrDetails.loadErrorHint':
+        'Versuchen Sie es gleich noch einmal.',
+      'components.SportarrDetails.loadMore': 'Mehr Veranstaltungen laden',
+      'components.SportarrDetails.loading': 'Ligadetails werden geladen…',
+      'components.SportarrDetails.loadingEvents': 'Ereignisse werden geladen…',
+      'components.SportarrDetails.missing': 'Nicht heruntergeladen',
+      'components.SportarrDetails.monitored': 'Überwacht in Sportarr',
+      'components.SportarrDetails.noDate': 'Datum nicht bekannt gegeben',
+      'components.SportarrDetails.noEvents':
+        'Sportarr hat noch keine überwachten Ereignisse für diese Liga.',
+      'components.SportarrDetails.noPermission':
+        'Sie haben keine Erlaubnis, diese Liga anzufordern.',
+      'components.SportarrDetails.partCount': '{count} Dateien',
+      'components.SportarrDetails.request': 'Liga anfordern',
+      'components.SportarrDetails.requested': 'Anhängiger Antrag',
+      'components.SportarrDetails.requestedHint':
+        'Diese Liga hat bereits eine aktive Anfrage.',
+      'components.SportarrDetails.retry': 'Versuchen Sie es noch einmal',
+      'components.SportarrDetails.season': 'Staffel',
+      'components.SportarrDetails.sport': 'Sport',
+      'components.SportarrDetails.unmonitored':
+        'Diese Liga ist in Sportarr, wird aber nicht überwacht.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Ermöglichen Sie die Überwachung dieser Liga in Sportarr, um ihre Ereignisse hier zu sehen.',
     },
   },
   {
@@ -11401,6 +11558,76 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Media Filters',
       'components.BookSeriesSearch.search': 'Search',
       'components.Discover.DiscoverAdult.clearSearch': 'Clear search',
+      'components.Common.ButtonHelp.cancel': 'Cancel the current action.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'The request was saved, but Sportarr could not add this league. Review the request for details and retry it.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Something went wrong while canceling this request.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Cancel request',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'The request for {title} was canceled.',
+      'components.RequestModal.Sportarr.close': 'Close',
+      'components.RequestModal.Sportarr.countryLabel': 'Country',
+      'components.RequestModal.Sportarr.defaultService': 'Default ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Already monitored in Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'No Sportarr service is configured.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'This league cannot be requested right now.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Your request is pending approval.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Pending sports request',
+      'components.RequestModal.Sportarr.quotaHint':
+        'TV seasons and sports leagues share your TV request quota.',
+      'components.RequestModal.Sportarr.requestError':
+        'Something went wrong while submitting the sports request.',
+      'components.RequestModal.Sportarr.requestFrom':
+        "{username}'s request is pending approval.",
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong> requested successfully!',
+      'components.RequestModal.Sportarr.requested': 'Already requested',
+      'components.RequestModal.Sportarr.service': 'Sportarr service',
+      'components.RequestModal.Sportarr.sportLabel': 'Sport',
+      'components.RequestModal.Sportarr.status': 'Status',
+      'components.RequestModal.Sportarr.unmonitored':
+        'This league already exists in Sportarr but is not monitored. Enable it in Sportarr before requesting it here.',
+      'components.RequestModal.Sportarr.yearLabel': 'Year',
+      'components.SportarrDetails.available': 'Available',
+      'components.SportarrDetails.back': 'Back to sports',
+      'components.SportarrDetails.country': 'Country',
+      'components.SportarrDetails.eventCount': '{count} events',
+      'components.SportarrDetails.eventError': 'Events could not be loaded.',
+      'components.SportarrDetails.events': 'Events',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Events appear here after this league is added to Sportarr and monitoring is enabled.',
+      'components.SportarrDetails.heading': 'League Details',
+      'components.SportarrDetails.loadError':
+        'League details could not be loaded.',
+      'components.SportarrDetails.loadErrorHint': 'Try again in a moment.',
+      'components.SportarrDetails.loadMore': 'Load more events',
+      'components.SportarrDetails.loading': 'Loading league details',
+      'components.SportarrDetails.loadingEvents': 'Loading events',
+      'components.SportarrDetails.missing': 'Not downloaded',
+      'components.SportarrDetails.monitored': 'Monitored in Sportarr',
+      'components.SportarrDetails.noDate': 'Date not announced',
+      'components.SportarrDetails.noEvents':
+        'Sportarr has no monitored events for this league yet.',
+      'components.SportarrDetails.noPermission':
+        'You do not have permission to request this league.',
+      'components.SportarrDetails.partCount': '{count} files',
+      'components.SportarrDetails.request': 'Request league',
+      'components.SportarrDetails.requested': 'Request pending',
+      'components.SportarrDetails.requestedHint':
+        'This league already has an active request.',
+      'components.SportarrDetails.retry': 'Try again',
+      'components.SportarrDetails.season': 'Season',
+      'components.SportarrDetails.sport': 'Sport',
+      'components.SportarrDetails.unmonitored':
+        'This league is in Sportarr but is not monitored.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Enable monitoring for this league in Sportarr to see its events here.',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -15807,6 +16034,22 @@ export const localeData = [
       'lumen.sports.trySearch': 'Try a sport, a league or a country.',
       'lumen.sports.noLeagues': 'No leagues found',
       'lumen.sports.tryFullName': 'Try the league’s full name.',
+      'lumen.sports.sendRequest': 'Send Request',
+      'lumen.sports.autoApproved': 'Automatically approved',
+      'lumen.sports.approvalRequired': 'Approval required',
+      'lumen.sports.quotaReached': 'TV request quota reached.',
+      'lumen.sports.quotaRemaining':
+        '{remaining} of {limit} TV requests remaining.',
+      'lumen.sports.recheckQuota': 'Recheck Quota',
+      'lumen.sports.defaultService': 'Default Service',
+      'lumen.sports.followLeague': 'Follow league',
+      'lumen.sports.chooseService': 'Choose Sportarr Service',
+      'components.SportarrDetails.previousPage': 'Previous Page',
+      'components.SportarrDetails.page': 'Page {page}',
+      'components.SportarrDetails.nextPage': 'Next Page',
+      'lumen.sports.requestedToast': 'League requested',
+      'lumen.sports.unmonitoredHint':
+        'This league is in Sportarr but is not monitored. Enable monitoring in Sportarr to see its events here.',
     },
   },
   {
@@ -17803,6 +18046,79 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Filtros de medios',
       'components.BookSeriesSearch.search': 'Buscar',
       'components.Discover.DiscoverAdult.clearSearch': 'Limpiar búsqueda',
+      'components.Common.ButtonHelp.cancel': 'Cancela la acción actual.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'La solicitud fue guardada, pero Sportarr no pudo añadir esta liga. Revise la solicitud para obtener detalles y vuelva a intentarlo.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Algo salió mal al cancelar esta solicitud.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Cancelar solicitud',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'La solicitud de {title} fue cancelada.',
+      'components.RequestModal.Sportarr.close': 'Cerrar',
+      'components.RequestModal.Sportarr.countryLabel': 'País',
+      'components.RequestModal.Sportarr.defaultService':
+        'Predeterminado ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Ya monitoreado en Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'No hay ningún servicio de Sportarr configurado.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Esta liga no puede ser solicitada ahora mismo.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Su solicitud está pendiente de aprobación.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Solicitud deportiva pendiente',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Las temporadas de TV y las ligas deportivas comparten su cuota de solicitud de TV.',
+      'components.RequestModal.Sportarr.requestError':
+        'Algo salió mal al presentar la solicitud deportiva.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'La solicitud de {username} está pendiente de aprobación.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '¡Se solicitó <strong>{title}</strong> correctamente!',
+      'components.RequestModal.Sportarr.requested': 'Ya se ha solicitado',
+      'components.RequestModal.Sportarr.service': 'Servicio Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'Deporte',
+      'components.RequestModal.Sportarr.status': 'Estado',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Esta liga ya existe en Sportarr pero no está monitorizada. Habilítela en Sportarr antes de solicitarla aquí.',
+      'components.RequestModal.Sportarr.yearLabel': 'Año',
+      'components.SportarrDetails.available': 'Disponible',
+      'components.SportarrDetails.back': 'Volver a los deportes',
+      'components.SportarrDetails.country': 'País',
+      'components.SportarrDetails.eventCount': '{count} eventos',
+      'components.SportarrDetails.eventError':
+        'Los eventos no se pueden cargar.',
+      'components.SportarrDetails.events': 'Eventos',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Los eventos aparecen aquí después de que esta liga se añade a Sportarr y el monitoreo está habilitado.',
+      'components.SportarrDetails.heading': 'Detalles de la Liga',
+      'components.SportarrDetails.loadError':
+        'Los detalles de la liga no se pueden cargar.',
+      'components.SportarrDetails.loadErrorHint':
+        'Prueba de nuevo en un momento.',
+      'components.SportarrDetails.loadMore': 'Cargar más eventos',
+      'components.SportarrDetails.loading': 'Cargando detalles de la liga',
+      'components.SportarrDetails.loadingEvents': 'Cargando eventos',
+      'components.SportarrDetails.missing': 'No descargado',
+      'components.SportarrDetails.monitored': 'Monitorizado en Sportarr',
+      'components.SportarrDetails.noDate': 'Fecha no anunciada',
+      'components.SportarrDetails.noEvents':
+        'Sportarr no tiene eventos monitorizados para esta liga todavía.',
+      'components.SportarrDetails.noPermission':
+        'No tienes permiso para solicitar esta liga.',
+      'components.SportarrDetails.partCount': '{count} archivos',
+      'components.SportarrDetails.request': 'Solicitud de liga',
+      'components.SportarrDetails.requested': 'Solicitud pendiente',
+      'components.SportarrDetails.requestedHint':
+        'Esta liga ya tiene una solicitud activa.',
+      'components.SportarrDetails.retry': 'Inténtalo de nuevo.',
+      'components.SportarrDetails.season': 'Temporada',
+      'components.SportarrDetails.sport': 'Deporte',
+      'components.SportarrDetails.unmonitored':
+        'Esta liga está en Sportarr pero no es monitorizada.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Permite monitorear esta liga en Sportarr para ver sus eventos aquí.',
     },
   },
   {
@@ -19359,6 +19675,80 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Filtros de medios',
       'components.BookSeriesSearch.search': 'Buscar',
       'components.Discover.DiscoverAdult.clearSearch': 'Limpiar búsqueda',
+      'components.Common.ButtonHelp.cancel': 'Cancela la acción actual.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'La solicitud fue salvada, pero Sportarr no pudo añadir esta liga. Revise la solicitud de detalles y vuelva a intentarlo.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Algo salió mal al cancelar esta solicitud.',
+      'components.RequestModal.Sportarr.cancelRequest':
+        'Solicitud de cancelación',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'La solicitud {title} fue cancelado.',
+      'components.RequestModal.Sportarr.close': 'Cerrar',
+      'components.RequestModal.Sportarr.countryLabel': 'Música country',
+      'components.RequestModal.Sportarr.defaultService':
+        'Default (por defecto){name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Ya monitoreado en Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'No se configura ningún servicio Sportarr.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Esta liga no puede ser solicitada ahora mismo.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Tu solicitud está pendiente de aprobación.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Solicitud de deportes pendientes',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Las estaciones de televisión y las ligas deportivas comparten su cuota de solicitud de TV.',
+      'components.RequestModal.Sportarr.requestError':
+        'Algo salió mal al presentar la solicitud deportiva.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'La solicitud de {username} está pendiente de aprobación.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '¡<strong>{title}</strong> solicitada con éxito!',
+      'components.RequestModal.Sportarr.requested': 'Ya se ha solicitado',
+      'components.RequestModal.Sportarr.service': 'Servicio deportivo',
+      'components.RequestModal.Sportarr.sportLabel': 'Deporte',
+      'components.RequestModal.Sportarr.status': 'Estado',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Esta liga ya existe en Sportarr pero no es monitorizada. Hágalo en Sportarr antes de solicitarlo aquí.',
+      'components.RequestModal.Sportarr.yearLabel': 'Año',
+      'components.SportarrDetails.available': 'Disponible',
+      'components.SportarrDetails.back': 'Volver a los deportes',
+      'components.SportarrDetails.country': 'País',
+      'components.SportarrDetails.eventCount': '{count} eventos',
+      'components.SportarrDetails.eventError':
+        'Los eventos no se pueden cargar.',
+      'components.SportarrDetails.events': 'Eventos',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Los eventos aparecen aquí después de que esta liga se añade a Sportarr y el monitoreo está habilitado.',
+      'components.SportarrDetails.heading': 'Detalles de la Liga',
+      'components.SportarrDetails.loadError':
+        'Los detalles de la liga no se pueden cargar.',
+      'components.SportarrDetails.loadErrorHint':
+        'Prueba de nuevo en un momento.',
+      'components.SportarrDetails.loadMore': 'Cargar más eventos',
+      'components.SportarrDetails.loading': 'Cargando detalles de la liga',
+      'components.SportarrDetails.loadingEvents': 'Cargando eventos',
+      'components.SportarrDetails.missing': 'No descargado',
+      'components.SportarrDetails.monitored': 'Monitorizado en Sportarr',
+      'components.SportarrDetails.noDate': 'Fecha no anunciada',
+      'components.SportarrDetails.noEvents':
+        'Sportarr no tiene eventos monitorizados para esta liga todavía.',
+      'components.SportarrDetails.noPermission':
+        'No tienes permiso para solicitar esta liga.',
+      'components.SportarrDetails.partCount': '{count} archivos',
+      'components.SportarrDetails.request': 'Solicitud de liga',
+      'components.SportarrDetails.requested': 'Solicitud pendiente',
+      'components.SportarrDetails.requestedHint':
+        'Esta liga ya tiene una solicitud activa.',
+      'components.SportarrDetails.retry': 'Inténtalo de nuevo.',
+      'components.SportarrDetails.season': 'Temporada',
+      'components.SportarrDetails.sport': 'Deporte',
+      'components.SportarrDetails.unmonitored':
+        'Esta liga está en Sportarr pero no es monitorizada.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Permite monitorear esta liga en Sportarr para ver sus eventos aquí.',
     },
   },
   {
@@ -21766,6 +22156,79 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Filtres pour médias',
       'components.BookSeriesSearch.search': 'Rechercher',
       'components.Discover.DiscoverAdult.clearSearch': 'Effacer la recherche',
+      'components.Common.ButtonHelp.cancel': "Annulez l'action actuelle.",
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'La demande a été enregistrée, mais Sportarr n’a pas pu ajouter cette ligue. Consultez la demande pour plus de détails, puis réessayez.',
+      'components.RequestModal.Sportarr.cancelError':
+        "Quelque chose s'est mal passé en annulant cette demande.",
+      'components.RequestModal.Sportarr.cancelRequest': 'Annuler la demande',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'La demande de {title} a été annulée.',
+      'components.RequestModal.Sportarr.close': 'Fermer',
+      'components.RequestModal.Sportarr.countryLabel': 'Pays',
+      'components.RequestModal.Sportarr.defaultService': 'Par défaut ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Déjà surveillé dans Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        "Aucun service Sportarr n'est configuré.",
+      'components.RequestModal.Sportarr.notRequestable':
+        'Cette ligue ne peut pas être demandée maintenant.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Votre demande est en attente de validation.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Demande sportive en attente',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Saisons TV et ligues sportives partagent votre quota de demande TV.',
+      'components.RequestModal.Sportarr.requestError':
+        'Quelque chose a mal tourné en soumettant la demande de sport.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'La demande de {username} est en attente de validation.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        'La demande de <strong>{title}</strong> a été envoyée avec succès !',
+      'components.RequestModal.Sportarr.requested': 'Déjà demandé',
+      'components.RequestModal.Sportarr.service': 'Service Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'Sport',
+      'components.RequestModal.Sportarr.status': 'Statut',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Cette ligue existe déjà dans Sportarr, mais elle n’est pas surveillée. Activez le suivi de cette ligue dans Sportarr avant d’en faire la demande ici.',
+      'components.RequestModal.Sportarr.yearLabel': 'Année',
+      'components.SportarrDetails.available': 'Disponible',
+      'components.SportarrDetails.back': 'Retour au sport',
+      'components.SportarrDetails.country': 'Pays',
+      'components.SportarrDetails.eventCount': '{count} événements',
+      'components.SportarrDetails.eventError':
+        'Les événements ne pouvaient pas être chargés.',
+      'components.SportarrDetails.events': 'Événements',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Les événements apparaissent ici après que cette ligue soit ajoutée à Sportarr et la surveillance est activée.',
+      'components.SportarrDetails.heading': 'Détails de la Ligue',
+      'components.SportarrDetails.loadError':
+        'Les détails de la ligue ne pouvaient pas être chargés.',
+      'components.SportarrDetails.loadErrorHint':
+        'Essaie encore dans un moment.',
+      'components.SportarrDetails.loadMore': "Charger plus d'événements",
+      'components.SportarrDetails.loading':
+        'Chargement des détails de la ligue',
+      'components.SportarrDetails.loadingEvents': 'Chargement des événements',
+      'components.SportarrDetails.missing': 'Non téléchargé',
+      'components.SportarrDetails.monitored': 'Surveillé en Sportarr',
+      'components.SportarrDetails.noDate': 'Date non annoncée',
+      'components.SportarrDetails.noEvents':
+        "Sportarr n'a pas encore suivi les événements pour cette ligue.",
+      'components.SportarrDetails.noPermission':
+        "Vous n'avez pas la permission de demander cette ligue.",
+      'components.SportarrDetails.partCount': '{count} fichiers',
+      'components.SportarrDetails.request': 'Demande ligue',
+      'components.SportarrDetails.requested': 'Demande pendante',
+      'components.SportarrDetails.requestedHint':
+        'Cette ligue a déjà une demande active.',
+      'components.SportarrDetails.retry': 'Essaie encore',
+      'components.SportarrDetails.season': 'Saison',
+      'components.SportarrDetails.sport': 'Sport',
+      'components.SportarrDetails.unmonitored':
+        "Cette ligue est en Sportarr mais n'est pas surveillée.",
+      'components.SportarrDetails.unmonitoredHint':
+        'Permettre la surveillance de cette ligue à Sportarr pour voir ses événements ici.',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
       'components.Layout.Sidebar.you': 'Vous',
@@ -26628,6 +27091,22 @@ export const localeData = [
       'lumen.sports.trySearch': 'Essayez un sport, une ligue ou un pays.',
       'lumen.sports.noLeagues': 'Aucune ligue trouvée',
       'lumen.sports.tryFullName': 'Essayez le nom complet de la ligue.',
+      'lumen.sports.sendRequest': 'Envoyer la demande',
+      'lumen.sports.autoApproved': 'Approuvée automatiquement',
+      'lumen.sports.approvalRequired': 'Approbation requise',
+      'lumen.sports.quotaReached': 'Quota de demandes TV atteint.',
+      'lumen.sports.quotaRemaining':
+        'Il reste {remaining} demandes TV sur {limit}.',
+      'lumen.sports.recheckQuota': 'Vérifier à nouveau le quota',
+      'lumen.sports.defaultService': 'Service par défaut',
+      'lumen.sports.followLeague': 'Suivre la ligue',
+      'lumen.sports.chooseService': 'Choisir un service Sportarr',
+      'components.SportarrDetails.previousPage': 'Page précédente',
+      'components.SportarrDetails.page': 'Page {page}',
+      'components.SportarrDetails.nextPage': 'Page suivante',
+      'lumen.sports.requestedToast': 'Demande de ligue envoyée',
+      'lumen.sports.unmonitoredHint':
+        'Cette ligue est dans Sportarr, mais elle n’est pas surveillée. Activez le suivi dans Sportarr pour voir ses événements ici.',
     },
   },
   {
@@ -28808,6 +29287,77 @@ export const localeData = [
       'components.Requests.mediaFilters': 'मीडिया फिल्टर',
       'components.BookSeriesSearch.search': 'खोजें',
       'components.Discover.DiscoverAdult.clearSearch': 'खोज साफ़ करें',
+      'components.Common.ButtonHelp.cancel': 'वर्तमान कार्रवाई को रद्द करना।',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'अनुरोध सहेज लिया गया, लेकिन Sportarr यह लीग नहीं जोड़ सका। विवरण के लिए अनुरोध देखें और फिर दोबारा प्रयास करें।',
+      'components.RequestModal.Sportarr.cancelError':
+        'इस अनुरोध को रद्द करते समय कुछ गलत हो गया।',
+      'components.RequestModal.Sportarr.cancelRequest': 'अनुरोध रद्द करना',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'अनुरोध {title} रद्द कर दिया गया था।',
+      'components.RequestModal.Sportarr.close': 'बंद करें',
+      'components.RequestModal.Sportarr.countryLabel': 'देश',
+      'components.RequestModal.Sportarr.defaultService': 'डिफ़ॉल्ट ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Sportarr में पहले से निगरानी में है',
+      'components.RequestModal.Sportarr.noService':
+        'Sportarr सेवा कॉन्फ़िगर नहीं की गई है।',
+      'components.RequestModal.Sportarr.notRequestable':
+        'इस लीग को अभी अनुरोध नहीं किया जा सकता है।',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'आपका अनुरोध मंज़ूरी की प्रतीक्षा में है।',
+      'components.RequestModal.Sportarr.pendingRequest': 'लंबित खेल अनुरोध',
+      'components.RequestModal.Sportarr.quotaHint':
+        'टीवी सीजन और स्पोर्ट्स लीग आपके टीवी अनुरोध कोटा साझा करते हैं।',
+      'components.RequestModal.Sportarr.requestError':
+        'खेल अनुरोध जमा करते समय कुछ गलत हो गया।',
+      'components.RequestModal.Sportarr.requestFrom':
+        '{username} का अनुरोध अनुमोदन के लिए लंबित है।',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong> के लिए अनुरोध सफलतापूर्वक भेजा गया!',
+      'components.RequestModal.Sportarr.requested': 'पहले से अनुरोधित',
+      'components.RequestModal.Sportarr.service': 'Sportarr सेवा',
+      'components.RequestModal.Sportarr.sportLabel': 'खेल',
+      'components.RequestModal.Sportarr.status': 'स्थिति',
+      'components.RequestModal.Sportarr.unmonitored':
+        'यह लीग पहले से Sportarr में मौजूद है, लेकिन इसकी निगरानी नहीं की जा रही है। इसे यहाँ अनुरोध करने से पहले Sportarr में सक्षम करें।',
+      'components.RequestModal.Sportarr.yearLabel': 'वर्ष',
+      'components.SportarrDetails.available': 'उपलब्ध',
+      'components.SportarrDetails.back': 'खेल वापस',
+      'components.SportarrDetails.country': 'देश',
+      'components.SportarrDetails.eventCount': '{count} आयोजन',
+      'components.SportarrDetails.eventError':
+        'घटनाओं को लोड नहीं किया जा सकता।',
+      'components.SportarrDetails.events': 'आयोजन',
+      'components.SportarrDetails.eventsAfterAdd':
+        'इस लीग को स्पोर्टर में जोड़ने और निगरानी सक्षम होने के बाद घटनाओं को यहां दिखाई दिया।',
+      'components.SportarrDetails.heading': 'लीग विवरण',
+      'components.SportarrDetails.loadError':
+        'लीग विवरण लोड नहीं किया जा सकता है।',
+      'components.SportarrDetails.loadErrorHint':
+        'एक पल में फिर से प्रयास करें।',
+      'components.SportarrDetails.loadMore': 'अधिक घटनाओं को लोड करें',
+      'components.SportarrDetails.loading': 'लीग विवरण लोड करना',
+      'components.SportarrDetails.loadingEvents': 'कार्यक्रम',
+      'components.SportarrDetails.missing': 'डाउनलोड नहीं',
+      'components.SportarrDetails.monitored': 'स्पोर्टार में निगरानी',
+      'components.SportarrDetails.noDate': 'तारीख घोषणा नहीं की',
+      'components.SportarrDetails.noEvents':
+        'स्पोर्टर ने अभी तक इस लीग के लिए कोई निगरानी नहीं की है।',
+      'components.SportarrDetails.noPermission':
+        'आपको इस लीग का अनुरोध करने की अनुमति नहीं है।',
+      'components.SportarrDetails.partCount': '{count} फ़ाइलें',
+      'components.SportarrDetails.request': 'लीग',
+      'components.SportarrDetails.requested': 'अनुरोध लंबित',
+      'components.SportarrDetails.requestedHint':
+        'इस लीग में पहले से ही एक सक्रिय अनुरोध है।',
+      'components.SportarrDetails.retry': 'फिर से कोशिश करो',
+      'components.SportarrDetails.season': 'सीज़न',
+      'components.SportarrDetails.sport': 'खेल',
+      'components.SportarrDetails.unmonitored':
+        'यह लीग स्पोर्टार में है लेकिन इसकी निगरानी नहीं की जाती है।',
+      'components.SportarrDetails.unmonitoredHint':
+        'स्पोर्टार में इस लीग के लिए यहां अपनी घटनाओं को देखने के लिए निगरानी सक्षम करें।',
     },
   },
   {
@@ -30973,6 +31523,75 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Filter media',
       'components.BookSeriesSearch.search': 'Cari',
       'components.Discover.DiscoverAdult.clearSearch': 'Hapus pencarian',
+      'components.Common.ButtonHelp.cancel': 'Batalkan aksi saat ini.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'Permintaan tersimpan, tetapi Sportarr tidak dapat menambahkan liga ini. Periksa detail permintaan lalu coba lagi.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Ada yang salah saat membatalkan permintaan ini.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Batalkan permintaan',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'Permintaan untuk {title} dibatalkan.',
+      'components.RequestModal.Sportarr.close': 'Tutup',
+      'components.RequestModal.Sportarr.countryLabel': 'Negara',
+      'components.RequestModal.Sportarr.defaultService': 'Default ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Sudah dipantau di Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'Tak ada layanan Sportarr yang dikonfigurasi.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Liga ini tidak dapat diminta sekarang.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Permintaan Anda menunggu persetujuan.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Permintaan olahraga tertunda',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Musim TV dan liga olahraga berbagi kuota permintaan TV Anda.',
+      'components.RequestModal.Sportarr.requestError':
+        'Ada yang salah saat mengirimkan permintaan olahraga.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'Permintaan {username} sedang menunggu persetujuan.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        'Permintaan <strong>{title}</strong> berhasil diajukan!',
+      'components.RequestModal.Sportarr.requested': 'Sudah diminta',
+      'components.RequestModal.Sportarr.service': 'Layanan Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'Olahraga',
+      'components.RequestModal.Sportarr.status': 'Status',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Liga ini sudah ada di Sportarr tetapi belum dipantau. Aktifkan pemantauan liga ini di Sportarr sebelum mengajukannya di sini.',
+      'components.RequestModal.Sportarr.yearLabel': 'Tahun',
+      'components.SportarrDetails.available': 'Tersedia',
+      'components.SportarrDetails.back': 'Kembali ke olahraga',
+      'components.SportarrDetails.country': 'Negara',
+      'components.SportarrDetails.eventCount': '{count} kejadian',
+      'components.SportarrDetails.eventError': 'Kejadian tidak dapat dimuat.',
+      'components.SportarrDetails.events': 'Kejadian',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Kejadian muncul di sini setelah liga ini ditambahkan ke Sportarr dan pemantauan diaktifkan.',
+      'components.SportarrDetails.heading': 'Rincian Liga',
+      'components.SportarrDetails.loadError': 'Rincian Liga tidak bisa dimuat.',
+      'components.SportarrDetails.loadErrorHint': 'Coba lagi sebentar lagi.',
+      'components.SportarrDetails.loadMore': 'Muat lebih banyak peristiwa',
+      'components.SportarrDetails.loading': 'Memuat rincian liga',
+      'components.SportarrDetails.loadingEvents': 'Memuat peristiwa',
+      'components.SportarrDetails.missing': 'Tidak diunduh',
+      'components.SportarrDetails.monitored': 'Dipantau di Sportarr',
+      'components.SportarrDetails.noDate': 'Tanggal tidak diumumkan',
+      'components.SportarrDetails.noEvents':
+        'Sportarr tidak memiliki dipantau peristiwa untuk liga ini belum.',
+      'components.SportarrDetails.noPermission':
+        'Anda tidak memiliki izin untuk meminta liga ini.',
+      'components.SportarrDetails.partCount': '{count} berkas',
+      'components.SportarrDetails.request': 'Meminta liga',
+      'components.SportarrDetails.requested': 'Permintaan tertunda',
+      'components.SportarrDetails.requestedHint':
+        'Liga ini sudah memiliki permintaan aktif.',
+      'components.SportarrDetails.retry': 'Coba lagi',
+      'components.SportarrDetails.season': 'Musim',
+      'components.SportarrDetails.sport': 'Olahraga',
+      'components.SportarrDetails.unmonitored':
+        'Liga ini di Sportarr tapi tidak dipantau.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Aktifkan pemantauan untuk liga di Sportarr untuk melihat kejadiannya di sini.',
     },
   },
   {
@@ -33120,6 +33739,79 @@ export const localeData = [
       'components.Requests.mediaFilters': 'メディアフィルタ',
       'components.BookSeriesSearch.search': '検索',
       'components.Discover.DiscoverAdult.clearSearch': '検索をクリア',
+      'components.Common.ButtonHelp.cancel':
+        '現在のアクションをキャンセルします。',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'リクエストは保存されましたが、Sportarrはこのリーグを追加できませんでした。詳細を確認するにはリクエストを確認し、もう一度お試しください。',
+      'components.RequestModal.Sportarr.cancelError':
+        'このリクエストをキャンセル中にエラーが発生しました。',
+      'components.RequestModal.Sportarr.cancelRequest':
+        'リクエストをキャンセル',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        '「{title}」のリクエストはキャンセルされました。',
+      'components.RequestModal.Sportarr.close': '閉じる',
+      'components.RequestModal.Sportarr.countryLabel': '国',
+      'components.RequestModal.Sportarr.defaultService': 'デフォルト ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Sportarrですでに監視されています',
+      'components.RequestModal.Sportarr.noService':
+        'Sportarrサービスは設定されていません。',
+      'components.RequestModal.Sportarr.notRequestable':
+        '今、このリーグはリクエストできません。',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'リクエストは承認待ちです。',
+      'components.RequestModal.Sportarr.pendingRequest':
+        '保留中のスポーツリクエスト',
+      'components.RequestModal.Sportarr.quotaHint':
+        'テレビ番組のシーズンとスポーツリーグは、テレビのリクエスト枠を共有します。',
+      'components.RequestModal.Sportarr.requestError':
+        'スポーツのリクエスト送信中に問題が発生しました。',
+      'components.RequestModal.Sportarr.requestFrom':
+        '{username}のリクエストは承認待ちです。',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong>のリクエストが正常に送信されました！',
+      'components.RequestModal.Sportarr.requested': 'すでにリクエスト済み',
+      'components.RequestModal.Sportarr.service': 'Sportarrサービス',
+      'components.RequestModal.Sportarr.sportLabel': 'スポーツ',
+      'components.RequestModal.Sportarr.status': 'ステータス',
+      'components.RequestModal.Sportarr.unmonitored':
+        'このリーグはすでにSportarrに登録されていますが、監視対象になっていません。ここでリクエストする前に、Sportarrで有効にしてください。',
+      'components.RequestModal.Sportarr.yearLabel': '年',
+      'components.SportarrDetails.available': '利用可能',
+      'components.SportarrDetails.back': 'スポーツに戻る',
+      'components.SportarrDetails.country': 'カントリー',
+      'components.SportarrDetails.eventCount': '{count} イベント',
+      'components.SportarrDetails.eventError':
+        'イベントはロードできませんでした。',
+      'components.SportarrDetails.events': 'イベント',
+      'components.SportarrDetails.eventsAfterAdd':
+        'このリーグがSportarrに追加され、監視が有効になった後にイベントがここに表示されます。',
+      'components.SportarrDetails.heading': 'リーグ詳細',
+      'components.SportarrDetails.loadError':
+        'リーグの詳細は読み込まれません。',
+      'components.SportarrDetails.loadErrorHint': 'もう一度お試しください。',
+      'components.SportarrDetails.loadMore': 'より多くのイベントをロードする',
+      'components.SportarrDetails.loading': 'リーグの詳細を読み込む',
+      'components.SportarrDetails.loadingEvents': 'イベントの読み込み',
+      'components.SportarrDetails.missing': 'ダウンロード',
+      'components.SportarrDetails.monitored': 'Sportarrで監視',
+      'components.SportarrDetails.noDate': '発表予定日',
+      'components.SportarrDetails.noEvents':
+        'Sportarrは、まだこのリーグのために監視されたイベントはありません。',
+      'components.SportarrDetails.noPermission':
+        'このリーグをリクエストすることはできません。',
+      'components.SportarrDetails.partCount': '{count} ファイル',
+      'components.SportarrDetails.request': 'リクエストリーグ',
+      'components.SportarrDetails.requested': 'リクエスト送信',
+      'components.SportarrDetails.requestedHint':
+        'このリーグは既にアクティブなリクエストを持っています。',
+      'components.SportarrDetails.retry': 'もう一度お試しください',
+      'components.SportarrDetails.season': 'シーズン',
+      'components.SportarrDetails.sport': 'スポーツ',
+      'components.SportarrDetails.unmonitored':
+        'このリーグはSportarrですが監視されていません。',
+      'components.SportarrDetails.unmonitoredHint':
+        'Sportarrのこのリーグの監視を有効にして、このイベントを見ることができます。',
     },
   },
   {
@@ -34599,6 +35291,77 @@ export const localeData = [
       'components.Requests.mediaFilters': '미디어 필터',
       'components.BookSeriesSearch.search': '검색',
       'components.Discover.DiscoverAdult.clearSearch': '검색 지우기',
+      'components.Common.ButtonHelp.cancel': '현재 동작을 취소합니다.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        '요청은 저장되었지만 Sportarr에서 이 리그를 추가하지 못했습니다. 자세한 내용은 요청을 확인한 뒤 다시 시도하세요.',
+      'components.RequestModal.Sportarr.cancelError':
+        '이 요청을 취소하는 동안 뭔가 잘못되었습니다.',
+      'components.RequestModal.Sportarr.cancelRequest': '요청 취소',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        '{title} 요청이 취소되었습니다.',
+      'components.RequestModal.Sportarr.close': '닫기',
+      'components.RequestModal.Sportarr.countryLabel': '국가',
+      'components.RequestModal.Sportarr.defaultService': '기본값 ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Sportarr에서 이미 모니터링 중',
+      'components.RequestModal.Sportarr.noService':
+        'Sportarr 서비스가 구성되지 않습니다.',
+      'components.RequestModal.Sportarr.notRequestable':
+        '이 리그는 현재 요청할 수 없습니다.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        '당신의 요청이 승인 대기 중입니다.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        '대기 중인 스포츠 요청',
+      'components.RequestModal.Sportarr.quotaHint':
+        'TV 시즌과 스포츠 리그는 TV 요청 할당량을 공유합니다.',
+      'components.RequestModal.Sportarr.requestError':
+        '스포츠 요청을 제출하면서 뭔가 잘못되었습니다.',
+      'components.RequestModal.Sportarr.requestFrom':
+        '{username}님의 요청이 승인 대기 중입니다.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '<strong>{title}</strong> 요청이 성공적으로 제출되었습니다!',
+      'components.RequestModal.Sportarr.requested': '이미 요청됨',
+      'components.RequestModal.Sportarr.service': 'Sportarr 서비스',
+      'components.RequestModal.Sportarr.sportLabel': '스포츠',
+      'components.RequestModal.Sportarr.status': '상태',
+      'components.RequestModal.Sportarr.unmonitored':
+        '이 리그는 이미 Sportarr에 있지만 모니터링되고 있지 않습니다. 여기서 요청하기 전에 Sportarr에서 활성화하세요.',
+      'components.RequestModal.Sportarr.yearLabel': '연도',
+      'components.SportarrDetails.available': '사용 가능',
+      'components.SportarrDetails.back': '바로가기',
+      'components.SportarrDetails.country': '국가',
+      'components.SportarrDetails.eventCount': '{count} 행사일정',
+      'components.SportarrDetails.eventError': '사건은 적재될 수 있었습니다.',
+      'components.SportarrDetails.events': '- 연혁',
+      'components.SportarrDetails.eventsAfterAdd':
+        '이 리그가 Sportarr에 추가 된 후 이벤트가 나타납니다.',
+      'components.SportarrDetails.heading': 'League 세부 정보',
+      'components.SportarrDetails.loadError':
+        '리그 세부사항은 적재될 수 없습니다.',
+      'components.SportarrDetails.loadErrorHint':
+        '한 순간에 다시 시도하십시오.',
+      'components.SportarrDetails.loadMore': '더 많은 이벤트',
+      'components.SportarrDetails.loading': '로딩중',
+      'components.SportarrDetails.loadingEvents': '관련 상품',
+      'components.SportarrDetails.missing': '다운로드',
+      'components.SportarrDetails.monitored': 'Sportarr에서 모니터',
+      'components.SportarrDetails.noDate': '날짜 발표',
+      'components.SportarrDetails.noEvents':
+        'Sportarr은 아직이 리그에 대한 모니터링 된 이벤트가 없습니다.',
+      'components.SportarrDetails.noPermission':
+        '이 리그를 요청할 권한이 없습니다.',
+      'components.SportarrDetails.partCount': '{count} 파일 형식',
+      'components.SportarrDetails.request': '연락처',
+      'components.SportarrDetails.requested': '요청 대기 중',
+      'components.SportarrDetails.requestedHint':
+        '이 리그는 이미 활성 요청을 가지고 있습니다.',
+      'components.SportarrDetails.retry': '다시 시도',
+      'components.SportarrDetails.season': '시즌',
+      'components.SportarrDetails.sport': '·',
+      'components.SportarrDetails.unmonitored':
+        '이 리그는 Sportarr에 있지만 모니터링되지 않습니다.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Sportarr의이 리그에 대한 모니터링이 여기에 이벤트를 볼 수 있습니다.',
     },
   },
   {
@@ -37982,6 +38745,77 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Filtros de mídia',
       'components.BookSeriesSearch.search': 'Pesquisar',
       'components.Discover.DiscoverAdult.clearSearch': 'Limpar pesquisa',
+      'components.Common.ButtonHelp.cancel': 'Cancele a ação atual.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'O pedido foi salvo, mas o Sportarr não conseguiu adicionar esta liga. Consulte o pedido para ver os detalhes e tente novamente.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Algo deu errado enquanto cancelava o pedido.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Cancelar pedido',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'O pedido de {title} foi cancelado.',
+      'components.RequestModal.Sportarr.close': 'Fechar',
+      'components.RequestModal.Sportarr.countryLabel': 'País',
+      'components.RequestModal.Sportarr.defaultService': 'Padrão ({name})',
+      'components.RequestModal.Sportarr.monitored': 'Já monitorado em Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'Nenhum serviço Sportarr está configurado.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Esta liga não pode ser solicitada agora.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Sua solicitação está aguardando aprovação.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Pedido esportivo pendente',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Temporadas de TV e ligas esportivas compartilham sua quota de pedidos de TV.',
+      'components.RequestModal.Sportarr.requestError':
+        'Algo deu errado ao submeter o pedido de esporte.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'Existe uma solicitação pendente de {username}.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        'Solicitação de <strong>{title}</strong> enviada com sucesso!',
+      'components.RequestModal.Sportarr.requested': 'Já solicitado',
+      'components.RequestModal.Sportarr.service': 'Serviço Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'Esporte',
+      'components.RequestModal.Sportarr.status': 'Estado',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Esta liga já existe no Sportarr, mas não está monitorada. Ative-a no Sportarr antes de solicitá-la aqui.',
+      'components.RequestModal.Sportarr.yearLabel': 'Ano',
+      'components.SportarrDetails.available': 'Disponível',
+      'components.SportarrDetails.back': 'De volta aos esportes',
+      'components.SportarrDetails.country': 'País',
+      'components.SportarrDetails.eventCount': '{count} eventos',
+      'components.SportarrDetails.eventError':
+        'Os eventos não puderam ser carregados.',
+      'components.SportarrDetails.events': 'Eventos',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Os eventos aparecem aqui depois que esta liga é adicionada ao Sportarr e monitoramento é ativado.',
+      'components.SportarrDetails.heading': 'Detalhes da Liga',
+      'components.SportarrDetails.loadError':
+        'Os detalhes da Liga não podiam ser carregados.',
+      'components.SportarrDetails.loadErrorHint':
+        'Tente novamente em um momento.',
+      'components.SportarrDetails.loadMore': 'Carregue mais eventos.',
+      'components.SportarrDetails.loading': 'Carregando detalhes da liga.',
+      'components.SportarrDetails.loadingEvents': 'Carregando eventos',
+      'components.SportarrDetails.missing': 'Não baixado.',
+      'components.SportarrDetails.monitored': 'Monitorado em Sportarr',
+      'components.SportarrDetails.noDate': 'Data não anunciada',
+      'components.SportarrDetails.noEvents':
+        'Sportarr ainda não monitorou eventos para esta liga.',
+      'components.SportarrDetails.noPermission':
+        'Você não tem permissão para solicitar esta liga.',
+      'components.SportarrDetails.partCount': '{count} Arquivos',
+      'components.SportarrDetails.request': 'Pedir liga.',
+      'components.SportarrDetails.requested': 'Pedido pendente.',
+      'components.SportarrDetails.requestedHint':
+        'Esta liga já tem um pedido ativo.',
+      'components.SportarrDetails.retry': 'Tente novamente.',
+      'components.SportarrDetails.season': 'Temporada',
+      'components.SportarrDetails.sport': 'Esportes',
+      'components.SportarrDetails.unmonitored':
+        'Esta liga está em Sportarr mas não é monitorada.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Habilite o monitoramento desta liga em Sportarr para ver seus eventos aqui.',
     },
   },
   {
@@ -43391,6 +44225,66 @@ export const localeData = [
       'components.Requests.mediaFilters': '媒体筛选条件',
       'components.BookSeriesSearch.search': '搜索',
       'components.Discover.DiscoverAdult.clearSearch': '清除搜索',
+      'components.Common.ButtonHelp.cancel': '取消当前动作 。',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        '请求已保存，但 Sportarr 无法添加此联赛。请查看请求详情后重试。',
+      'components.RequestModal.Sportarr.cancelError': '取消此请求时出错 。',
+      'components.RequestModal.Sportarr.cancelRequest': '取消请求',
+      'components.RequestModal.Sportarr.cancelSuccess': '请求 {title} 已取消。',
+      'components.RequestModal.Sportarr.close': '关闭',
+      'components.RequestModal.Sportarr.countryLabel': '国家',
+      'components.RequestModal.Sportarr.defaultService': '默认（{name}）',
+      'components.RequestModal.Sportarr.monitored': '已在 Sportarr 中监控',
+      'components.RequestModal.Sportarr.noService': '尚未配置 Sportarr 服务。',
+      'components.RequestModal.Sportarr.notRequestable': '现在不能要求联赛',
+      'components.RequestModal.Sportarr.pendingApproval':
+        '您的请求正在等待批准。',
+      'components.RequestModal.Sportarr.pendingRequest': '待处理的体育申请',
+      'components.RequestModal.Sportarr.quotaHint':
+        '电视剧季和体育联赛共用您的电视请求配额。',
+      'components.RequestModal.Sportarr.requestError': '提交体育请求时出错。',
+      'components.RequestModal.Sportarr.requestFrom':
+        '{username} 的请求正在等待批准。',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '为 <strong>{title}</strong> 提交请求成功！',
+      'components.RequestModal.Sportarr.requested': '已提交请求',
+      'components.RequestModal.Sportarr.service': 'Sportarr 服务',
+      'components.RequestModal.Sportarr.sportLabel': '体育',
+      'components.RequestModal.Sportarr.status': '状态',
+      'components.RequestModal.Sportarr.unmonitored':
+        '此联赛已存在于 Sportarr 中，但尚未监控。请先在 Sportarr 中启用监控，再在此提交请求。',
+      'components.RequestModal.Sportarr.yearLabel': '年份',
+      'components.SportarrDetails.available': '可用',
+      'components.SportarrDetails.back': '继续运动',
+      'components.SportarrDetails.country': '国家',
+      'components.SportarrDetails.eventCount': '{count} 事件',
+      'components.SportarrDetails.eventError': '无法装入事件 。',
+      'components.SportarrDetails.events': '活动',
+      'components.SportarrDetails.eventsAfterAdd':
+        '此联盟加入Sportarr并启用监控后, 事件在此出现 。',
+      'components.SportarrDetails.heading': '联盟细节',
+      'components.SportarrDetails.loadError': '联盟细节无法装入 。',
+      'components.SportarrDetails.loadErrorHint': '再试一会',
+      'components.SportarrDetails.loadMore': '装入更多事件',
+      'components.SportarrDetails.loading': '正在装入联盟细节',
+      'components.SportarrDetails.loadingEvents': '正在装入事件',
+      'components.SportarrDetails.missing': '未下载',
+      'components.SportarrDetails.monitored': '在 Sportarr 中被监视',
+      'components.SportarrDetails.noDate': '尚未公布日期',
+      'components.SportarrDetails.noEvents':
+        'Sportarr还没有这个联盟的监控事件。',
+      'components.SportarrDetails.noPermission': '您没有权限请求此联盟 。',
+      'components.SportarrDetails.partCount': '{count} 文件',
+      'components.SportarrDetails.request': '请求联盟',
+      'components.SportarrDetails.requested': '请求待决',
+      'components.SportarrDetails.requestedHint': '这支联赛已经有主动请求了.',
+      'components.SportarrDetails.retry': '再试一次',
+      'components.SportarrDetails.season': '季',
+      'components.SportarrDetails.sport': '体育',
+      'components.SportarrDetails.unmonitored':
+        '这个联赛位于斯波特尔,但没有受到监控.',
+      'components.SportarrDetails.unmonitoredHint':
+        '启用对 Sportarr 中的此联盟的监视可在此查看其事件 。',
     },
   },
   {
@@ -44826,6 +45720,65 @@ export const localeData = [
       'components.Requests.mediaFilters': '媒體篩選條件',
       'components.BookSeriesSearch.search': '搜尋',
       'components.Discover.DiscoverAdult.clearSearch': '清除搜尋',
+      'components.Common.ButtonHelp.cancel': '取消目前的動作 。',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        '請求已儲存，但 Sportarr 無法加入此聯盟。請查看請求詳情後重試。',
+      'components.RequestModal.Sportarr.cancelError': '取消此要求時出錯 。',
+      'components.RequestModal.Sportarr.cancelRequest': '取消要求',
+      'components.RequestModal.Sportarr.cancelSuccess': '要求 {title} 已取消。',
+      'components.RequestModal.Sportarr.close': '關閉',
+      'components.RequestModal.Sportarr.countryLabel': '國家',
+      'components.RequestModal.Sportarr.defaultService': '預設（{name}）',
+      'components.RequestModal.Sportarr.monitored': '已在 Sportarr 監控',
+      'components.RequestModal.Sportarr.noService': '尚未設定 Sportarr 服務。',
+      'components.RequestModal.Sportarr.notRequestable': '現在不能要求這個聯盟',
+      'components.RequestModal.Sportarr.pendingApproval':
+        '您的請求正在等待核准。',
+      'components.RequestModal.Sportarr.pendingRequest': '待處理的體育請求',
+      'components.RequestModal.Sportarr.quotaHint':
+        '影集季與體育聯盟共用您的電視請求額度。',
+      'components.RequestModal.Sportarr.requestError': '提交體育請求時出錯。',
+      'components.RequestModal.Sportarr.requestFrom':
+        '{username} 的請求正在等待核准。',
+      'components.RequestModal.Sportarr.requestSuccess':
+        '為 <strong>{title}</strong> 提出請求成功！',
+      'components.RequestModal.Sportarr.requested': '已提出請求',
+      'components.RequestModal.Sportarr.service': 'Sportarr 服務',
+      'components.RequestModal.Sportarr.sportLabel': '運動',
+      'components.RequestModal.Sportarr.status': '狀態',
+      'components.RequestModal.Sportarr.unmonitored':
+        '此聯盟已存在於 Sportarr 中，但尚未監控。請先在 Sportarr 中啟用監控，再於此提出請求。',
+      'components.RequestModal.Sportarr.yearLabel': '年份',
+      'components.SportarrDetails.available': '可用',
+      'components.SportarrDetails.back': '回到運動',
+      'components.SportarrDetails.country': '國家',
+      'components.SportarrDetails.eventCount': '{count} 事件',
+      'components.SportarrDetails.eventError': '事件無法載入 。',
+      'components.SportarrDetails.events': '事件',
+      'components.SportarrDetails.eventsAfterAdd':
+        '此聯盟加入 Sportarr 後, 監控功能已啟動 。',
+      'components.SportarrDetails.heading': '聯盟細節',
+      'components.SportarrDetails.loadError': '聯盟細節無法載入 。',
+      'components.SportarrDetails.loadErrorHint': '馬上再試一次',
+      'components.SportarrDetails.loadMore': '載入更多事件',
+      'components.SportarrDetails.loading': '正在載入聯盟細節',
+      'components.SportarrDetails.loadingEvents': '載入事件',
+      'components.SportarrDetails.missing': '未下載',
+      'components.SportarrDetails.monitored': '在 Sportarr 監控',
+      'components.SportarrDetails.noDate': '未宣布日期',
+      'components.SportarrDetails.noEvents':
+        'Sportarr目前沒有監控這個聯盟的活動',
+      'components.SportarrDetails.noPermission': '您沒有權限要求此聯盟 。',
+      'components.SportarrDetails.partCount': '{count} 文件',
+      'components.SportarrDetails.request': '要求聯盟',
+      'components.SportarrDetails.requested': '等待中',
+      'components.SportarrDetails.requestedHint': '此聯盟已經有活動要求 。',
+      'components.SportarrDetails.retry': '再試一次',
+      'components.SportarrDetails.season': '季',
+      'components.SportarrDetails.sport': '体育',
+      'components.SportarrDetails.unmonitored': '這支聯賽在Sportarr,',
+      'components.SportarrDetails.unmonitoredHint':
+        '啟動 Sportarr 監控此聯盟的情況 。',
     },
   },
   {
@@ -46357,6 +47310,76 @@ export const localeData = [
       'components.Requests.mediaFilters': 'Bộ lọc nội dung',
       'components.BookSeriesSearch.search': 'Tìm kiếm',
       'components.Discover.DiscoverAdult.clearSearch': 'Xóa tìm kiếm',
+      'components.Common.ButtonHelp.cancel': 'Hủy bỏ hành động hiện thời.',
+      'components.RequestModal.Sportarr.backendRequestFailed':
+        'Yêu cầu đã được lưu, nhưng Sportarr không thể thêm giải đấu này. Hãy xem chi tiết yêu cầu rồi thử lại.',
+      'components.RequestModal.Sportarr.cancelError':
+        'Có gì đó không ổn trong khi hủy yêu cầu này.',
+      'components.RequestModal.Sportarr.cancelRequest': 'Hủy yêu cầu',
+      'components.RequestModal.Sportarr.cancelSuccess':
+        'Yêu cầu {title} đã bị hủy bỏ.',
+      'components.RequestModal.Sportarr.close': 'Đóng',
+      'components.RequestModal.Sportarr.countryLabel': 'Quốc gia',
+      'components.RequestModal.Sportarr.defaultService': 'Mặc định ({name})',
+      'components.RequestModal.Sportarr.monitored':
+        'Đã được theo dõi ở Sportarr',
+      'components.RequestModal.Sportarr.noService':
+        'Chưa cấu hình dịch vụ Sportarr.',
+      'components.RequestModal.Sportarr.notRequestable':
+        'Không thể yêu cầu liên minh này ngay bây giờ.',
+      'components.RequestModal.Sportarr.pendingApproval':
+        'Yêu cầu của bạn đang chờ phê duyệt.',
+      'components.RequestModal.Sportarr.pendingRequest':
+        'Yêu cầu thể thao đang chờ xử lý',
+      'components.RequestModal.Sportarr.quotaHint':
+        'Các mùa phim truyền hình và các giải đấu thể thao dùng chung hạn mức yêu cầu truyền hình của bạn.',
+      'components.RequestModal.Sportarr.requestError':
+        'Có gì đó không ổn trong khi nộp đơn yêu cầu thể thao.',
+      'components.RequestModal.Sportarr.requestFrom':
+        'Yêu cầu của {username} đang chờ phê duyệt.',
+      'components.RequestModal.Sportarr.requestSuccess':
+        'Yêu cầu <strong>{title}</strong> đã được gửi thành công!',
+      'components.RequestModal.Sportarr.requested': 'Đã yêu cầu',
+      'components.RequestModal.Sportarr.service': 'Dịch vụ Sportarr',
+      'components.RequestModal.Sportarr.sportLabel': 'Thể thao',
+      'components.RequestModal.Sportarr.status': 'Trạng thái',
+      'components.RequestModal.Sportarr.unmonitored':
+        'Giải đấu này đã có trong Sportarr nhưng chưa được theo dõi. Hãy bật theo dõi giải đấu trong Sportarr trước khi yêu cầu tại đây.',
+      'components.RequestModal.Sportarr.yearLabel': 'Năm',
+      'components.SportarrDetails.available': 'Có sẵn',
+      'components.SportarrDetails.back': 'Trở lại môn thể thao',
+      'components.SportarrDetails.country': 'Quốc gia',
+      'components.SportarrDetails.eventCount': '{count} sự kiện',
+      'components.SportarrDetails.eventError': 'Không thể tải sự kiện.',
+      'components.SportarrDetails.events': 'Sự kiện',
+      'components.SportarrDetails.eventsAfterAdd':
+        'Các sự kiện xuất hiện ở đây sau giải đấu này được thêm vào trình điều khiển và khả năng giám sát đã được bật.',
+      'components.SportarrDetails.heading': 'Chi tiết Liên kết',
+      'components.SportarrDetails.loadError':
+        'Không thể tải thông tin liên kết.',
+      'components.SportarrDetails.loadErrorHint': 'Hãy thử lại lần nữa.',
+      'components.SportarrDetails.loadMore': 'Tải thêm sự kiện',
+      'components.SportarrDetails.loading': 'Đang tải chi tiết giải đấu',
+      'components.SportarrDetails.loadingEvents': 'Đang tải các sự kiện',
+      'components.SportarrDetails.missing': 'Chưa tải về',
+      'components.SportarrDetails.monitored': 'Theo dõi trong trình xuất khẩu',
+      'components.SportarrDetails.noDate': 'Chưa thông báo ngày tháng',
+      'components.SportarrDetails.noEvents':
+        'Chưa có sự kiện giám sát nào cho giải đấu này.',
+      'components.SportarrDetails.noPermission':
+        'Bạn không có quyền yêu cầu liên minh này.',
+      'components.SportarrDetails.partCount': '{count} Tập tin',
+      'components.SportarrDetails.request': 'Liên kết yêu cầu',
+      'components.SportarrDetails.requested': 'Yêu cầu chờ',
+      'components.SportarrDetails.requestedHint':
+        'Liên đoàn này đã có một yêu cầu hoạt động.',
+      'components.SportarrDetails.retry': 'Thử lại đi.',
+      'components.SportarrDetails.season': 'Mùa',
+      'components.SportarrDetails.sport': 'Chuyển',
+      'components.SportarrDetails.unmonitored':
+        'Liên minh này nằm ở Sportarr nhưng không được theo dõi.',
+      'components.SportarrDetails.unmonitoredHint':
+        'Cho phép giám sát cho liên minh này ở Sportarr xem các sự kiện của nó ở đây.',
     },
   },
 ] as const;

@@ -3811,7 +3811,21 @@
     "lumen.sports.searchLeague": "Search for a league",
     "lumen.sports.trySearch": "Try a sport, a league or a country.",
     "lumen.sports.noLeagues": "No leagues found",
-    "lumen.sports.tryFullName": "Try the league’s full name."
+    "lumen.sports.tryFullName": "Try the league’s full name.",
+    "lumen.sports.sendRequest": "Send Request",
+    "lumen.sports.autoApproved": "Automatically approved",
+    "lumen.sports.approvalRequired": "Approval required",
+    "lumen.sports.quotaReached": "TV request quota reached.",
+    "lumen.sports.quotaRemaining": "{remaining} of {limit} TV requests remaining.",
+    "lumen.sports.recheckQuota": "Recheck Quota",
+    "lumen.sports.defaultService": "Default Service",
+    "lumen.sports.followLeague": "Follow league",
+    "lumen.sports.chooseService": "Choose Sportarr Service",
+    "components.SportarrDetails.previousPage": "Previous Page",
+    "components.SportarrDetails.page": "Page {page}",
+    "components.SportarrDetails.nextPage": "Next Page",
+    "lumen.sports.requestedToast": "League requested",
+    "lumen.sports.unmonitoredHint": "This league is in Sportarr but is not monitored. Enable monitoring in Sportarr to see its events here."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7784,7 +7798,21 @@
     "lumen.sports.searchLeague": "Rechercher une ligue",
     "lumen.sports.trySearch": "Essayez un sport, une ligue ou un pays.",
     "lumen.sports.noLeagues": "Aucune ligue trouvée",
-    "lumen.sports.tryFullName": "Essayez le nom complet de la ligue."
+    "lumen.sports.tryFullName": "Essayez le nom complet de la ligue.",
+    "lumen.sports.sendRequest": "Envoyer la demande",
+    "lumen.sports.autoApproved": "Approuvée automatiquement",
+    "lumen.sports.approvalRequired": "Approbation requise",
+    "lumen.sports.quotaReached": "Quota de demandes TV atteint.",
+    "lumen.sports.quotaRemaining": "Il reste {remaining} demandes TV sur {limit}.",
+    "lumen.sports.recheckQuota": "Vérifier à nouveau le quota",
+    "lumen.sports.defaultService": "Service par défaut",
+    "lumen.sports.followLeague": "Suivre la ligue",
+    "lumen.sports.chooseService": "Choisir un service Sportarr",
+    "components.SportarrDetails.previousPage": "Page précédente",
+    "components.SportarrDetails.page": "Page {page}",
+    "components.SportarrDetails.nextPage": "Page suivante",
+    "lumen.sports.requestedToast": "Demande de ligue envoyée",
+    "lumen.sports.unmonitoredHint": "Cette ligue est dans Sportarr, mais elle n’est pas surveillée. Activez le suivi dans Sportarr pour voir ses événements ici."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11761,6 +11789,20 @@
     "lumen.sports.searchLeague": "ابحث عن دوري",
     "lumen.sports.trySearch": "جرّب اسم رياضة أو دوري أو بلد.",
     "lumen.sports.noLeagues": "لم يتم العثور على دوريات",
-    "lumen.sports.tryFullName": "جرّب كتابة الاسم الكامل للدوري."
+    "lumen.sports.tryFullName": "جرّب كتابة الاسم الكامل للدوري.",
+    "lumen.sports.sendRequest": "إرسال الطلب",
+    "lumen.sports.autoApproved": "تمت الموافقة تلقائيًا",
+    "lumen.sports.approvalRequired": "الموافقة مطلوبة",
+    "lumen.sports.quotaReached": "تم بلوغ حصة طلبات التلفاز.",
+    "lumen.sports.quotaRemaining": "المتبقي {remaining} من {limit} طلبات تلفاز.",
+    "lumen.sports.recheckQuota": "إعادة التحقق من الحصة",
+    "lumen.sports.defaultService": "الخدمة الافتراضية",
+    "lumen.sports.followLeague": "متابعة الدوري",
+    "lumen.sports.chooseService": "اختيار خدمة Sportarr",
+    "components.SportarrDetails.previousPage": "الصفحة السابقة",
+    "components.SportarrDetails.page": "الصفحة {page}",
+    "components.SportarrDetails.nextPage": "الصفحة التالية",
+    "lumen.sports.requestedToast": "تم طلب الدوري",
+    "lumen.sports.unmonitoredHint": "هذا الدوري موجود في Sportarr ولكنه غير مُراقب. فعّل المراقبة في Sportarr لرؤية أحداثه هنا."
   }
 }

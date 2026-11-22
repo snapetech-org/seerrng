@@ -6745,7 +6745,11 @@ handling, league routes, provider calls, and request permissions are unchanged.
 The browser fixture covers initial and no-results states, RTL direction, and
 viewport overflow across desktop, iPhone, Android, and tablet. Matched French
 desktop and iPhone baseline and candidate captures were inspected; candidate
-Arabic was also reviewed. League detail and follow-sheet copy remain separate
-parity gaps. Live Sportarr behavior and independent linguistic review remain
+Arabic was also reviewed. League detail, event schedules, paging, and follow/request sheet copy now also
+localize in English, French, and Arabic. The workflow fixture covers loaded
+events, details, follow/request states, locale direction, and viewport overflow
+across desktop, iPhone, Android, and tablet (12 cases). Matched French desktop
+and iPhone baseline/candidate renders and the Arabic desktop candidate were
+inspected. Live Sportarr behavior and independent linguistic review remain
 unverified. Evidence is retained at
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-sports-catalog-localization-20261122/`.
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-sports-workflow-localization-20261122/`.
