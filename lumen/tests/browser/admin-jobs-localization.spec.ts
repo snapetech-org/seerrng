@@ -59,6 +59,7 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     nextExecutionTime: '2026-11-21T00:00:00Z',
   };
   const writes: unknown[] = [];
+  let rejectFirstSave = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -73,6 +74,10 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     if (path.endsWith('/settings/jobs/sample/schedule')) {
       const body = request.postDataJSON();
       writes.push(body);
+      if (rejectFirstSave) {
+        rejectFirstSave = false;
+        return route.fulfill({ status: 503, json: { message: 'Try again' } });
+      }
       job.cronSchedule = body.schedule;
       return route.fulfill({ json: job });
     }
@@ -96,8 +101,20 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     row.getByRole('textbox', { name: labels[3], exact: true })
   ).toHaveValue('0 */20 * * * *');
   await page.getByRole('button', { name: labels[4], exact: true }).click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(
+    row.getByRole('textbox', { name: labels[3], exact: true })
+  ).toHaveValue('0 */20 * * * *');
+  await expect(
+    row.getByRole('button', { name: labels[4], exact: true })
+  ).toBeEnabled();
+  expect(job.cronSchedule).toBe('0 */15 * * * *');
+  await page.getByRole('button', { name: labels[4], exact: true }).click();
   await expect.poll(() => job.cronSchedule).toBe('0 */20 * * * *');
-  expect(writes).toEqual([{ schedule: '0 */20 * * * *' }]);
+  expect(writes).toEqual([
+    { schedule: '0 */20 * * * *' },
+    { schedule: '0 */20 * * * *' },
+  ]);
   await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute(
     'dir',

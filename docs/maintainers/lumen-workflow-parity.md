@@ -1150,9 +1150,14 @@ feedback. SeerrNG's native jobs catalog supplies process, command, enabled,
 disabled, run, and cancel labels; Lumen localizes the remaining scheduler
 controls and uses plural-aware seconds, minutes, hours, and days descriptions.
 The existing run/cancel confirmation, cron request, schedule readback, and
-periodic refresh behavior are retained. The eight existing job workflow cases
-and eight English/French/Arabic locale cases pass in standalone and bundled
-Lumen across desktop, iPhone, Android, and tablet. French desktop and Arabic
+periodic refresh behavior are retained. The localized schedule workflow now
+also verifies a rejected save: the edited schedule stays in the form, the
+save action remains available, and retry persists and reads back the change.
+This recovery check passes in English, French, and Arabic across desktop,
+iPhone, Android, and tablet in standalone Lumen. The existing eight job
+workflow cases and eight locale cases previously passed in standalone and
+bundled Lumen across those viewports; the new failed-save recovery assertion
+has not yet been rerun against the Express `/lumen/` mount. French desktop and Arabic
 iPhone baseline/candidate renders were inspected; content wraps within the
 existing job card and tested viewport widths have no horizontal overflow.
 Evidence is retained in
