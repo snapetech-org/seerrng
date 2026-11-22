@@ -5428,6 +5428,18 @@ fixtures verify the changed-flag payload and confirmed save across desktop,
 iPhone, Android, and tablet. Live server persistence and independent linguistic
 review remain open.
 
+Book Series Catalog and Requests now use the same saved locale for catalog
+loading and matching states, ongoing monitoring controls, request status, and
+manager actions. Request authorization, monitoring endpoints, catalog identity,
+and persistence are unchanged. Twelve saved-locale cases and the existing
+manager/member queue and catalog-navigation tests pass across four viewports
+(36 cases). English baseline and candidate captures match at 1440 × 900 and
+390 × 844; French desktop and Arabic phone captures were inspected for wrapping,
+RTL, and overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/book-series-admin-visual/`.
+Bundled Express mount, live provider behavior, and independent linguistic
+review remain open.
+
 The Application API Key panel now localizes reveal/hide, copy, regeneration,
 confirmation, and feedback in English, French, and Arabic. Existing key
 replacement behavior and immediate invalidation are preserved. Browser fixtures

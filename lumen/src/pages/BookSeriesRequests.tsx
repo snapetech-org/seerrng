@@ -6,6 +6,7 @@ import { canManageRequests } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { bookSeriesCatalogQuery } from './BookSeriesCatalog';
 
@@ -13,11 +14,11 @@ const endpoint = '/book-series/watch/requests';
 const actions = [
   {
     id: 'approve',
-    label: 'Approve',
+    key: 'approve',
     states: ['pending', 'failed', 'stopped', 'declined', 'active'],
   },
-  { id: 'decline', label: 'Decline', states: ['pending'] },
-  { id: 'stop', label: 'Stop Monitoring', states: ['active', 'failed'] },
+  { id: 'decline', key: 'decline', states: ['pending'] },
+  { id: 'stop', key: 'stop', states: ['active', 'failed'] },
 ] as const;
 
 type RequestRow = {
@@ -32,6 +33,7 @@ type RequestRow = {
 };
 
 export default function BookSeriesRequests() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const manage = canManageRequests(user?.permissions);
   const requests = useApi<RequestRow[]>(endpoint, { keepDuringRefresh: true });
@@ -54,7 +56,15 @@ export default function BookSeriesRequests() {
       await api(`${endpoint}/${id}/${action}`, { method: 'POST' });
     } catch (error) {
       if (generation === sessionGeneration())
-        setFailure(friendlyError(error, 'Could not update series monitoring.'));
+        setFailure(
+          friendlyError(
+            error,
+            t(
+              'lumen.bookSeries.updateFailed',
+              'Could not update series monitoring.'
+            )
+          )
+        );
     } finally {
       pending.current = false;
       if (generation === sessionGeneration()) {
@@ -67,20 +77,30 @@ export default function BookSeriesRequests() {
 
   return (
     <>
-      <ExtraHeader title="Book Series Requests">
+      <ExtraHeader
+        title={t('lumen.bookSeries.requests', 'Book Series Requests')}
+      >
         <Link className="chip" to="/requests">
-          Back to Requests
+          {t('lumen.bookSeries.backToRequests', 'Back to Requests')}
         </Link>
         <Link className="chip" to="/book-series">
-          Find a Book Series
+          {t('lumen.bookSeries.findTitle', 'Find a Book Series')}
         </Link>
       </ExtraHeader>
       <p className="note">
-        Stopping monitoring keeps books already added to the service.
+        {t(
+          'lumen.bookSeries.stoppingKeepsBooks',
+          'Stopping monitoring keeps books already added to the service.'
+        )}
       </p>
       <ServiceNote
         error={requests.error}
-        what="book series requests"
+        what={t('lumen.bookSeries.requestsWhat', 'book series requests')}
+        title={t(
+          'lumen.bookSeries.requestsLoadFailed',
+          'Could not load book series requests'
+        )}
+        retryLabel={t('lumen.bookSeries.retry', 'Retry')}
         retry={requests.reload}
       />
       {failure && (
@@ -90,11 +110,16 @@ export default function BookSeriesRequests() {
       )}
       {!requests.data && !requests.error && (
         <p className="note" role="status">
-          Loading book series requests…
+          {t(
+            'lumen.bookSeries.requestsLoading',
+            'Loading book series requests…'
+          )}
         </p>
       )}
       {requests.data?.length === 0 && (
-        <p className="note">No book series requests.</p>
+        <p className="note">
+          {t('lumen.bookSeries.noRequests', 'No book series requests.')}
+        </p>
       )}
       <ul className="setlist">
         {requests.data?.map((row) => {
@@ -122,15 +147,26 @@ export default function BookSeriesRequests() {
                 )}
                 <p className="note">
                   {row.serverName ? `${row.serverName} · ` : ''}
-                  {row.format} · {row.status}
+                  {row.format === 'audiobook'
+                    ? t('lumen.bookSeries.audiobooks', 'Audiobooks')
+                    : t('lumen.bookSeries.ebooks', 'Ebooks')}{' '}
+                  · {t(`lumen.bookSeries.status.${row.status}`, row.status)}
                 </p>
                 <p className="note">
-                  {row.includeExtras ? 'Includes extras' : 'Primary books only'}
+                  {row.includeExtras
+                    ? t('lumen.bookSeries.includesExtras', 'Includes extras')
+                    : t(
+                        'lumen.bookSeries.primaryBooksOnly',
+                        'Primary books only'
+                      )}
                 </p>
                 {manage && (
                   <p className="note">
                     {row.destination ||
-                      'The original service destination is unavailable.'}
+                      t(
+                        'lumen.bookSeries.destinationUnavailable',
+                        'The original service destination is unavailable.'
+                      )}
                   </p>
                 )}
               </div>
@@ -140,7 +176,7 @@ export default function BookSeriesRequests() {
                     .filter(({ states }) =>
                       states.some((state) => state === row.status)
                     )
-                    .map(({ id, label }) => (
+                    .map(({ id, key }) => (
                       <button
                         key={id}
                         className="btn btn-quiet btn-sm"
@@ -148,7 +184,14 @@ export default function BookSeriesRequests() {
                         disabled={actionsDisabled}
                         onClick={() => void update(row.id, id)}
                       >
-                        {label}
+                        {key === 'approve'
+                          ? t('lumen.bookSeries.approve', 'Approve')
+                          : key === 'decline'
+                            ? t('lumen.bookSeries.decline', 'Decline')
+                            : t(
+                                'lumen.bookSeries.stopMonitoring',
+                                'Stop Monitoring'
+                              )}
                       </button>
                     ))}
                 </div>

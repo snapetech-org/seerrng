@@ -127,7 +127,7 @@ for (const manager of [true, false]) {
     const row = page
       .getByRole('listitem')
       .filter({ hasText: 'Fixture Series' });
-    await expect(row).toContainText('pending');
+    await expect(row).toContainText('Pending');
     await expect(row).toContainText('Includes extras');
     if (manager) {
       await expect(row).toContainText('HD · /books');
@@ -145,12 +145,12 @@ for (const manager of [true, false]) {
       } finally {
         releaseReadback();
       }
-      await expect(row).toContainText('declined');
+      await expect(row).toContainText('Declined');
       await expect(row.getByRole('button', { name: 'Decline' })).toHaveCount(0);
       await row.getByRole('button', { name: 'Approve' }).click();
-      await expect(row).toContainText('active');
+      await expect(row).toContainText('Active');
       await row.getByRole('button', { name: 'Stop Monitoring' }).click();
-      await expect(row).toContainText('stopped');
+      await expect(row).toContainText('Stopped');
       await expect(
         row.getByRole('button', { name: 'Stop Monitoring' })
       ).toHaveCount(0);
@@ -187,7 +187,7 @@ for (const manager of [true, false]) {
         .getByRole('checkbox', { name: 'Include Companion Books and Extras' })
         .check();
       await monitor.click();
-      await expect(page.getByText('Monitoring status: pending')).toBeVisible();
+      await expect(page.getByText('Monitoring status: Pending')).toBeVisible();
       await expect(monitor).toHaveCount(0);
       await page
         .getByRole('button', { name: 'Request Books', exact: true })
@@ -313,5 +313,5 @@ test('series search preserves format and opens the exact local variant', async (
     page.getByText(/Goodreads monitoring includes all linked books/)
   ).toBeVisible();
   await page.getByRole('button', { name: 'Request Monitoring' }).click();
-  await expect(page.getByText('Monitoring status: pending')).toBeVisible();
+  await expect(page.getByText('Monitoring status: Pending')).toBeVisible();
 });

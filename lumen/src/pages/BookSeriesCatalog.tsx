@@ -8,6 +8,7 @@ import { canManageRequests } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Catalog = {
@@ -51,6 +52,7 @@ export function bookSeriesCatalogQuery(
 }
 
 function CatalogMonitoring({ query }: { query: string }) {
+  const { t } = useLumenLocale();
   const params = new URLSearchParams(query);
   const goodreads = params.get('providerId')?.startsWith('gr:') === true;
   const { user } = useAuth();
@@ -94,7 +96,13 @@ function CatalogMonitoring({ query }: { query: string }) {
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
-          friendlyError(error, 'Could not request series monitoring.')
+          friendlyError(
+            error,
+            t(
+              'lumen.bookSeries.monitorRequestFailed',
+              'Could not request series monitoring.'
+            )
+          )
         );
     } finally {
       pending.current = false;
@@ -106,10 +114,15 @@ function CatalogMonitoring({ query }: { query: string }) {
   }
 
   return (
-    <Section title="Series Monitoring">
+    <Section title={t('lumen.bookSeries.monitoring', 'Series Monitoring')}>
       <ServiceNote
         error={watch.error}
-        what="series monitoring"
+        what={t('lumen.bookSeries.monitoring', 'series monitoring')}
+        title={t(
+          'lumen.bookSeries.monitoringLoadFailed',
+          'Could not load series monitoring'
+        )}
+        retryLabel={t('lumen.bookSeries.retry', 'Retry')}
         retry={watch.reload}
       />
       {failure && (
@@ -119,31 +132,45 @@ function CatalogMonitoring({ query }: { query: string }) {
       )}
       {watch.data && !watch.data.supported && (
         <p className="note">
-          This book service does not support series monitoring.
+          {t(
+            'lumen.bookSeries.monitoringUnsupported',
+            'This book service does not support series monitoring.'
+          )}
         </p>
       )}
       {watch.data?.supported && (
         <>
           {status && (
             <p className="note" role="status">
-              Monitoring status: {status}
+              {t(
+                'lumen.bookSeries.monitoringStatus',
+                'Monitoring status: {status}',
+                { status: t(`lumen.bookSeries.status.${status}`, status) }
+              )}
             </p>
           )}
           {canRequest &&
             !['active', 'pending', 'failed'].includes(status ?? '') && (
               <>
                 <p className="note">
-                  Request ongoing monitoring for current and future books in
-                  this catalog. Approval may be required.
+                  {t(
+                    'lumen.bookSeries.monitoringDescription',
+                    'Request ongoing monitoring for current and future books in this catalog. Approval may be required.'
+                  )}
                 </p>
                 {goodreads ? (
                   <p className="note">
-                    Goodreads monitoring includes all linked books because
-                    primary books are not classified.
+                    {t(
+                      'lumen.bookSeries.goodreadsMonitoringNote',
+                      'Goodreads monitoring includes all linked books because primary books are not classified.'
+                    )}
                   </p>
                 ) : (
                   <label className="set">
-                    Include Companion Books and Extras
+                    {t(
+                      'lumen.bookSeries.includeExtras',
+                      'Include Companion Books and Extras'
+                    )}
                     <input
                       type="checkbox"
                       checked={includeExtras}
@@ -160,7 +187,10 @@ function CatalogMonitoring({ query }: { query: string }) {
                   disabled={busy}
                   onClick={() => void submit()}
                 >
-                  Request Monitoring
+                  {t(
+                    'lumen.bookSeries.requestMonitoring',
+                    'Request Monitoring'
+                  )}
                 </button>
               </>
             )}
@@ -171,6 +201,7 @@ function CatalogMonitoring({ query }: { query: string }) {
 }
 
 export default function BookSeriesCatalog() {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const { id } = useParams();
   const [params] = useSearchParams();
@@ -226,17 +257,20 @@ export default function BookSeriesCatalog() {
   return (
     <>
       <ExtraHeader
-        title={data?.title || 'Book Series Catalog'}
+        title={
+          data?.title ||
+          t('lumen.bookSeries.catalogTitle', 'Book Series Catalog')
+        }
         sub={data?.serverName}
       >
         <Link className="chip" to="/book-series/requests">
-          Book Series Requests
+          {t('lumen.bookSeries.requests', 'Book Series Requests')}
         </Link>
         <Link
           className="chip"
           to={`/book-series${seriesSearch ? `?${seriesSearch}` : ''}`}
         >
-          Find a Book Series
+          {t('lumen.bookSeries.findTitle', 'Find a Book Series')}
         </Link>
         {managementUrl && (
           <a
@@ -245,7 +279,11 @@ export default function BookSeriesCatalog() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Manage Series in {data?.serverName}
+            {t(
+              'lumen.bookSeries.manageSeriesIn',
+              'Manage Series in {service}',
+              { service: data?.serverName ?? '' }
+            )}
           </a>
         )}
         {data && path && (
@@ -259,24 +297,37 @@ export default function BookSeriesCatalog() {
       </ExtraHeader>
       {!path && (
         <p className="note" role="alert">
-          The series catalog link is incomplete or invalid.
+          {t(
+            'lumen.bookSeries.invalidCatalogLink',
+            'The series catalog link is incomplete or invalid.'
+          )}
         </p>
       )}
       <ServiceNote
         error={catalog.error}
-        what="book series catalog"
+        what={t('lumen.bookSeries.catalogWhat', 'book series catalog')}
+        title={t(
+          'lumen.bookSeries.catalogLoadFailed',
+          'Could not load book series catalog'
+        )}
+        retryLabel={t('lumen.bookSeries.retry', 'Retry')}
         retry={catalog.reload}
       />
       {path && !data && !catalog.error && (
         <p className="note" role="status">
-          Loading series catalog…
+          {t('lumen.bookSeries.catalogLoading', 'Loading series catalog…')}
         </p>
       )}
       {data && (
         <>
           <p className="note">
-            {data.format === 'audiobook' ? 'Audiobooks' : 'Ebooks'} ·{' '}
-            {data.bookCount ?? books.length} series entries
+            {data.format === 'audiobook'
+              ? t('lumen.bookSeries.audiobooks', 'Audiobooks')
+              : t('lumen.bookSeries.ebooks', 'Ebooks')}{' '}
+            ·{' '}
+            {t('lumen.bookSeries.seriesEntryCount', '{count} series entries', {
+              count: data.bookCount ?? books.length,
+            })}
           </p>
           {data.description && <p>{data.description}</p>}
           {monitoringQuery && (
@@ -284,10 +335,20 @@ export default function BookSeriesCatalog() {
           )}
           {(data.resolutionTruncated || data.truncated) && (
             <p className="note">
-              Only part of this catalog could be checked for matches.
+              {t(
+                'lumen.bookSeries.catalogTruncated',
+                'Only part of this catalog could be checked for matches.'
+              )}
             </p>
           )}
-          {!books.length && <p className="note">No books in this preview.</p>}
+          {!books.length && (
+            <p className="note">
+              {t(
+                'lumen.bookSeries.noBooksPreview',
+                'No books in this preview.'
+              )}
+            </p>
+          )}
           <ul className="setlist">
             {books.map((entry, index) => (
               <li className="set" key={index}>
@@ -307,15 +368,21 @@ export default function BookSeriesCatalog() {
                       entry.book.title || entry.title
                     )}
                   >
-                    View Book
+                    {t('lumen.bookSeries.viewBook', 'View Book')}
                   </Link>
                 ) : (
                   <small>
                     {entry.matchStatus === 'ambiguous'
-                      ? 'Multiple Possible Matches'
+                      ? t(
+                          'lumen.bookSeries.multipleMatches',
+                          'Multiple Possible Matches'
+                        )
                       : entry.matchStatus === 'unavailable'
-                        ? 'Match Unavailable'
-                        : 'No Match'}
+                        ? t(
+                            'lumen.bookSeries.matchUnavailable',
+                            'Match Unavailable'
+                          )
+                        : t('lumen.bookSeries.noMatch', 'No Match')}
                   </small>
                 )}
               </li>
