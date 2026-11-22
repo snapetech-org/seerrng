@@ -135,6 +135,26 @@ content in both baseline and candidate. Live Hardcover responses and
 independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-recommendations-localization-20261122/`.
 
+### Comic and manga detail localization
+
+Comic and manga detail pages now localize edition selection, recommendation
+markers, request and reader actions, issue/volume lists, metadata labels and
+statuses, and lookup/request recovery text in English, French, and Arabic.
+Provider-supplied edition names, publishers, descriptions, genre values, and
+issue titles remain unchanged. Existing selection, permission checks, request
+payloads, and reader destinations are preserved.
+
+The full Comics/Manga browser suite passes 96 cases with 28 existing
+viewport/interaction skips. The added locale matrix covers 12 locale/device
+cases and asserts no horizontal overflow. Matched source/candidate screenshots
+were captured for English/French/Arabic at desktop and iPhone sizes; French
+iPhone and Arabic desktop were inspected. Lumen-owned labels and facts follow
+the account locale, while embedded controls from their own shared components
+and provider metadata retain their existing owners. Live ComicVine/reader
+responses and independent language review remain unverified. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-detail-localization-20261122/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load

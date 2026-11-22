@@ -477,6 +477,61 @@ test('the edition picker defaults to the recommended English edition', async ({
   await expect(rows.nth(5)).toContainText('Requested');
 });
 
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  const baseline = process.env.LUMEN_COMIC_DETAIL_BASELINE === 'true';
+  const copy = {
+    en: {
+      picker: 'Choose an edition',
+      recommended: 'Recommended',
+      volumes: 'Volumes',
+    },
+    fr: {
+      picker: 'Choisir une édition',
+      recommended: 'Recommandée',
+      volumes: 'Volumes',
+    },
+    ar: { picker: 'اختر نسخة', recommended: 'موصى بها', volumes: 'المجلدات' },
+  }[baseline ? 'en' : locale];
+  test(`comic detail localizes edition and issue controls in ${locale}`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, { locale });
+    await page.goto('/comic/al-105778');
+    await expect(
+      page.getByRole('heading', { name: copy.picker })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('radiogroup', {
+        name:
+          copy.picker === 'Choose an edition'
+            ? 'Editions'
+            : locale === 'fr'
+              ? 'Éditions'
+              : 'النسخ',
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(copy.recommended, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText(copy.volumes, { exact: true }).last()
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    if (info.project.name === 'desktop' || info.project.name === 'iphone') {
+      const captureDirectory = process.env.LUMEN_COMIC_DETAIL_CAPTURE_DIR;
+      if (captureDirectory)
+        await page.screenshot({
+          path: `${captureDirectory}/${locale}-${info.project.name}.png`,
+          fullPage: true,
+        });
+    }
+  });
+}
+
 test('an edition already in the library shows on the work and in the picker', async ({
   page,
 }) => {

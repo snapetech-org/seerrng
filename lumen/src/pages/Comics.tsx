@@ -689,28 +689,37 @@ export function Comics() {
 
 // the chosen edition's volumes or issues, as ComicVine lists them
 function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
+  const { t } = useLumenLocale();
   const issues = usePaged<ComicIssue>(`/comic/${id}/issues`);
+  const heading = manga
+    ? t('lumen.comicDetail.volumes', 'Volumes')
+    : t('lumen.comicDetail.issues', 'Issues');
   if (!issues.items.length)
     return issues.error ? (
       <div>
-        <div className="h2">{manga ? 'Volumes' : 'Issues'}</div>
+        <div className="h2">{heading}</div>
         <ServiceNote
           error={issues.error}
-          what={manga ? 'the volumes' : 'the issues'}
+          what={
+            manga
+              ? t('lumen.comicDetail.theVolumes', 'the volumes')
+              : t('lumen.comicDetail.theIssues', 'the issues')
+          }
           retry={issues.retry}
         />
       </div>
     ) : null;
   return (
     <div>
-      <div className="h2">{manga ? 'Volumes' : 'Issues'}</div>
+      <div className="h2">{heading}</div>
       <ol className="slist tlist">
         {issues.items.map((i) => (
           <li key={i.id} className="trow">
             <span className="tn">#{i.issueNumber || '?'}</span>
             <span>
               <b>
-                {i.name || `${manga ? 'Volume' : 'Issue'} #${i.issueNumber}`}
+                {i.name ||
+                  `${manga ? t('lumen.comicDetail.volume', 'Volume') : t('lumen.comicDetail.issue', 'Issue')} #${i.issueNumber}`}
               </b>
               {i.coverDate && (
                 <small>
@@ -736,6 +745,7 @@ function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
 // ---- one work: its editions to choose from (English recommended), then the chosen
 // edition's description and volumes ----
 export function ComicDetail() {
+  const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const toast = useToast();
   const { kavitaUrl } = usePrefs();
@@ -801,12 +811,18 @@ export function ComicDetail() {
   if (workError)
     return (
       <ExtraGate k="comic">
-        <ServiceNote error={workError} what="this comic" retry={reload} />
+        <ServiceNote
+          error={workError}
+          what={t('lumen.comicDetail.thisComic', 'this comic')}
+          retry={reload}
+        />
       </ExtraGate>
     );
   if (!work) return <div className="detail-loading" aria-busy="true" />;
   const manga = work.kind === 'manga';
-  const unit = manga ? 'vol' : 'issue';
+  const unit = manga
+    ? t('lumen.comicDetail.volUnit', 'vol')
+    : t('lumen.comicDetail.issueUnit', 'issue');
   const cs = comicState(shown);
   const s = chosen ? stateOf(chosen.id) : cs.stat;
   const about = work.description
@@ -824,7 +840,9 @@ export function ComicDetail() {
       setAsked((x) => new Set(x).add(chosen.id));
       refresh();
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(e, t('lumen.comicDetail.requestFailed', 'Request failed'))
+      );
     } finally {
       sending.current = false;
       setBusy(false);
@@ -842,21 +860,21 @@ export function ComicDetail() {
       rel="noopener"
     >
       <Icon name="book" />
-      Read in Kavita
+      {t('lumen.comicDetail.readInKavita', 'Read in Kavita')}
     </a>
   ) : null;
   const alsoRead = complete ? null : read;
   const main =
     c?.mediaInfo?.status === MediaStatus.BLOCKLISTED ? (
       <button className="btn btn-tonal" disabled>
-        Blocklisted
+        {t('lumen.status.blocklisted', 'Blocklisted')}
       </button>
     ) : !chosen ? (
       <button className="btn btn-tonal" disabled>
         <Icon name="clock" />
         {work.editionsResolved
-          ? 'No edition to request yet'
-          : 'Looking up editions…'}
+          ? t('lumen.comicDetail.noEdition', 'No edition to request yet')
+          : t('lumen.comicDetail.lookingUpEditions', 'Looking up editions…')}
       </button>
     ) : complete && read ? (
       read
@@ -869,10 +887,12 @@ export function ComicDetail() {
       <button className="btn btn-primary" disabled={busy} onClick={request}>
         <Icon name="plus" />
         {editions.length > 1
-          ? `Request · ${editionLabel(chosen)}`
+          ? t('lumen.comicDetail.requestEdition', 'Request · {edition}', {
+              edition: editionLabel(chosen),
+            })
           : manga
-            ? 'Request manga'
-            : 'Request series'}
+            ? t('lumen.comicDetail.requestManga', 'Request manga')
+            : t('lumen.comicDetail.requestSeries', 'Request series')}
       </button>
     );
   return (
@@ -885,9 +905,13 @@ export function ComicDetail() {
           title={work.title}
           line={[
             work.startYear,
-            manga ? 'Manga' : 'Comic',
+            manga
+              ? t('lumen.comicDetail.manga', 'Manga')
+              : t('lumen.comicDetail.comic', 'Comic'),
             chosen?.publisher || work.publisher,
-            chosen?.issueCount ? `${chosen.issueCount} ${unit}s` : '',
+            chosen?.issueCount
+              ? `${chosen.issueCount} ${manga ? t('lumen.comicDetail.volumeUnitPlural', 'vols') : t('lumen.comicDetail.issueUnitPlural', 'issues')}`
+              : '',
           ]}
         />
         <div className="dbody">
@@ -948,7 +972,10 @@ export function ComicDetail() {
             <div
               className="progress"
               role="progressbar"
-              aria-label="Download progress"
+              aria-label={t(
+                'lumen.comicDetail.downloadProgress',
+                'Download progress'
+              )}
               aria-valuenow={cs.pct}
               aria-valuemin={0}
               aria-valuemax={100}
@@ -969,24 +996,43 @@ export function ComicDetail() {
               <div id="editions">
                 <div className="sec-head">
                   <h2>
-                    {editions.length > 1 ? 'Choose an edition' : 'Edition'}
+                    {editions.length > 1
+                      ? t(
+                          'lumen.comicDetail.chooseEdition',
+                          'Choose an edition'
+                        )
+                      : t('lumen.comicDetail.edition', 'Edition')}
                   </h2>
                   <span className="note">
-                    {editions.length > 1 ? `${editions.length} editions` : ''}
+                    {editions.length > 1
+                      ? t(
+                          'lumen.comicDetail.editionCount',
+                          '{count} editions',
+                          {
+                            count: editions.length,
+                          }
+                        )
+                      : ''}
                   </span>
                 </div>
                 {!editions.length && (
                   <p className="note">
                     {work.editionsResolved
-                      ? 'ComicVine has no edition of this series yet, so it can’t be requested.'
-                      : 'Couldn’t look up the editions right now. Try again in a minute.'}
+                      ? t(
+                          'lumen.comicDetail.noComicVineEdition',
+                          'ComicVine has no edition of this series yet, so it can’t be requested.'
+                        )
+                      : t(
+                          'lumen.comicDetail.editionLookupFailed',
+                          'Couldn’t look up the editions right now. Try again in a minute.'
+                        )}
                   </p>
                 )}
                 {!!editions.length && (
                   <div
                     className="nlist"
                     role="radiogroup"
-                    aria-label="Editions"
+                    aria-label={t('lumen.comicDetail.editions', 'Editions')}
                   >
                     {editions.map((e) => {
                       const st = stateOf(e.id);
@@ -1033,7 +1079,23 @@ export function ComicDetail() {
                                 e.title !== work.title ? e.title : '',
                                 e.startYear,
                                 e.issueCount
-                                  ? `${e.issueCount} ${unit}${e.issueCount === 1 ? '' : 's'}`
+                                  ? t(
+                                      manga
+                                        ? e.issueCount === 1
+                                          ? 'lumen.comicDetail.oneVolume'
+                                          : 'lumen.comicDetail.volumeCount'
+                                        : e.issueCount === 1
+                                          ? 'lumen.comicDetail.oneIssue'
+                                          : 'lumen.comicDetail.issueCount',
+                                      manga
+                                        ? e.issueCount === 1
+                                          ? '1 volume'
+                                          : '{count} volumes'
+                                        : e.issueCount === 1
+                                          ? '1 issue'
+                                          : '{count} issues',
+                                      { count: e.issueCount }
+                                    )
                                   : '',
                               ]
                                 .filter(Boolean)
@@ -1043,7 +1105,10 @@ export function ComicDetail() {
                               {e.recommended && (
                                 <span className="tag rec">
                                   <Icon name="star" />
-                                  Recommended
+                                  {t(
+                                    'lumen.comicDetail.recommended',
+                                    'Recommended'
+                                  )}
                                 </span>
                               )}
                               {st?.k === 'ok' && (
@@ -1076,36 +1141,52 @@ export function ComicDetail() {
               <Facts
                 rows={[
                   [
-                    'Type',
+                    t('lumen.comicDetail.type', 'Type'),
                     manga
                       ? chosen?.languageName
-                        ? `Manga, ${chosen.languageName} edition`
-                        : 'Manga'
+                        ? t(
+                            'lumen.comicDetail.mangaLanguageEdition',
+                            'Manga, {language} edition',
+                            { language: chosen.languageName }
+                          )
+                        : t('lumen.comicDetail.manga', 'Manga')
                       : chosen?.languageName &&
                           chosen.languageName !== 'English'
-                        ? `Comic, ${chosen.languageName} edition`
-                        : 'Comic',
+                        ? t(
+                            'lumen.comicDetail.comicLanguageEdition',
+                            'Comic, {language} edition',
+                            { language: chosen.languageName }
+                          )
+                        : t('lumen.comicDetail.comic', 'Comic'),
                   ],
-                  ['Publisher', chosen?.publisher || work.publisher],
-                  ['Started', chosen?.startYear || work.startYear],
                   [
-                    manga ? 'Volumes' : 'Issues',
+                    t('lumen.comicDetail.publisher', 'Publisher'),
+                    chosen?.publisher || work.publisher,
+                  ],
+                  [
+                    t('lumen.comicDetail.started', 'Started'),
+                    chosen?.startYear || work.startYear,
+                  ],
+                  [
+                    manga
+                      ? t('lumen.comicDetail.volumes', 'Volumes')
+                      : t('lumen.comicDetail.issues', 'Issues'),
                     chosen?.issueCount ? String(chosen.issueCount) : '',
                   ],
                   [
-                    'Status',
+                    t('lumen.comicDetail.status', 'Status'),
                     work.status === 'ongoing'
-                      ? 'Ongoing'
+                      ? t('lumen.comicDetail.ongoing', 'Ongoing')
                       : work.status === 'finished'
-                        ? 'Finished'
+                        ? t('lumen.comicDetail.finished', 'Finished')
                         : work.status === 'hiatus'
-                          ? 'On hiatus'
+                          ? t('lumen.comicDetail.onHiatus', 'On hiatus')
                           : work.status === 'cancelled'
-                            ? 'Cancelled'
+                            ? t('lumen.comicDetail.cancelled', 'Cancelled')
                             : '',
                   ],
                   [
-                    'In library',
+                    t('lumen.comicDetail.inLibrary', 'In library'),
                     chosen?.mediaInfo?.comicProgress?.total
                       ? `${Math.min(chosen.mediaInfo.comicProgress.owned, chosen.mediaInfo.comicProgress.total)} of ${chosen.mediaInfo.comicProgress.total}`
                       : '',
