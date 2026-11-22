@@ -230,6 +230,34 @@ test('indexer search honors enabled categories, submitted pagination and one-use
   await expect(
     page.getByRole('link', { name: 'Open indexer details' })
   ).toHaveCount(0);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/indexer-results-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  const navClearance = await page.evaluate(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    const action = [...document.querySelectorAll('button')].find((button) =>
+      button.textContent?.includes('Load more results')
+    );
+    const nav = document.querySelector('.tabbar');
+    return {
+      scrollHeight: document.documentElement.scrollHeight,
+      viewportHeight: window.innerHeight,
+      actionBottom: action?.getBoundingClientRect().bottom,
+      navTop: nav?.getBoundingClientRect().top,
+    };
+  });
+  if (['iphone', 'android'].includes(test.info().project.name))
+    expect(
+      navClearance.actionBottom ?? Number.POSITIVE_INFINITY
+    ).toBeLessThanOrEqual(navClearance.navTop ?? -1);
   await page
     .getByRole('searchbox', { name: 'Search terms' })
     .fill('Next query');
