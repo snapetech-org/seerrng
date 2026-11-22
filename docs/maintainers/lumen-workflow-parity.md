@@ -5901,3 +5901,20 @@ form and operations view. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/request-service-locale/`.
 A matched native baseline, bundled Express mount, live provider round trips,
 and independent linguistic review remain unverified.
+
+### Request override rules administration
+
+The override rules page now follows the saved English, French, or Arabic locale
+for service names, rule summaries, condition lookups, editor labels, validation,
+save/delete feedback, and recovery actions. Dropdown labels remain distinct from
+their corresponding ID text-field labels. Rule matching, service selection,
+condition values, and the `/overrideRule` payload are unchanged.
+
+Saved-locale fixtures pass in all three locales across desktop, iPhone, Android,
+and tablet (12 cases); the existing multi-language/country save flow also passes
+in all four viewports and retains its expected API payload. French desktop and
+Arabic iPhone candidates were inspected, including RTL and page overflow. A
+matched pre-change/native visual comparison, bundled Express mount, live
+provider behavior, and independent linguistic review remain open. Candidate
+captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/override-rules/`.

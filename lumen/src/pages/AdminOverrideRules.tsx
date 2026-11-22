@@ -7,6 +7,7 @@ import { ServiceNote } from '../components/extra';
 import { KeywordResults } from '../components/SubjectTagFilter';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const serviceTypes = [
   ['radarrServiceId', 'radarr', 'Radarr'],
@@ -51,12 +52,15 @@ function RulesForService({
   onDelete: (rule: Rule) => void;
   service: (typeof serviceTypes)[number];
 }) {
+  const { t } = useLumenLocale();
   const [key, endpoint, label] = service;
   const services = useApi<Service[]>(`/settings/${endpoint}`);
   return (
-    <Section title={label}>
+    <Section title={t(`lumen.override.service.${endpoint}`, label)}>
       <ServiceNote
-        what={`${label} service names`}
+        what={t('lumen.override.serviceNames', '{service} service names', {
+          service: t(`lumen.override.service.${endpoint}`, label),
+        })}
         error={services.error}
         retry={services.reload}
       />
@@ -66,7 +70,10 @@ function RulesForService({
         return (
           <Section
             key={rule.id}
-            title={`${name || `${label} Service ${serviceId}`} · Rule ${rule.id}`}
+            title={t('lumen.override.ruleTitle', '{service} · Rule {id}', {
+              service: name || `${label} Service ${serviceId}`,
+              id: rule.id,
+            })}
           >
             <dl className="setlist">
               {fields.map(([field, title]) => {
@@ -75,7 +82,7 @@ function RulesForService({
                 return (
                   <div className="set" key={field}>
                     <dt>
-                      <b>{title}</b>
+                      <b>{t(`lumen.override.field.${field}`, title)}</b>
                     </dt>
                     <dd>{value}</dd>
                   </div>
@@ -88,14 +95,14 @@ function RulesForService({
                 disabled={editing}
                 onClick={() => onEdit(rule)}
               >
-                Edit Rule
+                {t('lumen.override.edit', 'Edit Rule')}
               </button>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={editing}
                 onClick={() => onDelete(rule)}
               >
-                Delete Rule
+                {t('lumen.override.delete', 'Delete Rule')}
               </button>
             </div>
           </Section>
@@ -116,6 +123,7 @@ function ConditionChoices({
   onChange: (field: string, value: string) => void;
   busy: boolean;
 }) {
+  const { t } = useLumenLocale();
   const video = provider === 'radarr' || provider === 'sonarr';
   const [userSearch, setUserSearch] = useState('');
   const [userQuery, setUserQuery] = useState('');
@@ -154,16 +162,20 @@ function ConditionChoices({
   const choices = [
     [
       'users',
-      'User',
+      t('lumen.override.user', 'User'),
       users.data?.results.map(({ id, displayName }) => [
         String(id),
         displayName,
       ]),
     ],
-    ['genre', 'Genre', genres.data?.map(({ id, name }) => [String(id), name])],
+    [
+      'genre',
+      t('lumen.override.genre', 'Genre'),
+      genres.data?.map(({ id, name }) => [String(id), name]),
+    ],
     [
       'language',
-      'Language',
+      t('lumen.override.language', 'Language'),
       languages.data?.map(({ iso_639_1, english_name }) => [
         iso_639_1,
         english_name,
@@ -171,7 +183,7 @@ function ConditionChoices({
     ],
     [
       'productionCountries',
-      'Production Country',
+      t('lumen.override.productionCountry', 'Production Country'),
       countries.data?.map(({ iso_3166_1, english_name }) => [
         iso_3166_1,
         english_name,
@@ -180,25 +192,34 @@ function ConditionChoices({
   ] as const;
 
   return (
-    <Section title="Find Conditions by Name">
+    <Section
+      title={t('lumen.override.findConditions', 'Find Conditions by Name')}
+    >
       {(
         [
           ['users', users],
           ['genres', genres],
           ['languages', languages],
-          ['production countries', countries],
+          [
+            t('lumen.override.productionCountries', 'production countries'),
+            countries,
+          ],
         ] as const
       ).map(([what, lookup]) => (
         <ServiceNote
           key={what}
           what={what}
+          title={t('lumen.override.lookupLoadError', 'Could not load {what}', {
+            what,
+          })}
+          retryLabel={t('lumen.override.retry', 'Retry')}
           error={lookup.error}
           retry={lookup.reload}
         />
       ))}
       <div className="toolbar">
         <label className="sel">
-          Search Users
+          {t('lumen.override.searchUsers', 'Search Users')}
           <input
             className="cfg-input"
             type="search"
@@ -214,7 +235,7 @@ function ConditionChoices({
           disabled={busy}
           onClick={() => setUserQuery(userSearch.trim())}
         >
-          Find Users
+          {t('lumen.override.findUsers', 'Find Users')}
         </button>
       </div>
       <div className="setlist">
@@ -231,13 +252,20 @@ function ConditionChoices({
                     if (event.target.value) toggle(field, event.target.value);
                   }}
                 >
-                  <option value="">Choose to add or remove</option>
+                  <option value="">
+                    {t(
+                      'lumen.override.chooseAddRemove',
+                      'Choose to add or remove'
+                    )}
+                  </option>
                   {[...options]
                     .sort((a, b) => a[1].localeCompare(b[1]))
                     .map(([id, name]) => (
                       <option key={id} value={id}>
                         {name}
-                        {picked(field).includes(id) ? ' (selected)' : ''}
+                        {picked(field).includes(id)
+                          ? ` (${t('lumen.override.selected', 'selected')})`
+                          : ''}
                       </option>
                     ))}
                 </select>
@@ -249,7 +277,7 @@ function ConditionChoices({
         <>
           <div className="toolbar">
             <label className="sel">
-              Search Keywords
+              {t('lumen.override.searchKeywords', 'Search Keywords')}
               <input
                 className="cfg-input"
                 type="search"
@@ -268,7 +296,7 @@ function ConditionChoices({
                 setKeywordQuery(keywordSearch.trim());
               }}
             >
-              Find Keywords
+              {t('lumen.override.findKeywords', 'Find Keywords')}
             </button>
           </div>
           {keywordQuery && (
@@ -297,6 +325,7 @@ function RuleEditor({
   onSaved: () => void;
   onCancel: () => void;
 }) {
+  const { t } = useLumenLocale();
   const radarr = useApi<Service[]>('/settings/radarr');
   const sonarr = useApi<Service[]>('/settings/sonarr');
   const lidarr = useApi<Service[]>('/settings/lidarr');
@@ -374,7 +403,12 @@ function RuleEditor({
     const hasValue = ([field]: (typeof fields)[number]) =>
       activeFields.has(field) && values[field].trim();
     if (!conditions.some(hasValue) || !overrides.some(hasValue)) {
-      setFailure('Enter at least one condition and one setting to override.');
+      setFailure(
+        t(
+          'lumen.override.requiredConditionSetting',
+          'Enter at least one condition and one setting to override.'
+        )
+      );
       return;
     }
     pending.current = true;
@@ -405,7 +439,13 @@ function RuleEditor({
       onSaved();
     } catch (error) {
       setFailure(
-        friendlyError(error, 'Could not save the request override rule.')
+        friendlyError(
+          error,
+          t(
+            'lumen.override.saveFailed',
+            'Could not save the request override rule.'
+          )
+        )
       );
     } finally {
       pending.current = false;
@@ -414,11 +454,25 @@ function RuleEditor({
   }
 
   return (
-    <Section title={rule ? `Edit Rule ${rule.id}` : 'New Override Rule'}>
+    <Section
+      title={
+        rule
+          ? t('lumen.override.editRuleId', 'Edit Rule {id}', { id: rule.id })
+          : t('lumen.override.newRule', 'New Override Rule')
+      }
+    >
       {serviceTypes.map(([, , label], index) => (
         <ServiceNote
           key={label}
-          what={`${label} services`}
+          what={t('lumen.override.services', '{service} services', {
+            service: label,
+          })}
+          title={t(
+            'lumen.override.serviceLoadError',
+            'Could not load {service} services',
+            { service: label }
+          )}
+          retryLabel={t('lumen.override.retry', 'Retry')}
           error={serviceLists[index].error}
           retry={serviceLists[index].reload}
         />
@@ -431,7 +485,7 @@ function RuleEditor({
       >
         <div className="setlist">
           <label className="set cfg-row">
-            <b>Service</b>
+            <b>{t('lumen.override.service', 'Service')}</b>
             <select
               ref={serviceSelect}
               className="cfg-select"
@@ -464,10 +518,15 @@ function RuleEditor({
                 setTarget(next);
               }}
             >
-              <option value="">Choose a service</option>
+              <option value="">
+                {t('lumen.override.chooseService', 'Choose a service')}
+              </option>
               {target && !options.some(({ value }) => value === target) && (
                 <option value={target} disabled>
-                  Previously selected service
+                  {t(
+                    'lumen.override.previousService',
+                    'Previously selected service'
+                  )}
                 </option>
               )}
               {options.map(({ value, label }) => (
@@ -481,13 +540,23 @@ function RuleEditor({
         {target && (
           <>
             <ServiceNote
-              what="destination choices"
+              what={t(
+                'lumen.override.destinationChoices',
+                'destination choices'
+              )}
+              title={t(
+                'lumen.override.destinationLoadError',
+                'Could not load destination choices'
+              )}
+              retryLabel={t('lumen.override.retry', 'Retry')}
               error={destination.error}
               retry={destination.reload}
             />
             <p className="note">
-              Every populated condition must match. Use commas to enter multiple
-              values.
+              {t(
+                'lumen.override.conditionHelp',
+                'Every populated condition must match. Use commas to enter multiple values.'
+              )}
             </p>
             <div className="setlist">
               {visibleFields.map(([field, label]) => {
@@ -500,7 +569,12 @@ function RuleEditor({
                   const choices = serviceChoices[field];
                   return (
                     <label className="set cfg-row" key={field}>
-                      <b>{label.replace(' ID', '')}</b>
+                      <b>
+                        {t(
+                          `lumen.override.choice.${field}`,
+                          label.replace(' ID', '')
+                        )}
+                      </b>
                       <select
                         className="cfg-select"
                         disabled={busy}
@@ -509,13 +583,22 @@ function RuleEditor({
                           setValues({ ...values, [field]: event.target.value })
                         }
                       >
-                        <option value="">Use service default</option>
+                        <option value="">
+                          {t(
+                            'lumen.override.serviceDefault',
+                            'Use service default'
+                          )}
+                        </option>
                         {values[field] &&
                           !choices.some(
                             ([value]) => value === values[field]
                           ) && (
                             <option value={values[field]}>
-                              Saved value ({values[field]})
+                              {t(
+                                'lumen.override.savedValue',
+                                'Saved value ({value})',
+                                { value: values[field] }
+                              )}
                             </option>
                           )}
                         {choices.map(([value, name]) => (
@@ -531,14 +614,17 @@ function RuleEditor({
                   field === 'profileId' || field === 'languageProfileId';
                 const display =
                   !catalog && field === 'genre'
-                    ? 'TMDB Genre IDs'
+                    ? t('lumen.override.tmdbGenreIds', 'TMDB Genre IDs')
                     : !catalog && field === 'keywords'
-                      ? 'TMDB Keyword IDs'
+                      ? t('lumen.override.tmdbKeywordIds', 'TMDB Keyword IDs')
                       : field === 'language'
-                        ? 'Language Codes'
+                        ? t('lumen.override.languageCodes', 'Language Codes')
                         : field === 'productionCountries'
-                          ? 'Production Country Codes'
-                          : label;
+                          ? t(
+                              'lumen.override.productionCountryCodes',
+                              'Production Country Codes'
+                            )
+                          : t(`lumen.override.field.${field}`, label);
                 return (
                   <label className="set cfg-row" key={field}>
                     <b>{display}</b>
@@ -569,7 +655,7 @@ function RuleEditor({
               />
             )}
             {!!destination.data?.tags.length && (
-              <Section title="Service Tags">
+              <Section title={t('lumen.override.serviceTags', 'Service Tags')}>
                 <div className="setlist">
                   {destination.data.tags.map(({ id, label }) => {
                     const value = String(id);
@@ -606,7 +692,7 @@ function RuleEditor({
             className="btn btn-primary btn-sm"
             disabled={busy || !options.some(({ value }) => value === target)}
           >
-            Save Rule
+            {t('lumen.override.saveRule', 'Save Rule')}
           </button>
           <button
             type="button"
@@ -614,7 +700,7 @@ function RuleEditor({
             onClick={onCancel}
             disabled={busy}
           >
-            Cancel
+            {t('lumen.override.cancel', 'Cancel')}
           </button>
         </div>
       </form>
@@ -623,6 +709,7 @@ function RuleEditor({
 }
 
 export default function AdminOverrideRules() {
+  const { t } = useLumenLocale();
   const rules = useApi<Rule[]>('/overrideRule');
   const [editing, setEditing] = useState<Rule | null>();
   const [deleting, setDeleting] = useState<Rule>();
@@ -641,7 +728,13 @@ export default function AdminOverrideRules() {
       rules.reload();
     } catch (error) {
       setFailure(
-        friendlyError(error, 'Could not delete the request override rule.')
+        friendlyError(
+          error,
+          t(
+            'lumen.override.deleteFailed',
+            'Could not delete the request override rule.'
+          )
+        )
       );
     } finally {
       pending.current = false;
@@ -651,32 +744,39 @@ export default function AdminOverrideRules() {
   return (
     <>
       <header className="ph">
-        <h1>Request Override Rules</h1>
+        <h1>{t('lumen.override.title', 'Request Override Rules')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.admin.title', 'Administration')}
         </Link>
         <button
           className="btn btn-tonal btn-sm"
           disabled={editing !== undefined || !rules.data}
           onClick={() => setEditing(null)}
         >
-          New Override Rule
+          {t('lumen.override.newRule', 'New Override Rule')}
         </button>
       </div>
       <ServiceNote
-        what="request override rules"
+        what={t('lumen.override.rules', 'request override rules')}
+        title={t(
+          'lumen.override.rulesLoadError',
+          'Could not load request override rules'
+        )}
+        retryLabel={t('lumen.override.retry', 'Retry')}
         error={rules.error}
         retry={rules.reload}
       />
       {!rules.data && !rules.error && (
         <p className="note" role="status">
-          Loading request override rules…
+          {t('lumen.override.loading', 'Loading request override rules…')}
         </p>
       )}
       {rules.data?.length === 0 && (
-        <p className="note">No request override rules configured.</p>
+        <p className="note">
+          {t('lumen.override.empty', 'No request override rules configured.')}
+        </p>
       )}
       {editing !== undefined && (
         <RuleEditor
@@ -691,9 +791,12 @@ export default function AdminOverrideRules() {
       )}
       {deleting && (
         <ConfirmSheet
-          title="Delete Override Rule"
-          body="Future requests will stop using this rule."
-          confirm="Delete Rule"
+          title={t('lumen.override.deleteTitle', 'Delete Override Rule')}
+          body={t(
+            'lumen.override.deleteBody',
+            'Future requests will stop using this rule.'
+          )}
+          confirm={t('lumen.override.delete', 'Delete Rule')}
           busy={busy}
           onConfirm={() => void deleteRule()}
           onClose={() => {
