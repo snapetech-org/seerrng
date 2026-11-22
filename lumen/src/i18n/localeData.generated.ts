@@ -4362,6 +4362,7 @@ export const localeData = [
       'lumen.music.releaseTypeHint': 'جرّب نوع إصدار آخر.',
       'lumen.music.releaseTypes': 'أنواع الإصدارات',
       'lumen.music.requestAlbum': 'طلب الألبوم',
+      'lumen.music.listenOn': 'استمع على {server}',
       'lumen.music.retry': 'إعادة المحاولة',
       'lumen.music.retryArtistLookup': 'أعد محاولة البحث عن الفنان',
       'lumen.music.searchHint': 'جرّب كلمات أقل أو اسم الفنان فقط.',
@@ -14045,6 +14046,7 @@ export const localeData = [
       'lumen.music.releaseTypeHint': 'Try another release type.',
       'lumen.music.releaseTypes': 'Release Types',
       'lumen.music.requestAlbum': 'Request album',
+      'lumen.music.listenOn': 'Listen on {server}',
       'lumen.music.retry': 'Retry',
       'lumen.music.retryArtistLookup': 'Retry Artist Lookup',
       'lumen.music.searchHint': 'Try fewer words, or just the artist.',
@@ -24547,6 +24549,7 @@ export const localeData = [
       'lumen.music.releaseTypeHint': 'Essayez un autre type de sortie.',
       'lumen.music.releaseTypes': 'Types de sorties',
       'lumen.music.requestAlbum': 'Demander l’album',
+      'lumen.music.listenOn': 'Écouter sur {server}',
       'lumen.music.retry': 'Réessayer',
       'lumen.music.retryArtistLookup': 'Réessayer la recherche d’artiste',
       'lumen.music.searchHint':

@@ -11,6 +11,7 @@ const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
 const rowBaseline = process.env.LUMEN_REQUEST_ROW_BASELINE === '1';
 const partialBaseline = process.env.LUMEN_REQUEST_PARTIAL_BASELINE === '1';
 const requestLinkBaseline = process.env.LUMEN_REQUEST_LINK_BASELINE === '1';
+const mediaLinkBaseline = process.env.LUMEN_MEDIA_LINK_BASELINE === '1';
 
 const labels = {
   en: {
@@ -38,6 +39,8 @@ const labels = {
     seasonMissing: 'Season 1 not found yet',
     seasonsMissing: 'Seasons 1, 3–4 not found yet',
     invalidLink: 'This request link is invalid.',
+    watchOn: 'Watch on Plex',
+    listenOn: 'Listen on Plex',
   },
   fr: {
     waiting: 'En attente d’approbation',
@@ -65,6 +68,8 @@ const labels = {
     seasonMissing: 'Saison 1 introuvable pour le moment',
     seasonsMissing: 'Saisons 1, 3–4 introuvables pour le moment',
     invalidLink: 'Ce lien de demande n’est pas valide.',
+    watchOn: 'Regarder sur Plex',
+    listenOn: 'Écouter sur Plex',
   },
   ar: {
     waiting: 'بانتظار الموافقة',
@@ -91,6 +96,8 @@ const labels = {
     seasonMissing: 'الموسم 1 غير موجود بعد',
     seasonsMissing: 'المواسم 1, 3–4 غير موجودة بعد',
     invalidLink: 'رابط الطلب هذا غير صالح.',
+    watchOn: 'شاهد على Plex',
+    listenOn: 'استمع على Plex',
   },
 } as const;
 
@@ -193,6 +200,17 @@ const requests = [
       status: 5,
       status4k: 5,
       downloadStatus4k: [],
+      mediaUrl4k: 'https://plex.example/library/metadata/620',
+    },
+  },
+  {
+    ...request(640, 'available', 2),
+    type: 'music',
+    media: {
+      mediaType: 'music',
+      mbId: 'fixture-album',
+      status: 5,
+      mediaUrl: 'https://plex.example/library/metadata/640',
     },
   },
   tvRequest(630, true, [1]),
@@ -226,6 +244,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
           booksEnabled: true,
           ebookServiceEnabled: true,
           audiobookServiceEnabled: true,
+          musicEnabled: true,
           enabledMediaCategories: { ebook: true, audiobook: true },
         },
       });
@@ -251,6 +270,14 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
       return route.fulfill({
         json: { id: 620, title: 'Fixture 4K movie', releaseDate: '2020-01-01' },
       });
+    if (path === '/music/fixture-album')
+      return route.fulfill({
+        json: {
+          id: 'fixture-album',
+          title: 'Fixture music album',
+          artist: { name: 'Fixture Artist' },
+        },
+      });
     if (path === '/request') {
       const results =
         url.searchParams.get('filter') === 'processing' ? [] : requests;
@@ -262,7 +289,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   });
 
   await page.goto('/requests?tab=all');
-  await expect(page.locator('.rq')).toHaveCount(21);
+  await expect(page.locator('.rq')).toHaveCount(22);
   const expected = baseline
     ? {
         ...labels.en,
@@ -296,6 +323,20 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
     .filter({ hasText: 'Fixture 4K movie' })
     .locator('.st');
   await expect(fourK).toContainText(expected.fourK);
+  const fourKPlay = page
+    .locator('.rq')
+    .filter({ hasText: 'Fixture 4K movie' })
+    .locator('a.btn-ok');
+  await expect(fourKPlay).toHaveText(
+    mediaLinkBaseline ? 'Watch on Plex' : labels[locale].watchOn
+  );
+  const musicPlay = page
+    .locator('.rq')
+    .filter({ hasText: 'Fixture music album' })
+    .locator('a.btn-ok');
+  await expect(musicPlay).toHaveText(
+    mediaLinkBaseline ? 'Listen on Plex' : labels[locale].listenOn
+  );
   const tvDetail = (id: number) =>
     page
       .locator('.rq')
@@ -492,7 +533,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
       ? 'This request link is invalid.'
       : labels[locale].invalidLink
   );
-  await expect(page.locator('.rq')).toHaveCount(21);
+  await expect(page.locator('.rq')).toHaveCount(22);
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)

@@ -3411,6 +3411,7 @@
   "lumen.music.releaseTypeHint",
   "lumen.music.releaseTypes",
   "lumen.music.requestAlbum",
+  "lumen.music.listenOn",
   "lumen.music.retry",
   "lumen.music.retryArtistLookup",
   "lumen.music.searchHint",

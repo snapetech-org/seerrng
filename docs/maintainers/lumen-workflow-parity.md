@@ -6499,3 +6499,17 @@ reviewed in French and Arabic; the alert changes text without altering the
 layout. Live link destinations and independent linguistic review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-link-localization-20261122/`.
+
+### Media-server play-link localization in Requests
+
+Completed movie and music requests now use the selected media-server name in
+localized “Watch on” and “Listen on” actions in English, French, and Arabic.
+Plex URL validation, 4K URL selection, and link behavior are unchanged.
+
+The browser fixture exercises a completed 4K movie and a completed music album.
+Twelve candidate and twelve baseline cases pass across desktop, iPhone,
+Android, and tablet in all three locales. Matched captures at 1440 CSS pixels
+and phone size were inspected in French; only the action copy changes, without
+new overflow or geometry changes. Live media-server URLs and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-play-link-localization-20261122/`.

@@ -1914,8 +1914,12 @@ export default function Requests() {
           >
             <Icon name="play" size="sm" />
             {x.r.type === 'music'
-              ? `Listen on ${serverName}`
-              : `Watch on ${serverName}`}
+              ? t('lumen.music.listenOn', 'Listen on {server}', {
+                  server: serverName,
+                })
+              : t('lumen.tv.watchOn', 'Watch on {server}', {
+                  server: serverName,
+                })}
           </a>
         ) : (x.r.id < 0 ? !everyone : x.r.requestedBy?.id === user?.id) &&
           x.r.status === 1 ? (
