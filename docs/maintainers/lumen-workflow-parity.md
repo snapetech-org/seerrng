@@ -6503,10 +6503,10 @@ the season endpoint first fetches full series metadata to identify anime and
 select its provider. If that lookup fails, the entire batch previously returned
 500 before attempting any season. The endpoint now falls back to the configured
 TV provider when no per-user TV maturity cap depends on the missing rating
-metadata; users with a cap still fail closed. The focused route regression and
-server typecheck pass. This establishes recovery for the reproduced lookup
-failure, but does not establish that it caused the reporter's incident or verify
-their live provider.
+metadata; users with a cap still fail closed. Focused route regressions verify
+both the recovery and the maturity-cap denial, and the server typecheck passes.
+This establishes recovery for the reproduced lookup failure, but does not
+establish that it caused the reporter's incident or verify their live provider.
 
 ### Coming Soon to Release Calendar navigation
 

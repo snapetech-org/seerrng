@@ -9,6 +9,8 @@ import Tvdb from '@server/api/tvdb';
 import { MediaType } from '@server/constants/media';
 import { getRepository } from '@server/datasource';
 import Media from '@server/entity/Media';
+import { User } from '@server/entity/User';
+import { UserSettings } from '@server/entity/UserSettings';
 import {
   getSettings,
   MetadataProviderType,
@@ -232,6 +234,48 @@ describe('GET /tv/:id/seasons', () => {
         response.body[0].episodes[0].name,
         'Recovered episode'
       );
+    } finally {
+      settings.metadataSettings.tv = priorProvider;
+    }
+  });
+
+  it('fails closed for a TV maturity-limited user when series metadata is unavailable', async () => {
+    const settings = getSettings();
+    const priorProvider = settings.metadataSettings.tv;
+    settings.metadataSettings.tv = MetadataProviderType.TMDB;
+    const user = await getRepository(User).save(
+      new User({
+        email: 'tv-maturity-fallback@example.test',
+        avatar: 'avatar',
+      })
+    );
+    await getRepository(UserSettings).save(
+      new UserSettings({ user, tvMaturityRatingLimit: 'TV-14' })
+    );
+    const restrictedApp = express();
+    restrictedApp.use((req, _res, next) => {
+      req.user = user;
+      next();
+    });
+    restrictedApp.use('/api/v1/tv', tvRoutes);
+
+    const requests: string[] = [];
+    const mockGet = mock.method as (
+      object: object,
+      key: string,
+      callback: (url: string) => Promise<unknown>
+    ) => unknown;
+    mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
+      requests.push(url);
+      throw new Error('Temporary series metadata failure');
+    });
+
+    try {
+      const response = await request(restrictedApp)
+        .get('/api/v1/tv/1413/seasons')
+        .query({ seasonNumbers: '2' });
+      assert.strictEqual(response.status, 500);
+      assert.deepStrictEqual(requests, ['/tv/1413']);
     } finally {
       settings.metadataSettings.tv = priorProvider;
     }
