@@ -1,6 +1,7 @@
 import { useState, type RefObject } from 'react';
 import { api } from '../api';
 import { forget } from '../apiCache';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 import { Section } from './cards';
@@ -83,6 +84,7 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   setBusy: (busy: boolean) => void;
   pending: RefObject<boolean>;
 }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(() => toDraft(initial, provider));
   const [notice, setNotice] = useState('');
@@ -151,40 +153,60 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
             jellyfinForgotPasswordUrl: draft.jellyfinForgotPasswordUrl.trim(),
             apiKey: draft.apiKey || redacted,
           };
-    await perform(async () => {
-      const result = await api<T>(path, {
-        method: 'POST',
-        body: JSON.stringify({ ...connection, ...options }),
-      });
-      if (generation !== sessionGeneration()) return;
-      setSaved(result);
-      setDraft(toDraft(result, provider));
-      onSaved?.(result);
-      if (!tautulli) {
-        invalidatePublicSettings();
-        forget('/settings/public');
-      }
-      setNotice('Connection settings saved.');
-    }, `Could not save the ${name} connection. Check the address and credentials, then try again.`);
+    await perform(
+      async () => {
+        const result = await api<T>(path, {
+          method: 'POST',
+          body: JSON.stringify({ ...connection, ...options }),
+        });
+        if (generation !== sessionGeneration()) return;
+        setSaved(result);
+        setDraft(toDraft(result, provider));
+        onSaved?.(result);
+        if (!tautulli) {
+          invalidatePublicSettings();
+          forget('/settings/public');
+        }
+        setNotice(
+          t('lumen.mediaServerConnection.saved', 'Connection settings saved.')
+        );
+      },
+      t(
+        'lumen.mediaServerConnection.saveFailed',
+        'Could not save the {provider} connection. Check the address and credentials, then try again.',
+        { provider: name }
+      )
+    );
   }
 
   async function changeBridge(enabled: boolean) {
     const generation = sessionGeneration();
-    await perform(async () => {
-      const result = await api<{ bridgeLoginEnabled: boolean }>(
-        `${path}/bridge-login`,
-        {
-          method: 'POST',
-          body: JSON.stringify({ enabled }),
-        }
-      );
-      if (generation !== sessionGeneration()) return;
-      setSaved((previous) => ({
-        ...previous,
-        bridgeLoginEnabled: result.bridgeLoginEnabled,
-      }));
-      setNotice('Bridge sign-in settings saved.');
-    }, 'Could not change bridge sign-in. Check that Jellyfin is connected and media-server sign-in is enabled.');
+    await perform(
+      async () => {
+        const result = await api<{ bridgeLoginEnabled: boolean }>(
+          `${path}/bridge-login`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ enabled }),
+          }
+        );
+        if (generation !== sessionGeneration()) return;
+        setSaved((previous) => ({
+          ...previous,
+          bridgeLoginEnabled: result.bridgeLoginEnabled,
+        }));
+        setNotice(
+          t(
+            'lumen.mediaServerConnection.bridgeSaved',
+            'Bridge sign-in settings saved.'
+          )
+        );
+      },
+      t(
+        'lumen.mediaServerConnection.bridgeFailed',
+        'Could not change bridge sign-in. Check that Jellyfin is connected and media-server sign-in is enabled.'
+      )
+    );
   }
 
   const serverOptions = (devices ?? []).map((device) => {
@@ -223,13 +245,22 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
   );
   async function discoverPlex() {
     const generation = sessionGeneration();
-    await perform(async () => {
-      const result = await api<PlexDevice[]>('/settings/plex/devices/servers', {
-        cache: 'no-store',
-      });
-      if (generation !== sessionGeneration()) return;
-      setDevices(result);
-    }, 'Could not discover Plex servers. Retry or enter the address manually.');
+    await perform(
+      async () => {
+        const result = await api<PlexDevice[]>(
+          '/settings/plex/devices/servers',
+          {
+            cache: 'no-store',
+          }
+        );
+        if (generation !== sessionGeneration()) return;
+        setDevices(result);
+      },
+      t(
+        'lumen.mediaServerConnection.discoverFailed',
+        'Could not discover Plex servers. Retry or enter the address manually.'
+      )
+    );
   }
 
   const fields = tautulli
@@ -247,7 +278,13 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
           : jellyfinFields),
       ];
   return (
-    <Section title={`${name} Connection`}>
+    <Section
+      title={t(
+        'lumen.mediaServerConnection.connection',
+        '{provider} Connection',
+        { provider: name }
+      )}
+    >
       {plex && (
         <>
           <div className="toolbar">
@@ -257,7 +294,10 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
               disabled={busy}
               onClick={() => void discoverPlex()}
             >
-              Discover Plex Servers
+              {t(
+                'lumen.mediaServerConnection.discover',
+                'Discover Plex Servers'
+              )}
             </button>
           </div>
           {devices && (
@@ -265,7 +305,12 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
               {devices.length > 0 && (
                 <div className="setlist">
                   <label className="set cfg-row">
-                    <span>Discovered Plex Connection</span>
+                    <span>
+                      {t(
+                        'lumen.mediaServerConnection.discoveredConnection',
+                        'Discovered Plex Connection'
+                      )}
+                    </span>
                     <select
                       className="cfg-select"
                       value={selectedConnection?.id ?? ''}
@@ -283,7 +328,10 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
                       }}
                     >
                       <option value="" disabled>
-                        Choose a Connection
+                        {t(
+                          'lumen.mediaServerConnection.chooseConnection',
+                          'Choose a Connection'
+                        )}
                       </option>
                       {serverOptions.map((server) => (
                         <optgroup
@@ -296,7 +344,7 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
                               value={connection.id}
                               disabled={connection.status !== 200}
                             >
-                              {`${connection.local ? 'Local' : 'Remote'} ${connection.protocol.toUpperCase()} · ${connection.address}:${connection.port}${connection.status !== 200 ? ' · Unreachable' : index === 0 ? ' · Recommended' : ''}`}
+                              {`${connection.local ? t('lumen.mediaServerConnection.local', 'Local') : t('lumen.mediaServerConnection.remote', 'Remote')} ${connection.protocol.toUpperCase()} · ${connection.address}:${connection.port}${connection.status !== 200 ? ` · ${t('lumen.mediaServerConnection.unreachableShort', 'Unreachable')}` : index === 0 ? ` · ${t('lumen.mediaServerConnection.recommended', 'Recommended')}` : ''}`}
                             </option>
                           ))}
                         </optgroup>
@@ -308,9 +356,18 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
               {!discoveredConnections.some(({ status }) => status === 200) && (
                 <p className="note">
                   {devices.length
-                    ? 'No discovered Plex connection is reachable.'
-                    : 'No Plex servers were found.'}{' '}
-                  Enter the address manually or retry discovery.
+                    ? t(
+                        'lumen.mediaServerConnection.unreachable',
+                        'No discovered Plex connection is reachable.'
+                      )
+                    : t(
+                        'lumen.mediaServerConnection.noServers',
+                        'No Plex servers were found.'
+                      )}{' '}
+                  {t(
+                    'lumen.mediaServerConnection.enterAddress',
+                    'Enter the address manually or retry discovery.'
+                  )}
                 </p>
               )}
             </>
@@ -330,7 +387,12 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
           />
           {fields.map(([key, label, type]) => (
             <label className="set cfg-row" key={key}>
-              <span>{label}</span>
+              <span>
+                {t(
+                  `${tautulli ? 'lumen.mediaServerConnection.tautulliField' : 'lumen.mediaServerConnection.field'}.${key}`,
+                  label
+                )}
+              </span>
               <input
                 className="cfg-input"
                 type={type}
@@ -340,14 +402,23 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
                 max={key === 'port' ? 65535 : undefined}
                 autoComplete={key === 'apiKey' ? 'new-password' : undefined}
                 placeholder={
-                  key === 'apiKey' && configuredKey ? 'Saved key' : undefined
+                  key === 'apiKey' && configuredKey
+                    ? t('lumen.mediaServerConnection.savedKey', 'Saved key')
+                    : undefined
                 }
                 onChange={(event) => change({ [key]: event.target.value })}
               />
             </label>
           ))}
           <label className="set cfg-row">
-            <span>{tautulli ? 'Use HTTPS for Tautulli' : 'Use HTTPS'}</span>
+            <span>
+              {tautulli
+                ? t(
+                    'lumen.mediaServerConnection.useHttpsTautulli',
+                    'Use HTTPS for Tautulli'
+                  )
+                : t('lumen.mediaServerConnection.useHttps', 'Use HTTPS')}
+            </span>
             <input
               type="checkbox"
               checked={draft.useSsl}
@@ -357,7 +428,12 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
           </label>
           {plex && (
             <label className="set cfg-row">
-              <span>Analyze Media on Playback</span>
+              <span>
+                {t(
+                  'lumen.mediaServerConnection.analyzePlayback',
+                  'Analyze Media on Playback'
+                )}
+              </span>
               <input
                 type="checkbox"
                 checked={draft.analyzeOnPlayback}
@@ -374,14 +450,23 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
             className="btn btn-primary btn-sm"
             disabled={busy || !valid || !changed}
           >
-            Save {name} Connection
+            {t(
+              'lumen.mediaServerConnection.saveConnection',
+              'Save {provider} Connection',
+              { provider: name }
+            )}
           </button>
         </div>
       </form>
       {name === 'Jellyfin' && (
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Enable Jellyfin Bridge Sign-In</span>
+            <span>
+              {t(
+                'lumen.mediaServerConnection.enableBridge',
+                'Enable Jellyfin Bridge Sign-In'
+              )}
+            </span>
             <input
               type="checkbox"
               checked={saved.bridgeLoginEnabled === true}

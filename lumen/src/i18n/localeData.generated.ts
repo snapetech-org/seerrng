@@ -2080,6 +2080,51 @@ export const localeData = [
       'lumen.adminLogs.search': 'بحث',
       'lumen.adminLogs.systemLogs': 'سجلات النظام',
       'lumen.adminLogs.title': 'سجلات النظام',
+      'lumen.adminMediaLibraries.administration': 'الإدارة',
+      'lumen.adminMediaLibraries.audiobooks': 'الكتب الصوتية',
+      'lumen.adminMediaLibraries.automatic': 'تلقائي',
+      'lumen.adminMediaLibraries.cancelScan': 'إلغاء الفحص',
+      'lumen.adminMediaLibraries.configureServer':
+        'قم بإعداد خادم وسائط لإدارة مكتباته.',
+      'lumen.adminMediaLibraries.disableAll': 'تعطيل الكل',
+      'lumen.adminMediaLibraries.enableAll': 'تفعيل الكل',
+      'lumen.adminMediaLibraries.enableLibrary': 'تفعيل {name}',
+      'lumen.adminMediaLibraries.enabled': 'مفعّل',
+      'lumen.adminMediaLibraries.episodeOrder': 'ترتيب الحلقات',
+      'lumen.adminMediaLibraries.episodeOrderFor': 'ترتيب حلقات {name}',
+      'lumen.adminMediaLibraries.fullScan': 'فحص المكتبة بالكامل',
+      'lumen.adminMediaLibraries.libraries': 'مكتبات خادم الوسائط',
+      'lumen.adminMediaLibraries.libraryType': 'نوع المكتبة',
+      'lumen.adminMediaLibraries.libraryTypeFor': 'نوع مكتبة {name}',
+      'lumen.adminMediaLibraries.loadLibrariesFailure':
+        'تعذر تحميل مكتبات خادم الوسائط',
+      'lumen.adminMediaLibraries.loadSettingsFailure':
+        'تعذر تحميل إعدادات خادم الوسائط',
+      'lumen.adminMediaLibraries.loadingLibraries': 'جارٍ تحميل المكتبات…',
+      'lumen.adminMediaLibraries.loadingServer': 'جارٍ تحميل خادم الوسائط…',
+      'lumen.adminMediaLibraries.noLibraries':
+        'لم يتم العثور على مكتبات. حدّث قائمة المكتبات بعد إعداد الخادم.',
+      'lumen.adminMediaLibraries.noScan': 'لا يوجد فحص قيد التشغيل.',
+      'lumen.adminMediaLibraries.pageTitle': 'مكتبات خادم الوسائط',
+      'lumen.adminMediaLibraries.providerLibraries': 'مكتبات {provider}',
+      'lumen.adminMediaLibraries.refreshLibraries': 'تحديث المكتبات',
+      'lumen.adminMediaLibraries.scanCancelRequested': 'تم طلب إلغاء الفحص.',
+      'lumen.adminMediaLibraries.scanStartRequested': 'تم طلب بدء الفحص.',
+      'lumen.adminMediaLibraries.scanStatus': 'حالة الفحص',
+      'lumen.adminMediaLibraries.scanStatusFailure': 'تعذر تحميل حالة الفحص',
+      'lumen.adminMediaLibraries.scanning':
+        'جارٍ الفحص{library} · {progress} من {total}',
+      'lumen.adminMediaLibraries.settings': 'إعدادات خادم الوسائط',
+      'lumen.adminMediaLibraries.settingsUpdated': 'تم تحديث إعدادات المكتبة.',
+      'lumen.adminMediaLibraries.startScan': 'بدء الفحص الكامل',
+      'lumen.adminMediaLibraries.tautulliLoadFailure':
+        'تعذر تحميل إعدادات Tautulli',
+      'lumen.adminMediaLibraries.tautulliSettings': 'إعدادات Tautulli',
+      'lumen.adminMediaLibraries.type.book': 'الكتب',
+      'lumen.adminMediaLibraries.type.movie': 'الأفلام',
+      'lumen.adminMediaLibraries.type.music': 'الموسيقى',
+      'lumen.adminMediaLibraries.type.show': 'المسلسلات',
+      'lumen.adminMediaLibraries.typeUpdated': 'تم تحديث نوع المكتبة.',
       'lumen.adminNetwork.ackRequired':
         'أقرّ بأن جلسات تسجيل الدخول عبر HTTP قد تُعترض قبل تفعيل تسجيل الدخول عبر HTTP.',
       'lumen.adminNetwork.clearProxyPassword': 'مسح كلمة مرور الوكيل المحفوظة',
@@ -3669,6 +3714,55 @@ export const localeData = [
       'lumen.me.wholeSeriesHelp': 'إيقاف: اختر المواسم في كل مرة',
       'lumen.me.wholeSeriesTitle': 'طلب المسلسل كاملًا افتراضيًا',
       'lumen.mediaCategory.sports': 'الرياضة',
+      'lumen.mediaServerConnection.analyzePlayback':
+        'تحليل الوسائط أثناء التشغيل',
+      'lumen.mediaServerConnection.bridgeFailed':
+        'تعذر تغيير تسجيل الدخول عبر الجسر. تحقق من اتصال Jellyfin وتفعيل تسجيل الدخول عبر خادم الوسائط.',
+      'lumen.mediaServerConnection.bridgeSaved':
+        'تم حفظ إعدادات تسجيل الدخول عبر الجسر.',
+      'lumen.mediaServerConnection.chooseConnection': 'اختر اتصالاً',
+      'lumen.mediaServerConnection.connection': 'اتصال {provider}',
+      'lumen.mediaServerConnection.discover': 'اكتشاف خوادم Plex',
+      'lumen.mediaServerConnection.discoverFailed':
+        'تعذر اكتشاف خوادم Plex. أعد المحاولة أو أدخل العنوان يدوياً.',
+      'lumen.mediaServerConnection.discoveredConnection': 'اتصال Plex المكتشف',
+      'lumen.mediaServerConnection.enableBridge':
+        'تفعيل تسجيل الدخول عبر Jellyfin',
+      'lumen.mediaServerConnection.enterAddress':
+        'أدخل العنوان يدوياً أو أعد محاولة الاكتشاف.',
+      'lumen.mediaServerConnection.field.apiKey': 'مفتاح API للخادم',
+      'lumen.mediaServerConnection.field.externalHostname':
+        'عنوان URL الخارجي للخادم',
+      'lumen.mediaServerConnection.field.ip': 'اسم مضيف الخادم',
+      'lumen.mediaServerConnection.field.jellyfinForgotPasswordUrl':
+        'عنوان إعادة تعيين كلمة المرور',
+      'lumen.mediaServerConnection.field.port': 'منفذ الخادم',
+      'lumen.mediaServerConnection.field.urlBase': 'مسار قاعدة الخادم',
+      'lumen.mediaServerConnection.field.webAppUrl':
+        'عنوان تطبيق Plex على الويب',
+      'lumen.mediaServerConnection.local': 'محلي',
+      'lumen.mediaServerConnection.noServers': 'لم يتم العثور على خوادم Plex.',
+      'lumen.mediaServerConnection.recommended': 'موصى به',
+      'lumen.mediaServerConnection.remote': 'بعيد',
+      'lumen.mediaServerConnection.saveConnection': 'حفظ اتصال {provider}',
+      'lumen.mediaServerConnection.saveFailed':
+        'تعذر حفظ اتصال {provider}. تحقق من العنوان وبيانات الاعتماد ثم أعد المحاولة.',
+      'lumen.mediaServerConnection.saved': 'تم حفظ إعدادات الاتصال.',
+      'lumen.mediaServerConnection.savedKey': 'مفتاح محفوظ',
+      'lumen.mediaServerConnection.tautulliField.apiKey':
+        'مفتاح API لـ Tautulli',
+      'lumen.mediaServerConnection.tautulliField.externalHostname':
+        'عنوان URL الخارجي لـ Tautulli',
+      'lumen.mediaServerConnection.tautulliField.ip': 'اسم مضيف Tautulli',
+      'lumen.mediaServerConnection.tautulliField.port': 'منفذ Tautulli',
+      'lumen.mediaServerConnection.tautulliField.urlBase':
+        'مسار قاعدة Tautulli',
+      'lumen.mediaServerConnection.unreachable':
+        'لا يمكن الوصول إلى أي اتصال Plex مكتشف.',
+      'lumen.mediaServerConnection.unreachableShort': 'غير قابل للوصول',
+      'lumen.mediaServerConnection.useHttps': 'استخدام HTTPS',
+      'lumen.mediaServerConnection.useHttpsTautulli':
+        'استخدام HTTPS مع Tautulli',
       'lumen.movie.action.request': 'طلب',
       'lumen.movie.action.request4k': 'طلب 4K',
       'lumen.movie.action.request4kApproval': 'طلب موافقة 4K',
@@ -4053,6 +4147,8 @@ export const localeData = [
       'lumen.resetPassword.title': 'إعادة تعيين كلمة المرور',
       'lumen.resetPassword.tooManyAttempts':
         'محاولات كثيرة جدًا. انتظر قليلًا ثم حاول مرة أخرى.',
+      'lumen.savedConnectionHost.choose': 'اختر مضيفاً محفوظاً',
+      'lumen.savedConnectionHost.label': 'مضيف اتصال محفوظ',
       'lumen.search.bestMatch': 'أفضل تطابق',
       'lumen.search.bookSeries': 'سلاسل الكتب',
       'lumen.search.browse': 'تصفح',
@@ -10467,6 +10563,53 @@ export const localeData = [
       'lumen.adminLogs.search': 'Search',
       'lumen.adminLogs.systemLogs': 'system logs',
       'lumen.adminLogs.title': 'System Logs',
+      'lumen.adminMediaLibraries.administration': 'Administration',
+      'lumen.adminMediaLibraries.audiobooks': 'Audiobooks',
+      'lumen.adminMediaLibraries.automatic': 'Automatic',
+      'lumen.adminMediaLibraries.cancelScan': 'Cancel Scan',
+      'lumen.adminMediaLibraries.configureServer':
+        'Configure a media server to manage its libraries.',
+      'lumen.adminMediaLibraries.disableAll': 'Disable All',
+      'lumen.adminMediaLibraries.enableAll': 'Enable All',
+      'lumen.adminMediaLibraries.enableLibrary': 'Enable {name}',
+      'lumen.adminMediaLibraries.enabled': 'Enabled',
+      'lumen.adminMediaLibraries.episodeOrder': 'Episode Order',
+      'lumen.adminMediaLibraries.episodeOrderFor': 'Episode Order for {name}',
+      'lumen.adminMediaLibraries.fullScan': 'Full Library Scan',
+      'lumen.adminMediaLibraries.libraries': 'media server libraries',
+      'lumen.adminMediaLibraries.libraryType': 'Library Type',
+      'lumen.adminMediaLibraries.libraryTypeFor': 'Library Type for {name}',
+      'lumen.adminMediaLibraries.loadLibrariesFailure':
+        'Couldn’t Load Media Server Libraries',
+      'lumen.adminMediaLibraries.loadSettingsFailure':
+        'Couldn’t Load Media Server Settings',
+      'lumen.adminMediaLibraries.loadingLibraries': 'Loading libraries…',
+      'lumen.adminMediaLibraries.loadingServer': 'Loading media server…',
+      'lumen.adminMediaLibraries.noLibraries':
+        'No libraries found. Refresh the library list after configuring your server.',
+      'lumen.adminMediaLibraries.noScan': 'No scan is running.',
+      'lumen.adminMediaLibraries.pageTitle': 'Media Server Libraries',
+      'lumen.adminMediaLibraries.providerLibraries': '{provider} Libraries',
+      'lumen.adminMediaLibraries.refreshLibraries': 'Refresh Libraries',
+      'lumen.adminMediaLibraries.scanCancelRequested':
+        'Scan cancellation requested.',
+      'lumen.adminMediaLibraries.scanStartRequested': 'Scan start requested.',
+      'lumen.adminMediaLibraries.scanStatus': 'scan status',
+      'lumen.adminMediaLibraries.scanStatusFailure':
+        'Couldn’t Load Scan Status',
+      'lumen.adminMediaLibraries.scanning':
+        'Scanning{library} · {progress} of {total}',
+      'lumen.adminMediaLibraries.settings': 'media server settings',
+      'lumen.adminMediaLibraries.settingsUpdated': 'Library settings updated.',
+      'lumen.adminMediaLibraries.startScan': 'Start Full Scan',
+      'lumen.adminMediaLibraries.tautulliLoadFailure':
+        'Couldn’t Load Tautulli Settings',
+      'lumen.adminMediaLibraries.tautulliSettings': 'Tautulli settings',
+      'lumen.adminMediaLibraries.type.book': 'Books',
+      'lumen.adminMediaLibraries.type.movie': 'Movies',
+      'lumen.adminMediaLibraries.type.music': 'Music',
+      'lumen.adminMediaLibraries.type.show': 'Series',
+      'lumen.adminMediaLibraries.typeUpdated': 'Library type updated.',
       'lumen.adminNetwork.ackRequired':
         'Confirm that HTTP login sessions can be intercepted before enabling sign-in over HTTP.',
       'lumen.adminNetwork.clearProxyPassword': 'Clear Saved Proxy Password',
@@ -12023,6 +12166,53 @@ export const localeData = [
       'lumen.managedTvAccess.status.pending': 'Waiting for approval',
       'lumen.managedTvAccess.title': 'TV request access',
       'lumen.mediaCategory.sports': 'Sports',
+      'lumen.mediaServerConnection.analyzePlayback':
+        'Analyze Media on Playback',
+      'lumen.mediaServerConnection.bridgeFailed':
+        'Could not change bridge sign-in. Check that Jellyfin is connected and media-server sign-in is enabled.',
+      'lumen.mediaServerConnection.bridgeSaved':
+        'Bridge sign-in settings saved.',
+      'lumen.mediaServerConnection.chooseConnection': 'Choose a Connection',
+      'lumen.mediaServerConnection.connection': '{provider} Connection',
+      'lumen.mediaServerConnection.discover': 'Discover Plex Servers',
+      'lumen.mediaServerConnection.discoverFailed':
+        'Could not discover Plex servers. Retry or enter the address manually.',
+      'lumen.mediaServerConnection.discoveredConnection':
+        'Discovered Plex Connection',
+      'lumen.mediaServerConnection.enableBridge':
+        'Enable Jellyfin Bridge Sign-In',
+      'lumen.mediaServerConnection.enterAddress':
+        'Enter the address manually or retry discovery.',
+      'lumen.mediaServerConnection.field.apiKey': 'Server API Key',
+      'lumen.mediaServerConnection.field.externalHostname':
+        'External Server URL',
+      'lumen.mediaServerConnection.field.ip': 'Server Hostname',
+      'lumen.mediaServerConnection.field.jellyfinForgotPasswordUrl':
+        'Password Reset URL',
+      'lumen.mediaServerConnection.field.port': 'Server Port',
+      'lumen.mediaServerConnection.field.urlBase': 'Server Base Path',
+      'lumen.mediaServerConnection.field.webAppUrl': 'Plex Web App URL',
+      'lumen.mediaServerConnection.local': 'Local',
+      'lumen.mediaServerConnection.noServers': 'No Plex servers were found.',
+      'lumen.mediaServerConnection.recommended': 'Recommended',
+      'lumen.mediaServerConnection.remote': 'Remote',
+      'lumen.mediaServerConnection.saveConnection':
+        'Save {provider} Connection',
+      'lumen.mediaServerConnection.saveFailed':
+        'Could not save the {provider} connection. Check the address and credentials, then try again.',
+      'lumen.mediaServerConnection.saved': 'Connection settings saved.',
+      'lumen.mediaServerConnection.savedKey': 'Saved key',
+      'lumen.mediaServerConnection.tautulliField.apiKey': 'Tautulli API Key',
+      'lumen.mediaServerConnection.tautulliField.externalHostname':
+        'Tautulli External URL',
+      'lumen.mediaServerConnection.tautulliField.ip': 'Tautulli Hostname',
+      'lumen.mediaServerConnection.tautulliField.port': 'Tautulli Port',
+      'lumen.mediaServerConnection.tautulliField.urlBase': 'Tautulli Base Path',
+      'lumen.mediaServerConnection.unreachable':
+        'No discovered Plex connection is reachable.',
+      'lumen.mediaServerConnection.unreachableShort': 'Unreachable',
+      'lumen.mediaServerConnection.useHttps': 'Use HTTPS',
+      'lumen.mediaServerConnection.useHttpsTautulli': 'Use HTTPS for Tautulli',
       'lumen.movie.action.request': 'Request',
       'lumen.movie.action.request4k': 'Request 4K',
       'lumen.movie.action.request4kApproval': 'Request 4K Approval',
@@ -12414,6 +12604,8 @@ export const localeData = [
       'lumen.resetPassword.title': 'Reset Your Password',
       'lumen.resetPassword.tooManyAttempts':
         'Too many attempts. Wait a moment and try again.',
+      'lumen.savedConnectionHost.choose': 'Choose a Saved Host',
+      'lumen.savedConnectionHost.label': 'Saved Connection Host',
       'lumen.search.bestMatch': 'Best Match',
       'lumen.search.bookSeries': 'Book Series',
       'lumen.search.browse': 'Browse',
@@ -19366,6 +19558,64 @@ export const localeData = [
       'lumen.adminLogs.search': 'Rechercher',
       'lumen.adminLogs.systemLogs': 'journaux système',
       'lumen.adminLogs.title': 'Journaux système',
+      'lumen.adminMediaLibraries.administration': 'Administration',
+      'lumen.adminMediaLibraries.audiobooks': 'Livres audio',
+      'lumen.adminMediaLibraries.automatic': 'Automatique',
+      'lumen.adminMediaLibraries.cancelScan': 'Annuler l’analyse',
+      'lumen.adminMediaLibraries.configureServer':
+        'Configurez un serveur multimédia pour gérer ses bibliothèques.',
+      'lumen.adminMediaLibraries.disableAll': 'Tout désactiver',
+      'lumen.adminMediaLibraries.enableAll': 'Tout activer',
+      'lumen.adminMediaLibraries.enableLibrary': 'Activer {name}',
+      'lumen.adminMediaLibraries.enabled': 'Activé',
+      'lumen.adminMediaLibraries.episodeOrder': 'Ordre des épisodes',
+      'lumen.adminMediaLibraries.episodeOrderFor':
+        'Ordre des épisodes de {name}',
+      'lumen.adminMediaLibraries.fullScan':
+        'Analyse complète de la bibliothèque',
+      'lumen.adminMediaLibraries.libraries':
+        'bibliothèques du serveur multimédia',
+      'lumen.adminMediaLibraries.libraryType': 'Type de bibliothèque',
+      'lumen.adminMediaLibraries.libraryTypeFor':
+        'Type de bibliothèque de {name}',
+      'lumen.adminMediaLibraries.loadLibrariesFailure':
+        'Impossible de charger les bibliothèques du serveur multimédia',
+      'lumen.adminMediaLibraries.loadSettingsFailure':
+        'Impossible de charger les paramètres du serveur multimédia',
+      'lumen.adminMediaLibraries.loadingLibraries':
+        'Chargement des bibliothèques…',
+      'lumen.adminMediaLibraries.loadingServer':
+        'Chargement du serveur multimédia…',
+      'lumen.adminMediaLibraries.noLibraries':
+        'Aucune bibliothèque trouvée. Actualisez la liste après avoir configuré votre serveur.',
+      'lumen.adminMediaLibraries.noScan': 'Aucune analyse en cours.',
+      'lumen.adminMediaLibraries.pageTitle':
+        'Bibliothèques du serveur multimédia',
+      'lumen.adminMediaLibraries.providerLibraries': 'Bibliothèques {provider}',
+      'lumen.adminMediaLibraries.refreshLibraries':
+        'Actualiser les bibliothèques',
+      'lumen.adminMediaLibraries.scanCancelRequested':
+        'Annulation de l’analyse demandée.',
+      'lumen.adminMediaLibraries.scanStartRequested':
+        'Démarrage de l’analyse demandé.',
+      'lumen.adminMediaLibraries.scanStatus': 'état de l’analyse',
+      'lumen.adminMediaLibraries.scanStatusFailure':
+        'Impossible de charger l’état de l’analyse',
+      'lumen.adminMediaLibraries.scanning':
+        'Analyse{library} · {progress} sur {total}',
+      'lumen.adminMediaLibraries.settings': 'paramètres du serveur multimédia',
+      'lumen.adminMediaLibraries.settingsUpdated':
+        'Paramètres de la bibliothèque mis à jour.',
+      'lumen.adminMediaLibraries.startScan': 'Lancer l’analyse complète',
+      'lumen.adminMediaLibraries.tautulliLoadFailure':
+        'Impossible de charger les paramètres Tautulli',
+      'lumen.adminMediaLibraries.tautulliSettings': 'paramètres Tautulli',
+      'lumen.adminMediaLibraries.type.book': 'Livres',
+      'lumen.adminMediaLibraries.type.movie': 'Films',
+      'lumen.adminMediaLibraries.type.music': 'Musique',
+      'lumen.adminMediaLibraries.type.show': 'Séries',
+      'lumen.adminMediaLibraries.typeUpdated':
+        'Type de bibliothèque mis à jour.',
       'lumen.adminNetwork.ackRequired':
         'Confirmez que les sessions de connexion HTTP peuvent être interceptées avant d’activer la connexion en HTTP.',
       'lumen.adminNetwork.clearProxyPassword':
@@ -21115,6 +21365,57 @@ export const localeData = [
         'Désactivé : choisissez les saisons à chaque demande',
       'lumen.me.wholeSeriesTitle': 'Demander toute la série par défaut',
       'lumen.mediaCategory.sports': 'Sports',
+      'lumen.mediaServerConnection.analyzePlayback':
+        'Analyser le média pendant la lecture',
+      'lumen.mediaServerConnection.bridgeFailed':
+        'Impossible de modifier la connexion. Vérifiez que Jellyfin est connecté et que la connexion au serveur multimédia est activée.',
+      'lumen.mediaServerConnection.bridgeSaved':
+        'Paramètres de connexion enregistrés.',
+      'lumen.mediaServerConnection.chooseConnection': 'Choisir une connexion',
+      'lumen.mediaServerConnection.connection': 'Connexion à {provider}',
+      'lumen.mediaServerConnection.discover': 'Rechercher les serveurs Plex',
+      'lumen.mediaServerConnection.discoverFailed':
+        'Impossible de rechercher les serveurs Plex. Réessayez ou saisissez l’adresse manuellement.',
+      'lumen.mediaServerConnection.discoveredConnection':
+        'Connexion Plex détectée',
+      'lumen.mediaServerConnection.enableBridge':
+        'Activer la connexion Jellyfin',
+      'lumen.mediaServerConnection.enterAddress':
+        'Saisissez l’adresse manuellement ou relancez la recherche.',
+      'lumen.mediaServerConnection.field.apiKey': 'Clé API du serveur',
+      'lumen.mediaServerConnection.field.externalHostname':
+        'URL externe du serveur',
+      'lumen.mediaServerConnection.field.ip': 'Nom d’hôte du serveur',
+      'lumen.mediaServerConnection.field.jellyfinForgotPasswordUrl':
+        'URL de réinitialisation du mot de passe',
+      'lumen.mediaServerConnection.field.port': 'Port du serveur',
+      'lumen.mediaServerConnection.field.urlBase': 'Chemin de base du serveur',
+      'lumen.mediaServerConnection.field.webAppUrl':
+        'URL de l’application Web Plex',
+      'lumen.mediaServerConnection.local': 'Local',
+      'lumen.mediaServerConnection.noServers': 'Aucun serveur Plex trouvé.',
+      'lumen.mediaServerConnection.recommended': 'Recommandé',
+      'lumen.mediaServerConnection.remote': 'Distant',
+      'lumen.mediaServerConnection.saveConnection':
+        'Enregistrer la connexion {provider}',
+      'lumen.mediaServerConnection.saveFailed':
+        'Impossible d’enregistrer la connexion {provider}. Vérifiez l’adresse et les identifiants, puis réessayez.',
+      'lumen.mediaServerConnection.saved':
+        'Paramètres de connexion enregistrés.',
+      'lumen.mediaServerConnection.savedKey': 'Clé enregistrée',
+      'lumen.mediaServerConnection.tautulliField.apiKey': 'Clé API Tautulli',
+      'lumen.mediaServerConnection.tautulliField.externalHostname':
+        'URL externe Tautulli',
+      'lumen.mediaServerConnection.tautulliField.ip': 'Nom d’hôte Tautulli',
+      'lumen.mediaServerConnection.tautulliField.port': 'Port Tautulli',
+      'lumen.mediaServerConnection.tautulliField.urlBase':
+        'Chemin de base Tautulli',
+      'lumen.mediaServerConnection.unreachable':
+        'Aucune connexion Plex détectée n’est accessible.',
+      'lumen.mediaServerConnection.unreachableShort': 'Inaccessible',
+      'lumen.mediaServerConnection.useHttps': 'Utiliser HTTPS',
+      'lumen.mediaServerConnection.useHttpsTautulli':
+        'Utiliser HTTPS pour Tautulli',
       'lumen.movie.action.request': 'Demander',
       'lumen.movie.action.request4k': 'Demander en 4K',
       'lumen.movie.action.request4kApproval': 'Demander une approbation en 4K',
@@ -21539,6 +21840,8 @@ export const localeData = [
       'lumen.resetPassword.title': 'Réinitialiser Votre Mot de Passe',
       'lumen.resetPassword.tooManyAttempts':
         'Trop de tentatives. Patientez un instant, puis réessayez.',
+      'lumen.savedConnectionHost.choose': 'Choisir un hôte enregistré',
+      'lumen.savedConnectionHost.label': 'Hôte de connexion enregistré',
       'lumen.search.bestMatch': 'Meilleure correspondance',
       'lumen.search.bookSeries': 'Séries de livres',
       'lumen.search.browse': 'Parcourir',

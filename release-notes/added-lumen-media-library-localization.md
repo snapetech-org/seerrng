@@ -1,0 +1,1 @@
+Lumen's Media Server Libraries administration now follows the saved locale in English, French, and Arabic, including Plex, Jellyfin, Emby, and Tautulli connection controls, library classification, and full-scan status and actions. Existing permission checks, provider calls, credential handling, and scan behavior are preserved.

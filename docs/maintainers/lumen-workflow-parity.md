@@ -5806,3 +5806,27 @@ could miss RGB differences when alpha stayed unchanged. Rechecking the
 Download Clients and Share/Image Recognition captures in RGB confirms those
 English captures are pixel-identical; the Reader Delivery captures correctly
 show expected text-only changes.
+
+### Media Server Libraries localization
+
+The Media Server Libraries route now follows the saved locale in English,
+French, and Arabic. This includes Plex/Jellyfin/Emby library controls, episode
+ordering, audio-book classification, scan status and actions, Plex discovery,
+Tautulli fields, and the shared media-server connection and saved-host controls.
+Provider endpoints, permission gates, key redaction and reuse, saved-host
+selection behavior, and scan polling/start/cancel behavior are unchanged.
+
+The focused locale matrix passed 12 cases in standalone Lumen and 12 in the
+production-style `/lumen/` mount across desktop, iPhone, Android, and tablet.
+The existing media-library workflow suite passed all 36 cases across those
+viewports, including denied access, Plex/Jellyfin/Emby library operations,
+credential-preserving saves, Plex discovery, and Tautulli save/disconnect.
+English baseline and candidate desktop/iPhone captures were visually reviewed
+at matching states. French desktop and Arabic iPhone captures were inspected;
+long-page full-screen captures show the existing fixed mobile navigation layer
+over content while scrolling. No style or layout owners changed. Live media
+servers and external translation review remain unverified.
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/media-libraries-browser-standalone-final2/`,
+`.../media-libraries-browser-embedded-final/`,
+`.../media-libraries-visual/`, and `.../media-libraries-locales-saved-host/`.

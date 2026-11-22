@@ -8,6 +8,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Library = {
@@ -24,12 +25,6 @@ type Scan = {
   currentLibrary?: Library;
 };
 const names = { 1: 'Plex', 2: 'Jellyfin', 3: 'Emby' } as const;
-const libraryTypes = {
-  show: 'Series',
-  movie: 'Movies',
-  music: 'Music',
-  book: 'Books',
-};
 
 function MediaLibraries({
   name,
@@ -38,6 +33,7 @@ function MediaLibraries({
   name: string;
   provider: 'plex' | 'jellyfin';
 }) {
+  const { t } = useLumenLocale();
   const path = `/settings/${provider}`;
   const settings = useApi<ConnectionSettings & { libraries: Library[] }>(path);
   const tautulli = useApi<ConnectionSettings>(
@@ -82,7 +78,7 @@ function MediaLibraries({
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
-          friendlyError(error, 'Could not update media server settings.')
+          friendlyError(error, 'Could not update media server settings.', t)
         );
     } finally {
       pending.current = false;
@@ -92,27 +88,36 @@ function MediaLibraries({
 
   function updateLibraries(body: object) {
     const generation = sessionGeneration();
-    void run(async () => {
-      const result = await api<Library[]>(`${path}/library`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-      });
-      if (generation === sessionGeneration()) setUpdated(result);
-    }, 'Library settings updated.');
+    void run(
+      async () => {
+        const result = await api<Library[]>(`${path}/library`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+        });
+        if (generation === sessionGeneration()) setUpdated(result);
+      },
+      t(
+        'lumen.adminMediaLibraries.settingsUpdated',
+        'Library settings updated.'
+      )
+    );
   }
 
   function reclassify(id: string, type: Library['type']) {
     const generation = sessionGeneration();
-    void run(async () => {
-      const result = await api<Library[]>(
-        `${path}/library/${encodeURIComponent(id)}/type`,
-        {
-          method: 'PUT',
-          body: JSON.stringify({ type }),
-        }
-      );
-      if (generation === sessionGeneration()) setUpdated(result);
-    }, 'Library type updated.');
+    void run(
+      async () => {
+        const result = await api<Library[]>(
+          `${path}/library/${encodeURIComponent(id)}/type`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({ type }),
+          }
+        );
+        if (generation === sessionGeneration()) setUpdated(result);
+      },
+      t('lumen.adminMediaLibraries.typeUpdated', 'Library type updated.')
+    );
   }
 
   function changeScan(action: 'start' | 'cancel') {
@@ -129,8 +134,14 @@ function MediaLibraries({
         }
       },
       action === 'start'
-        ? 'Scan start requested.'
-        : 'Scan cancellation requested.'
+        ? t(
+            'lumen.adminMediaLibraries.scanStartRequested',
+            'Scan start requested.'
+          )
+        : t(
+            'lumen.adminMediaLibraries.scanCancelRequested',
+            'Scan cancellation requested.'
+          )
     );
   }
 
@@ -147,10 +158,24 @@ function MediaLibraries({
           onSaved={(connection) => setUpdated(connection.libraries)}
         />
       )}
-      <Section title={`${name} Libraries`}>
+      <Section
+        title={t(
+          'lumen.adminMediaLibraries.providerLibraries',
+          '{provider} Libraries',
+          { provider: name }
+        )}
+      >
         <ServiceNote
+          title={t(
+            'lumen.adminMediaLibraries.loadLibrariesFailure',
+            'Couldn’t Load Media Server Libraries'
+          )}
           error={settings.error}
-          what="media server libraries"
+          what={t(
+            'lumen.adminMediaLibraries.libraries',
+            'media server libraries'
+          )}
+          retryLabel={t('lumen.common.retry', 'Retry')}
           retry={settings.reload}
         />
         {libraries ? (
@@ -161,7 +186,10 @@ function MediaLibraries({
                 disabled={busy}
                 onClick={() => updateLibraries({ sync: true })}
               >
-                Refresh Libraries
+                {t(
+                  'lumen.adminMediaLibraries.refreshLibraries',
+                  'Refresh Libraries'
+                )}
               </button>
               <button
                 className="btn btn-quiet btn-sm"
@@ -172,20 +200,22 @@ function MediaLibraries({
                   })
                 }
               >
-                Enable All
+                {t('lumen.adminMediaLibraries.enableAll', 'Enable All')}
               </button>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy || !enabled.length}
                 onClick={() => updateLibraries({ enable: '' })}
               >
-                Disable All
+                {t('lumen.adminMediaLibraries.disableAll', 'Disable All')}
               </button>
             </div>
             {libraries.length === 0 && (
               <p className="note">
-                No libraries found. Refresh the library list after configuring
-                your server.
+                {t(
+                  'lumen.adminMediaLibraries.noLibraries',
+                  'No libraries found. Refresh the library list after configuring your server.'
+                )}
               </p>
             )}
             <div className="setlist">
@@ -196,13 +226,25 @@ function MediaLibraries({
                     <small>
                       {provider === 'plex' && library.type === 'book'
                         ? 'Audiobooks'
-                        : libraryTypes[library.type]}
+                        : t(
+                            `lumen.adminMediaLibraries.type.${library.type}`,
+                            {
+                              show: 'Series',
+                              movie: 'Movies',
+                              music: 'Music',
+                              book: 'Books',
+                            }[library.type]
+                          )}
                     </small>
                   </span>
                   <label className="cfg-on">
                     <input
                       type="checkbox"
-                      aria-label={`Enable ${library.name}`}
+                      aria-label={t(
+                        'lumen.adminMediaLibraries.enableLibrary',
+                        'Enable {name}',
+                        { name: library.name }
+                      )}
                       checked={library.enabled}
                       disabled={busy}
                       onChange={(event) =>
@@ -214,14 +256,21 @@ function MediaLibraries({
                         })
                       }
                     />
-                    Enabled
+                    {t('lumen.adminMediaLibraries.enabled', 'Enabled')}
                   </label>
                   {library.type === 'show' && (
                     <label className="cfg-on">
-                      Episode Order
+                      {t(
+                        'lumen.adminMediaLibraries.episodeOrder',
+                        'Episode Order'
+                      )}
                       <select
                         className="cfg-select"
-                        aria-label={`Episode Order for ${library.name}`}
+                        aria-label={t(
+                          'lumen.adminMediaLibraries.episodeOrderFor',
+                          'Episode Order for {name}',
+                          { name: library.name }
+                        )}
                         value={library.episodeOrderProvider ?? 'none'}
                         disabled={busy}
                         onChange={(event) =>
@@ -231,7 +280,12 @@ function MediaLibraries({
                           })
                         }
                       >
-                        <option value="none">Automatic</option>
+                        <option value="none">
+                          {t(
+                            'lumen.adminMediaLibraries.automatic',
+                            'Automatic'
+                          )}
+                        </option>
                         <option value="tmdb">TMDB</option>
                         <option value="tvdb">TVDB</option>
                       </select>
@@ -240,10 +294,17 @@ function MediaLibraries({
                   {provider === 'plex' &&
                     (library.type === 'music' || library.type === 'book') && (
                       <label className="cfg-on">
-                        Library Type
+                        {t(
+                          'lumen.adminMediaLibraries.libraryType',
+                          'Library Type'
+                        )}
                         <select
                           className="cfg-select"
-                          aria-label={`Library Type for ${library.name}`}
+                          aria-label={t(
+                            'lumen.adminMediaLibraries.libraryTypeFor',
+                            'Library Type for {name}',
+                            { name: library.name }
+                          )}
                           value={library.type}
                           disabled={busy}
                           onChange={(event) =>
@@ -253,8 +314,15 @@ function MediaLibraries({
                             )
                           }
                         >
-                          <option value="music">Music</option>
-                          <option value="book">Audiobooks</option>
+                          <option value="music">
+                            {t('lumen.adminMediaLibraries.type.music', 'Music')}
+                          </option>
+                          <option value="book">
+                            {t(
+                              'lumen.adminMediaLibraries.audiobooks',
+                              'Audiobooks'
+                            )}
+                          </option>
                         </select>
                       </label>
                     )}
@@ -265,23 +333,43 @@ function MediaLibraries({
         ) : (
           !settings.error && (
             <p className="note" role="status">
-              Loading libraries…
+              {t(
+                'lumen.adminMediaLibraries.loadingLibraries',
+                'Loading libraries…'
+              )}
             </p>
           )
         )}
       </Section>
-      <Section title="Full Library Scan">
+      <Section
+        title={t('lumen.adminMediaLibraries.fullScan', 'Full Library Scan')}
+      >
         <ServiceNote
+          title={t(
+            'lumen.adminMediaLibraries.scanStatusFailure',
+            'Couldn’t Load Scan Status'
+          )}
           error={scan.error}
-          what="scan status"
+          what={t('lumen.adminMediaLibraries.scanStatus', 'scan status')}
+          retryLabel={t('lumen.common.retry', 'Retry')}
           retry={scan.reload}
         />
         {scanStatus && (
           <>
             <p className="note" role="status">
               {scanStatus.running
-                ? `Scanning${scanStatus.currentLibrary ? ` ${scanStatus.currentLibrary.name}` : ''} · ${scanStatus.progress} of ${scanStatus.total}`
-                : 'No scan is running.'}
+                ? t(
+                    'lumen.adminMediaLibraries.scanning',
+                    'Scanning{library} · {progress} of {total}',
+                    {
+                      library: scanStatus.currentLibrary
+                        ? ` ${scanStatus.currentLibrary.name}`
+                        : '',
+                      progress: scanStatus.progress,
+                      total: scanStatus.total,
+                    }
+                  )
+                : t('lumen.adminMediaLibraries.noScan', 'No scan is running.')}
             </p>
             <div className="toolbar">
               <button
@@ -289,14 +377,14 @@ function MediaLibraries({
                 disabled={busy || scanStatus.running}
                 onClick={() => changeScan('start')}
               >
-                Start Full Scan
+                {t('lumen.adminMediaLibraries.startScan', 'Start Full Scan')}
               </button>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy || !scanStatus.running}
                 onClick={() => changeScan('cancel')}
               >
-                Cancel Scan
+                {t('lumen.adminMediaLibraries.cancelScan', 'Cancel Scan')}
               </button>
             </div>
           </>
@@ -314,8 +402,16 @@ function MediaLibraries({
           />
         ) : (
           <ServiceNote
+            title={t(
+              'lumen.adminMediaLibraries.tautulliLoadFailure',
+              'Couldn’t Load Tautulli Settings'
+            )}
             error={tautulli.error}
-            what="Tautulli settings"
+            what={t(
+              'lumen.adminMediaLibraries.tautulliSettings',
+              'Tautulli settings'
+            )}
+            retryLabel={t('lumen.common.retry', 'Retry')}
             retry={tautulli.reload}
           />
         ))}
@@ -336,6 +432,7 @@ function MediaLibraries({
 export default function AdminMediaLibraries({
   mediaServerType,
 }: { mediaServerType?: number } = {}) {
+  const { t } = useLumenLocale();
   const settings = useApi<{ mediaServerType?: number }>(
     mediaServerType === undefined ? '/settings/public' : null
   );
@@ -344,16 +441,23 @@ export default function AdminMediaLibraries({
   return (
     <>
       <header className="ph">
-        <h1>Media Server Libraries</h1>
+        <h1>
+          {t('lumen.adminMediaLibraries.pageTitle', 'Media Server Libraries')}
+        </h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {t('lumen.adminMediaLibraries.administration', 'Administration')}
           </Link>
         </div>
       </header>
       <ServiceNote
+        title={t(
+          'lumen.adminMediaLibraries.loadSettingsFailure',
+          'Couldn’t Load Media Server Settings'
+        )}
         error={settings.error}
-        what="media server settings"
+        what={t('lumen.adminMediaLibraries.settings', 'media server settings')}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={settings.reload}
       />
       {name ? (
@@ -364,12 +468,18 @@ export default function AdminMediaLibraries({
         />
       ) : mediaServerType !== undefined || settings.data ? (
         <p className="note">
-          Configure a media server to manage its libraries.
+          {t(
+            'lumen.adminMediaLibraries.configureServer',
+            'Configure a media server to manage its libraries.'
+          )}
         </p>
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading media server…
+            {t(
+              'lumen.adminMediaLibraries.loadingServer',
+              'Loading media server…'
+            )}
           </p>
         )
       )}

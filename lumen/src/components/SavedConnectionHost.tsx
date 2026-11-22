@@ -1,5 +1,6 @@
 import { connectionHostsPath, type Host } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 export function SavedConnectionHost({
   disabled,
@@ -8,12 +9,15 @@ export function SavedConnectionHost({
   disabled: boolean;
   onSelect: (hostname: string) => void;
 }) {
+  const { t } = useLumenLocale();
   const hosts = useApi<Host[]>(connectionHostsPath);
   if (!hosts.data?.length) return null;
 
   return (
     <label className="set cfg-row">
-      <span>Saved Connection Host</span>
+      <span>
+        {t('lumen.savedConnectionHost.label', 'Saved Connection Host')}
+      </span>
       <select
         className="cfg-select"
         disabled={disabled}
@@ -22,7 +26,9 @@ export function SavedConnectionHost({
           if (event.target.value) onSelect(event.target.value);
         }}
       >
-        <option value="">Choose a Saved Host</option>
+        <option value="">
+          {t('lumen.savedConnectionHost.choose', 'Choose a Saved Host')}
+        </option>
         {hosts.data.map(({ name, hostname }) => (
           <option key={name} value={hostname}>
             {name}
