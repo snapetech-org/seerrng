@@ -4683,5 +4683,11 @@
   "lumen.requests.row.etaAlmostDone",
   "lumen.requests.row.etaHours",
   "lumen.requests.row.etaHoursPlural",
-  "lumen.requests.row.etaMinutes"
+  "lumen.requests.row.etaMinutes",
+  "lumen.requests.row.newEpisodesAsTheyAir",
+  "lumen.requests.row.fewEpisodesMissing",
+  "lumen.requests.row.season",
+  "lumen.requests.row.seasons",
+  "lumen.requests.row.seasonsNotFound",
+  "lumen.requests.row.seasonNotFound"
 ]

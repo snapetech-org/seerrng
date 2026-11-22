@@ -6466,3 +6466,21 @@ Arabic; translated queue and ETA copy fits without new overflow or geometry
 changes. Live provider data and independent linguistic review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-row-localization-20261122/`.
+
+### Partial TV request explanation localization
+
+Lumen now localizes the Requests-row explanations for newly airing episodes,
+partially missing episodes, and requested seasons that have not appeared in the
+library. Single and multiple season labels retain their season numbers and
+compressed ranges. The existing request and season status calculations are
+unchanged.
+
+Fixture coverage passes for airing and ended shows, one missing requested
+season, and multiple missing seasons with a range. Twelve baseline and twelve
+candidate browser cases pass across desktop, iPhone, Android, and tablet in
+English, French, and Arabic. Matched baseline/candidate captures were inspected
+at 1440 CSS pixels and phone size in French and Arabic; translated detail wraps
+within the existing row layout, and no viewport overflow was detected. Live
+metadata and independent linguistic review remain unverified. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-partial-status-20261122/`.

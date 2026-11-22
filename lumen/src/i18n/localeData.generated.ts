@@ -5727,6 +5727,13 @@ export const localeData = [
       'lumen.requests.row.etaHours': 'متبقي نحو ساعة واحدة',
       'lumen.requests.row.etaHoursPlural': 'متبقي نحو {count} ساعات',
       'lumen.requests.row.etaMinutes': 'متبقي نحو {count} دقيقة',
+      'lumen.requests.row.newEpisodesAsTheyAir':
+        'تُضاف الحلقات الجديدة عند عرضها',
+      'lumen.requests.row.fewEpisodesMissing': 'بعض الحلقات مفقودة',
+      'lumen.requests.row.season': 'الموسم {seasons}',
+      'lumen.requests.row.seasons': 'المواسم {seasons}',
+      'lumen.requests.row.seasonsNotFound': '{seasons} غير موجودة بعد',
+      'lumen.requests.row.seasonNotFound': '{seasons} غير موجود بعد',
     },
   },
   {
@@ -15415,6 +15422,13 @@ export const localeData = [
       'lumen.requests.row.etaHours': 'About {count} hr left',
       'lumen.requests.row.etaHoursPlural': 'About {count} hrs left',
       'lumen.requests.row.etaMinutes': 'About {count} min left',
+      'lumen.requests.row.newEpisodesAsTheyAir':
+        'New episodes added as they air',
+      'lumen.requests.row.fewEpisodesMissing': 'A few episodes missing',
+      'lumen.requests.row.season': 'Season {seasons}',
+      'lumen.requests.row.seasons': 'Seasons {seasons}',
+      'lumen.requests.row.seasonsNotFound': '{seasons} not found yet',
+      'lumen.requests.row.seasonNotFound': '{seasons} not found yet',
     },
   },
   {
@@ -26020,6 +26034,16 @@ export const localeData = [
       'lumen.requests.row.etaHours': 'Environ {count} h restante',
       'lumen.requests.row.etaHoursPlural': 'Environ {count} h restantes',
       'lumen.requests.row.etaMinutes': 'Environ {count} min restantes',
+      'lumen.requests.row.newEpisodesAsTheyAir':
+        'Les nouveaux épisodes sont ajoutés au fur et à mesure de leur diffusion',
+      'lumen.requests.row.fewEpisodesMissing':
+        'Quelques épisodes sont manquants',
+      'lumen.requests.row.season': 'Saison {seasons}',
+      'lumen.requests.row.seasons': 'Saisons {seasons}',
+      'lumen.requests.row.seasonsNotFound':
+        '{seasons} introuvables pour le moment',
+      'lumen.requests.row.seasonNotFound':
+        '{seasons} introuvable pour le moment',
     },
   },
   {

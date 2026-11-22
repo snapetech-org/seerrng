@@ -282,7 +282,7 @@ function seasonsMissing(x: Row) {
     .sort((a, b) => a - b);
 }
 // [10, 11, 12, 13, 15] -> "Seasons 10–13, 15"
-function seasonList(ns: number[]) {
+function seasonList(ns: number[], translate?: Translate) {
   const runs: string[] = [];
   for (let i = 0; i < ns.length;) {
     let j = i;
@@ -290,7 +290,16 @@ function seasonList(ns: number[]) {
     runs.push(j > i ? `${ns[i]}–${ns[j]}` : `${ns[i]}`);
     i = j + 1;
   }
-  return `${ns.length === 1 ? 'Season' : 'Seasons'} ${runs.join(', ')}`;
+  const seasons = runs.join(', ');
+  const id =
+    ns.length === 1
+      ? 'lumen.requests.row.season'
+      : 'lumen.requests.row.seasons';
+  const fallback = `${ns.length === 1 ? 'Season' : 'Seasons'} {seasons}`;
+  return (
+    translate?.(id, fallback, { seasons }) ??
+    fallback.replace('{seasons}', seasons)
+  );
 }
 
 // an edition id that names a specific edition rather than just "this book" (Open Library work ids
@@ -544,8 +553,14 @@ export function requestRowStatus(
             x.airing == null
               ? undefined // title not looked up yet
               : x.airing
-                ? 'New episodes added as they air'
-                : 'A few episodes missing',
+                ? (translate?.(
+                    'lumen.requests.row.newEpisodesAsTheyAir',
+                    'New episodes added as they air'
+                  ) ?? 'New episodes added as they air')
+                : (translate?.(
+                    'lumen.requests.row.fewEpisodesMissing',
+                    'A few episodes missing'
+                  ) ?? 'A few episodes missing'),
         }
       : {
           k: 'ok',
@@ -553,7 +568,13 @@ export function requestRowStatus(
           ico: 'check',
           active: true,
           detail: missing?.length
-            ? `${seasonList(missing)} not found yet`
+            ? (translate?.(
+                missing.length === 1
+                  ? 'lumen.requests.row.seasonNotFound'
+                  : 'lumen.requests.row.seasonsNotFound',
+                '{seasons} not found yet',
+                { seasons: seasonList(missing, translate) }
+              ) ?? `${seasonList(missing)} not found yet`)
             : undefined,
         };
   }

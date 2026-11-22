@@ -9,6 +9,7 @@ const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
 const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
 const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
 const rowBaseline = process.env.LUMEN_REQUEST_ROW_BASELINE === '1';
+const partialBaseline = process.env.LUMEN_REQUEST_PARTIAL_BASELINE === '1';
 
 const labels = {
   en: {
@@ -31,6 +32,10 @@ const labels = {
     autoQueued: 'Auto-Queued',
     episodeQueue: 'Episode Queue · 2 ahead',
     eta: 'About 3 min left',
+    airing: 'New episodes added as they air',
+    fewMissing: 'A few episodes missing',
+    seasonMissing: 'Season 1 not found yet',
+    seasonsMissing: 'Seasons 1, 3–4 not found yet',
   },
   fr: {
     waiting: 'En attente d’approbation',
@@ -52,6 +57,11 @@ const labels = {
     autoQueued: 'Ajout automatique',
     episodeQueue: 'File d’attente des épisodes · 2 à venir',
     eta: 'Environ 3 min restantes',
+    airing:
+      'Les nouveaux épisodes sont ajoutés au fur et à mesure de leur diffusion',
+    fewMissing: 'Quelques épisodes sont manquants',
+    seasonMissing: 'Saison 1 introuvable pour le moment',
+    seasonsMissing: 'Saisons 1, 3–4 introuvables pour le moment',
   },
   ar: {
     waiting: 'بانتظار الموافقة',
@@ -73,6 +83,10 @@ const labels = {
     autoQueued: 'مضاف تلقائيًا',
     episodeQueue: 'قائمة انتظار الحلقات · 2 قادمة',
     eta: 'متبقي نحو 3 دقيقة',
+    airing: 'تُضاف الحلقات الجديدة عند عرضها',
+    fewMissing: 'بعض الحلقات مفقودة',
+    seasonMissing: 'الموسم 1 غير موجود بعد',
+    seasonsMissing: 'المواسم 1, 3–4 غير موجودة بعد',
   },
 } as const;
 
@@ -129,6 +143,23 @@ const request = (
   },
 });
 
+const tvRequest = (id: number, airing: boolean | null, seasons: number[]) => ({
+  ...request(id, 'requested', 2),
+  type: 'tv',
+  seasons: seasons.map((seasonNumber) => ({ seasonNumber })),
+  airing,
+  currentStatus: undefined,
+  media: {
+    mediaType: 'tv',
+    tmdbId: id,
+    status: 4,
+    seasons:
+      airing === null
+        ? []
+        : seasons.map((seasonNumber) => ({ seasonNumber, status: 4 })),
+  },
+});
+
 const requests = [
   ...statuses.map(([, stage, requestStatus, options], index) => ({
     ...request(601 + index, stage, requestStatus, options),
@@ -160,6 +191,10 @@ const requests = [
       downloadStatus4k: [],
     },
   },
+  tvRequest(630, true, [1]),
+  tvRequest(631, false, [1]),
+  tvRequest(632, null, [1]),
+  tvRequest(633, null, [1, 3, 4]),
 ];
 
 test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
@@ -197,6 +232,17 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
         json: { id: bookId, title: `Status ${id}`, author: 'Reader' },
       });
     }
+    if (path.startsWith('/tv/')) {
+      const id = Number(path.split('/').pop());
+      return route.fulfill({
+        json: {
+          id,
+          title: `TV ${id}`,
+          name: `TV ${id}`,
+          status: id === 630 ? 'Returning Series' : 'Ended',
+        },
+      });
+    }
     if (path === '/movie/620')
       return route.fulfill({
         json: { id: 620, title: 'Fixture 4K movie', releaseDate: '2020-01-01' },
@@ -212,7 +258,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   });
 
   await page.goto('/requests?tab=all');
-  await expect(page.locator('.rq')).toHaveCount(17);
+  await expect(page.locator('.rq')).toHaveCount(21);
   const expected = baseline
     ? {
         ...labels.en,
@@ -241,8 +287,28 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   await expect(eta).toContainText(
     rowBaseline ? 'About 3 min left' : labels[locale].eta
   );
-  const fourK = page.locator('.rq').nth(16);
-  await expect(fourK.locator('.st')).toContainText(expected.fourK);
+  const fourK = page
+    .locator('.rq')
+    .filter({ hasText: 'Fixture 4K movie' })
+    .locator('.st');
+  await expect(fourK).toContainText(expected.fourK);
+  const tvDetail = (id: number) =>
+    page
+      .locator('.rq')
+      .filter({ hasText: `TV ${id}` })
+      .locator('.st');
+  await expect(tvDetail(630)).toContainText(
+    partialBaseline ? labels.en.airing : labels[locale].airing
+  );
+  await expect(tvDetail(631)).toContainText(
+    partialBaseline ? labels.en.fewMissing : labels[locale].fewMissing
+  );
+  await expect(tvDetail(632)).toContainText(
+    partialBaseline ? labels.en.seasonMissing : labels[locale].seasonMissing
+  );
+  await expect(tvDetail(633)).toContainText(
+    partialBaseline ? labels.en.seasonsMissing : labels[locale].seasonsMissing
+  );
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
