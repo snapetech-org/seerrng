@@ -13,7 +13,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
-| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. Discover shell labels, shelf headings, empty/error/retry states, recent-media dates, and card title-view actions follow English, French, and Arabic locale in standalone and bundled deployments. Trending localizes its media/time filters and load/empty states and retains API filters after retry. Music discovery and its album/artist detail pages now localize their page-owned labels, filters, metadata headings, track groups, request action, empty/error feedback, and paging. | Finish other route localization, shared music-action copy, native-matched visual acceptance, and verify remaining live provider data separately. |
+| Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. Discover shell labels, shelf headings, empty/error/retry states, recent-media dates, and card title-view actions follow English, French, and Arabic locale in standalone and bundled deployments. Trending localizes its media/time filters and load/empty states and retains API filters after retry. Music discovery and its album/artist detail pages localize their page-owned labels, filters, metadata headings, track groups, request action, empty/error feedback, and paging. Shared music/adult request buttons localize the default label and success/failure feedback. | Finish other route localization, complete matched visual acceptance for the shared request button (the baseline adult detail fixture does not resolve), and verify remaining live provider data separately. |
 | Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. Focused software request history and its permission-aware management actions are verified in standalone and bundled Lumen. IGDB catalog detail now adds eligible games directly to the viewer's private My Games library without requiring software request permission. Game detail also shows Steam ownership, safe YouTube videos, and all available playtime estimates in localized metadata. | Verify live acquisition and imports, remaining catalog/content actions, and native-matched visual acceptance. |
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. My Media supports account recovery, private identity mapping packs, tracking updates, and resumable scans. Delegated Watchlists and ambiguous combined-list ownership are covered. | Verify live provider mutations, determine whether a separate delegated library-sharing workflow exists in native SeerrNG, and complete native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Its copy and release details are localized for English, French, and Arabic in standalone and bundled deployments. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
@@ -6334,3 +6334,21 @@ states were inspected at 1440 × 900 and 390 × 844; layout remains unchanged.
 The reported real-provider failure remains unverified against the reporter's
 server. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-season-batching-20261122/`.
+
+### Shared music and adult request feedback localization
+
+The shared extra-media request button now localizes its default label, success
+toast, and generic failure feedback in English, French, and Arabic. Music keeps
+its page-specific “request album” label; structured API errors continue through
+the existing localized error formatter. Request payloads and permission gates
+are unchanged.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet, checking
+the music failure and retry path, adult default action, request payloads, RTL
+direction, and viewport overflow. French desktop music detail baseline and
+candidate renders were inspected and retain the same action layout. Arabic
+iPhone candidate was inspected. The baseline adult detail route remains in its
+loading state with the fixture, so the adult button’s matched visual acceptance
+is unverified. Live submission and independent linguistic review are also
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-request-localization-20261122/`.

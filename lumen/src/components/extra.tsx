@@ -10,6 +10,7 @@ import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useExtras, type Extra, type Magazine } from '../extras';
 import { usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import type { ManagedMediaType } from '../mediaIdentity';
 import { usePrefs } from '../settings';
@@ -260,7 +261,7 @@ export function ExtraSearch({
 // the detail page's main button: shows the library state, or requests it
 export function RequestButton({
   stat,
-  label = 'Request',
+  label,
   request,
   className = 'btn btn-primary',
 }: {
@@ -269,6 +270,7 @@ export function RequestButton({
   request: () => Promise<unknown>;
   className?: string;
 }) {
+  const { t } = useLumenLocale();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -291,9 +293,18 @@ export function RequestButton({
     try {
       await request();
       setDone(true);
-      toast('Requested');
+      toast(t('lumen.common.requestSubmitted', 'Request submitted.'));
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(
+          e,
+          t(
+            'lumen.common.requestFailed',
+            'The request could not be submitted.'
+          ),
+          t
+        )
+      );
     } finally {
       setBusy(false);
     }
@@ -301,7 +312,7 @@ export function RequestButton({
   return (
     <button className={className} disabled={busy} onClick={go}>
       <Icon name="plus" />
-      {label}
+      {label ?? t('lumen.common.request', 'Request')}
     </button>
   );
 }

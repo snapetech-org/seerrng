@@ -3185,6 +3185,9 @@ export const localeData = [
       'lumen.collectors.unavailable':
         'تتطلب اختيارات هواة الجمع slskdN مع تفعيل التبادل الاجتماعي.',
       'lumen.collectors.what': 'اختيارات هواة الجمع',
+      'lumen.common.request': 'طلب',
+      'lumen.common.requestFailed': 'تعذر إرسال الطلب.',
+      'lumen.common.requestSubmitted': 'تم إرسال الطلب.',
       'lumen.common.retry': 'إعادة المحاولة',
       'lumen.detail.advancedOptions': 'خيارات الطلب المتقدمة',
       'lumen.detail.confirmPinFailure':
@@ -12762,6 +12765,9 @@ export const localeData = [
       'lumen.collectors.unavailable':
         'Collector picks require slskdN with social federation enabled.',
       'lumen.collectors.what': 'collector picks',
+      'lumen.common.request': 'Request',
+      'lumen.common.requestFailed': 'The request could not be submitted.',
+      'lumen.common.requestSubmitted': 'Request submitted.',
       'lumen.common.retry': 'Retry',
       'lumen.detail.advancedOptions': 'Advanced Request Options',
       'lumen.detail.confirmPinFailure':
@@ -22927,6 +22933,9 @@ export const localeData = [
       'lumen.collectors.unavailable':
         'Les sélections nécessitent slskdN avec la fédération sociale activée.',
       'lumen.collectors.what': 'sélections des collectionneurs',
+      'lumen.common.request': 'Demander',
+      'lumen.common.requestFailed': 'La demande n’a pas pu être envoyée.',
+      'lumen.common.requestSubmitted': 'Demande envoyée.',
       'lumen.common.retry': 'Réessayer',
       'lumen.detail.advancedOptions': 'Options de demande avancées',
       'lumen.detail.confirmPinFailure':
