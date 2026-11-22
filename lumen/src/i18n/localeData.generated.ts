@@ -3797,6 +3797,68 @@ export const localeData = [
       'lumen.metadata.test': 'اختبار',
       'lumen.metadata.testFailed': 'تعذر اختبار موفري البيانات الوصفية.',
       'lumen.metadata.title': 'موفرو البيانات الوصفية',
+      'lumen.migration.addServiceFirst':
+        'أضف خدمة BookshelfNG من إعدادات خدمات SeerrNG لترحيل مكتبتها.',
+      'lumen.migration.allCurrentFolders': 'كل المجلدات الحالية',
+      'lumen.migration.alreadyAtDestination': 'موجود بالفعل في الوجهة',
+      'lumen.migration.audiobooks': 'كتب صوتية',
+      'lumen.migration.authorFileCounts':
+        '{media} وسائط · {sidecars} جانبية · {missing} مفقودة',
+      'lumen.migration.authorPages': 'صفحات المؤلفين',
+      'lumen.migration.authors': 'المؤلفون',
+      'lumen.migration.availableSpace': 'المتاح: {space}.',
+      'lumen.migration.books': 'كتب',
+      'lumen.migration.bookshelfLibrary': 'مكتبة Bookshelf',
+      'lumen.migration.bookshelfService': 'خدمة Bookshelf',
+      'lumen.migration.bookshelfServices': 'خدمات Bookshelf',
+      'lumen.migration.cannotStart':
+        'لا يمكن بدء هذه المعاينة. راجع التعارضات والتحذيرات المبلغ عنها.',
+      'lumen.migration.chooseRootFolder': 'اختر مجلدًا جذريًا',
+      'lumen.migration.clearSelection': 'مسح التحديد',
+      'lumen.migration.confirmMove':
+        'راجعت هذه المعاينة وأريد من BookshelfNG نقل هذه الملفات.',
+      'lumen.migration.conflict': 'تعارض: {message}',
+      'lumen.migration.contacting': 'جارٍ الاتصال بـBookshelfNG…',
+      'lumen.migration.currentFolder': 'المجلد الحالي',
+      'lumen.migration.description':
+        'انقل ملفات الكتب أو الكتب الصوتية بين المجلدات الجذرية في قاعدة بيانات BookshelfNG واحدة. تتحقق المعاينة من الملفات والتعارضات ومساحة القرص قبل تأكيد النقل.',
+      'lumen.migration.destinationRootFolder': 'مجلد الوجهة الجذر',
+      'lumen.migration.filterAuthors': 'تصفية المؤلفين',
+      'lumen.migration.libraryLoadFailed': 'تعذر تحميل مكتبة Bookshelf',
+      'lumen.migration.libraryLoading': 'جارٍ تحميل مكتبة Bookshelf…',
+      'lumen.migration.mediaFormat': 'تنسيق الوسائط',
+      'lumen.migration.movePreview': 'معاينة النقل',
+      'lumen.migration.moveStatus': 'النقل {id}: {status}',
+      'lumen.migration.nextPage': 'الصفحة التالية',
+      'lumen.migration.noAuthorsMatch': 'لا يوجد مؤلفون يطابقون عوامل التصفية.',
+      'lumen.migration.noIndividualFiles':
+        'لم يتضمن BookshelfNG الملفات الفردية.',
+      'lumen.migration.pageOf': 'الصفحة {page} من {total}',
+      'lumen.migration.previewCounts':
+        '{authors} مؤلفون · {media} ملفات وسائط · {sidecars} ملفات جانبية · {missing} ملفات مفقودة للتخطي',
+      'lumen.migration.previewFailed': 'تعذرت معاينة النقل.',
+      'lumen.migration.previewMove': 'معاينة النقل',
+      'lumen.migration.previousPage': 'الصفحة السابقة',
+      'lumen.migration.registeredFiles': '{count} ملفات مسجلة',
+      'lumen.migration.requiredSpace': 'المساحة المطلوبة للنسخ: {space}.',
+      'lumen.migration.retry': 'إعادة المحاولة',
+      'lumen.migration.reviewAuthorsFiles': 'مراجعة المؤلفين والملفات',
+      'lumen.migration.selectAuthor': 'تحديد {name}',
+      'lumen.migration.selectMatchingAuthors': 'تحديد المؤلفين المطابقين',
+      'lumen.migration.selectedAuthors':
+        'تم تحديد {count} مؤلفين. يمكن أن تضم كل دفعة حتى 1,000 مؤلف.',
+      'lumen.migration.servicesLoadFailed': 'تعذر تحميل خدمات Bookshelf',
+      'lumen.migration.servicesLoading': 'جارٍ تحميل خدمات Bookshelf…',
+      'lumen.migration.spaceUnavailable': 'المساحة الحرة في الوجهة غير متاحة.',
+      'lumen.migration.startFailed':
+        'تعذر بدء النقل. تحقق من BookshelfNG قبل إرسال معاينة جديدة.',
+      'lumen.migration.startMove': 'بدء النقل',
+      'lumen.migration.statusRefreshFailed':
+        'فشل تحديث الحالة. قد يواصل BookshelfNG نقل الملفات.',
+      'lumen.migration.title': 'ترحيل مسارات مكتبة Bookshelf',
+      'lumen.migration.tooManyAuthors':
+        'أعاد BookshelfNG أول 10,000 مؤلف. قلّص القائمة قبل تحديد دفعة.',
+      'lumen.migration.warning': 'تحذير: {message}',
       'lumen.movie.action.request': 'طلب',
       'lumen.movie.action.request4k': 'طلب 4K',
       'lumen.movie.action.request4kApproval': 'طلب موافقة 4K',
@@ -12489,6 +12551,70 @@ export const localeData = [
       'lumen.metadata.test': 'Test',
       'lumen.metadata.testFailed': 'Could not test metadata providers.',
       'lumen.metadata.title': 'Metadata Providers',
+      'lumen.migration.addServiceFirst':
+        'Add a BookshelfNG service in SeerrNG Service Settings to migrate its library.',
+      'lumen.migration.allCurrentFolders': 'All Current Folders',
+      'lumen.migration.alreadyAtDestination': 'Already at destination',
+      'lumen.migration.audiobooks': 'Audiobooks',
+      'lumen.migration.authorFileCounts':
+        '{media} media · {sidecars} sidecar · {missing} missing',
+      'lumen.migration.authorPages': 'Author Pages',
+      'lumen.migration.authors': 'Authors',
+      'lumen.migration.availableSpace': 'Available: {space}.',
+      'lumen.migration.books': 'Books',
+      'lumen.migration.bookshelfLibrary': 'Bookshelf Library',
+      'lumen.migration.bookshelfService': 'Bookshelf Service',
+      'lumen.migration.bookshelfServices': 'Bookshelf services',
+      'lumen.migration.cannotStart':
+        'This preview cannot be started. Review the reported conflicts and warnings.',
+      'lumen.migration.chooseRootFolder': 'Choose a Root Folder',
+      'lumen.migration.clearSelection': 'Clear Selection',
+      'lumen.migration.confirmMove':
+        'I reviewed this preview and want BookshelfNG to move these files.',
+      'lumen.migration.conflict': 'Conflict: {message}',
+      'lumen.migration.contacting': 'Contacting BookshelfNG…',
+      'lumen.migration.currentFolder': 'Current Folder',
+      'lumen.migration.description':
+        'Move book or audiobook files between root folders in one BookshelfNG database. A preview checks files, conflicts, and disk space before you confirm the move.',
+      'lumen.migration.destinationRootFolder': 'Destination Root Folder',
+      'lumen.migration.filterAuthors': 'Filter Authors',
+      'lumen.migration.libraryLoadFailed':
+        'Could not load the Bookshelf library',
+      'lumen.migration.libraryLoading': 'Loading Bookshelf library…',
+      'lumen.migration.mediaFormat': 'Media Format',
+      'lumen.migration.movePreview': 'Move Preview',
+      'lumen.migration.moveStatus': 'Move {id}: {status}',
+      'lumen.migration.nextPage': 'Next Page',
+      'lumen.migration.noAuthorsMatch': 'No authors match these filters.',
+      'lumen.migration.noIndividualFiles':
+        'BookshelfNG did not include individual files.',
+      'lumen.migration.pageOf': 'Page {page} of {total}',
+      'lumen.migration.previewCounts':
+        '{authors} authors · {media} media files · {sidecars} sidecar files · {missing} missing files to skip',
+      'lumen.migration.previewFailed': 'Could not preview the move.',
+      'lumen.migration.previewMove': 'Preview Move',
+      'lumen.migration.previousPage': 'Previous Page',
+      'lumen.migration.registeredFiles': '{count} registered files',
+      'lumen.migration.requiredSpace': 'Required copy space: {space}.',
+      'lumen.migration.retry': 'Retry',
+      'lumen.migration.reviewAuthorsFiles': 'Review Authors and Files',
+      'lumen.migration.selectAuthor': 'Select {name}',
+      'lumen.migration.selectMatchingAuthors': 'Select Matching Authors',
+      'lumen.migration.selectedAuthors':
+        '{count} authors selected. Each batch can include up to 1,000 authors.',
+      'lumen.migration.servicesLoadFailed': 'Could not load Bookshelf services',
+      'lumen.migration.servicesLoading': 'Loading Bookshelf services…',
+      'lumen.migration.spaceUnavailable':
+        'Destination free space was unavailable.',
+      'lumen.migration.startFailed':
+        'Could not start the move. Check BookshelfNG before submitting a new preview.',
+      'lumen.migration.startMove': 'Start Move',
+      'lumen.migration.statusRefreshFailed':
+        'Status refresh failed. BookshelfNG may still be moving files.',
+      'lumen.migration.title': 'Bookshelf Library Path Migration',
+      'lumen.migration.tooManyAuthors':
+        'BookshelfNG returned the first 10,000 authors. Narrow the list before selecting a batch.',
+      'lumen.migration.warning': 'Warning: {message}',
       'lumen.movie.action.request': 'Request',
       'lumen.movie.action.request4k': 'Request 4K',
       'lumen.movie.action.request4kApproval': 'Request 4K Approval',
@@ -21945,6 +22071,77 @@ export const localeData = [
       'lumen.metadata.testFailed':
         'Impossible de tester les fournisseurs de métadonnées.',
       'lumen.metadata.title': 'Fournisseurs de métadonnées',
+      'lumen.migration.addServiceFirst':
+        'Ajoutez un service BookshelfNG dans les paramètres des services SeerrNG pour migrer sa bibliothèque.',
+      'lumen.migration.allCurrentFolders': 'Tous les dossiers actuels',
+      'lumen.migration.alreadyAtDestination': 'Déjà à destination',
+      'lumen.migration.audiobooks': 'Livres audio',
+      'lumen.migration.authorFileCounts':
+        '{media} médias · {sidecars} annexes · {missing} manquants',
+      'lumen.migration.authorPages': 'Pages des auteurs',
+      'lumen.migration.authors': 'Auteurs',
+      'lumen.migration.availableSpace': 'Disponible : {space}.',
+      'lumen.migration.books': 'Livres',
+      'lumen.migration.bookshelfLibrary': 'Bibliothèque Bookshelf',
+      'lumen.migration.bookshelfService': 'Service Bookshelf',
+      'lumen.migration.bookshelfServices': 'Services Bookshelf',
+      'lumen.migration.cannotStart':
+        'Cet aperçu ne peut pas être lancé. Examinez les conflits et avertissements signalés.',
+      'lumen.migration.chooseRootFolder': 'Choisir un dossier racine',
+      'lumen.migration.clearSelection': 'Effacer la sélection',
+      'lumen.migration.confirmMove':
+        'J’ai vérifié cet aperçu et je souhaite que BookshelfNG déplace ces fichiers.',
+      'lumen.migration.conflict': 'Conflit : {message}',
+      'lumen.migration.contacting': 'Connexion à BookshelfNG…',
+      'lumen.migration.currentFolder': 'Dossier actuel',
+      'lumen.migration.description':
+        'Déplacez des fichiers de livres ou de livres audio entre les dossiers racine d’une base BookshelfNG. Un aperçu vérifie les fichiers, les conflits et l’espace disque avant confirmation.',
+      'lumen.migration.destinationRootFolder': 'Dossier racine de destination',
+      'lumen.migration.filterAuthors': 'Filtrer les auteurs',
+      'lumen.migration.libraryLoadFailed':
+        'Impossible de charger la bibliothèque Bookshelf',
+      'lumen.migration.libraryLoading':
+        'Chargement de la bibliothèque Bookshelf…',
+      'lumen.migration.mediaFormat': 'Format du média',
+      'lumen.migration.movePreview': 'Aperçu du déplacement',
+      'lumen.migration.moveStatus': 'Déplacement {id} : {status}',
+      'lumen.migration.nextPage': 'Page suivante',
+      'lumen.migration.noAuthorsMatch':
+        'Aucun auteur ne correspond à ces filtres.',
+      'lumen.migration.noIndividualFiles':
+        'BookshelfNG n’a pas fourni les fichiers individuels.',
+      'lumen.migration.pageOf': 'Page {page} sur {total}',
+      'lumen.migration.previewCounts':
+        '{authors} auteurs · {media} fichiers multimédias · {sidecars} fichiers annexes · {missing} fichiers manquants à ignorer',
+      'lumen.migration.previewFailed':
+        'Impossible de prévisualiser le déplacement.',
+      'lumen.migration.previewMove': 'Prévisualiser le déplacement',
+      'lumen.migration.previousPage': 'Page précédente',
+      'lumen.migration.registeredFiles': '{count} fichiers enregistrés',
+      'lumen.migration.requiredSpace': 'Espace requis pour la copie : {space}.',
+      'lumen.migration.retry': 'Réessayer',
+      'lumen.migration.reviewAuthorsFiles':
+        'Examiner les auteurs et les fichiers',
+      'lumen.migration.selectAuthor': 'Sélectionner {name}',
+      'lumen.migration.selectMatchingAuthors':
+        'Sélectionner les auteurs correspondants',
+      'lumen.migration.selectedAuthors':
+        '{count} auteurs sélectionnés. Chaque lot peut contenir jusqu’à 1 000 auteurs.',
+      'lumen.migration.servicesLoadFailed':
+        'Impossible de charger les services Bookshelf',
+      'lumen.migration.servicesLoading': 'Chargement des services Bookshelf…',
+      'lumen.migration.spaceUnavailable':
+        'L’espace libre de destination est indisponible.',
+      'lumen.migration.startFailed':
+        'Impossible de démarrer le déplacement. Vérifiez BookshelfNG avant de créer un nouvel aperçu.',
+      'lumen.migration.startMove': 'Démarrer le déplacement',
+      'lumen.migration.statusRefreshFailed':
+        'Échec de l’actualisation de l’état. BookshelfNG peut toujours déplacer les fichiers.',
+      'lumen.migration.title':
+        'Migration des chemins de bibliothèque Bookshelf',
+      'lumen.migration.tooManyAuthors':
+        'BookshelfNG a renvoyé les 10 000 premiers auteurs. Affinez la liste avant de sélectionner un lot.',
+      'lumen.migration.warning': 'Avertissement : {message}',
       'lumen.movie.action.request': 'Demander',
       'lumen.movie.action.request4k': 'Demander en 4K',
       'lumen.movie.action.request4kApproval': 'Demander une approbation en 4K',

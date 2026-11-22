@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Format = 'ebook' | 'audiobook';
@@ -77,33 +78,53 @@ function diskSpace(bytes: number) {
 }
 
 function PreviewDetails({ preview }: { preview: Preview }) {
+  const { t } = useLumenLocale();
   return (
     <>
       <p className="note">
-        {preview.authorCount} authors · {preview.mediaFileCount} media files ·{' '}
-        {preview.sidecarFileCount} sidecar files · {preview.missingFileCount}{' '}
-        missing files to skip
+        {t(
+          'lumen.migration.previewCounts',
+          '{authors} authors · {media} media files · {sidecars} sidecar files · {missing} missing files to skip',
+          {
+            authors: preview.authorCount,
+            media: preview.mediaFileCount,
+            sidecars: preview.sidecarFileCount,
+            missing: preview.missingFileCount,
+          }
+        )}
       </p>
       <p className="note">
-        Required copy space: {diskSpace(preview.requiredCopyBytes)}.
+        {t('lumen.migration.requiredSpace', 'Required copy space: {space}.', {
+          space: diskSpace(preview.requiredCopyBytes),
+        })}
         {preview.availableSpace === undefined
-          ? ' Destination free space was unavailable.'
-          : ` Available: ${diskSpace(preview.availableSpace)}.`}
+          ? ` ${t('lumen.migration.spaceUnavailable', 'Destination free space was unavailable.')}`
+          : ` ${t('lumen.migration.availableSpace', 'Available: {space}.', { space: diskSpace(preview.availableSpace) })}`}
       </p>
       <div className="setlist">
         {preview.warnings.map((warning, index) => (
           <div key={index} className="set">
-            <small>Warning: {warning}</small>
+            <small>
+              {t('lumen.migration.warning', 'Warning: {message}', {
+                message: warning,
+              })}
+            </small>
           </div>
         ))}
         {preview.conflicts.map((conflict, index) => (
           <div key={index} className="set">
-            <small>Conflict: {conflict}</small>
+            <small>
+              {t('lumen.migration.conflict', 'Conflict: {message}', {
+                message: conflict,
+              })}
+            </small>
           </div>
         ))}
       </div>
       <details>
-        <summary>Review Authors and Files</summary>
+        <summary>
+          {t('lumen.migration.reviewAuthorsFiles', 'Review Authors and Files')}
+        </summary>
         <div className="setlist">
           {preview.authors.map((author) => (
             <AuthorPreview key={author.authorId} author={author} />
@@ -115,6 +136,7 @@ function PreviewDetails({ preview }: { preview: Preview }) {
 }
 
 function AuthorPreview({ author }: { author: Preview['authors'][number] }) {
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(false);
   return (
     <details
@@ -133,15 +155,25 @@ function AuthorPreview({ author }: { author: Preview['authors'][number] }) {
           </div>
           <div className="set">
             <small>
-              {author.mediaFileCount} media · {author.sidecarFileCount} sidecar
-              · {author.missingFileCount} missing
+              {t(
+                'lumen.migration.authorFileCounts',
+                '{media} media · {sidecars} sidecar · {missing} missing',
+                {
+                  media: author.mediaFileCount,
+                  sidecars: author.sidecarFileCount,
+                  missing: author.missingFileCount,
+                }
+              )}
             </small>
           </div>
           {author.files.map((file, index) => (
             <div className="set" key={index}>
               <small>
                 {file.status === 'alreadyAtDestination'
-                  ? 'Already at destination'
+                  ? t(
+                      'lumen.migration.alreadyAtDestination',
+                      'Already at destination'
+                    )
                   : file.status}{' '}
                 ({file.fileType}): {file.sourcePath} → {file.destinationPath}
               </small>
@@ -149,7 +181,10 @@ function AuthorPreview({ author }: { author: Preview['authors'][number] }) {
           ))}
           {author.files.length === 0 && (
             <p className="note">
-              BookshelfNG did not include individual files.
+              {t(
+                'lumen.migration.noIndividualFiles',
+                'BookshelfNG did not include individual files.'
+              )}
             </p>
           )}
         </div>
@@ -159,6 +194,7 @@ function AuthorPreview({ author }: { author: Preview['authors'][number] }) {
 }
 
 function MigrationForm({ services }: { services: Service[] }) {
+  const { t } = useLumenLocale();
   const preferred =
     services.find((service) => service.serviceType === 'audiobook') ??
     services[0];
@@ -297,8 +333,14 @@ function MigrationForm({ services }: { services: Service[] }) {
           friendlyError(
             error,
             start
-              ? 'Could not start the move. Check BookshelfNG before submitting a new preview.'
-              : 'Could not preview the move.'
+              ? t(
+                  'lumen.migration.startFailed',
+                  'Could not start the move. Check BookshelfNG before submitting a new preview.'
+                )
+              : t(
+                  'lumen.migration.previewFailed',
+                  'Could not preview the move.'
+                )
           )
         );
     } finally {
@@ -309,10 +351,14 @@ function MigrationForm({ services }: { services: Service[] }) {
 
   return (
     <>
-      <Section title="Bookshelf Library">
+      <Section
+        title={t('lumen.migration.bookshelfLibrary', 'Bookshelf Library')}
+      >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Bookshelf Service</span>
+            <span>
+              {t('lumen.migration.bookshelfService', 'Bookshelf Service')}
+            </span>
             <select
               className="cfg-select"
               value={serviceId}
@@ -335,7 +381,7 @@ function MigrationForm({ services }: { services: Service[] }) {
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Media Format</span>
+            <span>{t('lumen.migration.mediaFormat', 'Media Format')}</span>
             <select
               className="cfg-select"
               value={format}
@@ -347,12 +393,16 @@ function MigrationForm({ services }: { services: Service[] }) {
                 resetLibrary();
               }}
             >
-              <option value="ebook">Books</option>
-              <option value="audiobook">Audiobooks</option>
+              <option value="ebook">
+                {t('lumen.migration.books', 'Books')}
+              </option>
+              <option value="audiobook">
+                {t('lumen.migration.audiobooks', 'Audiobooks')}
+              </option>
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Current Folder</span>
+            <span>{t('lumen.migration.currentFolder', 'Current Folder')}</span>
             <select
               className="cfg-select"
               value={source}
@@ -363,14 +413,21 @@ function MigrationForm({ services }: { services: Service[] }) {
                 select([]);
               }}
             >
-              <option value="">All Current Folders</option>
+              <option value="">
+                {t('lumen.migration.allCurrentFolders', 'All Current Folders')}
+              </option>
               {sourcePaths.map((folder) => (
                 <option key={folder}>{folder}</option>
               ))}
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Destination Root Folder</span>
+            <span>
+              {t(
+                'lumen.migration.destinationRootFolder',
+                'Destination Root Folder'
+              )}
+            </span>
             <select
               className="cfg-select"
               value={destination}
@@ -380,14 +437,16 @@ function MigrationForm({ services }: { services: Service[] }) {
                 invalidate();
               }}
             >
-              <option value="">Choose a Root Folder</option>
+              <option value="">
+                {t('lumen.migration.chooseRootFolder', 'Choose a Root Folder')}
+              </option>
               {roots.map((root) => (
                 <option key={root.id}>{root.path}</option>
               ))}
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Filter Authors</span>
+            <span>{t('lumen.migration.filterAuthors', 'Filter Authors')}</span>
             <input
               className="cfg-input"
               type="search"
@@ -403,26 +462,36 @@ function MigrationForm({ services }: { services: Service[] }) {
         </div>
         <ServiceNote
           error={configuration.error}
-          what="Bookshelf library"
+          what={t('lumen.migration.bookshelfLibrary', 'Bookshelf Library')}
+          title={t(
+            'lumen.migration.libraryLoadFailed',
+            'Could not load the Bookshelf library'
+          )}
+          retryLabel={t('lumen.migration.retry', 'Retry')}
           retry={configuration.reload}
         />
         {!configuration.data && !configuration.error && (
           <p className="note" role="status">
-            Loading Bookshelf library…
+            {t('lumen.migration.libraryLoading', 'Loading Bookshelf library…')}
           </p>
         )}
       </Section>
       {configuration.data && (
-        <Section title="Authors">
+        <Section title={t('lumen.migration.authors', 'Authors')}>
           {configuration.data.truncated && (
             <p className="note">
-              BookshelfNG returned the first 10,000 authors. Narrow the list
-              before selecting a batch.
+              {t(
+                'lumen.migration.tooManyAuthors',
+                'BookshelfNG returned the first 10,000 authors. Narrow the list before selecting a batch.'
+              )}
             </p>
           )}
           <p className="note" role="status">
-            {selected.length} authors selected. Each batch can include up to
-            1,000 authors.
+            {t(
+              'lumen.migration.selectedAuthors',
+              '{count} authors selected. Each batch can include up to 1,000 authors.',
+              { count: selected.length }
+            )}
           </p>
           <div className="toolbar">
             <button
@@ -432,18 +501,26 @@ function MigrationForm({ services }: { services: Service[] }) {
                 select(filtered.slice(0, batchLimit).map(({ id }) => id))
               }
             >
-              Select Matching Authors
+              {t(
+                'lumen.migration.selectMatchingAuthors',
+                'Select Matching Authors'
+              )}
             </button>
             <button
               className="btn btn-quiet btn-sm"
               disabled={disabled || !selected.length}
               onClick={() => select([])}
             >
-              Clear Selection
+              {t('lumen.migration.clearSelection', 'Clear Selection')}
             </button>
           </div>
           {!filtered.length && (
-            <p className="note">No authors match these filters.</p>
+            <p className="note">
+              {t(
+                'lumen.migration.noAuthorsMatch',
+                'No authors match these filters.'
+              )}
+            </p>
           )}
           <div className="setlist">
             {filtered
@@ -454,12 +531,20 @@ function MigrationForm({ services }: { services: Service[] }) {
                     <b>{author.name}</b>
                     <small>
                       {author.currentFormatPath || author.path} ·{' '}
-                      {author.bookFileCount} registered files
+                      {t(
+                        'lumen.migration.registeredFiles',
+                        '{count} registered files',
+                        { count: author.bookFileCount }
+                      )}
                     </small>
                   </span>
                   <input
                     type="checkbox"
-                    aria-label={`Select ${author.name}`}
+                    aria-label={t(
+                      'lumen.migration.selectAuthor',
+                      'Select {name}',
+                      { name: author.name }
+                    )}
                     checked={selectedSet.has(author.id)}
                     disabled={
                       disabled ||
@@ -478,23 +563,29 @@ function MigrationForm({ services }: { services: Service[] }) {
               ))}
           </div>
           {pageCount > 1 && (
-            <nav className="toolbar" aria-label="Author Pages">
+            <nav
+              className="toolbar"
+              aria-label={t('lumen.migration.authorPages', 'Author Pages')}
+            >
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={visiblePage === 0}
                 onClick={() => setPage(visiblePage - 1)}
               >
-                Previous Page
+                {t('lumen.migration.previousPage', 'Previous Page')}
               </button>
               <span>
-                Page {visiblePage + 1} of {pageCount}
+                {t('lumen.migration.pageOf', 'Page {page} of {total}', {
+                  page: visiblePage + 1,
+                  total: pageCount,
+                })}
               </span>
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={visiblePage + 1 >= pageCount}
                 onClick={() => setPage(visiblePage + 1)}
               >
-                Next Page
+                {t('lumen.migration.nextPage', 'Next Page')}
               </button>
             </nav>
           )}
@@ -504,20 +595,22 @@ function MigrationForm({ services }: { services: Service[] }) {
               disabled={disabled || !canPreview}
               onClick={() => void submit(false)}
             >
-              Preview Move
+              {t('lumen.migration.previewMove', 'Preview Move')}
             </button>
           </div>
         </Section>
       )}
       {preview && (
-        <Section title="Move Preview">
+        <Section title={t('lumen.migration.movePreview', 'Move Preview')}>
           <PreviewDetails preview={preview} />
           {canStart ? (
             <>
               <label className="set cfg-row">
                 <span>
-                  I reviewed this preview and want BookshelfNG to move these
-                  files.
+                  {t(
+                    'lumen.migration.confirmMove',
+                    'I reviewed this preview and want BookshelfNG to move these files.'
+                  )}
                 </span>
                 <input
                   type="checkbox"
@@ -532,26 +625,31 @@ function MigrationForm({ services }: { services: Service[] }) {
                   disabled={disabled || !confirmed}
                   onClick={() => void submit(true)}
                 >
-                  Start Move
+                  {t('lumen.migration.startMove', 'Start Move')}
                 </button>
               </div>
             </>
           ) : (
             <p className="note">
-              This preview cannot be started. Review the reported conflicts and
-              warnings.
+              {t(
+                'lumen.migration.cannotStart',
+                'This preview cannot be started. Review the reported conflicts and warnings.'
+              )}
             </p>
           )}
         </Section>
       )}
       {busy && (
         <p className="note" role="status">
-          Contacting BookshelfNG…
+          {t('lumen.migration.contacting', 'Contacting BookshelfNG…')}
         </p>
       )}
       {command && (
         <p className="note" role="status">
-          Move {command.id}: {command.status}
+          {t('lumen.migration.moveStatus', 'Move {id}: {status}', {
+            id: command.id,
+            status: command.status,
+          })}
           {running && typeof command.progress === 'number'
             ? ` (${Math.max(0, Math.min(100, command.progress))}%)`
             : ''}
@@ -560,7 +658,10 @@ function MigrationForm({ services }: { services: Service[] }) {
       )}
       {running && status.error && (
         <p className="note" role="status">
-          Status refresh failed. BookshelfNG may still be moving files.
+          {t(
+            'lumen.migration.statusRefreshFailed',
+            'Status refresh failed. BookshelfNG may still be moving files.'
+          )}
         </p>
       )}
       {failure && (
@@ -573,6 +674,7 @@ function MigrationForm({ services }: { services: Service[] }) {
 }
 
 export default function AdminLibraryMigration() {
+  const { t } = useLumenLocale();
   const settings = useApi<Service[]>(servicesPath);
   const services = settings.data?.filter(
     (service) =>
@@ -581,32 +683,42 @@ export default function AdminLibraryMigration() {
   return (
     <>
       <header className="ph">
-        <h1>Bookshelf Library Path Migration</h1>
+        <h1>
+          {t('lumen.migration.title', 'Bookshelf Library Path Migration')}
+        </h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {t('lumen.admin.title', 'Administration')}
           </Link>
         </div>
       </header>
       <p className="note">
-        Move book or audiobook files between root folders in one BookshelfNG
-        database. A preview checks files, conflicts, and disk space before you
-        confirm the move.
+        {t(
+          'lumen.migration.description',
+          'Move book or audiobook files between root folders in one BookshelfNG database. A preview checks files, conflicts, and disk space before you confirm the move.'
+        )}
       </p>
       <ServiceNote
         error={settings.error}
-        what="Bookshelf services"
+        what={t('lumen.migration.bookshelfServices', 'Bookshelf services')}
+        title={t(
+          'lumen.migration.servicesLoadFailed',
+          'Could not load Bookshelf services'
+        )}
+        retryLabel={t('lumen.migration.retry', 'Retry')}
         retry={settings.reload}
       />
       {!services && !settings.error && (
         <p className="note" role="status">
-          Loading Bookshelf services…
+          {t('lumen.migration.servicesLoading', 'Loading Bookshelf services…')}
         </p>
       )}
       {services?.length === 0 && (
         <p className="note">
-          Add a BookshelfNG service in SeerrNG Service Settings to migrate its
-          library.
+          {t(
+            'lumen.migration.addServiceFirst',
+            'Add a BookshelfNG service in SeerrNG Service Settings to migrate its library.'
+          )}
         </p>
       )}
       {!!services?.length && <MigrationForm services={services} />}

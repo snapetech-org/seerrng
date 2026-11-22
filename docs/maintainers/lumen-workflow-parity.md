@@ -5918,3 +5918,24 @@ matched pre-change/native visual comparison, bundled Express mount, live
 provider behavior, and independent linguistic review remain open. Candidate
 captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/override-rules/`.
+
+### Bookshelf library migration localization
+
+The Bookshelf library path migration page now localizes its source and
+destination controls, author selection and paging, preview counts and disk
+space, conflict/warning labels, confirmation, command progress, and recovery
+messages in English, French, and Arabic. The supported service selection,
+preview token, confirmation step, file move request body, and progress polling
+remain unchanged.
+
+The new saved-locale fixture passes in all three locales across desktop,
+iPhone, Android, and tablet. The existing end-to-end preview test also passes
+in all four viewports and confirms that conflicts prevent starting a move, a
+changed destination invalidates the preview, and only the latest preview token
+is sent after explicit confirmation. French desktop and Arabic iPhone candidates
+were inspected. The sticky mobile navigation overlays part of this tall page in
+the initial phone viewport; that shared layout behavior needs a matched baseline
+review. Bundled Express mount, actual file moves, live provider state, and
+independent linguistic review remain unverified. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/library-migration-french-desktop.png`
+and `.../library-migration-arabic-phone.png`.
