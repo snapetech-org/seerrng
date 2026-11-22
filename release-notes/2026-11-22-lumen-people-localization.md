@@ -1,0 +1,1 @@
+- Localize Lumen People profiles, filmography filters and sorting, and bulk movie request confirmation and result feedback in English, French, and Arabic. Preserve provider supplied metadata, category and request permissions, batching, and request payloads.

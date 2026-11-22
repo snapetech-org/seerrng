@@ -6919,3 +6919,21 @@ and iPhone sizes. French iPhone and Arabic desktop request sheets were
 inspected. Live media server and music provider behavior and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-localization-20261122/`.
+
+
+### People and filmography localization
+
+People pages now localize person fallbacks, profile recovery and loading states,
+filmography sections and media filters, sort labels and directions, and bulk
+movie request confirmation and result summaries in English, French, and Arabic.
+Provider supplied names, biographies, departments, credit roles, and movie
+titles remain unchanged. Category and request permissions, deduplication,
+batching, request payloads, and default movie settings are unchanged.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet for all
+three locales. They verify localized filmography filters and sections, bulk
+request confirmation and exact unique movie IDs, Arabic direction, and page
+overflow. Existing People search, privacy, credit filtering, safe portrait,
+and sort regressions pass. Live TMDB data and independent linguistic review
+remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-people-localization-20261122/`.

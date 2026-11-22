@@ -12,16 +12,18 @@ import { useToast } from '../components/toast';
 import { useExtras } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { sessionGeneration } from '../sessionState';
 
 export function PersonCard({ person }: { person: TitleResult }) {
+  const { t } = useLumenLocale();
   const image = tmdbImg(person.profilePath);
   return (
     <ExtraCard
       href={`/person/${person.id}`}
       img={image || undefined}
-      title={person.name || 'Unknown person'}
+      title={person.name || t('lumen.people.unknown', 'Unknown person')}
       icon="user"
     />
   );
@@ -48,14 +50,6 @@ interface PersonCredits {
   cast: PersonCredit[];
   crew: PersonCredit[];
 }
-
-const creditSorts = [
-  ['voteCount', 'Votes'],
-  ['popularity', 'Popularity'],
-  ['date', 'Release Date'],
-  ['voteAverage', 'Rating'],
-  ['title', 'Title'],
-] as const;
 
 const creditCollator = new Intl.Collator(undefined, {
   numeric: true,
@@ -139,11 +133,19 @@ function Filmography({
   movieEnabled: boolean;
   tvEnabled: boolean;
 }) {
+  const { t } = useLumenLocale();
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('voteCount.desc');
+  const creditSorts = [
+    ['voteCount', t('lumen.people.votes', 'Votes')],
+    ['popularity', t('lumen.people.popularity', 'Popularity')],
+    ['date', t('lumen.people.releaseDate', 'Release Date')],
+    ['voteAverage', t('lumen.people.rating', 'Rating')],
+    ['title', t('lumen.people.title', 'Title')],
+  ] as const;
   const groups = [
     {
-      label: 'Cast',
+      label: t('lumen.people.cast', 'Cast'),
       entries: creditTitles(
         credits.cast ?? [],
         filter,
@@ -154,7 +156,7 @@ function Filmography({
       ),
     },
     {
-      label: 'Crew',
+      label: t('lumen.people.crew', 'Crew'),
       entries: creditTitles(
         credits.crew ?? [],
         filter,
@@ -167,21 +169,31 @@ function Filmography({
   ];
   if (!acting) groups.reverse();
   return (
-    <Section title="Credits">
+    <Section title={t('lumen.people.credits', 'Credits')}>
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Media Type</span>
+          <span className="lbl">
+            {t('lumen.people.mediaType', 'Media Type')}
+          </span>
           <select
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
           >
-            <option value="all">All</option>
-            {movieEnabled && <option value="movie">Movies</option>}
-            {tvEnabled && <option value="tv">Series</option>}
+            <option value="all">{t('lumen.people.all', 'All')}</option>
+            {movieEnabled && (
+              <option value="movie">
+                {t('lumen.people.movies', 'Movies')}
+              </option>
+            )}
+            {tvEnabled && (
+              <option value="tv">{t('lumen.people.series', 'Series')}</option>
+            )}
           </select>
         </label>
         <label className="sel">
-          <span className="lbl">Sort Credits</span>
+          <span className="lbl">
+            {t('lumen.people.sortCredits', 'Sort Credits')}
+          </span>
           <select
             value={sort}
             onChange={(event) => setSort(event.target.value)}
@@ -191,19 +203,19 @@ function Filmography({
                 <option value={`${key}.desc`}>
                   {label} (
                   {key === 'title'
-                    ? 'Z–A'
+                    ? t('lumen.people.zToA', 'Z–A')
                     : key === 'date'
-                      ? 'Newest'
-                      : 'High to Low'}
+                      ? t('lumen.people.newest', 'Newest')
+                      : t('lumen.people.highToLow', 'High to Low')}
                   )
                 </option>
                 <option value={`${key}.asc`}>
                   {label} (
                   {key === 'title'
-                    ? 'A–Z'
+                    ? t('lumen.people.aToZ', 'A–Z')
                     : key === 'date'
-                      ? 'Oldest'
-                      : 'Low to High'}
+                      ? t('lumen.people.oldest', 'Oldest')
+                      : t('lumen.people.lowToHigh', 'Low to High')}
                   )
                 </option>
               </optgroup>
@@ -212,7 +224,9 @@ function Filmography({
         </label>
       </div>
       {groups.every(({ entries }) => !entries.length) && (
-        <p className="note">No matching credits.</p>
+        <p className="note">
+          {t('lumen.people.noMatchingCredits', 'No matching credits.')}
+        </p>
       )}
       {groups.map(
         ({ label, entries }) =>
@@ -243,6 +257,7 @@ function RequestPersonMovies({
   ids: number[];
   onSubmitted: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [selection, setSelection] = useState<number[]>();
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
@@ -294,11 +309,19 @@ function RequestPersonMovies({
       }
       if (generation !== sessionGeneration()) return;
       const result = [
-        `${created} submitted`,
-        `${skipped} skipped`,
-        `${failed} failed`,
-        unconfirmed ? `${unconfirmed} unconfirmed` : '',
-        notSubmitted ? `${notSubmitted} not submitted` : '',
+        t('lumen.people.submitted', '{count} submitted', { count: created }),
+        t('lumen.people.skipped', '{count} skipped', { count: skipped }),
+        t('lumen.people.failed', '{count} failed', { count: failed }),
+        unconfirmed
+          ? t('lumen.people.unconfirmed', '{count} unconfirmed', {
+              count: unconfirmed,
+            })
+          : '',
+        notSubmitted
+          ? t('lumen.people.notSubmitted', '{count} not submitted', {
+              count: notSubmitted,
+            })
+          : '',
       ]
         .filter(Boolean)
         .join(' · ');
@@ -322,16 +345,22 @@ function RequestPersonMovies({
           disabled={!ids.length}
           onClick={() => setSelection(ids)}
         >
-          Request All Movies
+          {t('lumen.people.requestAllMovies', 'Request All Movies')}
         </button>
       </div>
       {summary && <p className="note">{summary}</p>}
       {selection && (
         <ConfirmSheet
-          title={`Request Movies by ${name}`}
-          body={`SeerrNG will check ${selection.length} credited movies for eligibility and request the eligible titles using your default movie settings.`}
-          confirm="Request All"
-          cancel="Cancel"
+          title={t('lumen.people.requestMoviesBy', 'Request Movies by {name}', {
+            name,
+          })}
+          body={t(
+            'lumen.people.requestConfirmation',
+            'SeerrNG will check {count} credited movies for eligibility and request the eligible titles using your default movie settings.',
+            { count: selection.length }
+          )}
+          confirm={t('lumen.people.requestAll', 'Request All')}
+          cancel={t('lumen.people.cancel', 'Cancel')}
           busy={busy}
           onConfirm={() => void submit()}
           onClose={() => {
@@ -344,6 +373,7 @@ function RequestPersonMovies({
 }
 
 export default function PersonDetail() {
+  const { t } = useLumenLocale();
   const { id: rawId } = useParams();
   const { user } = useAuth();
   const extras = useExtras();
@@ -374,16 +404,21 @@ export default function PersonDetail() {
     ),
   ];
 
-  if (!path) return <div className="empty">Person not found.</div>;
+  if (!path)
+    return (
+      <div className="empty">
+        {t('lumen.people.notFound', 'Person not found.')}
+      </div>
+    );
 
   return (
     <>
       <header className="ph">
         <div className="eyebrow">
-          <Link to="/search">People</Link>
+          <Link to="/search">{t('lumen.people.people', 'People')}</Link>
         </div>
         <div className="ph-row">
-          <h1>{person.data?.name || 'Person'}</h1>
+          <h1>{person.data?.name || t('lumen.people.person', 'Person')}</h1>
           {canViewFollowing(user?.permissions) &&
             person.data?.id === id &&
             person.data.name && (
@@ -413,10 +448,14 @@ export default function PersonDetail() {
       </header>
       <ServiceNote
         error={person.error}
-        what="person details"
+        what={t('lumen.people.personDetails', 'person details')}
         retry={person.reload}
       />
-      {!person.data && !person.error && <p className="note">Loading person…</p>}
+      {!person.data && !person.error && (
+        <p className="note">
+          {t('lumen.people.loadingPerson', 'Loading person…')}
+        </p>
+      )}
       {person.data && (
         <div className="person-overview">
           <div className="portrait">
@@ -437,7 +476,11 @@ export default function PersonDetail() {
               <p className="sub">{person.data.knownForDepartment}</p>
             )}
             {person.data.placeOfBirth && (
-              <p className="sub">Born in {person.data.placeOfBirth}</p>
+              <p className="sub">
+                {t('lumen.people.bornIn', 'Born in {place}', {
+                  place: person.data.placeOfBirth,
+                })}
+              </p>
             )}
             {person.data.biography && (
               <p className="ov long">{person.data.biography}</p>
@@ -447,11 +490,13 @@ export default function PersonDetail() {
       )}
       <ServiceNote
         error={credits.error}
-        what="credits"
+        what={t('lumen.people.credits', 'credits')}
         retry={credits.reload}
       />
       {!credits.data && !credits.error && (
-        <p className="note">Loading credits…</p>
+        <p className="note">
+          {t('lumen.people.loadingCredits', 'Loading credits…')}
+        </p>
       )}
       {credits.data && (
         <Filmography
