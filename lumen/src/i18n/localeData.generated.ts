@@ -2972,6 +2972,24 @@ export const localeData = [
       'lumen.clientTokens.title': 'رموز العميل',
       'lumen.clientTokens.tokenName': 'اسم الرمز',
       'lumen.clientTokens.yourTokens': 'رموزك',
+      'lumen.collectors.empty':
+        'لا يشارك هواة الجمع الذين تتابعهم أي شيء حتى الآن.',
+      'lumen.collectors.followArtist': 'متابعة إصدارات الفنان',
+      'lumen.collectors.followFailed': 'تعذرت متابعة الفنان.',
+      'lumen.collectors.followNotConfirmed': 'لم يتم تأكيد المتابعة.',
+      'lumen.collectors.followedNotice': 'تمت متابعة الفنان.',
+      'lumen.collectors.following': 'تتابع',
+      'lumen.collectors.followingProgress': 'جارٍ المتابعة…',
+      'lumen.collectors.noAlbum': 'لا يوجد ألبوم مطابق في الفهرس',
+      'lumen.collectors.openAlbum': 'فتح الألبوم',
+      'lumen.collectors.sharedMany':
+        'تمت المشاركة بواسطة {count} من هواة الجمع الموثوقين',
+      'lumen.collectors.sharedOne':
+        'تمت المشاركة بواسطة {count} من هواة الجمع الموثوقين',
+      'lumen.collectors.title': 'اختيارات هواة الجمع',
+      'lumen.collectors.unavailable':
+        'تتطلب اختيارات هواة الجمع slskdN مع تفعيل التبادل الاجتماعي.',
+      'lumen.collectors.what': 'اختيارات هواة الجمع',
       'lumen.common.retry': 'إعادة المحاولة',
       'lumen.detail.advancedOptions': 'خيارات الطلب المتقدمة',
       'lumen.detail.confirmPinFailure':
@@ -12163,6 +12181,22 @@ export const localeData = [
       'lumen.clientTokens.title': 'Client Tokens',
       'lumen.clientTokens.tokenName': 'Token Name',
       'lumen.clientTokens.yourTokens': 'Your Tokens',
+      'lumen.collectors.empty':
+        'Nothing is being shared by collectors you follow yet.',
+      'lumen.collectors.followArtist': 'Follow Artist Releases',
+      'lumen.collectors.followFailed': 'Could not follow the artist.',
+      'lumen.collectors.followNotConfirmed': 'Follow was not confirmed.',
+      'lumen.collectors.followedNotice': 'Artist followed.',
+      'lumen.collectors.following': 'Following',
+      'lumen.collectors.followingProgress': 'Following…',
+      'lumen.collectors.noAlbum': 'No catalog album match',
+      'lumen.collectors.openAlbum': 'Open Album',
+      'lumen.collectors.sharedMany': 'Shared by {count} trusted collectors',
+      'lumen.collectors.sharedOne': 'Shared by {count} trusted collector',
+      'lumen.collectors.title': 'Collector Picks',
+      'lumen.collectors.unavailable':
+        'Collector picks require slskdN with social federation enabled.',
+      'lumen.collectors.what': 'collector picks',
       'lumen.common.retry': 'Retry',
       'lumen.detail.advancedOptions': 'Advanced Request Options',
       'lumen.detail.confirmPinFailure':
@@ -21930,6 +21964,24 @@ export const localeData = [
       'lumen.clientTokens.title': 'Jetons client',
       'lumen.clientTokens.tokenName': 'Nom du jeton',
       'lumen.clientTokens.yourTokens': 'Vos jetons',
+      'lumen.collectors.empty':
+        'Les collectionneurs que vous suivez ne partagent encore rien.',
+      'lumen.collectors.followArtist': 'Suivre les sorties de l’artiste',
+      'lumen.collectors.followFailed': 'Impossible de suivre l’artiste.',
+      'lumen.collectors.followNotConfirmed': 'Le suivi n’a pas été confirmé.',
+      'lumen.collectors.followedNotice': 'Artiste suivi.',
+      'lumen.collectors.following': 'Abonné',
+      'lumen.collectors.followingProgress': 'Abonnement…',
+      'lumen.collectors.noAlbum': 'Aucun album correspondant dans le catalogue',
+      'lumen.collectors.openAlbum': 'Ouvrir l’album',
+      'lumen.collectors.sharedMany':
+        'Partagé par {count} collectionneurs de confiance',
+      'lumen.collectors.sharedOne':
+        'Partagé par {count} collectionneur de confiance',
+      'lumen.collectors.title': 'Sélections des collectionneurs',
+      'lumen.collectors.unavailable':
+        'Les sélections nécessitent slskdN avec la fédération sociale activée.',
+      'lumen.collectors.what': 'sélections des collectionneurs',
       'lumen.common.retry': 'Réessayer',
       'lumen.detail.advancedOptions': 'Options de demande avancées',
       'lumen.detail.confirmPinFailure':

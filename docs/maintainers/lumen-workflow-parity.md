@@ -6068,3 +6068,14 @@ Twelve browser cases plus the existing restore/clear workflow passed across
 desktop, iPhone, Android, and tablet (16 cases). Bundled Express mount, live
 provider behavior, matched visual acceptance, and independent linguistic
 review remain open.
+
+### Collector Picks localization
+
+Collector Picks follows the saved English, French, or Arabic locale for
+availability, source counts, album links, follow actions, and user feedback.
+Provider-supplied recommendation reasons and artist/album identities are
+preserved. The existing authenticated artist-follow POST is unchanged.
+Twelve locale cases and the existing follow integration test passed across
+desktop, iPhone, Android, and tablet (16 cases). Bundled Express mount, live
+federation, matched visual acceptance, and independent linguistic review
+remain open.
