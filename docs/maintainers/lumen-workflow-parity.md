@@ -1060,7 +1060,9 @@ confirmed library target, and preview fingerprint. Rejection offers distinct
 blocklist and client-removal controls, with client removal off by default.
 Both actions re-read the inbox after submission or an uncertain result.
 Headed Chrome at 1440 × 1000 verified the manual import and rejection flows
-against synthetic data. Mobile and bundled visual checks for the Download Inbox
+against synthetic data. That earlier interaction check did not include mobile
+or bundled visual acceptance; the subsequent localization qualification below
+records those checks. Live service handoff and native-matched visual comparison
 remain open.
 
 The Inbox and both intervention sheets now read the signed-in user's locale for
