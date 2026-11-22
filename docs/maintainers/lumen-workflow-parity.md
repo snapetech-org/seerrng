@@ -6863,3 +6863,20 @@ catalog detail and issue pages still contain English-only UI copy and remain a
 separate localization gap. Live AniList/ComicVine behavior and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-comics-localization-20261122/`.
+
+### Book author and series localization
+
+Author bibliographies and book series pages now localize their headings,
+filters, pagination, book counts, and empty states in English, French, and
+Arabic. Provider supplied author names, book titles, subjects, and language
+names remain intact. Filtering, sorting, selection, request, and reader
+behavior are unchanged.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet using
+localized account settings. They verify author pagination labels, series
+filter accessibility and options, Arabic direction, and page overflow.
+French iPhone and Arabic desktop candidate captures were inspected. A matched
+English baseline/candidate captures match pixel-for-pixel at desktop and iPhone
+sizes. Live provider behavior and independent linguistic review remain
+unverified. Evidence is at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-grouping-localization-20261122/`.

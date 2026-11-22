@@ -13,6 +13,7 @@ import { ServiceNote } from '../components/extra';
 import ReaderShelf from '../components/ReaderShelf';
 import SeriesNarratorPlanner from '../components/SeriesNarratorPlanner';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { CollectionAssociations } from './Associations';
 import BookSeriesCatalog from './BookSeriesCatalog';
 
@@ -45,6 +46,7 @@ function Books({
   title: string;
   empty?: string;
 }) {
+  const { t } = useLumenLocale();
   return (
     <Section title={title}>
       {books.length ? (
@@ -54,7 +56,9 @@ function Books({
           ))}
         </div>
       ) : (
-        <p className="note">{empty}</p>
+        <p className="note">
+          {empty ?? t('lumen.bookGrouping.noBooks', 'No books found.')}
+        </p>
       )}
     </Section>
   );
@@ -81,6 +85,7 @@ function Loading({
 }
 
 function AuthorDetail({ id }: { id: string }) {
+  const { t } = useLumenLocale();
   const [offsets, setOffsets] = useState([0]);
   const offset = offsets.at(-1) ?? 0;
   const path = `/author/${encodeURIComponent(id)}?limit=${pageSize}`;
@@ -92,7 +97,11 @@ function AuthorDetail({ id }: { id: string }) {
   const data = author.data;
   if (!data)
     return (
-      <Loading title="Author" error={author.error} reload={author.reload} />
+      <Loading
+        title={t('lumen.bookGrouping.author', 'Author')}
+        error={author.error}
+        reload={author.reload}
+      />
     );
   const nextOffset = data.pagination.offset + data.works.length;
   const bibliography = firstPage.data;
@@ -129,16 +138,25 @@ function AuthorDetail({ id }: { id: string }) {
           />
         </div>
         {data.biography && <p className="ov">{data.biography}</p>}
-        <Books books={data.works} title="Bibliography" />
+        <Books
+          books={data.works}
+          title={t('lumen.bookGrouping.bibliography', 'Bibliography')}
+        />
         {data.pagination.totalItems > pageSize && (
-          <div className="toolbar" aria-label="Bibliography Pages">
+          <div
+            className="toolbar"
+            aria-label={t(
+              'lumen.bookGrouping.bibliographyPages',
+              'Bibliography Pages'
+            )}
+          >
             <button
               className="btn btn-tonal btn-sm"
               type="button"
               disabled={!offset}
               onClick={() => setOffsets((pages) => pages.slice(0, -1))}
             >
-              Previous
+              {t('lumen.bookGrouping.previous', 'Previous')}
             </button>
             <button
               className="btn btn-tonal btn-sm"
@@ -148,7 +166,7 @@ function AuthorDetail({ id }: { id: string }) {
               }
               onClick={() => setOffsets((pages) => [...pages, nextOffset])}
             >
-              Next
+              {t('lumen.bookGrouping.next', 'Next')}
             </button>
           </div>
         )}
@@ -179,6 +197,7 @@ function hasTrackedFormat(book: BookResult, format: 'ebook' | 'audiobook') {
 }
 
 function SeriesBooks({ books }: { books: BookResult[] }) {
+  const { t } = useLumenLocale();
   const [filters, setFilters] = useState(emptyFilters);
   const { format, year, subject, rating, language } = filters;
   const filtered = books.filter((book) => {
@@ -241,32 +260,37 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
   ][] = [
     [
       'format',
-      'Format',
+      t('lumen.bookGrouping.format', 'Format'),
       [
-        ['ebook', 'Ebooks'],
-        ['audiobook', 'Audiobooks'],
+        ['ebook', t('lumen.bookGrouping.ebooks', 'Ebooks')],
+        ['audiobook', t('lumen.bookGrouping.audiobooks', 'Audiobooks')],
       ],
     ],
     [
       'year',
-      'First Published',
+      t('lumen.bookGrouping.firstPublished', 'First Published'),
       [
         ...years
           .filter((value) => value >= 1970)
           .map((value) => toOption(String(value))),
         ...(years.some((value) => value < 1970)
-          ? [['older', 'Before 1970'] as const]
+          ? [
+              [
+                'older',
+                t('lumen.bookGrouping.before1970', 'Before 1970'),
+              ] as const,
+            ]
           : []),
       ],
     ],
     [
       'subject',
-      'Subject',
+      t('lumen.bookGrouping.subject', 'Subject'),
       [...subjects].sort((left, right) => left[1].localeCompare(right[1])),
     ],
     [
       'rating',
-      'Minimum Rating',
+      t('lumen.bookGrouping.minimumRating', 'Minimum Rating'),
       Array.from({ length: 9 }, (_, index) => {
         const score = (1 + index * 0.5).toFixed(1);
         return [score, `${score}+`];
@@ -274,13 +298,17 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
     ],
     [
       'language',
-      'Language',
+      t('lumen.bookGrouping.language', 'Language'),
       languages.map((code) => [code, languageLabel(code)]),
     ],
   ];
   return (
     <>
-      <div className="toolbar" role="group" aria-label="Book Series Filters">
+      <div
+        className="toolbar"
+        role="group"
+        aria-label={t('lumen.bookGrouping.filters', 'Book Series Filters')}
+      >
         {controls.map(([key, label, options]) => (
           <label className="sel" key={key}>
             <span className="lbl">{label}</span>
@@ -291,7 +319,7 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
                 setFilters((previous) => ({ ...previous, [key]: value }));
               }}
             >
-              <option value="">Any</option>
+              <option value="">{t('lumen.bookGrouping.any', 'Any')}</option>
               {options.map(([value, text]) => (
                 <option key={value} value={value}>
                   {text}
@@ -306,7 +334,7 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
             type="button"
             onClick={() => setFilters(emptyFilters)}
           >
-            Clear Filters
+            {t('lumen.bookGrouping.clearFilters', 'Clear Filters')}
           </button>
         )}
       </div>
@@ -316,9 +344,14 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
             ? filtered.map((book) => ({ ...book, bookFormat: format }))
             : filtered
         }
-        title="Books in This Series"
+        title={t('lumen.bookGrouping.booksInSeries', 'Books in This Series')}
         empty={
-          books.length ? 'No books match these filters.' : 'No books found.'
+          books.length
+            ? t(
+                'lumen.bookGrouping.noFilterMatches',
+                'No books match these filters.'
+              )
+            : t('lumen.bookGrouping.noBooks', 'No books found.')
         }
       />
     </>
@@ -326,6 +359,7 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
 }
 
 function SeriesDetail({ id }: { id: string }) {
+  const { t } = useLumenLocale();
   const series = useApi<Series>(`/series/${encodeURIComponent(id)}`, {
     currentPathOnly: true,
   });
@@ -333,7 +367,7 @@ function SeriesDetail({ id }: { id: string }) {
   if (!data)
     return (
       <Loading
-        title="Book Series"
+        title={t('lumen.bookGrouping.bookSeries', 'Book Series')}
         error={series.error}
         reload={series.reload}
       />
@@ -359,7 +393,15 @@ function SeriesDetail({ id }: { id: string }) {
           title={data.title}
           poster={bookArt(books[0]?.posterPath, 'L')}
           whole
-          line={[books.length === 1 ? '1 book' : `${books.length} books`]}
+          line={[
+            t(
+              books.length === 1
+                ? 'lumen.bookGrouping.bookCountOne'
+                : 'lumen.bookGrouping.bookCount',
+              books.length === 1 ? '1 book' : '{count} books',
+              { count: books.length }
+            ),
+          ]}
         />
         <div className="dbody">
           <div className="dstatus">
@@ -383,7 +425,13 @@ function SeriesDetail({ id }: { id: string }) {
           {books.length > 0 ? (
             <SeriesBooks books={books} />
           ) : (
-            <Books books={books} title="Books in This Series" />
+            <Books
+              books={books}
+              title={t(
+                'lumen.bookGrouping.booksInSeries',
+                'Books in This Series'
+              )}
+            />
           )}
         </div>
       </article>
