@@ -6057,3 +6057,14 @@ remain unchanged. Twelve locale checks and the existing related-video paging,
 identity, and retry test passed across desktop, iPhone, Android, and tablet
 (16 cases). Bundled Express mount, live metadata, matched visual review, and
 independent linguistic review remain open.
+
+### Swipe History localization
+
+The Swipe History panel follows the saved English, French, or Arabic locale
+for category filters, decision labels, restore and clear actions, confirmations,
+feedback, loading, errors, and empty states. It remains embedded in the Swipe
+screen and keeps the established viewer-scoped GET, POST, and DELETE routes.
+Twelve browser cases plus the existing restore/clear workflow passed across
+desktop, iPhone, Android, and tablet (16 cases). Bundled Express mount, live
+provider behavior, matched visual acceptance, and independent linguistic
+review remain open.

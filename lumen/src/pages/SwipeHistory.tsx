@@ -4,22 +4,9 @@ import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
-const labels: Record<string, string> = {
-  movie: 'Movies',
-  tv: 'Series',
-  book: 'Books',
-  audiobook: 'Audiobooks',
-  comic: 'Comics',
-  magazine: 'Magazines',
-  music: 'Music',
-  sports: 'Sports',
-  adult: 'Adult',
-  'software-retro': 'Retro Games',
-  'software-modern': 'Apps',
-  'software-game': 'Games',
-};
 interface Decision {
   mediaType: string;
   id: string;
@@ -29,6 +16,24 @@ interface Decision {
 const endpoint = '/swipe/history';
 
 export default function SwipeHistory({ categories }: { categories: string[] }) {
+  const { t } = useLumenLocale();
+  const labels: Record<string, string> = {
+    movie: t('lumen.swipeHistory.category.movies', 'Movies'),
+    tv: t('lumen.swipeHistory.category.series', 'Series'),
+    book: t('lumen.swipeHistory.category.books', 'Books'),
+    audiobook: t('lumen.swipeHistory.category.audiobooks', 'Audiobooks'),
+    comic: t('lumen.swipeHistory.category.comics', 'Comics'),
+    magazine: t('lumen.swipeHistory.category.magazines', 'Magazines'),
+    music: t('lumen.swipeHistory.category.music', 'Music'),
+    sports: t('lumen.swipeHistory.category.sports', 'Sports'),
+    adult: t('lumen.swipeHistory.category.adult', 'Adult'),
+    'software-retro': t(
+      'lumen.swipeHistory.category.retroGames',
+      'Retro Games'
+    ),
+    'software-modern': t('lumen.swipeHistory.category.apps', 'Apps'),
+    'software-game': t('lumen.swipeHistory.category.games', 'Games'),
+  };
   const [category, setCategory] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -61,10 +66,19 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
           method: 'DELETE',
         });
         if (generation === sessionGeneration())
-          setNotice(`Cleared ${result.cleared} decisions.`);
+          setNotice(
+            t('lumen.swipeHistory.clearedCount', 'Cleared {count} decisions.', {
+              count: result.cleared,
+            })
+          );
       }
       if (generation !== sessionGeneration()) return;
-      if (item) setNotice(`${item.title} restored.`);
+      if (item)
+        setNotice(
+          t('lumen.swipeHistory.restoreSuccess', '{title} restored.', {
+            title: item.title,
+          })
+        );
       setConfirm(false);
       history.reload();
     } catch (failure) {
@@ -72,7 +86,10 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not update Swipe history.'
+            : t(
+                'lumen.swipeHistory.updateError',
+                'Could not update Swipe history.'
+              )
         );
     } finally {
       pending.current = false;
@@ -81,10 +98,10 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
   }
 
   return (
-    <Section title="Swipe History">
+    <Section title={t('lumen.swipeHistory.title', 'Swipe History')}>
       <div className="setlist">
         <label className="set cfg-row">
-          <span>History Category</span>
+          <span>{t('lumen.swipeHistory.category', 'History Category')}</span>
           <select
             className="cfg-select"
             value={category}
@@ -96,7 +113,9 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
               setNotice('');
             }}
           >
-            <option value="">All Categories</option>
+            <option value="">
+              {t('lumen.swipeHistory.allCategories', 'All Categories')}
+            </option>
             {categories.map((type) => (
               <option key={type} value={type}>
                 {labels[type] ?? type}
@@ -106,7 +125,7 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
         </label>
       </div>
       <ServiceNote
-        what="Swipe history"
+        what={t('lumen.swipeHistory.what', 'Swipe history')}
         error={history.error}
         retry={history.reload}
       />
@@ -122,14 +141,21 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
       )}
       {!decisions && !history.error && (
         <p className="note" role="status">
-          Loading Swipe history…
+          {t('lumen.swipeHistory.loading', 'Loading Swipe history…')}
         </p>
       )}
       {decisions?.length === 0 && (
-        <p className="note">No decisions in this category.</p>
+        <p className="note">
+          {t('lumen.swipeHistory.empty', 'No decisions in this category.')}
+        </p>
       )}
       {history.data?.hasMore && (
-        <p className="note">Showing the latest 200 decisions.</p>
+        <p className="note">
+          {t(
+            'lumen.swipeHistory.latestLimit',
+            'Showing the latest 200 decisions.'
+          )}
+        </p>
       )}
       <div className="setlist">
         {decisions?.map((item) => (
@@ -138,25 +164,29 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
               <b>{item.title}</b>
               <small>
                 {item.decision === 'want'
-                  ? 'Requested'
+                  ? t('lumen.swipeHistory.requested', 'Requested')
                   : item.decision === 'pass'
-                    ? 'Passed'
-                    : 'Seen or Read'}
+                    ? t('lumen.swipeHistory.passed', 'Passed')
+                    : t('lumen.swipeHistory.seenOrRead', 'Seen or Read')}
               </small>
             </span>
             {item.decision === 'want' ? (
               <Link to="/requests" className="btn btn-quiet btn-sm">
-                View Requests
+                {t('lumen.swipeHistory.viewRequests', 'View Requests')}
               </Link>
             ) : (
               <button
                 type="button"
                 className="btn btn-quiet btn-sm"
-                aria-label={`Restore ${item.title}`}
+                aria-label={t(
+                  'lumen.swipeHistory.restoreTitle',
+                  'Restore {title}',
+                  { title: item.title }
+                )}
                 disabled={busy}
                 onClick={() => void change(item)}
               >
-                Restore
+                {t('lumen.swipeHistory.restore', 'Restore')}
               </button>
             )}
           </div>
@@ -167,8 +197,16 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
           {confirm ? (
             <>
               <p className="note">
-                Clear passed, seen, and read titles from{' '}
-                {category ? (labels[category] ?? category) : 'all categories'}?
+                {category
+                  ? t(
+                      'lumen.swipeHistory.confirmClearCategory',
+                      'Clear passed, seen, and read titles from {category}?',
+                      { category: labels[category] ?? category }
+                    )
+                  : t(
+                      'lumen.swipeHistory.confirmClearAll',
+                      'Clear passed, seen, and read titles from all categories?'
+                    )}
               </p>
               <button
                 type="button"
@@ -176,7 +214,10 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
                 disabled={busy}
                 onClick={() => void change()}
               >
-                Confirm Clear History
+                {t(
+                  'lumen.swipeHistory.confirmClearHistory',
+                  'Confirm Clear History'
+                )}
               </button>
               <button
                 type="button"
@@ -184,7 +225,7 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
                 disabled={busy}
                 onClick={() => setConfirm(false)}
               >
-                Cancel
+                {t('lumen.swipeHistory.cancel', 'Cancel')}
               </button>
             </>
           ) : (
@@ -194,7 +235,7 @@ export default function SwipeHistory({ categories }: { categories: string[] }) {
               disabled={busy}
               onClick={() => setConfirm(true)}
             >
-              Clear History
+              {t('lumen.swipeHistory.clearHistory', 'Clear History')}
             </button>
           )}
         </div>
