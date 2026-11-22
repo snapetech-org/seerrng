@@ -6,6 +6,7 @@ import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 type Availability = { available: boolean; code?: string };
 type Feed = {
@@ -26,26 +27,50 @@ type Book = {
 };
 type Books = Availability & { books?: Book[]; total?: number };
 
-function unavailable(code?: string) {
+function unavailable(
+  code: string | undefined,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
   switch (code) {
     case 'no-token':
-      return 'Add a Hardcover API token to a Hardcover list in your profile.';
+      return t(
+        'lumen.bookRecommendations.noToken',
+        'Add a Hardcover API token to a Hardcover list in your profile.'
+      );
     case 'scope':
-      return 'Your Hardcover token needs permission to read recommendation feeds.';
+      return t(
+        'lumen.bookRecommendations.scope',
+        'Your Hardcover token needs permission to read recommendation feeds.'
+      );
     case 'rejected':
-      return 'Hardcover rejected your API token.';
+      return t(
+        'lumen.bookRecommendations.rejected',
+        'Hardcover rejected your API token.'
+      );
     default:
-      return 'Hardcover recommendations are unavailable.';
+      return t(
+        'lumen.bookRecommendations.unavailable',
+        'Hardcover recommendations are unavailable.'
+      );
   }
 }
 
 const filters = [
-  ['standalones', 'Standalones only'],
-  ['firstInSeries', 'Standalones and first books in a series'],
-  ['lessPopular', 'Less popular discoveries'],
+  ['standalones', 'lumen.bookRecommendations.standalones', 'Standalones only'],
+  [
+    'firstInSeries',
+    'lumen.bookRecommendations.firstInSeries',
+    'Standalones and first books in a series',
+  ],
+  [
+    'lessPopular',
+    'lumen.bookRecommendations.lessPopular',
+    'Less popular discoveries',
+  ],
 ] as const;
 
 export default function BookRecommendations() {
+  const { t } = useLumenLocale();
   const feeds = useApi<Availability & { results?: Feed[] }>(
     '/book-recommendations'
   );
@@ -116,13 +141,18 @@ export default function BookRecommendations() {
         }
       );
       if (!result.available) {
-        setFeedError(unavailable(result.code));
+        setFeedError(unavailable(result.code, t));
         return;
       }
       setBooks(result);
       setFeedback(next);
     } catch (error) {
-      setFeedError(friendlyError(error, 'Could not load this feed.'));
+      setFeedError(
+        friendlyError(
+          error,
+          t('lumen.bookRecommendations.loadError', 'Could not load this feed.')
+        )
+      );
     } finally {
       loadingFeed.current = false;
       setBusy(false);
@@ -165,10 +195,18 @@ export default function BookRecommendations() {
       const match = result.groups[0]?.candidates.find(
         (candidate) => candidate.mediaType === 'book'
       );
-      if (!match?.id) throw new Error('No catalog match was found.');
+      if (!match?.id)
+        throw new Error(
+          t('lumen.bookRecommendations.noMatch', 'No catalog match was found.')
+        );
       navigate(bookDetailPath(match.id, format, match.title || book.title));
     } catch (error) {
-      toast(friendlyError(error, 'Could not find this book.'));
+      toast(
+        friendlyError(
+          error,
+          t('lumen.bookRecommendations.openError', 'Could not find this book.')
+        )
+      );
     } finally {
       setBusy(false);
     }
@@ -197,7 +235,7 @@ export default function BookRecommendations() {
           }),
         }
       );
-      if (!result.id) throw new Error(unavailable(result.code));
+      if (!result.id) throw new Error(unavailable(result.code, t));
       setTitle('');
       setMood('');
       setDescription('');
@@ -209,9 +247,19 @@ export default function BookRecommendations() {
       next.set('feed', String(result.id));
       setParams(next);
       feeds.reload();
-      toast('Recommendation feed created.');
+      toast(
+        t('lumen.bookRecommendations.created', 'Recommendation feed created.')
+      );
     } catch (error) {
-      setCreateError(friendlyError(error, 'Could not create the feed.'));
+      setCreateError(
+        friendlyError(
+          error,
+          t(
+            'lumen.bookRecommendations.createError',
+            'Could not create the feed.'
+          )
+        )
+      );
     } finally {
       creatingFeed.current = false;
       setBusy(false);
@@ -220,21 +268,28 @@ export default function BookRecommendations() {
 
   return (
     <>
-      <ExtraHeader title="Book Recommendations" />
+      <ExtraHeader
+        title={t('lumen.bookRecommendations.title', 'Book Recommendations')}
+      />
       <ServiceNote
         error={feeds.error}
-        what="recommendation feeds"
+        what={t('lumen.bookRecommendations.feeds', 'recommendation feeds')}
         retry={feeds.reload}
       />
       {!feeds.data && !feeds.error && (
         <div className="detail-loading" aria-busy="true" />
       )}
       {feeds.data && !feeds.data.available && (
-        <p className="note">{unavailable(feeds.data.code)}</p>
+        <p className="note">{unavailable(feeds.data.code, t)}</p>
       )}
       {feeds.data?.available && (
         <>
-          <Section title="Hardcover Feeds">
+          <Section
+            title={t(
+              'lumen.bookRecommendations.feedsHeading',
+              'Hardcover Feeds'
+            )}
+          >
             <ul className="setlist">
               {feeds.data.results?.map((feed) => (
                 <li className="set" key={feed.id}>
@@ -243,12 +298,17 @@ export default function BookRecommendations() {
                     <small>
                       {[
                         feed.source === 'mine'
-                          ? 'Yours'
+                          ? t('lumen.bookRecommendations.yours', 'Yours')
                           : feed.source === 'featured'
-                            ? 'Featured'
-                            : 'Popular',
+                            ? t(
+                                'lumen.bookRecommendations.featured',
+                                'Featured'
+                              )
+                            : t('lumen.bookRecommendations.popular', 'Popular'),
                         feed.owner,
-                        `${feed.likes} likes`,
+                        t('lumen.bookRecommendations.likes', '{count} likes', {
+                          count: feed.likes,
+                        }),
                       ]
                         .filter(Boolean)
                         .join(' · ')}
@@ -267,9 +327,13 @@ export default function BookRecommendations() {
                         setParams(next, { preventScrollReset: true });
                       }
                     }}
-                    aria-label={`Show Books: ${feed.title}`}
+                    aria-label={t(
+                      'lumen.bookRecommendations.showBooksFor',
+                      'Show books: {title}',
+                      { title: feed.title }
+                    )}
                   >
-                    Show Books
+                    {t('lumen.bookRecommendations.showBooks', 'Show Books')}
                   </button>
                 </li>
               ))}
@@ -277,7 +341,10 @@ export default function BookRecommendations() {
             {feedId && !bookmarkedFeed && (
               <>
                 <p className="note" role="status">
-                  This recommendation feed is unavailable.
+                  {t(
+                    'lumen.bookRecommendations.feedUnavailable',
+                    'This recommendation feed is unavailable.'
+                  )}
                 </p>
                 <div className="toolbar">
                   <button
@@ -285,7 +352,10 @@ export default function BookRecommendations() {
                     type="button"
                     onClick={feeds.reload}
                   >
-                    Refresh Feeds
+                    {t(
+                      'lumen.bookRecommendations.refreshFeeds',
+                      'Refresh Feeds'
+                    )}
                   </button>
                   <button
                     className="chip"
@@ -299,13 +369,21 @@ export default function BookRecommendations() {
                       });
                     }}
                   >
-                    Clear Feed Selection
+                    {t(
+                      'lumen.bookRecommendations.clearFeed',
+                      'Clear Feed Selection'
+                    )}
                   </button>
                 </div>
               </>
             )}
             {!feeds.data.results?.length && (
-              <p className="note">No recommendation feeds found.</p>
+              <p className="note">
+                {t(
+                  'lumen.bookRecommendations.noFeeds',
+                  'No recommendation feeds found.'
+                )}
+              </p>
             )}
           </Section>
           {selected && selected.id === bookmarkedFeed?.id && (
@@ -317,9 +395,9 @@ export default function BookRecommendations() {
                   void load(selected);
                 }}
               >
-                {filters.map(([key, label]) => (
+                {filters.map(([key, translationKey, fallback]) => (
                   <label className="set" key={key}>
-                    {label}
+                    {t(translationKey, fallback)}
                     <input
                       type="checkbox"
                       checked={flags[key]}
@@ -330,23 +408,35 @@ export default function BookRecommendations() {
                   </label>
                 ))}
                 <label className="set">
-                  Only these authors
+                  {t(
+                    'lumen.bookRecommendations.onlyAuthors',
+                    'Only these authors'
+                  )}
                   <input
                     value={include}
                     onChange={(event) => setInclude(event.target.value)}
-                    placeholder="Comma-separated names"
+                    placeholder={t(
+                      'lumen.bookRecommendations.commaNames',
+                      'Comma-separated names'
+                    )}
                   />
                 </label>
                 <label className="set">
-                  Leave out these authors
+                  {t(
+                    'lumen.bookRecommendations.excludeAuthors',
+                    'Leave out these authors'
+                  )}
                   <input
                     value={exclude}
                     onChange={(event) => setExclude(event.target.value)}
-                    placeholder="Comma-separated names"
+                    placeholder={t(
+                      'lumen.bookRecommendations.commaNames',
+                      'Comma-separated names'
+                    )}
                   />
                 </label>
                 <label className="set">
-                  Format
+                  {t('lumen.bookRecommendations.format', 'Format')}
                   <select
                     value={format}
                     onChange={(event) => {
@@ -357,12 +447,16 @@ export default function BookRecommendations() {
                       setParams(next, { preventScrollReset: true });
                     }}
                   >
-                    <option value="ebook">Ebook</option>
-                    <option value="audiobook">Audiobook</option>
+                    <option value="ebook">
+                      {t('lumen.bookRecommendations.ebook', 'Ebook')}
+                    </option>
+                    <option value="audiobook">
+                      {t('lumen.bookRecommendations.audiobook', 'Audiobook')}
+                    </option>
                   </select>
                 </label>
                 <button className="btn btn-quiet btn-sm" disabled={busy}>
-                  Apply Filters
+                  {t('lumen.bookRecommendations.applyFilters', 'Apply Filters')}
                 </button>
               </form>
               {feedError && (
@@ -373,8 +467,18 @@ export default function BookRecommendations() {
               {books?.available && (
                 <p className="note">
                   {books.books?.length
-                    ? `Showing ${books.books.length} of ${books.total ?? books.books.length}.`
-                    : 'No books match these filters.'}
+                    ? t(
+                        'lumen.bookRecommendations.showingBooks',
+                        'Showing {shown} of {total}.',
+                        {
+                          shown: books.books.length,
+                          total: books.total ?? books.books.length,
+                        }
+                      )
+                    : t(
+                        'lumen.bookRecommendations.noBooksMatch',
+                        'No books match these filters.'
+                      )}
                 </p>
               )}
               <ul className="setlist">
@@ -420,8 +524,14 @@ export default function BookRecommendations() {
                           }}
                         >
                           {value === 'more'
-                            ? 'More Like This'
-                            : 'Less Like This'}
+                            ? t(
+                                'lumen.bookRecommendations.moreLike',
+                                'More Like This'
+                              )
+                            : t(
+                                'lumen.bookRecommendations.lessLike',
+                                'Less Like This'
+                              )}
                         </button>
                       ))}
                       <button
@@ -429,7 +539,7 @@ export default function BookRecommendations() {
                         disabled={busy}
                         onClick={() => void openBook(book)}
                       >
-                        Open Book
+                        {t('lumen.bookRecommendations.openBook', 'Open Book')}
                       </button>
                     </div>
                   </li>
@@ -437,7 +547,12 @@ export default function BookRecommendations() {
               </ul>
             </Section>
           )}
-          <Section title="Create a Recommendation Feed">
+          <Section
+            title={t(
+              'lumen.bookRecommendations.createHeading',
+              'Create a Recommendation Feed'
+            )}
+          >
             <div className="setlist recommendation-feed-form">
               <form
                 id="recommendation-feed-form"
@@ -448,7 +563,7 @@ export default function BookRecommendations() {
                 }}
               >
                 <label className="set">
-                  Title
+                  {t('lumen.bookRecommendations.titleField', 'Title')}
                   <input
                     required
                     value={title}
@@ -456,14 +571,17 @@ export default function BookRecommendations() {
                   />
                 </label>
                 <label className="set">
-                  Mood (optional)
+                  {t('lumen.bookRecommendations.mood', 'Mood (optional)')}
                   <input
                     value={mood}
                     onChange={(event) => setMood(event.target.value)}
                   />
                 </label>
                 <label className="set">
-                  Description (optional)
+                  {t(
+                    'lumen.bookRecommendations.description',
+                    'Description (optional)'
+                  )}
                   <textarea
                     value={description}
                     maxLength={500}
@@ -471,37 +589,68 @@ export default function BookRecommendations() {
                   />
                 </label>
                 <label className="set">
-                  Genres to Include
+                  {t(
+                    'lumen.bookRecommendations.genresInclude',
+                    'Genres to Include'
+                  )}
                   <input
                     value={genres}
                     onChange={(event) => setGenres(event.target.value)}
-                    placeholder="Comma-separated genres"
+                    placeholder={t(
+                      'lumen.bookRecommendations.commaGenres',
+                      'Comma-separated genres'
+                    )}
                   />
                 </label>
                 <label className="set">
-                  Genres to Avoid
+                  {t(
+                    'lumen.bookRecommendations.genresAvoid',
+                    'Genres to Avoid'
+                  )}
                   <input
                     value={avoidGenres}
                     onChange={(event) => setAvoidGenres(event.target.value)}
-                    placeholder="Comma-separated genres"
+                    placeholder={t(
+                      'lumen.bookRecommendations.commaGenres',
+                      'Comma-separated genres'
+                    )}
                   />
                 </label>
                 <label className="set">
-                  Series Position
+                  {t(
+                    'lumen.bookRecommendations.seriesPosition',
+                    'Series Position'
+                  )}
                   <select
                     value={seriesPosition}
                     onChange={(event) => setSeriesPosition(event.target.value)}
                   >
-                    <option value="">Any position</option>
-                    <option value="standalone">Standalones only</option>
+                    <option value="">
+                      {t(
+                        'lumen.bookRecommendations.anyPosition',
+                        'Any position'
+                      )}
+                    </option>
+                    <option value="standalone">
+                      {t(
+                        'lumen.bookRecommendations.standalones',
+                        'Standalones only'
+                      )}
+                    </option>
                     <option value="first_or_standalone">
-                      Standalones and first books
+                      {t(
+                        'lumen.bookRecommendations.firstOrStandalone',
+                        'Standalones and first books'
+                      )}
                     </option>
                   </select>
                 </label>
                 <div className="set recommendation-preference">
                   <label htmlFor="recommendation-create-less-popular">
-                    Prefer Less Popular Books
+                    {t(
+                      'lumen.bookRecommendations.preferLessPopular',
+                      'Prefer Less Popular Books'
+                    )}
                   </label>
                   <input
                     id="recommendation-create-less-popular"
@@ -519,7 +668,10 @@ export default function BookRecommendations() {
                 form="recommendation-feed-form"
                 disabled={busy || !title.trim()}
               >
-                Create on Hardcover
+                {t(
+                  'lumen.bookRecommendations.createOnHardcover',
+                  'Create on Hardcover'
+                )}
               </button>
             </div>
             {createError && (

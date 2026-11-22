@@ -117,6 +117,24 @@ fixture uses a small mocked language list; live catalog coverage and
 independent linguistic review remain open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-language-options-20261121/`.
 
+### Book Recommendations localization
+
+The Hardcover Book Recommendations route now localizes its feed headings and
+actions, source and like counts, recommendation filters, ebook/audiobook
+choices, create-feed fields, empty and unavailable states, and recovery and
+success feedback in English, French, and Arabic. Provider-authored feed and
+book metadata stays as supplied. Existing filter values, URL selection,
+Hardcover request bodies, and book resolution destinations are unchanged.
+
+The focused fixture passes 12 cases across desktop, iPhone, Android, and tablet
+and checks page-level horizontal overflow. Matched baseline/candidate captures
+were generated at 1440px desktop and iPhone 13 sizes; French iPhone and Arabic
+desktop candidates were inspected. Longer translated copy wraps within the
+existing components, and the sticky mobile navigation overlaps lower form
+content in both baseline and candidate. Live Hardcover responses and
+independent linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-recommendations-localization-20261122/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load
