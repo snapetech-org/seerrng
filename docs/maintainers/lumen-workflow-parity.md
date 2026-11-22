@@ -6753,3 +6753,19 @@ and iPhone baseline/candidate renders and the Arabic desktop candidate were
 inspected. Live Sportarr behavior and independent linguistic review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-sports-workflow-localization-20261122/`.
+
+### Swipe workflow localization
+
+Swipe's deck search, category names, filters, favorites, saved preferences,
+keyboard help, request actions, loading and empty states, and error feedback now
+follow English, French, or Arabic. Swipe History already localizes its own
+history controls and remains part of the same workflow. Decision semantics,
+request payloads, category availability, and preference persistence are
+unchanged. New browser fixtures pass across desktop, iPhone, Android, and tablet
+for all three locales (12 cases); 24 existing Swipe workflow regression cases
+also pass. Matched French desktop and iPhone baseline/candidate renders and an
+Arabic desktop candidate were inspected. Layout and control ownership remain
+unchanged, and all tested pages avoid horizontal overflow. Live recommendation
+providers and independent linguistic review remain unverified. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-localization-20261122/`.

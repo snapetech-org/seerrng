@@ -5,6 +5,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { streamingOverrideMessage } from '../components/requestSheet';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import {
   filterSwipeCards,
@@ -73,6 +74,7 @@ function DeckFilters({
   onApply: (filters: SwipeCatalogFilters) => void;
   onReset: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [draft, setDraft] = useState(catalogDefaults);
   const basic = category === 'sports' || category === 'adult';
   const ranged = !basic && category !== 'magazine';
@@ -81,13 +83,17 @@ function DeckFilters({
     !!draft.yearTo &&
     Number(draft.yearFrom) > Number(draft.yearTo);
   const fields = [
-    ...(!basic ? [['genre', 'Genre or Subject']] : []),
-    ...(category === 'comic' ? [['publisher', 'Publisher']] : []),
+    ...(!basic
+      ? [['genre', t('lumen.swipe.genreSubject', 'Genre or Subject')]]
+      : []),
+    ...(category === 'comic'
+      ? [['publisher', t('lumen.swipe.publisher', 'Publisher')]]
+      : []),
   ] as [keyof SwipeCatalogFilters, string][];
 
   return (
     <details className="adv">
-      <summary>Deck Filters</summary>
+      <summary>{t('lumen.swipe.deckFilters', 'Deck Filters')}</summary>
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -111,7 +117,9 @@ function DeckFilters({
           ))}
           {category === 'magazine' && (
             <label className="set cfg-row">
-              <span>Magazine Catalog</span>
+              <span>
+                {t('lumen.swipe.magazineCatalog', 'Magazine Catalog')}
+              </span>
               <select
                 className="cfg-select"
                 disabled={disabled}
@@ -124,8 +132,12 @@ function DeckFilters({
                   })
                 }
               >
-                <option value="tracked">Tracked Magazines</option>
-                <option value="public">Public Catalog</option>
+                <option value="tracked">
+                  {t('lumen.swipe.trackedMagazines', 'Tracked Magazines')}
+                </option>
+                <option value="public">
+                  {t('lumen.swipe.publicCatalog', 'Public Catalog')}
+                </option>
               </select>
             </label>
           )}
@@ -133,8 +145,8 @@ function DeckFilters({
             <>
               {(
                 [
-                  ['yearFrom', 'From Year'],
-                  ['yearTo', 'To Year'],
+                  ['yearFrom', t('lumen.swipe.fromYear', 'From Year')],
+                  ['yearTo', t('lumen.swipe.toYear', 'To Year')],
                 ] as const
               ).map(([key, label]) => (
                 <label className="set cfg-row" key={key}>
@@ -153,7 +165,7 @@ function DeckFilters({
                 </label>
               ))}
               <label className="set cfg-row">
-                <span>Minimum Rating</span>
+                <span>{t('lumen.swipe.minimumRating', 'Minimum Rating')}</span>
                 <input
                   className="cfg-input"
                   type="number"
@@ -172,7 +184,10 @@ function DeckFilters({
         </div>
         {inverted && (
           <p className="note" role="alert">
-            The starting year must be before or equal to the ending year.
+            {t(
+              'lumen.swipe.invalidYearRange',
+              'The starting year must be before or equal to the ending year.'
+            )}
           </p>
         )}
         <div className="toolbar">
@@ -181,7 +196,7 @@ function DeckFilters({
             className="btn btn-primary btn-sm"
             disabled={disabled || inverted}
           >
-            Apply Filters
+            {t('lumen.swipe.applyFilters', 'Apply Filters')}
           </button>
           <button
             type="button"
@@ -192,7 +207,7 @@ function DeckFilters({
               onReset();
             }}
           >
-            Reset Filters
+            {t('lumen.swipe.resetFilters', 'Reset Filters')}
           </button>
         </div>
       </form>
@@ -220,6 +235,7 @@ function FavoritePicker({
   disabled: boolean;
   onChange: (favorites: Favorite[]) => void;
 }) {
+  const { t } = useLumenLocale();
   const [preferred, setPreferred] = useState<Category>();
   const category =
     preferred && available.includes(preferred) ? preferred : available[0];
@@ -238,10 +254,14 @@ function FavoritePicker({
 
   return (
     <fieldset className="setlist">
-      <legend>Favorite Titles ({selected.length} of 25)</legend>
+      <legend>
+        {t('lumen.swipe.favoriteTitles', 'Favorite Titles ({count} of 25)', {
+          count: selected.length,
+        })}
+      </legend>
       {category && (
         <label className="set cfg-row">
-          <span>Favorite Category</span>
+          <span>{t('lumen.swipe.favoriteCategory', 'Favorite Category')}</span>
           <select
             className="cfg-select"
             value={category}
@@ -250,25 +270,28 @@ function FavoritePicker({
           >
             {available.map((key) => (
               <option key={key} value={key}>
-                {categories[key]}
+                {t(`lumen.swipe.category.${key}`, categories[key])}
               </option>
             ))}
           </select>
         </label>
       )}
       <ServiceNote
-        what="favorite titles"
+        what={t('lumen.swipe.favoriteTitlesLabel', 'favorite titles')}
         error={favorites.error}
         retry={favorites.reload}
       />
       {category && !favorites.data && !favorites.error && (
         <p className="note" role="status">
-          Loading favorite titles…
+          {t('lumen.swipe.loadingFavorites', 'Loading favorite titles…')}
         </p>
       )}
       {favorites.data && !options.length && (
         <p className="note">
-          No titles are available from your library or requests.
+          {t(
+            'lumen.swipe.noFavorites',
+            'No titles are available from your library or requests.'
+          )}
         </p>
       )}
       {options.map((seed) => {
@@ -312,6 +335,7 @@ function Preferences({
   onSave: (profile: Profile) => void;
   available: Category[];
 }) {
+  const { t } = useLumenLocale();
   const [draft, setDraft] = useState(profile);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ text: string; error?: boolean }>();
@@ -350,14 +374,19 @@ function Preferences({
       if (generation !== sessionGeneration()) return;
       setDraft(saved);
       onSave(saved);
-      setFeedback({ text: 'Swipe preferences saved.' });
+      setFeedback({
+        text: t('lumen.swipe.preferencesSaved', 'Swipe preferences saved.'),
+      });
     } catch (failure) {
       if (generation === sessionGeneration())
         setFeedback({
           text:
             failure instanceof ApiError
               ? failure.message
-              : 'Could not save Swipe preferences.',
+              : t(
+                  'lumen.swipe.preferencesSaveError',
+                  'Could not save Swipe preferences.'
+                ),
           error: true,
         });
     } finally {
@@ -368,7 +397,7 @@ function Preferences({
 
   return (
     <details className="adv">
-      <summary>Swipe Preferences</summary>
+      <summary>{t('lumen.swipe.preferences', 'Swipe Preferences')}</summary>
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -377,7 +406,9 @@ function Preferences({
       >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Series Request Default</span>
+            <span>
+              {t('lumen.swipe.seriesRequestDefault', 'Series Request Default')}
+            </span>
             <select
               className="cfg-select"
               disabled={busy}
@@ -388,12 +419,18 @@ function Preferences({
                 })
               }
             >
-              <option value="first-season">First Season</option>
-              <option value="all-seasons">All Seasons</option>
+              <option value="first-season">
+                {t('lumen.swipe.firstSeason', 'First Season')}
+              </option>
+              <option value="all-seasons">
+                {t('lumen.swipe.allSeasons', 'All Seasons')}
+              </option>
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Book Request Format</span>
+            <span>
+              {t('lumen.swipe.bookRequestFormat', 'Book Request Format')}
+            </span>
             <select
               className="cfg-select"
               disabled={busy}
@@ -404,12 +441,16 @@ function Preferences({
                 })
               }
             >
-              <option value="ebook">Ebook</option>
-              <option value="audiobook">Audiobook</option>
+              <option value="ebook">{t('lumen.swipe.ebook', 'Ebook')}</option>
+              <option value="audiobook">
+                {t('lumen.swipe.audiobook', 'Audiobook')}
+              </option>
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Recommendation Sources</span>
+            <span>
+              {t('lumen.swipe.recommendationSources', 'Recommendation Sources')}
+            </span>
             <select
               className="cfg-select"
               disabled={busy}
@@ -420,13 +461,19 @@ function Preferences({
                 })
               }
             >
-              <option value="full">Full History</option>
-              <option value="rated">Rated Titles</option>
-              <option value="favorites">Selected Favorites</option>
+              <option value="full">
+                {t('lumen.swipe.fullHistory', 'Full History')}
+              </option>
+              <option value="rated">
+                {t('lumen.swipe.ratedTitles', 'Rated Titles')}
+              </option>
+              <option value="favorites">
+                {t('lumen.swipe.selectedFavorites', 'Selected Favorites')}
+              </option>
             </select>
           </label>
           <label className="set cfg-row">
-            <span>Taste Notes</span>
+            <span>{t('lumen.swipe.tasteNotes', 'Taste Notes')}</span>
             <textarea
               className="cfg-json"
               maxLength={1000}
@@ -455,7 +502,7 @@ function Preferences({
             className="btn btn-primary btn-sm"
             disabled={busy || !dirty}
           >
-            Save Swipe Preferences
+            {t('lumen.swipe.savePreferences', 'Save Swipe Preferences')}
           </button>
         </div>
       </form>
@@ -472,6 +519,7 @@ function Deck({
   formats: string[];
   profile: Profile | null;
 }) {
+  const { t } = useLumenLocale();
   const catalog = !Object.hasOwn(recommendations, category);
   const [refresh, setRefresh] = useState(false);
   const software = category.startsWith('software-');
@@ -726,7 +774,12 @@ function Deck({
         })
       );
       if (generation !== sessionGeneration()) return;
-      if (requested) setNotice(`${card.title} requested.`);
+      if (requested)
+        setNotice(
+          t('lumen.swipe.requestedTitle', '{title} requested.', {
+            title: card.title,
+          })
+        );
       setHandled((ids) => [...ids, card.id]);
       setRestored(undefined);
     } catch (failure) {
@@ -745,13 +798,16 @@ function Deck({
         setHandled((ids) => [...ids, card.id]);
         setRestored(undefined);
         setError(
-          'The request was created, but Swipe could not save its history.'
+          t(
+            'lumen.swipe.historySaveError',
+            'The request was created, but Swipe could not save its history.'
+          )
         );
       } else {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not update Swipe. Try again.'
+            : t('lumen.swipe.updateError', 'Could not update Swipe. Try again.')
         );
       }
     } finally {
@@ -772,15 +828,17 @@ function Deck({
   }
 
   return (
-    <Section title={categories[category]}>
+    <Section
+      title={t(`lumen.swipe.category.${category}`, categories[category])}
+    >
       {streamingOverride &&
         streamingOverride.cardId === card?.id &&
         streamingOverride.generation === sessionGeneration() && (
           <ConfirmSheet
-            title="Streaming Request Policy"
+            title={t('lumen.swipe.streamingPolicy', 'Streaming Request Policy')}
             body={streamingOverride.message}
-            confirm="Request Anyway"
-            cancel="Cancel"
+            confirm={t('lumen.swipe.requestAnyway', 'Request Anyway')}
+            cancel={t('lumen.swipe.cancel', 'Cancel')}
             onClose={() => setStreamingOverride(undefined)}
             onConfirm={() => void act('want', streamingOverride)}
           />
@@ -794,14 +852,14 @@ function Deck({
         }}
       >
         <label className="sr-only" htmlFor={`swipe-catalog-search-${category}`}>
-          Search Titles
+          {t('lumen.swipe.searchTitles', 'Search Titles')}
         </label>
         <input
           id={`swipe-catalog-search-${category}`}
           className="cfg-input"
           type="search"
           maxLength={128}
-          placeholder="Search titles"
+          placeholder={t('lumen.swipe.searchTitles', 'Search titles')}
           value={queryDraft}
           disabled={busy}
           onChange={(event) => setQueryDraft(event.target.value)}
@@ -811,7 +869,7 @@ function Deck({
           className="btn btn-primary btn-sm"
           disabled={busy}
         >
-          Search Deck
+          {t('lumen.swipe.searchDeck', 'Search Deck')}
         </button>
       </form>
       <DeckFilters
@@ -822,12 +880,12 @@ function Deck({
         onReset={() => applyFilters(catalogDefaults)}
       />
       <ServiceNote
-        what="previous decisions"
+        what={t('lumen.swipe.previousDecisions', 'previous decisions')}
         error={history.error}
         retry={history.reload}
       />
       <ServiceNote
-        what="recommendations"
+        what={t('lumen.swipe.recommendations', 'recommendations')}
         error={deck.error}
         retry={deck.reload}
       />
@@ -844,14 +902,16 @@ function Deck({
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- The focusable region exposes keyboard shortcuts alongside native buttons. */}
       <div
         role="application"
-        aria-label="Swipe shortcuts"
+        aria-label={t('lumen.swipe.shortcuts', 'Swipe shortcuts')}
         aria-describedby="swipe-shortcuts"
         tabIndex={0}
         onKeyDown={handleKey}
       >
         <p id="swipe-shortcuts" className="note">
-          Focus here for keyboard shortcuts. Left passes, right requests, up
-          marks seen or read, and Backspace undoes.
+          {t(
+            'lumen.swipe.shortcutHelp',
+            'Focus here for keyboard shortcuts. Left passes, right requests, up marks seen or read, and Backspace undoes.'
+          )}
         </p>
       </div>
       {card ? (
@@ -890,8 +950,8 @@ function Deck({
               <label className="set cfg-row">
                 <span>
                   {softwareTarget.category === 'game'
-                    ? 'PC Variant'
-                    : 'Target System'}
+                    ? t('lumen.swipe.pcVariant', 'PC Variant')
+                    : t('lumen.swipe.targetSystem', 'Target System')}
                 </span>
                 <select
                   className="cfg-select"
@@ -904,7 +964,9 @@ function Deck({
                     })
                   }
                 >
-                  <option value={-1}>Choose a Request Target</option>
+                  <option value={-1}>
+                    {t('lumen.swipe.chooseTarget', 'Choose a Request Target')}
+                  </option>
                   {targets.map(({ label }, index) => (
                     <option key={label} value={index}>
                       {label}
@@ -921,7 +983,7 @@ function Deck({
               disabled={busy || !canRequest}
               onClick={() => void act('want')}
             >
-              Request
+              {t('lumen.swipe.request', 'Request')}
             </button>
             <button
               type="button"
@@ -929,7 +991,7 @@ function Deck({
               disabled={busy}
               onClick={() => void act('pass')}
             >
-              Pass
+              {t('lumen.swipe.pass', 'Pass')}
             </button>
             <button
               type="button"
@@ -938,22 +1000,31 @@ function Deck({
               onClick={() => void act('seen')}
             >
               {['book', 'audiobook', 'comic', 'magazine'].includes(category)
-                ? 'Already Read'
-                : 'Already Seen'}
+                ? t('lumen.swipe.alreadyRead', 'Already Read')
+                : t('lumen.swipe.alreadySeen', 'Already Seen')}
             </button>
           </div>
         </>
       ) : deck.data && (!catalog || history.data) ? (
         <p className="note">
           {filtered
-            ? 'No more titles match these filters on this page.'
-            : 'No more recommendations in this deck.'}
+            ? t(
+                'lumen.swipe.noFilteredTitles',
+                'No more titles match these filters on this page.'
+              )
+            : t(
+                'lumen.swipe.noRecommendations',
+                'No more recommendations in this deck.'
+              )}
         </p>
       ) : (
         !deck.error &&
         !history.error && (
           <p className="note" role="status">
-            Loading recommendations…
+            {t(
+              'lumen.swipe.loadingRecommendations',
+              'Loading recommendations…'
+            )}
           </p>
         )
       )}
@@ -964,7 +1035,7 @@ function Deck({
           disabled={busy || !deck.data}
           onClick={() => void act('undo')}
         >
-          Undo Last Decision
+          {t('lumen.swipe.undoDecision', 'Undo Last Decision')}
         </button>
         {!card &&
           deck.data &&
@@ -980,7 +1051,7 @@ function Deck({
                 )
               }
             >
-              Load More Recommendations
+              {t('lumen.swipe.loadMore', 'Load More Recommendations')}
             </button>
           )}
       </div>
@@ -989,6 +1060,7 @@ function Deck({
 }
 
 export default function Swipe() {
+  const { t } = useLumenLocale();
   const status = useApi<Status>('/swipe/status');
   const profile = useApi<Profile>(status.data ? '/swipe/profile' : null);
   const [savedProfile, setSavedProfile] = useState<Profile>();
@@ -1002,22 +1074,36 @@ export default function Swipe() {
     selected && available.includes(selected) ? selected : available[0];
   return (
     <>
-      <h1>Swipe</h1>
+      <h1>{t('lumen.swipe.title', 'Swipe')}</h1>
       {status.errorStatus === 404 || status.errorStatus === 403 ? (
-        <p className="note">Swipe is unavailable for this account.</p>
+        <p className="note">
+          {t(
+            'lumen.swipe.unavailable',
+            'Swipe is unavailable for this account.'
+          )}
+        </p>
       ) : (
-        <ServiceNote what="Swipe" error={status.error} retry={status.reload} />
+        <ServiceNote
+          what={t('lumen.swipe.title', 'Swipe')}
+          error={status.error}
+          retry={status.reload}
+        />
       )}
       {!status.data && !status.error && (
         <p className="note" role="status">
-          Loading Swipe…
+          {t('lumen.swipe.loading', 'Loading Swipe…')}
         </p>
       )}
       {status.data && !category && (
-        <p className="note">No recommendation categories are available.</p>
+        <p className="note">
+          {t(
+            'lumen.swipe.noCategories',
+            'No recommendation categories are available.'
+          )}
+        </p>
       )}
       <ServiceNote
-        what="request preferences"
+        what={t('lumen.swipe.requestPreferences', 'request preferences')}
         error={profile.error}
         retry={profile.reload}
       />
@@ -1037,7 +1123,12 @@ export default function Swipe() {
             className="btn btn-quiet btn-sm"
             onClick={() => setShowHistory((value) => !value)}
           >
-            {showHistory ? 'Back to Recommendations' : 'View Swipe History'}
+            {showHistory
+              ? t(
+                  'lumen.swipe.backToRecommendations',
+                  'Back to Recommendations'
+                )
+              : t('lumen.swipe.viewHistory', 'View Swipe History')}
           </button>
         </div>
       )}
@@ -1048,7 +1139,7 @@ export default function Swipe() {
         <>
           <div className="toolbar">
             <label className="set cfg-row">
-              <span>Category</span>
+              <span>{t('lumen.swipe.categoryLabel', 'Category')}</span>
               <select
                 className="cfg-select"
                 value={category}
@@ -1058,7 +1149,7 @@ export default function Swipe() {
               >
                 {available.map((key) => (
                   <option key={key} value={key}>
-                    {categories[key]}
+                    {t(`lumen.swipe.category.${key}`, categories[key])}
                   </option>
                 ))}
               </select>
