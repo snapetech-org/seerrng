@@ -5720,6 +5720,13 @@ export const localeData = [
       'lumen.status.differentEdition': 'إصدار مختلف في المكتبة',
       'lumen.status.on4kServer': 'بدقة 4K على {server}',
       'lumen.status.overQuota': 'تجاوز الحصة',
+      'lumen.requests.row.autoQueued': 'مضاف تلقائيًا',
+      'lumen.requests.row.episodeQueueAhead':
+        'قائمة انتظار الحلقات · {count} قادمة',
+      'lumen.requests.row.etaAlmostDone': 'اكتمل تقريبًا',
+      'lumen.requests.row.etaHours': 'متبقي نحو ساعة واحدة',
+      'lumen.requests.row.etaHoursPlural': 'متبقي نحو {count} ساعات',
+      'lumen.requests.row.etaMinutes': 'متبقي نحو {count} دقيقة',
     },
   },
   {
@@ -15402,6 +15409,12 @@ export const localeData = [
       'lumen.status.differentEdition': 'Different edition in library',
       'lumen.status.on4kServer': '4K on {server}',
       'lumen.status.overQuota': 'Over quota',
+      'lumen.requests.row.autoQueued': 'Auto-Queued',
+      'lumen.requests.row.episodeQueueAhead': 'Episode Queue · {count} ahead',
+      'lumen.requests.row.etaAlmostDone': 'Almost done',
+      'lumen.requests.row.etaHours': 'About {count} hr left',
+      'lumen.requests.row.etaHoursPlural': 'About {count} hrs left',
+      'lumen.requests.row.etaMinutes': 'About {count} min left',
     },
   },
   {
@@ -26000,6 +26013,13 @@ export const localeData = [
         'Édition différente dans la bibliothèque',
       'lumen.status.on4kServer': '4K sur {server}',
       'lumen.status.overQuota': 'Quota dépassé',
+      'lumen.requests.row.autoQueued': 'Ajout automatique',
+      'lumen.requests.row.episodeQueueAhead':
+        'File d’attente des épisodes · {count} à venir',
+      'lumen.requests.row.etaAlmostDone': 'Presque terminé',
+      'lumen.requests.row.etaHours': 'Environ {count} h restante',
+      'lumen.requests.row.etaHoursPlural': 'Environ {count} h restantes',
+      'lumen.requests.row.etaMinutes': 'Environ {count} min restantes',
     },
   },
   {

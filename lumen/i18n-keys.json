@@ -4677,5 +4677,11 @@
   "lumen.status.statusUnavailable",
   "lumen.status.differentEdition",
   "lumen.status.on4kServer",
-  "lumen.status.overQuota"
+  "lumen.status.overQuota",
+  "lumen.requests.row.autoQueued",
+  "lumen.requests.row.episodeQueueAhead",
+  "lumen.requests.row.etaAlmostDone",
+  "lumen.requests.row.etaHours",
+  "lumen.requests.row.etaHoursPlural",
+  "lumen.requests.row.etaMinutes"
 ]

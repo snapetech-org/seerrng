@@ -229,14 +229,37 @@ async function requestListOnce(path: string): Promise<RequestListPage> {
 
 // what a request looks like to the person who made it, in plain words
 // "00:03:03" -> "About 3 min left"
-function eta(t?: string) {
+type Translate = (
+  id: string,
+  fallback?: string,
+  values?: Record<string, string | number>
+) => string;
+
+function eta(t?: string, translate?: Translate) {
   const m = /^(?:(\d+)\.)?(\d+):(\d+):(\d+)/.exec(t || '');
   if (!m) return '';
   const mins = +(m[1] || 0) * 1440 + +m[2] * 60 + +m[3] + (+m[4] >= 30 ? 1 : 0);
-  if (mins < 1) return 'Almost done';
-  return mins < 60
-    ? `About ${mins} min left`
-    : `About ${Math.round(mins / 60)} hr${Math.round(mins / 60) === 1 ? '' : 's'} left`;
+  if (mins < 1)
+    return (
+      translate?.('lumen.requests.row.etaAlmostDone', 'Almost done') ??
+      'Almost done'
+    );
+  if (mins < 60)
+    return (
+      translate?.('lumen.requests.row.etaMinutes', 'About {count} min left', {
+        count: mins,
+      }) ?? `About ${mins} min left`
+    );
+  const hours = Math.round(mins / 60);
+  return (
+    translate?.(
+      hours === 1
+        ? 'lumen.requests.row.etaHours'
+        : 'lumen.requests.row.etaHoursPlural',
+      hours === 1 ? 'About {count} hr left' : 'About {count} hrs left',
+      { count: hours }
+    ) ?? `About ${hours} hr${hours === 1 ? '' : 's'} left`
+  );
 }
 
 // a series request is done once every requested season that has aired is at least partly on
@@ -327,7 +350,8 @@ export function requestRowStatus(
   x: Row,
   serverName = 'Plex',
   live?: ReadonlyMap<string, LiveDownload>,
-  allowRawHashes = false
+  allowRawHashes = false,
+  translate?: Translate
 ): {
   k: 'ok' | 'dl' | 'wait' | 'bad';
   word: string;
@@ -506,7 +530,7 @@ export function requestRowStatus(
       ico: 'down',
       active: true,
       pct,
-      detail: eta(dls[0]?.timeLeft),
+      detail: eta(dls[0]?.timeLeft, translate),
     };
   if (ms === MediaStatus.PARTIAL) {
     const missing = seasonsMissing(x);
@@ -2272,7 +2296,8 @@ export default function Requests() {
             x,
             serverName,
             liveDownloads,
-            allowRawHashes
+            allowRawHashes,
+            t
           );
           const detail = requestFailureMessage(x.r) ?? st.detail;
           const artwork = artUrl(x.art);
@@ -2323,10 +2348,16 @@ export default function Requests() {
                 <div className="st">
                   <RequestStatusPills request={x.r} status={st} />
                   {x.r.watchAheadParentRequestId ? (
-                    <span className="d">Auto-Queued</span>
+                    <span className="d">
+                      {t('lumen.requests.row.autoQueued', 'Auto-Queued')}
+                    </span>
                   ) : (x.r.watchAheadEpisodeCount ?? 0) > 0 ? (
                     <span className="d">
-                      Episode Queue · {x.r.watchAheadEpisodeCount} ahead
+                      {t(
+                        'lumen.requests.row.episodeQueueAhead',
+                        'Episode Queue · {count} ahead',
+                        { count: x.r.watchAheadEpisodeCount ?? 0 }
+                      )}
                     </span>
                   ) : null}
                   {detail && <span className="d">{detail}</span>}

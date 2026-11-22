@@ -8,6 +8,7 @@ const locale = ['en', 'fr', 'ar'].includes(
 const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
 const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
 const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
+const rowBaseline = process.env.LUMEN_REQUEST_ROW_BASELINE === '1';
 
 const labels = {
   en: {
@@ -27,6 +28,9 @@ const labels = {
     inLibrary: 'In library',
     fourK: '4K on Plex',
     overQuota: 'Over quota',
+    autoQueued: 'Auto-Queued',
+    episodeQueue: 'Episode Queue · 2 ahead',
+    eta: 'About 3 min left',
   },
   fr: {
     waiting: 'En attente d’approbation',
@@ -45,6 +49,9 @@ const labels = {
     inLibrary: 'Dans la bibliothèque',
     fourK: '4K sur Plex',
     overQuota: 'Quota dépassé',
+    autoQueued: 'Ajout automatique',
+    episodeQueue: 'File d’attente des épisodes · 2 à venir',
+    eta: 'Environ 3 min restantes',
   },
   ar: {
     waiting: 'بانتظار الموافقة',
@@ -63,6 +70,9 @@ const labels = {
     inLibrary: 'في المكتبة',
     fourK: 'بدقة 4K على Plex',
     overQuota: 'تجاوز الحصة',
+    autoQueued: 'مضاف تلقائيًا',
+    episodeQueue: 'قائمة انتظار الحلقات · 2 قادمة',
+    eta: 'متبقي نحو 3 دقيقة',
   },
 } as const;
 
@@ -120,9 +130,24 @@ const request = (
 });
 
 const requests = [
-  ...statuses.map(([, stage, requestStatus, options], index) =>
-    request(601 + index, stage, requestStatus, options)
-  ),
+  ...statuses.map(([, stage, requestStatus, options], index) => ({
+    ...request(601 + index, stage, requestStatus, options),
+    ...(index === 0 ? { watchAheadParentRequestId: 500 } : {}),
+    ...(index === 1 ? { watchAheadEpisodeCount: 2 } : {}),
+  })),
+  {
+    ...request(621, 'downloading', 2),
+    currentStatus: undefined,
+    media: {
+      mediaType: 'book',
+      tmdbId: 0,
+      status: 2,
+      audiobookDownloadStatus: [
+        { size: 100, sizeLeft: 80, timeLeft: '00:03:00' },
+      ],
+      identifiers: [{ provider: 'openlibrary', value: 'OL621W' }],
+    },
+  },
   {
     ...request(620, 'available', 2),
     type: 'movie',
@@ -187,7 +212,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   });
 
   await page.goto('/requests?tab=all');
-  await expect(page.locator('.rq')).toHaveCount(16);
+  await expect(page.locator('.rq')).toHaveCount(17);
   const expected = baseline
     ? {
         ...labels.en,
@@ -204,7 +229,19 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   }
   const overQuota = page.locator('.rq').nth(14);
   await expect(overQuota.locator('.st')).toContainText(expected.overQuota);
-  const fourK = page.locator('.rq').nth(15);
+  const autoQueued = page.locator('.rq').nth(0).locator('.st');
+  const episodeQueue = page.locator('.rq').nth(1).locator('.st');
+  const eta = page.locator('.rq').nth(15).locator('.st');
+  await expect(autoQueued).toContainText(
+    rowBaseline ? 'Auto-Queued' : labels[locale].autoQueued
+  );
+  await expect(episodeQueue).toContainText(
+    rowBaseline ? 'Episode Queue · 2 ahead' : labels[locale].episodeQueue
+  );
+  await expect(eta).toContainText(
+    rowBaseline ? 'About 3 min left' : labels[locale].eta
+  );
+  const fourK = page.locator('.rq').nth(16);
   await expect(fourK.locator('.st')).toContainText(expected.fourK);
   await expect
     .poll(() =>

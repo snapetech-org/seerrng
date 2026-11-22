@@ -6448,3 +6448,21 @@ status text changes while card geometry is preserved, and no locale overflows
 the viewport. Live provider responses and independent linguistic review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-status-localization-20261122/`.
+
+### Request row queue context and ETA localization
+
+The Requests list now localizes the automatic-queue label, queued episode count,
+and download ETA detail in English, French, and Arabic. Existing queue counts,
+download progress, filtering, request lifecycle state, and action behavior are
+unchanged. The ETA formatter receives the active locale only when rendering the
+Requests list; the shared request status calculation retains its English
+fallback for nonlocalized callers.
+
+The fixture covers both queue labels and a scheduled audiobook ETA. Twelve
+baseline and twelve candidate browser cases pass across desktop, iPhone,
+Android, and tablet in all three locales. Matched baseline/candidate captures
+were inspected at 1440 CSS pixels and phone size for English, French, and
+Arabic; translated queue and ETA copy fits without new overflow or geometry
+changes. Live provider data and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-row-localization-20261122/`.
