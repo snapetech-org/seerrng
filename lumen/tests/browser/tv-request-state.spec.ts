@@ -1,4 +1,6 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import { basename, dirname, join } from 'node:path';
 
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${testMount}${path}`;
@@ -597,7 +599,7 @@ test('TV detail can request missing episodes from a partly requested season', as
   ]);
 });
 
-test('large-series episode metadata uses one bounded batch and preserves deep-linked selection on retry', async ({
+test('large-series episode metadata uses small bounded batches and preserves deep-linked selection on retry', async ({
   page,
 }) => {
   const posts: RecordedPost[] = [];
@@ -646,6 +648,7 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
   await open.click();
   const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
   await expect(sheet.getByText('Could not load episodes')).toBeVisible();
+  expect(batchQueries).toEqual(['1,2,3,4,5', '6,7,8,9,10', '11,12,13,14,15']);
   const initialBatchCount = batchQueries.length;
   retrying = true;
   await sheet.getByRole('button', { name: 'Retry' }).click();
@@ -677,6 +680,122 @@ test('large-series episode metadata uses one bounded batch and preserves deep-li
       },
     },
   ]);
+});
+
+test('loaded episodes remain selectable while the final large-series batch is pending', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  const largeSeriesSeasons = Array.from({ length: 15 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  const batchQueries: string[] = [];
+  const baselineCapture = process.env.LUMEN_TV_BATCH_BASELINE_CAPTURE === '1';
+  const allSeasons = Array.from({ length: 15 }, (_, index) => index + 1).join(
+    ','
+  );
+  const pendingBatch = baselineCapture ? allSeasons : '11,12,13,14,15';
+  let releaseLastBatch!: () => void;
+  let lastBatchStarted = false;
+  const lastBatchGate = new Promise<void>((resolve) => {
+    releaseLastBatch = resolve;
+  });
+  await show(
+    page,
+    {},
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true },
+    largeSeriesSeasons
+  );
+  await page.route('**/api/v1/tv/84773/seasons?*', async (route) => {
+    const requested =
+      new URL(route.request().url()).searchParams.get('seasonNumbers') ?? '';
+    batchQueries.push(requested);
+    const numbers = requested.split(',').map(Number);
+    if (requested === pendingBatch) {
+      lastBatchStarted = true;
+      await lastBatchGate;
+    }
+    return route.fulfill({
+      json: numbers
+        .filter((seasonNumber) => seasonNumber !== 15)
+        .map((seasonNumber) => ({
+          seasonNumber,
+          episodes: [
+            { episodeNumber: 1, name: `Loaded Season ${seasonNumber}` },
+          ],
+        })),
+    });
+  });
+
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect.poll(() => lastBatchStarted).toBe(true);
+  await expect(sheet.getByText('Loading episodes…')).toBeVisible();
+  await expect
+    .poll(() => batchQueries)
+    .toEqual(
+      baselineCapture
+        ? [allSeasons]
+        : ['1,2,3,4,5', '6,7,8,9,10', '11,12,13,14,15']
+    );
+  if (baselineCapture) {
+    await expect(sheet.getByRole('checkbox')).toHaveCount(0);
+  } else {
+    await sheet.getByText('Season 1', { exact: true }).click();
+    const episode = sheet.getByRole('checkbox', {
+      name: 'E1 Loaded Season 1',
+      exact: true,
+    });
+    await expect(episode).toBeEnabled();
+    await episode.check();
+    await expect(sheet.getByText('Selected: 1')).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: 'Request Selected Episodes' })
+    ).toBeDisabled();
+  }
+  const capture = process.env.LUMEN_TV_BATCH_CAPTURE;
+  if (capture) {
+    await sheet.evaluate((element) => element.scrollTo({ top: 0 }));
+    await page.waitForTimeout(400);
+    await mkdir(dirname(capture), { recursive: true });
+    await page.screenshot({
+      path: join(
+        dirname(capture),
+        `${basename(capture, '.png')}-${test.info().project.name}.png`
+      ),
+      fullPage: false,
+    });
+  }
+
+  releaseLastBatch();
+  await expect(sheet.getByRole('alert')).toContainText(
+    'Episodes from loaded seasons are still shown'
+  );
+  if (baselineCapture) {
+    await sheet.getByText('Season 1', { exact: true }).click();
+    await sheet
+      .getByRole('checkbox', { name: 'E1 Loaded Season 1', exact: true })
+      .check();
+    await expect(sheet.getByText('Selected: 1')).toBeVisible();
+  }
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+  ).toBeEnabled();
+  await sheet
+    .getByRole('button', { name: 'Request Selected Episodes' })
+    .click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts[0].body).toMatchObject({
+    seasons: [1],
+    seasonRequests: [{ seasonNumber: 1, episodeNumbers: [1] }],
+  });
 });
 
 test('partial large-series metadata still permits exact requests from loaded seasons', async ({
@@ -743,12 +862,7 @@ test('partial large-series metadata still permits exact requests from loaded sea
       fullPage: true,
     });
   }
-  expect(batchQueries.length).toBeGreaterThanOrEqual(1);
-  expect(batchQueries).toEqual(
-    batchQueries.map(() =>
-      largeSeriesSeasons.map(({ seasonNumber }) => seasonNumber).join(',')
-    )
-  );
+  expect(batchQueries).toEqual(['1,2,3,4,5', '6,7,8,9,10', '11,12,13,14,15']);
   await submit.click();
   await expect.poll(() => posts.length).toBe(1);
   expect(posts).toEqual([

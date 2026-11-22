@@ -18,7 +18,10 @@ interface SeasonEpisodes {
   episodes: Episode[];
 }
 
-const SEASON_BATCH_SIZE = 20;
+// The server fetches provider metadata with concurrency three. Keep client
+// batches small so one slow upstream season cannot hold a long series behind
+// a single proxy request; failed seasons are retried independently.
+const SEASON_BATCH_SIZE = 5;
 
 export default function TvEpisodeRequestSheet({
   tvId,
@@ -134,7 +137,7 @@ export default function TvEpisodeRequestSheet({
   const hasLoadedSeasons = seasons.some(({ seasonNumber }) =>
     episodesBySeason.has(seasonNumber)
   );
-  const canSelectLoadedEpisodes = !loading && hasLoadedSeasons;
+  const canSelectLoadedEpisodes = hasLoadedSeasons;
   const eligible = (seasonNumber: number, episode: Episode) =>
     Number.isSafeInteger(episode.episodeNumber) &&
     episode.episodeNumber > 0 &&
@@ -193,7 +196,7 @@ export default function TvEpisodeRequestSheet({
             <button
               className="btn btn-quiet btn-sm"
               type="button"
-              disabled={busy || loading || !picked.size}
+              disabled={busy || !picked.size}
               onClick={() => setPicked(new Map())}
             >
               {t('lumen.tvEpisodeRequest.clearSelection', 'Clear Selection')}
@@ -301,10 +304,7 @@ export default function TvEpisodeRequestSheet({
                             <input
                               type="checkbox"
                               disabled={
-                                busy ||
-                                !!streamingOverride ||
-                                loading ||
-                                !available
+                                busy || !!streamingOverride || !available
                               }
                               checked={
                                 available &&
