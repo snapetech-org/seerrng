@@ -232,7 +232,7 @@ function CollectionContent({ id }: { id: number }) {
                 className="btn btn-tonal btn-sm"
                 onClick={() => setPlayOpen(true)}
               >
-                Play Collection
+                {t('lumen.collectionPlayback.title', 'Play Collection')}
               </button>
             )}
             {qualities.length > 0 && (

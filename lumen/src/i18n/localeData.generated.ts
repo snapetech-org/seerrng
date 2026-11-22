@@ -5814,6 +5814,30 @@ export const localeData = [
       'lumen.collectionQueue.stop': 'إيقاف القائمة',
       'lumen.collectionQueue.restart': 'إعادة تشغيل القائمة',
       'lumen.collectionQueue.close': 'إغلاق',
+      'lumen.collectionPlayback.chooseDevice': 'اختر…',
+      'lumen.collectionPlayback.close': 'إغلاق',
+      'lumen.collectionPlayback.createPlaylist': 'إنشاء قائمة تشغيل',
+      'lumen.collectionPlayback.device': 'الجهاز',
+      'lumen.collectionPlayback.deviceFailure':
+        'تعذّر تأكيد التشغيل. تحقق من الجهاز المحدد.',
+      'lumen.collectionPlayback.devices': 'أجهزة التشغيل',
+      'lumen.collectionPlayback.devicesFailure': 'تعذّر تحميل أجهزة التشغيل',
+      'lumen.collectionPlayback.loadingDevices': 'جارٍ تحميل أجهزة التشغيل…',
+      'lumen.collectionPlayback.noDevices': 'لا تتوفر أجهزة نشطة ومصرح بها.',
+      'lumen.collectionPlayback.openPlaylist': 'فتح قائمة التشغيل',
+      'lumen.collectionPlayback.playOnDevice': 'التشغيل على الجهاز',
+      'lumen.collectionPlayback.playableMovies': 'الأفلام القابلة للتشغيل',
+      'lumen.collectionPlayback.playbackDevice': 'جهاز التشغيل',
+      'lumen.collectionPlayback.playbackQuality': 'جودة التشغيل',
+      'lumen.collectionPlayback.playlistFailure':
+        'تعذّر فتح قائمة تشغيل لهذا التحديد.',
+      'lumen.collectionPlayback.playlistWarning':
+        'سيؤدي إنشاء قائمة تشغيل إلى استبدال قائمة «التحديد الحالي» على خادم الوسائط.',
+      'lumen.collectionPlayback.quality': 'الجودة',
+      'lumen.collectionPlayback.retry': 'إعادة المحاولة',
+      'lumen.collectionPlayback.selectionLimit': 'اختر ١٬٠٠٠ فيلم أو أقل.',
+      'lumen.collectionPlayback.startedOn': 'بدأ التشغيل على {device}.',
+      'lumen.collectionPlayback.title': 'تشغيل المجموعة',
     },
   },
   {
@@ -15591,6 +15615,33 @@ export const localeData = [
       'lumen.collectionQueue.stop': 'Stop Queue',
       'lumen.collectionQueue.restart': 'Restart Queue',
       'lumen.collectionQueue.close': 'Close',
+      'lumen.collectionPlayback.chooseDevice': 'Choose…',
+      'lumen.collectionPlayback.close': 'Close',
+      'lumen.collectionPlayback.createPlaylist': 'Create Playback Playlist',
+      'lumen.collectionPlayback.device': 'Device',
+      'lumen.collectionPlayback.deviceFailure':
+        'Could Not Confirm Playback. Check the Selected Device.',
+      'lumen.collectionPlayback.devices': 'Playback Devices',
+      'lumen.collectionPlayback.devicesFailure':
+        'Couldn’t Load Playback Devices',
+      'lumen.collectionPlayback.loadingDevices': 'Loading Playback Devices…',
+      'lumen.collectionPlayback.noDevices':
+        'No Active, Authorized Devices Are Available.',
+      'lumen.collectionPlayback.openPlaylist': 'Open Playlist',
+      'lumen.collectionPlayback.playOnDevice': 'Play on Device',
+      'lumen.collectionPlayback.playableMovies': 'Playable Movies',
+      'lumen.collectionPlayback.playbackDevice': 'Playback Device',
+      'lumen.collectionPlayback.playbackQuality': 'Playback Quality',
+      'lumen.collectionPlayback.playlistFailure':
+        'Could Not Open a Playlist for This Selection.',
+      'lumen.collectionPlayback.playlistWarning':
+        'Creating a Playlist Replaces the Media Server’s Current Selection Playlist.',
+      'lumen.collectionPlayback.quality': 'Quality',
+      'lumen.collectionPlayback.retry': 'Retry',
+      'lumen.collectionPlayback.selectionLimit':
+        'Select 1,000 Movies or Fewer.',
+      'lumen.collectionPlayback.startedOn': 'Playback Started on {device}.',
+      'lumen.collectionPlayback.title': 'Play Collection',
     },
   },
   {
@@ -26291,6 +26342,34 @@ export const localeData = [
       'lumen.collectionQueue.stop': 'Arrêter la file',
       'lumen.collectionQueue.restart': 'Redémarrer la file',
       'lumen.collectionQueue.close': 'Fermer',
+      'lumen.collectionPlayback.chooseDevice': 'Choisir…',
+      'lumen.collectionPlayback.close': 'Fermer',
+      'lumen.collectionPlayback.createPlaylist': 'Créer une liste de lecture',
+      'lumen.collectionPlayback.device': 'Appareil',
+      'lumen.collectionPlayback.deviceFailure':
+        'Lecture non confirmée. Vérifiez l’appareil sélectionné.',
+      'lumen.collectionPlayback.devices': 'appareils de lecture',
+      'lumen.collectionPlayback.devicesFailure':
+        'Impossible de charger les appareils de lecture',
+      'lumen.collectionPlayback.loadingDevices':
+        'Chargement des appareils de lecture…',
+      'lumen.collectionPlayback.noDevices':
+        'Aucun appareil actif et autorisé n’est disponible.',
+      'lumen.collectionPlayback.openPlaylist': 'Ouvrir la liste de lecture',
+      'lumen.collectionPlayback.playOnDevice': 'Lire sur l’appareil',
+      'lumen.collectionPlayback.playableMovies': 'Films lisibles',
+      'lumen.collectionPlayback.playbackDevice': 'Appareil de lecture',
+      'lumen.collectionPlayback.playbackQuality': 'Qualité de lecture',
+      'lumen.collectionPlayback.playlistFailure':
+        'Impossible d’ouvrir une liste de lecture pour cette sélection.',
+      'lumen.collectionPlayback.playlistWarning':
+        'La création d’une liste remplace la liste de lecture « Sélection actuelle » du serveur multimédia.',
+      'lumen.collectionPlayback.quality': 'Qualité',
+      'lumen.collectionPlayback.retry': 'Réessayer',
+      'lumen.collectionPlayback.selectionLimit':
+        'Sélectionnez 1 000 films ou moins.',
+      'lumen.collectionPlayback.startedOn': 'Lecture lancée sur {device}.',
+      'lumen.collectionPlayback.title': 'Lire la collection',
     },
   },
   {

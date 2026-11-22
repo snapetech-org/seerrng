@@ -574,6 +574,86 @@ test('collection playback uses ordered internal IDs, skips shared copies, and op
   ]);
 });
 
+test('collection playback follows the saved French locale', async ({
+  page,
+}, testInfo) => {
+  const writes: unknown[] = [];
+  let locale = 'en';
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { otherUsersAvailability: 'show' } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Example Collection',
+          parts: [
+            {
+              id: 20,
+              mediaType: 'movie',
+              title: 'First Movie',
+              mediaInfo: { id: 99, status: 5 },
+            },
+          ],
+        },
+      });
+    if (path === '/playback/devices')
+      return route.fulfill({
+        json: [{ id: 'player-1', name: 'TV', client: 'Plex' }],
+      });
+    if (path === '/playback/collection/play') {
+      writes.push(request.postDataJSON());
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(`${mount}/collection/30`);
+  await page.getByRole('button', { name: 'Play Collection' }).click();
+  const englishSheet = page.getByRole('dialog', { name: 'Play Collection' });
+  await expect(englishSheet.getByLabel('Playback Device')).toBeVisible();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: testInfo.outputPath('playback-english.png') });
+
+  locale = 'fr';
+  await page.reload();
+  await page.getByRole('button', { name: 'Lire la collection' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Lire la collection' });
+  await expect(sheet.getByLabel('Appareil de lecture')).toBeVisible();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: testInfo.outputPath('playback-french.png') });
+  const geometry = await sheet.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      left: rect.left,
+      right: rect.right,
+      viewport: document.documentElement.clientWidth,
+      overflow:
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    };
+  });
+  expect(geometry.left).toBeGreaterThanOrEqual(0);
+  expect(geometry.right).toBeLessThanOrEqual(geometry.viewport);
+  expect(geometry.overflow).toBe(false);
+  await sheet.getByLabel('Appareil de lecture').selectOption('player-1');
+  await sheet.getByRole('button', { name: 'Lire sur l’appareil' }).click();
+  await expect(sheet.getByText('Lecture lancée sur TV.')).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Créer une liste de lecture' })
+  ).toBeVisible();
+  expect(writes).toEqual([
+    { mediaIds: [99], is4k: false, deviceId: 'player-1' },
+  ]);
+});
+
 test('movie media-server collection sync checks on demand and adds visible verified movies', async ({
   page,
 }) => {

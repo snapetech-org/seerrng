@@ -1297,6 +1297,17 @@ changed selection against synthetic data. Mobile and bundled visual
 acceptance, comparison against rendered native workflows, and live provider
 playback remain open.
 
+The collection playback entry and sheet now localize their labels,
+accessibility names, device loading and failure feedback, playlist warning,
+and playback result in English, French, and Arabic. A saved-French browser
+case verifies the same ordered internal-ID mutation and device feedback. The
+collection suite passes 32 cases across desktop, iPhone, Android, and tablet.
+Matched English/French desktop and iPhone screenshots were reviewed; French
+copy wraps within the existing sheet, with no horizontal viewport overflow.
+Bundled visual acceptance, rendered native comparison, live provider
+playback, and independent language review remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-queue-localization-20261122/playback-matched/`.
+
 The 20-case collection suite now honors the configured deployment mount and
 passed against both standalone Lumen and the production Express `/lumen/`
 mount, across desktop, iPhone, Android, and tablet presets. Coverage includes

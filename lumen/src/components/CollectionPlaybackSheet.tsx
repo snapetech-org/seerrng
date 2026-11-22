@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api, MediaStatus, plexUrl, titleOf, type TitleResult } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
@@ -67,6 +68,7 @@ export default function CollectionPlaybackSheet({
   visibility: Availability;
   close: () => void;
 }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const working = useRef(false);
   const [quality, setQuality] = useState(qualities[0]);
@@ -124,7 +126,15 @@ export default function CollectionPlaybackSheet({
           body: JSON.stringify({ ...body, deviceId: device.id }),
         });
         if (generation === sessionGeneration())
-          setNotice(`Playback started on ${device.name}.`);
+          setNotice(
+            t(
+              'lumen.collectionPlayback.startedOn',
+              'Playback Started on {device}.',
+              {
+                device: device.name,
+              }
+            )
+          );
       } else {
         const { url } = await api<{ url: string }>(
           '/playback/collection/playlist',
@@ -140,9 +150,14 @@ export default function CollectionPlaybackSheet({
     } catch {
       if (generation === sessionGeneration()) {
         setError(
-          onDevice
-            ? 'Could not confirm playback. Check the selected device.'
-            : 'Could not open a playlist for this selection.'
+          t(
+            onDevice
+              ? 'lumen.collectionPlayback.deviceFailure'
+              : 'lumen.collectionPlayback.playlistFailure',
+            onDevice
+              ? 'Could not Confirm Playback. Check the Selected Device.'
+              : 'Could Not Open a Playlist for This Selection.'
+          )
         );
         if (onDevice) reload();
       }
@@ -160,19 +175,24 @@ export default function CollectionPlaybackSheet({
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Play Collection"
+        aria-label={t('lumen.collectionPlayback.title', 'Play Collection')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>Play Collection</h2>
+            <h2>{t('lumen.collectionPlayback.title', 'Play Collection')}</h2>
             <p className="note">{title}</p>
           </header>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Quality</span>
+              <span className="lbl">
+                {t('lumen.collectionPlayback.quality', 'Quality')}
+              </span>
               <select
-                aria-label="Playback Quality"
+                aria-label={t(
+                  'lumen.collectionPlayback.playbackQuality',
+                  'Playback Quality'
+                )}
                 disabled={busy}
                 value={quality}
                 onChange={(event) => {
@@ -189,7 +209,13 @@ export default function CollectionPlaybackSheet({
               </select>
             </label>
           </div>
-          <ul className="setlist" aria-label="Playable Movies">
+          <ul
+            className="setlist"
+            aria-label={t(
+              'lumen.collectionPlayback.playableMovies',
+              'Playable Movies'
+            )}
+          >
             {playable.map(([id, part]) => (
               <li className="set" key={id}>
                 <label>
@@ -211,27 +237,50 @@ export default function CollectionPlaybackSheet({
             ))}
           </ul>
           {mediaIds.length > 1000 && (
-            <p className="note">Select 1,000 movies or fewer.</p>
+            <p className="note">
+              {t(
+                'lumen.collectionPlayback.selectionLimit',
+                'Select 1,000 Movies or Fewer.'
+              )}
+            </p>
           )}
           <ServiceNote
             error={deviceError}
-            what="playback devices"
+            what={t('lumen.collectionPlayback.devices', 'Playback Devices')}
+            title={t(
+              'lumen.collectionPlayback.devicesFailure',
+              'Couldn’t Load Playback Devices'
+            )}
+            retryLabel={t('lumen.collectionPlayback.retry', 'Retry')}
             retry={reload}
           />
           {!devices && !deviceError && (
             <p className="note" role="status">
-              Loading playback devices…
+              {t(
+                'lumen.collectionPlayback.loadingDevices',
+                'Loading Playback Devices…'
+              )}
             </p>
           )}
           {devices?.length === 0 && (
-            <p className="note">No active, authorized devices are available.</p>
+            <p className="note">
+              {t(
+                'lumen.collectionPlayback.noDevices',
+                'No Active, Authorized Devices Are Available.'
+              )}
+            </p>
           )}
           {!!devices?.length && (
             <div className="toolbar">
               <label className="sel">
-                <span className="lbl">Device</span>
+                <span className="lbl">
+                  {t('lumen.collectionPlayback.device', 'Device')}
+                </span>
                 <select
-                  aria-label="Playback Device"
+                  aria-label={t(
+                    'lumen.collectionPlayback.playbackDevice',
+                    'Playback Device'
+                  )}
                   value={device?.id ?? ''}
                   disabled={busy}
                   onChange={(event) => {
@@ -239,7 +288,9 @@ export default function CollectionPlaybackSheet({
                     clearResult();
                   }}
                 >
-                  <option value="">Choose…</option>
+                  <option value="">
+                    {t('lumen.collectionPlayback.chooseDevice', 'Choose…')}
+                  </option>
                   {devices.map(({ id, name, client, platform }) => (
                     <option value={id} key={id}>
                       {[name, client, platform].filter(Boolean).join(' · ')}
@@ -252,13 +303,15 @@ export default function CollectionPlaybackSheet({
                 disabled={busy || !valid || !device}
                 onClick={() => void play(true)}
               >
-                Play on Device
+                {t('lumen.collectionPlayback.playOnDevice', 'Play on Device')}
               </button>
             </div>
           )}
           <p className="note">
-            Creating a playlist replaces the media server’s Current Selection
-            playlist.
+            {t(
+              'lumen.collectionPlayback.playlistWarning',
+              'Creating a Playlist Replaces the Media Server’s Current Selection Playlist.'
+            )}
           </p>
           <div className="toolbar">
             <button
@@ -266,7 +319,10 @@ export default function CollectionPlaybackSheet({
               disabled={busy || !valid}
               onClick={() => void play(false)}
             >
-              Create Playback Playlist
+              {t(
+                'lumen.collectionPlayback.createPlaylist',
+                'Create Playback Playlist'
+              )}
             </button>
             {playlist && (
               <a
@@ -275,7 +331,7 @@ export default function CollectionPlaybackSheet({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Open Playlist
+                {t('lumen.collectionPlayback.openPlaylist', 'Open Playlist')}
               </a>
             )}
           </div>
@@ -291,7 +347,7 @@ export default function CollectionPlaybackSheet({
           )}
           <div className="pk-foot">
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
-              Close
+              {t('lumen.collectionPlayback.close', 'Close')}
             </button>
           </div>
         </div>
