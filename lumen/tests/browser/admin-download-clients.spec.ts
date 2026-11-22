@@ -1,8 +1,55 @@
 import { expect, test } from '@playwright/test';
 
+const locale = (
+  ['en', 'fr', 'ar'].includes(process.env.LUMEN_DOWNLOAD_CLIENTS_LOCALE ?? '')
+    ? process.env.LUMEN_DOWNLOAD_CLIENTS_LOCALE
+    : 'en'
+) as 'en' | 'fr' | 'ar';
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+const labels = {
+  en: {
+    page: 'Download Client Settings',
+    back: 'Administration',
+    section: 'Live Download Progress',
+    interval: 'Refresh Interval (Seconds)',
+    apiKey: 'API Key',
+    test: 'Test Client',
+    connected: 'Connected to Usenet (fixture).',
+    saved: 'Download client settings saved.',
+    save: 'Save Changes',
+    lastCheck: 'Last check passed.',
+  },
+  fr: {
+    page: 'Paramètres du client de téléchargement',
+    back: 'Administration',
+    section: 'Progression des téléchargements en direct',
+    interval: 'Intervalle d’actualisation (secondes)',
+    apiKey: 'Clé API',
+    test: 'Tester le client',
+    connected: 'Connecté à Usenet (fixture).',
+    saved: 'Paramètres du client de téléchargement enregistrés.',
+    save: 'Enregistrer les modifications',
+    lastCheck: 'La dernière vérification a réussi.',
+  },
+  ar: {
+    page: 'إعدادات عميل التنزيل',
+    back: 'الإدارة',
+    section: 'تقدم التنزيل المباشر',
+    interval: 'الفاصل الزمني للتحديث (ثوانٍ)',
+    apiKey: 'مفتاح API',
+    test: 'اختبار العميل',
+    connected: 'تم الاتصال بـ Usenet (fixture).',
+    saved: 'تم حفظ إعدادات عميل التنزيل.',
+    save: 'حفظ التغييرات',
+    lastCheck: 'نجح آخر فحص.',
+  },
+} as const;
+
 test('download clients test and save with the existing credential', async ({
   page,
 }, info) => {
+  const text = labels[locale];
   const endpoint = '/api/v1/settings/download-clients';
   let saved = {
     pollIntervalSeconds: 3,
@@ -26,9 +73,11 @@ test('download clients test and save with the existing credential', async ({
   );
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname;
+    const path = new URL(request.url()).pathname.replace(/^\/lumen(?=\/)/, '');
     if (path.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale } });
     if (path === endpoint + '/status')
       return route.fulfill({ json: { clients: [{ clientId: 7, ok: true }] } });
     if (path === endpoint + '/test') {
@@ -50,21 +99,38 @@ test('download clients test and save with the existing credential', async ({
     }
     return route.fulfill({ json: saved });
   });
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   await page
     .getByRole('link', { name: 'Open Download Client Settings' })
     .click();
+  await expect(
+    page.getByRole('heading', { name: text.page, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: text.back, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: text.section, exact: true })
+  ).toBeVisible();
   await page.getByText('Usenet', { exact: true }).click();
-  await expect(page.getByLabel('API Key')).toHaveValue('');
-  await page.getByRole('button', { name: 'Test Client' }).click();
-  await expect(page.getByText('Connected to Usenet (fixture).')).toBeVisible();
-  await page.getByLabel('Refresh Interval (Seconds)').fill('8');
+  await expect(page.getByLabel(text.apiKey)).toHaveValue('');
+  await expect(page.getByText(text.lastCheck)).toBeVisible();
+  await page.getByRole('button', { name: text.test }).click();
+  await expect(page.getByText(text.connected)).toBeVisible();
+  await page.getByLabel(text.interval).fill('8');
+  await expect(page.locator('html')).toHaveAttribute(
+    'dir',
+    locale === 'ar' ? 'rtl' : 'ltr'
+  );
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
   await page.screenshot({
     path: info.outputPath('download-clients.png'),
     fullPage: true,
   });
-  await page.getByRole('button', { name: 'Save Changes' }).click();
-  await expect(page.getByText('Download client settings saved.')).toBeVisible();
+  await page.getByRole('button', { name: text.save }).click();
+  await expect(page.getByText(text.saved)).toBeVisible();
   expect(writes[0]).toMatchObject({
     id: 7,
     type: 'sabnzbd',

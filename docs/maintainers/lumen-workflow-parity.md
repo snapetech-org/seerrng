@@ -5717,3 +5717,23 @@ and RTL direction. Evidence is retained at
 `.../admin-readers-candidate/`, and `.../admin-readers-embedded/`.
 Live Audiobookshelf and Kavita server behavior and independent translation
 review remain unverified.
+
+### Download Client settings localization
+
+The Lumen Download Client Administration page now localizes its page and
+section headings, setup profiles, client fields, saved-credential controls,
+connection-test status, add/remove/save/discard actions, and loading/save/test
+feedback in English, French, and Arabic. The existing endpoints, masked
+credential behavior, setup profile values, and provider operations are
+unchanged.
+
+The focused workflow passed across the three locales and four viewport presets
+in both standalone and production-style /lumen/ deployments (24 cases per
+deployment). It checks connection testing and saving while preserving the
+existing credential, localized success feedback, and horizontal overflow.
+English baseline and candidate screenshots match pixel-for-pixel at desktop
+and iPhone sizes. French desktop and Arabic iPhone renders were inspected;
+Arabic uses RTL layout without visible clipping. Setup-wizard embedding,
+live client connectivity and persistence, and independent translation review
+remain unverified. Evidence is retained at
+/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/download-clients-candidate/.

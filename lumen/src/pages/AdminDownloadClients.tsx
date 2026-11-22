@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const refreshIntervalId = 'download-clients-interval';
@@ -81,6 +82,7 @@ function Editor({
   onDirtyChange?: (dirty: boolean) => void;
   inSetup: boolean;
 }) {
+  const { t } = useLumenLocale();
   const [interval, setInterval] = useState(initial.pollIntervalSeconds);
   const [clients, setClients] = useState(initial.clients.map(toDraft));
   const [saved, setSaved] = useState(initial);
@@ -153,8 +155,16 @@ function Editor({
         if (generation === sessionGeneration())
           setFeedback({
             text: result.version
-              ? `Connected to ${client.name} (${result.version}).`
-              : `Connected to ${client.name}.`,
+              ? t(
+                  'lumen.adminDownloadClients.testConnectedVersion',
+                  'Connected to {client} ({version}).',
+                  { client: client.name, version: result.version }
+                )
+              : t(
+                  'lumen.adminDownloadClients.testConnected',
+                  'Connected to {client}.',
+                  { client: client.name }
+                ),
           });
       } else {
         const result = await api<Settings>(endpoint, {
@@ -168,7 +178,12 @@ function Editor({
         setSaved(result);
         reset(result);
         health.refresh();
-        setFeedback({ text: 'Download client settings saved.' });
+        setFeedback({
+          text: t(
+            'lumen.adminDownloadClients.settingsSaved',
+            'Download client settings saved.'
+          ),
+        });
       }
     } catch (failure) {
       if (generation === sessionGeneration())
@@ -176,7 +191,10 @@ function Editor({
           text:
             failure instanceof ApiError
               ? failure.message
-              : 'Could not update download client settings.',
+              : t(
+                  'lumen.adminDownloadClients.saveFailure',
+                  'Could not update download client settings.'
+                ),
           error: true,
         });
     } finally {
@@ -194,17 +212,34 @@ function Editor({
   }, [inSetup]);
 
   return (
-    <Section title="Live Download Progress">
+    <Section
+      title={t(
+        'lumen.adminDownloadClients.sectionTitle',
+        'Live Download Progress'
+      )}
+    >
       {inSetup && (
         <label className="sel">
-          Download Setup Profile
+          {t(
+            'lumen.adminDownloadClients.setupProfile',
+            'Download Setup Profile'
+          )}
           <select
             value={profile}
             onChange={(event) => setProfile(event.target.value)}
           >
-            <option value="both">Usenet and Torrents</option>
-            <option value="usenet">Usenet</option>
-            <option value="torrent">Torrents</option>
+            <option value="both">
+              {t(
+                'lumen.adminDownloadClients.profile.both',
+                'Usenet and Torrents'
+              )}
+            </option>
+            <option value="usenet">
+              {t('lumen.adminDownloadClients.profile.usenet', 'Usenet')}
+            </option>
+            <option value="torrent">
+              {t('lumen.adminDownloadClients.profile.torrent', 'Torrents')}
+            </option>
           </select>
         </label>
       )}
@@ -216,7 +251,12 @@ function Editor({
       >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Refresh Interval (Seconds)</span>
+            <span>
+              {t(
+                'lumen.adminDownloadClients.refreshInterval',
+                'Refresh Interval (Seconds)'
+              )}
+            </span>
             <input
               id={inSetup ? undefined : refreshIntervalId}
               className="cfg-input"
@@ -231,16 +271,21 @@ function Editor({
           </label>
         </div>
         {!clients.length && (
-          <p className="note">No download clients configured.</p>
+          <p className="note">
+            {t(
+              'lumen.adminDownloadClients.noClients',
+              'No download clients configured.'
+            )}
+          </p>
         )}
         {clients.map((client) => {
           const { row, type } = client;
           const secretLabel =
             type === 'sabnzbd'
-              ? 'API Key'
+              ? t('lumen.adminDownloadClients.apiKey', 'API Key')
               : type === 'torrentng'
-                ? 'API Token'
-                : 'Password';
+                ? t('lumen.adminDownloadClients.apiToken', 'API Token')
+                : t('lumen.adminDownloadClients.password', 'Password');
           const usesUsername =
             type === 'qbittorrent' || type === 'transmission';
           const status = health.data?.clients?.find(
@@ -248,10 +293,18 @@ function Editor({
           );
           return (
             <details className="adv" key={row}>
-              <summary>{client.name || 'New Download Client'}</summary>
+              <summary>
+                {client.name ||
+                  t(
+                    'lumen.adminDownloadClients.newClient',
+                    'New Download Client'
+                  )}
+              </summary>
               <div className="setlist">
                 <label className="set cfg-row">
-                  <span>Client Type</span>
+                  <span>
+                    {t('lumen.adminDownloadClients.clientType', 'Client Type')}
+                  </span>
                   <select
                     className="cfg-select"
                     disabled={busy}
@@ -290,11 +343,28 @@ function Editor({
                 />
                 {(
                   [
-                    ['name', 'Name', 80],
-                    ['hostname', 'Hostname', 255],
-                    ['baseUrl', 'URL Base', 512],
+                    ['name', t('lumen.adminDownloadClients.name', 'Name'), 80],
+                    [
+                      'hostname',
+                      t('lumen.adminDownloadClients.hostname', 'Hostname'),
+                      255,
+                    ],
+                    [
+                      'baseUrl',
+                      t('lumen.adminDownloadClients.urlBase', 'URL Base'),
+                      512,
+                    ],
                     ...(usesUsername
-                      ? [['username', 'Username', 2048] as const]
+                      ? [
+                          [
+                            'username',
+                            t(
+                              'lumen.adminDownloadClients.username',
+                              'Username'
+                            ),
+                            2048,
+                          ] as const,
+                        ]
                       : []),
                   ] as const
                 ).map(([field, label, maxLength]) => (
@@ -313,7 +383,7 @@ function Editor({
                   </label>
                 ))}
                 <label className="set cfg-row">
-                  <span>Port</span>
+                  <span>{t('lumen.adminDownloadClients.port', 'Port')}</span>
                   <input
                     className="cfg-input"
                     type="number"
@@ -329,8 +399,17 @@ function Editor({
                 </label>
                 {(
                   [
-                    ['useSsl', 'Use HTTPS'],
-                    ['enabled', 'Read Live Progress'],
+                    [
+                      'useSsl',
+                      t('lumen.adminDownloadClients.useHttps', 'Use HTTPS'),
+                    ],
+                    [
+                      'enabled',
+                      t(
+                        'lumen.adminDownloadClients.readLiveProgress',
+                        'Read Live Progress'
+                      ),
+                    ],
                   ] as const
                 ).map(([field, label]) => (
                   <label className="set cfg-row" key={field}>
@@ -355,7 +434,12 @@ function Editor({
                     disabled={busy || client.clearPassword}
                     value={client.secret}
                     placeholder={
-                      client.passwordConfigured ? 'Saved credential' : undefined
+                      client.passwordConfigured
+                        ? t(
+                            'lumen.adminDownloadClients.savedCredential',
+                            'Saved credential'
+                          )
+                        : undefined
                     }
                     onChange={(event) =>
                       update(row, { secret: event.target.value })
@@ -364,7 +448,12 @@ function Editor({
                 </label>
                 {client.passwordConfigured && (
                   <label className="set cfg-row">
-                    <span>Remove Saved Credential</span>
+                    <span>
+                      {t(
+                        'lumen.adminDownloadClients.removeSavedCredential',
+                        'Remove Saved Credential'
+                      )}
+                    </span>
                     <input
                       type="checkbox"
                       disabled={busy}
@@ -378,7 +467,15 @@ function Editor({
               </div>
               {status && (
                 <p className="note">
-                  {status.ok ? 'Last check passed.' : 'Last check failed.'}
+                  {status.ok
+                    ? t(
+                        'lumen.adminDownloadClients.lastCheckPassed',
+                        'Last check passed.'
+                      )
+                    : t(
+                        'lumen.adminDownloadClients.lastCheckFailed',
+                        'Last check failed.'
+                      )}
                 </p>
               )}
               <div className="toolbar">
@@ -393,7 +490,7 @@ function Editor({
                   }
                   onClick={() => void submit(client)}
                 >
-                  Test Client
+                  {t('lumen.adminDownloadClients.testClient', 'Test Client')}
                 </button>
                 <button
                   type="button"
@@ -405,7 +502,10 @@ function Editor({
                     )
                   }
                 >
-                  Remove Client
+                  {t(
+                    'lumen.adminDownloadClients.removeClient',
+                    'Remove Client'
+                  )}
                 </button>
               </div>
             </details>
@@ -424,7 +524,7 @@ function Editor({
               disabled={busy || clients.length >= 8}
               onClick={() => addClient('sabnzbd')}
             >
-              Add Usenet Client
+              {t('lumen.adminDownloadClients.addUsenet', 'Add Usenet Client')}
             </button>
           )}
           {(!inSetup || profile !== 'usenet') && (
@@ -434,7 +534,15 @@ function Editor({
               disabled={busy || clients.length >= 8}
               onClick={() => addClient('qbittorrent')}
             >
-              {inSetup ? 'Add Torrent Client' : 'Add Download Client'}
+              {inSetup
+                ? t(
+                    'lumen.adminDownloadClients.addTorrent',
+                    'Add Torrent Client'
+                  )
+                : t(
+                    'lumen.adminDownloadClients.addDownload',
+                    'Add Download Client'
+                  )}
             </button>
           )}
           <button
@@ -442,7 +550,7 @@ function Editor({
             className="btn btn-primary btn-sm"
             disabled={busy}
           >
-            Save Changes
+            {t('lumen.adminDownloadClients.saveChanges', 'Save Changes')}
           </button>
           <button
             type="button"
@@ -450,7 +558,7 @@ function Editor({
             disabled={busy}
             onClick={() => reset(saved)}
           >
-            Discard Changes
+            {t('lumen.adminDownloadClients.discardChanges', 'Discard Changes')}
           </button>
         </div>
       </form>
@@ -462,22 +570,33 @@ export default function AdminDownloadClients({
   inSetup = false,
   onDirtyChange,
 }: { inSetup?: boolean; onDirtyChange?: (dirty: boolean) => void } = {}) {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(endpoint);
   return (
     <>
       {!inSetup && (
         <>
-          <h1>Download Client Settings</h1>
+          <h1>
+            {t(
+              'lumen.adminDownloadClients.pageTitle',
+              'Download Client Settings'
+            )}
+          </h1>
           <div className="toolbar">
             <Link className="btn btn-quiet btn-sm" to="/admin">
-              Administration
+              {t('lumen.nav.administration', 'Administration')}
             </Link>
           </div>
         </>
       )}
       <ServiceNote
         what="download client settings"
+        title={t(
+          'lumen.adminDownloadClients.loadFailureTitle',
+          'Couldn’t load Download Client Settings'
+        )}
         error={settings.error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -489,7 +608,10 @@ export default function AdminDownloadClients({
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading download client settings…
+            {t(
+              'lumen.adminDownloadClients.loading',
+              'Loading download client settings…'
+            )}
           </p>
         )
       )}

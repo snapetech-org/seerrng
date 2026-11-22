@@ -1,0 +1,1 @@
+Lumen's Download Client administration screen now follows the saved interface language in English, French, and Arabic, including connection tests and recovery feedback. Client configuration, saved credential protection, and provider behavior are unchanged.

@@ -1807,6 +1807,49 @@ export const localeData = [
       'lumen.adminDiscovery.saving': 'جارٍ الحفظ…',
       'lumen.adminDiscovery.title': 'تكاملات الاستكشاف',
       'lumen.adminDiscovery.unconfigured': 'لم يتم الإعداد',
+      'lumen.adminDownloadClients.addDownload': 'إضافة عميل تنزيل',
+      'lumen.adminDownloadClients.addTorrent': 'إضافة عميل تورنت',
+      'lumen.adminDownloadClients.addUsenet': 'إضافة عميل Usenet',
+      'lumen.adminDownloadClients.apiKey': 'مفتاح API',
+      'lumen.adminDownloadClients.apiToken': 'رمز API',
+      'lumen.adminDownloadClients.clientType': 'نوع العميل',
+      'lumen.adminDownloadClients.discardChanges': 'تجاهل التغييرات',
+      'lumen.adminDownloadClients.hostname': 'اسم المضيف',
+      'lumen.adminDownloadClients.lastCheckFailed': 'فشل آخر فحص.',
+      'lumen.adminDownloadClients.lastCheckPassed': 'نجح آخر فحص.',
+      'lumen.adminDownloadClients.loadFailureTitle':
+        'تعذر تحميل إعدادات عميل التنزيل',
+      'lumen.adminDownloadClients.loading': 'جارٍ تحميل إعدادات عميل التنزيل…',
+      'lumen.adminDownloadClients.name': 'الاسم',
+      'lumen.adminDownloadClients.newClient': 'عميل تنزيل جديد',
+      'lumen.adminDownloadClients.noClients': 'لم يتم إعداد أي عميل تنزيل.',
+      'lumen.adminDownloadClients.pageTitle': 'إعدادات عميل التنزيل',
+      'lumen.adminDownloadClients.password': 'كلمة المرور',
+      'lumen.adminDownloadClients.port': 'المنفذ',
+      'lumen.adminDownloadClients.profile.both': 'Usenet وتورنت',
+      'lumen.adminDownloadClients.profile.torrent': 'تورنت',
+      'lumen.adminDownloadClients.profile.usenet': 'Usenet',
+      'lumen.adminDownloadClients.readLiveProgress': 'قراءة التقدم المباشر',
+      'lumen.adminDownloadClients.refreshInterval':
+        'الفاصل الزمني للتحديث (ثوانٍ)',
+      'lumen.adminDownloadClients.removeClient': 'إزالة العميل',
+      'lumen.adminDownloadClients.removeSavedCredential':
+        'إزالة بيانات الاعتماد المحفوظة',
+      'lumen.adminDownloadClients.saveChanges': 'حفظ التغييرات',
+      'lumen.adminDownloadClients.saveFailure':
+        'تعذر تحديث إعدادات عميل التنزيل.',
+      'lumen.adminDownloadClients.savedCredential': 'بيانات اعتماد محفوظة',
+      'lumen.adminDownloadClients.sectionTitle': 'تقدم التنزيل المباشر',
+      'lumen.adminDownloadClients.settingsSaved':
+        'تم حفظ إعدادات عميل التنزيل.',
+      'lumen.adminDownloadClients.setupProfile': 'ملف إعداد التنزيل',
+      'lumen.adminDownloadClients.testClient': 'اختبار العميل',
+      'lumen.adminDownloadClients.testConnected': 'تم الاتصال بـ {client}.',
+      'lumen.adminDownloadClients.testConnectedVersion':
+        'تم الاتصال بـ {client} ({version}).',
+      'lumen.adminDownloadClients.urlBase': 'المسار الأساسي',
+      'lumen.adminDownloadClients.useHttps': 'استخدام HTTPS',
+      'lumen.adminDownloadClients.username': 'اسم المستخدم',
       'lumen.adminGeneral.apiKey.confirmBody':
         'سيتوقف المفتاح الحالي عن العمل فورًا. حدّث أي تكاملات تستخدمه.',
       'lumen.adminGeneral.apiKey.confirmFailure':
@@ -10053,6 +10096,49 @@ export const localeData = [
       'lumen.adminDiscovery.saving': 'Saving…',
       'lumen.adminDiscovery.title': 'Discovery Integrations',
       'lumen.adminDiscovery.unconfigured': 'Not configured',
+      'lumen.adminDownloadClients.addDownload': 'Add Download Client',
+      'lumen.adminDownloadClients.addTorrent': 'Add Torrent Client',
+      'lumen.adminDownloadClients.addUsenet': 'Add Usenet Client',
+      'lumen.adminDownloadClients.apiKey': 'API Key',
+      'lumen.adminDownloadClients.apiToken': 'API Token',
+      'lumen.adminDownloadClients.clientType': 'Client Type',
+      'lumen.adminDownloadClients.discardChanges': 'Discard Changes',
+      'lumen.adminDownloadClients.hostname': 'Hostname',
+      'lumen.adminDownloadClients.lastCheckFailed': 'Last check failed.',
+      'lumen.adminDownloadClients.lastCheckPassed': 'Last check passed.',
+      'lumen.adminDownloadClients.loadFailureTitle':
+        'Couldn’t load Download Client Settings',
+      'lumen.adminDownloadClients.loading': 'Loading download client settings…',
+      'lumen.adminDownloadClients.name': 'Name',
+      'lumen.adminDownloadClients.newClient': 'New Download Client',
+      'lumen.adminDownloadClients.noClients': 'No download clients configured.',
+      'lumen.adminDownloadClients.pageTitle': 'Download Client Settings',
+      'lumen.adminDownloadClients.password': 'Password',
+      'lumen.adminDownloadClients.port': 'Port',
+      'lumen.adminDownloadClients.profile.both': 'Usenet and Torrents',
+      'lumen.adminDownloadClients.profile.torrent': 'Torrents',
+      'lumen.adminDownloadClients.profile.usenet': 'Usenet',
+      'lumen.adminDownloadClients.readLiveProgress': 'Read Live Progress',
+      'lumen.adminDownloadClients.refreshInterval':
+        'Refresh Interval (Seconds)',
+      'lumen.adminDownloadClients.removeClient': 'Remove Client',
+      'lumen.adminDownloadClients.removeSavedCredential':
+        'Remove Saved Credential',
+      'lumen.adminDownloadClients.saveChanges': 'Save Changes',
+      'lumen.adminDownloadClients.saveFailure':
+        'Could not update download client settings.',
+      'lumen.adminDownloadClients.savedCredential': 'Saved credential',
+      'lumen.adminDownloadClients.sectionTitle': 'Live Download Progress',
+      'lumen.adminDownloadClients.settingsSaved':
+        'Download client settings saved.',
+      'lumen.adminDownloadClients.setupProfile': 'Download Setup Profile',
+      'lumen.adminDownloadClients.testClient': 'Test Client',
+      'lumen.adminDownloadClients.testConnected': 'Connected to {client}.',
+      'lumen.adminDownloadClients.testConnectedVersion':
+        'Connected to {client} ({version}).',
+      'lumen.adminDownloadClients.urlBase': 'URL Base',
+      'lumen.adminDownloadClients.useHttps': 'Use HTTPS',
+      'lumen.adminDownloadClients.username': 'Username',
       'lumen.adminGeneral.apiKey.confirmBody':
         'The current key stops working immediately. Update any integrations that use it.',
       'lumen.adminGeneral.apiKey.confirmFailure':
@@ -18776,6 +18862,59 @@ export const localeData = [
       'lumen.adminDiscovery.saving': 'Enregistrement…',
       'lumen.adminDiscovery.title': 'Intégrations de découverte',
       'lumen.adminDiscovery.unconfigured': 'Non configuré',
+      'lumen.adminDownloadClients.addDownload':
+        'Ajouter un client de téléchargement',
+      'lumen.adminDownloadClients.addTorrent': 'Ajouter un client torrent',
+      'lumen.adminDownloadClients.addUsenet': 'Ajouter un client Usenet',
+      'lumen.adminDownloadClients.apiKey': 'Clé API',
+      'lumen.adminDownloadClients.apiToken': 'Jeton API',
+      'lumen.adminDownloadClients.clientType': 'Type de client',
+      'lumen.adminDownloadClients.discardChanges': 'Annuler les modifications',
+      'lumen.adminDownloadClients.hostname': "Nom d'hôte",
+      'lumen.adminDownloadClients.lastCheckFailed':
+        'La dernière vérification a échoué.',
+      'lumen.adminDownloadClients.lastCheckPassed':
+        'La dernière vérification a réussi.',
+      'lumen.adminDownloadClients.loadFailureTitle':
+        'Impossible de charger les paramètres du client de téléchargement',
+      'lumen.adminDownloadClients.loading':
+        'Chargement des paramètres du client de téléchargement…',
+      'lumen.adminDownloadClients.name': 'Nom',
+      'lumen.adminDownloadClients.newClient':
+        'Nouveau client de téléchargement',
+      'lumen.adminDownloadClients.noClients':
+        'Aucun client de téléchargement configuré.',
+      'lumen.adminDownloadClients.pageTitle':
+        'Paramètres du client de téléchargement',
+      'lumen.adminDownloadClients.password': 'Mot de passe',
+      'lumen.adminDownloadClients.port': 'Port',
+      'lumen.adminDownloadClients.profile.both': 'Usenet et torrents',
+      'lumen.adminDownloadClients.profile.torrent': 'Torrents',
+      'lumen.adminDownloadClients.profile.usenet': 'Usenet',
+      'lumen.adminDownloadClients.readLiveProgress':
+        'Lire la progression en direct',
+      'lumen.adminDownloadClients.refreshInterval':
+        'Intervalle d’actualisation (secondes)',
+      'lumen.adminDownloadClients.removeClient': 'Supprimer le client',
+      'lumen.adminDownloadClients.removeSavedCredential':
+        'Supprimer l’identifiant enregistré',
+      'lumen.adminDownloadClients.saveChanges': 'Enregistrer les modifications',
+      'lumen.adminDownloadClients.saveFailure':
+        'Impossible de mettre à jour les paramètres du client de téléchargement.',
+      'lumen.adminDownloadClients.savedCredential': 'Identifiant enregistré',
+      'lumen.adminDownloadClients.sectionTitle':
+        'Progression des téléchargements en direct',
+      'lumen.adminDownloadClients.settingsSaved':
+        'Paramètres du client de téléchargement enregistrés.',
+      'lumen.adminDownloadClients.setupProfile':
+        'Profil de configuration des téléchargements',
+      'lumen.adminDownloadClients.testClient': 'Tester le client',
+      'lumen.adminDownloadClients.testConnected': 'Connecté à {client}.',
+      'lumen.adminDownloadClients.testConnectedVersion':
+        'Connecté à {client} ({version}).',
+      'lumen.adminDownloadClients.urlBase': 'Chemin de base',
+      'lumen.adminDownloadClients.useHttps': 'Utiliser HTTPS',
+      'lumen.adminDownloadClients.username': "Nom d'utilisateur",
       'lumen.adminGeneral.apiKey.confirmBody':
         'La clé actuelle cessera de fonctionner immédiatement. Mettez à jour les intégrations qui l’utilisent.',
       'lumen.adminGeneral.apiKey.confirmFailure':
