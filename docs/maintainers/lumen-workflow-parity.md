@@ -6096,3 +6096,19 @@ tablet (24 cases). French desktop and Arabic phone candidates were inspected
 for RTL, wrapping, and overflow. Live accounts, matched baseline comparison,
 and independent linguistic review remain open. Captures are retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/provider-discovery/visual-test-results/`.
+
+### Franchise relationship pages
+
+Lumen Franchise pages now derive their media type from the fixed route segment
+and load the matching TV or anime relationships. This also fixes the prior
+invalid-title state on `/franchise/tv/:id` and `/franchise/anime/:id`. Page
+headings, relationship groups and types, confidence, curator form, errors,
+loading and empty states, and return navigation follow English, French, and
+Arabic. The existing relationship authorization, endpoints, and mutation
+payloads are unchanged.
+
+Twelve locale cases passed across desktop, iPhone, Android, and tablet; the
+existing server-authorized curator workflow also passes in all four viewports.
+Overflow and locale direction are asserted, with French desktop and Arabic
+iPhone captures retained. Live catalogue data, matched pre-change visual
+comparison, and independent language review remain unverified.

@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../auth';
 import AnimeContinuation from '../components/AnimeContinuation';
@@ -10,6 +10,7 @@ import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const groups = {
   source: 'Source Material',
@@ -92,13 +93,16 @@ function itemHref(item: FranchiseItem) {
 }
 
 export default function Franchise() {
-  const { mediaType = '', id = '' } = useParams();
+  const { id = '' } = useParams();
+  const { pathname } = useLocation();
+  const mediaType = pathname.split('/')[2] || '';
   return (
     <FranchiseTitle key={`${mediaType}:${id}`} mediaType={mediaType} id={id} />
   );
 }
 
 function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const valid =
     (mediaType === 'tv' || mediaType === 'anime') && /^\d{1,10}$/.test(id);
@@ -121,7 +125,13 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       });
       reload();
     } catch (cause) {
-      toast(friendlyError(cause, 'Couldn’t update the relationship'));
+      toast(
+        friendlyError(
+          cause,
+          t('lumen.franchise.updateError', 'Couldn’t update the relationship'),
+          t
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -144,7 +154,10 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       !title
     ) {
       toast(
-        'Choose a relationship and enter the related title and catalogue ID.'
+        t(
+          'lumen.franchise.validationError',
+          'Choose a relationship and enter the related title and catalogue ID.'
+        )
       );
       return;
     }
@@ -180,7 +193,13 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       setAdding(false);
       reload();
     } catch (cause) {
-      toast(friendlyError(cause, 'Couldn’t add the relationship'));
+      toast(
+        friendlyError(
+          cause,
+          t('lumen.franchise.addError', 'Couldn’t add the relationship'),
+          t
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -192,14 +211,16 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       <ExtraHeader
         title={
           data?.anchor.title
-            ? `Franchise for ${data.anchor.title}`
-            : 'Franchise'
+            ? t('lumen.franchise.forTitle', 'Franchise for {title}', {
+                title: data.anchor.title,
+              })
+            : t('lumen.franchise.title', 'Franchise')
         }
       >
         <div className="toolbar">
           {valid && mediaType === 'tv' && (
             <Link className="chip" to={`/tv/${id}`}>
-              Back to Series
+              {t('lumen.franchise.backToSeries', 'Back to Series')}
             </Link>
           )}
           {data?.canCurate && !adding && (
@@ -209,7 +230,7 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
               disabled={busy}
               onClick={() => setAdding(true)}
             >
-              Add Relationship
+              {t('lumen.franchise.addRelationship', 'Add Relationship')}
             </button>
           )}
           {data && canViewFollowing(user?.permissions) && (
@@ -232,65 +253,81 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
         )}
       {!valid && (
         <p className="note" role="alert">
-          Invalid franchise title.
+          {t('lumen.franchise.invalid', 'Invalid franchise title.')}
         </p>
       )}
-      <ServiceNote error={error} what="franchise" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.franchise.what', 'franchise')}
+        retry={reload}
+      />
       {valid && !data && !error && (
         <p className="note" role="status">
-          Loading franchise…
+          {t('lumen.franchise.loading', 'Loading franchise…')}
         </p>
       )}
       {data?.canCurate && adding && (
-        <Section title="Add a Relationship">
+        <Section
+          title={t('lumen.franchise.addRelationship', 'Add a Relationship')}
+        >
           <form onSubmit={(event) => void addRelationship(event)}>
             <fieldset className="setlist" disabled={busy}>
               <label className="set cfg-row">
-                <b>Related Title</b>
+                <b>{t('lumen.franchise.relatedTitle', 'Related Title')}</b>
                 <input name="title" required maxLength={255} />
               </label>
               <label className="set cfg-row">
-                <b>Catalogue ID</b>
+                <b>{t('lumen.franchise.catalogueId', 'Catalogue ID')}</b>
                 <input name="toId" required maxLength={128} />
               </label>
               <label className="set cfg-row">
-                <b>Media Type</b>
-                <select name="toType" aria-label="Media Type" defaultValue="tv">
+                <b>{t('lumen.franchise.mediaType', 'Media Type')}</b>
+                <select
+                  name="toType"
+                  aria-label={t('lumen.franchise.mediaType', 'Media Type')}
+                  defaultValue="tv"
+                >
                   {Object.entries(targetTypes).map(([value, label]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(
+                        `lumen.franchise.target.${value === 'tv' ? 'series' : value}`,
+                        label
+                      )}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="set cfg-row">
-                <b>Relationship</b>
+                <b>{t('lumen.franchise.relationship', 'Relationship')}</b>
                 <select
                   name="relation"
-                  aria-label="Relationship"
+                  aria-label={t('lumen.franchise.relationship', 'Relationship')}
                   defaultValue="sequel"
                 >
                   {Object.entries(relations).map(([value, label]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(
+                        `lumen.franchise.relation.${value === 'source-material' ? 'sourceMaterial' : value === 'side-story' ? 'sideStory' : value === 'same-franchise' ? 'sameFranchise' : value}`,
+                        label
+                      )}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="set cfg-row">
-                <b>Evidence</b>
+                <b>{t('lumen.franchise.evidence', 'Evidence')}</b>
                 <input name="evidence" maxLength={512} />
               </label>
               <div className="toolbar">
                 <button className="btn btn-tonal btn-sm" type="submit">
-                  Save Relationship
+                  {t('lumen.franchise.saveRelationship', 'Save Relationship')}
                 </button>
                 <button
                   className="btn btn-quiet btn-sm"
                   type="button"
                   onClick={() => setAdding(false)}
                 >
-                  Cancel
+                  {t('lumen.franchise.cancel', 'Cancel')}
                 </button>
               </div>
             </fieldset>
@@ -299,18 +336,32 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
       )}
       {data?.notes.includes('no-anilist-match') && (
         <p className="note">
-          No AniList match was found. Curated links may still be available.
+          {t(
+            'lumen.franchise.noAniListMatch',
+            'No AniList match was found. Curated links may still be available.'
+          )}
         </p>
       )}
       {data?.items.length === 0 && (
-        <p className="note">No franchise relationships found.</p>
+        <p className="note">
+          {t(
+            'lumen.franchise.noRelationships',
+            'No franchise relationships found.'
+          )}
+        </p>
       )}
       {data &&
         Object.entries(groups).map(([group, label]) => {
           const items = data.items.filter((item) => item.group === group);
           return (
             items.length > 0 && (
-              <Section key={group} title={label}>
+              <Section
+                key={group}
+                title={t(
+                  `lumen.franchise.group.${group === 'side-story' ? 'sideStory' : group === 'soundtrack' ? 'soundtracks' : group}`,
+                  label
+                )}
+              >
                 <ul className="setlist">
                   {items.map((item) => (
                     <li
@@ -323,11 +374,28 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
                         </Link>
                         <small>
                           {[
-                            item.format || item.mediaType,
+                            item.format === 'ebook'
+                              ? t('lumen.franchise.format.ebook', 'Ebook')
+                              : item.format === 'audiobook'
+                                ? t(
+                                    'lumen.franchise.format.audiobook',
+                                    'Audiobook'
+                                  )
+                                : Object.hasOwn(targetTypes, item.mediaType)
+                                  ? t(
+                                      `lumen.franchise.target.${item.mediaType === 'tv' ? 'series' : item.mediaType}`,
+                                      targetTypes[
+                                        item.mediaType as keyof typeof targetTypes
+                                      ]
+                                    )
+                                  : item.mediaType,
                             item.year,
                             item.verified
-                              ? 'Verified'
-                              : `${item.confidence} confidence`,
+                              ? t('lumen.franchise.verified', 'Verified')
+                              : t(
+                                  `lumen.franchise.confidence.${item.confidence}`,
+                                  `${item.confidence} confidence`
+                                ),
                           ]
                             .filter(Boolean)
                             .join(' · ')}
@@ -341,9 +409,12 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
                             <Link
                               className="btn btn-quiet btn-sm"
                               to={`/franchise/anime/${item.anilistId}`}
-                              aria-label={`Explore Franchise: ${item.title}`}
+                              aria-label={`${t('lumen.providerDiscovery.exploreFranchise', 'Explore Franchise')}: ${item.title}`}
                             >
-                              Explore Franchise
+                              {t(
+                                'lumen.providerDiscovery.exploreFranchise',
+                                'Explore Franchise'
+                              )}
                             </Link>
                           )}
                       </div>
@@ -358,7 +429,7 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
                                 void curate(item.relationId!, 'verified')
                               }
                             >
-                              Confirm
+                              {t('lumen.franchise.confirm', 'Confirm')}
                             </button>
                           )}
                           <button
@@ -369,7 +440,7 @@ function FranchiseTitle({ mediaType, id }: { mediaType: string; id: string }) {
                               void curate(item.relationId!, 'rejected')
                             }
                           >
-                            Hide
+                            {t('lumen.franchise.hide', 'Hide')}
                           </button>
                         </div>
                       )}

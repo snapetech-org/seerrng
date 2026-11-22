@@ -5105,7 +5105,7 @@ test('Franchise opens related titles and confirms a server-authorized relationsh
     page.getByRole('link', { name: 'Fixture Sequel' })
   ).toHaveAttribute('href', '/tv/203');
   await page.getByRole('button', { name: 'Confirm', exact: true }).click();
-  await expect(page.getByText('tv · Verified')).toBeVisible();
+  await expect(page.getByText('Series · Verified')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Confirm', exact: true })
   ).toHaveCount(0);
