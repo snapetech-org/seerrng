@@ -37,6 +37,7 @@ const labels = {
     savePermissions: 'Save Default Permissions',
     confirmPermissions: 'Save Default Permissions?',
     editPermissions: 'Edit Default Permissions',
+    permissionGroup: 'Default Permissions',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
   },
@@ -74,6 +75,7 @@ const labels = {
     savePermissions: 'Enregistrer les autorisations par défaut',
     confirmPermissions: 'Enregistrer les autorisations par défaut ?',
     editPermissions: 'Modifier les autorisations par défaut',
+    permissionGroup: 'Autorisations par défaut',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
@@ -110,6 +112,7 @@ const labels = {
     savePermissions: 'حفظ الأذونات الافتراضية',
     confirmPermissions: 'هل تريد حفظ الأذونات الافتراضية؟',
     editPermissions: 'تحرير الأذونات الافتراضية',
+    permissionGroup: 'الأذونات الافتراضية',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -355,6 +358,9 @@ test('general application settings localize and recover failed saves', async ({
   });
   const permissions = page.locator('#default-user-permissions');
   await permissions.getByText(text.editPermissions, { exact: true }).click();
+  await expect(
+    permissions.getByRole('group', { name: text.permissionGroup })
+  ).toBeVisible();
   await permissions.getByText(text.permissionRequest, { exact: true }).click();
   await permissions
     .getByRole('button', { name: text.savePermissions, exact: true })

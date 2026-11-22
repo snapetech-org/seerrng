@@ -109,7 +109,10 @@ export default function DefaultUserPermissions({
         <div
           className="perm-groups"
           role="group"
-          aria-label="Default Permissions"
+          aria-label={t(
+            'lumen.adminGeneral.permissions.group',
+            'Default Permissions'
+          )}
         >
           {permissionGroups.map(([group, options]) => (
             <div className="perm-group" key={group}>

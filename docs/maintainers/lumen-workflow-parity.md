@@ -6825,6 +6825,12 @@ unchanged. The browser fixture now follows the current route ownership: request
 policy and quotas are tested on Request Defaults, while API-key controls remain
 on General Settings.
 
+The default-permissions editor also exposes its localized accessible group
+name in English, French, and Arabic. This changes no permission values or save
+behavior. Twelve locale and viewport checks pass, including the localized
+group name in the administrator workflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-permission-group-20261122/`.
+
 Twelve standalone and twelve bundled `/lumen/` browser cases pass across the
 three locales and desktop, iPhone, Android, and tablet. French baseline and
 candidate captures cover both routes at 1440 and 390 CSS pixels; longer labels
