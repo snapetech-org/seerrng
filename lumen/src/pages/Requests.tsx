@@ -1861,7 +1861,7 @@ export default function Requests() {
               })
             }
           >
-            Cancel
+            {t('lumen.requests.actions.cancel', 'Cancel')}
           </button>
         ) : null}
       </>
@@ -2313,7 +2313,7 @@ export default function Requests() {
                       className="btn btn-sm btn-quiet"
                       onClick={() => setP(historyParams(x.r.id))}
                     >
-                      History
+                      {t('lumen.requests.actions.history', 'History')}
                     </button>
                   )}
                   {renderRequestActions(x, everyone && manage)}
@@ -2341,7 +2341,7 @@ export default function Requests() {
         <ConfirmSheet
           title={
             confirming.how === 'cancel'
-              ? 'Cancel this request?'
+              ? t('lumen.requests.actions.cancelTitle', 'Cancel this request?')
               : confirming.how === 'remove'
                 ? `Remove ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')}?`
                 : confirming.how === 'removeMedia'
@@ -2350,7 +2350,15 @@ export default function Requests() {
           }
           body={
             confirming.how === 'cancel'
-              ? `${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} won’t be fetched. You can ask for it again later.`
+              ? t(
+                  'lumen.requests.actions.cancelBody',
+                  '{title} won’t be fetched. You can ask for it again later.',
+                  {
+                    title:
+                      confirming.title.trim() ||
+                      t('lumen.requestHistory.unknownTitle', 'this item'),
+                  }
+                )
               : confirming.how === 'remove'
                 ? `This deletes the request for ${confirming.title.trim() || t('lumen.requestHistory.unknownTitle', 'this item')} for good. It can’t be undone.`
                 : confirming.how === 'removeMedia'
@@ -2359,13 +2367,14 @@ export default function Requests() {
           }
           confirm={
             confirming.how === 'cancel'
-              ? 'Cancel request'
+              ? t('lumen.requests.actions.confirmCancel', 'Cancel request')
               : confirming.how === 'remove'
                 ? 'Remove request'
                 : confirming.how === 'removeMedia'
                   ? 'Remove from Service'
                   : 'Decline request'
           }
+          cancel={t('lumen.requests.actions.keep', 'Keep it')}
           onClose={() => setConfirming(null)}
           onConfirm={() => {
             const { id, how, request } = confirming;

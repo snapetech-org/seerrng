@@ -6,6 +6,7 @@ const locale = ['en', 'fr', 'ar'].includes(
   ? (process.env.LUMEN_REQUEST_STATUS_LOCALE as 'en' | 'fr' | 'ar')
   : 'en';
 const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
+const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
 
 const labels = {
   en: {
@@ -216,4 +217,69 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
       path: `${captureDir}/${locale}-${width}.png`,
       fullPage: true,
     });
+
+  const actionCopy = actionBaseline
+    ? {
+        history: 'History',
+        cancel: 'Cancel',
+        cancelTitle: 'Cancel this request?',
+        cancelBody:
+          'Status 601 won’t be fetched. You can ask for it again later.',
+        confirmCancel: 'Cancel request',
+        keep: 'Keep it',
+      }
+    : {
+        en: {
+          history: 'History',
+          cancel: 'Cancel',
+          cancelTitle: 'Cancel this request?',
+          cancelBody:
+            'Status 601 won’t be fetched. You can ask for it again later.',
+          confirmCancel: 'Cancel request',
+          keep: 'Keep it',
+        },
+        fr: {
+          history: 'Historique',
+          cancel: 'Annuler',
+          cancelTitle: 'Annuler cette demande ?',
+          cancelBody:
+            'Status 601 ne sera pas téléchargé. Vous pourrez le demander à nouveau plus tard.',
+          confirmCancel: 'Annuler la demande',
+          keep: 'Conserver',
+        },
+        ar: {
+          history: 'السجل',
+          cancel: 'إلغاء',
+          cancelTitle: 'إلغاء هذا الطلب؟',
+          cancelBody: 'لن يتم جلب Status 601. يمكنك طلبه مرة أخرى لاحقًا.',
+          confirmCancel: 'إلغاء الطلب',
+          keep: 'الاحتفاظ به',
+        },
+      }[locale];
+  const firstRow = page.locator('.rq').nth(0);
+  await expect(
+    firstRow.getByRole('button', { name: actionCopy.history })
+  ).toBeVisible();
+  await firstRow.getByRole('button', { name: actionCopy.cancel }).click();
+  const dialog = page.getByRole('alertdialog', {
+    name: actionCopy.cancelTitle,
+  });
+  await expect(dialog).toContainText(actionCopy.cancelBody);
+  await expect(
+    dialog.getByRole('button', { name: actionCopy.confirmCancel })
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('button', { name: actionCopy.keep })
+  ).toBeVisible();
+  await dialog.evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations().map((animation) => animation.finished)
+    );
+  });
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({
+      path: `${captureDir}/actions-${locale}-${width}.png`,
+      fullPage: false,
+    });
+  await dialog.getByRole('button', { name: actionCopy.keep }).click();
 });

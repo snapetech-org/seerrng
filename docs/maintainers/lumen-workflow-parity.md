@@ -6395,6 +6395,23 @@ linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-filter-localization-20261122/`
 and `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-manager-display-20261122/`.
 
+### Request cancellation action localization
+
+The request list now localizes the request-history and cancel actions, and the
+pending-request confirmation sheet's title, explanation, confirm, and keep
+labels in English, French, and Arabic. The cancel path still calls the existing
+request cancellation API only after confirmation; request permissions and list
+state behavior are unchanged. Other moderation confirmations and mutation
+feedback remain separate parity work.
+
+The status and cancel-confirmation fixture passes across desktop, iPhone,
+Android, and tablet in all three locales (12 candidate cases). Matched baseline
+and candidate list/dialog captures were reviewed at desktop and iPhone sizes;
+the Arabic mobile sheet settles above the bottom navigation and its translated
+copy and buttons fit. Live cancellation and independent linguistic review
+remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-action-localization-20261122/`.
+
 ### Shared request lifecycle status localization
 
 Lumen now translates shared request lifecycle labels in English, French, and
