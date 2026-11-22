@@ -6498,6 +6498,16 @@ captures show the partial-load warning, enabled loaded episodes, and usable
 submit action without clipping or horizontal overflow. The reported
 real-provider failure remains unverified against the reporter's server.
 
+A follow-up diagnosis found another failure path shared by native and Lumen:
+the season endpoint first fetches full series metadata to identify anime and
+select its provider. If that lookup fails, the entire batch previously returned
+500 before attempting any season. The endpoint now falls back to the configured
+TV provider when no per-user TV maturity cap depends on the missing rating
+metadata; users with a cap still fail closed. The focused route regression and
+server typecheck pass. This establishes recovery for the reproduced lookup
+failure, but does not establish that it caused the reporter's incident or verify
+their live provider.
+
 ### Coming Soon to Release Calendar navigation
 
 Lumen Coming Soon now includes the native page's contextual Release Calendar

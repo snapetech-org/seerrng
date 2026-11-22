@@ -403,7 +403,30 @@ tvRoutes.get('/:id/cover', async (req, res) => {
 });
 
 const getSeasonMetadataProvider = async (tvId: number, user?: User) => {
-  const tmdbTv = await new TheMovieDb().getTvShow({ tvId });
+  let tmdbTv: Awaited<ReturnType<TheMovieDb['getTvShow']>>;
+  try {
+    tmdbTv = await new TheMovieDb().getTvShow({ tvId });
+  } catch (error) {
+    // Anime detection normally selects a separate metadata provider. If the
+    // show lookup is temporarily unavailable, a normal TV request can still
+    // load seasons from the configured TV provider. Do not take that fallback
+    // when a per-user maturity cap needs the show rating to be checked.
+    if (user && (await getUserVideoMaturityPolicy(user.id)).tv !== null) {
+      throw error;
+    }
+    logger.warn(
+      'Unable to classify series metadata provider; using TV provider',
+      {
+        label: 'TV',
+        tvId,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      }
+    );
+    return {
+      isAnime: false,
+      provider: await getMetadataProvider('tv'),
+    };
+  }
   if (
     user &&
     !isVideoWithinMaturityLimit(

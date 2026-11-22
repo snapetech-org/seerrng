@@ -192,6 +192,51 @@ describe('GET /tv/:id/seasons', () => {
     }
   });
 
+  it('loads seasons when the series lookup used for provider classification is unavailable', async () => {
+    const settings = getSettings();
+    const priorProvider = settings.metadataSettings.tv;
+    settings.metadataSettings.tv = MetadataProviderType.TMDB;
+    const mockGet = mock.method as (
+      object: object,
+      key: string,
+      callback: (url: string) => Promise<unknown>
+    ) => unknown;
+    mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
+      if (url === '/tv/1413') {
+        throw new Error('Temporary series metadata failure');
+      }
+      if (url === '/tv/1413/season/2') {
+        return {
+          id: 102,
+          season_number: 2,
+          episodes: [
+            {
+              id: 502,
+              episode_number: 1,
+              season_number: 2,
+              name: 'Recovered episode',
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected TMDB request: ${url}`);
+    });
+
+    try {
+      const response = await request(validatedApp)
+        .get('/api/v1/tv/1413/seasons')
+        .query({ seasonNumbers: '2' });
+      assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+      assert.strictEqual(response.body[0].seasonNumber, 2);
+      assert.strictEqual(
+        response.body[0].episodes[0].name,
+        'Recovered episode'
+      );
+    } finally {
+      settings.metadataSettings.tv = priorProvider;
+    }
+  });
+
   it('returns valid season metadata when the provider reports no episodes', async () => {
     const settings = getSettings();
     const priorProvider = settings.metadataSettings.tv;
