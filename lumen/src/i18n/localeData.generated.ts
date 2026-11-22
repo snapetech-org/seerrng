@@ -2150,6 +2150,51 @@ export const localeData = [
       'lumen.adminProwlarr.searchLimitLabel': 'حدّ البحث لـ {indexer}',
       'lumen.adminProwlarr.searchUnavailable': 'البحث غير متاح',
       'lumen.adminProwlarr.version': 'الإصدار {version}.',
+      'lumen.adminReaderDelivery.connected':
+        'تم الاتصال بـ {provider}. الرفوف الموجودة: {count}.',
+      'lumen.adminReaderDelivery.discardChanges': 'تجاهل التغييرات',
+      'lumen.adminReaderDelivery.field.password': 'كلمة مرور {provider}',
+      'lumen.adminReaderDelivery.field.url': 'عنوان URL لـ {provider}',
+      'lumen.adminReaderDelivery.field.username': 'اسم مستخدم {provider}',
+      'lumen.adminReaderDelivery.items': 'العناصر',
+      'lumen.adminReaderDelivery.keepShelf': 'الإبقاء على الرف',
+      'lumen.adminReaderDelivery.koboCollection': 'مجموعة Kobo',
+      'lumen.adminReaderDelivery.koboStatus.disabled': 'معطلة',
+      'lumen.adminReaderDelivery.koboStatus.error': 'تتطلب الانتباه',
+      'lumen.adminReaderDelivery.koboStatus.pending': 'جارٍ التحديث',
+      'lumen.adminReaderDelivery.koboStatus.ready': 'جاهزة',
+      'lumen.adminReaderDelivery.komgaReader': 'قارئ القصص المصورة Komga',
+      'lumen.adminReaderDelivery.loadSettingsFailure':
+        'تعذر تحميل إعدادات القارئ',
+      'lumen.adminReaderDelivery.loadShelvesFailure':
+        'تعذر تحميل رفوف القارئ المُدارة',
+      'lumen.adminReaderDelivery.loadingSettings': 'جارٍ تحميل إعدادات القارئ…',
+      'lumen.adminReaderDelivery.loadingShelves': 'جارٍ تحميل الرفوف…',
+      'lumen.adminReaderDelivery.managedShelves': 'رفوف القارئ المُدارة',
+      'lumen.adminReaderDelivery.noShelves': 'لا توجد رفوف قارئ مُدارة.',
+      'lumen.adminReaderDelivery.opdsCatalog': 'فهرس OPDS لـ {provider}',
+      'lumen.adminReaderDelivery.pageTitle': 'توصيل القارئ',
+      'lumen.adminReaderDelivery.preferences': 'تفضيلات التوصيل',
+      'lumen.adminReaderDelivery.preferredApp': 'تطبيق القراءة المفضل',
+      'lumen.adminReaderDelivery.previewMatches': 'مطابقات المعاينة',
+      'lumen.adminReaderDelivery.private': 'خاص',
+      'lumen.adminReaderDelivery.removeSavedCredentials':
+        'إزالة بيانات اعتماد {provider} المحفوظة',
+      'lumen.adminReaderDelivery.removeShelf': 'إزالة الرف',
+      'lumen.adminReaderDelivery.removeShelfBody':
+        'سيؤدي هذا إلى إزالة رف القارئ. ستبقى ملفات المكتبة كما هي.',
+      'lumen.adminReaderDelivery.removeShelfTitle': 'إزالة {name}؟',
+      'lumen.adminReaderDelivery.removeShelfWithKobo':
+        'سيؤدي هذا إلى إزالة رف القارئ ومجموعة Kobo. ستبقى ملفات المكتبة كما هي.',
+      'lumen.adminReaderDelivery.saveSettings': 'حفظ إعدادات القارئ',
+      'lumen.adminReaderDelivery.savedCredential': 'بيانات اعتماد محفوظة',
+      'lumen.adminReaderDelivery.settingsSaved': 'تم حفظ إعدادات القارئ.',
+      'lumen.adminReaderDelivery.shared': 'مشترك',
+      'lumen.adminReaderDelivery.status.error': 'يتطلب الانتباه',
+      'lumen.adminReaderDelivery.status.pending': 'جارٍ التحديث',
+      'lumen.adminReaderDelivery.status.ready': 'جاهز',
+      'lumen.adminReaderDelivery.testGroupingAccess':
+        'اختبار الوصول إلى تجميعات {provider}',
       'lumen.adminReaders.actionFailed': 'تعذر إكمال إجراء {service}.',
       'lumen.adminReaders.apiKey': 'مفتاح API',
       'lumen.adminReaders.audiobookLibrary': 'مكتبة الكتب الصوتية',
@@ -10495,6 +10540,51 @@ export const localeData = [
       'lumen.adminProwlarr.searchLimitLabel': '{indexer} Search Limit',
       'lumen.adminProwlarr.searchUnavailable': 'Search Unavailable',
       'lumen.adminProwlarr.version': 'Version {version}.',
+      'lumen.adminReaderDelivery.connected':
+        '{provider} connected. Existing shelves found: {count}.',
+      'lumen.adminReaderDelivery.discardChanges': 'Discard Changes',
+      'lumen.adminReaderDelivery.field.password': '{provider} Password',
+      'lumen.adminReaderDelivery.field.url': '{provider} URL',
+      'lumen.adminReaderDelivery.field.username': '{provider} Username',
+      'lumen.adminReaderDelivery.items': 'Items',
+      'lumen.adminReaderDelivery.keepShelf': 'Keep it',
+      'lumen.adminReaderDelivery.koboCollection': 'Kobo Collection',
+      'lumen.adminReaderDelivery.koboStatus.disabled': 'Disabled',
+      'lumen.adminReaderDelivery.koboStatus.error': 'Needs Attention',
+      'lumen.adminReaderDelivery.koboStatus.pending': 'Updating',
+      'lumen.adminReaderDelivery.koboStatus.ready': 'Ready',
+      'lumen.adminReaderDelivery.komgaReader': 'Komga Comic Reader',
+      'lumen.adminReaderDelivery.loadSettingsFailure':
+        'Couldn’t Load Reader Settings',
+      'lumen.adminReaderDelivery.loadShelvesFailure':
+        'Couldn’t Load Managed Reader Shelves',
+      'lumen.adminReaderDelivery.loadingSettings': 'Loading reader settings…',
+      'lumen.adminReaderDelivery.loadingShelves': 'Loading shelves…',
+      'lumen.adminReaderDelivery.managedShelves': 'Managed Reader Shelves',
+      'lumen.adminReaderDelivery.noShelves': 'No managed reader shelves.',
+      'lumen.adminReaderDelivery.opdsCatalog': '{provider} OPDS Catalog',
+      'lumen.adminReaderDelivery.pageTitle': 'Reader Delivery',
+      'lumen.adminReaderDelivery.preferences': 'Delivery Preferences',
+      'lumen.adminReaderDelivery.preferredApp': 'Preferred Reader App',
+      'lumen.adminReaderDelivery.previewMatches': 'Preview Matches',
+      'lumen.adminReaderDelivery.private': 'Private',
+      'lumen.adminReaderDelivery.removeSavedCredentials':
+        'Remove Saved {provider} Credentials',
+      'lumen.adminReaderDelivery.removeShelf': 'Remove Shelf',
+      'lumen.adminReaderDelivery.removeShelfBody':
+        'This removes the reader shelf. Library files are kept.',
+      'lumen.adminReaderDelivery.removeShelfTitle': 'Remove {name}?',
+      'lumen.adminReaderDelivery.removeShelfWithKobo':
+        'This removes the reader shelf and its Kobo Collection. Library files are kept.',
+      'lumen.adminReaderDelivery.saveSettings': 'Save Reader Settings',
+      'lumen.adminReaderDelivery.savedCredential': 'Saved Credential',
+      'lumen.adminReaderDelivery.settingsSaved': 'Reader settings saved.',
+      'lumen.adminReaderDelivery.shared': 'Shared',
+      'lumen.adminReaderDelivery.status.error': 'Needs Attention',
+      'lumen.adminReaderDelivery.status.pending': 'Updating',
+      'lumen.adminReaderDelivery.status.ready': 'Ready',
+      'lumen.adminReaderDelivery.testGroupingAccess':
+        'Test {provider} Grouping Access',
       'lumen.adminReaders.actionFailed':
         'Could not complete the {service} action.',
       'lumen.adminReaders.apiKey': 'API Key',
@@ -19354,6 +19444,57 @@ export const localeData = [
         'Limite de recherche pour {indexer}',
       'lumen.adminProwlarr.searchUnavailable': 'Recherche indisponible',
       'lumen.adminProwlarr.version': 'Version {version}.',
+      'lumen.adminReaderDelivery.connected':
+        '{provider} connecté. Rayons existants : {count}.',
+      'lumen.adminReaderDelivery.discardChanges': 'Annuler les modifications',
+      'lumen.adminReaderDelivery.field.password': 'Mot de passe {provider}',
+      'lumen.adminReaderDelivery.field.url': 'URL de {provider}',
+      'lumen.adminReaderDelivery.field.username':
+        'Nom d’utilisateur {provider}',
+      'lumen.adminReaderDelivery.items': 'Éléments',
+      'lumen.adminReaderDelivery.keepShelf': 'Garder le rayon',
+      'lumen.adminReaderDelivery.koboCollection': 'Collection Kobo',
+      'lumen.adminReaderDelivery.koboStatus.disabled': 'Désactivée',
+      'lumen.adminReaderDelivery.koboStatus.error': 'À vérifier',
+      'lumen.adminReaderDelivery.koboStatus.pending': 'Mise à jour',
+      'lumen.adminReaderDelivery.koboStatus.ready': 'Prête',
+      'lumen.adminReaderDelivery.komgaReader':
+        'Lecteur de bandes dessinées Komga',
+      'lumen.adminReaderDelivery.loadSettingsFailure':
+        'Impossible de charger les paramètres du lecteur',
+      'lumen.adminReaderDelivery.loadShelvesFailure':
+        'Impossible de charger les rayons de lecture gérés',
+      'lumen.adminReaderDelivery.loadingSettings':
+        'Chargement des paramètres du lecteur…',
+      'lumen.adminReaderDelivery.loadingShelves': 'Chargement des rayons…',
+      'lumen.adminReaderDelivery.managedShelves': 'Rayons de lecture gérés',
+      'lumen.adminReaderDelivery.noShelves': 'Aucun rayon de lecture géré.',
+      'lumen.adminReaderDelivery.opdsCatalog': 'Catalogue OPDS de {provider}',
+      'lumen.adminReaderDelivery.pageTitle': 'Distribution aux lecteurs',
+      'lumen.adminReaderDelivery.preferences': 'Préférences de distribution',
+      'lumen.adminReaderDelivery.preferredApp':
+        'Application de lecture préférée',
+      'lumen.adminReaderDelivery.previewMatches': 'Correspondances de l’aperçu',
+      'lumen.adminReaderDelivery.private': 'Privé',
+      'lumen.adminReaderDelivery.removeSavedCredentials':
+        'Supprimer les identifiants enregistrés de {provider}',
+      'lumen.adminReaderDelivery.removeShelf': 'Supprimer le rayon',
+      'lumen.adminReaderDelivery.removeShelfBody':
+        'Cette action supprime le rayon. Les fichiers de la bibliothèque sont conservés.',
+      'lumen.adminReaderDelivery.removeShelfTitle': 'Supprimer {name} ?',
+      'lumen.adminReaderDelivery.removeShelfWithKobo':
+        'Cette action supprime le rayon et sa collection Kobo. Les fichiers de la bibliothèque sont conservés.',
+      'lumen.adminReaderDelivery.saveSettings':
+        'Enregistrer les paramètres du lecteur',
+      'lumen.adminReaderDelivery.savedCredential': 'Identifiant enregistré',
+      'lumen.adminReaderDelivery.settingsSaved':
+        'Paramètres du lecteur enregistrés.',
+      'lumen.adminReaderDelivery.shared': 'Partagé',
+      'lumen.adminReaderDelivery.status.error': 'À vérifier',
+      'lumen.adminReaderDelivery.status.pending': 'Mise à jour',
+      'lumen.adminReaderDelivery.status.ready': 'Prêt',
+      'lumen.adminReaderDelivery.testGroupingAccess':
+        'Tester l’accès aux groupements {provider}',
       'lumen.adminReaders.actionFailed':
         "Impossible d'effectuer l'action pour {service}.",
       'lumen.adminReaders.apiKey': 'Clé API',

@@ -5778,3 +5778,31 @@ connections, provider persistence, and independent translation review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/url-connection-standalone-final/`,
 `.../url-connection-embedded/`, and `.../url-connection-visual/`.
+
+### Reader Delivery settings localization
+
+The Lumen Reader Delivery screen now localizes Grimmory and BookOrbit connection
+fields, delivery preferences, managed shelves, status, save/discard and
+confirmation actions in English, French, and Arabic. Provider operations,
+credential omission and redaction, shelf counts, and confirmed deletion remain
+unchanged. Provider-returned shelf and Kobo error text remains provider-owned
+and is shown verbatim.
+
+The browser matrix verifies save failure draft retention, successful save
+without resending saved credentials, explicit credential clearing, BookOrbit
+grouping access, shelf counts, empty state, and cancel/confirm deletion. All 12
+cases pass in standalone Lumen and all 12 pass under the bundled `/lumen/`
+mount across three locales and four viewport presets. English baseline and
+candidate screenshots have matching dimensions and geometry; RGB comparison
+shows only expected text changes, including the saved-credential placeholder.
+French desktop and Arabic iPhone renders were inspected. Live Grimmory and
+BookOrbit services and independent translation review remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/reader-delivery-standalone-final2/`,
+`.../reader-delivery-embedded/`, and `.../reader-delivery-visual/`.
+
+Screenshot comparisons use RGB channels. An earlier RGBA `getbbox()` check
+could miss RGB differences when alpha stayed unchanged. Rechecking the
+Download Clients and Share/Image Recognition captures in RGB confirms those
+English captures are pixel-identical; the Reader Delivery captures correctly
+show expected text-only changes.

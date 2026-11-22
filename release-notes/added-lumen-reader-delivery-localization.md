@@ -1,0 +1,1 @@
+Lumen's Reader Delivery administration now follows the saved locale in English, French, and Arabic, including connection settings, delivery preferences, managed shelves, status, and confirmation actions. Existing provider behavior and credential handling are preserved.

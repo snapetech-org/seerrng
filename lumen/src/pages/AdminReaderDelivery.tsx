@@ -6,6 +6,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const path = '/settings/reader-delivery';
 const providers = { grimmory: 'Grimmory', bookorbit: 'BookOrbit' } as const;
@@ -31,17 +32,12 @@ interface Shelf {
   koboSyncError: string | null;
 }
 
-const statusLabel = {
-  ready: 'Ready',
-  pending: 'Updating',
-  error: 'Needs attention',
-};
-
 function settingsDraft(settings: Settings): Settings {
   return { ...settings, grimmoryPassword: '', bookorbitPassword: '' };
 }
 
 function Connections({ initial }: { initial: Settings }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(() => settingsDraft(initial));
   const [clear, setClear] = useState({ grimmory: false, bookorbit: false });
@@ -68,7 +64,14 @@ function Connections({ initial }: { initial: Settings }) {
           }
         );
         setNotice({
-          text: `${providers[provider]} connected. Existing shelves found: ${result.existingGroupingCount}.`,
+          text: t(
+            'lumen.adminReaderDelivery.connected',
+            '{provider} connected. Existing shelves found: {count}.',
+            {
+              provider: providers[provider],
+              count: result.existingGroupingCount,
+            }
+          ),
         });
       } else {
         const { grimmoryPassword, bookorbitPassword, ...fields } = draft;
@@ -89,11 +92,16 @@ function Connections({ initial }: { initial: Settings }) {
         setSaved(result);
         setDraft(settingsDraft(result));
         setClear({ grimmory: false, bookorbit: false });
-        setNotice({ text: 'Reader settings saved.' });
+        setNotice({
+          text: t(
+            'lumen.adminReaderDelivery.settingsSaved',
+            'Reader settings saved.'
+          ),
+        });
       }
     } catch (error) {
       setNotice({
-        text: friendlyError(error, 'Reader service operation failed.'),
+        text: friendlyError(error, 'Reader service operation failed.', t),
         error: true,
       });
     } finally {
@@ -123,7 +131,13 @@ function Connections({ initial }: { initial: Settings }) {
                 return (
                   <label className="set cfg-row" key={key}>
                     <span>
-                      {name} {field === 'Url' ? 'URL' : field}
+                      {t(
+                        `lumen.adminReaderDelivery.field.${field.toLowerCase()}`,
+                        field === 'Url'
+                          ? '{provider} URL'
+                          : '{provider} ' + field,
+                        { provider: name }
+                      )}
                     </span>
                     <input
                       className="cfg-input"
@@ -134,7 +148,12 @@ function Connections({ initial }: { initial: Settings }) {
                       inputMode={field === 'Url' ? 'url' : undefined}
                       maxLength={field === 'Username' ? 256 : 2048}
                       placeholder={
-                        field === 'Password' && saved[key] ? 'Saved' : undefined
+                        field === 'Password' && saved[key]
+                          ? t(
+                              'lumen.adminReaderDelivery.savedCredential',
+                              'Saved Credential'
+                            )
+                          : undefined
                       }
                       value={draft[key]}
                       disabled={busy || (field !== 'Url' && clear[provider])}
@@ -150,7 +169,13 @@ function Connections({ initial }: { initial: Settings }) {
                 saved[`${provider}Username`] || saved[`${provider}Password`]
               ) && (
                 <label className="set cfg-row">
-                  <span>Remove Saved {name} Credentials</span>
+                  <span>
+                    {t(
+                      'lumen.adminReaderDelivery.removeSavedCredentials',
+                      'Remove Saved {provider} Credentials',
+                      { provider: name }
+                    )}
+                  </span>
                   <input
                     type="checkbox"
                     checked={clear[provider]}
@@ -168,7 +193,13 @@ function Connections({ initial }: { initial: Settings }) {
               {!!url && (
                 <>
                   <label className="set cfg-row">
-                    <span>{name} OPDS Catalog</span>
+                    <span>
+                      {t(
+                        'lumen.adminReaderDelivery.opdsCatalog',
+                        '{provider} OPDS Catalog',
+                        { provider: name }
+                      )}
+                    </span>
                     <input
                       className="cfg-input"
                       readOnly
@@ -177,7 +208,12 @@ function Connections({ initial }: { initial: Settings }) {
                   </label>
                   {provider === 'grimmory' && (
                     <label className="set cfg-row">
-                      <span>Komga Comic Reader</span>
+                      <span>
+                        {t(
+                          'lumen.adminReaderDelivery.komgaReader',
+                          'Komga Comic Reader'
+                        )}
+                      </span>
                       <input
                         className="cfg-input"
                         readOnly
@@ -195,16 +231,30 @@ function Connections({ initial }: { initial: Settings }) {
                 disabled={dirty || busy || !saved[`${provider}Url`]}
                 onClick={() => void run(provider)}
               >
-                Test {name} Grouping Access
+                {t(
+                  'lumen.adminReaderDelivery.testGroupingAccess',
+                  'Test {provider} Grouping Access',
+                  { provider: name }
+                )}
               </button>
             </div>
           </Section>
         );
       })}
-      <Section title="Delivery Preferences">
+      <Section
+        title={t(
+          'lumen.adminReaderDelivery.preferences',
+          'Delivery Preferences'
+        )}
+      >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Preferred Reader App</span>
+            <span>
+              {t(
+                'lumen.adminReaderDelivery.preferredApp',
+                'Preferred Reader App'
+              )}
+            </span>
             <select
               className="cfg-select"
               value={draft.preferredProvider}
@@ -239,7 +289,7 @@ function Connections({ initial }: { initial: Settings }) {
                 setNotice(undefined);
               }}
             >
-              Discard Changes
+              {t('lumen.adminReaderDelivery.discardChanges', 'Discard Changes')}
             </button>
           )}
           <button
@@ -247,7 +297,10 @@ function Connections({ initial }: { initial: Settings }) {
             type="submit"
             disabled={!dirty || busy}
           >
-            Save Reader Settings
+            {t(
+              'lumen.adminReaderDelivery.saveSettings',
+              'Save Reader Settings'
+            )}
           </button>
         </div>
       </Section>
@@ -256,6 +309,7 @@ function Connections({ initial }: { initial: Settings }) {
 }
 
 function ManagedShelves() {
+  const { t } = useLumenLocale();
   const shelves = useApi<Shelf[]>(path + '/groupings', {
     keepDuringRefresh: true,
   });
@@ -274,7 +328,9 @@ function ManagedShelves() {
       setSelected(undefined);
       shelves.reload();
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not remove the managed shelf.'));
+      setError(
+        friendlyError(failure, 'Could not remove the managed shelf.', t)
+      );
       setSelected(undefined);
     } finally {
       deleting.current = false;
@@ -283,10 +339,20 @@ function ManagedShelves() {
   }
 
   return (
-    <Section title="Managed Reader Shelves">
+    <Section
+      title={t(
+        'lumen.adminReaderDelivery.managedShelves',
+        'Managed Reader Shelves'
+      )}
+    >
       <ServiceNote
         what="managed shelves"
+        title={t(
+          'lumen.adminReaderDelivery.loadShelvesFailure',
+          'Couldn’t Load Managed Reader Shelves'
+        )}
         error={shelves.error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={shelves.reload}
       />
       {error && (
@@ -296,11 +362,16 @@ function ManagedShelves() {
       )}
       {!shelves.data && !shelves.error && (
         <p className="note" role="status">
-          Loading shelves…
+          {t('lumen.adminReaderDelivery.loadingShelves', 'Loading shelves…')}
         </p>
       )}
       {shelves.data?.length === 0 && (
-        <p className="note">No managed reader shelves.</p>
+        <p className="note">
+          {t(
+            'lumen.adminReaderDelivery.noShelves',
+            'No managed reader shelves.'
+          )}
+        </p>
       )}
       {!!shelves.data?.length && (
         <div className="setlist">
@@ -310,15 +381,45 @@ function ManagedShelves() {
                 <b>{shelf.groupName}</b>
                 <small>
                   {providers[shelf.provider]} · {shelf.targetName} ·{' '}
-                  {statusLabel[shelf.status]} ·{' '}
-                  {shelf.isPublic ? 'Shared' : 'Private'}
+                  {t(
+                    `lumen.adminReaderDelivery.status.${shelf.status}`,
+                    {
+                      ready: 'Ready',
+                      pending: 'Updating',
+                      error: 'Needs Attention',
+                    }[shelf.status]
+                  )}{' '}
+                  ·{' '}
+                  {shelf.isPublic
+                    ? t('lumen.adminReaderDelivery.shared', 'Shared')
+                    : t('lumen.adminReaderDelivery.private', 'Private')}
                 </small>
                 <small>
-                  {shelf.countVerified ? 'Items' : 'Preview matches'}:{' '}
-                  {shelf.lastMatchCount}
+                  {t(
+                    shelf.countVerified
+                      ? 'lumen.adminReaderDelivery.items'
+                      : 'lumen.adminReaderDelivery.previewMatches',
+                    shelf.countVerified ? 'Items' : 'Preview Matches'
+                  )}
+                  : {shelf.lastMatchCount}
                 </small>
                 {shelf.syncToKobo && (
-                  <small>Kobo Collection: {shelf.koboSyncStatus}</small>
+                  <small>
+                    {t(
+                      'lumen.adminReaderDelivery.koboCollection',
+                      'Kobo Collection'
+                    )}
+                    :{' '}
+                    {t(
+                      `lumen.adminReaderDelivery.koboStatus.${shelf.koboSyncStatus}`,
+                      {
+                        disabled: 'Disabled',
+                        pending: 'Updating',
+                        ready: 'Ready',
+                        error: 'Needs Attention',
+                      }[shelf.koboSyncStatus]
+                    )}
+                  </small>
                 )}
                 {shelf.lastError && <small>{shelf.lastError}</small>}
                 {shelf.koboSyncError && <small>{shelf.koboSyncError}</small>}
@@ -328,7 +429,7 @@ function ManagedShelves() {
                 className="btn btn-quiet btn-sm"
                 onClick={() => setSelected(shelf)}
               >
-                Remove Shelf
+                {t('lumen.adminReaderDelivery.removeShelf', 'Remove Shelf')}
               </button>
             </div>
           ))}
@@ -336,13 +437,24 @@ function ManagedShelves() {
       )}
       {selected && (
         <ConfirmSheet
-          title={`Remove ${selected.groupName}?`}
+          title={t(
+            'lumen.adminReaderDelivery.removeShelfTitle',
+            'Remove {name}?',
+            { name: selected.groupName }
+          )}
           body={
             selected.syncToKobo
-              ? 'This removes the reader shelf and its Kobo Collection. Library files are kept.'
-              : 'This removes the reader shelf. Library files are kept.'
+              ? t(
+                  'lumen.adminReaderDelivery.removeShelfWithKobo',
+                  'This removes the reader shelf and its Kobo Collection. Library files are kept.'
+                )
+              : t(
+                  'lumen.adminReaderDelivery.removeShelfBody',
+                  'This removes the reader shelf. Library files are kept.'
+                )
           }
-          confirm="Remove Shelf"
+          confirm={t('lumen.adminReaderDelivery.removeShelf', 'Remove Shelf')}
+          cancel={t('lumen.adminReaderDelivery.keepShelf', 'Keep it')}
           busy={busy}
           onConfirm={() => void remove()}
           onClose={() => {
@@ -355,20 +467,26 @@ function ManagedShelves() {
 }
 
 export default function AdminReaderDelivery() {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   return (
     <>
       <header className="ph">
-        <h1>Reader Delivery</h1>
+        <h1>{t('lumen.adminReaderDelivery.pageTitle', 'Reader Delivery')}</h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.nav.administration', 'Administration')}
         </Link>
       </div>
       <ServiceNote
         what="reader settings"
+        title={t(
+          'lumen.adminReaderDelivery.loadSettingsFailure',
+          'Couldn’t Load Reader Settings'
+        )}
         error={settings.error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -376,7 +494,10 @@ export default function AdminReaderDelivery() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading reader settings…
+            {t(
+              'lumen.adminReaderDelivery.loadingSettings',
+              'Loading reader settings…'
+            )}
           </p>
         )
       )}
