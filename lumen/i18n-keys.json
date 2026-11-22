@@ -4697,6 +4697,7 @@
   "lumen.status.on4kServer",
   "lumen.status.overQuota",
   "lumen.requests.row.autoQueued",
+  "lumen.requests.row.differentEditionDetail",
   "lumen.requests.row.episodeQueueAhead",
   "lumen.requests.row.etaAlmostDone",
   "lumen.requests.row.etaHours",

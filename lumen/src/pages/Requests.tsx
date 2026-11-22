@@ -485,6 +485,10 @@ export function requestRowStatus(
             ico: 'check',
             active: false,
             detail:
+              translate?.(
+                'lumen.requests.row.differentEditionDetail',
+                'This book is in your library in another edition than the one requested.'
+              ) ??
               'This book is in your library in another edition than the one requested.',
           };
         return { ...base, k: 'wait', word: 'Checking library', ico: 'clock' };

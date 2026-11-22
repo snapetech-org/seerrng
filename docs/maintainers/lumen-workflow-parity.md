@@ -6631,12 +6631,15 @@ Arabic, including approval, search, import, library-check, failure, declined,
 cancelled, unavailable, different-edition, 4K-server, and over-quota states.
 The shared card status owner applies to Requests, detail and discovery cards,
 and household request previews. Queue and download progress keep their existing
-localized formatting, and provider-supplied status details remain intact.
+localized formatting. The Requests row also localizes the explanation shown
+when a pinned book request is fulfilled by a different edition; provider-owned
+status messages remain as supplied.
 Request state, filtering, retry, and authorization behavior are unchanged.
 
 The lifecycle fixture passes on desktop, iPhone, Android, and tablet in all
-three locales (12 cases). Existing shared poster-status coverage passes in the
-same matrix (12 cases). Matched baseline/candidate request-list captures at
+three locales (12 cases), including the different-edition explanation.
+Existing shared poster-status coverage passes in the same matrix (12 cases).
+Matched baseline/candidate request-list captures at
 desktop and iPhone sizes were reviewed for English, French, and Arabic; the
 status text changes while card geometry is preserved, and no locale overflows
 the viewport. Live provider responses and independent linguistic review remain

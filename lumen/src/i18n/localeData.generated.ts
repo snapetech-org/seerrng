@@ -5832,6 +5832,8 @@ export const localeData = [
       'lumen.status.on4kServer': 'بدقة 4K على {server}',
       'lumen.status.overQuota': 'تجاوز الحصة',
       'lumen.requests.row.autoQueued': 'مضاف تلقائيًا',
+      'lumen.requests.row.differentEditionDetail':
+        'هذا الكتاب موجود في مكتبتك بإصدار مختلف عن الإصدار المطلوب.',
       'lumen.requests.row.episodeQueueAhead':
         'قائمة انتظار الحلقات · {count} قادمة',
       'lumen.requests.row.etaAlmostDone': 'اكتمل تقريبًا',
@@ -16533,6 +16535,8 @@ export const localeData = [
       'lumen.status.on4kServer': '4K on {server}',
       'lumen.status.overQuota': 'Over quota',
       'lumen.requests.row.autoQueued': 'Auto-Queued',
+      'lumen.requests.row.differentEditionDetail':
+        'This book is in your library in another edition than the one requested.',
       'lumen.requests.row.episodeQueueAhead': 'Episode Queue · {count} ahead',
       'lumen.requests.row.etaAlmostDone': 'Almost done',
       'lumen.requests.row.etaHours': 'About {count} hr left',
@@ -28275,6 +28279,8 @@ export const localeData = [
       'lumen.status.on4kServer': '4K sur {server}',
       'lumen.status.overQuota': 'Quota dépassé',
       'lumen.requests.row.autoQueued': 'Ajout automatique',
+      'lumen.requests.row.differentEditionDetail':
+        'Ce livre est dans votre bibliothèque dans une autre édition que celle demandée.',
       'lumen.requests.row.episodeQueueAhead':
         'File d’attente des épisodes · {count} à venir',
       'lumen.requests.row.etaAlmostDone': 'Presque terminé',

@@ -6,6 +6,7 @@ const locale = ['en', 'fr', 'ar'].includes(
   ? (process.env.LUMEN_REQUEST_STATUS_LOCALE as 'en' | 'fr' | 'ar')
   : 'en';
 const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
+const detailBaseline = process.env.LUMEN_REQUEST_DETAIL_BASELINE === '1';
 const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
 const moderationBaseline = process.env.LUMEN_MODERATION_BASELINE === '1';
 const rowBaseline = process.env.LUMEN_REQUEST_ROW_BASELINE === '1';
@@ -28,6 +29,8 @@ const labels = {
     unavailable: 'Unavailable',
     unknown: 'Status unavailable',
     differentEdition: 'Different edition in library',
+    differentEditionDetail:
+      'This book is in your library in another edition than the one requested.',
     inLibrary: 'In library',
     fourK: '4K on Plex',
     overQuota: 'Over quota',
@@ -56,6 +59,8 @@ const labels = {
     unavailable: 'Indisponible',
     unknown: 'Statut indisponible',
     differentEdition: 'Édition différente dans la bibliothèque',
+    differentEditionDetail:
+      'Ce livre est dans votre bibliothèque dans une autre édition que celle demandée.',
     inLibrary: 'Dans la bibliothèque',
     fourK: '4K sur Plex',
     overQuota: 'Quota dépassé',
@@ -85,6 +90,8 @@ const labels = {
     unavailable: 'غير متاح',
     unknown: 'الحالة غير متاحة',
     differentEdition: 'إصدار مختلف في المكتبة',
+    differentEditionDetail:
+      'هذا الكتاب موجود في مكتبتك بإصدار مختلف عن الإصدار المطلوب.',
     inLibrary: 'في المكتبة',
     fourK: 'بدقة 4K على Plex',
     overQuota: 'تجاوز الحصة',
@@ -304,6 +311,11 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
     await expect(row).toBeVisible();
     await expect(row.locator('.st')).toContainText(expected[key]);
   }
+  await expect(page.locator('.rq').nth(12).locator('.d')).toContainText(
+    detailBaseline
+      ? labels.en.differentEditionDetail
+      : labels[locale].differentEditionDetail
+  );
   const overQuota = page.locator('.rq').nth(14);
   await expect(overQuota.locator('.st')).toContainText(expected.overQuota);
   const autoQueued = page.locator('.rq').nth(0).locator('.st');
