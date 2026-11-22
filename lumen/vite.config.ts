@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 // @ts-expect-error plain JS dev helper, no types
 import { extrasMock } from './mocks/extras.mjs';
@@ -20,6 +21,11 @@ export default defineConfig({
   // Lumen owns plain CSS; do not inherit SeerrNG's separate PostCSS pipeline.
   css: { postcss: { plugins: [] } },
   plugins: [react(), ...(process.env.LUMEN_MOCKS ? [mocks] : [])],
+  resolve: {
+    alias: {
+      '@app': fileURLToPath(new URL('../src', import.meta.url)),
+    },
+  },
   server: {
     port: 5173,
     proxy: {

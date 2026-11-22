@@ -6626,6 +6626,11 @@ export const localeData = [
       'lumen.setup.useHttps': 'استخدام HTTPS',
       'lumen.setup.username': 'اسم المستخدم',
       'lumen.setup.videoGroup': 'الأفلام والمسلسلات',
+      'lumen.account.themePreset': 'إعداد مسبق مضمّن للمظهر',
+      'lumen.account.themePresetPlaceholder': 'اختر إعدادًا مسبقًا',
+      'lumen.account.themePresetHelp':
+        'يؤدي تطبيق الإعداد المسبق إلى حفظه في حسابك مع الاحتفاظ بقيم التجاوز الحالية التي تظل لها الأولوية.',
+      'lumen.account.applyThemePreset': 'تطبيق الإعداد المسبق',
     },
   },
   {
@@ -17336,6 +17341,11 @@ export const localeData = [
       'lumen.setup.useHttps': 'Use HTTPS',
       'lumen.setup.username': 'Username',
       'lumen.setup.videoGroup': 'Movies and Series',
+      'lumen.account.themePreset': 'Built-in Theme Preset',
+      'lumen.account.themePresetPlaceholder': 'Choose a preset',
+      'lumen.account.themePresetHelp':
+        'Applying a preset saves it to your account and keeps existing override values, which continue to take precedence.',
+      'lumen.account.applyThemePreset': 'Apply Theme Preset',
     },
   },
   {
@@ -29124,6 +29134,11 @@ export const localeData = [
       'lumen.setup.useHttps': 'Utiliser HTTPS',
       'lumen.setup.username': 'Nom d’utilisateur',
       'lumen.setup.videoGroup': 'Films et séries',
+      'lumen.account.themePreset': 'Préréglage de thème intégré',
+      'lumen.account.themePresetPlaceholder': 'Choisir un préréglage',
+      'lumen.account.themePresetHelp':
+        'L’application d’un préréglage l’enregistre dans votre compte et conserve les valeurs de remplacement existantes, qui restent prioritaires.',
+      'lumen.account.applyThemePreset': 'Appliquer le préréglage',
     },
   },
   {

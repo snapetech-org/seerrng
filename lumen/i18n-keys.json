@@ -5467,5 +5467,9 @@
   "lumen.setup.urlBase",
   "lumen.setup.useHttps",
   "lumen.setup.username",
-  "lumen.setup.videoGroup"
+  "lumen.setup.videoGroup",
+  "lumen.account.themePreset",
+  "lumen.account.themePresetPlaceholder",
+  "lumen.account.themePresetHelp",
+  "lumen.account.applyThemePreset"
 ]

@@ -625,6 +625,70 @@ for (const scenario of [
   });
 }
 
+test('account applies the shared built-in theme preset and preserves overrides', async ({
+  page,
+}) => {
+  const overrides: Record<string, string | number> = {
+    '--theme-page-spotlight-strength': 0.5,
+    '--theme-page-bg': '#112233',
+  };
+  let submitted: Record<string, string | number | null> | undefined;
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          permissions: 32,
+          settings: { advancedThemeOverrides: overrides },
+        },
+      });
+    if (path === '/user/2/settings/advanced-theme') {
+      submitted = request.postDataJSON().changes;
+      for (const [key, value] of Object.entries(submitted ?? {})) {
+        if (typeof value === 'string' || typeof value === 'number')
+          overrides[key] = value;
+        else delete overrides[key];
+      }
+      return route.fulfill({ json: { advancedThemeOverrides: overrides } });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(appPath('./me/account#advanced-theme'));
+  await page.getByLabel('Page Background').fill('#445566');
+  await page.getByLabel('Built-in Theme Preset').selectOption('john-redesign');
+  await page.getByRole('button', { name: 'Apply Theme Preset' }).click();
+  await expect(page.getByText('Theme colors saved.')).toBeVisible();
+  expect(submitted?.preset).toBe('john-redesign');
+  expect(submitted?.['--palette-blue']).toBe('#0051d4');
+  expect(submitted?.['--theme-page-bg']).toBe('#445566');
+  expect(overrides['--theme-page-bg']).toBe('#445566');
+  expect(overrides['--theme-page-spotlight-strength']).toBe(0.5);
+  await expect(page.getByLabel('Page Background')).toHaveValue('#445566');
+  await page.getByRole('button', { name: 'Edit All Overrides' }).click();
+  const editor = page.getByLabel('Theme Override JSON');
+  await editor.fill('{"--theme-control-border":"#abcdef"}');
+  await page.getByLabel('Built-in Theme Preset').selectOption('john-redesign');
+  await page.getByRole('button', { name: 'Apply Theme Preset' }).click();
+  await expect.poll(() => overrides['--theme-control-border']).toBe('#abcdef');
+  expect(overrides['--theme-page-bg']).toBe('#445566');
+  expect(overrides['--theme-page-spotlight-strength']).toBe(0.5);
+  await page.getByRole('button', { name: 'Edit Theme Colors' }).click();
+  await expect(page.getByLabel('Page Background')).toHaveValue('#445566');
+  await page.getByLabel('Built-in Theme Preset').scrollIntoViewIfNeeded();
+  await expect(page.getByText(/Applying a preset saves it/)).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/candidate-${page.viewportSize()?.width}.png`,
+    });
+});
+
 test('account theme colors preserve stored overrides for other controls', async ({
   page,
 }) => {
@@ -746,7 +810,7 @@ test('account theme colors preserve stored overrides for other controls', async 
     await expect(sidebar).toHaveCSS('border-right-color', 'rgb(42, 48, 59)');
     await expect(sidebar).toHaveCSS('background-image', 'none');
   } else {
-    const tabs = page.getByRole('navigation', { name: 'Tabs' });
+    const tabs = page.locator('nav.tabbar[aria-label="Tabs"]');
     await expect(tabs).toHaveCSS('background-image', 'none');
     const width = (await tabs.boundingBox())?.width;
     const color = page.getByLabel('Sidebar Background Start');

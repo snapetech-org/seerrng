@@ -1,0 +1,1 @@
+Lumen Account Settings now includes SeerrNG's built-in advanced theme preset picker. It uses the shared SeerrNG preset definition and retains existing account overrides when applying a preset. Controls are localized in English, French, and Arabic.

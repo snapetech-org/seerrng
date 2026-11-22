@@ -10,7 +10,11 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@app/*": ["../src/*"],
+      "@server/*": ["../server/*"]
+    }
   },
   "include": ["src", "vite.config.ts"]
 }
