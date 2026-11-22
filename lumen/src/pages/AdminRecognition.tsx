@@ -4,6 +4,7 @@ import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const path = '/settings/recognition';
@@ -29,6 +30,7 @@ function Editor({
   localOcr?: boolean;
   onSaved: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [key, setKey] = useState('');
@@ -83,14 +85,22 @@ function Editor({
       setKey('');
       setClearKey(false);
       onSaved();
-      setFeedback({ text: 'Recognition settings saved.' });
+      setFeedback({
+        text: t(
+          'lumen.adminRecognition.settingsSaved',
+          'Recognition settings saved.'
+        ),
+      });
     } catch (failure) {
       if (generation === sessionGeneration()) {
         setFeedback({
           text:
             failure instanceof ApiError
               ? failure.message
-              : 'Could not save recognition settings.',
+              : t(
+                  'lumen.adminRecognition.saveFailure',
+                  'Could not save recognition settings.'
+                ),
           error: true,
         });
       }
@@ -101,7 +111,9 @@ function Editor({
   }
 
   return (
-    <Section title="Share to Request">
+    <Section
+      title={t('lumen.adminRecognition.sectionTitle', 'Share to Request')}
+    >
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -110,7 +122,9 @@ function Editor({
       >
         <div className="setlist">
           <label className="set cfg-row">
-            <span>Enable Share to Request</span>
+            <span>
+              {t('lumen.adminRecognition.enabled', 'Enable Share to Request')}
+            </span>
             <input
               type="checkbox"
               checked={draft.enabled}
@@ -120,12 +134,21 @@ function Editor({
           </label>
           <label className="set cfg-row">
             <span>
-              Read Images With Local Text Recognition
+              {t(
+                'lumen.adminRecognition.localOcr',
+                'Read Images With Local Text Recognition'
+              )}
               {saved.localOcr && localOcr !== undefined && (
                 <small>
                   {localOcr
-                    ? 'Tesseract is available.'
-                    : 'Tesseract is unavailable.'}
+                    ? t(
+                        'lumen.adminRecognition.ocrAvailable',
+                        'Tesseract is available.'
+                      )
+                    : t(
+                        'lumen.adminRecognition.ocrUnavailable',
+                        'Tesseract is unavailable.'
+                      )}
                 </small>
               )}
             </span>
@@ -137,7 +160,9 @@ function Editor({
             />
           </label>
           <label className="set cfg-row">
-            <span>Vision Provider</span>
+            <span>
+              {t('lumen.adminRecognition.provider', 'Vision Provider')}
+            </span>
             <select
               className="cfg-select"
               value={draft.visionProvider}
@@ -150,16 +175,23 @@ function Editor({
                 })
               }
             >
-              <option value="none">Off (Local Only)</option>
+              <option value="none">
+                {t('lumen.adminRecognition.provider.off', 'Off (Local Only)')}
+              </option>
               <option value="anthropic">Anthropic Claude</option>
-              <option value="openai">OpenAI-Compatible Server</option>
+              <option value="openai">
+                {t(
+                  'lumen.adminRecognition.provider.openai',
+                  'OpenAI-Compatible Server'
+                )}
+              </option>
             </select>
           </label>
           {draft.visionProvider !== 'none' && (
             <>
               {draft.visionProvider === 'openai' && (
                 <label className="set cfg-row">
-                  <span>Base URL</span>
+                  <span>{t('lumen.adminRecognition.baseUrl', 'Base URL')}</span>
                   <input
                     className="cfg-input"
                     inputMode="url"
@@ -176,7 +208,7 @@ function Editor({
                 </label>
               )}
               <label className="set cfg-row">
-                <span>Model ID</span>
+                <span>{t('lumen.adminRecognition.modelId', 'Model ID')}</span>
                 <input
                   className="cfg-input"
                   maxLength={100}
@@ -188,13 +220,15 @@ function Editor({
                 />
               </label>
               <label className="set cfg-row">
-                <span>API Key</span>
+                <span>{t('lumen.adminRecognition.apiKey', 'API Key')}</span>
                 <input
                   className="cfg-input"
                   type="password"
                   autoComplete="new-password"
                   placeholder={
-                    saved.visionApiKeyConfigured ? 'Saved' : undefined
+                    saved.visionApiKeyConfigured
+                      ? t('lumen.adminRecognition.savedCredential', 'Saved')
+                      : undefined
                   }
                   maxLength={512}
                   disabled={busy || clearKey}
@@ -204,7 +238,12 @@ function Editor({
               </label>
               {saved.visionApiKeyConfigured && (
                 <label className="set cfg-row">
-                  <span>Remove Saved API Key</span>
+                  <span>
+                    {t(
+                      'lumen.adminRecognition.removeSavedKey',
+                      'Remove Saved API Key'
+                    )}
+                  </span>
                   <input
                     type="checkbox"
                     checked={clearKey}
@@ -214,7 +253,12 @@ function Editor({
                 </label>
               )}
               <label className="set cfg-row">
-                <span>Allow Uploaded Images to Be Sent to This Provider</span>
+                <span>
+                  {t(
+                    'lumen.adminRecognition.externalConsent',
+                    'Allow Uploaded Images to Be Sent to This Provider'
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   checked={draft.externalConsent}
@@ -227,7 +271,9 @@ function Editor({
             </>
           )}
           <label className="set cfg-row">
-            <span>Largest Image (MiB)</span>
+            <span>
+              {t('lumen.adminRecognition.maxImage', 'Largest Image (MiB)')}
+            </span>
             <input
               className="cfg-input"
               type="number"
@@ -267,7 +313,7 @@ function Editor({
                 setFeedback(undefined);
               }}
             >
-              Discard Changes
+              {t('lumen.adminRecognition.discardChanges', 'Discard Changes')}
             </button>
           )}
           <button
@@ -275,7 +321,7 @@ function Editor({
             type="submit"
             disabled={busy || !dirty}
           >
-            Save Changes
+            {t('lumen.adminRecognition.saveChanges', 'Save Changes')}
           </button>
         </div>
       </form>
@@ -284,21 +330,29 @@ function Editor({
 }
 
 export default function AdminRecognition() {
+  const { t } = useLumenLocale();
   const settings = useApi<Settings>(path);
   const capabilities = useApi<{ localOcr: boolean }>('/resolve/capabilities');
   return (
     <>
       <header className="ph">
-        <h1>Share and Image Recognition</h1>
+        <h1>
+          {t('lumen.adminRecognition.pageTitle', 'Share and Image Recognition')}
+        </h1>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
-          Administration
+          {t('lumen.nav.administration', 'Administration')}
         </Link>
       </div>
       <ServiceNote
         what="recognition settings"
+        title={t(
+          'lumen.adminRecognition.loadFailureTitle',
+          'Couldn’t load Recognition Settings'
+        )}
         error={settings.error}
+        retryLabel={t('lumen.common.retry', 'Retry')}
         retry={settings.reload}
       />
       {settings.data ? (
@@ -310,7 +364,10 @@ export default function AdminRecognition() {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading recognition settings…
+            {t(
+              'lumen.adminRecognition.loading',
+              'Loading recognition settings…'
+            )}
           </p>
         )
       )}

@@ -1,0 +1,1 @@
+Lumen's Share and Image Recognition administration page now follows the saved interface language in English, French, and Arabic. Provider configuration, saved API key handling, and explicit consent before uploaded images are sent to an external provider are preserved.

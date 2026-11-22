@@ -5737,3 +5737,24 @@ Arabic uses RTL layout without visible clipping. Setup-wizard embedding,
 live client connectivity and persistence, and independent translation review
 remain unverified. Evidence is retained at
 /mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/download-clients-candidate/.
+
+### Share and Image Recognition settings localization
+
+The administrator recognition workflow now localizes its page and section
+titles, local OCR capability status, provider and model fields, saved-key
+controls, uploaded-image consent, maximum image size, save/discard actions,
+and loading/success/failure feedback in English, French, and Arabic. Provider
+choices, credential redaction, consent reset when the destination changes,
+and the requirement for explicit external-image consent are preserved.
+
+The focused workflow verifies localized labels and RTL direction, retains edits
+after consent rejection, confirms that changing the provider URL resets
+consent, saves without resending the stored API key, removes a saved key, and
+discards changes. All 24 browser cases pass in standalone and all 24 pass in the
+production-style `/lumen/` mount across desktop, iPhone, Android, and tablet.
+English desktop and iPhone screenshots match the previous build pixel for
+pixel. French desktop and Arabic iPhone renders were inspected in both builds.
+Live requests to Anthropic, an OpenAI-compatible server, Tesseract, and
+independent linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/recognition-browser-standalone/`,
+`.../recognition-browser-embedded/`, and `.../recognition-visual/`.
