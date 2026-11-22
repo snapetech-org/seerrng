@@ -19,7 +19,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Its copy and release details are localized for English, French, and Arabic in standalone and bundled deployments. Coming Soon provides a contextual Release Calendar link, localized with the saved account locale. Swipe and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request history and lifecycle, title/edition identity, progress, permission-aware retry, explicit Sonarr season mapping, managed-copy cleanup that preserves history, and supported 4K paths. Lumen’s TV request state covers exact season and episode selection across multiple seasons, quota approval, destination-specific settings, bounded metadata recovery with selection preservation, and localized episode selection/recovery in English, French, and Arabic. Episode metadata requests are split into five-season client batches to keep provider work per request bounded; failed seasons retry independently, and episodes from completed batches stay selectable while later batches load. Submission waits for metadata completion and includes only selected episode identities. | Compare each media category independently; verify live season metadata and service handoff, and finish matched native visuals. Request-role fixtures cover own-request scope, household visibility, manager moderation, owner cancellation, category-authorized retry, season mapping, and managed-copy removal. Fixtures do not establish live provider timing or server handoff. |
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
-| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Verify mobile native-matched visuals. |
+| Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Capture a current native baseline and compare mobile list/detail states; November 6 screenshots are historical only. |
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Native `/users/:id` and `/profile/*` profile, request, watchlist, and settings bookmarks now redirect to Lumen equivalents with filters preserved and self/manager access enforced. Profile settings links target their existing account subsections, including notification-channel anchors. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Finish remaining per-route failure recovery and role/state matrices; verify live authorization and provider persistence/readback, and complete native-matched visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. The About screen includes SeerrNG support and TMDB logo attribution links. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
@@ -1278,6 +1278,17 @@ dictionaries; the standalone main bundle fell from 347.72 KB to 323.39 KB gzip
 while adding these issue translations. Live-provider and native-matched
 acceptance remain open.
 
+On 2026-11-22, current Lumen Issues and Blocklist list screens were captured at
+390 × 997 in Chromium with the same Fight Club fixture as the retained native
+reference. The candidate screens had no horizontal document overflow. The
+15-case Issues/Blocklist browser suite passed on the iPhone project. The native
+screenshots are from November 6 and show older SeerrNGJ filter and media-card
+presentation; no current native build or matched current native state was
+available, so these captures do not close native-matched visual acceptance.
+Candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-issues-blocklist-mobile-20261122/`.
+release-note: none
+
 ### Blocklist browsing and removal increment
 
 The Lumen Blocklist uses the authorized count endpoint for desktop and You
@@ -1301,6 +1312,13 @@ suite passed. English/French desktop and iPhone renders and Arabic desktop/iPhon
 RTL renders were reviewed with no overflow or control-owner changes. Longer
 French labels wrap the filter row naturally. Native-matched visuals and bundled
 acceptance remain open.
+
+On 2026-11-22, the mobile Blocklist list was captured at 390 × 997 in Chromium
+with the Fight Club fixture. Its full filter stack and entry fit without
+horizontal document overflow. The current candidate is retained with the Issues
+capture above. Native-matched visual acceptance remains open because the
+available native screenshot is from November 6 rather than the current native
+build.
 
 ### Blocklist media detail increment
 
