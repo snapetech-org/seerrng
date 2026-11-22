@@ -284,6 +284,12 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
           'Search results are separate from SeerrNG requests. You can send a result to a download client configured in Prowlarr.'
         )}
       </p>
+      <p className="note">
+        {t(
+          'components.IndexerSearch.requestStillUsesManager',
+          'Sending a result does not change a SeerrNG request. Prowlarr handles the handoff to its configured download client.'
+        )}
+      </p>
       <form
         className="toolbar"
         onSubmit={(event) => {
@@ -297,8 +303,15 @@ function SearchForm({ configuration }: { configuration: Configuration }) {
               'components.IndexerSearch.category',
               'Media category'
             )}
+            disabled={searching}
             value={selected}
-            onChange={(event) => setCategory(event.target.value)}
+            onChange={(event) => {
+              setCategory(event.target.value);
+              setResults([]);
+              setSubmitted(undefined);
+              setNextOffset(undefined);
+              setError('');
+            }}
           >
             {categories.map((item) => (
               <option key={item.category} value={item.category}>

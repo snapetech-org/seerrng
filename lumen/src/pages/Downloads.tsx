@@ -272,6 +272,12 @@ export default function Downloads({ allowed }: { allowed: boolean }) {
       <header className="ph">
         <h1>{t('downloads.title', 'Download Inbox')}</h1>
       </header>
+      <p className="note">
+        {t(
+          'downloads.description',
+          'Review acquisition warnings, select files for manual import, and reject unwanted downloads.'
+        )}
+      </p>
       {allowed ? (
         <>
           <div className="toolbar">

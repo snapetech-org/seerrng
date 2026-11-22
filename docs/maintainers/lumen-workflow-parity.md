@@ -1081,7 +1081,10 @@ Inbox, history, import, and rejection states were inspected. Evidence is retaine
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-downloads-localization-20261120/`.
 Provider-supplied warning text remains as returned, custom fallback messages
 use English outside English, French, and Arabic, and live service handoff and
-native-matched visual acceptance remain open.
+native-matched visual acceptance remain unverified. The page also includes the
+native Download Inbox description from SeerrNG's localized catalog. The same
+fixture was captured before and after this addition at desktop and iPhone sizes;
+French and Arabic candidate layouts were inspected.
 
 ### Indexer Search increment
 
@@ -1115,7 +1118,14 @@ deployments. Pre-change and candidate fixture renders were compared at 1440 ×
 result rows without horizontal overflow. Evidence is retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-localization-20261120/`.
 Live Prowlarr effects, independent linguistic review, and native-matched visual
-acceptance remain open.
+acceptance remain open. Lumen also displays the native notice that sending a
+release does not alter a SeerrNG request. While searching, category selection is
+disabled; changing category afterward clears stale results, counts, and
+pagination before a new search. Submitted query/category pairs remain fixed for
+pagination. The focused acquisition suites pass 48 cases per deployment in
+English, plus eight cases per locale and deployment in French and Arabic. The
+French iPhone baseline/candidate and Arabic iPhone candidate were inspected at
+matching fixture states; translated notices wrap without horizontal overflow.
 
 Lumen's administrator Prowlarr settings and diagnostics now also use SeerrNG's
 `components.SettingsProwlarr.*` locale catalog. The connection form, saved API

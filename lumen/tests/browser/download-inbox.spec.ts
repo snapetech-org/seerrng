@@ -216,6 +216,8 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
   const labels = {
     en: {
       title: 'Download Inbox',
+      description:
+        'Review acquisition warnings, select files for manual import, and reject unwanted downloads.',
       active: 'Active warnings',
       history: 'History',
       status: 'Needs attention',
@@ -235,6 +237,8 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
     },
     fr: {
       title: 'Télécharger la boîte de réception',
+      description:
+        "Examiner les avertissements d'acquisition, sélectionner des fichiers pour l'importation manuelle et rejeter les téléchargements indésirables.",
       active: 'Mises en garde actives',
       history: 'Historique',
       status: "Besoin d'attention",
@@ -256,6 +260,8 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
     },
     ar: {
       title: 'تحميل',
+      description:
+        'راجع تحذيرات الاستحواذ، وحدد الملفات للاستيراد اليدوي، ورفض التنزيلات غير المرغوب فيها.',
       active: 'تحذيرات نشطة',
       history: 'التاريخ',
       status: 'الحاجة إلى الاهتمام',
@@ -336,6 +342,8 @@ test('Download Inbox follows the saved locale at desktop and phone sizes', async
   await expect(
     page.getByRole('heading', { name: expected('title', 'Download Inbox') })
   ).toBeVisible();
+  if (candidate)
+    await expect(page.getByText(labels[locale].description)).toBeVisible();
   await expect(
     page.getByRole('button', { name: expected('active', 'Active Warnings') })
   ).toBeVisible();
