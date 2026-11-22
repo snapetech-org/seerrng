@@ -372,6 +372,7 @@ export function CollectionCard({
 }
 
 export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const toast = useToast();
   const { prefs } = usePrefs();
@@ -436,12 +437,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           {...mediaLink(playbackMedia, false, tv ? 'tv' : 'movie')}
         >
           <Icon name="play" size="sm" />
-          Watch on {serverName}
+          {t('lumen.tv.watchOn', 'Watch on {server}', { server: serverName })}
         </a>
       ) : (
         <Link className="qbtn okb" to={href}>
           <Icon name="play" size="sm" />
-          On {serverName}
+          {t('lumen.status.onServer', 'On {server}', { server: serverName })}
         </Link>
       );
   else if (s)

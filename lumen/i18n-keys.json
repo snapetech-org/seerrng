@@ -3348,6 +3348,7 @@
   "lumen.movie.fact.status",
   "lumen.movie.fact.streamingProviders",
   "lumen.movie.playbackUnavailable",
+  "lumen.movie.watch4kOn",
   "lumen.movie.policy.cancel",
   "lumen.movie.policy.requestAnyway",
   "lumen.movie.policy.title",

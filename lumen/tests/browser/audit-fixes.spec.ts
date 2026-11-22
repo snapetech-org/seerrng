@@ -178,6 +178,135 @@ test('a 4K-only movie links Watch to the 4K copy', async ({ page }) => {
   await expect(watch).toHaveAttribute('href', url);
 });
 
+test('movie playback actions follow the selected locale', async ({ page }) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_MEDIA_DETAIL_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_MEDIA_DETAIL_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const baseline = process.env.LUMEN_DETAIL_MEDIA_BASELINE === '1';
+  const names = {
+    en: { hd: 'Watch on Plex', uhd: 'Watch 4K on Plex' },
+    fr: { hd: 'Regarder sur Plex', uhd: 'Regarder en 4K sur Plex' },
+    ar: { hd: 'شاهد على Plex', uhd: 'شاهد بدقة 4K على Plex' },
+  } as const;
+  const hd = 'https://app.plex.tv/desktop/#!/server/s/details?key=hd';
+  const uhd = 'https://app.plex.tv/desktop/#!/server/s/details?key=uhd';
+  await fixtures(page, (path) => {
+    if (path === '/user/1/settings/main') return { json: { locale } };
+    if (path === '/movie/64')
+      return {
+        json: {
+          id: 64,
+          title: 'Playback labels',
+          genres: [],
+          releaseDate: '2020-01-01',
+          mediaInfo: {
+            id: 4,
+            status: 5,
+            status4k: 5,
+            mediaUrl: hd,
+            mediaUrl4k: uhd,
+          },
+        },
+      };
+  });
+  const width = page.viewportSize()?.width;
+  const captureDir = process.env.LUMEN_DETAIL_MEDIA_CAPTURE_DIR;
+  await page.goto('/movie/64');
+  const watchHd = page.getByRole('link', {
+    name: baseline ? 'Watch on Plex' : names[locale].hd,
+    exact: true,
+  });
+  await expect(watchHd).toHaveAttribute('href', hd);
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({ path: `${captureDir}/${locale}-${width}-hd.png` });
+  await page.goto('/movie/64?quality=4k');
+  const watchUhd = page.getByRole('link', {
+    name: baseline ? 'Watch 4K on Plex' : names[locale].uhd,
+    exact: true,
+  });
+  await expect(watchUhd).toHaveAttribute('href', uhd);
+  await expect(page.locator('.dstatus')).toContainText(
+    baseline
+      ? '4K on Plex'
+      : {
+          en: '4K on Plex',
+          fr: '4K sur Plex',
+          ar: 'بدقة 4K على Plex',
+        }[locale]
+  );
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({ path: `${captureDir}/${locale}-${width}-4k.png` });
+});
+
+test('available movie cards localize their media-server quick link', async ({
+  page,
+}) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_MEDIA_DETAIL_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_MEDIA_DETAIL_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const baseline = process.env.LUMEN_DETAIL_MEDIA_BASELINE === '1';
+  const label = {
+    en: 'Watch on Plex',
+    fr: 'Regarder sur Plex',
+    ar: 'شاهد على Plex',
+  } as const;
+  const onServer = {
+    en: 'On Plex',
+    fr: 'Sur Plex',
+    ar: 'على Plex',
+  } as const;
+  const url = 'https://app.plex.tv/desktop/#!/server/s/details?key=card';
+  await fixtures(page, (path) => {
+    if (path === '/user/1/settings/main') return { json: { locale } };
+    if (path === '/genres/movie' || path === '/discover/genreslider/movie')
+      return { json: [] };
+    if (path === '/discover/movies' || path === '/discover/trending')
+      return {
+        json: paged([
+          {
+            id: 65,
+            title: 'Card playback',
+            releaseDate: '2020-01-01',
+            mediaType: 'movie',
+            mediaInfo: { status: 5, mediaUrl: url },
+          },
+          {
+            id: 66,
+            title: 'Card library status',
+            releaseDate: '2020-01-01',
+            mediaType: 'movie',
+            mediaInfo: { status: 5 },
+          },
+        ]),
+      };
+  });
+  await page.goto('/movies');
+  const card = page.locator('.poster').filter({ hasText: 'Card playback' });
+  await expect(card).toBeVisible();
+  await card.hover();
+  const play = card.locator('.qbtn.okb');
+  await expect(play).toHaveText(baseline ? 'Watch on Plex' : label[locale]);
+  await expect(play).toHaveAttribute('href', url);
+  const libraryCard = page
+    .locator('.poster')
+    .filter({ hasText: 'Card library status' });
+  await expect(libraryCard).toBeVisible();
+  await libraryCard.hover();
+  const on = libraryCard.locator('.qbtn.okb');
+  await expect(on).toHaveText(baseline ? 'On Plex' : onServer[locale]);
+  await expect(on).toHaveAttribute('href', '/movie/66');
+  const width = page.viewportSize()?.width;
+  const captureDir = process.env.LUMEN_DETAIL_MEDIA_CAPTURE_DIR;
+  if (captureDir && (width === 1440 || width === 390))
+    await page.screenshot({
+      path: `${captureDir}/${locale}-${width}-card.png`,
+    });
+});
+
 test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
   const hd = 'https://app.plex.tv/desktop/#!/server/s/details?key=hd';
   const uhd = 'https://app.plex.tv/desktop/#!/server/s/details?key=uhd';

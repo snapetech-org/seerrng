@@ -6513,3 +6513,20 @@ and phone size were inspected in French; only the action copy changes, without
 new overflow or geometry changes. Live media-server URLs and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-play-link-localization-20261122/`.
+
+### Media-server labels across movie details and cards
+
+Movie detail playback actions now localize HD and 4K labels, and the 4K
+availability fact and badge use the existing localized server-status labels.
+Shared title cards now localize both their external “Watch on” action and their
+in-app “On” status action. Media-server name selection, 4K distinction, URL
+validation, and navigation targets are unchanged.
+
+The browser fixture verifies both movie playback URLs and 4K status copy, plus
+card actions with and without an external playback URL. Twenty-four candidate
+and twenty-four baseline browser cases pass across desktop, iPhone, Android,
+and tablet in English, French, and Arabic. Matched 1440px and phone captures
+were reviewed in French; the translated actions fit the existing controls and
+the card/detail geometry is unchanged. Live server links and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-media-labels-20261122/`.

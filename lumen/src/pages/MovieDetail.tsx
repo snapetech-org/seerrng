@@ -166,10 +166,12 @@ export default function MovieDetail() {
     s4k === MediaStatus.AVAILABLE || s4k === MediaStatus.PARTIAL;
   const visible4k = available4k && !(shared4k && mode === 'hide');
   const fourKLabel = shared4k
-    ? 'Available to Other Users'
+    ? t('lumen.status.shared', 'Available to Other Users')
     : s4k === MediaStatus.PARTIAL
-      ? `Partly on ${serverName}`
-      : `On ${serverName}`;
+      ? t('lumen.status.partlyOnServer', 'Partly on {server}', {
+          server: serverName,
+        })
+      : t('lumen.status.onServer', 'On {server}', { server: serverName });
   const date = m.releaseDate || '';
   const unreleased = date > localToday();
   const director = (m.credits?.crew || [])
@@ -236,7 +238,9 @@ export default function MovieDetail() {
   const main = fourKPlayback?.href ? (
     <a className="btn btn-primary" {...fourKPlayback}>
       <Icon name="play" />
-      Watch 4K on {serverName}
+      {t('lumen.movie.watch4kOn', 'Watch 4K on {server}', {
+        server: serverName,
+      })}
     </a>
   ) : playableStatus?.k === 'ok' ? (
     <a
@@ -244,7 +248,7 @@ export default function MovieDetail() {
       {...mediaLink(playback, false, 'movie', serverName)}
     >
       <Icon name="play" />
-      Watch on {serverName}
+      {t('lumen.tv.watchOn', 'Watch on {server}', { server: serverName })}
     </a>
   ) : s ? (
     visibleStatus && (
@@ -330,10 +334,18 @@ export default function MovieDetail() {
               icon={shared4k ? 'user' : 'check'}
             >
               {shared4k
-                ? '4K · Available to Other Users'
+                ? `4K · ${t('lumen.status.shared', 'Available to Other Users')}`
                 : s4k === MediaStatus.PARTIAL
-                  ? `4K partly on ${serverName}`
-                  : `4K on ${serverName}`}
+                  ? `4K · ${t(
+                      'lumen.status.partlyOnServer',
+                      'Partly on {server}',
+                      {
+                        server: serverName,
+                      }
+                    )}`
+                  : t('lumen.status.on4kServer', '4K on {server}', {
+                      server: serverName,
+                    })}
             </Pill>
           )}
           {(s4k === MediaStatus.PENDING || s4k === MediaStatus.PROCESSING) && (
