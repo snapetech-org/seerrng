@@ -5830,3 +5830,21 @@ Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/media-libraries-browser-standalone-final2/`,
 `.../media-libraries-browser-embedded-final/`,
 `.../media-libraries-visual/`, and `.../media-libraries-locales-saved-host/`.
+
+### Metadata provider administration localization
+
+The Lumen Metadata Providers page and shared metadata credential form now
+localize their headings, field labels, validation and provider status messages,
+save/test actions, credential feedback, and Bookshelf catalog guidance in
+English, French, and Arabic. Provider names, saved settings, credential
+redaction, request payloads, and independent form behavior remain owned by the
+existing integration components.
+
+Browser fixtures verify the saved locale, translated provider fields and
+section headings, RTL direction, and page overflow in English, French, and
+Arabic across desktop, iPhone, Android, and tablet in the standalone production
+build. The existing independent-save/provider-test regression also passes in
+those viewports. The bundled Express `/lumen/` mount did not serve the Vite
+preview fixture and remains unverified. Native-matched visual captures, actual
+provider round trips, credential persistence, and independent linguistic review
+remain unverified; this UI milestone is incomplete until those checks pass.

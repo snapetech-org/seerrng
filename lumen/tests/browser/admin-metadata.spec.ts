@@ -1,5 +1,73 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
+for (const [locale, labels] of [
+  [
+    'fr',
+    {
+      title: 'Fournisseurs de métadonnées',
+      tv: 'Fournisseur de métadonnées TV',
+      music: 'Métadonnées musicales',
+      invalid:
+        'Saisissez des valeurs dans les limites ou le format de langue pris en charge.',
+    },
+  ],
+  [
+    'ar',
+    {
+      title: 'موفرو البيانات الوصفية',
+      tv: 'موفر بيانات التلفاز',
+      music: 'بيانات الموسيقى الوصفية',
+      invalid: 'أدخل قيماً ضمن النطاقات أو تنسيق اللغة المدعوم.',
+    },
+  ],
+] as const) {
+  test(`metadata settings follow the saved ${locale} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen/, '')
+        .slice(7);
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 2 } });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/settings/metadatas')
+        return route.fulfill({ json: { tv: 'tmdb', anime: 'tmdb' } });
+      if (path === '/settings/metadatas/music')
+        return route.fulfill({
+          json: { maxConcurrentRequests: 2, maxRequestsPerSecond: 10 },
+        });
+      if (path === '/settings/metadatas/books')
+        return route.fulfill({ json: { allowedLanguages: [] } });
+      if (path === '/settings/main') return route.fulfill({ json: {} });
+      return route.fulfill({ json: {} });
+    });
+    await page.goto(`${mount}/admin/metadata`);
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(
+      page.getByRole('heading', { name: labels.title, exact: true })
+    ).toBeVisible();
+    await expect(page.getByLabel(labels.tv)).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.music, exact: true })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  });
+}
+
 test('metadata sections save independently and expose failed provider checks', async ({
   page,
 }, info) => {

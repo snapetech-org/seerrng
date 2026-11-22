@@ -3,6 +3,7 @@ import { api } from '../api';
 import { forget } from '../apiCache';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 
@@ -19,6 +20,7 @@ type Draft = { value: string; remove: boolean };
 const empty: Draft = { value: '', remove: false };
 
 function CredentialsForm({ initial }: { initial: Settings }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState<Partial<Record<Field, Draft>>>({});
   const [busy, setBusy] = useState(false);
@@ -58,9 +60,19 @@ function CredentialsForm({ initial }: { initial: Settings }) {
       setSaved(result);
       setDraft({});
       forget(endpoint);
-      setNotice('Metadata credentials saved.');
+      setNotice(
+        t('lumen.metadata.credentialsSaved', 'Metadata credentials saved.')
+      );
     } catch (error) {
-      setError(friendlyError(error, 'Could not save metadata credentials.'));
+      setError(
+        friendlyError(
+          error,
+          t(
+            'lumen.metadata.credentialsSaveFailed',
+            'Could not save metadata credentials.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -83,7 +95,11 @@ function CredentialsForm({ initial }: { initial: Settings }) {
                   aria-label={label}
                   type="password"
                   autoComplete="new-password"
-                  placeholder={saved[key] ? 'Saved credential' : undefined}
+                  placeholder={
+                    saved[key]
+                      ? t('lumen.metadata.savedCredential', 'Saved credential')
+                      : undefined
+                  }
                   value={field.value}
                   disabled={busy || field.remove}
                   maxLength={512}
@@ -94,7 +110,9 @@ function CredentialsForm({ initial }: { initial: Settings }) {
               </label>
               {saved[key] && (
                 <label className="set cfg-row">
-                  <b>Remove saved {label}</b>
+                  <b>
+                    {t('lumen.metadata.removeSaved', 'Remove saved')} {label}
+                  </b>
                   <input
                     type="checkbox"
                     checked={field.remove}
@@ -114,7 +132,7 @@ function CredentialsForm({ initial }: { initial: Settings }) {
           className="btn btn-tonal btn-sm"
           disabled={busy || !changes.length}
         >
-          Save Metadata Credentials
+          {t('lumen.metadata.saveCredentials', 'Save Metadata Credentials')}
         </button>
       </div>
       {notice && (
@@ -132,16 +150,17 @@ function CredentialsForm({ initial }: { initial: Settings }) {
 }
 
 export default function MetadataCredentials() {
+  const { t } = useLumenLocale();
   const { data, error, reload } = useApi<Settings>(endpoint);
   return (
-    <Section title="Metadata Credentials">
+    <Section title={t('lumen.metadata.credentials', 'Metadata Credentials')}>
       <ServiceNote error={error} what="metadata credentials" retry={reload} />
       {data ? (
         <CredentialsForm initial={data} />
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading credentials…
+            {t('lumen.metadata.loadingCredentials', 'Loading credentials…')}
           </p>
         )
       )}

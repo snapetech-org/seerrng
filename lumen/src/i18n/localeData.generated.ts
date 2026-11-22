@@ -3763,6 +3763,40 @@ export const localeData = [
       'lumen.mediaServerConnection.useHttps': 'استخدام HTTPS',
       'lumen.mediaServerConnection.useHttpsTautulli':
         'استخدام HTTPS مع Tautulli',
+      'lumen.metadata.bookshelfCatalog': 'فهرس Bookshelf',
+      'lumen.metadata.bookshelfCatalogHelp':
+        'يُضبط الوصول إلى Hardcover على خادم BookshelfNG أو rreading-glasses المتصل. تدير نقاط النهاية المستضافة المشتركة بيانات اعتمادها الخاصة.',
+      'lumen.metadata.connected': 'متصل',
+      'lumen.metadata.credentials': 'بيانات اعتماد البيانات الوصفية',
+      'lumen.metadata.credentialsSaveFailed':
+        'تعذر حفظ بيانات اعتماد البيانات الوصفية.',
+      'lumen.metadata.credentialsSaved':
+        'تم حفظ بيانات اعتماد البيانات الوصفية.',
+      'lumen.metadata.failed': 'فشل',
+      'lumen.metadata.field.anime': 'موفر بيانات الأنمي',
+      'lumen.metadata.field.languages': 'لغات الكتب المسموح بها',
+      'lumen.metadata.field.maxConcurrentRequests':
+        'الحد الأقصى للطلبات المتزامنة',
+      'lumen.metadata.field.maxRequestsPerSecond':
+        'الحد الأقصى للطلبات في الثانية',
+      'lumen.metadata.field.tv': 'موفر بيانات التلفاز',
+      'lumen.metadata.invalidValues':
+        'أدخل قيماً ضمن النطاقات أو تنسيق اللغة المدعوم.',
+      'lumen.metadata.loadingCredentials': 'جارٍ تحميل بيانات الاعتماد…',
+      'lumen.metadata.notTested': 'لم يُختبر',
+      'lumen.metadata.providers': 'الموفرون',
+      'lumen.metadata.removeSaved': 'إزالة بيانات الاعتماد المحفوظة',
+      'lumen.metadata.save': 'حفظ',
+      'lumen.metadata.saveCredentials': 'حفظ بيانات اعتماد البيانات الوصفية',
+      'lumen.metadata.saveFailed': 'تعذر حفظ إعدادات البيانات الوصفية.',
+      'lumen.metadata.saved': 'تم حفظ الإعدادات.',
+      'lumen.metadata.savedCredential': 'بيانات اعتماد محفوظة',
+      'lumen.metadata.section.books': 'قيود لغة الكتب',
+      'lumen.metadata.section.music': 'بيانات الموسيقى الوصفية',
+      'lumen.metadata.section.video': 'التلفاز والأنمي',
+      'lumen.metadata.test': 'اختبار',
+      'lumen.metadata.testFailed': 'تعذر اختبار موفري البيانات الوصفية.',
+      'lumen.metadata.title': 'موفرو البيانات الوصفية',
       'lumen.movie.action.request': 'طلب',
       'lumen.movie.action.request4k': 'طلب 4K',
       'lumen.movie.action.request4kApproval': 'طلب موافقة 4K',
@@ -12213,6 +12247,39 @@ export const localeData = [
       'lumen.mediaServerConnection.unreachableShort': 'Unreachable',
       'lumen.mediaServerConnection.useHttps': 'Use HTTPS',
       'lumen.mediaServerConnection.useHttpsTautulli': 'Use HTTPS for Tautulli',
+      'lumen.metadata.bookshelfCatalog': 'Bookshelf Catalog',
+      'lumen.metadata.bookshelfCatalogHelp':
+        'Hardcover access is configured on the connected BookshelfNG or rreading-glasses server. Shared hosted endpoints manage their own upstream credentials.',
+      'lumen.metadata.connected': 'Connected',
+      'lumen.metadata.credentials': 'Metadata Credentials',
+      'lumen.metadata.credentialsSaveFailed':
+        'Could not save metadata credentials.',
+      'lumen.metadata.credentialsSaved': 'Metadata credentials saved.',
+      'lumen.metadata.failed': 'Failed',
+      'lumen.metadata.field.anime': 'Anime Metadata Provider',
+      'lumen.metadata.field.languages': 'Allowed Book Languages',
+      'lumen.metadata.field.maxConcurrentRequests':
+        'Maximum Concurrent Requests',
+      'lumen.metadata.field.maxRequestsPerSecond':
+        'Maximum Requests per Second',
+      'lumen.metadata.field.tv': 'TV Metadata Provider',
+      'lumen.metadata.invalidValues':
+        'Enter values within the supported ranges or language format.',
+      'lumen.metadata.loadingCredentials': 'Loading credentials…',
+      'lumen.metadata.notTested': 'Not Tested',
+      'lumen.metadata.providers': 'Providers',
+      'lumen.metadata.removeSaved': 'Remove saved',
+      'lumen.metadata.save': 'Save',
+      'lumen.metadata.saveCredentials': 'Save Metadata Credentials',
+      'lumen.metadata.saveFailed': 'Could not save metadata settings.',
+      'lumen.metadata.saved': 'Settings saved.',
+      'lumen.metadata.savedCredential': 'Saved credential',
+      'lumen.metadata.section.books': 'Book Language Restrictions',
+      'lumen.metadata.section.music': 'Music Metadata',
+      'lumen.metadata.section.video': 'TV and Anime',
+      'lumen.metadata.test': 'Test',
+      'lumen.metadata.testFailed': 'Could not test metadata providers.',
+      'lumen.metadata.title': 'Metadata Providers',
       'lumen.movie.action.request': 'Request',
       'lumen.movie.action.request4k': 'Request 4K',
       'lumen.movie.action.request4kApproval': 'Request 4K Approval',
@@ -21416,6 +21483,43 @@ export const localeData = [
       'lumen.mediaServerConnection.useHttps': 'Utiliser HTTPS',
       'lumen.mediaServerConnection.useHttpsTautulli':
         'Utiliser HTTPS pour Tautulli',
+      'lumen.metadata.bookshelfCatalog': 'Catalogue Bookshelf',
+      'lumen.metadata.bookshelfCatalogHelp':
+        'L’accès Hardcover est configuré sur le serveur BookshelfNG ou rreading-glasses connecté. Les services hébergés partagés gèrent leurs propres identifiants amont.',
+      'lumen.metadata.connected': 'Connecté',
+      'lumen.metadata.credentials': 'Identifiants de métadonnées',
+      'lumen.metadata.credentialsSaveFailed':
+        'Impossible d’enregistrer les identifiants de métadonnées.',
+      'lumen.metadata.credentialsSaved':
+        'Identifiants de métadonnées enregistrés.',
+      'lumen.metadata.failed': 'Échec',
+      'lumen.metadata.field.anime': 'Fournisseur de métadonnées anime',
+      'lumen.metadata.field.languages': 'Langues autorisées pour les livres',
+      'lumen.metadata.field.maxConcurrentRequests':
+        'Nombre maximal de requêtes simultanées',
+      'lumen.metadata.field.maxRequestsPerSecond':
+        'Nombre maximal de requêtes par seconde',
+      'lumen.metadata.field.tv': 'Fournisseur de métadonnées TV',
+      'lumen.metadata.invalidValues':
+        'Saisissez des valeurs dans les limites ou le format de langue pris en charge.',
+      'lumen.metadata.loadingCredentials': 'Chargement des identifiants…',
+      'lumen.metadata.notTested': 'Non testé',
+      'lumen.metadata.providers': 'Fournisseurs',
+      'lumen.metadata.removeSaved': 'Supprimer l’identifiant enregistré',
+      'lumen.metadata.save': 'Enregistrer',
+      'lumen.metadata.saveCredentials':
+        'Enregistrer les identifiants de métadonnées',
+      'lumen.metadata.saveFailed':
+        'Impossible d’enregistrer les paramètres de métadonnées.',
+      'lumen.metadata.saved': 'Paramètres enregistrés.',
+      'lumen.metadata.savedCredential': 'Identifiant enregistré',
+      'lumen.metadata.section.books': 'Restrictions de langue des livres',
+      'lumen.metadata.section.music': 'Métadonnées musicales',
+      'lumen.metadata.section.video': 'Télévision et anime',
+      'lumen.metadata.test': 'Tester',
+      'lumen.metadata.testFailed':
+        'Impossible de tester les fournisseurs de métadonnées.',
+      'lumen.metadata.title': 'Fournisseurs de métadonnées',
       'lumen.movie.action.request': 'Demander',
       'lumen.movie.action.request4k': 'Demander en 4K',
       'lumen.movie.action.request4kApproval': 'Demander une approbation en 4K',

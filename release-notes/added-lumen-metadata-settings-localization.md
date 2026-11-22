@@ -1,0 +1,1 @@
+Lumen's Metadata Providers administration screen and credential controls now follow the saved English, French, or Arabic locale. Existing provider selection, validation, credential redaction, save/test requests, and independent form state remain unchanged.

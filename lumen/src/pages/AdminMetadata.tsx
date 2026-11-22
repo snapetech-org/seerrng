@@ -6,6 +6,7 @@ import { ServiceNote } from '../components/extra';
 import MetadataCredentials from '../components/MetadataCredentials';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 const path = '/settings/metadatas';
@@ -121,6 +122,7 @@ function MetadataForm({
   config: Configuration;
   initial: Values;
 }) {
+  const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -163,7 +165,7 @@ function MetadataForm({
         const values = config.read(response);
         setSaved(values);
         setDraft(values);
-        setNotice('Settings saved.');
+        setNotice(t('lumen.metadata.saved', 'Settings saved.'));
       }
     } catch (error) {
       if (generation !== sessionGeneration()) return;
@@ -173,8 +175,14 @@ function MetadataForm({
         friendlyError(
           error,
           test
-            ? 'Could not test metadata providers.'
-            : 'Could not save metadata settings.'
+            ? t(
+                'lumen.metadata.testFailed',
+                'Could not test metadata providers.'
+              )
+            : t(
+                'lumen.metadata.saveFailed',
+                'Could not save metadata settings.'
+              )
         )
       );
     } finally {
@@ -202,7 +210,7 @@ function MetadataForm({
           }
           return (
             <label className="set cfg-row" htmlFor={id} key={key}>
-              <span>{label}</span>
+              <span>{t(`lumen.metadata.field.${key}`, label)}</span>
               {video ? (
                 <select
                   id={id}
@@ -234,17 +242,20 @@ function MetadataForm({
             <b>{providerNames[provider]}</b>
             <span aria-live="polite">
               {statuses[provider] === 'ok'
-                ? 'Connected'
+                ? t('lumen.metadata.connected', 'Connected')
                 : statuses[provider] === 'failed'
-                  ? 'Failed'
-                  : 'Not Tested'}
+                  ? t('lumen.metadata.failed', 'Failed')
+                  : t('lumen.metadata.notTested', 'Not Tested')}
             </span>
           </div>
         ))}
       </div>
       {changed && !payload && (
         <p className="note" role="alert">
-          Enter values within the supported ranges or language format.
+          {t(
+            'lumen.metadata.invalidValues',
+            'Enter values within the supported ranges or language format.'
+          )}
         </p>
       )}
       {failure && (
@@ -262,7 +273,11 @@ function MetadataForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !changed || !payload}
         >
-          Save {config.title}
+          {t('lumen.metadata.save', 'Save')}{' '}
+          {t(
+            `lumen.metadata.section.${config.endpoint === path ? 'video' : config.endpoint.endsWith('/music') ? 'music' : 'books'}`,
+            config.title
+          )}
         </button>
         {providers.length > 0 && (
           <button
@@ -271,7 +286,12 @@ function MetadataForm({
             disabled={busy}
             onClick={() => void submit(true)}
           >
-            Test {config.title} Providers
+            {t('lumen.metadata.test', 'Test')}{' '}
+            {t(
+              `lumen.metadata.section.${config.endpoint === path ? 'video' : 'music'}`,
+              config.title
+            )}{' '}
+            {t('lumen.metadata.providers', 'Providers')}
           </button>
         )}
       </div>
@@ -280,11 +300,17 @@ function MetadataForm({
 }
 
 function MetadataSection({ config }: { config: Configuration }) {
+  const { t } = useLumenLocale();
   const { data, error, reload } = useApi<Record<string, unknown>>(
     config.endpoint
   );
   return (
-    <Section title={config.title}>
+    <Section
+      title={t(
+        `lumen.metadata.section.${config.endpoint === path ? 'video' : config.endpoint.endsWith('/music') ? 'music' : 'books'}`,
+        config.title
+      )}
+    >
       <p className="note">{config.help}</p>
       <ServiceNote error={error} what={config.title} retry={reload} />
       {data ? (
@@ -301,13 +327,14 @@ function MetadataSection({ config }: { config: Configuration }) {
 }
 
 export default function AdminMetadata() {
+  const { t } = useLumenLocale();
   return (
     <>
       <header className="ph">
-        <h1>Metadata Providers</h1>
+        <h1>{t('lumen.metadata.title', 'Metadata Providers')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {t('lumen.admin.back', 'Administration')}
           </Link>
         </div>
       </header>
@@ -315,11 +342,14 @@ export default function AdminMetadata() {
         <MetadataSection config={config} key={config.endpoint} />
       ))}
       <MetadataCredentials />
-      <Section title="Bookshelf Catalog">
+      <Section
+        title={t('lumen.metadata.bookshelfCatalog', 'Bookshelf Catalog')}
+      >
         <p className="note">
-          Hardcover access is configured on the connected BookshelfNG or
-          rreading-glasses server. Shared hosted endpoints manage their own
-          upstream credentials.
+          {t(
+            'lumen.metadata.bookshelfCatalogHelp',
+            'Hardcover access is configured on the connected BookshelfNG or rreading-glasses server. Shared hosted endpoints manage their own upstream credentials.'
+          )}
         </p>
       </Section>
     </>
