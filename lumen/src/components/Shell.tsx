@@ -77,7 +77,6 @@ const SIDE: [string, IconName, string, string][] = [
 const TABS: [string, IconName, string, string][] = [
   ['/', 'home', 'components.Layout.Sidebar.discover', 'Discover'],
   ['/search', 'search', 'i18n.searchLabel', 'Search'],
-  ['/books', 'book', 'components.Layout.Sidebar.browsebooks', 'Books'],
   ['/requests', 'inbox', 'components.Layout.Sidebar.requests', 'Requests'],
   ['/me', 'user', 'components.Layout.UserDropdown.myprofile', 'You'],
 ];
@@ -139,6 +138,27 @@ export default function Shell({ children }: { children: ReactNode }) {
     );
   };
   const loc = useLocation();
+  const [moreOpen, setMoreOpen] = useState(false);
+  useEffect(() => setMoreOpen(false), [loc.pathname]);
+  useEffect(() => {
+    if (!moreOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMoreOpen(false);
+    };
+    const closeOnNavigation = (event: MouseEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest('#mobile-primary-navigation a')
+      )
+        setMoreOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    window.addEventListener('click', closeOnNavigation, true);
+    return () => {
+      window.removeEventListener('keydown', closeOnEscape);
+      window.removeEventListener('click', closeOnNavigation, true);
+    };
+  }, [moreOpen]);
   const showBlocklist = useBlocklistNavigation();
   const managesRequests = canManageRequests(user?.permissions);
   const [pendingRequests, setPendingRequests] = useState(0);
@@ -415,8 +435,10 @@ export default function Shell({ children }: { children: ReactNode }) {
     <>
       <div className="app">
         <nav
+          id="mobile-primary-navigation"
           className="side"
           aria-label={t('i18n.primaryNavigation', 'Main navigation')}
+          data-mobile-open={moreOpen || undefined}
         >
           <Link
             className="brand"
@@ -574,6 +596,13 @@ export default function Shell({ children }: { children: ReactNode }) {
             </span>
           </Link>
         </nav>
+        {moreOpen && (
+          <button
+            className="mobile-nav-scrim"
+            aria-label={t('i18n.closeMenu', 'Close menu')}
+            onClick={() => setMoreOpen(false)}
+          />
+        )}
         <div className="main">
           <div className="topbar" ref={topbar}>
             <button
@@ -673,6 +702,20 @@ export default function Shell({ children }: { children: ReactNode }) {
             )}
           </NavLink>
         ))}
+        <button
+          type="button"
+          className="tab"
+          aria-label={t(
+            moreOpen ? 'i18n.closeMenu' : 'i18n.moreNavigation',
+            moreOpen ? 'Close menu' : 'More navigation'
+          )}
+          aria-expanded={moreOpen}
+          aria-controls="mobile-primary-navigation"
+          onClick={() => setMoreOpen((open) => !open)}
+        >
+          <Icon name={moreOpen ? 'x' : 'more'} />
+          {t('lumen.nav.more', 'More')}
+        </button>
       </nav>
     </>
   );

@@ -11,16 +11,31 @@ test('shell navigation landmarks and request badges follow the account locale', 
       primary: 'Main navigation',
       tabs: 'Tabs',
       pending: 'Pending requests: 4',
+      more: 'More navigation',
+      close: 'Close menu',
+      books: 'Books',
+      calendar: 'Calendar',
+      watchlist: 'Watchlist',
     },
     fr: {
       primary: 'Navigation principale',
       tabs: 'Onglets',
       pending: 'Demandes en attente : 4',
+      more: 'Plus de navigation',
+      close: 'Fermer le menu',
+      books: 'Livres',
+      calendar: 'Calendrier',
+      watchlist: 'Liste de suivi',
     },
     ar: {
       primary: 'التنقل الرئيسي',
       tabs: 'علامات التبويب',
       pending: 'الطلبات المعلّقة: 4',
+      more: 'المزيد من عناصر التنقل',
+      close: 'أغلق القائمة',
+      books: 'كتب',
+      calendar: 'التقويم',
+      watchlist: 'قائمة المتابعة',
     },
   }[locale];
   await page.route('**/api/v1/**', (route) => {
@@ -28,7 +43,14 @@ test('shell navigation landmarks and request badges follow the account locale', 
       .replace(/^\/lumen/, '')
       .replace(/^\/api\/v1/, '');
     if (path === '/auth/me')
-      return route.fulfill({ json: { id: 1, permissions: 2, userType: 2 } });
+      return route.fulfill({
+        json: {
+          id: 1,
+          permissions: 2,
+          userType: 2,
+          displayName: 'Player',
+        },
+      });
     if (path === '/user/1/settings/main')
       return route.fulfill({ json: { locale } });
     if (path === '/request/count')
@@ -47,6 +69,48 @@ test('shell navigation landmarks and request badges follow the account locale', 
     labels.tabs
   );
   await expect(page.locator(`[aria-label="${labels.pending}"]`)).toHaveCount(2);
+  const captureDir = process.env.LUMEN_MENU_CAPTURE_DIR;
+  const viewportWidth = page.viewportSize()?.width ?? 0;
+  if (captureDir)
+    await page.screenshot({
+      path: `${captureDir}/menu-closed-${locale}-${viewportWidth}.png`,
+      fullPage: true,
+    });
+  if (viewportWidth < 1040) {
+    const more = page.locator(
+      '.tabbar [aria-controls="mobile-primary-navigation"]'
+    );
+    await expect(more).toHaveAccessibleName(labels.more);
+    await expect(more).toBeVisible();
+    await expect(more).toHaveAttribute('aria-expanded', 'false');
+    await more.click();
+    await expect(more).toHaveAccessibleName(labels.close);
+    await expect(more).toHaveAttribute('aria-expanded', 'true');
+    const menu = page.locator('.side');
+    await expect(menu).toHaveAttribute('data-mobile-open', 'true');
+    await expect(
+      menu.getByRole('link', { name: labels.books, exact: true })
+    ).toBeVisible();
+    await expect(
+      menu.getByRole('link', { name: labels.calendar, exact: true })
+    ).toBeVisible();
+    await expect(
+      menu.getByRole('link', { name: labels.watchlist, exact: true })
+    ).toBeVisible();
+    if (captureDir)
+      await page.screenshot({ path: `${captureDir}/menu-open-${locale}.png` });
+    await page.keyboard.press('Escape');
+    await expect(menu).not.toHaveAttribute('data-mobile-open', 'true');
+    await more.click();
+    await menu
+      .getByRole('link', { name: labels.calendar, exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/calendar$/);
+    await expect(menu).not.toHaveAttribute('data-mobile-open', 'true');
+    await more.click();
+    await page.locator('.mobile-nav-scrim').click({ position: { x: 4, y: 4 } });
+    await expect(menu).not.toHaveAttribute('data-mobile-open', 'true');
+  }
 });
 
 test('mobile tabs yield to long forms on scroll and return on scroll up', async ({

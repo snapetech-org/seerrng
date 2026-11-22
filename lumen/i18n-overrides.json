@@ -1,6 +1,7 @@
 {
   "en": {
     "lumen.nav.administration": "Administration",
+    "lumen.nav.more": "More",
     "lumen.nav.lumenSettings": "Lumen Settings",
     "lumen.nav.pendingRequests": "Pending requests: {count}",
     "lumen.nav.seerrAdministration": "SeerrNG Administration",
@@ -4447,6 +4448,7 @@
     "components.Layout.Sidebar.comingSoon": "À venir",
     "components.Layout.Sidebar.watchSessions": "Séances de visionnage",
     "lumen.nav.administration": "Administration",
+    "lumen.nav.more": "Plus",
     "lumen.nav.lumenSettings": "Paramètres de Lumen",
     "lumen.nav.pendingRequests": "Demandes en attente : {count}",
     "lumen.nav.seerrAdministration": "Administration de SeerrNG",
@@ -8991,6 +8993,7 @@
     "components.Layout.Sidebar.comingSoon": "قريبًا",
     "components.Layout.Sidebar.watchSessions": "جلسات المشاهدة",
     "lumen.nav.administration": "الإدارة",
+    "lumen.nav.more": "المزيد",
     "lumen.nav.lumenSettings": "إعدادات Lumen",
     "lumen.nav.pendingRequests": "الطلبات المعلّقة: {count}",
     "lumen.nav.seerrAdministration": "إدارة SeerrNG",

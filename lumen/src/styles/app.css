@@ -75,6 +75,10 @@
   gap: 2px;
   padding: 7px 0 5px;
   border-radius: 24px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
   font-size: 11px;
   font-weight: 650;
   color: var(--ink-2);
@@ -87,6 +91,13 @@
 .tab[aria-current='page'] {
   color: var(--accent);
   background: var(--surface-2);
+}
+.tab[aria-expanded='true'] {
+  color: var(--accent);
+  background: var(--surface-2);
+}
+.mobile-nav-scrim {
+  display: none;
 }
 .badge {
   position: absolute;
@@ -107,6 +118,84 @@ body.is-detail .tabbar {
   transform: translate(-50%, 140%);
   opacity: 0;
   pointer-events: none;
+}
+
+@media (max-width: 1039px) {
+  .side[data-mobile-open='true'] {
+    --navigation-surface: var(--glass);
+    position: fixed;
+    z-index: 55;
+    inset: 12px 12px calc(84px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    padding: 12px;
+    border: 1px solid var(--sidebar-border, var(--glass-line));
+    border-radius: 20px;
+    background: var(--navigation-surface);
+    box-shadow: var(--shadow-float);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  }
+  .mobile-nav-scrim {
+    position: fixed;
+    z-index: 45;
+    inset: 0;
+    display: block;
+    border: 0;
+    background: var(--scrim);
+  }
+  .side[data-mobile-open='true'] .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 4px 10px 12px;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .side[data-mobile-open='true'] .brand .mark {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .side[data-mobile-open='true'] a {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    color: var(--ink-2);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .side[data-mobile-open='true'] a[aria-current='page'] {
+    background: var(--accent-soft);
+    color: var(--accent-soft-ink);
+  }
+  .side[data-mobile-open='true'] .lbl {
+    padding: 14px 12px 4px;
+    color: var(--ink-3);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .side[data-mobile-open='true'] .me {
+    margin-top: auto;
+    height: auto;
+  }
+  .side[data-mobile-open='true'] .me small {
+    display: block;
+    color: var(--ink-3);
+    font-size: 12px;
+    font-weight: 500;
+  }
 }
 
 .avatar {

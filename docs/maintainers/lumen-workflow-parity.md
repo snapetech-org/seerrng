@@ -7243,3 +7243,22 @@ Arabic. The Lumen production build passes. Matched baseline/candidate captures
 at desktop (1440px) and iPhone (390px) were inspected; evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-filters-20261122/`.
 Live QuestarrNG and ROMarrNG catalog responses were not exercised.
+
+### Mobile navigation menu
+
+Lumen's phone navigation now has a **More** control that reveals the same
+permission- and category-filtered navigation as the desktop sidebar. The panel
+provides access to enabled catalogs, administration, requests, downloads,
+issues, the calendar, library, and account destinations without removing the
+existing Discover, Search, Requests, or You tabs. Books remains available in
+the menu. Escape, selecting a destination, tapping outside, and the More control
+close the panel; the More control exposes its expanded state to assistive
+technology. Its filters and authorization continue to use the existing Lumen
+navigation and route/API owners.
+
+Desktop, iPhone, Android, and tablet browser coverage verifies the localized
+More control, enabled categories, utility destinations, escape, outside-click,
+route-selection behavior, and long-page tab-bar behavior. Matched desktop and
+iPhone baseline/candidate captures were inspected. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-more-20261122/`.
+Live permission changes and route/API authorization remain server-owned.
