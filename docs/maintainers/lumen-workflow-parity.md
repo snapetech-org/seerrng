@@ -628,18 +628,23 @@ connect Trakt, AniList, and Simkl from Linked Accounts.
 
 | Workflow | Existing API and acceptance |
 | --- | --- |
-| Read, disconnect, and allow writes | Lumen Linked Accounts uses the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Desktop and iPhone browser fixtures verify preference readback, a denied write, cancellation, and confirmed disconnection. Live provider and matched visual verification remain open. |
-| Trakt | Lumen completes the existing server-verified callback from Linked Accounts. Use the configured HTTPS application origin so the browser can return with its session and callback cookies. Server tests cover Classic PKCE and bundled and standalone return routing. Desktop and iPhone fixtures cover account-owner linking and single-use completion. Live provider and matched visual verification remain open. |
-| AniList | Lumen opens the provider authorization URL and submits the returned code through the completion endpoint. Desktop and iPhone browser fixtures cover successful readback, clearing the code on cancellation, and keeping the code out of the URL. Live provider and matched visual verification remain open. |
-| Simkl | Lumen displays the device code and expiry, then polls at the server's interval. Polling stops on expiry, cancellation, account change, or unmount. Desktop and iPhone fixtures cover cancellation, a changed polling interval, and account readback after approval. Live provider and matched visual verification remain open. |
+| Read, disconnect, and allow writes | Lumen Linked Accounts uses the authenticated discovery accounts endpoint and provider-specific delete and preference operations. Desktop and iPhone browser fixtures verify preference readback, a denied write, cancellation, and confirmed disconnection. Matched visual verification is recorded below; live provider verification remains open. |
+| Trakt | Lumen completes the existing server-verified callback from Linked Accounts. Use the configured HTTPS application origin so the browser can return with its session and callback cookies. Server tests cover Classic PKCE and bundled and standalone return routing. Desktop and iPhone fixtures cover account-owner linking and single-use completion. Matched visual verification is recorded below; live provider verification remains open. |
+| AniList | Lumen opens the provider authorization URL and submits the returned code through the completion endpoint. Desktop and iPhone browser fixtures cover successful readback, clearing the code on cancellation, and keeping the code out of the URL. Matched visual verification is recorded below; live provider verification remains open. |
+| Simkl | Lumen displays the device code and expiry, then polls at the server's interval. Polling stops on expiry, cancellation, account change, or unmount. Desktop and iPhone fixtures cover cancellation, a changed polling interval, and account readback after approval. Matched visual verification is recorded below; live provider verification remains open. |
 
 The shared server routes live in `server/routes/discoveryIntegrations.ts`.
 Classic's account controls are in `src/components/DiscoveryIntegrations/Accounts.tsx`.
 The Linked Accounts and My Media browser suites run against both the standalone
 build and the production bundle served by Express at `/lumen/`. Desktop and
 iPhone cases cover the provider round trips, library selection and pagination,
-private matches, and tracking updates using fixture API responses. Live provider
-effects and matched visual acceptance remain unverified.
+private matches, and tracking updates using fixture API responses. Linked
+Accounts English baseline captures from `c86e57bde` and the French and Arabic
+candidate captures from `e350c6dce` were compared at matching desktop (1440 ×
+900) and iPhone (390 CSS-pixel width) viewports. Translated labels wrap within
+the existing controls, and the browser fixtures confirm no horizontal overflow.
+Live provider effects remain unverified. Screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-linked-accounts-visual-20261122/`.
 
 ### Game Finder verification
 
