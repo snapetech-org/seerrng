@@ -51,15 +51,26 @@ import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 
-const statOf = (g: Game): Stat => {
+type Translate = ReturnType<typeof useLumenLocale>['t'];
+
+const categoryMessages = {
+  game: 'lumen.gameLibrary.pcGames',
+  retro: 'lumen.gameLibrary.retroConsoles',
+  modern: 'lumen.gameLibrary.modernConsoles',
+} as const;
+
+const categoryLabel = (category: GameCategory, t: Translate) =>
+  t(categoryMessages[category], GAME_LABEL[category]);
+
+const statOf = (g: Game, t: Translate): Stat => {
   const w = gameState(g);
   return !w
     ? null
     : w === 'In library'
-      ? { k: 'ok', word: w, ico: 'check' }
+      ? { k: 'ok', word: t('lumen.status.inLibrary', w), ico: 'check' }
       : w === 'Downloading'
-        ? { k: 'dl', word: w, ico: 'down' }
-        : { k: 'wait', word: w, ico: 'clock' };
+        ? { k: 'dl', word: t('lumen.status.downloading', w), ico: 'down' }
+        : { k: 'wait', word: t('lumen.status.requested', w), ico: 'clock' };
 };
 
 // the software catalogue pages by offset when browsing and by cursor when searching
@@ -183,6 +194,7 @@ export function SoftwareBookmark() {
 
 export function Games() {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const x = useExtras();
   const [p, setP] = useSearchParams();
   const { key: locationKey } = useLocation();
@@ -220,39 +232,52 @@ export function Games() {
   return (
     <ExtraGate k="game">
       <ExtraHeader
-        title="Games"
+        title={t('lumen.games.catalogTitle', 'Games')}
         sub={
           cat === 'game'
-            ? 'PC games. Pick your system when you request.'
-            : 'Pick the console when you request; it arrives ready for your emulator.'
+            ? t(
+                'lumen.games.pcRequestHint',
+                'PC games. Pick your system when you request.'
+              )
+            : t(
+                'lumen.games.consoleRequestHint',
+                'Pick the console when you request; it arrives ready for your emulator.'
+              )
         }
       >
         <div className="toolbar">
           {canUseRequestAccess(user?.permissions) && (
             <>
               <Link className="chip" to="/patches">
-                Translations and Hacks
+                {t(
+                  'lumen.games.translationsAndHacks',
+                  'Translations and Hacks'
+                )}
               </Link>
               {x.games.includes('game') && (
                 <Link className="chip" to="/games/discovery">
-                  Game Finder
+                  {t('lumen.gameFinder.title', 'Game Finder')}
                 </Link>
               )}
             </>
           )}
           <Link className="chip" to="/game-library">
-            My Games
+            {t('lumen.gameLibrary.myGames', 'My Games')}
           </Link>
         </div>
         {x.games.length > 1 && (
-          <div className="seg wide" role="group" aria-label="Platform">
+          <div
+            className="seg wide"
+            role="group"
+            aria-label={t('lumen.games.platformGroup', 'Platform')}
+          >
             {x.games.map((c) => (
               <button
                 key={c}
                 aria-pressed={cat === c}
                 onClick={() => setCat(c)}
               >
-                {GAME_LABEL[c]}
+                {categoryLabel(c, t)}
               </button>
             ))}
           </div>
@@ -264,9 +289,9 @@ export function Games() {
           }
           placeholder={
             {
-              game: 'Search PC games…',
-              retro: 'Search retro games…',
-              modern: 'Search console games…',
+              game: t('lumen.games.searchPc', 'Search PC games…'),
+              retro: t('lumen.games.searchRetro', 'Search retro games…'),
+              modern: t('lumen.games.searchConsole', 'Search console games…'),
             }[cat || 'game']
           }
         />
@@ -276,8 +301,11 @@ export function Games() {
         <GridSkeleton />
       ) : !cat ? (
         <ServiceNote
-          error="None of the game catalogues answered."
-          what="games"
+          error={t(
+            'lumen.games.catalogueUnavailable',
+            'None of the game catalogues answered.'
+          )}
+          what={t('lumen.games.catalogueWhat', 'games')}
           retry={x.recheckGames}
         />
       ) : (
@@ -289,7 +317,8 @@ export function Games() {
           />
           {!list.error && !list.items.length && !list.loading && (
             <div className="empty">
-              <b>No games found</b>Try the game’s full title.
+              <b>{t('lumen.games.noGamesFound', 'No games found')}</b>
+              {t('lumen.games.tryFullTitle', 'Try the game’s full title.')}
             </div>
           )}
         </>
@@ -302,7 +331,7 @@ export function Games() {
             img={g.coverUrl}
             title={g.title}
             icon="game"
-            stat={statOf(g)}
+            stat={statOf(g, t)}
             meta={[(g.releaseDate || '').slice(0, 4), g.genres?.[0]]
               .filter(Boolean)
               .join(' · ')}
@@ -452,7 +481,7 @@ function GameDetailView({
       setAddingToLibrary(false);
     }
   };
-  const s = statOf(g);
+  const s = statOf(g, t);
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
   const sys = system
     ? (systems.find(({ slug }) => slug === system)?.slug ?? '')
@@ -555,7 +584,7 @@ function GameDetailView({
           title={g.title}
           line={[
             (g.releaseDate || '').slice(0, 4),
-            GAME_LABEL[cat],
+            categoryLabel(cat, t),
             g.genres.slice(0, 3).join(', '),
           ]}
         />
@@ -838,7 +867,7 @@ function GameDetailView({
         <div className="actionbar">
           <span className="ab-meta">
             <b>{g.title}</b>
-            {GAME_LABEL[cat]}
+            {categoryLabel(cat, t)}
           </span>
           {main}
         </div>

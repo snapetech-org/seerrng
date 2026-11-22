@@ -5876,6 +5876,20 @@ export const localeData = [
       'lumen.requests.episodeQueue.accountDefault': 'إعداد الحساب الافتراضي',
       'lumen.requests.episodeQueue.oneEpisode': 'حلقة واحدة',
       'lumen.requests.episodeQueue.multipleEpisodes': '{count} حلقات',
+      'lumen.games.catalogTitle': 'الألعاب',
+      'lumen.games.pcRequestHint':
+        'ألعاب الكمبيوتر. اختر نظام التشغيل عند تقديم الطلب.',
+      'lumen.games.consoleRequestHint':
+        'اختر وحدة التحكم عند تقديم الطلب؛ وستصل اللعبة جاهزة للمحاكي.',
+      'lumen.games.translationsAndHacks': 'الترجمات والتعديلات',
+      'lumen.games.platformGroup': 'المنصة',
+      'lumen.games.searchPc': 'ابحث عن ألعاب الكمبيوتر…',
+      'lumen.games.searchRetro': 'ابحث عن ألعاب قديمة…',
+      'lumen.games.searchConsole': 'ابحث عن ألعاب أجهزة الألعاب…',
+      'lumen.games.catalogueUnavailable': 'لم يستجب أي من كتالوجات الألعاب.',
+      'lumen.games.catalogueWhat': 'الألعاب',
+      'lumen.games.noGamesFound': 'لم يتم العثور على ألعاب',
+      'lumen.games.tryFullTitle': 'جرّب كتابة اسم اللعبة كاملاً.',
     },
   },
   {
@@ -15724,6 +15738,21 @@ export const localeData = [
       'lumen.requests.episodeQueue.accountDefault': 'the account default',
       'lumen.requests.episodeQueue.oneEpisode': '1 episode',
       'lumen.requests.episodeQueue.multipleEpisodes': '{count} episodes',
+      'lumen.games.catalogTitle': 'Games',
+      'lumen.games.pcRequestHint':
+        'PC games. Pick your system when you request.',
+      'lumen.games.consoleRequestHint':
+        'Pick the console when you request; it arrives ready for your emulator.',
+      'lumen.games.translationsAndHacks': 'Translations and Hacks',
+      'lumen.games.platformGroup': 'Platform',
+      'lumen.games.searchPc': 'Search PC games…',
+      'lumen.games.searchRetro': 'Search retro games…',
+      'lumen.games.searchConsole': 'Search console games…',
+      'lumen.games.catalogueUnavailable':
+        'None of the game catalogues answered.',
+      'lumen.games.catalogueWhat': 'games',
+      'lumen.games.noGamesFound': 'No games found',
+      'lumen.games.tryFullTitle': 'Try the game’s full title.',
     },
   },
   {
@@ -26501,6 +26530,21 @@ export const localeData = [
         'le réglage par défaut du compte',
       'lumen.requests.episodeQueue.oneEpisode': '1 épisode',
       'lumen.requests.episodeQueue.multipleEpisodes': '{count} épisodes',
+      'lumen.games.catalogTitle': 'Jeux',
+      'lumen.games.pcRequestHint':
+        'Jeux PC. Choisissez votre système lors de la demande.',
+      'lumen.games.consoleRequestHint':
+        'Choisissez la console lors de la demande ; le jeu sera prêt pour votre émulateur.',
+      'lumen.games.translationsAndHacks': 'Traductions et modifications',
+      'lumen.games.platformGroup': 'Plateforme',
+      'lumen.games.searchPc': 'Rechercher des jeux PC…',
+      'lumen.games.searchRetro': 'Rechercher des jeux rétro…',
+      'lumen.games.searchConsole': 'Rechercher des jeux sur console…',
+      'lumen.games.catalogueUnavailable':
+        'Aucun catalogue de jeux n’a répondu.',
+      'lumen.games.catalogueWhat': 'jeux',
+      'lumen.games.noGamesFound': 'Aucun jeu trouvé',
+      'lumen.games.tryFullTitle': 'Essayez le titre complet du jeu.',
     },
   },
   {

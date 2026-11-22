@@ -6706,3 +6706,18 @@ and candidate captures were inspected at 1440 and 390 CSS pixels; French and
 Arabic candidate renders were also inspected. Standalone and bundled production
 builds compile. API behavior is unchanged. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-about-parity-20261122/`.
+
+### Games catalog localization
+
+The Games catalog now localizes its page heading and request guidance, shortcut
+links, platform group and tabs, search prompts, catalogue-unavailable message,
+empty state, and game status/category labels in English, French, and Arabic.
+Catalog queries, platform selection, permissions, and request behavior are
+unchanged. Twelve browser cases cover locale content, shortcuts, platform
+switching, search, empty results, RTL direction, and overflow across desktop,
+iPhone, Android, and tablet. Matching baseline and candidate desktop and phone
+captures were inspected; candidate French and Arabic renders were also reviewed.
+The game detail request form still has untranslated controls and is tracked as a
+remaining parity gap. Live service behavior and independent linguistic review
+remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/`.

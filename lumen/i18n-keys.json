@@ -4806,5 +4806,17 @@
   "lumen.requests.episodeQueue.conflict",
   "lumen.requests.episodeQueue.accountDefault",
   "lumen.requests.episodeQueue.oneEpisode",
-  "lumen.requests.episodeQueue.multipleEpisodes"
+  "lumen.requests.episodeQueue.multipleEpisodes",
+  "lumen.games.catalogTitle",
+  "lumen.games.pcRequestHint",
+  "lumen.games.consoleRequestHint",
+  "lumen.games.translationsAndHacks",
+  "lumen.games.platformGroup",
+  "lumen.games.searchPc",
+  "lumen.games.searchRetro",
+  "lumen.games.searchConsole",
+  "lumen.games.catalogueUnavailable",
+  "lumen.games.catalogueWhat",
+  "lumen.games.noGamesFound",
+  "lumen.games.tryFullTitle"
 ]
