@@ -5975,3 +5975,20 @@ session-creation payload and no horizontal overflow. The production Vite build
 and i18n catalog checks pass. Matched native baseline screenshots, bundled
 Express mount, live multi-user provider behavior, fixed-navigation overlap on
 tall mobile pages, and independent linguistic review remain open.
+
+### Book Series Search localization
+
+Lumen's Book Series Search route now follows the saved English, French, or
+Arabic locale for its search controls, service availability and result states,
+source labels, retry action, and result links. Query parameters and result
+navigation remain unchanged.
+
+Twelve saved-locale cases pass across desktop, iPhone, Android, and tablet; the
+existing series search and manager/member request-queue tests also pass in all
+four viewports (24 cases total). The production build and i18n check pass.
+English baseline and candidate screenshots match pixel-for-pixel at 1440 × 900
+and 390 × 844. French desktop and Arabic phone screenshots were inspected for
+label wrapping, RTL, and overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/book-series-baseline/`.
+Bundled Express mount, live provider behavior, and independent linguistic
+review remain open.

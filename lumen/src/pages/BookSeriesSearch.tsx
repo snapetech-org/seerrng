@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { bookSeriesCatalogQuery } from './BookSeriesCatalog';
 
 type Result = {
@@ -28,14 +29,17 @@ function resultLink(result: Result) {
 }
 
 export default function BookSeriesSearch() {
+  const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const query = (params.get('query') ?? '').trim();
   const format = params.get('format') ?? '';
   return (
     <>
-      <ExtraHeader title="Find a Book Series">
+      <ExtraHeader
+        title={t('lumen.bookSeries.findTitle', 'Find a Book Series')}
+      >
         <Link className="chip" to="/book-series/requests">
-          Book Series Requests
+          {t('lumen.bookSeries.requests', 'Book Series Requests')}
         </Link>
       </ExtraHeader>
       <form
@@ -53,7 +57,7 @@ export default function BookSeriesSearch() {
         }}
       >
         <label className="sel">
-          Series Name
+          {t('lumen.bookSeries.seriesName', 'Series Name')}
           <input
             className="cfg-input"
             type="search"
@@ -65,15 +69,21 @@ export default function BookSeriesSearch() {
           />
         </label>
         <label className="sel">
-          Format
+          {t('lumen.bookSeries.format', 'Format')}
           <select name="format" defaultValue={format}>
-            <option value="">All Formats</option>
-            <option value="ebook">Ebooks</option>
-            <option value="audiobook">Audiobooks</option>
+            <option value="">
+              {t('lumen.bookSeries.allFormats', 'All Formats')}
+            </option>
+            <option value="ebook">
+              {t('lumen.bookSeries.ebooks', 'Ebooks')}
+            </option>
+            <option value="audiobook">
+              {t('lumen.bookSeries.audiobooks', 'Audiobooks')}
+            </option>
           </select>
         </label>
         <button className="btn btn-primary" type="submit">
-          Search Series
+          {t('lumen.bookSeries.search', 'Search Series')}
         </button>
       </form>
       <BookSeriesResults query={query} format={format} />
@@ -90,6 +100,7 @@ export function BookSeriesResults({
   format?: string;
   limit?: number;
 }) {
+  const { t } = useLumenLocale();
   const path =
     query.length >= 2 && query.length <= 200
       ? '/book-series/search?' +
@@ -112,34 +123,57 @@ export function BookSeriesResults({
         error={
           search.error ||
           (search.data && (!results || search.data.status === 'unavailable')
-            ? 'Series search is unavailable.'
+            ? t(
+                'lumen.bookSeries.searchUnavailable',
+                'Series search is unavailable.'
+              )
             : null)
         }
-        what="book series search"
+        what={t('lumen.bookSeries.searchWhat', 'book series search')}
+        title={t(
+          'lumen.bookSeries.searchLoadFailed',
+          'Could not load book series search'
+        )}
+        retryLabel={t('lumen.bookSeries.retry', 'Retry')}
         retry={search.reload}
       />
       {path && !search.data && !search.error && (
         <p className="note" role="status">
-          Searching for series…
+          {t('lumen.bookSeries.searching', 'Searching for series…')}
         </p>
       )}
       {search.data?.status === 'partial' && (
-        <p className="note">Some book services could not be searched.</p>
+        <p className="note">
+          {t(
+            'lumen.bookSeries.partial',
+            'Some book services could not be searched.'
+          )}
+        </p>
       )}
       {search.data?.status === 'disabled' && (
-        <p className="note">Book series search is disabled.</p>
+        <p className="note">
+          {t('lumen.bookSeries.disabled', 'Book series search is disabled.')}
+        </p>
       )}
       {search.data?.status === 'unsupported' && (
         <p className="note">
-          No configured services support book series search.
+          {t(
+            'lumen.bookSeries.unsupported',
+            'No configured services support book series search.'
+          )}
         </p>
       )}
       {search.data?.status === 'ok' && results?.length === 0 && (
-        <p className="note">No series found.</p>
+        <p className="note">
+          {t('lumen.bookSeries.noResults', 'No series found.')}
+        </p>
       )}
       {search.data?.truncated && (
         <p className="note">
-          Some results were omitted. Try a more specific title.
+          {t(
+            'lumen.bookSeries.truncated',
+            'Some results were omitted. Try a more specific title.'
+          )}
         </p>
       )}
       <ul className="setlist">
@@ -156,16 +190,22 @@ export function BookSeriesResults({
                   <b>{result.title}</b>
                   <p className="note">
                     {result.serverName} · {result.format} ·{' '}
-                    {result.source === 'library' ? 'Library' : 'Catalog'}
+                    {result.source === 'library'
+                      ? t('lumen.bookSeries.library', 'Library')
+                      : t('lumen.bookSeries.catalog', 'Catalog')}
                   </p>
                 </div>
                 {href && (
                   <Link
                     className="go"
                     to={href}
-                    aria-label={`Open ${result.title} from ${result.serverName}`}
+                    aria-label={t(
+                      'lumen.bookSeries.openFromTitle',
+                      'Open {title} from {service}',
+                      { title: result.title, service: result.serverName }
+                    )}
                   >
-                    Open
+                    {t('lumen.bookSeries.open', 'Open')}
                   </Link>
                 )}
               </li>
