@@ -4831,5 +4831,15 @@
   "lumen.games.waitingApproval",
   "lumen.games.requestedTitle",
   "lumen.games.quotaReached",
-  "lumen.games.gameWhat"
+  "lumen.games.gameWhat",
+  "lumen.sports.followed",
+  "lumen.sports.catalogTitle",
+  "lumen.sports.catalogHint",
+  "lumen.sports.searchPlaceholder",
+  "lumen.sports.teamFollows",
+  "lumen.sports.catalogWhat",
+  "lumen.sports.searchLeague",
+  "lumen.sports.trySearch",
+  "lumen.sports.noLeagues",
+  "lumen.sports.tryFullName"
 ]

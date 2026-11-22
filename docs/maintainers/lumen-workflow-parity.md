@@ -6717,9 +6717,8 @@ unchanged. Twelve browser cases cover locale content, shortcuts, platform
 switching, search, empty results, RTL direction, and overflow across desktop,
 iPhone, Android, and tablet. Matching baseline and candidate desktop and phone
 captures were inspected; candidate French and Arabic renders were also reviewed.
-The game detail request form still has untranslated controls and is tracked as a
-remaining parity gap. Live service behavior and independent linguistic review
-remain unverified. Evidence is retained at
+Live service behavior and independent linguistic review remain unverified.
+Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/`.
 
 The PC game detail request form now localizes its operating-system and build
@@ -6736,3 +6735,17 @@ Android, and tablet. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-baseline/`
 and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-candidate/`.
+
+### Sports catalog localization
+
+The Sports catalog now localizes its heading and guidance, search placeholder,
+team follows link, search-first empty state, no-results recovery text, and
+followed/requested card status in English, French, and Arabic. Search query
+handling, league routes, provider calls, and request permissions are unchanged.
+The browser fixture covers initial and no-results states, RTL direction, and
+viewport overflow across desktop, iPhone, Android, and tablet. Matched French
+desktop and iPhone baseline and candidate captures were inspected; candidate
+Arabic was also reviewed. League detail and follow-sheet copy remain separate
+parity gaps. Live Sportarr behavior and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-sports-catalog-localization-20261122/`.

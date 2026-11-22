@@ -34,19 +34,28 @@ import {
   type Scene,
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { useLiveTvStatus } from '../liveTv';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 
 // Sportarr knows whether a league is followed even before SeerrNG has a request for it
-const leagueStat = (l: League): Stat =>
+const leagueStat = (
+  l: League,
+  t: ReturnType<typeof useLumenLocale>['t']
+): Stat =>
   extraStat(l.mediaInfo) ||
   (l.libraryState === 'monitored'
-    ? { k: 'ok', word: 'Followed', ico: 'check' }
+    ? { k: 'ok', word: t('lumen.sports.followed', 'Followed'), ico: 'check' }
     : l.libraryState === 'requested'
-      ? { k: 'wait', word: 'Requested', ico: 'clock' }
+      ? {
+          k: 'wait',
+          word: t('lumen.status.requested', 'Requested'),
+          ico: 'clock',
+        }
       : null);
 
 export function LeagueCard({ league: l }: { league: League }) {
+  const { t } = useLumenLocale();
   return (
     <ExtraCard
       href={`/sportarr/${encodeURIComponent(l.id)}`}
@@ -54,7 +63,7 @@ export function LeagueCard({ league: l }: { league: League }) {
       title={l.title}
       shape="sq"
       icon="trophy"
-      stat={leagueStat(l)}
+      stat={leagueStat(l, t)}
       meta={[l.sport, l.country].filter(Boolean).join(' · ')}
     />
   );
@@ -84,6 +93,7 @@ function useSearchBox() {
 
 // ---- sports: Sportarr leagues; requesting one follows the league's events ----
 export function Sports() {
+  const { t } = useLumenLocale();
   const liveTv = useLiveTvStatus();
   const { q, setQ, query } = useSearchBox();
   // Sportarr has no browse feed: the page starts with a search
@@ -93,34 +103,42 @@ export function Sports() {
   return (
     <ExtraGate k="sports">
       <ExtraHeader
-        title="Sports"
-        sub="Find a league or competition and follow it; events are recorded as they happen."
+        title={t('lumen.sports.catalogTitle', 'Sports')}
+        sub={t(
+          'lumen.sports.catalogHint',
+          'Find a league or competition and follow it; events are recorded as they happen.'
+        )}
       >
         <ExtraSearch
           value={q}
           onChange={setQ}
-          placeholder="Search leagues — Premier League, NFL, F1…"
+          placeholder={t(
+            'lumen.sports.searchPlaceholder',
+            'Search leagues — Premier League, NFL, F1…'
+          )}
         />
       </ExtraHeader>
       {liveTv.data?.configured && (
         <div className="toolbar">
           <Link className="btn btn-tonal btn-sm" to="/recordings">
-            Team Follows and Recordings
+            {t('lumen.sports.teamFollows', 'Team Follows and Recordings')}
           </Link>
         </div>
       )}
       <ServiceNote
         error={list.items.length ? null : list.error}
-        what="sports"
+        what={t('lumen.sports.catalogWhat', 'sports')}
       />
       {!query && !list.error && (
         <div className="empty">
-          <b>Search for a league</b>Try a sport, a league or a country.
+          <b>{t('lumen.sports.searchLeague', 'Search for a league')}</b>
+          {t('lumen.sports.trySearch', 'Try a sport, a league or a country.')}
         </div>
       )}
       {!!query && !list.error && !list.items.length && !list.loading && (
         <div className="empty">
-          <b>No leagues found</b>Try the league’s full name.
+          <b>{t('lumen.sports.noLeagues', 'No leagues found')}</b>
+          {t('lumen.sports.tryFullName', 'Try the league’s full name.')}
         </div>
       )}
       <div className="sqg grid">
@@ -291,6 +309,7 @@ function LeagueRequestSheet({
   done: () => void;
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
@@ -314,7 +333,7 @@ function LeagueRequestSheet({
   );
   const target =
     advanced && serviceId !== undefined ? destination.data : league;
-  const status = target && !target.requestable ? leagueStat(target) : null;
+  const status = target && !target.requestable ? leagueStat(target, t) : null;
   const quota = useVideoRequestQuota('tv');
   const restricted = quota.status?.restricted;
   const unavailable = services.data?.length === 0;
@@ -423,6 +442,7 @@ function LeagueRequestSheet({
 export function LeagueDetail() {
   const { id = '' } = useParams();
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const [requesting, setRequesting] = useState(false);
   const [requested, setRequested] = useState('');
   const bits = user?.permissions ?? 0;
@@ -445,7 +465,7 @@ export function LeagueDetail() {
       </ExtraGate>
     );
   if (!l) return <div className="detail-loading" aria-busy="true" />;
-  const s = leagueStat(l);
+  const s = leagueStat(l, t);
   const choosingService = canChooseRequestOptions(user?.permissions);
   const main =
     mayRequest && requested !== id && (l.requestable || choosingService) ? (

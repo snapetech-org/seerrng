@@ -3801,7 +3801,17 @@
     "lumen.games.waitingApproval": "Waiting for approval",
     "lumen.games.requestedTitle": "Requested {title}",
     "lumen.games.quotaReached": "You’ve reached your game request limit.",
-    "lumen.games.gameWhat": "this game"
+    "lumen.games.gameWhat": "this game",
+    "lumen.sports.followed": "Followed",
+    "lumen.sports.catalogTitle": "Sports",
+    "lumen.sports.catalogHint": "Find a league or competition and follow it; events are recorded as they happen.",
+    "lumen.sports.searchPlaceholder": "Search leagues — Premier League, NFL, F1…",
+    "lumen.sports.teamFollows": "Team Follows and Recordings",
+    "lumen.sports.catalogWhat": "sports",
+    "lumen.sports.searchLeague": "Search for a league",
+    "lumen.sports.trySearch": "Try a sport, a league or a country.",
+    "lumen.sports.noLeagues": "No leagues found",
+    "lumen.sports.tryFullName": "Try the league’s full name."
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7764,7 +7774,17 @@
     "lumen.games.waitingApproval": "En attente d’approbation",
     "lumen.games.requestedTitle": "Demande envoyée : {title}",
     "lumen.games.quotaReached": "Vous avez atteint votre limite de demandes de jeux.",
-    "lumen.games.gameWhat": "ce jeu"
+    "lumen.games.gameWhat": "ce jeu",
+    "lumen.sports.followed": "Suivie",
+    "lumen.sports.catalogTitle": "Sports",
+    "lumen.sports.catalogHint": "Trouvez une ligue ou une compétition et suivez-la ; les événements sont enregistrés au fur et à mesure.",
+    "lumen.sports.searchPlaceholder": "Rechercher une ligue — Premier League, NFL, F1…",
+    "lumen.sports.teamFollows": "Suivis d’équipes et enregistrements",
+    "lumen.sports.catalogWhat": "sports",
+    "lumen.sports.searchLeague": "Rechercher une ligue",
+    "lumen.sports.trySearch": "Essayez un sport, une ligue ou un pays.",
+    "lumen.sports.noLeagues": "Aucune ligue trouvée",
+    "lumen.sports.tryFullName": "Essayez le nom complet de la ligue."
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11731,6 +11751,16 @@
     "lumen.games.waitingApproval": "بانتظار الموافقة",
     "lumen.games.requestedTitle": "تم طلب {title}",
     "lumen.games.quotaReached": "لقد وصلت إلى الحد الأقصى لطلبات الألعاب.",
-    "lumen.games.gameWhat": "هذه اللعبة"
+    "lumen.games.gameWhat": "هذه اللعبة",
+    "lumen.sports.followed": "تمت متابعتها",
+    "lumen.sports.catalogTitle": "الرياضة",
+    "lumen.sports.catalogHint": "اعثر على دوري أو بطولة وتابعها؛ وسيتم تسجيل الأحداث فور وقوعها.",
+    "lumen.sports.searchPlaceholder": "ابحث عن دوري — Premier League أو NFL أو F1…",
+    "lumen.sports.teamFollows": "متابعات الفرق والتسجيلات",
+    "lumen.sports.catalogWhat": "الرياضة",
+    "lumen.sports.searchLeague": "ابحث عن دوري",
+    "lumen.sports.trySearch": "جرّب اسم رياضة أو دوري أو بلد.",
+    "lumen.sports.noLeagues": "لم يتم العثور على دوريات",
+    "lumen.sports.tryFullName": "جرّب كتابة الاسم الكامل للدوري."
   }
 }
