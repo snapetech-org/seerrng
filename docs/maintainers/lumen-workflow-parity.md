@@ -6639,3 +6639,22 @@ the final batch is still loading. This fixture verifies client behavior, not
 the reporter's live metadata provider or reverse-proxy timeout. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-large-series-episode-batching-20261122/`.
+
+### General and request-default administration navigation
+
+General Settings and Request Defaults now translate their cross-page
+navigation labels in English, French, and Arabic. Request Defaults also passes
+a localized service-description label into its recoverable settings note. The
+existing routes, permissions, settings endpoints, and save behavior are
+unchanged. The browser fixture now follows the current route ownership: request
+policy and quotas are tested on Request Defaults, while API-key controls remain
+on General Settings.
+
+Twelve standalone and twelve bundled `/lumen/` browser cases pass across the
+three locales and desktop, iPhone, Android, and tablet. French baseline and
+candidate captures cover both routes at 1440 and 390 CSS pixels; longer labels
+wrap within the existing navigation and page layout, with no page-level
+horizontal overflow. The fixture validates mocked settings writes and retries;
+live administrator settings and independent linguistic review remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-acceptance-20261122/`.

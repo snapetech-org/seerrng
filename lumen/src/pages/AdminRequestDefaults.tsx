@@ -19,22 +19,24 @@ export default function AdminRequestDefaults() {
   return (
     <>
       <header className="ph">
-        <h1>{t('lumen.adminGeneral.requestDefaults.title', 'Request Defaults')}</h1>
+        <h1>
+          {t('lumen.adminGeneral.requestDefaults.title', 'Request Defaults')}
+        </h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {t('lumen.admin.title', 'Administration')}
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/users">
-            Users
+            {t('lumen.adminUsers.title', 'Users')}
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/categories">
-            Media Categories
+            {t('lumen.adminGeneral.mediaCategories', 'Media Categories')}
           </Link>
         </div>
       </header>
       <ServiceNote
         error={settings.error}
-        what="request settings"
+        what={t('lumen.adminGeneral.requestSettings.what', 'request settings')}
         retry={settings.reload}
       />
       <InstanceRequestSettings

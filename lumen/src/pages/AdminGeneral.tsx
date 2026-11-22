@@ -415,10 +415,10 @@ export default function AdminGeneral() {
         <h1>{n('lumen.adminGeneral.title', 'General Settings')}</h1>
         <div className="toolbar">
           <Link className="btn btn-quiet btn-sm" to="/admin">
-            Administration
+            {n('lumen.admin.title', 'Administration')}
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/requests">
-            Request Defaults
+            {n('lumen.adminGeneral.requestDefaults.title', 'Request Defaults')}
           </Link>
           <Link className="btn btn-quiet btn-sm" to="/admin/categories">
             {n('lumen.adminGeneral.mediaCategories', 'Media Categories')}

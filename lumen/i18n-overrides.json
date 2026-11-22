@@ -3775,7 +3775,8 @@
     "lumen.requests.episodeQueue.conflict": "This request is no longer eligible for that queue setting. Reload the request and try again.",
     "lumen.requests.episodeQueue.accountDefault": "the account default",
     "lumen.requests.episodeQueue.oneEpisode": "1 episode",
-    "lumen.requests.episodeQueue.multipleEpisodes": "{count} episodes"
+    "lumen.requests.episodeQueue.multipleEpisodes": "{count} episodes",
+    "lumen.adminGeneral.requestSettings.what": "request settings"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7712,7 +7713,8 @@
     "lumen.requests.episodeQueue.conflict": "Cette demande ne peut plus utiliser ce réglage. Rechargez la demande et réessayez.",
     "lumen.requests.episodeQueue.accountDefault": "le réglage par défaut du compte",
     "lumen.requests.episodeQueue.oneEpisode": "1 épisode",
-    "lumen.requests.episodeQueue.multipleEpisodes": "{count} épisodes"
+    "lumen.requests.episodeQueue.multipleEpisodes": "{count} épisodes",
+    "lumen.adminGeneral.requestSettings.what": "paramètres des demandes"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11653,6 +11655,7 @@
     "lumen.requests.episodeQueue.conflict": "لم يعد هذا الطلب مؤهلًا لإعداد القائمة هذا. أعد تحميل الطلب وحاول مجددًا.",
     "lumen.requests.episodeQueue.accountDefault": "إعداد الحساب الافتراضي",
     "lumen.requests.episodeQueue.oneEpisode": "حلقة واحدة",
-    "lumen.requests.episodeQueue.multipleEpisodes": "{count} حلقات"
+    "lumen.requests.episodeQueue.multipleEpisodes": "{count} حلقات",
+    "lumen.adminGeneral.requestSettings.what": "إعدادات الطلبات"
   }
 }

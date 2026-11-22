@@ -2,10 +2,14 @@ import { expect, test } from '@playwright/test';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const locale = process.env.LUMEN_ADMIN_GENERAL_LOCALE ?? 'en';
+const baseline = process.env.LUMEN_ADMIN_GENERAL_BASELINE === '1';
 const labels = {
   en: {
     title: 'General Settings',
-    back: 'Back to Account',
+    back: 'Administration',
+    requestDefaults: 'Request Defaults',
+    users: 'Users',
+    mediaCategories: 'Media Categories',
     field: 'Application Title',
     interface: 'Default Interface',
     save: 'Save Application Settings',
@@ -38,7 +42,10 @@ const labels = {
   },
   fr: {
     title: 'Paramètres généraux',
-    back: 'Retour au compte',
+    back: 'Administration',
+    requestDefaults: 'Paramètres par défaut des demandes',
+    users: 'Utilisateurs',
+    mediaCategories: 'Catégories de médias',
     field: 'Titre de l’application',
     interface: 'Interface par défaut',
     save: 'Enregistrer les paramètres de l’application',
@@ -72,7 +79,10 @@ const labels = {
   },
   ar: {
     title: 'الإعدادات العامة',
-    back: 'العودة إلى الحساب',
+    back: 'الإدارة',
+    requestDefaults: 'إعدادات الطلبات الافتراضية',
+    users: 'المستخدمون',
+    mediaCategories: 'فئات الوسائط',
     field: 'عنوان التطبيق',
     interface: 'الواجهة الافتراضية',
     save: 'حفظ إعدادات التطبيق',
@@ -211,7 +221,20 @@ test('general application settings localize and recover failed saves', async ({
 
   await page.goto(`${mount}/admin/general`);
   await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
-  await expect(page.getByRole('link', { name: text.back })).toBeVisible();
+  const adminLinkLabel = baseline ? 'Administration' : text.back;
+  const requestDefaultsLabel = baseline
+    ? 'Request Defaults'
+    : text.requestDefaults;
+  await expect(
+    page.getByRole('link', { name: adminLinkLabel, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: requestDefaultsLabel, exact: true })
+  ).toBeVisible();
+  const usersLinkLabel = baseline ? 'Users' : text.users;
+  const categoriesLinkLabel = baseline
+    ? 'Media Categories'
+    : text.mediaCategories;
   await expect(page.getByLabel(text.field, { exact: true })).toHaveValue(
     'SeerrNG'
   );
@@ -225,8 +248,29 @@ test('general application settings localize and recover failed saves', async ({
       path: `${process.env.LUMEN_ADMIN_GENERAL_CAPTURE}-${page.viewportSize()!.width}.png`,
       fullPage: true,
     });
-    if (locale === 'en') return;
   }
+  await page
+    .getByRole('link', { name: requestDefaultsLabel, exact: true })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: text.requestDefaults, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: adminLinkLabel, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: usersLinkLabel, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: categoriesLinkLabel, exact: true })
+  ).toBeVisible();
+  if (process.env.LUMEN_ADMIN_REQUEST_DEFAULTS_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_REQUEST_DEFAULTS_CAPTURE}-${page.viewportSize()!.width}.png`,
+      fullPage: false,
+    });
+  }
+  await page.goto(`${mount}/admin/general`);
 
   const field = page.getByLabel(text.field, { exact: true });
   await field.fill('Household SeerrNG');
@@ -292,6 +336,9 @@ test('general application settings localize and recover failed saves', async ({
     .click();
   await expect(page.getByRole('alert')).toContainText(text.mappingsError);
   expect(writes).toHaveLength(4);
+  await page
+    .getByRole('link', { name: requestDefaultsLabel, exact: true })
+    .click();
   await page.getByRole('checkbox', { name: text.enable4k }).uncheck();
   await page
     .getByRole('button', { name: text.requestSettingsSave, exact: true })
@@ -330,6 +377,7 @@ test('general application settings localize and recover failed saves', async ({
     )
   ).toBeVisible();
   expect(writes[6]).toEqual({ defaultPermissions: 0 });
+  await page.goto(`${mount}/admin/general`);
   const apiKeyPanel = page.locator('#apiKey');
   await expect(
     apiKeyPanel.getByRole('heading', { name: text.apiKeyTitle })

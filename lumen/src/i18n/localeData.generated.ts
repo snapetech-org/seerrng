@@ -2002,6 +2002,7 @@ export const localeData = [
       'lumen.adminGeneral.requestSettings.saveFailure':
         'تعذر حفظ إعدادات الطلب. حاول مجددًا.',
       'lumen.adminGeneral.requestSettings.saved': 'تم حفظ إعدادات الطلب.',
+      'lumen.adminGeneral.requestSettings.what': 'إعدادات الطلبات',
       'lumen.adminGeneral.requestSettings.title': 'إعدادات طلب المثيل',
       'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
         'تتبع توفر كل حلقة',
@@ -11846,6 +11847,7 @@ export const localeData = [
         'Could not save the instance request settings. Try again.',
       'lumen.adminGeneral.requestSettings.saved':
         'Instance request settings saved.',
+      'lumen.adminGeneral.requestSettings.what': 'request settings',
       'lumen.adminGeneral.requestSettings.title': 'Instance Request Settings',
       'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
         'Track Individual Episode Availability',
@@ -22231,6 +22233,7 @@ export const localeData = [
         'Impossible d’enregistrer les règles de demande. Réessayez.',
       'lumen.adminGeneral.requestSettings.saved':
         'Paramètres de demande de l’instance enregistrés.',
+      'lumen.adminGeneral.requestSettings.what': 'paramètres des demandes',
       'lumen.adminGeneral.requestSettings.title':
         'Paramètres de demande de l’instance',
       'lumen.adminGeneral.requestSettings.trackEpisodeAvailability':
