@@ -197,14 +197,13 @@ test('a large series selects all fifteen seasons and submits the whole-series re
   await expect(rows.nth(14)).toHaveAttribute('id', 'season-15');
   await rows.nth(14).scrollIntoViewIfNeeded();
   await page
-    .getByRole('button', { name: 'Entire series', exact: true })
+    .locator('.shortcuts')
+    .getByRole('button', { name: 'Request entire series', exact: true })
     .click();
   for (let index = 0; index < 15; index++)
     await expect(rows.nth(index)).toHaveAttribute('aria-checked', 'true');
-  const request = page.getByRole('button', {
-    name: 'Request entire series',
-    exact: true,
-  });
+  const request = page.locator('button.btn-primary:visible').first();
+  await expect(request).toHaveText('Request entire series');
   await expect(request).toBeEnabled();
   await request.click();
   await expect.poll(() => posts.length).toBe(1);
