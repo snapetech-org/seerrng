@@ -134,7 +134,7 @@ test('progressive requests start, stop, and restart the selected quality', async
   await expect(
     sheet.getByRole('button', { name: 'Start Queue' })
   ).toBeDisabled();
-  await sheet.getByLabel('Queue Quality').selectOption('4k');
+  await sheet.getByLabel('Quality').selectOption('4k');
   await sheet.getByLabel('Movies Ahead').selectOption('2');
   await sheet.getByRole('button', { name: 'Start Queue' }).click();
   await expect(
@@ -148,6 +148,103 @@ test('progressive requests start, stop, and restart the selected quality', async
     { bufferSize: 2, is4k: true },
     '?is4k=true',
     { bufferSize: 2, is4k: true },
+  ]);
+});
+
+test('collection queue controls and lifecycle feedback follow the saved locale', async ({
+  page,
+}, info) => {
+  let status: 'waiting' | 'stopped' | null = null;
+  const mutations: unknown[] = [];
+  const queue = (is4k: boolean) =>
+    status
+      ? {
+          collectionId: 30,
+          is4k,
+          bufferSize: 1,
+          status,
+          reason: null,
+          requested: 0,
+          watched: 1,
+          total: 1,
+        }
+      : null;
+
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2080 } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { movie4kEnabled: true } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Collection exemple',
+          parts: [{ id: 20, mediaType: 'movie', title: 'Film exemple' }],
+        },
+      });
+    if (path === '/collection/30/queue') {
+      if (request.method() === 'POST') {
+        const body = request.postDataJSON();
+        mutations.push(body);
+        const is4k = body.is4k === true;
+        status = 'waiting';
+        return route.fulfill({ status: 202, json: { queue: queue(is4k) } });
+      }
+      const is4k = url.searchParams.get('is4k') === 'true';
+      if (request.method() === 'DELETE') {
+        mutations.push(url.search);
+        status = 'stopped';
+        return route.fulfill({ status: 204 });
+      }
+      return route.fulfill({ json: { queue: queue(is4k) } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(`${mount}/collection/30`);
+  await page
+    .getByRole('button', {
+      name: /Queue Collection|Mettre la collection en file/,
+    })
+    .click();
+  const sheet = page.getByRole('dialog');
+  await page.screenshot({
+    path: info.outputPath('collection-queue-setup.png'),
+    animations: 'disabled',
+  });
+  await expect(sheet).toHaveAttribute(
+    'aria-label',
+    'Mettre la collection en file d’attente'
+  );
+  await expect(sheet.getByLabel('Qualité')).toHaveValue('hd');
+  await expect(sheet.getByLabel('Films d’avance')).toHaveValue('1');
+  await expect(
+    sheet.getByRole('button', { name: 'Démarrer la file' })
+  ).toBeEnabled();
+  await sheet.getByRole('button', { name: 'Démarrer la file' }).click();
+  await expect(sheet.getByText('En attente', { exact: true })).toBeVisible();
+  await expect(
+    sheet.getByText('Vus : 1 · demandes de la file : 0 · total : 1')
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('collection-queue-waiting.png'),
+    animations: 'disabled',
+  });
+  await sheet.getByRole('button', { name: 'Arrêter la file' }).click();
+  await expect(sheet.getByText('File arrêtée', { exact: true })).toBeVisible();
+  await sheet.getByRole('button', { name: 'Redémarrer la file' }).click();
+  await expect(sheet.getByText('En attente', { exact: true })).toBeVisible();
+  expect(mutations).toEqual([
+    { bufferSize: 1, is4k: false },
+    '?is4k=false',
+    { bufferSize: 1, is4k: false },
   ]);
 });
 

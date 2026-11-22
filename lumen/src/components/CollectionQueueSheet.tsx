@@ -3,16 +3,17 @@ import { createPortal } from 'react-dom';
 import { api, ApiError } from '../api';
 import { useAuth } from '../auth';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canRequest4k, canRequestMovies } from './detail';
 import { useDialog } from './useDialog';
 
-const STATUS = {
+const STATUS_FALLBACK = {
   active: 'Queue Active',
   waiting: 'Waiting',
   completed: 'All Movies Queued',
   stopped: 'Queue Stopped',
 };
-const REASONS = {
+const REASON_FALLBACK = {
   'playback-unlinked': 'Link your Plex, Jellyfin, or Emby account to continue.',
   'request-policy':
     'Review request access, quotas, Blocklist entries, or service settings. Pending requests still require approval.',
@@ -26,8 +27,8 @@ interface Queue {
   is4k: boolean;
   collectionId: number;
   bufferSize: 1 | 2;
-  status: keyof typeof STATUS;
-  reason: keyof typeof REASONS | null;
+  status: keyof typeof STATUS_FALLBACK;
+  reason: keyof typeof REASON_FALLBACK | null;
   requested: number;
   watched: number;
   total: number;
@@ -47,6 +48,7 @@ function QueueControls({
   canStart: boolean;
   onBusy: (busy: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
   const base = `/collection/${id}/queue`;
   const path = `${base}?is4k=${is4k}`;
   const [queue, setQueue] = useState<Queue | null>();
@@ -128,7 +130,10 @@ function QueueControls({
           [400, 403, 409, 503].includes(error.status) &&
           error.message.length <= 512
           ? error.message
-          : 'Could not confirm the change. Check the queue before trying again.'
+          : t(
+              'lumen.collectionQueue.confirmFailure',
+              'Could not confirm the change. Check the queue before trying again.'
+            )
       );
     } finally {
       changing.current = false;
@@ -142,26 +147,35 @@ function QueueControls({
     <>
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Movies Ahead</span>
+          <span className="lbl">
+            {t('lumen.collectionQueue.moviesAhead', 'Movies Ahead')}
+          </span>
           <select
-            aria-label="Movies Ahead"
+            aria-label={t('lumen.collectionQueue.moviesAhead', 'Movies Ahead')}
             value={bufferSize}
             disabled={busy || active}
             onChange={(event) => setBuffer(event.target.value === '2' ? 2 : 1)}
           >
-            <option value={1}>1 movie</option>
-            <option value={2}>2 movies</option>
+            <option value={1}>
+              {t('lumen.collectionQueue.oneMovie', '1 movie')}
+            </option>
+            <option value={2}>
+              {t('lumen.collectionQueue.twoMovies', '2 movies')}
+            </option>
           </select>
         </label>
       </div>
       {queue === undefined && !readError && (
         <p className="note" role="status">
-          Loading collection queue…
+          {t('lumen.collectionQueue.loading', 'Loading collection queue…')}
         </p>
       )}
       {readError && (
         <p className="note" role="alert">
-          Queue status could not be refreshed. Retrying…
+          {t(
+            'lumen.collectionQueue.refreshFailure',
+            'Queue status could not be refreshed. Retrying…'
+          )}
         </p>
       )}
       {writeError && (
@@ -171,24 +185,47 @@ function QueueControls({
       )}
       {queue && (
         <div role="status">
-          <b>{STATUS[queue.status]}</b>
+          <b>
+            {t(
+              `lumen.collectionQueue.status.${queue.status}`,
+              STATUS_FALLBACK[queue.status]
+            )}
+          </b>
           <p className="note">
-            {queue.watched} watched · {queue.requested} requested by this queue
-            · {queue.total} total
+            {t(
+              'lumen.collectionQueue.progress',
+              '{watched} watched · {requested} requested by this queue · {total} total',
+              {
+                watched: queue.watched,
+                requested: queue.requested,
+                total: queue.total,
+              }
+            )}
           </p>
-          {queue.reason && <p className="note">{REASONS[queue.reason]}</p>}
+          {queue.reason && (
+            <p className="note">
+              {t(
+                `lumen.collectionQueue.reason.${queue.reason}`,
+                REASON_FALLBACK[queue.reason]
+              )}
+            </p>
+          )}
         </div>
       )}
       {!canStart && !active && (
         <p className="note">
-          Movie request access and an enabled quality are required to start a
-          queue.
+          {t(
+            'lumen.collectionQueue.accessRequired',
+            'Movie request access and an enabled quality are required to start a queue.'
+          )}
         </p>
       )}
       {active && (
         <p className="note">
-          Stopping prevents future requests. Existing requests and downloaded
-          files stay in place.
+          {t(
+            'lumen.collectionQueue.stopExplanation',
+            'Stopping prevents future requests. Existing requests and downloaded files stay in place.'
+          )}
         </p>
       )}
       <div className="toolbar">
@@ -199,7 +236,11 @@ function QueueControls({
           }
           onClick={() => void change()}
         >
-          {active ? 'Stop Queue' : queue ? 'Restart Queue' : 'Start Queue'}
+          {active
+            ? t('lumen.collectionQueue.stop', 'Stop Queue')
+            : queue
+              ? t('lumen.collectionQueue.restart', 'Restart Queue')
+              : t('lumen.collectionQueue.start', 'Start Queue')}
         </button>
       </div>
     </>
@@ -215,6 +256,7 @@ export default function CollectionQueueSheet({
   title: string;
   close: () => void;
 }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
   const [is4k, setIs4k] = useState(false);
@@ -241,23 +283,27 @@ export default function CollectionQueueSheet({
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Queue Collection"
+        aria-label={t('lumen.collectionQueue.title', 'Queue Collection')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>Queue Collection</h2>
+            <h2>{t('lumen.collectionQueue.title', 'Queue Collection')}</h2>
             <p className="note">{title}</p>
           </header>
           <p className="note">
-            Request movies in release order as you watch, using your regular
-            request defaults. Already requested movies count toward the buffer.
+            {t(
+              'lumen.collectionQueue.description',
+              'Request movies in release order as you watch, using your regular request defaults. Already requested movies count toward the buffer.'
+            )}
           </p>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Quality</span>
+              <span className="lbl">
+                {t('lumen.collectionQueue.quality', 'Quality')}
+              </span>
               <select
-                aria-label="Queue Quality"
+                aria-label={t('lumen.collectionQueue.quality', 'Quality')}
                 disabled={busy}
                 value={is4k ? '4k' : 'hd'}
                 onChange={(event) => setIs4k(event.target.value === '4k')}
@@ -265,7 +311,12 @@ export default function CollectionQueueSheet({
                 <option value="hd">HD</option>
                 {(enabled4k || existing4k?.queue || is4k) && (
                   <option value="4k">
-                    {enabled4k ? '4K' : '4K (Existing Queue)'}
+                    {enabled4k
+                      ? '4K'
+                      : t(
+                          'lumen.collectionQueue.existing4k',
+                          '4K (Existing Queue)'
+                        )}
                   </option>
                 )}
               </select>
@@ -280,7 +331,7 @@ export default function CollectionQueueSheet({
           />
           <div className="pk-foot">
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
-              Close
+              {t('lumen.collectionQueue.close', 'Close')}
             </button>
           </div>
         </div>

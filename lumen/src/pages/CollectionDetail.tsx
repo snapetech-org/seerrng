@@ -247,7 +247,7 @@ function CollectionContent({ id }: { id: number }) {
               className="btn btn-quiet btn-sm"
               onClick={() => setQueueOpen(true)}
             >
-              Queue Collection
+              {t('lumen.collectionQueue.title', 'Queue Collection')}
             </button>
             {blocked > 0 && (
               <span className="dnote">
