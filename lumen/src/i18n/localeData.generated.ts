@@ -6365,6 +6365,93 @@ export const localeData = [
       'lumen.patches.keepOriginal': 'الاحتفاظ بالأصل',
       'lumen.patches.requestPatch': 'طلب التعديل',
       'lumen.patches.requestHistory': 'سجل الطلبات',
+      'lumen.curatedCollection.albums': 'ألبومات',
+      'lumen.curatedCollection.series': 'مسلسلات',
+      'lumen.curatedCollection.blocklistResult':
+        'أُضيف {added} إلى قائمة الحظر، وفشل {failed}.',
+      'lumen.curatedCollection.blocklistCollection': 'حظر المجموعة',
+      'lumen.curatedCollection.blocklistConfirmTitle':
+        'هل تريد حظر هذه المجموعة؟',
+      'lumen.curatedCollection.blocklistConfirmBody':
+        'سيتم حظر الطلبات الجديدة لـ {count} من {noun} المؤهلة في هذه المجموعة.',
+      'lumen.curatedCollection.releaseType': 'نوع الإصدار',
+      'lumen.curatedCollection.genre': 'النوع',
+      'lumen.curatedCollection.releaseYear': 'سنة الإصدار',
+      'lumen.curatedCollection.unknown': 'غير معروف',
+      'lumen.curatedCollection.releases': 'الإصدارات',
+      'lumen.curatedCollection.filters': 'عوامل تصفية المجموعة',
+      'lumen.curatedCollection.any': 'أي',
+      'lumen.curatedCollection.clearFilters': 'مسح عوامل التصفية',
+      'lumen.curatedCollection.noReleaseMatches':
+        'لا توجد إصدارات تطابق عوامل التصفية هذه.',
+      'lumen.curatedCollection.noReleases': 'لا تتوفر إصدارات في هذه المجموعة.',
+      'lumen.curatedCollection.refreshFailed': 'تعذر تحديث توفر المجموعة.',
+      'lumen.curatedCollection.discography': 'الأعمال الموسيقية',
+      'lumen.curatedCollection.seriesCollection': 'مجموعة المسلسلات',
+      'lumen.curatedCollection.thisCollection': 'هذه المجموعة',
+      'lumen.curatedCollection.loading': 'جارٍ تحميل المجموعة…',
+      'lumen.curatedCollection.releasesLower': 'إصدارات',
+      'lumen.curatedCollection.memberCount': '{count} {noun}',
+      'lumen.curatedCollection.watchTrailer': 'مشاهدة الإعلان',
+      'lumen.curatedCollection.backToAlbum': 'العودة إلى الألبوم',
+      'lumen.curatedCollection.checkingAvailability': 'جارٍ التحقق من التوفر…',
+      'lumen.curatedCollection.refreshAvailability': 'تحديث التوفر',
+      'lumen.curatedCollection.seriesInCollection': 'المسلسلات في هذه المجموعة',
+      'lumen.curatedCollection.noTitles': 'لا تتوفر عناوين في هذه المجموعة.',
+      'lumen.curatedCollection.notFound': 'لم يتم العثور على المجموعة.',
+      'lumen.collectionServer.add': 'إضافة إلى خادم الوسائط',
+      'lumen.collectionServer.remove': 'الإزالة من خادم الوسائط',
+      'lumen.collectionServer.addTitle': 'إضافة المجموعة إلى خادم الوسائط',
+      'lumen.collectionServer.removeTitle': 'إزالة المجموعة من خادم الوسائط',
+      'lumen.collectionServer.verified':
+        'تم التحقق من {verified} من أصل {count} مكتبة.',
+      'lumen.collectionServer.verifyFailed': 'تعذر التحقق من تغيير المجموعة.',
+      'lumen.collectionServer.availableCount': '{count} متاح',
+      'lumen.collectionServer.done': 'تم',
+      'lumen.collectionServer.cancel': 'إلغاء',
+      'lumen.musicCollectionRequests.submitFailed':
+        'تعذر إرسال طلبات الموسيقى.',
+      'lumen.musicCollectionRequests.title': 'طلب الإصدارات',
+      'lumen.musicCollectionRequests.services': 'خدمات الموسيقى',
+      'lumen.musicCollectionRequests.loadingServices':
+        'جارٍ تحميل خدمات الموسيقى…',
+      'lumen.musicCollectionRequests.noServices':
+        'لم يتم إعداد أي خدمة لطلبات الموسيقى.',
+      'lumen.musicCollectionRequests.result':
+        'تم طلب {requested}، وتخطي {skipped}، وفشل {failed}.',
+      'lumen.musicCollectionRequests.quality': 'الجودة',
+      'lumen.musicCollectionRequests.unavailable': 'متاح بهذه الجودة أو محظور',
+      'lumen.musicCollectionRequests.selected': 'تم تحديد {count} من {limit}',
+      'lumen.musicCollectionRequests.submit': 'طلب الإصدارات المحددة',
+      'lumen.musicCollectionRequests.close': 'إغلاق',
+      'lumen.tvCollectionRequests.sessionChanged': 'تغيرت الجلسة',
+      'lumen.tvCollectionRequests.requestFailed': 'فشل الطلب',
+      'lumen.tvCollectionRequests.title': 'طلب المسلسلات',
+      'lumen.tvCollectionRequests.result': 'تم طلب {requested}، وفشل {failed}.',
+      'lumen.tvCollectionRequests.quality': 'الجودة',
+      'lumen.tvCollectionRequests.quota': 'حد الطلبات',
+      'lumen.tvCollectionRequests.loadingQuota': 'جارٍ تحميل حد الطلبات…',
+      'lumen.tvCollectionRequests.loadingSeries': 'جارٍ تحميل المسلسلات…',
+      'lumen.tvCollectionRequests.noMatches':
+        'لا توجد مسلسلات تطابق عوامل التصفية هذه.',
+      'lumen.tvCollectionRequests.clearSelection': 'مسح التحديد',
+      'lumen.tvCollectionRequests.selectAll': 'تحديد الكل',
+      'lumen.tvCollectionRequests.detailsUnavailable':
+        'تفاصيل المسلسل غير متاحة',
+      'lumen.tvCollectionRequests.tvdbMatch':
+        'اطلب المسلسل منفردًا لاختيار تطابق TVDB',
+      'lumen.tvCollectionRequests.requestableOne': 'موسم واحد متاح للطلب',
+      'lumen.tvCollectionRequests.requestableMany': '{count} مواسم متاحة للطلب',
+      'lumen.tvCollectionRequests.noneRequestable': 'لا توجد مواسم متاحة للطلب',
+      'lumen.tvCollectionRequests.retryDetails':
+        'إعادة محاولة تحميل تفاصيل المسلسل',
+      'lumen.tvCollectionRequests.selectedOne': 'تم تحديد موسم واحد',
+      'lumen.tvCollectionRequests.selectedMany': 'تم تحديد {count} مواسم',
+      'lumen.tvCollectionRequests.quotaExceeded': 'تم تجاوز حد الطلبات',
+      'lumen.tvCollectionRequests.requesting': 'جارٍ الطلب…',
+      'lumen.tvCollectionRequests.requestAnyway': 'طلب رغم ذلك ({count})',
+      'lumen.tvCollectionRequests.submit': 'طلب المسلسلات المحددة',
+      'lumen.tvCollectionRequests.close': 'إغلاق',
     },
   },
   {
@@ -16806,6 +16893,99 @@ export const localeData = [
       'lumen.patches.keepOriginal': 'Keep Original',
       'lumen.patches.requestPatch': 'Request Patch',
       'lumen.patches.requestHistory': 'Request History',
+      'lumen.curatedCollection.albums': 'albums',
+      'lumen.curatedCollection.series': 'series',
+      'lumen.curatedCollection.blocklistResult':
+        '{added} added to the Blocklist, {failed} failed.',
+      'lumen.curatedCollection.blocklistCollection': 'Blocklist Collection',
+      'lumen.curatedCollection.blocklistConfirmTitle':
+        'Blocklist this collection?',
+      'lumen.curatedCollection.blocklistConfirmBody':
+        'New requests will be blocked for {count} eligible {noun} in this collection.',
+      'lumen.curatedCollection.releaseType': 'Release Type',
+      'lumen.curatedCollection.genre': 'Genre',
+      'lumen.curatedCollection.releaseYear': 'Release Year',
+      'lumen.curatedCollection.unknown': 'Unknown',
+      'lumen.curatedCollection.releases': 'Releases',
+      'lumen.curatedCollection.filters': 'Collection Filters',
+      'lumen.curatedCollection.any': 'Any',
+      'lumen.curatedCollection.clearFilters': 'Clear Filters',
+      'lumen.curatedCollection.noReleaseMatches':
+        'No releases match these filters.',
+      'lumen.curatedCollection.noReleases':
+        'No releases are available in this collection.',
+      'lumen.curatedCollection.refreshFailed':
+        'Could not refresh collection availability.',
+      'lumen.curatedCollection.discography': 'Discography',
+      'lumen.curatedCollection.seriesCollection': 'Series Collection',
+      'lumen.curatedCollection.thisCollection': 'this collection',
+      'lumen.curatedCollection.loading': 'Loading collection…',
+      'lumen.curatedCollection.releasesLower': 'releases',
+      'lumen.curatedCollection.memberCount': '{count} {noun}',
+      'lumen.curatedCollection.watchTrailer': 'Watch Trailer',
+      'lumen.curatedCollection.backToAlbum': 'Back to Album',
+      'lumen.curatedCollection.checkingAvailability': 'Checking Availability…',
+      'lumen.curatedCollection.refreshAvailability': 'Refresh Availability',
+      'lumen.curatedCollection.seriesInCollection': 'Series in This Collection',
+      'lumen.curatedCollection.noTitles':
+        'No titles are available in this collection.',
+      'lumen.curatedCollection.notFound': 'Collection not found.',
+      'lumen.collectionServer.add': 'Add to Media Server',
+      'lumen.collectionServer.remove': 'Remove from Media Server',
+      'lumen.collectionServer.addTitle': 'Add Collection to Media Server',
+      'lumen.collectionServer.removeTitle':
+        'Remove Collection from Media Server',
+      'lumen.collectionServer.verified':
+        '{verified} of {count} libraries verified.',
+      'lumen.collectionServer.verifyFailed':
+        'Could not verify the collection change.',
+      'lumen.collectionServer.availableCount': '{count} available',
+      'lumen.collectionServer.done': 'Done',
+      'lumen.collectionServer.cancel': 'Cancel',
+      'lumen.musicCollectionRequests.submitFailed':
+        'Could not submit music requests.',
+      'lumen.musicCollectionRequests.title': 'Request Releases',
+      'lumen.musicCollectionRequests.services': 'music services',
+      'lumen.musicCollectionRequests.loadingServices':
+        'Loading music services…',
+      'lumen.musicCollectionRequests.noServices':
+        'No music request services are configured.',
+      'lumen.musicCollectionRequests.result':
+        '{requested} requested, {skipped} skipped, {failed} failed.',
+      'lumen.musicCollectionRequests.quality': 'Quality',
+      'lumen.musicCollectionRequests.unavailable':
+        'Available in this quality or blocklisted',
+      'lumen.musicCollectionRequests.selected': '{count} of {limit} selected',
+      'lumen.musicCollectionRequests.submit': 'Request Selected Releases',
+      'lumen.musicCollectionRequests.close': 'Close',
+      'lumen.tvCollectionRequests.sessionChanged': 'Session changed',
+      'lumen.tvCollectionRequests.requestFailed': 'Request failed',
+      'lumen.tvCollectionRequests.title': 'Request Series',
+      'lumen.tvCollectionRequests.result':
+        '{requested} requested, {failed} failed.',
+      'lumen.tvCollectionRequests.quality': 'Quality',
+      'lumen.tvCollectionRequests.quota': 'request quota',
+      'lumen.tvCollectionRequests.loadingQuota': 'Loading request quota…',
+      'lumen.tvCollectionRequests.loadingSeries': 'Loading series…',
+      'lumen.tvCollectionRequests.noMatches': 'No series match these filters.',
+      'lumen.tvCollectionRequests.clearSelection': 'Clear Selection',
+      'lumen.tvCollectionRequests.selectAll': 'Select All',
+      'lumen.tvCollectionRequests.detailsUnavailable':
+        'Series details unavailable',
+      'lumen.tvCollectionRequests.tvdbMatch':
+        'Request individually to select a TVDB match',
+      'lumen.tvCollectionRequests.requestableOne': '{count} requestable season',
+      'lumen.tvCollectionRequests.requestableMany':
+        '{count} requestable seasons',
+      'lumen.tvCollectionRequests.noneRequestable': 'No requestable seasons',
+      'lumen.tvCollectionRequests.retryDetails': 'Retry Series Details',
+      'lumen.tvCollectionRequests.selectedOne': '{count} season selected',
+      'lumen.tvCollectionRequests.selectedMany': '{count} seasons selected',
+      'lumen.tvCollectionRequests.quotaExceeded': 'Request quota exceeded',
+      'lumen.tvCollectionRequests.requesting': 'Requesting…',
+      'lumen.tvCollectionRequests.requestAnyway': 'Request Anyway ({count})',
+      'lumen.tvCollectionRequests.submit': 'Request Selected Series',
+      'lumen.tvCollectionRequests.close': 'Close',
     },
   },
   {
@@ -28301,6 +28481,112 @@ export const localeData = [
       'lumen.patches.keepOriginal': 'Conserver l’original',
       'lumen.patches.requestPatch': 'Demander le patch',
       'lumen.patches.requestHistory': 'Historique des demandes',
+      'lumen.curatedCollection.albums': 'albums',
+      'lumen.curatedCollection.series': 'séries',
+      'lumen.curatedCollection.blocklistResult':
+        '{added} ajoutés à la liste de blocage, {failed} échecs.',
+      'lumen.curatedCollection.blocklistCollection': 'Bloquer la collection',
+      'lumen.curatedCollection.blocklistConfirmTitle':
+        'Bloquer cette collection ?',
+      'lumen.curatedCollection.blocklistConfirmBody':
+        'Les nouvelles demandes seront bloquées pour {count} {noun} admissibles de cette collection.',
+      'lumen.curatedCollection.releaseType': 'Type de sortie',
+      'lumen.curatedCollection.genre': 'Genre',
+      'lumen.curatedCollection.releaseYear': 'Année de sortie',
+      'lumen.curatedCollection.unknown': 'Inconnu',
+      'lumen.curatedCollection.releases': 'Sorties',
+      'lumen.curatedCollection.filters': 'Filtres de collection',
+      'lumen.curatedCollection.any': 'Tous',
+      'lumen.curatedCollection.clearFilters': 'Effacer les filtres',
+      'lumen.curatedCollection.noReleaseMatches':
+        'Aucune sortie ne correspond à ces filtres.',
+      'lumen.curatedCollection.noReleases':
+        'Aucune sortie n’est disponible dans cette collection.',
+      'lumen.curatedCollection.refreshFailed':
+        'Impossible d’actualiser la disponibilité de la collection.',
+      'lumen.curatedCollection.discography': 'Discographie',
+      'lumen.curatedCollection.seriesCollection': 'Collection de séries',
+      'lumen.curatedCollection.thisCollection': 'cette collection',
+      'lumen.curatedCollection.loading': 'Chargement de la collection…',
+      'lumen.curatedCollection.releasesLower': 'sorties',
+      'lumen.curatedCollection.memberCount': '{count} {noun}',
+      'lumen.curatedCollection.watchTrailer': 'Regarder la bande-annonce',
+      'lumen.curatedCollection.backToAlbum': 'Retour à l’album',
+      'lumen.curatedCollection.checkingAvailability':
+        'Vérification de la disponibilité…',
+      'lumen.curatedCollection.refreshAvailability':
+        'Actualiser la disponibilité',
+      'lumen.curatedCollection.seriesInCollection':
+        'Séries de cette collection',
+      'lumen.curatedCollection.noTitles':
+        'Aucun titre n’est disponible dans cette collection.',
+      'lumen.curatedCollection.notFound': 'Collection introuvable.',
+      'lumen.collectionServer.add': 'Ajouter au serveur multimédia',
+      'lumen.collectionServer.remove': 'Retirer du serveur multimédia',
+      'lumen.collectionServer.addTitle':
+        'Ajouter la collection au serveur multimédia',
+      'lumen.collectionServer.removeTitle':
+        'Retirer la collection du serveur multimédia',
+      'lumen.collectionServer.verified':
+        '{verified} bibliothèque(s) sur {count} vérifiée(s).',
+      'lumen.collectionServer.verifyFailed':
+        'Impossible de vérifier la modification de la collection.',
+      'lumen.collectionServer.availableCount': '{count} disponibles',
+      'lumen.collectionServer.done': 'Terminé',
+      'lumen.collectionServer.cancel': 'Annuler',
+      'lumen.musicCollectionRequests.submitFailed':
+        'Impossible d’envoyer les demandes musicales.',
+      'lumen.musicCollectionRequests.title': 'Demander des sorties',
+      'lumen.musicCollectionRequests.services': 'services musicaux',
+      'lumen.musicCollectionRequests.loadingServices':
+        'Chargement des services musicaux…',
+      'lumen.musicCollectionRequests.noServices':
+        'Aucun service de demande musicale n’est configuré.',
+      'lumen.musicCollectionRequests.result':
+        '{requested} demandées, {skipped} ignorées, {failed} échecs.',
+      'lumen.musicCollectionRequests.quality': 'Qualité',
+      'lumen.musicCollectionRequests.unavailable':
+        'Déjà disponible dans cette qualité ou bloqué',
+      'lumen.musicCollectionRequests.selected':
+        '{count} sur {limit} sélectionnés',
+      'lumen.musicCollectionRequests.submit':
+        'Demander les sorties sélectionnées',
+      'lumen.musicCollectionRequests.close': 'Fermer',
+      'lumen.tvCollectionRequests.sessionChanged': 'Session modifiée',
+      'lumen.tvCollectionRequests.requestFailed': 'Échec de la demande',
+      'lumen.tvCollectionRequests.title': 'Demander des séries',
+      'lumen.tvCollectionRequests.result':
+        '{requested} demandées, {failed} échecs.',
+      'lumen.tvCollectionRequests.quality': 'Qualité',
+      'lumen.tvCollectionRequests.quota': 'quota de demandes',
+      'lumen.tvCollectionRequests.loadingQuota':
+        'Chargement du quota de demandes…',
+      'lumen.tvCollectionRequests.loadingSeries': 'Chargement des séries…',
+      'lumen.tvCollectionRequests.noMatches':
+        'Aucune série ne correspond à ces filtres.',
+      'lumen.tvCollectionRequests.clearSelection': 'Effacer la sélection',
+      'lumen.tvCollectionRequests.selectAll': 'Tout sélectionner',
+      'lumen.tvCollectionRequests.detailsUnavailable':
+        'Détails de la série indisponibles',
+      'lumen.tvCollectionRequests.tvdbMatch':
+        'Faites une demande individuelle pour choisir une correspondance TVDB',
+      'lumen.tvCollectionRequests.requestableOne':
+        '{count} saison disponible à la demande',
+      'lumen.tvCollectionRequests.requestableMany':
+        '{count} saisons disponibles à la demande',
+      'lumen.tvCollectionRequests.noneRequestable':
+        'Aucune saison disponible à la demande',
+      'lumen.tvCollectionRequests.retryDetails':
+        'Réessayer les détails de la série',
+      'lumen.tvCollectionRequests.selectedOne': '{count} saison sélectionnée',
+      'lumen.tvCollectionRequests.selectedMany':
+        '{count} saisons sélectionnées',
+      'lumen.tvCollectionRequests.quotaExceeded': 'Quota de demandes dépassé',
+      'lumen.tvCollectionRequests.requesting': 'Demande en cours…',
+      'lumen.tvCollectionRequests.requestAnyway':
+        'Demander quand même ({count})',
+      'lumen.tvCollectionRequests.submit': 'Demander les séries sélectionnées',
+      'lumen.tvCollectionRequests.close': 'Fermer',
     },
   },
   {

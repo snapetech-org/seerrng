@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import {
   requestableCollectionSeasons,
@@ -78,6 +79,7 @@ function Sheet({
   close: () => void;
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const settings = usePublicSettings();
   const advanced = useAsksRequestOptions();
@@ -226,7 +228,13 @@ function Sheet({
       const updates = await mapSeries(requests, async ({ submission }) => {
         const { title, id, seasons, options } = submission;
         if (sessionGeneration() !== generation)
-          return { title, error: 'Session changed' };
+          return {
+            title,
+            error: t(
+              'lumen.tvCollectionRequests.sessionChanged',
+              'Session changed'
+            ),
+          };
         try {
           await requestSeries(
             id,
@@ -238,7 +246,12 @@ function Sheet({
           const message = retry ? undefined : streamingOverrideMessage(error);
           return {
             title,
-            error: message ?? friendlyError(error, 'Request failed'),
+            error:
+              message ??
+              friendlyError(
+                error,
+                t('lumen.tvCollectionRequests.requestFailed', 'Request failed')
+              ),
             override: message === undefined ? undefined : submission,
           };
         }
@@ -264,19 +277,25 @@ function Sheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Request Series"
+        aria-label={t('lumen.tvCollectionRequests.title', 'Request Series')}
         ref={dialog}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Request Series</h3>
+            <h3>{t('lumen.tvCollectionRequests.title', 'Request Series')}</h3>
           </header>
           {results ? (
             <>
               <p role="status">
-                {results.filter(({ error }) => !error).length} requested,{' '}
-                {results.filter(({ error }) => error).length} failed.
+                {t(
+                  'lumen.tvCollectionRequests.result',
+                  '{requested} requested, {failed} failed.',
+                  {
+                    requested: results.filter(({ error }) => !error).length,
+                    failed: results.filter(({ error }) => error).length,
+                  }
+                )}
               </p>
               <ul className="slist">
                 {results.map(
@@ -293,7 +312,9 @@ function Sheet({
             <>
               {offers4k && canRequestHd && (
                 <label className="sel">
-                  <span className="lbl">Quality</span>
+                  <span className="lbl">
+                    {t('lumen.tvCollectionRequests.quality', 'Quality')}
+                  </span>
                   <select
                     value={fourK ? '4k' : 'hd'}
                     disabled={busy}
@@ -322,13 +343,16 @@ function Sheet({
                 </div>
               )}
               <ServiceNote
-                what="request quota"
+                what={t('lumen.tvCollectionRequests.quota', 'request quota')}
                 error={quota.error}
                 retry={quota.reload}
               />
               {!quota.data && !quota.error && (
                 <p className="note" role="status">
-                  Loading request quota…
+                  {t(
+                    'lumen.tvCollectionRequests.loadingQuota',
+                    'Loading request quota…'
+                  )}
                 </p>
               )}
               <VideoCollectionFilters
@@ -339,12 +363,20 @@ function Sheet({
               />
               {!rows ? (
                 <p className="note" role="status">
-                  Loading series…
+                  {t(
+                    'lumen.tvCollectionRequests.loadingSeries',
+                    'Loading series…'
+                  )}
                 </p>
               ) : (
                 <>
                   {!rows.length && (
-                    <p className="note">No series match these filters.</p>
+                    <p className="note">
+                      {t(
+                        'lumen.tvCollectionRequests.noMatches',
+                        'No series match these filters.'
+                      )}
+                    </p>
                   )}
                   {!!eligible.length && (
                     <div className="toolbar">
@@ -362,7 +394,15 @@ function Sheet({
                           )
                         }
                       >
-                        {allSelected ? 'Clear Selection' : 'Select All'}
+                        {allSelected
+                          ? t(
+                              'lumen.tvCollectionRequests.clearSelection',
+                              'Clear Selection'
+                            )
+                          : t(
+                              'lumen.tvCollectionRequests.selectAll',
+                              'Select All'
+                            )}
                       </button>
                     </div>
                   )}
@@ -373,12 +413,29 @@ function Sheet({
                           {member.title}
                           <small>
                             {!detail
-                              ? 'Series details unavailable'
+                              ? t(
+                                  'lumen.tvCollectionRequests.detailsUnavailable',
+                                  'Series details unavailable'
+                                )
                               : !detail.externalIds?.tvdbId
-                                ? 'Request individually to select a TVDB match'
+                                ? t(
+                                    'lumen.tvCollectionRequests.tvdbMatch',
+                                    'Request individually to select a TVDB match'
+                                  )
                                 : selections.length
-                                  ? `${selections.length} requestable ${selections.length === 1 ? 'season' : 'seasons'}`
-                                  : 'No requestable seasons'}
+                                  ? t(
+                                      selections.length === 1
+                                        ? 'lumen.tvCollectionRequests.requestableOne'
+                                        : 'lumen.tvCollectionRequests.requestableMany',
+                                      selections.length === 1
+                                        ? '{count} requestable season'
+                                        : '{count} requestable seasons',
+                                      { count: selections.length }
+                                    )
+                                  : t(
+                                      'lumen.tvCollectionRequests.noneRequestable',
+                                      'No requestable seasons'
+                                    )}
                           </small>
                         </span>
                         <input
@@ -405,12 +462,25 @@ function Sheet({
                       disabled={busy}
                       onClick={() => setRevision((value) => value + 1)}
                     >
-                      Retry Series Details
+                      {t(
+                        'lumen.tvCollectionRequests.retryDetails',
+                        'Retry Series Details'
+                      )}
                     </button>
                   )}
                   <p className="note" role="status">
-                    {count} {count === 1 ? 'season' : 'seasons'} selected
-                    {overQuota ? ' · Request quota exceeded' : ''}
+                    {t(
+                      count === 1
+                        ? 'lumen.tvCollectionRequests.selectedOne'
+                        : 'lumen.tvCollectionRequests.selectedMany',
+                      count === 1
+                        ? '{count} season selected'
+                        : '{count} seasons selected',
+                      { count }
+                    )}
+                    {overQuota
+                      ? ` · ${t('lumen.tvCollectionRequests.quotaExceeded', 'Request quota exceeded')}`
+                      : ''}
                   </p>
                 </>
               )}
@@ -424,7 +494,13 @@ function Sheet({
                 disabled={busy}
                 onClick={() => void submit(true)}
               >
-                {busy ? 'Requesting…' : `Request Anyway (${overrides.length})`}
+                {busy
+                  ? t('lumen.tvCollectionRequests.requesting', 'Requesting…')
+                  : t(
+                      'lumen.tvCollectionRequests.requestAnyway',
+                      'Request Anyway ({count})',
+                      { count: overrides.length }
+                    )}
               </button>
             )}
             {!results && (
@@ -434,7 +510,12 @@ function Sheet({
                 disabled={busy || !canSubmit}
                 onClick={() => void submit()}
               >
-                {busy ? 'Requesting…' : 'Request Selected Series'}
+                {busy
+                  ? t('lumen.tvCollectionRequests.requesting', 'Requesting…')
+                  : t(
+                      'lumen.tvCollectionRequests.submit',
+                      'Request Selected Series'
+                    )}
               </button>
             )}
             <button
@@ -443,7 +524,7 @@ function Sheet({
               disabled={busy}
               onClick={finish}
             >
-              Close
+              {t('lumen.tvCollectionRequests.close', 'Close')}
             </button>
           </div>
         </div>
@@ -460,6 +541,7 @@ export default function TvCollectionRequests({
   members: Member[];
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const offers4k = useOffers4k('tv');
   const permissions = user?.permissions;
@@ -475,7 +557,7 @@ export default function TvCollectionRequests({
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        Request Series
+        {t('lumen.tvCollectionRequests.title', 'Request Series')}
       </button>
       {open && (
         <Sheet

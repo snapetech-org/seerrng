@@ -1,0 +1,1 @@
+- Localize curated TV and music collection discovery, series and release request sheets, media server add/remove verification, and collection blocklisting in English, French, and Arabic. Preserve provider-supplied catalog names, filters, permissions, and request payloads.

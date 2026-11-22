@@ -28,6 +28,7 @@ import { useToast } from '../components/toast';
 import TvCollectionRequests from '../components/TvCollectionRequests';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { CollectionAssociations } from './Associations';
 
@@ -67,6 +68,7 @@ function CollectionBlocklist({
   members: Collection['parts'];
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const toast = useToast();
   const allowed = canManageBlocklist(user?.permissions);
@@ -87,7 +89,10 @@ function CollectionBlocklist({
     ).values(),
   ];
   if (!allowed || !members.length) return null;
-  const noun = kind === 'music' ? 'albums' : 'series';
+  const noun =
+    kind === 'music'
+      ? t('lumen.curatedCollection.albums', 'albums')
+      : t('lumen.curatedCollection.series', 'series');
 
   async function blocklist() {
     if (!allowed || !confirmed || !eligible.length || pending.current) return;
@@ -129,7 +134,11 @@ function CollectionBlocklist({
       }
       if (generation === sessionGeneration()) {
         toast(
-          `${succeeded} added to the Blocklist, ${eligible.length - succeeded} failed.`
+          t(
+            'lumen.curatedCollection.blocklistResult',
+            '{added} added to the Blocklist, {failed} failed.',
+            { added: succeeded, failed: eligible.length - succeeded }
+          )
         );
         notifyBlocklistChanged();
         refresh();
@@ -149,13 +158,26 @@ function CollectionBlocklist({
         disabled={!eligible.length || busy}
         onClick={() => setConfirmed(true)}
       >
-        Blocklist Collection
+        {t(
+          'lumen.curatedCollection.blocklistCollection',
+          'Blocklist Collection'
+        )}
       </button>
       {confirmed && (
         <ConfirmSheet
-          title="Blocklist this collection?"
-          body={`New requests will be blocked for ${eligible.length} eligible ${noun} in this collection.`}
-          confirm="Blocklist Collection"
+          title={t(
+            'lumen.curatedCollection.blocklistConfirmTitle',
+            'Blocklist this collection?'
+          )}
+          body={t(
+            'lumen.curatedCollection.blocklistConfirmBody',
+            'New requests will be blocked for {count} eligible {noun} in this collection.',
+            { count: eligible.length, noun }
+          )}
+          confirm={t(
+            'lumen.curatedCollection.blocklistCollection',
+            'Blocklist Collection'
+          )}
           busy={busy}
           onConfirm={() => void blocklist()}
           onClose={() => {
@@ -182,6 +204,7 @@ function MusicReleases({
   members: Collection['parts'];
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [filters, setFilters] = useState({
     ...emptyMusicFilters,
     type: 'album',
@@ -209,15 +232,15 @@ function MusicReleases({
     .sort()
     .reverse();
   const controls = [
-    ['type', 'Release Type', types],
-    ['genre', 'Genre', genres],
+    ['type', t('lumen.curatedCollection.releaseType', 'Release Type'), types],
+    ['genre', t('lumen.curatedCollection.genre', 'Genre'), genres],
     [
       'year',
-      'Release Year',
+      t('lumen.curatedCollection.releaseYear', 'Release Year'),
       [
         ...years.map((value) => [value, value]),
         ...(members.some((part) => year(part) === 'unknown')
-          ? [['unknown', 'Unknown']]
+          ? [['unknown', t('lumen.curatedCollection.unknown', 'Unknown')]]
           : []),
       ],
     ],
@@ -241,9 +264,16 @@ function MusicReleases({
     );
   });
   return (
-    <Section title="Releases">
+    <Section title={t('lumen.curatedCollection.releases', 'Releases')}>
       {!!members.length && (
-        <div className="toolbar" role="group" aria-label="Collection Filters">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t(
+            'lumen.curatedCollection.filters',
+            'Collection Filters'
+          )}
+        >
           {controls.map(([key, label, choices]) => (
             <label className="sel" key={key}>
               <span className="lbl">{label}</span>
@@ -254,7 +284,9 @@ function MusicReleases({
                   setFilters((previous) => ({ ...previous, [key]: value }));
                 }}
               >
-                <option value="">Any</option>
+                <option value="">
+                  {t('lumen.curatedCollection.any', 'Any')}
+                </option>
                 {choices.map(([value, name]) => (
                   <option key={value} value={value}>
                     {name}
@@ -270,7 +302,7 @@ function MusicReleases({
               type="button"
               onClick={() => setFilters(emptyMusicFilters)}
             >
-              Clear Filters
+              {t('lumen.curatedCollection.clearFilters', 'Clear Filters')}
             </button>
           )}
         </div>
@@ -278,8 +310,14 @@ function MusicReleases({
       {!visible.length ? (
         <p className="note">
           {members.length
-            ? 'No releases match these filters.'
-            : 'No releases are available in this collection.'}
+            ? t(
+                'lumen.curatedCollection.noReleaseMatches',
+                'No releases match these filters.'
+              )
+            : t(
+                'lumen.curatedCollection.noReleases',
+                'No releases are available in this collection.'
+              )}
         </p>
       ) : (
         <div className="sqg grid">
@@ -312,6 +350,7 @@ function MusicReleases({
 }
 
 function Content({ kind, id }: { kind: Kind; id: string }) {
+  const { t } = useLumenLocale();
   const [params] = useSearchParams();
   const path = `/collection-catalog/${kind}/${encodeURIComponent(id)}`;
   const collection = useApi<Collection>(path);
@@ -350,13 +389,19 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
     } catch (failure) {
       setSync(undefined);
       setSyncError(
-        friendlyError(failure, 'Could not refresh collection availability.')
+        friendlyError(
+          failure,
+          t(
+            'lumen.curatedCollection.refreshFailed',
+            'Could not refresh collection availability.'
+          )
+        )
       );
     } finally {
       pending.current = false;
       setChecking(false);
     }
-  }, [path, id, supportsSync]);
+  }, [path, id, supportsSync, t]);
   // Use the catalog GET's authorized membership. The availability response
   // from older servers can include series omitted by the viewer's policy.
   const members = useMemo(() => {
@@ -423,22 +468,31 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
     return (
       <>
         <header className="ph">
-          <h1>{music ? 'Discography' : 'Series Collection'}</h1>
+          <h1>
+            {music
+              ? t('lumen.curatedCollection.discography', 'Discography')
+              : t(
+                  'lumen.curatedCollection.seriesCollection',
+                  'Series Collection'
+                )}
+          </h1>
         </header>
         <ServiceNote
-          what="this collection"
+          what={t('lumen.curatedCollection.thisCollection', 'this collection')}
           error={collection.error}
           retry={collection.reload}
         />
         {!collection.error && (
           <p className="note" role="status">
-            Loading collection…
+            {t('lumen.curatedCollection.loading', 'Loading collection…')}
           </p>
         )}
       </>
     );
 
-  const noun = music ? 'releases' : 'series';
+  const noun = music
+    ? t('lumen.curatedCollection.releasesLower', 'releases')
+    : t('lumen.curatedCollection.series', 'series');
   return (
     <article className="detail">
       <DetailTop
@@ -452,7 +506,12 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
             : tmdbImg(data.backdropPath, 'w1280')
         }
         square={music}
-        line={[`${members.length} ${noun}`]}
+        line={[
+          t('lumen.curatedCollection.memberCount', '{count} {noun}', {
+            count: members.length,
+            noun,
+          }),
+        ]}
       />
       <div className="dbody">
         <CollectionAssociations
@@ -467,7 +526,7 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Watch Trailer
+            {t('lumen.curatedCollection.watchTrailer', 'Watch Trailer')}
           </a>
         )}
         <CollectionBlocklist
@@ -480,7 +539,7 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
         />
         {albumId && music && (
           <Link className="btn btn-quiet btn-sm" to={`/music/${albumId}`}>
-            Back to Album
+            {t('lumen.curatedCollection.backToAlbum', 'Back to Album')}
           </Link>
         )}
         {supportsSync && hasMembers && (
@@ -492,7 +551,15 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
                 disabled={checking}
                 onClick={() => void refreshAvailability()}
               >
-                {checking ? 'Checking Availability…' : 'Refresh Availability'}
+                {checking
+                  ? t(
+                      'lumen.curatedCollection.checkingAvailability',
+                      'Checking Availability…'
+                    )
+                  : t(
+                      'lumen.curatedCollection.refreshAvailability',
+                      'Refresh Availability'
+                    )}
               </button>
             </div>
             {syncError && (
@@ -515,7 +582,10 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
           <MusicReleases members={members} refresh={collection.reload} />
         ) : (
           <Section
-            title="Series in This Collection"
+            title={t(
+              'lumen.curatedCollection.seriesInCollection',
+              'Series in This Collection'
+            )}
             action={
               <TvCollectionRequests
                 members={members}
@@ -541,7 +611,10 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
               </div>
             ) : (
               <p className="note">
-                No titles are available in this collection.
+                {t(
+                  'lumen.curatedCollection.noTitles',
+                  'No titles are available in this collection.'
+                )}
               </p>
             )}
           </Section>
@@ -552,9 +625,14 @@ function Content({ kind, id }: { kind: Kind; id: string }) {
 }
 
 export default function CuratedCollection() {
+  const { t } = useLumenLocale();
   const { kind, id = '' } = useParams();
   if ((kind !== 'music' && kind !== 'tv') || !/^[a-z0-9_-]{1,128}$/i.test(id))
-    return <p className="note">Collection not found.</p>;
+    return (
+      <p className="note">
+        {t('lumen.curatedCollection.notFound', 'Collection not found.')}
+      </p>
+    );
   const content = <Content key={`${kind}:${id}`} kind={kind} id={id} />;
   return kind === 'music' ? (
     <ExtraGate k="music">{content}</ExtraGate>

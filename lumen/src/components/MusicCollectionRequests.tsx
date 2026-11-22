@@ -4,6 +4,7 @@ import { api, MediaStatus, type MediaInfo } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -42,6 +43,7 @@ function Sheet({
   close: () => void;
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const pending = useRef(false);
   const services = useApi<Lidarr[]>('/service/lidarr');
@@ -88,7 +90,15 @@ function Sheet({
         })
       );
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not submit music requests.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.musicCollectionRequests.submitFailed',
+            'Could not submit music requests.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -102,32 +112,52 @@ function Sheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Request Releases"
+        aria-label={t(
+          'lumen.musicCollectionRequests.title',
+          'Request Releases'
+        )}
         ref={dialog}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Request Releases</h3>
+            <h3>
+              {t('lumen.musicCollectionRequests.title', 'Request Releases')}
+            </h3>
           </header>
           <ServiceNote
-            what="music services"
+            what={t('lumen.musicCollectionRequests.services', 'music services')}
             error={services.error}
             retry={services.reload}
           />
           {!services.data && !services.error && (
             <p className="note" role="status">
-              Loading music services…
+              {t(
+                'lumen.musicCollectionRequests.loadingServices',
+                'Loading music services…'
+              )}
             </p>
           )}
           {services.data && !targets.length && (
-            <p className="note">No music request services are configured.</p>
+            <p className="note">
+              {t(
+                'lumen.musicCollectionRequests.noServices',
+                'No music request services are configured.'
+              )}
+            </p>
           )}
           {result ? (
             <>
               <p role="status">
-                {result.created.length} requested, {result.skipped.length}{' '}
-                skipped, {result.failed.length} failed.
+                {t(
+                  'lumen.musicCollectionRequests.result',
+                  '{requested} requested, {skipped} skipped, {failed} failed.',
+                  {
+                    requested: result.created.length,
+                    skipped: result.skipped.length,
+                    failed: result.failed.length,
+                  }
+                )}
               </p>
               {!!(result.skipped.length + result.failed.length) && (
                 <ul className="slist">
@@ -143,7 +173,9 @@ function Sheet({
             !!targets.length && (
               <>
                 <label className="sel">
-                  <span className="lbl">Quality</span>
+                  <span className="lbl">
+                    {t('lumen.musicCollectionRequests.quality', 'Quality')}
+                  </span>
                   <select
                     disabled={busy}
                     value={format}
@@ -168,7 +200,10 @@ function Sheet({
                         {release.title}
                         {unavailable(release) && (
                           <small>
-                            Available in this quality or blocklisted
+                            {t(
+                              'lumen.musicCollectionRequests.unavailable',
+                              'Available in this quality or blocklisted'
+                            )}
                           </small>
                         )}
                       </span>
@@ -194,7 +229,11 @@ function Sheet({
                   ))}
                 </div>
                 <p className="note" role="status">
-                  {items.length} of {limit} selected
+                  {t(
+                    'lumen.musicCollectionRequests.selected',
+                    '{count} of {limit} selected',
+                    { count: items.length, limit }
+                  )}
                 </p>
               </>
             )
@@ -212,7 +251,10 @@ function Sheet({
                 disabled={busy || !destination || !items.length}
                 onClick={() => void submit()}
               >
-                Request Selected Releases
+                {t(
+                  'lumen.musicCollectionRequests.submit',
+                  'Request Selected Releases'
+                )}
               </button>
             )}
             <button
@@ -221,7 +263,7 @@ function Sheet({
               disabled={busy}
               onClick={finish}
             >
-              Close
+              {t('lumen.musicCollectionRequests.close', 'Close')}
             </button>
           </div>
         </div>
@@ -238,6 +280,7 @@ export default function MusicCollectionRequests({
   releases: Release[];
   refresh: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const permissions = user?.permissions;
@@ -256,7 +299,7 @@ export default function MusicCollectionRequests({
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        Request Releases
+        {t('lumen.musicCollectionRequests.title', 'Request Releases')}
       </button>
       {open && (
         <Sheet

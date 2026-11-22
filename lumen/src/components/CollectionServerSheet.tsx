@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { useDialog } from './useDialog';
 
@@ -32,6 +33,7 @@ export default function CollectionServerActions({
   visibleIds: string[];
   onComplete: () => void;
 }) {
+  const { t } = useLumenLocale();
   const [selection, setSelection] = useState<Selection>();
   const visible = new Set(visibleIds);
   const destinations = sync?.supported ? sync.destinations : [];
@@ -58,7 +60,7 @@ export default function CollectionServerActions({
             disabled={!add.length}
             onClick={() => setSelection({ action: 'add', destinations: add })}
           >
-            Add to Media Server
+            {t('lumen.collectionServer.add', 'Add to Media Server')}
           </button>
           <button
             className="btn btn-quiet btn-sm"
@@ -68,7 +70,7 @@ export default function CollectionServerActions({
               setSelection({ action: 'remove', destinations: remove })
             }
           >
-            Remove from Media Server
+            {t('lumen.collectionServer.remove', 'Remove from Media Server')}
           </button>
         </div>
       )}
@@ -95,6 +97,7 @@ function CollectionServerSheet({
   close: () => void;
   onComplete: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { action, destinations } = selection;
   const [selected, setSelected] = useState(
     () => new Set(destinations.map(({ libraryId }) => libraryId))
@@ -116,8 +119,11 @@ function CollectionServerSheet({
   ];
   const adding = action === 'add';
   const title = adding
-    ? 'Add Collection to Media Server'
-    : 'Remove Collection from Media Server';
+    ? t('lumen.collectionServer.addTitle', 'Add Collection to Media Server')
+    : t(
+        'lumen.collectionServer.removeTitle',
+        'Remove Collection from Media Server'
+      );
   const valid =
     libraries.length > 0 &&
     libraries.length <= 50 &&
@@ -152,11 +158,26 @@ function CollectionServerSheet({
           (entry) => entry.libraryId === libraryId && entry.state === expected
         )
       ).length;
-      setResult(`${verified} of ${libraries.length} libraries verified.`);
+      setResult(
+        t(
+          'lumen.collectionServer.verified',
+          '{verified} of {count} libraries verified.',
+          {
+            verified,
+            count: libraries.length,
+          }
+        )
+      );
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
-          friendlyError(error, 'Could not verify the collection change.')
+          friendlyError(
+            error,
+            t(
+              'lumen.collectionServer.verifyFailed',
+              'Could not verify the collection change.'
+            )
+          )
         );
     } finally {
       working.current = false;
@@ -188,7 +209,8 @@ function CollectionServerSheet({
                 <label className="set" key={libraryId}>
                   <span>
                     {libraryName}
-                    {adding && ` · ${availableIds?.length ?? 0} available`}
+                    {adding &&
+                      ` · ${t('lumen.collectionServer.availableCount', '{count} available', { count: availableIds?.length ?? 0 })}`}
                   </span>
                   <input
                     type="checkbox"
@@ -214,7 +236,9 @@ function CollectionServerSheet({
               disabled={busy}
               onClick={dismiss}
             >
-              {result || failure ? 'Done' : 'Cancel'}
+              {result || failure
+                ? t('lumen.collectionServer.done', 'Done')
+                : t('lumen.collectionServer.cancel', 'Cancel')}
             </button>
             {!result && !failure && (
               <button

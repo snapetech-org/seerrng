@@ -6898,3 +6898,24 @@ French iPhone and Arabic desktop were inspected. Live ROMarrNG catalogue and
 acquisition behavior and independent linguistic review remain unverified.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-patches-localization-20261122/`.
+
+### Curated collection workflow localization
+
+Curated TV and music collection pages now localize collection headings and
+states, availability refresh and filters, TV series and music release request
+sheets, collection blocklisting and confirmation, and media server add/remove
+verification in English, French, and Arabic. Provider supplied collection,
+series, release, library, genre, and service names remain unchanged. Existing
+permissions, catalog filters, server sync selection/removal tokens, and request
+payloads are preserved.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet for all
+three locales. They exercise TV collection sync add/remove verification,
+series requests, blocklisting, and music release filter and bulk request flows;
+exact API payloads, Arabic direction, and horizontal overflow are checked. The
+five existing curated collection workflow regressions also pass. Matched
+English baseline/candidate series page captures are pixel-identical at desktop
+and iPhone sizes. French iPhone and Arabic desktop request sheets were
+inspected. Live media server and music provider behavior and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-curated-localization-20261122/`.
