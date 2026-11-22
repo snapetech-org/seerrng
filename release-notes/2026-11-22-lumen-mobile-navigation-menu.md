@@ -1,1 +1,1 @@
-Lumen now provides a mobile More menu for the same enabled and permission-aware destinations available in its desktop sidebar. Escape, outside clicks, route selection, and the More control close the menu.
+Lumen now provides a mobile More menu for the same enabled and permission-aware destinations available in its desktop sidebar. Escape, outside clicks, route selection, and the More control close the menu. Restricted-category and utility visibility remains filtered on compact phones.

@@ -113,6 +113,98 @@ test('shell navigation landmarks and request badges follow the account locale', 
   }
 });
 
+test('More navigation filters categories and fits a compact phone', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'iphone', 'Compact phone case');
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          permissions: 0,
+          userType: 1,
+          displayName: 'Viewer',
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({
+        json: {
+          locale: 'en',
+          enabledMediaCategories: {
+            movie: false,
+            tv: true,
+            ebook: false,
+            audiobook: false,
+          },
+        },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: {
+            movie: false,
+            tv: true,
+            ebook: false,
+            audiobook: false,
+          },
+          softwareEnabled: false,
+          romarrEnabled: false,
+          adultEnabled: false,
+          swipeEnabled: true,
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/me');
+  await page.getByRole('button', { name: 'More navigation' }).click();
+  const menu = page.locator('.side');
+  await expect(menu).toHaveAttribute('data-mobile-open', 'true');
+  await expect(menu.getByRole('link', { name: 'Series' })).toBeVisible();
+  await expect(menu.getByRole('link', { name: 'Movies' })).toHaveCount(0);
+  await expect(
+    menu.getByRole('link', { name: 'Books', exact: true })
+  ).toHaveCount(0);
+  for (const name of [
+    'Download Inbox',
+    'Indexer Search',
+    'Issues',
+    'Following',
+  ])
+    await expect(menu.getByRole('link', { name })).toHaveCount(0);
+  await expect(menu.getByRole('link', { name: 'Calendar' })).toBeVisible();
+  await expect(menu.getByRole('link', { name: 'Watchlist' })).toBeVisible();
+  const captureDir = process.env.LUMEN_MENU_CAPTURE_DIR;
+  if (captureDir)
+    await page.screenshot({
+      path: `${captureDir}/compact-standard-user-320x568.png`,
+    });
+
+  const dimensions = await menu.evaluate((element) => ({
+    clientHeight: element.clientHeight,
+    scrollHeight: element.scrollHeight,
+    scrollWidth: element.scrollWidth,
+    clientWidth: element.clientWidth,
+  }));
+  expect(dimensions.scrollHeight).toBeGreaterThan(dimensions.clientHeight);
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    320
+  );
+  await menu.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(menu.getByRole('link', { name: /Viewer/ })).toBeInViewport();
+});
+
 test('mobile tabs yield to long forms on scroll and return on scroll up', async ({
   page,
 }, testInfo) => {

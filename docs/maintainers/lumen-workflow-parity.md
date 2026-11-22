@@ -7258,7 +7258,10 @@ navigation and route/API owners.
 
 Desktop, iPhone, Android, and tablet browser coverage verifies the localized
 More control, enabled categories, utility destinations, escape, outside-click,
-route-selection behavior, and long-page tab-bar behavior. Matched desktop and
-iPhone baseline/candidate captures were inspected. Evidence is retained at
+route-selection behavior, and long-page tab-bar behavior. A restricted-user
+matrix verifies disabled movie/books entries and permission-gated utilities at
+320 × 568, with no horizontal overflow and scroll access to the bottom profile
+entry. Matched desktop and iPhone baseline/candidate captures were inspected;
+the compact phone candidate was inspected as well. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-more-20261122/`.
 Live permission changes and route/API authorization remain server-owned.
