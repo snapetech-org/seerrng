@@ -7195,15 +7195,18 @@ captures were inspected. Evidence is retained at
 
 Lumen now preserves the ordered, filtered result context when opening movie or
 series details from Browse, the main Discover movie/series/upcoming shelves,
-Trending, public TMDB lists, and configured video shelves. Detail pages expose
-previous and next controls only when the URL context matches the current media
-identity; direct detail links remain control-free. Context lives in bounded,
-tab-local session storage and is capped at 5,000 results and 12 contexts.
+Trending, public TMDB lists, configured video shelves, and the Discover
+Watchlist. Detail pages expose previous and next controls only when the URL
+context matches the current media identity; direct detail links remain
+control-free. Context lives in bounded, tab-local session storage and is capped
+at 5,000 results and 12 contexts.
 
 The browser workflow passes for movie and TV results on desktop and iPhone in
 standalone preview and the production Express `/lumen/` mount. It verifies
-opening from results, forward navigation and end-of-list behavior, direct-link
-behavior, and phone-width overflow. The desktop and iPhone detail captures were
+opening from results, forward and backward navigation, end-of-list behavior,
+identity-mismatch and direct-link behavior, and phone-width overflow. A
+Discover Watchlist case verifies its filtered result context and adjacent
+navigation on desktop and iPhone. The desktop and iPhone detail captures were
 visually inspected. Filtered catalog behavior on native Discover pages that
 have no Lumen equivalent, and live catalog data, remain outside this increment.
 Evidence is retained at

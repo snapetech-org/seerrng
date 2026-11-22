@@ -125,3 +125,70 @@ for (const kind of ['movie', 'tv'] as const) {
     ).resolves.toBe(true);
   });
 }
+
+test('Discover Watchlist details keep the filtered result context', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (request) => request.abort());
+  await page.route('**/api/v1/**', (request) => {
+    const path = new URL(request.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return request.fulfill({
+        json: { id: 1, displayName: 'Viewer', permissions: 2 },
+      });
+    if (path === '/user/1/settings/main')
+      return request.fulfill({ json: { locale: 'en' } });
+    if (path === '/settings/public')
+      return request.fulfill({
+        json: { enabledMediaCategories: { movie: true, tv: true } },
+      });
+    if (path === '/discover/watchlist')
+      return request.fulfill({
+        json: {
+          results: [101, 102, 103].map((tmdbId, index) => ({
+            id: tmdbId,
+            tmdbId,
+            ratingKey: `fixture-${tmdbId}`,
+            mediaType: 'movie',
+            title: [
+              'First Watchlist Film',
+              'Current Watchlist Film',
+              'Next Watchlist Film',
+            ][index],
+          })),
+          totalPages: 1,
+          filtersSupported: true,
+        },
+      });
+    if (/^\/movie\/\d+$/.test(path)) {
+      const id = Number(path.split('/').at(-1));
+      return request.fulfill({
+        json: {
+          id,
+          title: id === 102 ? 'Current Watchlist Film' : `Watchlist Film ${id}`,
+          overview: 'Fixture detail.',
+          genres: [],
+          credits: { cast: [], crew: [] },
+          mediaInfo: {},
+        },
+      });
+    }
+    if (/^\/movie\/\d+\/(?:recommendations|similar)$/.test(path))
+      return request.fulfill({
+        json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+      });
+    if (path === '/service/radarr') return request.fulfill({ json: [] });
+    return request.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
+  });
+
+  await page.goto(route('/watchlist/discover'));
+  await page.getByRole('link', { name: 'Current Watchlist Film' }).click();
+  await expect(page).toHaveURL(/discoverContext=[a-z0-9_-]{12,64}/i);
+  await expect(
+    page.getByRole('button', { name: 'Previous', exact: true })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Next', exact: true }).click();
+  await expect(page).toHaveURL(/\/movie\/103\?discoverContext=/);
+});

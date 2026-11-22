@@ -4,6 +4,11 @@ import { api } from '../api';
 import { useAuth } from '../auth';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
+import {
+  createDiscoverNavigationContextId,
+  storeDiscoverNavigationContext,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
 import { friendlyError } from '../errors';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
@@ -70,6 +75,7 @@ function WatchlistPage({
   setFiltersSupported: (supported: boolean) => void;
   canRemove: boolean;
 }) {
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const { data, error, reload, refresh } = useApi<WatchlistData>(path);
   const [removed, setRemoved] = useState<string[]>([]);
   const [removing, setRemoving] = useState<string>();
@@ -125,6 +131,13 @@ function WatchlistPage({
       mediaTypes.includes(item.mediaType) &&
       !removed.includes(`${item.mediaType}:${itemId(item)}`)
   );
+  const discoverItems: DiscoverNavigationItem[] =
+    rows?.flatMap((item) => {
+      const id = itemId(item);
+      return id && (item.mediaType === 'movie' || item.mediaType === 'tv')
+        ? [{ id: Number(id), mediaType: item.mediaType }]
+        : [];
+    }) ?? [];
 
   return (
     <>
@@ -149,7 +162,22 @@ function WatchlistPage({
                   {id ? (
                     <Link
                       className="go"
-                      to={`/${item.mediaType}/${encodeURIComponent(id)}`}
+                      to={
+                        item.mediaType === 'movie' || item.mediaType === 'tv'
+                          ? `/${item.mediaType}/${encodeURIComponent(id)}?discoverContext=${encodeURIComponent(discoverContextId)}`
+                          : `/${item.mediaType}/${encodeURIComponent(id)}`
+                      }
+                      onClick={() => {
+                        if (
+                          item.mediaType === 'movie' ||
+                          item.mediaType === 'tv'
+                        )
+                          storeDiscoverNavigationContext(
+                            discoverContextId,
+                            discoverItems,
+                            { id: Number(id), mediaType: item.mediaType }
+                          );
+                      }}
                     >
                       {item.title}
                     </Link>
