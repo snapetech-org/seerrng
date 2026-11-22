@@ -3462,6 +3462,10 @@
     "lumen.bookDetail.narrationCount": "{count} narrations{duration}",
     "lumen.bookDetail.englishRecordingOne": "{count} English recording",
     "lumen.bookDetail.englishRecordings": "{count} English recordings",
+    "lumen.followButton.follow": "Follow",
+    "lumen.followButton.followFutureVolumes": "Follow Future Volumes",
+    "lumen.followButton.followNarrator": "Follow {name}",
+    "lumen.followButton.followStoryExpansions": "Follow Story Expansions",
     "lumen.followButton.retryStatus": "Retry Follow Status",
     "lumen.followButton.following": "Following",
     "lumen.followButton.updateFailed": "Couldn’t update Following"
@@ -7088,6 +7092,10 @@
     "lumen.bookDetail.narrationCount": "{count} narrations{duration}",
     "lumen.bookDetail.englishRecordingOne": "{count} enregistrement en anglais",
     "lumen.bookDetail.englishRecordings": "{count} enregistrements en anglais",
+    "lumen.followButton.follow": "Suivre",
+    "lumen.followButton.followFutureVolumes": "Suivre les volumes à venir",
+    "lumen.followButton.followNarrator": "Suivre {name}",
+    "lumen.followButton.followStoryExpansions": "Suivre les extensions scénaristiques",
     "lumen.followButton.retryStatus": "Réessayer le suivi",
     "lumen.followButton.following": "Abonné",
     "lumen.followButton.updateFailed": "Impossible de modifier le suivi"
@@ -10718,6 +10726,10 @@
     "lumen.bookDetail.narrationCount": "{count} تسجيلات{duration}",
     "lumen.bookDetail.englishRecordingOne": "{count} تسجيل باللغة الإنجليزية",
     "lumen.bookDetail.englishRecordings": "{count} تسجيلات باللغة الإنجليزية",
+    "lumen.followButton.follow": "متابعة",
+    "lumen.followButton.followFutureVolumes": "متابعة المجلدات القادمة",
+    "lumen.followButton.followNarrator": "متابعة {name}",
+    "lumen.followButton.followStoryExpansions": "متابعة توسعات القصة",
     "lumen.followButton.retryStatus": "إعادة محاولة حالة المتابعة",
     "lumen.followButton.following": "تتم المتابعة",
     "lumen.followButton.updateFailed": "تعذر تحديث المتابعة"

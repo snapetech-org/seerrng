@@ -623,6 +623,17 @@ Android, and tablet. API fixtures verify author follow and unfollow,
 narrator identity, and preservation of an explicitly selected edition.
 Matched visual and live provider verification remain open.
 
+The shared Follow button's default label and the software-expansion, future
+novel-volume, and audiobook-narrator labels now follow the saved English,
+French, or Arabic locale. The existing browser fixtures verify the default
+French and Arabic labels, expansion identity and confirmed state in French,
+narrator interpolation in French, and future-volume identity and confirmed
+state in French across desktop, iPhone, Android, and tablet. Matching French
+person-page screenshots were inspected at desktop and iPhone sizes; the action
+fits the existing heading row without overflow. API permission and follow
+behavior are unchanged. Live provider and native-matched visual verification
+remain open.
+
 Anime series details now open the manga and novel continuation lookup on
 demand. Users can change seasons, inspect match evidence, open mapped volumes
 or search, and follow future novels in the selected lookup language. Four
@@ -6154,6 +6165,20 @@ viewport. Browser fixtures do not verify live catalogue or provider services,
 and independent language review remains unverified. Screenshots and test
 results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-detail-localization-20261121/test-results/`.
+
+### Following actions localization
+
+The shared Follow control now takes its default label from the saved locale.
+Game story-expansion follows, anime future-volume follows, and audiobook
+narrator follows also use the saved English, French, or Arabic locale. Follow
+identity, selection, permissions, mutations, and server-confirmed state are
+unchanged. The standalone and bundled `/lumen/` browser matrices each pass 20
+cases across desktop, iPhone, Android, and tablet, including default labels,
+narrator interpolation, game follow identity, future-volume follow identity,
+retry, and confirmed server state. Matched baseline/candidate desktop and
+iPhone captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-actions-20261121/captures/`.
+Live account locale behavior and independent language review remain unverified.
 
 ### Mobile navigation avoids expanded-panel actions
 

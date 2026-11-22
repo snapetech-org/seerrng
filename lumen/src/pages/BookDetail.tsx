@@ -908,7 +908,13 @@ export default function BookDetail() {
                     {[...soloNarrators].map(([key, name]) => (
                       <FollowButton
                         key={key}
-                        label={`Follow ${name}`}
+                        label={t(
+                          'lumen.followButton.followNarrator',
+                          'Follow {name}',
+                          {
+                            name,
+                          }
+                        )}
                         subject={{
                           kind: 'narrator',
                           subjectKey: `narrator:${key}`,

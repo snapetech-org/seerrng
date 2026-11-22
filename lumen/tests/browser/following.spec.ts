@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+const baseline = process.env.LUMEN_FOLLOW_BASELINE === '1';
+
+function apiPath(url: string) {
+  return new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+}
+
 test('household users can open Following and manage their own updates', async ({
   page,
   baseURL,
@@ -9,7 +15,7 @@ test('household users can open Following and manage their own updates', async ({
   let notify = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = apiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Reader', permissions: 32 },
@@ -166,7 +172,7 @@ test('direct navigation without request access does not fetch follows', async ({
   let requested = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = apiPath(route.request().url());
     requested ||= path.startsWith('/follow');
     return route.fulfill({
       json:
@@ -184,15 +190,17 @@ test('direct navigation without request access does not fetch follows', async ({
 
 test('following a person uses the exact identity and waits for server confirmation', async ({
   page,
-}) => {
+}, info) => {
   const person = { id: 77, name: 'Example Director' };
   let followed = false;
   let fail = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = apiPath(request.url());
     const record = { id: 2, kind: 'tmdb-person', subjectKey: 'tmdb:person:77' };
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'ar' } });
     if (path === '/follow' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual({
         kind: 'tmdb-person',
@@ -221,14 +229,24 @@ test('following a person uses the exact identity and waits for server confirmati
     });
   });
   await page.goto('./person/77');
-  const follow = page.getByRole('button', { name: 'Follow', exact: true });
+  const follow = page.getByRole('button', {
+    name: baseline ? 'Follow' : 'متابعة',
+    exact: true,
+  });
+  await expect(follow).toBeVisible();
+  const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/${baseline ? 'baseline' : 'candidate'}-person-${info.project.name}.png`,
+      fullPage: true,
+    });
   await follow.click();
   await expect(page.getByRole('status')).toContainText('Try again');
   await expect(follow).toHaveAttribute('aria-pressed', 'false');
   fail = false;
   await follow.click();
   const following = page.getByRole('button', {
-    name: 'Following',
+    name: 'تتم المتابعة',
     exact: true,
   });
   await expect(following).toHaveAttribute('aria-pressed', 'true');
@@ -244,7 +262,7 @@ test('filtered discovery follows the exact genre, studio, and network', async ({
   const posted: unknown[] = [];
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = apiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/genres/tv') return route.fulfill({ json: [] });
@@ -307,7 +325,7 @@ test('book details follow the author by catalog identity', async ({ page }) => {
   };
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = apiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/settings/public')
@@ -347,7 +365,7 @@ test('book details follow the author by catalog identity', async ({ page }) => {
 
 test('an audiobook can follow a solo narrator without selecting an edition', async ({
   page,
-}) => {
+}, info) => {
   const subject = {
     kind: 'narrator',
     subjectKey: 'narrator:fixture reader',
@@ -355,7 +373,9 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
   };
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = apiPath(request.url());
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/settings/public')
@@ -408,16 +428,26 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
   const cast = narrations.getByRole('radio', { name: /Full Cast/ });
   await cast.click();
   await expect(cast).toBeChecked();
-  await page.getByRole('button', { name: 'Follow Fixture Reader' }).click();
+  const narratorFollow = page.getByRole('button', {
+    name: baseline ? 'Follow Fixture Reader' : 'Suivre Fixture Reader',
+  });
+  await expect(narratorFollow).toBeVisible();
+  const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/${baseline ? 'baseline' : 'candidate'}-narrator-${info.project.name}.png`,
+      fullPage: true,
+    });
+  await narratorFollow.click();
   await expect(
-    page.getByRole('button', { name: 'Following', exact: true })
+    page.getByRole('button', { name: 'Abonné', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(cast).toBeChecked();
 });
 
 test('anime continuation loads on demand and follows the novel in its language', async ({
   page,
-}) => {
+}, info) => {
   const subject = {
     kind: 'series-language',
     subjectKey: 'ranobedb:81:en',
@@ -428,7 +458,9 @@ test('anime continuation loads on demand and follows the novel in its language',
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    const path = url.pathname.slice(7);
+    const path = apiPath(request.url());
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/tv/92')
@@ -504,7 +536,7 @@ test('anime continuation loads on demand and follows the novel in its language',
     .selectOption('1');
   await expect
     .poll(() => lookups)
-    .toEqual(['?language=en&season=2', '?language=en&season=1']);
+    .toEqual(['?language=fr&season=2', '?language=fr&season=1']);
   await expect(
     page.getByRole('link', { name: 'Open Continuation Volume' })
   ).toBeVisible();
@@ -517,9 +549,19 @@ test('anime continuation loads on demand and follows the novel in its language',
   await expect(
     page.getByText('The continuation volume is unconfirmed.')
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Follow Future Volumes' }).click();
+  const futureVolumesFollow = page.getByRole('button', {
+    name: baseline ? 'Follow Future Volumes' : 'Suivre les volumes à venir',
+  });
+  await expect(futureVolumesFollow).toBeVisible();
+  const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/${baseline ? 'baseline' : 'candidate'}-future-volumes-${info.project.name}.png`,
+      fullPage: true,
+    });
+  await futureVolumesFollow.click();
   await expect(
-    page.getByRole('button', { name: 'Following', exact: true })
+    page.getByRole('button', { name: 'Abonné', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
 });
 
@@ -530,7 +572,7 @@ test('switching franchise titles keeps the follow identity and state separate', 
   const subjects: unknown[] = [];
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = apiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/franchise/anime/10')
@@ -638,7 +680,7 @@ for (const [type, catalogId, href] of [
     let saved = false;
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
-      const path = new URL(request.url()).pathname.slice(7);
+      const path = apiPath(request.url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions: 2 } });
       if (path === '/franchise/anime/10')
@@ -700,7 +742,7 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
     })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(7);
+    const path = apiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/integrations/discovery/feeds/anilist/trending')

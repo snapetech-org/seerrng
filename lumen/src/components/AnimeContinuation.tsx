@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { ServiceNote } from './extra';
 import FollowButton from './FollowButton';
@@ -67,6 +68,7 @@ export default function AnimeContinuation({
   seasons?: { seasonNumber: number; name?: string }[];
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(false);
   const [season, setSeason] = useState<number>();
   const chosenSeason = season ?? seasons?.at(-1)?.seasonNumber;
@@ -240,7 +242,10 @@ export default function AnimeContinuation({
                         {novel && canViewFollowing(user?.permissions) && (
                           <FollowButton
                             key={`${novel.ranobedbId}:${novel.language}`}
-                            label="Follow Future Volumes"
+                            label={t(
+                              'lumen.followButton.followFutureVolumes',
+                              'Follow Future Volumes'
+                            )}
                             subject={{
                               kind: 'series-language',
                               subjectKey: `ranobedb:${novel.ranobedbId}:${novel.language}`,

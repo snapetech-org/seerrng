@@ -48,6 +48,7 @@ import {
 } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 
 const statOf = (g: Game): Stat => {
@@ -348,6 +349,7 @@ function GameDetailView({
   platform: string;
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const {
     data,
     error: loadError,
@@ -497,7 +499,10 @@ function GameDetailView({
               g.igdbId > 0 &&
               canViewFollowing(user?.permissions) && (
                 <FollowButton
-                  label="Follow Story Expansions"
+                  label={t(
+                    'lumen.followButton.followStoryExpansions',
+                    'Follow Story Expansions'
+                  )}
                   subject={{
                     kind: 'expansion',
                     subjectKey: `igdb:${g.igdbId}`,

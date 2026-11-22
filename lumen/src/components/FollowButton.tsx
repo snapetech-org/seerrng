@@ -23,7 +23,7 @@ interface FollowRecord {
 
 export default function FollowButton({
   subject,
-  label = 'Follow',
+  label,
 }: {
   subject: FollowIdentity;
   label?: string;
@@ -87,7 +87,7 @@ export default function FollowButton({
         ? t('lumen.followButton.retryStatus', 'Retry Follow Status')
         : match
           ? t('lumen.followButton.following', 'Following')
-          : label}
+          : (label ?? t('lumen.followButton.follow', 'Follow'))}
     </button>
   );
 }

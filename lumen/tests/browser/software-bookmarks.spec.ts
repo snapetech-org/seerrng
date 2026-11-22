@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const baseline = process.env.LUMEN_FOLLOW_BASELINE === '1';
+const testAppPath = (path: string) => `${testMount}${path}`;
+const testApiPath = (url: string) =>
+  new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+
 test('software bookmarks open catalog titles by provider and preserve search', async ({
   page,
 }, info) => {
@@ -21,7 +27,9 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   );
   await page.route('**/api/v1/**', (route) => {
     const url = new URL(route.request().url());
-    const path = url.pathname.slice(7);
+    const path = testApiPath(route.request().url());
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
     if (path === '/patches/search') {
       patchReads.push(url.searchParams);
       return route.fulfill({ json: { available: true, results: [] } });
@@ -94,11 +102,23 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/software?category=game&game=42');
+  await page.goto(testAppPath('/software?category=game&game=42'));
   await expect(page).toHaveURL(/\/game\/game\/42$/);
-  await page.getByRole('button', { name: 'Follow Story Expansions' }).click();
+  const storyFollow = page.getByRole('button', {
+    name: baseline
+      ? 'Follow Story Expansions'
+      : 'Suivre les extensions scénaristiques',
+  });
+  await expect(storyFollow).toBeVisible();
+  const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/${baseline ? 'baseline' : 'candidate'}-game-${info.project.name}.png`,
+      fullPage: true,
+    });
+  await storyFollow.click();
   await expect(
-    page.getByRole('button', { name: 'Following', exact: true })
+    page.getByRole('button', { name: 'Abonné', exact: true })
   ).toHaveAttribute('aria-pressed', 'true');
   await expect(
     page.getByRole('heading', { name: 'Fixture PC Game' })
@@ -116,12 +136,12 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   await page.screenshot({ path: info.outputPath('pc-bookmark.png') });
   await page.getByRole('combobox', { name: 'System' }).selectOption('windows');
   await page.getByRole('combobox', { name: 'Build' }).selectOption('x64');
-  await page.evaluate(() => {
-    history.pushState(history.state, '', '/game/game/43');
+  await page.evaluate((path) => {
+    history.pushState(history.state, '', path);
     window.dispatchEvent(
       new PopStateEvent('popstate', { state: history.state })
     );
-  });
+  }, `${testMount}/game/game/43`);
   await expect(page.getByRole('alert')).toContainText(
     'Catalog temporarily unavailable.'
   );
@@ -150,9 +170,9 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     },
   ]);
   await page.goto(
-    `/software?category=retro&catalogProvider=dat&game=${datKey}`
+    testAppPath(`/software?category=retro&catalogProvider=dat&game=${datKey}`)
   );
-  await expect(page).toHaveURL(`/game/retro/${datKey}?dat=1`);
+  await expect(page).toHaveURL(testAppPath(`/game/retro/${datKey}?dat=1`));
   await expect(
     page.getByRole('heading', { name: 'Fixture DAT Game' })
   ).toBeVisible();
@@ -186,8 +206,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     '/request/software/catalog/games/43?category=game',
     `/request/software/catalog/games/${datKey}?category=retro&catalogProvider=dat`,
   ]);
-  await page.goto('/software?category=retro&game=bad&q=Fixture+Search&extra=1');
-  await expect(page).toHaveURL('/games?c=retro&q=Fixture+Search');
+  await page.goto(
+    testAppPath('/software?category=retro&game=bad&q=Fixture+Search&extra=1')
+  );
+  await expect(page).toHaveURL(testAppPath('/games?c=retro&q=Fixture+Search'));
   expect(reads).toHaveLength(3);
 });
 
@@ -203,7 +225,7 @@ for (const mode of ['edition', 'missing-selected'] as const) {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
-      const path = new URL(request.url()).pathname.slice(7);
+      const path = testApiPath(request.url());
       if (path === '/auth/me')
         return route.fulfill({ json: { id: 1, permissions: 32 } });
       if (path === '/settings/public')
@@ -278,7 +300,7 @@ for (const mode of ['edition', 'missing-selected'] as const) {
         });
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto('/game/game/42');
+    await page.goto(testAppPath('/game/game/42'));
     const content = page.getByRole('combobox', { name: 'Content to Request' });
     await content.selectOption('edition');
     await expect(page.getByText('Edition contents are unknown.')).toBeVisible();
@@ -329,8 +351,9 @@ test('game catalogue retries the same offset and keeps earlier results', async (
   const offsets: string[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.slice(7);
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = testApiPath(request.url());
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/settings/public')
@@ -378,7 +401,7 @@ test('game catalogue retries the same offset and keeps earlier results', async (
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   await expect(page.getByRole('link', { name: 'First Game' })).toBeVisible();
   const retry = page.getByRole('alert').getByRole('button', { name: 'Retry' });
   await retry.click();
@@ -388,14 +411,10 @@ test('game catalogue retries the same offset and keeps earlier results', async (
   const search = page.getByPlaceholder('Search PC games…');
   await search.fill('First bookmark');
   await expect(page).toHaveURL(/q=First\+bookmark/);
-  await page.evaluate(() => {
-    history.pushState(
-      { ...history.state, key: 'second-bookmark' },
-      '',
-      '/games?q=Second+bookmark'
-    );
+  await page.evaluate((path) => {
+    history.pushState({ ...history.state, key: 'second-bookmark' }, '', path);
     dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
-  });
+  }, `${testMount}/games?q=Second+bookmark`);
   await expect(search).toHaveValue('Second bookmark');
   await expect(
     page.getByRole('link', { name: 'Second bookmark result' })
