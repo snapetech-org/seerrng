@@ -1154,10 +1154,12 @@ periodic refresh behavior are retained. The localized schedule workflow now
 also verifies a rejected save: the edited schedule stays in the form, the
 save action remains available, and retry persists and reads back the change.
 This recovery check passes in English, French, and Arabic across desktop,
-iPhone, Android, and tablet in standalone Lumen. The existing eight job
-workflow cases and eight locale cases previously passed in standalone and
-bundled Lumen across those viewports; the new failed-save recovery assertion
-has not yet been rerun against the Express `/lumen/` mount. French desktop and Arabic
+iPhone, Android, and tablet in standalone Lumen and in the production bundle
+served by SeerrNG's Express `/lumen/` mount (12 cases per deployment). The
+browser fixture supplies API responses, so it verifies the real built frontend
+and mount routing without changing a live scheduled job. The existing eight
+job workflow cases and eight locale cases also previously passed in both
+deployments across those viewports. French desktop and Arabic
 iPhone baseline/candidate renders were inspected; content wraps within the
 existing job card and tested viewport widths have no horizontal overflow.
 Evidence is retained in
