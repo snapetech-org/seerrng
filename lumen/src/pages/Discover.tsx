@@ -178,6 +178,11 @@ export default function Discover() {
       ? '/discover/movies/upcoming'
       : null
   );
+  const tvUpcoming = useApi<Paged<TitleResult>>(
+    preferencesReady && categorySettingsReady && tvEnabled && on.comingSoon
+      ? '/discover/tv/upcoming'
+      : null
+  );
   const genres = useApi<Genre[]>(
     preferencesReady && categorySettingsReady && movieEnabled && on.genres
       ? '/discover/genreslider/movie'
@@ -200,12 +205,15 @@ export default function Discover() {
   const movieCards = movies.data?.results.filter(visible);
   const seriesCards = series.data?.results.filter(visible);
   const upcomingCards = soon.data?.results.filter(visible);
+  const upcomingSeriesCards = tvUpcoming.data?.results.filter(visible);
   const movieNavigationItems: DiscoverNavigationItem[] =
     movieCards?.map(({ id }) => ({ id, mediaType: 'movie' })) ?? [];
   const seriesNavigationItems: DiscoverNavigationItem[] =
     seriesCards?.map(({ id }) => ({ id, mediaType: 'tv' })) ?? [];
   const upcomingNavigationItems: DiscoverNavigationItem[] =
     upcomingCards?.map(({ id }) => ({ id, mediaType: 'movie' })) ?? [];
+  const upcomingSeriesNavigationItems: DiscoverNavigationItem[] =
+    upcomingSeriesCards?.map(({ id }) => ({ id, mediaType: 'tv' })) ?? [];
   const hero = (trending.data?.results || [])
     .filter(
       (r): r is TitleResult =>
@@ -251,6 +259,7 @@ export default function Discover() {
                 (books_ || (h !== '/books' && h !== '/audiobooks')) &&
                 (h !== '/movies' || movieEnabled) &&
                 (h !== '/series' || tvEnabled) &&
+                (h !== '/soon' || movieEnabled || tvEnabled) &&
                 (h !== '/books' || ebookEnabled) &&
                 (h !== '/audiobooks' || audiobookEnabled) &&
                 (h !== '/share' || canUseShare(user?.permissions))
@@ -503,6 +512,36 @@ export default function Discover() {
               </Rail>
             ) : soon.error ? (
               <RowError retry={soon.reload} />
+            ) : (
+              <RailSkeleton />
+            )}
+          </Section>
+        )}
+
+      {preferencesReady &&
+        categorySettingsReady &&
+        tvEnabled &&
+        on.comingSoon &&
+        !empty(upcomingSeriesCards) && (
+          <Section
+            title={t('components.Discover.upcomingtv', 'Upcoming Series')}
+            action={<CardTitleToggle kinds={['tv']} />}
+            link={[t('components.Persius.seeAll'), '/soon?media=tv']}
+          >
+            {upcomingSeriesCards ? (
+              <Rail restoreId="coming-soon-tv">
+                {upcomingSeriesCards.map((series) => (
+                  <TitleCard
+                    key={series.id}
+                    it={{ ...series, mediaType: 'tv' }}
+                    discoverContextId={discoverContextId}
+                    discoverItems={upcomingSeriesNavigationItems}
+                    meta={shortDate(series.firstAirDate)}
+                  />
+                ))}
+              </Rail>
+            ) : tvUpcoming.error ? (
+              <RowError retry={tvUpcoming.reload} />
             ) : (
               <RailSkeleton />
             )}

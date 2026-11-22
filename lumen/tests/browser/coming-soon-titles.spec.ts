@@ -114,6 +114,90 @@ test('Coming Soon loads subsequent pages for the selected media only', async ({
   ]);
 });
 
+test('TV-only accounts can browse upcoming series from the menu and Discover', async ({
+  page,
+}) => {
+  const catalogReads: string[] = [];
+  const upcomingSeries = {
+    id: 902,
+    name: 'Upcoming Fixture Series',
+    mediaType: 'tv',
+    firstAirDate: '2027-04-12',
+    posterPath: null,
+  };
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: { defaults: {} } })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path.startsWith('/discover/')) catalogReads.push(path);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Viewer', permissions: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          enabledMediaCategories: { movie: false, tv: true },
+          movie4kEnabled: false,
+          series4kEnabled: false,
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({
+        json: { enabledMediaCategories: { movie: false, tv: true } },
+      });
+    if (path === '/settings/discover') return route.fulfill({ json: [] });
+    if (path === '/discover/tv/upcoming')
+      return route.fulfill({ json: paged([upcomingSeries]) });
+    return route.fulfill({ json: paged([]) });
+  });
+
+  await page.goto(testAppPath('/soon'));
+  await expect(
+    page.getByRole('heading', { name: 'Coming soon' })
+  ).toBeVisible();
+  const mediaNavigation = page.getByRole('navigation', {
+    name: 'Upcoming Media',
+  });
+  await expect(
+    mediaNavigation.getByRole('link', { name: 'Series', exact: true })
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(
+    mediaNavigation.getByRole('link', { name: 'Movies', exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Upcoming Fixture Series' })
+  ).toBeVisible();
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir) {
+    await page.screenshot({
+      path: `${captureDir}/${page.viewportSize()?.width ?? 'unknown'}-tv-only-soon.png`,
+      fullPage: true,
+    });
+  }
+  expect(catalogReads).toContain('/discover/tv/upcoming');
+  expect(catalogReads).not.toContain('/discover/movies/upcoming');
+
+  catalogReads.length = 0;
+  await page.goto(testAppPath('/'));
+  await expect(
+    page.getByRole('heading', { name: 'Upcoming Series' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Upcoming Fixture Series' })
+  ).toBeVisible();
+  if (captureDir) {
+    await page.screenshot({
+      path: `${captureDir}/${page.viewportSize()?.width ?? 'unknown'}-tv-only-discover.png`,
+      fullPage: true,
+    });
+  }
+  expect(catalogReads).toContain('/discover/tv/upcoming');
+  expect(catalogReads).not.toContain('/discover/movies/upcoming');
+});
+
 test('Coming Soon requests can confirm a permitted streaming override', async ({
   page,
 }) => {

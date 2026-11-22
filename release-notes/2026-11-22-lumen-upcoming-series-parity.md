@@ -1,0 +1,1 @@
+Lumen now includes upcoming television series alongside upcoming movies on Discover and Coming Soon. TV-only accounts can open the page from navigation, and movie/series filters and requests respect enabled media categories.

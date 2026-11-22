@@ -553,10 +553,13 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Icon name="cal" />
             {t('components.Layout.Sidebar.calendar', 'Release Calendar')}
           </NavLink>
-          <NavLink to="/soon">
-            <Icon name="cal" />
-            {t('components.Layout.Sidebar.comingSoon', 'Coming soon')}
-          </NavLink>
+          {(extras.categoryEnabled('movie') ||
+            extras.categoryEnabled('tv')) && (
+            <NavLink to="/soon">
+              <Icon name="cal" />
+              {t('components.Layout.Sidebar.comingSoon', 'Coming soon')}
+            </NavLink>
+          )}
           <Link className="me" to="/me">
             <span className="avatar">
               <AvatarContent

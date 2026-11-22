@@ -7211,3 +7211,19 @@ visually inspected. Filtered catalog behavior on native Discover pages that
 have no Lumen equivalent, and live catalog data, remain outside this increment.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-discover-navigation-20261122/`.
+
+### Upcoming series and category-aware Coming Soon
+
+Lumen now shows an Upcoming Series shelf on Discover and lets TV-only accounts
+use Coming Soon from the menu. The route and its filters fetch only enabled
+movie or TV catalogs, and the Coming Soon shortcut is hidden when neither
+video category is enabled. The shelf reuses SeerrNG's existing localization
+key and links to the TV-filtered Coming Soon view.
+
+TV-only desktop and iPhone browser cases pass, including menu visibility,
+Discover shelf visibility, the active Series filter, and checks that disabled
+movie endpoints are never requested. The production build passes. Candidate
+screenshots at desktop (1440px) and iPhone (390px) are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-upcoming-series-20261122/`.
+The candidate was inspected at both sizes; baseline comparison and live catalog
+provider behavior were not exercised in this increment.

@@ -19,6 +19,7 @@ import {
   showDiscoveryTitle,
 } from '../discoveryVisibility';
 import { friendlyError } from '../errors';
+import { useExtras } from '../extras';
 import { usePaged, usePublicSettings } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
@@ -32,9 +33,12 @@ export default function Soon() {
   const serverName = useMediaServerName();
   const availability = useVideoAvailability();
   const [params] = useSearchParams();
+  const extras = useExtras();
   const scope = params.get('media');
-  const showMovies = scope !== 'tv';
-  const showTv = scope !== 'movie';
+  const moviesEnabled = extras.categoryEnabled('movie');
+  const tvEnabled = extras.categoryEnabled('tv');
+  const showMovies = moviesEnabled && (scope !== 'tv' || !tvEnabled);
+  const showTv = tvEnabled && (scope !== 'movie' || !moviesEnabled);
   const movieList = usePaged<TitleResult>(
     showMovies ? '/discover/movies/upcoming' : null
   );
@@ -51,10 +55,11 @@ export default function Soon() {
       list: tvList,
     },
   ].filter(({ visible }) => visible);
-  const loading = lists.some(({ list }) => !list.page && !list.error);
-  const allSelectedListsLoaded = lists.every(
-    ({ list }) => list.page > 0 && list.done && !list.error
-  );
+  const loading =
+    !extras.ready || lists.some(({ list }) => !list.page && !list.error);
+  const allSelectedListsLoaded =
+    extras.ready &&
+    lists.every(({ list }) => list.page > 0 && list.done && !list.error);
   const visibility = discoveryVisibility(
     usePublicSettings(),
     user?.permissions
@@ -146,27 +151,39 @@ export default function Soon() {
           className="toolbar"
           aria-label={t('lumen.soon.media', 'Upcoming Media')}
         >
-          <Link
-            className="chip"
-            aria-current={showMovies && showTv ? 'page' : undefined}
-            to="/soon"
-          >
-            {t('lumen.soon.all', 'All')}
-          </Link>
-          <Link
-            className="chip"
-            aria-current={!showTv ? 'page' : undefined}
-            to="/soon?media=movie"
-          >
-            {t('lumen.soon.movieTitle', 'Movies')}
-          </Link>
-          <Link
-            className="chip"
-            aria-current={!showMovies ? 'page' : undefined}
-            to="/soon?media=tv"
-          >
-            {t('lumen.soon.seriesTitle', 'Series')}
-          </Link>
+          {moviesEnabled && tvEnabled && (
+            <Link
+              className="chip"
+              aria-current={scope === null ? 'page' : undefined}
+              to="/soon"
+            >
+              {t('lumen.soon.all', 'All')}
+            </Link>
+          )}
+          {moviesEnabled && (
+            <Link
+              className="chip"
+              aria-current={
+                scope === 'movie' || (!scope && !tvEnabled) ? 'page' : undefined
+              }
+              to="/soon?media=movie"
+            >
+              {t('lumen.soon.movieTitle', 'Movies')}
+            </Link>
+          )}
+          {tvEnabled && (
+            <Link
+              className="chip"
+              aria-current={
+                scope === 'tv' || (!scope && !moviesEnabled)
+                  ? 'page'
+                  : undefined
+              }
+              to="/soon?media=tv"
+            >
+              {t('lumen.soon.seriesTitle', 'Series')}
+            </Link>
+          )}
         </nav>
       </header>
       {loading && (

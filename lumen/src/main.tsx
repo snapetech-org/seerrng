@@ -813,7 +813,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="/soon" element={<MediaCategoryRoute categories={['movie']}><Soon /></MediaCategoryRoute>} />
+          <Route path="/soon" element={<MediaCategoryRoute categories={['movie', 'tv']}><Soon /></MediaCategoryRoute>} />
           <Route path="/me" element={<Me />} />
           <Route
             path="/me/account"
