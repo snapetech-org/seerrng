@@ -83,7 +83,7 @@ for (const language of locales) {
             },
           });
         case '/tv/84773/season/1':
-          if (++seasonLoads === 1)
+          if (++seasonLoads <= 2)
             return route.fulfill({
               status: 503,
               json: { message: 'Temporary metadata failure' },
@@ -115,9 +115,7 @@ for (const language of locales) {
     await expect(
       sheet.getByRole('heading', { name: language.open })
     ).toBeVisible();
-    await expect(
-      sheet.getByText(language.season, { exact: true })
-    ).toBeVisible();
+    await expect(sheet.getByText('Season 1', { exact: true })).toBeVisible();
     await expect(sheet.getByText(failureCopy, { exact: true })).toBeVisible();
     if (process.env.LUMEN_CAPTURE) {
       await page.waitForTimeout(400);
@@ -128,6 +126,7 @@ for (const language of locales) {
     await sheet
       .getByRole('button', { name: language.retry, exact: true })
       .click();
+    await sheet.getByText('Season 1', { exact: true }).click();
     const missingEpisode = sheet.getByRole('checkbox', {
       name: 'E2 Missing Episode',
       exact: true,

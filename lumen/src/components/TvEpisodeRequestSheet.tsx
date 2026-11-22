@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import type { Season, SeasonRequestSelection } from '../api';
-import { useApi } from '../hooks';
+import { api, type Season, type SeasonRequestSelection } from '../api';
 import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useBackCloses } from './requestSheet';
@@ -38,23 +37,29 @@ export default function TvEpisodeRequestSheet({
   busy: boolean;
   error?: string;
   streamingOverride?: { message: string; confirm: () => Promise<void> };
-  submit: (selection: SeasonRequestSelection) => Promise<void>;
+  submit: (selections: SeasonRequestSelection[]) => Promise<void>;
   close: () => void;
 }) {
   const { t } = useLumenLocale();
-  const [season, selectSeason] = useState(
-    () =>
-      seasons.find(({ seasonNumber }) => seasonNumber === initialSeason)
-        ?.seasonNumber ?? seasons[0].seasonNumber
+  const [episodesBySeason, setEpisodesBySeason] = useState(
+    new Map<number, Episode[]>()
   );
+  const episodesRef = useRef(episodesBySeason);
+  episodesRef.current = episodesBySeason;
   const [picked, setPicked] = useState(
     () =>
-      new Set(
-        season === initialSeason && initialEpisode !== undefined
-          ? [initialEpisode]
+      new Map<number, Set<number>>(
+        initialSeason !== undefined && initialEpisode !== undefined
+          ? [[initialSeason, new Set([initialEpisode])]]
           : []
       )
   );
+  const [openSeasons, setOpenSeasons] = useState(
+    () => new Set(initialSeason === undefined ? [] : [initialSeason])
+  );
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, close);
   useBackCloses(close);
@@ -62,25 +67,93 @@ export default function TvEpisodeRequestSheet({
   useEffect(() => {
     if (streamingOverride) closeButton.current?.focus();
   }, [streamingOverride]);
-  const {
-    data,
-    error: loadError,
-    reload,
-  } = useApi<{ episodes: Episode[] }>(`/tv/${tvId}/season/${season}`, {
-    currentPathOnly: true,
-  });
+  const seasonKey = seasons.map(({ seasonNumber }) => seasonNumber).join(',');
+  const seasonNumbers = useMemo(
+    () => (seasonKey ? seasonKey.split(',').map(Number) : []),
+    [seasonKey]
+  );
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      setLoading(true);
+      setLoadError(false);
+      const requested = seasonNumbers;
+      const missing = requested.filter(
+        (number) => !episodesRef.current.has(number)
+      );
+      const failed: number[] = [];
+      const accept = (number: number, value: { episodes: Episode[] }) => {
+        if (!Array.isArray(value?.episodes)) {
+          failed.push(number);
+          return;
+        }
+        episodesRef.current = new Map(episodesRef.current).set(
+          number,
+          value.episodes
+        );
+        if (active) setEpisodesBySeason(new Map(episodesRef.current));
+      };
+      for (let index = 0; index < missing.length; index += 3) {
+        const batch = missing.slice(index, index + 3);
+        await Promise.all(
+          batch.map(async (number) => {
+            try {
+              accept(
+                number,
+                await api<{ episodes: Episode[] }>(
+                  `/tv/${tvId}/season/${number}`
+                )
+              );
+            } catch {
+              failed.push(number);
+            }
+          })
+        );
+      }
+      // Providers that reject parallel season lookups get one serial recovery pass.
+      const unresolved = [...new Set(failed)];
+      const stillMissing: number[] = [];
+      for (const number of unresolved) {
+        try {
+          accept(
+            number,
+            await api<{ episodes: Episode[] }>(`/tv/${tvId}/season/${number}`)
+          );
+        } catch {
+          stillMissing.push(number);
+        }
+      }
+      if (active) {
+        setLoadError(stillMissing.length > 0);
+        setLoading(false);
+      }
+    };
+    void load();
+    return () => {
+      active = false;
+    };
+  }, [retryCount, seasonKey, seasonNumbers, tvId]);
   const quality = is4k ? 'fourK' : 'hd';
-  const eligibleSeason = seasons.some((item) => item.seasonNumber === season);
-  const episodes = Array.isArray(data?.episodes) ? data.episodes : [];
-  const eligible = (episode: Episode) =>
+  const complete =
+    !loading &&
+    !loadError &&
+    seasons.every(({ seasonNumber }) => episodesBySeason.has(seasonNumber));
+  const eligible = (seasonNumber: number, episode: Episode) =>
     Number.isSafeInteger(episode.episodeNumber) &&
     episode.episodeNumber > 0 &&
-    !pending.get(season)?.has(episode.episodeNumber) &&
+    !pending.get(seasonNumber)?.has(episode.episodeNumber) &&
     !episode.sonarrAvailability?.[quality] &&
     !episode.availabilitySources?.some((source) => source[quality]);
-  const episodeNumbers = episodes
-    .filter((item) => eligible(item) && picked.has(item.episodeNumber))
-    .map((item) => item.episodeNumber);
+  const selections = seasons.flatMap(({ seasonNumber }) => {
+    const episodeNumbers = (episodesBySeason.get(seasonNumber) ?? [])
+      .filter(
+        (episode) =>
+          eligible(seasonNumber, episode) &&
+          picked.get(seasonNumber)?.has(episode.episodeNumber)
+      )
+      .map(({ episodeNumber }) => episodeNumber);
+    return episodeNumbers.length ? [{ seasonNumber, episodeNumbers }] : [];
+  });
   return createPortal(
     <div className="sheet-wrap open">
       <div className="sheet-scrim" aria-hidden="true" onClick={close} />
@@ -100,34 +173,43 @@ export default function TvEpisodeRequestSheet({
                 : t('lumen.tvEpisodeRequest.title', 'Request Episodes')}
             </h3>
           </header>
-          <label className="sel">
-            <span className="lbl">
-              {t('lumen.tvEpisodeRequest.season', 'Season')}
-            </span>
-            <select
-              value={season}
-              disabled={busy || !!streamingOverride}
-              onChange={(event) => {
-                selectSeason(Number(event.target.value));
-                setPicked(new Set());
-              }}
+          <div className="toolbar">
+            <button
+              className="btn btn-tonal btn-sm"
+              type="button"
+              disabled={!complete || busy || !!streamingOverride}
+              onClick={() =>
+                setOpenSeasons(
+                  new Set(seasons.map(({ seasonNumber }) => seasonNumber))
+                )
+              }
             >
-              {seasons.map((item) => (
-                <option key={item.seasonNumber} value={item.seasonNumber}>
-                  {item.name ||
-                    (item.seasonNumber === 0
-                      ? t('lumen.tvEpisodeRequest.specials', 'Specials')
-                      : t(
-                          'lumen.tvEpisodeRequest.seasonNumber',
-                          'Season {number}',
-                          {
-                            number: item.seasonNumber,
-                          }
-                        ))}
-                </option>
-              ))}
-            </select>
-          </label>
+              {t('lumen.tvEpisodeRequest.expandAll', 'Expand All')}
+            </button>
+            <button
+              className="btn btn-tonal btn-sm"
+              type="button"
+              onClick={() => setOpenSeasons(new Set())}
+            >
+              {t('lumen.tvEpisodeRequest.collapseAll', 'Collapse All')}
+            </button>
+            <button
+              className="btn btn-quiet btn-sm"
+              type="button"
+              disabled={busy || !complete || !picked.size}
+              onClick={() => setPicked(new Map())}
+            >
+              {t('lumen.tvEpisodeRequest.clearSelection', 'Clear Selection')}
+            </button>
+            <span role="status">
+              {t('lumen.tvEpisodeRequest.selected', 'Selected: {count}', {
+                count: selections.reduce(
+                  (total, item) => total + (item.episodeNumbers?.length ?? 0),
+                  0
+                ),
+              })}
+            </span>
+          </div>
           <ServiceNote
             what={t('lumen.tvEpisodeRequest.episodes', 'episodes')}
             title={t(
@@ -135,51 +217,121 @@ export default function TvEpisodeRequestSheet({
               'Could not load episodes'
             )}
             retryLabel={t('lumen.account.retry', 'Retry')}
-            error={loadError}
-            retry={reload}
+            error={
+              loadError
+                ? t(
+                    'lumen.tvEpisodeRequest.loadFailureBody',
+                    'Some season details could not be loaded.'
+                  )
+                : null
+            }
+            retry={() => setRetryCount((count) => count + 1)}
           />
-          {!data && !loadError && (
+          {loading && (
             <p className="note" role="status">
               {t('lumen.tvEpisodeRequest.loading', 'Loading episodes…')}
             </p>
           )}
-          {data && !episodes.length && (
-            <p className="note">
-              {t('lumen.tvEpisodeRequest.empty', 'No episodes found.')}
-            </p>
-          )}
           <div className="setlist">
-            {episodes.map((episode) => {
-              const number = episode.episodeNumber;
-              const available = eligible(episode);
+            {seasons.map((item) => {
+              const seasonNumber = item.seasonNumber;
+              const episodes = episodesBySeason.get(seasonNumber) ?? [];
+              const label =
+                item.name ||
+                (seasonNumber === 0
+                  ? t('lumen.tvEpisodeRequest.specials', 'Specials')
+                  : t(
+                      'lumen.tvEpisodeRequest.seasonNumber',
+                      'Season {number}',
+                      {
+                        number: seasonNumber,
+                      }
+                    ));
+              const selectedCount = picked.get(seasonNumber)?.size ?? 0;
               return (
-                <label className="set cfg-row" key={number}>
-                  <span>
-                    E{number} {episode.name}
-                    {!available && (
-                      <small>
-                        {t(
-                          'lumen.tvEpisodeRequest.alreadyAvailable',
-                          'Already available or requested'
-                        )}
-                      </small>
-                    )}
-                  </span>
-                  <input
-                    type="checkbox"
-                    disabled={busy || !!streamingOverride || !available}
-                    checked={available && picked.has(number)}
-                    onChange={(event) => {
-                      const checked = event.target.checked;
-                      setPicked((previous) => {
-                        const next = new Set(previous);
-                        if (checked) next.add(number);
-                        else next.delete(number);
-                        return next;
-                      });
-                    }}
-                  />
-                </label>
+                <details
+                  key={seasonNumber}
+                  open={openSeasons.has(seasonNumber)}
+                  onToggle={(event) => {
+                    const open = event.currentTarget.open;
+                    setOpenSeasons((previous) => {
+                      const next = new Set(previous);
+                      if (open) next.add(seasonNumber);
+                      else next.delete(seasonNumber);
+                      return next;
+                    });
+                  }}
+                >
+                  <summary className="set">
+                    <span>{label}</span>
+                    <small>
+                      {selectedCount
+                        ? t(
+                            'lumen.tvEpisodeRequest.seasonSelected',
+                            '{count} selected',
+                            { count: selectedCount }
+                          )
+                        : t(
+                            'lumen.tvEpisodeRequest.episodeCount',
+                            '{count} episodes',
+                            { count: item.episodeCount }
+                          )}
+                    </small>
+                  </summary>
+                  {episodes.length ? (
+                    <div className="setlist">
+                      {episodes.map((episode) => {
+                        const number = episode.episodeNumber;
+                        const available = eligible(seasonNumber, episode);
+                        return (
+                          <label className="set cfg-row" key={number}>
+                            <span>
+                              E{number} {episode.name}
+                              {!available && (
+                                <small>
+                                  {t(
+                                    'lumen.tvEpisodeRequest.alreadyAvailable',
+                                    'Already available or requested'
+                                  )}
+                                </small>
+                              )}
+                            </span>
+                            <input
+                              type="checkbox"
+                              disabled={
+                                busy ||
+                                !!streamingOverride ||
+                                !complete ||
+                                !available
+                              }
+                              checked={
+                                available &&
+                                !!picked.get(seasonNumber)?.has(number)
+                              }
+                              onChange={(event) => {
+                                const next = new Map(picked);
+                                const seasonPicks = new Set(
+                                  next.get(seasonNumber)
+                                );
+                                if (event.target.checked)
+                                  seasonPicks.add(number);
+                                else seasonPicks.delete(number);
+                                if (seasonPicks.size)
+                                  next.set(seasonNumber, seasonPicks);
+                                else next.delete(seasonNumber);
+                                setPicked(next);
+                              }}
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                  ) : episodesBySeason.has(seasonNumber) ? (
+                    <p className="note">
+                      {t('lumen.tvEpisodeRequest.empty', 'No episodes found.')}
+                    </p>
+                  ) : null}
+                </details>
               );
             })}
           </div>
@@ -197,11 +349,11 @@ export default function TvEpisodeRequestSheet({
             <button
               type="button"
               className="btn btn-primary"
-              disabled={busy || !eligibleSeason || !episodeNumbers.length}
+              disabled={busy || !complete || !selections.length}
               onClick={() =>
                 streamingOverride
                   ? void streamingOverride.confirm()
-                  : void submit({ seasonNumber: season, episodeNumbers })
+                  : void submit(selections)
               }
             >
               {busy

@@ -353,11 +353,11 @@ export default function TvDetail() {
     quota.status?.restricted === true ||
     (!!quota.status?.limit && (quota.status.remaining ?? 0) < 1);
   const submitEpisodes = async (
-    selection: SeasonRequestSelection,
+    selections: SeasonRequestSelection[],
     options: RequestOptions & { seasonRequests: SeasonRequestSelection[] } = {
       ...opts,
       is4k,
-      seasonRequests: [selection],
+      seasonRequests: selections,
       requestQuotaApproval: episodeApproval || undefined,
     }
   ) => {
@@ -368,7 +368,7 @@ export default function TvDetail() {
     try {
       const result = await requestSeries(
         t.id,
-        [selection.seasonNumber],
+        selections.map(({ seasonNumber }) => seasonNumber),
         options
       );
       toast(
@@ -389,7 +389,7 @@ export default function TvDetail() {
         setEpisodeOverride({
           message: error.message,
           confirm: () =>
-            submitEpisodes(selection, {
+            submitEpisodes(selections, {
               ...options,
               bypassStreamingRequestPolicy: true,
             }),

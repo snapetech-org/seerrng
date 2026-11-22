@@ -90,6 +90,8 @@ async function show(
           mediaInfo,
         },
       });
+    if (/^\/tv\/84773\/season\/\d+$/.test(path))
+      return r.fulfill({ json: { episodes: [] } });
     return r.fulfill({ json: { results: [] } });
   });
   await page.goto(appPath('/tv/84773'));
@@ -531,6 +533,7 @@ test('TV detail can request missing episodes from a partly requested season', as
   });
   await action.click();
   const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await sheet.getByText('Season 1', { exact: true }).click();
   await expect(
     sheet.getByRole('checkbox', { name: /E1 Owned/ })
   ).toBeDisabled();
@@ -586,7 +589,7 @@ test('TV detail can request missing episodes from a partly requested season', as
   ]);
 });
 
-test('large-series episode metadata can be retried without losing the deep-linked episode', async ({
+test('large-series episode metadata recovers failed seasons without losing the deep-linked episode', async ({
   page,
 }) => {
   const posts: RecordedPost[] = [];
@@ -605,25 +608,29 @@ test('large-series episode metadata can be retried without losing the deep-linke
     largeSeriesSeasons
   );
   await page.goto(appPath('/tv/84773?episode=3#season-15'));
-  let loads = 0;
   const loadedSeasons: string[] = [];
   await page.route('**/api/v1/tv/84773/season/*', (route) => {
     const seasonNumber = new URL(route.request().url()).pathname
       .split('/')
       .at(-1)!;
     loadedSeasons.push(seasonNumber);
-    loads += 1;
-    if (loads === 1)
+    if (
+      seasonNumber === '15' &&
+      loadedSeasons.filter((n) => n === '15').length === 1
+    )
       return route.fulfill({
         status: 503,
         json: { message: 'Temporary metadata failure' },
       });
     return route.fulfill({
       json: {
-        episodes: [
-          { episodeNumber: 1, name: 'First episode' },
-          { episodeNumber: 3, name: 'Deep-linked episode' },
-        ],
+        episodes:
+          seasonNumber === '15'
+            ? [
+                { episodeNumber: 1, name: 'First episode' },
+                { episodeNumber: 3, name: 'Deep-linked episode' },
+              ]
+            : [],
       },
     });
   });
@@ -633,19 +640,22 @@ test('large-series episode metadata can be retried without losing the deep-linke
   });
   await open.click();
   const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
-  await expect(sheet.getByRole('combobox', { name: 'Season' })).toHaveValue(
-    '15'
-  );
-  const retry = sheet.getByRole('button', { name: 'Retry' });
-  await expect(retry).toBeVisible();
-  await retry.click();
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+  ).toBeEnabled();
+  await sheet.getByText('Season 1', { exact: true }).click();
   const selectedEpisode = sheet.getByRole('checkbox', {
     name: 'E3 Deep-linked episode',
     exact: true,
   });
   await expect(selectedEpisode).toBeChecked();
-  await expect(retry).toHaveCount(0);
-  expect(loadedSeasons).toEqual(['15', '15']);
+  expect(loadedSeasons.filter((number) => number === '15')).toEqual([
+    '15',
+    '15',
+  ]);
+  expect(new Set(loadedSeasons)).toEqual(
+    new Set(largeSeriesSeasons.map(({ seasonNumber }) => String(seasonNumber)))
+  );
   await sheet
     .getByRole('button', { name: 'Request Selected Episodes' })
     .click();
@@ -661,6 +671,84 @@ test('large-series episode metadata can be retried without losing the deep-linke
         is4k: false,
         seasons: [15],
         seasonRequests: [{ seasonNumber: 15, episodeNumbers: [3] }],
+      },
+    },
+  ]);
+});
+
+test('the episode picker submits selections from multiple seasons together', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  await show(
+    page,
+    {},
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true },
+    seasons.filter(({ seasonNumber }) => seasonNumber > 0).slice(0, 2)
+  );
+  await page.route('**/api/v1/tv/84773/season/*', (route) => {
+    const seasonNumber = Number(
+      new URL(route.request().url()).pathname.split('/').at(-1)
+    );
+    return route.fulfill({
+      json: {
+        episodes: [
+          {
+            episodeNumber: seasonNumber,
+            name: `Season ${seasonNumber} episode`,
+          },
+        ],
+      },
+    });
+  });
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await sheet.getByText('Season 1', { exact: true }).click();
+  await sheet.getByRole('checkbox', { name: 'E1 Season 1 episode' }).check();
+  await sheet.getByText('Season 2', { exact: true }).click();
+  await sheet.getByRole('checkbox', { name: 'E2 Season 2 episode' }).check();
+  await sheet.getByRole('button', { name: 'Collapse All' }).click();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'E1 Season 1 episode' })
+  ).toBeHidden();
+  await expect(sheet.getByText('Selected: 2')).toBeVisible();
+  await sheet.getByRole('button', { name: 'Expand All' }).click();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'E1 Season 1 episode' })
+  ).toBeVisible();
+  await sheet.getByRole('button', { name: 'Clear Selection' }).click();
+  await expect(sheet.getByText('Selected: 0')).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+  ).toBeDisabled();
+  await sheet.getByRole('checkbox', { name: 'E1 Season 1 episode' }).check();
+  await sheet.getByRole('checkbox', { name: 'E2 Season 2 episode' }).check();
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+  ).toBeEnabled();
+  await sheet
+    .getByRole('button', { name: 'Request Selected Episodes' })
+    .click();
+  await expect(
+    page.getByText('Episodes requested for The Rings of Power')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [1, 2],
+        seasonRequests: [
+          { seasonNumber: 1, episodeNumbers: [1] },
+          { seasonNumber: 2, episodeNumbers: [2] },
+        ],
       },
     },
   ]);
@@ -773,12 +861,14 @@ for (const scenario of ['eligible', 'owned season', 'owned episode']) {
       .getByRole('button', { name: 'Request Episodes', exact: true })
       .click();
     const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
-    await expect(sheet.getByRole('combobox', { name: 'Season' })).toHaveValue(
-      String(expected)
-    );
+    await expect(
+      sheet.getByText(`Season ${expected}`, { exact: true })
+    ).toBeVisible();
     const episode = sheet.getByRole('checkbox', {
       name: /E3 Bookmarked Episode/,
     });
+    if (!(await episode.isVisible()))
+      await sheet.getByText(`Season ${expected}`, { exact: true }).click();
     if (scenario === 'eligible') await expect(episode).toBeChecked();
     else await expect(episode).not.toBeChecked();
     if (scenario === 'owned episode') {
