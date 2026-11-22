@@ -155,6 +155,67 @@ function UserRequestsBookmark() {
   return <Navigate to={`/requests?${params}`} replace />;
 }
 
+function UserProfileBookmark() {
+  const { userId = '' } = useParams();
+  if (!/^[1-9]\d{0,9}$/.test(userId) || Number(userId) > 1_000_000_000)
+    return <Navigate to="/me" replace />;
+  return <Navigate to={`/household/${userId}`} replace />;
+}
+
+function UserWatchlistBookmark() {
+  const { userId = '' } = useParams();
+  const { search } = useLocation();
+  if (!/^[1-9]\d{0,9}$/.test(userId) || Number(userId) > 1_000_000_000)
+    return <Navigate to="/watchlist" replace />;
+  return <Navigate to={`/watchlist/user/${userId}${search}`} replace />;
+}
+
+function UserSettingsBookmark() {
+  const { userId = '' } = useParams();
+  const { pathname, search } = useLocation();
+  const { user } = useAuth();
+  if (!/^[1-9]\d{0,9}$/.test(userId) || Number(userId) > 1_000_000_000)
+    return <Navigate to="/me" replace />;
+
+  const suffix = pathname.split(`/users/${userId}/settings`)[1] ?? '';
+  const parts = suffix.split('/').filter(Boolean);
+  const page = parts[0] ?? 'main';
+  const targetIsSelf = user?.id === Number(userId);
+  const ownDestination: Record<string, string> = {
+    'linked-accounts': '/me/account/linked-accounts',
+    'tv-request-access': '/me/account/tv-requests',
+    'episode-queue': '/me/account/tv-requests',
+    notifications: '/me/account/notifications',
+    'client-tokens': '/me/account/client-tokens',
+  };
+  if (targetIsSelf)
+    return (
+      <Navigate
+        to={`${ownDestination[page] ?? '/me/account'}${search}`}
+        replace
+      />
+    );
+
+  if (((user?.permissions ?? 0) & (2 | 8)) === 0)
+    return <Navigate to="/me" replace />;
+
+  const managedPanel: Record<string, string> = {
+    'linked-accounts': 'linked-accounts',
+    'tv-request-access': 'tv-request-access',
+    'episode-queue': 'episode-queue',
+    notifications: 'notifications',
+    password: 'password',
+    permissions: 'permissions',
+    maturity: 'maturity',
+    main: 'main',
+  };
+  const panel = managedPanel[page];
+  const destination = panel
+    ? `/admin/users/${userId}/${panel}`
+    : `/admin/users/${userId}`;
+  return <Navigate to={`${destination}${search}`} replace />;
+}
+
 function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
   const { t } = useLumenLocale();
   return (
@@ -526,6 +587,19 @@ function App() {
           />
           <Route path="/search" element={<Search />} />
           <Route path="/household/:id" element={<HouseholdProfile />} />
+          <Route path="/users/:userId" element={<UserProfileBookmark />} />
+          <Route
+            path="/users/:requesterId/requests"
+            element={<UserRequestsBookmark />}
+          />
+          <Route
+            path="/users/:userId/watchlist"
+            element={<UserWatchlistBookmark />}
+          />
+          <Route
+            path="/users/:userId/settings/*"
+            element={<UserSettingsBookmark />}
+          />
           <Route path="/requests" element={<Requests />} />
           <Route
             path="/book-series/requests"
