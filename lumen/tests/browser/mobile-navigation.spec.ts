@@ -55,6 +55,26 @@ test('mobile tabs yield to long forms on scroll and return on scroll up', async 
     .poll(() => page.evaluate(() => document.documentElement.scrollHeight))
     .toBeGreaterThan(viewport!.height + 300);
 
+  const username = page.getByLabel('Username');
+  await username.focus();
+  await expect(tabs).toHaveAttribute('data-hidden', 'true');
+  await expect(page.getByRole('navigation', { name: 'Tabs' })).toHaveCount(0);
+  if (testInfo.project.name === 'iphone') {
+    const baselineTabs = await page.addStyleTag({
+      content:
+        '.tabbar[data-hidden] { transform: translateX(-50%) !important; opacity: 1 !important; pointer-events: auto !important; }',
+    });
+    await page.screenshot({
+      path: testInfo.outputPath('editing-baseline-tabs-visible.png'),
+    });
+    await baselineTabs.evaluate((style) => style.remove());
+    await page.screenshot({
+      path: testInfo.outputPath('editing-candidate-tabs-hidden.png'),
+    });
+  }
+  await username.evaluate((input: HTMLInputElement) => input.blur());
+  await expect(tabs).not.toHaveAttribute('data-hidden');
+
   await page.evaluate(() => window.scrollTo(0, 96));
   await page.waitForFunction(() => window.scrollY > 48);
   await expect(tabs).toHaveAttribute('data-hidden', 'true');

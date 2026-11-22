@@ -59,6 +59,9 @@ export const fullSeerrUrl = (configured?: string): string => {
   }
 };
 
+const EDITABLE_CONTROL =
+  'input:not([type="button"]):not([type="submit"]):not([type="reset"]), textarea, select, [contenteditable="true"]';
+
 const SIDE: [string, IconName, string, string][] = [
   ['/', 'home', 'components.Layout.Sidebar.discover', 'Discover'],
   ['/movies', 'film', 'components.Layout.Sidebar.browsemovies', 'Movies'],
@@ -246,7 +249,19 @@ export default function Shell({ children }: { children: ReactNode }) {
         const focusInTabs = document
           .querySelector('.tabbar')
           ?.contains(document.activeElement);
-        if (detail || offset <= 16 || atBottom || delta <= -6 || focusInTabs) {
+        const focusInEditor =
+          document.activeElement instanceof HTMLElement &&
+          document.activeElement.matches(EDITABLE_CONTROL);
+        if (focusInEditor) {
+          setTabsHidden(true);
+          directionAnchor = offset;
+        } else if (
+          detail ||
+          offset <= 16 ||
+          atBottom ||
+          delta <= -6 ||
+          focusInTabs
+        ) {
           setTabsHidden(false);
           directionAnchor = offset;
         } else if (offset > 48 && delta >= 12) {
@@ -261,6 +276,25 @@ export default function Shell({ children }: { children: ReactNode }) {
       cancelAnimationFrame(raf);
     };
   }, [detail]);
+  useEffect(() => {
+    const isEditingControl = (target: EventTarget | null) =>
+      target instanceof HTMLElement && !!target.closest(EDITABLE_CONTROL);
+    const hideForEditing = (event: FocusEvent) => {
+      if (isEditingControl(event.target)) setTabsHidden(true);
+    };
+    const restoreAfterEditing = () => {
+      requestAnimationFrame(() => {
+        if (!isEditingControl(document.activeElement) && window.scrollY <= 48)
+          setTabsHidden(false);
+      });
+    };
+    document.addEventListener('focusin', hideForEditing);
+    document.addEventListener('focusout', restoreAfterEditing);
+    return () => {
+      document.removeEventListener('focusin', hideForEditing);
+      document.removeEventListener('focusout', restoreAfterEditing);
+    };
+  }, []);
   const lastPath = useRef(loc.pathname);
   useEffect(() => {
     const moved = lastPath.current !== loc.pathname;

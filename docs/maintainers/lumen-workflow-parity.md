@@ -5998,11 +5998,15 @@ Radarr, Sonarr, and collector save/test flows. French and Arabic use the saved
 locale and Arabic sets RTL without page-level overflow. English baseline and
 candidate screenshots match pixel-for-pixel on desktop; phone screenshots have
 identical dimensions and 288 changed pixels around the sticky navigation.
-French desktop and Arabic iPhone candidates were inspected. The tall phone
-form's fixed navigation overlays controls in the initial viewport, so the
-shared navigation overlap remains open. Bundled Express mount, live provider
-operations, and independent linguistic review remain unverified. Baseline and
-candidate captures are retained at
+French desktop and Arabic iPhone candidates were inspected. The shared mobile
+navigation now yields while an editable control is focused and returns after
+focus leaves when the page is near its top. This lets users reach lower form
+controls that sit behind the fixed tabs while preserving the existing
+scroll-direction behavior. The mobile navigation regression and short-screen
+checks pass; matched focused-state screenshots at 390 × 844 are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/navigation-focus/`.
+Bundled Express mount, live provider operations, and independent linguistic
+review remain unverified. Baseline and candidate captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/servarr-*-{desktop,phone}.png`.
 
 ### Watch Sessions localization
