@@ -4,6 +4,7 @@ import { api, ApiError, tmdbImg } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Decision = 'want' | 'pass';
@@ -17,6 +18,7 @@ interface Movie {
 const pageSize = 20;
 
 export default function WatchSessionBallots({ id }: { id: string }) {
+  const { t } = useLumenLocale();
   const path = `/watch-sessions/${id}`;
   const deck = useApi<{ candidates: Movie[]; hasMore: boolean }>(
     path + '/deck'
@@ -60,7 +62,7 @@ export default function WatchSessionBallots({ id }: { id: string }) {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not save your vote.'
+            : t('lumen.watchSessions.voteFailed', 'Could not save your vote.')
         );
     } finally {
       pending.current = false;
@@ -75,19 +77,25 @@ export default function WatchSessionBallots({ id }: { id: string }) {
           type="button"
           className="btn btn-primary btn-sm"
           disabled={busy || current === 'want'}
-          aria-label={`Want to Watch ${movie.title}`}
+          aria-label={t(
+            'lumen.watchSessions.wantForTitle',
+            'Want to Watch {title}',
+            { title: movie.title }
+          )}
           onClick={() => void vote(movie, 'want')}
         >
-          Want to Watch
+          {t('lumen.watchSessions.wantToWatch', 'Want to Watch')}
         </button>
         <button
           type="button"
           className="btn btn-quiet btn-sm"
           disabled={busy || current === 'pass'}
-          aria-label={`Pass on ${movie.title}`}
+          aria-label={t('lumen.watchSessions.passTitle', 'Pass on {title}', {
+            title: movie.title,
+          })}
           onClick={() => void vote(movie, 'pass')}
         >
-          Pass
+          {t('lumen.watchSessions.pass', 'Pass')}
         </button>
       </div>
     );
@@ -100,9 +108,14 @@ export default function WatchSessionBallots({ id }: { id: string }) {
   const image = tmdbImg(card?.posterPath);
   return (
     <>
-      <Section title="Vote on Movies">
+      <Section title={t('lumen.watchSessions.voteOnMovies', 'Vote on Movies')}>
         <ServiceNote
-          what="session movies"
+          what={t('lumen.watchSessions.sessionMovies', 'session movies')}
+          title={t(
+            'lumen.watchSessions.moviesLoadFailed',
+            'Could not load session movies'
+          )}
+          retryLabel={t('lumen.watchSessions.retry', 'Retry')}
           error={deck.error}
           retry={reloadDeck}
         />
@@ -113,7 +126,7 @@ export default function WatchSessionBallots({ id }: { id: string }) {
         )}
         {!deck.data && !deck.error && (
           <p className="note" role="status">
-            Loading session movies…
+            {t('lumen.watchSessions.moviesLoading', 'Loading session movies…')}
           </p>
         )}
         {card && (
@@ -132,7 +145,12 @@ export default function WatchSessionBallots({ id }: { id: string }) {
         )}
         {!card && deck.data && (
           <>
-            <p className="note">No movies left in this batch.</p>
+            <p className="note">
+              {t(
+                'lumen.watchSessions.noMoviesBatch',
+                'No movies left in this batch.'
+              )}
+            </p>
             {deck.data.hasMore && (
               <div className="toolbar">
                 <button
@@ -141,26 +159,33 @@ export default function WatchSessionBallots({ id }: { id: string }) {
                   disabled={busy}
                   onClick={reloadDeck}
                 >
-                  Load More Movies
+                  {t('lumen.watchSessions.loadMoreMovies', 'Load More Movies')}
                 </button>
               </div>
             )}
           </>
         )}
       </Section>
-      <Section title="Your Votes">
+      <Section title={t('lumen.watchSessions.yourVotes', 'Your Votes')}>
         <ServiceNote
-          what="your votes"
+          what={t('lumen.watchSessions.votes', 'your votes')}
+          title={t(
+            'lumen.watchSessions.votesLoadFailed',
+            'Could not load your votes'
+          )}
+          retryLabel={t('lumen.watchSessions.retry', 'Retry')}
           error={ballots.error}
           retry={ballots.reload}
         />
         {!ballots.data && !ballots.error && (
           <p className="note" role="status">
-            Loading your votes…
+            {t('lumen.watchSessions.votesLoading', 'Loading your votes…')}
           </p>
         )}
         {ballots.data?.ballots.length === 0 && (
-          <p className="note">You haven’t voted yet.</p>
+          <p className="note">
+            {t('lumen.watchSessions.noVotes', 'You haven’t voted yet.')}
+          </p>
         )}
         <div className="setlist">
           {ballots.data?.ballots.map((movie) => (
@@ -168,7 +193,9 @@ export default function WatchSessionBallots({ id }: { id: string }) {
               <span>
                 <b>{movie.title}</b>
                 <small>
-                  {movie.decision === 'want' ? 'Want to Watch' : 'Passed'}
+                  {movie.decision === 'want'
+                    ? t('lumen.watchSessions.wantToWatch', 'Want to Watch')
+                    : t('lumen.watchSessions.passed', 'Passed')}
                 </small>
               </span>
               {voteButtons(movie, movie.decision)}
@@ -176,19 +203,29 @@ export default function WatchSessionBallots({ id }: { id: string }) {
           ))}
         </div>
       </Section>
-      <Section title="Group Matches">
+      <Section title={t('lumen.watchSessions.groupMatches', 'Group Matches')}>
         <ServiceNote
-          what="group matches"
+          what={t('lumen.watchSessions.groupMatches', 'group matches')}
+          title={t(
+            'lumen.watchSessions.matchesLoadFailed',
+            'Could not load group matches'
+          )}
+          retryLabel={t('lumen.watchSessions.retry', 'Retry')}
           error={matches.error}
           retry={matches.reload}
         />
         {!matches.data && !matches.error && (
           <p className="note" role="status">
-            Loading group matches…
+            {t('lumen.watchSessions.matchesLoading', 'Loading group matches…')}
           </p>
         )}
         {matches.data?.matches.length === 0 && (
-          <p className="note">No group matches on this page.</p>
+          <p className="note">
+            {t(
+              'lumen.watchSessions.noMatches',
+              'No group matches on this page.'
+            )}
+          </p>
         )}
         <div className="setlist">
           {matches.data?.matches.map((movie) => (
@@ -199,9 +236,13 @@ export default function WatchSessionBallots({ id }: { id: string }) {
               <Link
                 to={`/movie/${movie.id}`}
                 className="btn btn-quiet btn-sm"
-                aria-label={`Open ${movie.title}`}
+                aria-label={t(
+                  'lumen.watchSessions.openMovieTitle',
+                  'Open {title}',
+                  { title: movie.title }
+                )}
               >
-                Open Movie
+                {t('lumen.watchSessions.openMovie', 'Open Movie')}
               </Link>
             </div>
           ))}
@@ -214,7 +255,7 @@ export default function WatchSessionBallots({ id }: { id: string }) {
               disabled={busy}
               onClick={() => setSkip((value) => value - pageSize)}
             >
-              Previous Matches
+              {t('lumen.watchSessions.previousMatches', 'Previous Matches')}
             </button>
           )}
           {matches.data?.hasMore && (
@@ -224,7 +265,7 @@ export default function WatchSessionBallots({ id }: { id: string }) {
               disabled={busy}
               onClick={() => setSkip((value) => value + pageSize)}
             >
-              Next Matches
+              {t('lumen.watchSessions.nextMatches', 'Next Matches')}
             </button>
           )}
           <button
@@ -233,7 +274,7 @@ export default function WatchSessionBallots({ id }: { id: string }) {
             disabled={busy}
             onClick={matches.refresh}
           >
-            Refresh Matches
+            {t('lumen.watchSessions.refreshMatches', 'Refresh Matches')}
           </button>
         </div>
       </Section>

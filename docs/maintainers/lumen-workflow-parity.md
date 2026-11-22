@@ -5960,3 +5960,18 @@ shared navigation overlap remains open. Bundled Express mount, live provider
 operations, and independent linguistic review remain unverified. Baseline and
 candidate captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/servarr-*-{desktop,phone}.png`.
+
+### Watch Sessions localization
+
+Lumen's Watch Sessions list, session creation and management, invitations,
+join flow, ballots, and group matches now follow the saved English, French, or
+Arabic locale. Arabic uses RTL. Session creation and management API payloads,
+permissions, membership, and voting behavior remain unchanged.
+
+The new saved-locale browser cases and existing watch-session creation,
+membership, ballot, and confirmation workflows pass in all three locales and
+four viewports (32 cases). The focused browser checks confirmed the unchanged
+session-creation payload and no horizontal overflow. The production Vite build
+and i18n catalog checks pass. Matched native baseline screenshots, bundled
+Express mount, live multi-user provider behavior, fixed-navigation overlap on
+tall mobile pages, and independent linguistic review remain open.

@@ -4,6 +4,7 @@ import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import {
   captureWatchSessionInviteTokenFromHash,
@@ -25,6 +26,7 @@ export function WatchSessionInvites({
   id: string;
   draft: boolean;
 }) {
+  const { t } = useLumenLocale();
   const endpoint = `/watch-sessions/${id}/invites`;
   const invites = useApi<{ invites: Invite[] }>(endpoint);
   const href = useHref(joinPath);
@@ -63,7 +65,10 @@ export function WatchSessionInvites({
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not update the invitation.'
+            : t(
+                'lumen.watchSessions.inviteUpdateFailed',
+                'Could not update the invitation.'
+              )
         );
     } finally {
       pending.current = false;
@@ -72,9 +77,14 @@ export function WatchSessionInvites({
   }
 
   return (
-    <Section title="Invitations">
+    <Section title={t('lumen.watchSessions.invitations', 'Invitations')}>
       <ServiceNote
-        what="invitations"
+        what={t('lumen.watchSessions.invitations', 'invitations')}
+        title={t(
+          'lumen.watchSessions.invitationsLoadFailed',
+          'Could not load invitations'
+        )}
+        retryLabel={t('lumen.watchSessions.retry', 'Retry')}
         error={invites.error}
         retry={invites.reload}
       />
@@ -85,28 +95,41 @@ export function WatchSessionInvites({
       )}
       {!invites.data && !invites.error && (
         <p className="note" role="status">
-          Loading invitations…
+          {t('lumen.watchSessions.invitationsLoading', 'Loading invitations…')}
         </p>
       )}
       {invites.data?.invites.length === 0 && (
-        <p className="note">No invitations created.</p>
+        <p className="note">
+          {t('lumen.watchSessions.noInvitations', 'No invitations created.')}
+        </p>
       )}
       <div className="setlist">
         {invites.data?.invites.map((invite) => (
           <div className="set cfg-row" key={invite.id}>
             <span>
-              Invitation {invite.id}
-              <small>{invite.status}</small>
+              {t('lumen.watchSessions.invitationId', 'Invitation {id}', {
+                id: invite.id,
+              })}
+              <small>
+                {t(
+                  `lumen.watchSessions.inviteStatus.${invite.status}`,
+                  invite.status
+                )}
+              </small>
             </span>
             {invite.status === 'open' && (
               <button
                 type="button"
                 className="btn btn-quiet btn-sm"
                 disabled={busy}
-                aria-label={`Revoke Invitation ${invite.id}`}
+                aria-label={t(
+                  'lumen.watchSessions.revokeInvite',
+                  'Revoke Invitation {id}',
+                  { id: invite.id }
+                )}
                 onClick={() => void change(invite.id)}
               >
-                Revoke
+                {t('lumen.watchSessions.revoke', 'Revoke')}
               </button>
             )}
           </div>
@@ -120,14 +143,14 @@ export function WatchSessionInvites({
             disabled={busy}
             onClick={() => void change()}
           >
-            Create Invite Link
+            {t('lumen.watchSessions.createInviteLink', 'Create Invite Link')}
           </button>
         </div>
       )}
       {created && (
         <>
           <label className="set cfg-row">
-            <span>Invite Link</span>
+            <span>{t('lumen.watchSessions.inviteLink', 'Invite Link')}</span>
             <input
               className="cfg-input"
               readOnly
@@ -141,21 +164,32 @@ export function WatchSessionInvites({
               className="btn btn-quiet btn-sm"
               onClick={() => {
                 if (!navigator.clipboard) {
-                  setError('Copy the invitation link from the field.');
+                  setError(
+                    t(
+                      'lumen.watchSessions.copyLinkFromField',
+                      'Copy the invitation link from the field.'
+                    )
+                  );
                   return;
                 }
                 void navigator.clipboard.writeText(created.url).then(
                   () => setCopied(true),
-                  () => setError('Copy the invitation link from the field.')
+                  () =>
+                    setError(
+                      t(
+                        'lumen.watchSessions.copyLinkFromField',
+                        'Copy the invitation link from the field.'
+                      )
+                    )
                 );
               }}
             >
-              Copy Invite Link
+              {t('lumen.watchSessions.copyInviteLink', 'Copy Invite Link')}
             </button>
           </div>
           {copied && (
             <p className="note" role="status">
-              Invite link copied.
+              {t('lumen.watchSessions.inviteLinkCopied', 'Invite link copied.')}
             </p>
           )}
         </>
@@ -165,6 +199,7 @@ export function WatchSessionInvites({
 }
 
 export function JoinWatchSession() {
+  const { t } = useLumenLocale();
   const navigate = useNavigate();
   const token = useRef<string>(undefined);
   const started = useRef(false);
@@ -178,7 +213,12 @@ export function JoinWatchSession() {
       captureWatchSessionInviteTokenFromHash() ??
       readStoredWatchSessionInviteToken();
     if (!token.current) {
-      setError('Invite link is invalid or expired.');
+      setError(
+        t(
+          'lumen.watchSessions.invalidInvite',
+          'Invite link is invalid or expired.'
+        )
+      );
       setBusy(false);
       return;
     }
@@ -199,18 +239,21 @@ export function JoinWatchSession() {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not join the watch session. Reopen the invitation to retry.'
+            : t(
+                'lumen.watchSessions.joinFailed',
+                'Could not join the watch session. Reopen the invitation to retry.'
+              )
         );
       })
       .finally(() => setBusy(false));
-  }, [navigate]);
+  }, [navigate, t]);
 
   return (
     <>
-      <h1>Join Watch Session</h1>
+      <h1>{t('lumen.watchSessions.joinTitle', 'Join Watch Session')}</h1>
       {busy && (
         <p className="note" role="status">
-          Joining the watch session…
+          {t('lumen.watchSessions.joining', 'Joining the watch session…')}
         </p>
       )}
       {error && (
@@ -220,7 +263,7 @@ export function JoinWatchSession() {
       )}
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/watch-sessions">
-          Back to Watch Sessions
+          {t('lumen.watchSessions.backToSessions', 'Back to Watch Sessions')}
         </Link>
       </div>
     </>

@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import WatchSessionBallots from './WatchSessionBallots';
 import { JoinWatchSession, WatchSessionInvites } from './WatchSessionInvites';
@@ -37,6 +38,7 @@ function SessionForm({
   initial?: Detail;
   onSave: (session: Detail) => void;
 }) {
+  const { t } = useLumenLocale();
   const [title, setTitle] = useState(initial?.title ?? '');
   const [ranking, setRanking] = useState(
     initial?.filters?.ranking ?? 'popularity.desc'
@@ -95,7 +97,10 @@ function SessionForm({
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not save the watch session.'
+            : t(
+                'lumen.watchSessions.saveFailed',
+                'Could not save the watch session.'
+              )
         );
     } finally {
       pending.current = false;
@@ -112,7 +117,7 @@ function SessionForm({
     >
       <div className="setlist">
         <label className="set cfg-row">
-          <span>Session Title</span>
+          <span>{t('lumen.watchSessions.sessionTitle', 'Session Title')}</span>
           <input
             className="cfg-input"
             required
@@ -123,22 +128,28 @@ function SessionForm({
           />
         </label>
         <label className="set cfg-row">
-          <span>Movie Ranking</span>
+          <span>{t('lumen.watchSessions.movieRanking', 'Movie Ranking')}</span>
           <select
             className="cfg-select"
             disabled={busy}
             value={ranking}
             onChange={(event) => setRanking(event.target.value)}
           >
-            <option value="popularity.desc">Most Popular</option>
-            <option value="vote_average.desc">Highest Rated</option>
-            <option value="primary_release_date.desc">Newest Releases</option>
+            <option value="popularity.desc">
+              {t('lumen.watchSessions.mostPopular', 'Most Popular')}
+            </option>
+            <option value="vote_average.desc">
+              {t('lumen.watchSessions.highestRated', 'Highest Rated')}
+            </option>
+            <option value="primary_release_date.desc">
+              {t('lumen.watchSessions.newestReleases', 'Newest Releases')}
+            </option>
           </select>
         </label>
         {(
           [
-            ['releaseYearFrom', 'From Year'],
-            ['releaseYearTo', 'To Year'],
+            ['releaseYearFrom', t('lumen.watchSessions.fromYear', 'From Year')],
+            ['releaseYearTo', t('lumen.watchSessions.toYear', 'To Year')],
           ] as const
         ).map(([key, label]) => (
           <label className="set cfg-row" key={key}>
@@ -157,7 +168,9 @@ function SessionForm({
           </label>
         ))}
         <label className="set cfg-row">
-          <span>Minimum Rating</span>
+          <span>
+            {t('lumen.watchSessions.minimumRating', 'Minimum Rating')}
+          </span>
           <input
             className="cfg-input"
             type="number"
@@ -171,15 +184,24 @@ function SessionForm({
         </label>
       </div>
       <details className="adv">
-        <summary>Genres ({genreIds.length} of 5)</summary>
+        <summary>
+          {t('lumen.watchSessions.genresCount', 'Genres ({count} of 5)', {
+            count: genreIds.length,
+          })}
+        </summary>
         <ServiceNote
-          what="movie genres"
+          what={t('lumen.watchSessions.movieGenres', 'movie genres')}
+          title={t(
+            'lumen.watchSessions.genresLoadFailed',
+            'Could not load movie genres'
+          )}
+          retryLabel={t('lumen.watchSessions.retry', 'Retry')}
           error={genres.error}
           retry={genres.reload}
         />
         {!genres.data && !genres.error && (
           <p className="note" role="status">
-            Loading movie genres…
+            {t('lumen.watchSessions.genresLoading', 'Loading movie genres…')}
           </p>
         )}
         <div className="setlist picklist">
@@ -220,7 +242,9 @@ function SessionForm({
           className="btn btn-primary btn-sm"
           disabled={busy || !valid}
         >
-          {initial ? 'Save Session Settings' : 'Create Session'}
+          {initial
+            ? t('lumen.watchSessions.saveSettings', 'Save Session Settings')
+            : t('lumen.watchSessions.createSession', 'Create Session')}
         </button>
       </div>
     </form>
@@ -228,26 +252,39 @@ function SessionForm({
 }
 
 function SessionList() {
+  const { t } = useLumenLocale();
   const list = useApi<{ sessions: Summary[] }>(path);
   const navigate = useNavigate();
   return (
     <>
-      <h1>Watch Sessions</h1>
+      <h1>{t('lumen.watchSessions.title', 'Watch Sessions')}</h1>
       <ServiceNote
-        what="watch sessions"
+        what={t('lumen.watchSessions.sessions', 'watch sessions')}
+        title={t(
+          'lumen.watchSessions.loadFailed',
+          'Could not load watch sessions'
+        )}
+        retryLabel={t('lumen.watchSessions.retry', 'Retry')}
         error={list.error}
         retry={list.reload}
       />
       {!list.data && !list.error && (
         <p className="note" role="status">
-          Loading watch sessions…
+          {t('lumen.watchSessions.loading', 'Loading watch sessions…')}
         </p>
       )}
       {list.data && (
         <>
-          <Section title="Your Sessions">
+          <Section
+            title={t('lumen.watchSessions.yourSessions', 'Your Sessions')}
+          >
             {list.data.sessions.length === 0 && (
-              <p className="note">You haven’t joined any watch sessions.</p>
+              <p className="note">
+                {t(
+                  'lumen.watchSessions.noneJoined',
+                  'You haven’t joined any watch sessions.'
+                )}
+              </p>
             )}
             <div className="setlist">
               {list.data.sessions.map((session) => (
@@ -255,23 +292,33 @@ function SessionList() {
                   <span>
                     <b>{session.title}</b>
                     <small>
-                      {session.status === 'active' ? 'Active' : 'Draft'} ·{' '}
-                      {session.memberCount}{' '}
-                      {session.memberCount === 1 ? 'Member' : 'Members'}
+                      {session.status === 'active'
+                        ? t('lumen.watchSessions.active', 'Active')
+                        : t('lumen.watchSessions.draft', 'Draft')}{' '}
+                      ·{' '}
+                      {t('lumen.watchSessions.memberCount', '{count} members', {
+                        count: session.memberCount,
+                      })}
                     </small>
                   </span>
                   <Link
                     to={`${path}/${session.id}`}
                     className="btn btn-quiet btn-sm"
-                    aria-label={`Open ${session.title}`}
+                    aria-label={t(
+                      'lumen.watchSessions.openSession',
+                      'Open {title}',
+                      { title: session.title }
+                    )}
                   >
-                    Open
+                    {t('lumen.watchSessions.open', 'Open')}
                   </Link>
                 </div>
               ))}
             </div>
           </Section>
-          <Section title="Create a Session">
+          <Section
+            title={t('lumen.watchSessions.createSection', 'Create a Session')}
+          >
             <SessionForm
               onSave={(session) => navigate(`${path}/${session.id}`)}
             />
@@ -283,6 +330,7 @@ function SessionList() {
 }
 
 function SessionRoom({ id }: { id: string }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const navigate = useNavigate();
   const endpoint = `${path}/${id}`;
@@ -325,7 +373,10 @@ function SessionRoom({ id }: { id: string }) {
         setError(
           failure instanceof ApiError
             ? failure.message
-            : 'Could not update the watch session.'
+            : t(
+                'lumen.watchSessions.updateFailed',
+                'Could not update the watch session.'
+              )
         );
     } finally {
       pending.current = false;
@@ -335,10 +386,12 @@ function SessionRoom({ id }: { id: string }) {
 
   return (
     <>
-      <h1>{session?.title ?? 'Watch Session'}</h1>
+      <h1>
+        {session?.title ?? t('lumen.watchSessions.title', 'Watch Sessions')}
+      </h1>
       <div className="toolbar">
         <Link to={path} className="btn btn-quiet btn-sm">
-          Back to Watch Sessions
+          {t('lumen.watchSessions.backToSessions', 'Back to Watch Sessions')}
         </Link>
         <button
           type="button"
@@ -346,11 +399,16 @@ function SessionRoom({ id }: { id: string }) {
           disabled={busy}
           onClick={room.refresh}
         >
-          Refresh Room
+          {t('lumen.watchSessions.refreshRoom', 'Refresh Room')}
         </button>
       </div>
       <ServiceNote
-        what="the watch session"
+        what={t('lumen.watchSessions.session', 'the watch session')}
+        title={t(
+          'lumen.watchSessions.roomLoadFailed',
+          'Could not load the watch session'
+        )}
+        retryLabel={t('lumen.watchSessions.retry', 'Retry')}
         error={room.error}
         retry={room.reload}
       />
@@ -361,13 +419,15 @@ function SessionRoom({ id }: { id: string }) {
       )}
       {!session && !room.error && (
         <p className="note" role="status">
-          Loading the watch session…
+          {t('lumen.watchSessions.roomLoading', 'Loading the watch session…')}
         </p>
       )}
       {session && (
         <Section
           title={
-            session.status === 'active' ? 'Active Session' : 'Waiting to Start'
+            session.status === 'active'
+              ? t('lumen.watchSessions.activeSession', 'Active Session')
+              : t('lumen.watchSessions.waitingToStart', 'Waiting to Start')
           }
         >
           <div className="setlist">
@@ -375,29 +435,44 @@ function SessionRoom({ id }: { id: string }) {
               <div className="set cfg-row" key={member.id}>
                 <span>
                   <b>{member.displayName}</b>
-                  {member.isOwner && <small>Host</small>}
+                  {member.isOwner && (
+                    <small>{t('lumen.watchSessions.host', 'Host')}</small>
+                  )}
                 </span>
                 {owner && !member.isOwner && (
                   <button
                     type="button"
                     className="btn btn-quiet btn-sm"
                     disabled={busy}
-                    aria-label={`Remove ${member.displayName}`}
+                    aria-label={t(
+                      'lumen.watchSessions.removeMember',
+                      'Remove {name}',
+                      { name: member.displayName }
+                    )}
                     onClick={() =>
                       setConfirmation({
                         suffix: `/members/${member.id}`,
-                        prompt: `Remove ${member.displayName} from this session? The room closes if fewer than two members remain.`,
+                        prompt: t(
+                          'lumen.watchSessions.removeMemberPrompt',
+                          'Remove {name} from this session? The room closes if fewer than two members remain.',
+                          { name: member.displayName }
+                        ),
                         returnsToList: false,
                       })
                     }
                   >
-                    Remove
+                    {t('lumen.watchSessions.remove', 'Remove')}
                   </button>
                 )}
               </div>
             ))}
             <label className="set cfg-row">
-              <span>Contribute My Watchlist</span>
+              <span>
+                {t(
+                  'lumen.watchSessions.contributeWatchlist',
+                  'Contribute My Watchlist'
+                )}
+              </span>
               <input
                 type="checkbox"
                 disabled={busy || session.status !== 'draft'}
@@ -421,11 +496,14 @@ function SessionRoom({ id }: { id: string }) {
                 disabled={busy || session.memberCount < 2}
                 onClick={() => void change('/start', { method: 'POST' })}
               >
-                Start Session
+                {t('lumen.watchSessions.startSession', 'Start Session')}
               </button>
               {session.memberCount < 2 && (
                 <p className="note">
-                  At least two people must join before starting.
+                  {t(
+                    'lumen.watchSessions.minimumMembers',
+                    'At least two people must join before starting.'
+                  )}
                 </p>
               )}
             </div>
@@ -440,19 +518,26 @@ function SessionRoom({ id }: { id: string }) {
                   owner
                     ? {
                         suffix: '',
-                        prompt: 'End this session for everyone?',
+                        prompt: t(
+                          'lumen.watchSessions.endPrompt',
+                          'End this session for everyone?'
+                        ),
                         returnsToList: true,
                       }
                     : {
                         suffix: '/members/me',
-                        prompt:
-                          'Leave this session? Your votes will be removed, and the room closes if fewer than two members remain.',
+                        prompt: t(
+                          'lumen.watchSessions.leavePrompt',
+                          'Leave this session? Your votes will be removed, and the room closes if fewer than two members remain.'
+                        ),
                         returnsToList: true,
                       }
                 )
               }
             >
-              {owner ? 'End Session' : 'Leave Session'}
+              {owner
+                ? t('lumen.watchSessions.endSession', 'End Session')
+                : t('lumen.watchSessions.leaveSession', 'Leave Session')}
             </button>
           </div>
           {confirmation && (
@@ -473,7 +558,7 @@ function SessionRoom({ id }: { id: string }) {
                     )
                   }
                 >
-                  Confirm
+                  {t('lumen.watchSessions.confirm', 'Confirm')}
                 </button>
                 <button
                   type="button"
@@ -481,7 +566,7 @@ function SessionRoom({ id }: { id: string }) {
                   disabled={busy}
                   onClick={() => setConfirmation(undefined)}
                 >
-                  Cancel
+                  {t('lumen.watchSessions.cancel', 'Cancel')}
                 </button>
               </div>
             </>
@@ -489,7 +574,9 @@ function SessionRoom({ id }: { id: string }) {
         </Section>
       )}
       {session?.status === 'draft' && owner && (
-        <Section title="Session Settings">
+        <Section
+          title={t('lumen.watchSessions.sessionSettings', 'Session Settings')}
+        >
           {editing ? (
             <>
               <SessionForm
@@ -505,7 +592,7 @@ function SessionRoom({ id }: { id: string }) {
                   className="btn btn-quiet btn-sm"
                   onClick={() => setEditing(false)}
                 >
-                  Cancel Editing
+                  {t('lumen.watchSessions.cancelEditing', 'Cancel Editing')}
                 </button>
               </div>
             </>
@@ -516,7 +603,7 @@ function SessionRoom({ id }: { id: string }) {
                 className="btn btn-quiet btn-sm"
                 onClick={() => setEditing(true)}
               >
-                Edit Session Settings
+                {t('lumen.watchSessions.editSettings', 'Edit Session Settings')}
               </button>
             </div>
           )}
