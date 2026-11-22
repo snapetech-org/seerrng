@@ -5,6 +5,7 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
 type Provider =
@@ -140,7 +141,8 @@ function ServiceForm({
   initial: Service;
   done: () => void;
 }) {
-  const name = names[provider];
+  const { t } = useLumenLocale();
+  const name = t(`lumen.servarr.provider.${provider}`, names[provider]);
   const isSportarr = provider === 'sportarr';
   const isSonarr = provider === 'sonarr';
   const video = isSonarr || provider === 'radarr';
@@ -288,142 +290,174 @@ function ServiceForm({
   function testConnection() {
     if (!connected) return;
     const generation = sessionGeneration();
-    void run(async () => {
-      const result = await api<Options>(`${endpoint}/test`, {
-        method: 'POST',
-        body: JSON.stringify(connection),
-      });
-      if (generation === sessionGeneration()) setOptions(result);
-    }, `Could not test ${name}. Check the address and API key.`);
+    void run(
+      async () => {
+        const result = await api<Options>(`${endpoint}/test`, {
+          method: 'POST',
+          body: JSON.stringify(connection),
+        });
+        if (generation === sessionGeneration()) setOptions(result);
+      },
+      t(
+        'lumen.servarr.testFallback',
+        'Could not test {service}. Check the address and API key.',
+        { service: name }
+      )
+    );
   }
 
   function diagnose() {
     if (!connected || !isBook || managed) return;
     const generation = sessionGeneration();
     setDiagnostic(undefined);
-    void run(async () => {
-      let result: BookDiagnostic;
-      try {
-        result = await api<BookDiagnostic>(`${endpoint}/diagnose`, {
-          method: 'POST',
-          body: JSON.stringify({
-            ...connection,
-            term: 'isbn:9780547928227',
-            activeDirectory: draft.activeDirectory || undefined,
-            activeProfileId: draft.activeProfileId || undefined,
-            activeMetadataProfileId: draft.activeMetadataProfileId,
-          }),
-        });
-      } catch (error) {
-        if (!(error instanceof ApiError)) throw error;
-        result = { ok: false, message: error.message };
-      }
-      if (generation === sessionGeneration()) setDiagnostic(result);
-    }, 'Could not run the book metadata diagnostic. Try again.');
+    void run(
+      async () => {
+        let result: BookDiagnostic;
+        try {
+          result = await api<BookDiagnostic>(`${endpoint}/diagnose`, {
+            method: 'POST',
+            body: JSON.stringify({
+              ...connection,
+              term: 'isbn:9780547928227',
+              activeDirectory: draft.activeDirectory || undefined,
+              activeProfileId: draft.activeProfileId || undefined,
+              activeMetadataProfileId: draft.activeMetadataProfileId,
+            }),
+          });
+        } catch (error) {
+          if (!(error instanceof ApiError)) throw error;
+          result = { ok: false, message: error.message };
+        }
+        if (generation === sessionGeneration()) setDiagnostic(result);
+      },
+      t(
+        'lumen.servarr.metadataDiagnosticFallback',
+        'Could not run the book metadata diagnostic. Try again.'
+      )
+    );
   }
 
   function save() {
     if (!connected || !configurationValid || (optionsRequired && !options))
       return;
     const generation = sessionGeneration();
-    void run(async () => {
-      await api(path, {
-        method: initial.id === undefined ? 'POST' : 'PUT',
-        body: JSON.stringify(
-          collector
-            ? {
-                ...connection,
-                name: draft.name,
-                externalUrl: draft.externalUrl,
-                tags: draft.tags ?? [],
-                rootFolder: comicCollector
-                  ? draft.rootFolder?.trim() || undefined
-                  : undefined,
-                isDefault: draft.isDefault ?? false,
-                syncEnabled: draft.syncEnabled ?? false,
-                preventSearch: draft.preventSearch ?? false,
-              }
-            : {
-                ...draft,
-                ...(isSonarr
-                  ? {
-                      seriesType: draft.seriesType ?? 'standard',
-                      animeSeriesType: draft.animeSeriesType ?? 'anime',
-                      monitorNewItems: draft.monitorNewItems ?? 'all',
-                      activeAnimeProfileName:
-                        draft.activeAnimeProfileId === undefined
-                          ? undefined
-                          : (options?.profiles.find(
-                              ({ id }) => id === draft.activeAnimeProfileId
-                            )?.name ?? draft.activeAnimeProfileName),
-                    }
-                  : provider === 'radarr'
+    void run(
+      async () => {
+        await api(path, {
+          method: initial.id === undefined ? 'POST' : 'PUT',
+          body: JSON.stringify(
+            collector
+              ? {
+                  ...connection,
+                  name: draft.name,
+                  externalUrl: draft.externalUrl,
+                  tags: draft.tags ?? [],
+                  rootFolder: comicCollector
+                    ? draft.rootFolder?.trim() || undefined
+                    : undefined,
+                  isDefault: draft.isDefault ?? false,
+                  syncEnabled: draft.syncEnabled ?? false,
+                  preventSearch: draft.preventSearch ?? false,
+                }
+              : {
+                  ...draft,
+                  ...(isSonarr
                     ? {
-                        minimumAvailability:
-                          draft.minimumAvailability ?? 'released',
+                        seriesType: draft.seriesType ?? 'standard',
+                        animeSeriesType: draft.animeSeriesType ?? 'anime',
+                        monitorNewItems: draft.monitorNewItems ?? 'all',
+                        activeAnimeProfileName:
+                          draft.activeAnimeProfileId === undefined
+                            ? undefined
+                            : (options?.profiles.find(
+                                ({ id }) => id === draft.activeAnimeProfileId
+                              )?.name ?? draft.activeAnimeProfileName),
                       }
-                    : {
-                        is4k: false,
-                        ...(hasMetadata
+                    : provider === 'radarr'
+                      ? {
+                          minimumAvailability:
+                            draft.minimumAvailability ?? 'released',
+                        }
+                      : {
+                          is4k: false,
+                          ...(hasMetadata
+                            ? {
+                                activeMetadataProfileId:
+                                  draft.activeMetadataProfileId,
+                                activeMetadataProfileName:
+                                  options?.metadataProfiles?.find(
+                                    ({ id }) =>
+                                      id === draft.activeMetadataProfileId
+                                  )?.name ?? draft.activeMetadataProfileName,
+                              }
+                            : {}),
+                        }),
+                  apiKey: key,
+                  activeProfileName: managed
+                    ? bookorbit
+                      ? 'BookOrbit managed'
+                      : 'Bindery managed'
+                    : (options?.profiles.find(
+                        ({ id }) => id === draft.activeProfileId
+                      )?.name ?? draft.activeProfileName),
+                  ...(isBook
+                    ? { backend, serviceType: draft.serviceType ?? 'ebook' }
+                    : {}),
+                  ...(managed
+                    ? {
+                        activeProfileId: 0,
+                        activeMetadataProfileId: 0,
+                        activeMetadataProfileName: bookorbit
+                          ? 'BookOrbit managed'
+                          : 'Bindery managed',
+                        activeDirectory: '/',
+                        preventSearch: true,
+                        tagRequests: false,
+                        ...(bookorbit
                           ? {
-                              activeMetadataProfileId:
-                                draft.activeMetadataProfileId,
-                              activeMetadataProfileName:
-                                options?.metadataProfiles?.find(
-                                  ({ id }) =>
-                                    id === draft.activeMetadataProfileId
-                                )?.name ?? draft.activeMetadataProfileName,
+                              bookorbitUsername:
+                                draft.bookorbitUsername?.trim(),
                             }
-                          : {}),
-                      }),
-                apiKey: key,
-                activeProfileName: managed
-                  ? bookorbit
-                    ? 'BookOrbit managed'
-                    : 'Bindery managed'
-                  : (options?.profiles.find(
-                      ({ id }) => id === draft.activeProfileId
-                    )?.name ?? draft.activeProfileName),
-                ...(isBook
-                  ? { backend, serviceType: draft.serviceType ?? 'ebook' }
-                  : {}),
-                ...(managed
-                  ? {
-                      activeProfileId: 0,
-                      activeMetadataProfileId: 0,
-                      activeMetadataProfileName: bookorbit
-                        ? 'BookOrbit managed'
-                        : 'Bindery managed',
-                      activeDirectory: '/',
-                      preventSearch: true,
-                      tagRequests: false,
-                      ...(bookorbit
-                        ? { bookorbitUsername: draft.bookorbitUsername?.trim() }
-                        : { binderyUserMappings: mappings }),
-                    }
-                  : {}),
-              }
-        ),
-      });
-      if (generation === sessionGeneration()) done();
-    }, `Could not save the ${name} service.`);
+                          : { binderyUserMappings: mappings }),
+                      }
+                    : {}),
+                }
+          ),
+        });
+        if (generation === sessionGeneration()) done();
+      },
+      t('lumen.servarr.saveFallback', 'Could not save the {service} service.', {
+        service: name,
+      })
+    );
   }
 
   function remove() {
     if (!confirmation || initial.id === undefined) return;
     const generation = sessionGeneration();
-    void run(async () => {
-      await api(path, { method: 'DELETE' }, 'empty');
-      if (generation === sessionGeneration()) done();
-    }, `Could not remove the ${name} service.`);
+    void run(
+      async () => {
+        await api(path, { method: 'DELETE' }, 'empty');
+        if (generation === sessionGeneration()) done();
+      },
+      t(
+        'lumen.servarr.removeFallback',
+        'Could not remove the {service} service.',
+        { service: name }
+      )
+    );
   }
 
   return (
     <Section
       title={
         initial.id === undefined
-          ? `Add ${name} Service`
-          : `Edit ${initial.name}`
+          ? t('lumen.servarr.addTitle', 'Add {service} Service', {
+              service: name,
+            })
+          : t('lumen.servarr.editTitle', 'Edit {service}', {
+              service: initial.name,
+            })
       }
     >
       <form
@@ -436,7 +470,7 @@ function ServiceForm({
           {isBook && (
             <>
               <label className="set cfg-row">
-                <span>Backend</span>
+                <span>{t('lumen.servarr.backend', 'Backend')}</span>
                 <select
                   className="cfg-select"
                   disabled={busy || initial.id !== undefined}
@@ -454,14 +488,19 @@ function ServiceForm({
                   }}
                 >
                   <option value="readarr">
-                    ChaptarrNG or Readarr-Compatible
+                    {t(
+                      'lumen.servarr.readarrBackend',
+                      'ChaptarrNG or Readarr-Compatible'
+                    )}
                   </option>
-                  <option value="bindery">Bindery</option>
+                  <option value="bindery">
+                    {t('lumen.servarr.bindery', 'Bindery')}
+                  </option>
                   <option value="bookorbit">BookOrbit</option>
                 </select>
               </label>
               <label className="set cfg-row">
-                <span>Book Format</span>
+                <span>{t('lumen.servarr.bookFormat', 'Book Format')}</span>
                 <select
                   className="cfg-select"
                   disabled={busy}
@@ -479,14 +518,24 @@ function ServiceForm({
                     })
                   }
                 >
-                  <option value="ebook">Ebook</option>
-                  <option value="audiobook">Audiobook</option>
-                  {managed && <option value="both">Both Formats</option>}
+                  <option value="ebook">
+                    {t('lumen.servarr.ebook', 'Ebook')}
+                  </option>
+                  <option value="audiobook">
+                    {t('lumen.servarr.audiobook', 'Audiobook')}
+                  </option>
+                  {managed && (
+                    <option value="both">
+                      {t('lumen.servarr.bothFormats', 'Both Formats')}
+                    </option>
+                  )}
                 </select>
               </label>
               {bookorbit && (
                 <label className="set cfg-row">
-                  <span>BookOrbit Username</span>
+                  <span>
+                    {t('lumen.servarr.bookorbitUsername', 'BookOrbit Username')}
+                  </span>
                   <input
                     className="cfg-input"
                     value={draft.bookorbitUsername ?? ''}
@@ -506,7 +555,9 @@ function ServiceForm({
           {connectionFields.map(([field, label, type]) => (
             <label className="set cfg-row" key={field}>
               <span>
-                {field === 'apiKey' && bookorbit ? 'BookOrbit Password' : label}
+                {field === 'apiKey' && bookorbit
+                  ? t('lumen.servarr.bookorbitPassword', 'BookOrbit Password')
+                  : t(`lumen.servarr.connection.${field}`, label)}
               </span>
               <input
                 className="cfg-input"
@@ -514,7 +565,9 @@ function ServiceForm({
                 disabled={busy}
                 value={draft[field] ?? ''}
                 placeholder={
-                  field === 'apiKey' && initial.apiKey ? 'Saved key' : undefined
+                  field === 'apiKey' && initial.apiKey
+                    ? t('lumen.servarr.savedKey', 'Saved key')
+                    : undefined
                 }
                 autoComplete={field === 'apiKey' ? 'new-password' : undefined}
                 onChange={(event) =>
@@ -530,7 +583,7 @@ function ServiceForm({
           ))}
           {comicCollector && (
             <label className="set cfg-row">
-              <span>Root Folder</span>
+              <span>{t('lumen.servarr.rootFolder', 'Root Folder')}</span>
               <input
                 className="cfg-input"
                 value={draft.rootFolder ?? ''}
@@ -555,10 +608,16 @@ function ServiceForm({
               <label className="set cfg-row" key={field}>
                 <span>
                   {collector && field === 'syncEnabled'
-                    ? 'Enable Library Scan'
+                    ? t(
+                        'lumen.servarr.enableLibraryScan',
+                        'Enable Library Scan'
+                      )
                     : collector && field === 'preventSearch'
-                      ? 'Search on Approval'
-                      : label}
+                      ? t(
+                          'lumen.servarr.searchOnApproval',
+                          'Search on Approval'
+                        )
+                      : t(`lumen.servarr.flag.${field}`, label)}
                 </span>
                 <input
                   type="checkbox"
@@ -585,41 +644,44 @@ function ServiceForm({
                 [
                   [
                     'seriesType',
-                    'Series Type',
+                    t('lumen.servarr.seriesType', 'Series Type'),
                     'standard',
                     [
-                      ['standard', 'Standard'],
-                      ['daily', 'Daily'],
-                      ['anime', 'Anime'],
+                      ['standard', t('lumen.servarr.standard', 'Standard')],
+                      ['daily', t('lumen.servarr.daily', 'Daily')],
+                      ['anime', t('lumen.servarr.anime', 'Anime')],
                     ],
                   ],
                   [
                     'animeSeriesType',
-                    'Anime Series Type',
+                    t('lumen.servarr.animeSeriesType', 'Anime Series Type'),
                     'anime',
                     [
-                      ['standard', 'Standard'],
-                      ['daily', 'Daily'],
-                      ['anime', 'Anime'],
+                      ['standard', t('lumen.servarr.standard', 'Standard')],
+                      ['daily', t('lumen.servarr.daily', 'Daily')],
+                      ['anime', t('lumen.servarr.anime', 'Anime')],
                     ],
                   ],
                   [
                     'defaultSeasonType',
-                    'Season Order',
+                    t('lumen.servarr.seasonOrder', 'Season Order'),
                     'official',
                     [
-                      ['official', 'Official'],
-                      ['automatic', 'Automatic'],
+                      ['official', t('lumen.servarr.official', 'Official')],
+                      ['automatic', t('lumen.servarr.automatic', 'Automatic')],
                     ],
                   ],
                   [
                     'monitorNewItems',
-                    'Monitor New Items',
+                    t('lumen.servarr.monitorNewItems', 'Monitor New Items'),
                     'all',
                     [
-                      ['all', 'All'],
-                      ['none', 'None'],
-                      ['latest', 'Latest Season'],
+                      ['all', t('lumen.servarr.all', 'All')],
+                      ['none', t('lumen.servarr.none', 'None')],
+                      [
+                        'latest',
+                        t('lumen.servarr.latestSeason', 'Latest Season'),
+                      ],
                     ],
                   ],
                 ] as const
@@ -643,7 +705,12 @@ function ServiceForm({
                 </label>
               ))}
               <label className="set cfg-row">
-                <span>Enable Season Folders</span>
+                <span>
+                  {t(
+                    'lumen.servarr.enableSeasonFolders',
+                    'Enable Season Folders'
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   checked={draft.enableSeasonFolders === true}
@@ -656,7 +723,9 @@ function ServiceForm({
             </>
           ) : provider === 'radarr' ? (
             <label className="set cfg-row">
-              <span>Minimum Availability</span>
+              <span>
+                {t('lumen.servarr.minimumAvailability', 'Minimum Availability')}
+              </span>
               <select
                 className="cfg-select"
                 value={draft.minimumAvailability ?? 'released'}
@@ -665,15 +734,23 @@ function ServiceForm({
                   change({ minimumAvailability: event.target.value })
                 }
               >
-                <option value="announced">Announced</option>
-                <option value="inCinemas">In Cinemas</option>
-                <option value="released">Released</option>
+                <option value="announced">
+                  {t('lumen.servarr.announced', 'Announced')}
+                </option>
+                <option value="inCinemas">
+                  {t('lumen.servarr.inCinemas', 'In Cinemas')}
+                </option>
+                <option value="released">
+                  {t('lumen.servarr.released', 'Released')}
+                </option>
               </select>
             </label>
           ) : null}
           {!collector && !isSportarr && (
             <label className="set cfg-row">
-              <span>Download Queue Size</span>
+              <span>
+                {t('lumen.servarr.downloadQueueSize', 'Download Queue Size')}
+              </span>
               <input
                 className="cfg-input"
                 type="number"
@@ -687,7 +764,9 @@ function ServiceForm({
           )}
           {video && (
             <label className="set cfg-row">
-              <span>Request Button Label</span>
+              <span>
+                {t('lumen.servarr.requestButtonLabel', 'Request Button Label')}
+              </span>
               <input
                 className="cfg-input"
                 value={draft.requestButtonLabel ?? ''}
@@ -701,8 +780,10 @@ function ServiceForm({
         </div>
         {isLazyLibrarian && (
           <p className="note">
-            Use a write-enabled API key from LazyLibrarian under Config →
-            Interface.
+            {t(
+              'lumen.servarr.lazyLibrarianApiKeyHelp',
+              'Use a write-enabled API key from LazyLibrarian under Config → Interface.'
+            )}
           </p>
         )}
         <div className="toolbar">
@@ -712,7 +793,9 @@ function ServiceForm({
             disabled={busy || !connected}
             onClick={testConnection}
           >
-            Test {name}
+            {t('lumen.servarr.testService', 'Test {service}', {
+              service: name,
+            })}
           </button>
           {isBook && !managed && (
             <button
@@ -721,7 +804,10 @@ function ServiceForm({
               disabled={busy || !connected}
               onClick={diagnose}
             >
-              Run Metadata Diagnostic
+              {t(
+                'lumen.servarr.runMetadataDiagnostic',
+                'Run Metadata Diagnostic'
+              )}
             </button>
           )}
         </div>
@@ -729,9 +815,21 @@ function ServiceForm({
           <div className="note" role={diagnostic.ok ? 'status' : 'alert'}>
             <p>{diagnostic.message}</p>
             {diagnostic.detailMessage && <p>{diagnostic.detailMessage}</p>}
-            {diagnostic.provider && <p>Provider: {diagnostic.provider}</p>}
+            {diagnostic.provider && (
+              <p>
+                {t('lumen.servarr.providerLabel', 'Provider: {provider}', {
+                  provider: diagnostic.provider,
+                })}
+              </p>
+            )}
             {diagnostic.metadataSource && (
-              <p>Metadata source: {diagnostic.metadataSource}</p>
+              <p>
+                {t(
+                  'lumen.servarr.metadataSource',
+                  'Metadata source: {source}',
+                  { source: diagnostic.metadataSource }
+                )}
+              </p>
             )}
             {(diagnostic.providerNotice ?? diagnostic.legacyWarning) && (
               <p>{diagnostic.providerNotice ?? diagnostic.legacyWarning}</p>
@@ -741,7 +839,12 @@ function ServiceForm({
         {backend === 'bindery' && (
           <div className="setlist">
             <label className="set cfg-row">
-              <span>Bindery User Mappings (JSON)</span>
+              <span>
+                {t(
+                  'lumen.servarr.binderyMappings',
+                  'Bindery User Mappings (JSON)'
+                )}
+              </span>
               <textarea
                 className="cfg-json"
                 rows={5}
@@ -755,23 +858,39 @@ function ServiceForm({
         {backend === 'bindery' && (
           <p className="note">
             {mappings === undefined
-              ? 'Enter a JSON object with positive integer SeerrNG user IDs as keys and Bindery user IDs as values.'
-              : 'Map SeerrNG user IDs to Bindery user IDs.'}
+              ? t(
+                  'lumen.servarr.mappingInstructions',
+                  'Enter a JSON object with positive integer SeerrNG user IDs as keys and Bindery user IDs as values.'
+                )
+              : t(
+                  'lumen.servarr.mappingHelp',
+                  'Map SeerrNG user IDs to Bindery user IDs.'
+                )}
           </p>
         )}
         {options && !usesProfiles && (
           <p className="note" role="status">
-            {name} connection verified.
+            {t(
+              'lumen.servarr.connectionVerified',
+              '{service} connection verified.',
+              { service: name }
+            )}
           </p>
         )}
         {options && usesProfiles && (
           <>
             <p className="note" role="status">
-              {name} connection verified.
+              {t(
+                'lumen.servarr.connectionVerified',
+                '{service} connection verified.',
+                { service: name }
+              )}
             </p>
             <div className="setlist">
               <label className="set cfg-row">
-                <span>Quality Profile</span>
+                <span>
+                  {t('lumen.servarr.qualityProfile', 'Quality Profile')}
+                </span>
                 <select
                   className="cfg-select"
                   value={draft.activeProfileId}
@@ -780,7 +899,9 @@ function ServiceForm({
                     change({ activeProfileId: Number(event.target.value) })
                   }
                 >
-                  <option value={0}>Choose a Profile</option>
+                  <option value={0}>
+                    {t('lumen.servarr.chooseProfile', 'Choose a Profile')}
+                  </option>
                   {options.profiles.map(({ id, name }) => (
                     <option key={id} value={id}>
                       {name}
@@ -790,7 +911,7 @@ function ServiceForm({
               </label>
               {!isSportarr && (
                 <label className="set cfg-row">
-                  <span>Root Folder</span>
+                  <span>{t('lumen.servarr.rootFolder', 'Root Folder')}</span>
                   <select
                     className="cfg-select"
                     value={draft.activeDirectory}
@@ -799,7 +920,9 @@ function ServiceForm({
                       change({ activeDirectory: event.target.value })
                     }
                   >
-                    <option value="">Choose a Folder</option>
+                    <option value="">
+                      {t('lumen.servarr.chooseFolder', 'Choose a Folder')}
+                    </option>
                     {options.rootFolders.map(({ id, path }) => (
                       <option key={id} value={path}>
                         {path}
@@ -812,7 +935,9 @@ function ServiceForm({
             {hasMetadata && options.metadataProfiles && (
               <div className="setlist">
                 <label className="set cfg-row">
-                  <span>Metadata Profile</span>
+                  <span>
+                    {t('lumen.servarr.metadataProfile', 'Metadata Profile')}
+                  </span>
                   <select
                     className="cfg-select"
                     value={draft.activeMetadataProfileId ?? ''}
@@ -826,7 +951,12 @@ function ServiceForm({
                       })
                     }
                   >
-                    <option value="">Choose a Metadata Profile</option>
+                    <option value="">
+                      {t(
+                        'lumen.servarr.chooseMetadataProfile',
+                        'Choose a Metadata Profile'
+                      )}
+                    </option>
                     {options.metadataProfiles.map(({ id, name: title }) => (
                       <option key={id} value={id}>
                         {title}
@@ -839,7 +969,9 @@ function ServiceForm({
             {isSonarr && (
               <div className="setlist">
                 <label className="set cfg-row">
-                  <span>Anime Root Folder</span>
+                  <span>
+                    {t('lumen.servarr.animeRootFolder', 'Anime Root Folder')}
+                  </span>
                   <select
                     className="cfg-select"
                     value={draft.activeAnimeDirectory ?? ''}
@@ -848,7 +980,12 @@ function ServiceForm({
                       change({ activeAnimeDirectory: event.target.value })
                     }
                   >
-                    <option value="">Use Standard Root Folder</option>
+                    <option value="">
+                      {t(
+                        'lumen.servarr.standardRootFolder',
+                        'Use Standard Root Folder'
+                      )}
+                    </option>
                     {options.rootFolders.map(({ id, path }) => (
                       <option key={id} value={path}>
                         {path}
@@ -860,22 +997,31 @@ function ServiceForm({
                   [
                     [
                       'activeAnimeProfileId',
-                      'Anime Quality Profile',
+                      t(
+                        'lumen.servarr.animeQualityProfile',
+                        'Anime Quality Profile'
+                      ),
                       options.profiles,
                     ],
                     [
                       'activeLanguageProfileId',
-                      'Series Language Profile',
+                      t(
+                        'lumen.servarr.seriesLanguageProfile',
+                        'Series Language Profile'
+                      ),
                       options.languageProfiles,
                     ],
                     [
                       'activeAnimeLanguageProfileId',
-                      'Anime Language Profile',
+                      t(
+                        'lumen.servarr.animeLanguageProfile',
+                        'Anime Language Profile'
+                      ),
                       options.languageProfiles,
                     ],
                     [
                       'defaultMetadataLanguageId',
-                      'Metadata Language',
+                      t('lumen.servarr.metadataLanguage', 'Metadata Language'),
                       options.metadataLanguages,
                     ],
                   ] as const
@@ -900,8 +1046,8 @@ function ServiceForm({
                       >
                         <option value="">
                           {field === 'defaultMetadataLanguageId'
-                            ? 'Automatic'
-                            : 'Use Default'}
+                            ? t('lumen.servarr.automatic', 'Automatic')
+                            : t('lumen.servarr.useDefault', 'Use Default')}
                         </option>
                         {choices.map(({ id, name: title }) => (
                           <option key={id} value={id}>
@@ -924,10 +1070,16 @@ function ServiceForm({
               <details key={field} className="adv">
                 <summary>
                   {field === 'tags'
-                    ? 'Request Tags'
+                    ? t('lumen.servarr.requestTags', 'Request Tags')
                     : field === 'animeTags'
-                      ? 'Anime Request Tags'
-                      : 'Exclude Tags From Sync'}
+                      ? t(
+                          'lumen.servarr.animeRequestTags',
+                          'Anime Request Tags'
+                        )
+                      : t(
+                          'lumen.servarr.excludeTagsFromSync',
+                          'Exclude Tags From Sync'
+                        )}
                 </summary>
                 <div className="setlist">
                   {options.tags.map(({ id, label }) => (
@@ -969,7 +1121,9 @@ function ServiceForm({
               (optionsRequired && !options)
             }
           >
-            Save {name}
+            {t('lumen.servarr.saveService', 'Save {service}', {
+              service: name,
+            })}
           </button>
           <button
             type="button"
@@ -977,7 +1131,7 @@ function ServiceForm({
             disabled={busy}
             onClick={done}
           >
-            Cancel
+            {t('lumen.servarr.cancel', 'Cancel')}
           </button>
           {initial.id !== undefined && (
             <button
@@ -986,14 +1140,18 @@ function ServiceForm({
               disabled={busy}
               onClick={() => setConfirmation(true)}
             >
-              Remove Service
+              {t('lumen.servarr.removeService', 'Remove Service')}
             </button>
           )}
         </div>
         {confirmation && (
           <>
             <p className="note" role="alert">
-              Remove {initial.name} as a request destination?
+              {t(
+                'lumen.servarr.removeConfirmation',
+                'Remove {service} as a request destination?',
+                { service: initial.name }
+              )}
             </p>
             <div className="toolbar">
               <button
@@ -1002,7 +1160,7 @@ function ServiceForm({
                 disabled={busy}
                 onClick={remove}
               >
-                Confirm Removal
+                {t('lumen.servarr.confirmRemoval', 'Confirm Removal')}
               </button>
               <button
                 type="button"
@@ -1010,7 +1168,7 @@ function ServiceForm({
                 disabled={busy}
                 onClick={() => setConfirmation(false)}
               >
-                Keep Service
+                {t('lumen.servarr.keepService', 'Keep Service')}
               </button>
             </div>
           </>
@@ -1027,7 +1185,8 @@ export default function AdminServarr({
   provider: Provider;
   inSetup?: boolean;
 }) {
-  const name = names[provider];
+  const { t } = useLumenLocale();
+  const name = t(`lumen.servarr.provider.${provider}`, names[provider]);
   const services = useApi<Service[]>(`/settings/${provider}`);
   const [editing, setEditing] = useState<Service>();
   function done() {
@@ -1038,17 +1197,29 @@ export default function AdminServarr({
     <>
       {!inSetup && (
         <header className="ph">
-          <h1>{name} Services</h1>
+          <h1>
+            {t('lumen.servarr.servicesTitle', '{service} Services', {
+              service: name,
+            })}
+          </h1>
           <div className="toolbar">
             <Link className="btn btn-quiet btn-sm" to="/admin">
-              Administration
+              {t('lumen.admin.title', 'Administration')}
             </Link>
           </div>
         </header>
       )}
       <ServiceNote
         error={services.error}
-        what={`${name} services`}
+        what={t('lumen.servarr.services', '{service} services', {
+          service: name,
+        })}
+        title={t(
+          'lumen.servarr.servicesLoadFailed',
+          'Could not load {service} services',
+          { service: name }
+        )}
+        retryLabel={t('lumen.servarr.retry', 'Retry')}
         retry={services.reload}
       />
       {editing ? (
@@ -1059,7 +1230,9 @@ export default function AdminServarr({
           done={done}
         />
       ) : services.data ? (
-        <Section title="Configured Services">
+        <Section
+          title={t('lumen.servarr.configuredServices', 'Configured Services')}
+        >
           <div className="toolbar">
             <button
               className="btn btn-primary btn-sm"
@@ -1074,11 +1247,19 @@ export default function AdminServarr({
                 })
               }
             >
-              Add {name}
+              {t('lumen.servarr.addService', 'Add {service}', {
+                service: name,
+              })}
             </button>
           </div>
           {services.data.length === 0 && (
-            <p className="note">No {name} services configured.</p>
+            <p className="note">
+              {t(
+                'lumen.servarr.noServices',
+                'No {service} services configured.',
+                { service: name }
+              )}
+            </p>
           )}
           <div className="setlist">
             {services.data.map((service) => (
@@ -1086,15 +1267,21 @@ export default function AdminServarr({
                 <span>
                   <b>{service.name}</b>
                   <small>
-                    {service.is4k ? '4K' : 'Standard'}
-                    {service.isDefault ? ' · Default' : ''}
+                    {service.is4k
+                      ? '4K'
+                      : t('lumen.servarr.standard', 'Standard')}
+                    {service.isDefault
+                      ? ` · ${t('lumen.servarr.default', 'Default')}`
+                      : ''}
                   </small>
                 </span>
                 <button
                   className="btn btn-quiet btn-sm"
                   onClick={() => setEditing(service)}
                 >
-                  Edit {service.name}
+                  {t('lumen.servarr.editTitle', 'Edit {service}', {
+                    service: service.name,
+                  })}
                 </button>
               </div>
             ))}
@@ -1103,7 +1290,9 @@ export default function AdminServarr({
       ) : (
         !services.error && (
           <p className="note" role="status">
-            Loading {name} services…
+            {t('lumen.servarr.loadingServices', 'Loading {service} services…', {
+              service: name,
+            })}
           </p>
         )
       )}

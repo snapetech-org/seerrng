@@ -5939,3 +5939,24 @@ review. Bundled Express mount, actual file moves, live provider state, and
 independent linguistic review remain unverified. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/library-migration-french-desktop.png`
 and `.../library-migration-arabic-phone.png`.
+
+### Servarr service administration localization
+
+Servarr service administration now localizes the shared connection form and
+provider-specific choices, settings, diagnostics, save/test/remove feedback,
+confirmation, service lists, and recoverable loading states in English, French,
+and Arabic. Provider identifiers, credentials, profile and folder values,
+service capability rules, and API request bodies remain unchanged.
+
+Forty-eight browser cases pass across desktop, iPhone, Android, and tablet:
+saved-locale Bookshelf administration plus existing Readarr/Bindery/BookOrbit,
+Radarr, Sonarr, and collector save/test flows. French and Arabic use the saved
+locale and Arabic sets RTL without page-level overflow. English baseline and
+candidate screenshots match pixel-for-pixel on desktop; phone screenshots have
+identical dimensions and 288 changed pixels around the sticky navigation.
+French desktop and Arabic iPhone candidates were inspected. The tall phone
+form's fixed navigation overlays controls in the initial viewport, so the
+shared navigation overlap remains open. Bundled Express mount, live provider
+operations, and independent linguistic review remain unverified. Baseline and
+candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/servarr-*-{desktop,phone}.png`.
