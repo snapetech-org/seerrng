@@ -126,7 +126,7 @@ function DownloadRows({
         </p>
       )}
       {!!data?.partialSources.length && (
-        <p className="note" role="status">
+        <p className="note wait" role="status">
           {t(
             'downloads.partial',
             'Some acquisition services could not be checked. Their warnings may be missing or out of date.'

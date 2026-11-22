@@ -72,6 +72,21 @@ for (const permissions of [32, 8796093022208]) {
     await expect(
       page.getByText('Current Download', { exact: true })
     ).toBeVisible();
+    const partialWarning = page.getByText(
+      'Some acquisition services could not be checked. Their warnings may be missing or out of date.',
+      { exact: true }
+    );
+    await expect(partialWarning).toBeVisible();
+    const warningColors = await page.evaluate(() => {
+      const warning = document.querySelector('.note.wait');
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--wait)';
+      document.body.append(probe);
+      const expected = getComputedStyle(probe).color;
+      probe.remove();
+      return { actual: warning && getComputedStyle(warning).color, expected };
+    });
+    expect(warningColors.actual).toBe(warningColors.expected);
     await page.getByRole('button', { name: 'Next page' }).click();
     await expect.poll(() => queries.at(-1)?.get('page')).toBe('2');
     await page.getByRole('button', { name: 'History', exact: true }).click();

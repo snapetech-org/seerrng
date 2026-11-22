@@ -1035,6 +1035,9 @@ a.person:hover {
   font-size: 13px;
   margin: 0;
 }
+.note.wait {
+  color: var(--wait);
+}
 .request-summary {
   margin-top: 4px;
   padding: 0;
