@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 
 export default function ProviderFailure({
@@ -17,6 +18,7 @@ export default function ProviderFailure({
   retryAt?: number;
   retry: () => void;
 }) {
+  const { t } = useLumenLocale();
   const remaining = () =>
     Math.max(0, Math.ceil(((retryAt ?? 0) - Date.now()) / 1000));
   const [seconds, setSeconds] = useState(remaining);
@@ -37,7 +39,11 @@ export default function ProviderFailure({
   return (
     <>
       <ServiceNote
-        error={seconds ? `${error} Retry in ${seconds} seconds.` : error}
+        error={
+          seconds
+            ? `${error} ${t('lumen.providerFailure.retryCountdown', 'Retry in {seconds} seconds.', { seconds })}`
+            : error
+        }
         what={what}
         retry={retryable ? retry : undefined}
         retryDisabled={seconds > 0}
@@ -48,7 +54,7 @@ export default function ProviderFailure({
             className="chip"
             to={`/me/account/linked-accounts${provider ? `?${new URLSearchParams({ reconnect: provider })}` : ''}`}
           >
-            Reconnect Provider
+            {t('lumen.providerFailure.reconnect', 'Reconnect Provider')}
           </Link>
         </div>
       )}

@@ -6083,3 +6083,16 @@ Twelve locale cases and the existing follow integration test passed across
 desktop, iPhone, Android, and tablet (16 cases). Bundled Express mount, live
 federation, matched visual acceptance, and independent linguistic review
 remain open.
+
+### Provider Discovery localization
+
+Lumen Provider Discovery follows the saved English, French, or Arabic locale for
+feed selection, unmatched filtering and counts, MDBList entry, item match labels,
+retry and reconnect actions, empty states, and pagination. Provider IDs, feed
+keys, URL-backed filters, identity mapping controls, and provider requests are
+unchanged. Twelve new locale cases and three existing feed filtering, retry /
+reconnect, and feed-reset cases passed across desktop, iPhone, Android, and
+tablet (24 cases). French desktop and Arabic phone candidates were inspected
+for RTL, wrapping, and overflow. Live accounts, matched baseline comparison,
+and independent linguistic review remain open. Captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/provider-discovery/visual-test-results/`.

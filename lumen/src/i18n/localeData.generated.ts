@@ -4293,6 +4293,57 @@ export const localeData = [
       'lumen.playlist.title': 'استيراد قائمة تشغيل',
       'lumen.playlist.trackRequests': 'طلبات المقاطع',
       'lumen.playlist.urlLabel': 'رابط قائمة تشغيل Spotify أو YouTube',
+      'lumen.providerDiscovery.accessHelp':
+        'تأكد من تفعيل هذا الموفّر وربطه بحسابك.',
+      'lumen.providerDiscovery.discover': 'اكتشف',
+      'lumen.providerDiscovery.exploreFranchise': 'استكشاف السلسلة',
+      'lumen.providerDiscovery.feed': 'خلاصة الموفّر',
+      'lumen.providerDiscovery.feed.anilistLibrary': 'مكتبة AniList',
+      'lumen.providerDiscovery.feed.anilistNextSeason':
+        'الموسم القادم في AniList',
+      'lumen.providerDiscovery.feed.anilistPopular': 'الأكثر شعبية في AniList',
+      'lumen.providerDiscovery.feed.anilistTop': 'الأعلى تقييمًا في AniList',
+      'lumen.providerDiscovery.feed.anilistTrending':
+        'الأكثر رواجًا في AniList',
+      'lumen.providerDiscovery.feed.mdblistPublicList': 'قائمة MDBList عامة',
+      'lumen.providerDiscovery.feed.traktHistory': 'سجل Trakt',
+      'lumen.providerDiscovery.feed.traktMovieRecommendations':
+        'توصيات أفلام Trakt',
+      'lumen.providerDiscovery.feed.traktSeriesRecommendations':
+        'توصيات مسلسلات Trakt',
+      'lumen.providerDiscovery.feed.traktWatchlist': 'قائمة متابعة Trakt',
+      'lumen.providerDiscovery.linkedAccounts': 'الحسابات المرتبطة',
+      'lumen.providerDiscovery.listReference': 'مرجع MDBList',
+      'lumen.providerDiscovery.loading': 'جارٍ تحميل الخلاصة…',
+      'lumen.providerDiscovery.match.curated': 'مطابقة منسقة',
+      'lumen.providerDiscovery.match.externalId': 'مطابقة بواسطة معرّف الفهرس',
+      'lumen.providerDiscovery.match.personal': 'مطابقة شخصية',
+      'lumen.providerDiscovery.movie': 'فيلم',
+      'lumen.providerDiscovery.nextPage': 'الصفحة التالية',
+      'lumen.providerDiscovery.noCatalogueMatch': 'لا توجد مطابقة في الفهرس',
+      'lumen.providerDiscovery.noStableId':
+        'لا يملك هذا العنوان معرّف موفّر ثابتًا لحفظ المطابقة.',
+      'lumen.providerDiscovery.noTitles': 'لا توجد عناوين في هذه الصفحة.',
+      'lumen.providerDiscovery.noUnmatchedTitles':
+        'لا توجد عناوين غير مطابقة في هذه الصفحة.',
+      'lumen.providerDiscovery.openList': 'فتح القائمة',
+      'lumen.providerDiscovery.pageNumber': 'الصفحة {page}',
+      'lumen.providerDiscovery.pages': 'صفحات خلاصة الموفّر',
+      'lumen.providerDiscovery.previousPage': 'الصفحة السابقة',
+      'lumen.providerDiscovery.reconnectProvider': 'إعادة ربط الموفّر',
+      'lumen.providerDiscovery.retryCountdown':
+        'أعِد المحاولة بعد {seconds} ثانية.',
+      'lumen.providerDiscovery.series': 'مسلسل',
+      'lumen.providerDiscovery.title': 'اكتشاف الموفّرين',
+      'lumen.providerDiscovery.unmatchedMany':
+        '{count} من العناوين غير المطابقة في هذه الصفحة',
+      'lumen.providerDiscovery.unmatchedOne':
+        '{count} عنوان غير مطابق في هذه الصفحة',
+      'lumen.providerDiscovery.unmatchedOnly': 'غير المطابقة فقط',
+      'lumen.providerDiscovery.what': 'خلاصة الموفّر',
+      'lumen.providerFailure.reconnect': 'إعادة ربط الموفّر',
+      'lumen.providerFailure.retryCountdown':
+        'أعِد المحاولة بعد {seconds} ثانية.',
       'lumen.recordings.active': 'النشطة',
       'lumen.recordings.allStatuses': 'كل الحالات',
       'lumen.recordings.checking': 'جارٍ التحقق من البث التلفزيوني المباشر…',
@@ -13450,6 +13501,53 @@ export const localeData = [
       'lumen.playlist.title': 'Import Playlist',
       'lumen.playlist.trackRequests': 'Track Requests',
       'lumen.playlist.urlLabel': 'Spotify or YouTube Playlist URL',
+      'lumen.providerDiscovery.accessHelp':
+        'Check that this provider is enabled and linked in your account.',
+      'lumen.providerDiscovery.discover': 'Discover',
+      'lumen.providerDiscovery.exploreFranchise': 'Explore Franchise',
+      'lumen.providerDiscovery.feed': 'Provider Feed',
+      'lumen.providerDiscovery.feed.anilistLibrary': 'AniList Library',
+      'lumen.providerDiscovery.feed.anilistNextSeason': 'AniList Next Season',
+      'lumen.providerDiscovery.feed.anilistPopular': 'AniList Popular',
+      'lumen.providerDiscovery.feed.anilistTop': 'AniList Top Rated',
+      'lumen.providerDiscovery.feed.anilistTrending': 'AniList Trending',
+      'lumen.providerDiscovery.feed.mdblistPublicList': 'MDBList Public List',
+      'lumen.providerDiscovery.feed.traktHistory': 'Trakt History',
+      'lumen.providerDiscovery.feed.traktMovieRecommendations':
+        'Trakt Movie Recommendations',
+      'lumen.providerDiscovery.feed.traktSeriesRecommendations':
+        'Trakt Series Recommendations',
+      'lumen.providerDiscovery.feed.traktWatchlist': 'Trakt Watchlist',
+      'lumen.providerDiscovery.linkedAccounts': 'Linked Accounts',
+      'lumen.providerDiscovery.listReference': 'MDBList Reference',
+      'lumen.providerDiscovery.loading': 'Loading feed…',
+      'lumen.providerDiscovery.match.curated': 'Curated match',
+      'lumen.providerDiscovery.match.externalId': 'Matched by catalog ID',
+      'lumen.providerDiscovery.match.personal': 'Personal match',
+      'lumen.providerDiscovery.movie': 'Movie',
+      'lumen.providerDiscovery.nextPage': 'Next Page',
+      'lumen.providerDiscovery.noCatalogueMatch': 'No catalogue match',
+      'lumen.providerDiscovery.noStableId':
+        'This title has no stable provider ID for saving a match.',
+      'lumen.providerDiscovery.noTitles': 'No titles on this page.',
+      'lumen.providerDiscovery.noUnmatchedTitles':
+        'No unmatched titles on this page.',
+      'lumen.providerDiscovery.openList': 'Open List',
+      'lumen.providerDiscovery.pageNumber': 'Page {page}',
+      'lumen.providerDiscovery.pages': 'Provider Feed Pages',
+      'lumen.providerDiscovery.previousPage': 'Previous Page',
+      'lumen.providerDiscovery.reconnectProvider': 'Reconnect Provider',
+      'lumen.providerDiscovery.retryCountdown': 'Retry in {seconds} seconds.',
+      'lumen.providerDiscovery.series': 'Series',
+      'lumen.providerDiscovery.title': 'Provider Discovery',
+      'lumen.providerDiscovery.unmatchedMany':
+        '{count} unmatched titles on this page',
+      'lumen.providerDiscovery.unmatchedOne':
+        '{count} unmatched title on this page',
+      'lumen.providerDiscovery.unmatchedOnly': 'Unmatched Only',
+      'lumen.providerDiscovery.what': 'provider feed',
+      'lumen.providerFailure.reconnect': 'Reconnect Provider',
+      'lumen.providerFailure.retryCountdown': 'Retry in {seconds} seconds.',
       'lumen.recordings.active': 'Active',
       'lumen.recordings.allStatuses': 'All Statuses',
       'lumen.recordings.checking': 'Checking Live TV…',
@@ -23412,6 +23510,59 @@ export const localeData = [
       'lumen.playlist.title': 'Importer une playlist',
       'lumen.playlist.trackRequests': 'Demandes de titres',
       'lumen.playlist.urlLabel': 'URL de playlist Spotify ou YouTube',
+      'lumen.providerDiscovery.accessHelp':
+        'Vérifiez que ce fournisseur est activé et lié à votre compte.',
+      'lumen.providerDiscovery.discover': 'Découvrir',
+      'lumen.providerDiscovery.exploreFranchise': 'Explorer la franchise',
+      'lumen.providerDiscovery.feed': 'Flux fournisseur',
+      'lumen.providerDiscovery.feed.anilistLibrary': 'Bibliothèque AniList',
+      'lumen.providerDiscovery.feed.anilistNextSeason':
+        'Prochaine saison AniList',
+      'lumen.providerDiscovery.feed.anilistPopular': 'Populaires AniList',
+      'lumen.providerDiscovery.feed.anilistTop': 'Mieux notés AniList',
+      'lumen.providerDiscovery.feed.anilistTrending': 'Tendances AniList',
+      'lumen.providerDiscovery.feed.mdblistPublicList':
+        'Liste publique MDBList',
+      'lumen.providerDiscovery.feed.traktHistory': 'Historique Trakt',
+      'lumen.providerDiscovery.feed.traktMovieRecommendations':
+        'Recommandations de films Trakt',
+      'lumen.providerDiscovery.feed.traktSeriesRecommendations':
+        'Recommandations de séries Trakt',
+      'lumen.providerDiscovery.feed.traktWatchlist': 'Liste à suivre Trakt',
+      'lumen.providerDiscovery.linkedAccounts': 'Comptes liés',
+      'lumen.providerDiscovery.listReference': 'Référence MDBList',
+      'lumen.providerDiscovery.loading': 'Chargement du flux…',
+      'lumen.providerDiscovery.match.curated': 'Correspondance organisée',
+      'lumen.providerDiscovery.match.externalId':
+        'Correspondance par identifiant de catalogue',
+      'lumen.providerDiscovery.match.personal': 'Correspondance personnelle',
+      'lumen.providerDiscovery.movie': 'Film',
+      'lumen.providerDiscovery.nextPage': 'Page suivante',
+      'lumen.providerDiscovery.noCatalogueMatch':
+        'Aucune correspondance dans le catalogue',
+      'lumen.providerDiscovery.noStableId':
+        'Ce titre ne possède pas d’identifiant fournisseur stable pour enregistrer une correspondance.',
+      'lumen.providerDiscovery.noTitles': 'Aucun titre sur cette page.',
+      'lumen.providerDiscovery.noUnmatchedTitles':
+        'Aucun titre non associé sur cette page.',
+      'lumen.providerDiscovery.openList': 'Ouvrir la liste',
+      'lumen.providerDiscovery.pageNumber': 'Page {page}',
+      'lumen.providerDiscovery.pages': 'Pages du flux fournisseur',
+      'lumen.providerDiscovery.previousPage': 'Page précédente',
+      'lumen.providerDiscovery.reconnectProvider': 'Reconnecter le fournisseur',
+      'lumen.providerDiscovery.retryCountdown':
+        'Réessayer dans {seconds} secondes.',
+      'lumen.providerDiscovery.series': 'Série',
+      'lumen.providerDiscovery.title': 'Découverte des fournisseurs',
+      'lumen.providerDiscovery.unmatchedMany':
+        '{count} titres non associés sur cette page',
+      'lumen.providerDiscovery.unmatchedOne':
+        '{count} titre non associé sur cette page',
+      'lumen.providerDiscovery.unmatchedOnly': 'Non associés uniquement',
+      'lumen.providerDiscovery.what': 'flux fournisseur',
+      'lumen.providerFailure.reconnect': 'Reconnecter le fournisseur',
+      'lumen.providerFailure.retryCountdown':
+        'Réessayez dans {seconds} secondes.',
       'lumen.recordings.active': 'En cours',
       'lumen.recordings.allStatuses': 'Tous les statuts',
       'lumen.recordings.checking': 'Vérification de la télévision en direct…',

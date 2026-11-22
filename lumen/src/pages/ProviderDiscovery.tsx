@@ -8,6 +8,7 @@ import IdentityMapping, {
 } from '../components/IdentityMapping';
 import ProviderFailure from '../components/ProviderFailure';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 const feeds = {
   'anilist/trending': 'AniList Trending',
@@ -20,6 +21,21 @@ const feeds = {
   'trakt/recommendations-movie': 'Trakt Movie Recommendations',
   'trakt/recommendations-tv': 'Trakt Series Recommendations',
   'mdblist/list': 'MDBList Public List',
+};
+
+const feedLabelKeys: Record<keyof typeof feeds, string> = {
+  'anilist/trending': 'lumen.providerDiscovery.feed.anilistTrending',
+  'anilist/popular': 'lumen.providerDiscovery.feed.anilistPopular',
+  'anilist/top': 'lumen.providerDiscovery.feed.anilistTop',
+  'anilist/next-season': 'lumen.providerDiscovery.feed.anilistNextSeason',
+  'anilist/library': 'lumen.providerDiscovery.feed.anilistLibrary',
+  'trakt/watchlist': 'lumen.providerDiscovery.feed.traktWatchlist',
+  'trakt/history': 'lumen.providerDiscovery.feed.traktHistory',
+  'trakt/recommendations-movie':
+    'lumen.providerDiscovery.feed.traktMovieRecommendations',
+  'trakt/recommendations-tv':
+    'lumen.providerDiscovery.feed.traktSeriesRecommendations',
+  'mdblist/list': 'lumen.providerDiscovery.feed.mdblistPublicList',
 };
 
 const matchDescriptions = {
@@ -36,6 +52,7 @@ interface FeedPage {
 }
 
 export default function ProviderDiscovery() {
+  const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const requestedFeed = params.get('feed') ?? '';
   const feed = Object.hasOwn(feeds, requestedFeed)
@@ -69,27 +86,31 @@ export default function ProviderDiscovery() {
 
   return (
     <>
-      <ExtraHeader title="Provider Discovery">
+      <ExtraHeader
+        title={t('lumen.providerDiscovery.title', 'Provider Discovery')}
+      >
         <div className="toolbar">
           <Link className="chip" to="/me/account/linked-accounts">
-            Linked Accounts
+            {t('lumen.providerDiscovery.linkedAccounts', 'Linked Accounts')}
           </Link>
           <Link className="chip" to="/">
-            Discover
+            {t('lumen.providerDiscovery.discover', 'Discover')}
           </Link>
         </div>
       </ExtraHeader>
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Provider Feed</span>
+          <span className="lbl">
+            {t('lumen.providerDiscovery.feed', 'Provider Feed')}
+          </span>
           <select
-            aria-label="Provider Feed"
+            aria-label={t('lumen.providerDiscovery.feed', 'Provider Feed')}
             value={feed}
             onChange={(event) => update('feed', event.target.value)}
           >
             {Object.entries(feeds).map(([value, label]) => (
               <option key={value} value={value}>
-                {label}
+                {t(feedLabelKeys[value as keyof typeof feeds], label)}
               </option>
             ))}
           </select>
@@ -102,12 +123,21 @@ export default function ProviderDiscovery() {
               update('unmatched', event.target.checked ? '1' : '', false)
             }
           />{' '}
-          Unmatched Only
+          {t('lumen.providerDiscovery.unmatchedOnly', 'Unmatched Only')}
         </label>
         {typeof missingMappings === 'number' && missingMappings > 0 && (
           <span className="note">
-            {missingMappings} unmatched{' '}
-            {missingMappings === 1 ? 'title' : 'titles'} on this page
+            {missingMappings === 1
+              ? t(
+                  'lumen.providerDiscovery.unmatchedOne',
+                  '{count} unmatched title on this page',
+                  { count: missingMappings }
+                )
+              : t(
+                  'lumen.providerDiscovery.unmatchedMany',
+                  '{count} unmatched titles on this page',
+                  { count: missingMappings }
+                )}
           </span>
         )}
       </div>
@@ -127,14 +157,17 @@ export default function ProviderDiscovery() {
             <input
               name="list"
               type="text"
-              aria-label="MDBList Reference"
+              aria-label={t(
+                'lumen.providerDiscovery.listReference',
+                'MDBList Reference'
+              )}
               defaultValue={list}
               maxLength={2048}
               required
             />
           </label>
           <button className="btn btn-tonal btn-sm" type="submit">
-            Open List
+            {t('lumen.providerDiscovery.openList', 'Open List')}
           </button>
         </form>
       )}
@@ -142,7 +175,7 @@ export default function ProviderDiscovery() {
         <ProviderFailure
           key={`${feed}:${page}:${apiError?.retryAt ?? ''}`}
           error={error}
-          what="provider feed"
+          what={t('lumen.providerDiscovery.what', 'provider feed')}
           provider={feed.split('/')[0]}
           code={apiError?.code}
           retryAt={apiError?.retryAt}
@@ -151,19 +184,25 @@ export default function ProviderDiscovery() {
       )}
       {(errorStatus === 401 || errorStatus === 403) && (
         <p className="note">
-          Check that this provider is enabled and linked in your account.
+          {t(
+            'lumen.providerDiscovery.accessHelp',
+            'Check that this provider is enabled and linked in your account.'
+          )}
         </p>
       )}
       {enabled && !current && !error && (
         <p className="note" role="status">
-          Loading feed…
+          {t('lumen.providerDiscovery.loading', 'Loading feed…')}
         </p>
       )}
       {items?.length === 0 && (
         <p className="note">
           {unmatched
-            ? 'No unmatched titles on this page.'
-            : 'No titles on this page.'}
+            ? t(
+                'lumen.providerDiscovery.noUnmatchedTitles',
+                'No unmatched titles on this page.'
+              )
+            : t('lumen.providerDiscovery.noTitles', 'No titles on this page.')}
         </p>
       )}
       {!!items?.length && (
@@ -177,9 +216,15 @@ export default function ProviderDiscovery() {
             const matchDescription =
               item.identityResolution &&
               Object.hasOwn(matchDescriptions, item.identityResolution)
-                ? matchDescriptions[item.identityResolution]
+                ? t(
+                    `lumen.providerDiscovery.match.${item.identityResolution === 'external-id' ? 'externalId' : item.identityResolution}`,
+                    matchDescriptions[item.identityResolution]
+                  )
                 : item.identityMapped
-                  ? matchDescriptions.personal
+                  ? t(
+                      'lumen.providerDiscovery.match.personal',
+                      matchDescriptions.personal
+                    )
                   : undefined;
             return (
               <li className="set" key={item.id}>
@@ -203,9 +248,12 @@ export default function ProviderDiscovery() {
                       item.year,
                       href
                         ? item.mediaType === 'movie'
-                          ? 'Movie'
-                          : 'Series'
-                        : 'No catalogue match',
+                          ? t('lumen.providerDiscovery.movie', 'Movie')
+                          : t('lumen.providerDiscovery.series', 'Series')
+                        : t(
+                            'lumen.providerDiscovery.noCatalogueMatch',
+                            'No catalogue match'
+                          ),
                       href ? matchDescription : undefined,
                     ]
                       .filter(Boolean)
@@ -213,16 +261,22 @@ export default function ProviderDiscovery() {
                   </small>
                   {!href && !item.mappingAvailable && (
                     <small>
-                      This title has no stable provider ID for saving a match.
+                      {t(
+                        'lumen.providerDiscovery.noStableId',
+                        'This title has no stable provider ID for saving a match.'
+                      )}
                     </small>
                   )}
                   {animeId && (
                     <Link
                       className="btn btn-quiet btn-sm"
                       to={`/franchise/anime/${animeId}`}
-                      aria-label={`Explore Franchise: ${item.title}`}
+                      aria-label={`${t('lumen.providerDiscovery.exploreFranchise', 'Explore Franchise')}: ${item.title}`}
                     >
-                      Explore Franchise
+                      {t(
+                        'lumen.providerDiscovery.exploreFranchise',
+                        'Explore Franchise'
+                      )}
                     </Link>
                   )}
                 </div>
@@ -238,23 +292,28 @@ export default function ProviderDiscovery() {
         </ul>
       )}
       {enabled && (page > 1 || current?.hasMore) && (
-        <nav className="toolbar" aria-label="Provider Feed Pages">
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.providerDiscovery.pages', 'Provider Feed Pages')}
+        >
           <button
             className="btn btn-quiet btn-sm"
             type="button"
             disabled={page <= 1}
             onClick={() => update('page', String(page - 1), false)}
           >
-            Previous Page
+            {t('lumen.providerDiscovery.previousPage', 'Previous Page')}
           </button>
-          <span className="note">Page {page}</span>
+          <span className="note">
+            {t('lumen.providerDiscovery.pageNumber', 'Page {page}', { page })}
+          </span>
           <button
             className="btn btn-quiet btn-sm"
             type="button"
             disabled={!current?.hasMore || page >= 100}
             onClick={() => update('page', String(page + 1), false)}
           >
-            Next Page
+            {t('lumen.providerDiscovery.nextPage', 'Next Page')}
           </button>
         </nav>
       )}
