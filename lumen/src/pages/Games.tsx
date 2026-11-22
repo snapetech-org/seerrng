@@ -433,7 +433,11 @@ function GameDetailView({
   if (error)
     return (
       <ExtraGate k="game">
-        <ServiceNote what="this game" error={error} retry={reload} />
+        <ServiceNote
+          what={t('lumen.games.gameWhat', 'this game')}
+          error={error}
+          retry={reload}
+        />
       </ExtraGate>
     );
   if (!g) return <div className="detail-loading" aria-busy="true" />;
@@ -519,16 +523,25 @@ function GameDetailView({
         selection: selection ?? undefined,
       });
       setDone(
-        r.request.status === 'pending' ? 'Waiting for approval' : 'Requested'
+        r.request.status === 'pending'
+          ? t('lumen.games.waitingApproval', 'Waiting for approval')
+          : t('lumen.status.requested', 'Requested')
       );
       setRequestId(r.request.id);
-      toast(`Requested ${g.title}`);
+      toast(
+        t('lumen.games.requestedTitle', 'Requested {title}', {
+          title: g.title,
+        })
+      );
     } catch (e) {
       const m = e instanceof Error ? e.message : '';
       toast(
         m === 'SOFTWARE_QUOTA_EXCEEDED'
-          ? 'You’ve reached your game request limit.'
-          : m || 'Request failed'
+          ? t(
+              'lumen.games.quotaReached',
+              'You’ve reached your game request limit.'
+            )
+          : m || t('lumen.common.requestFailed', 'Request failed')
       );
     } finally {
       pending.current = false;
@@ -548,7 +561,7 @@ function GameDetailView({
         onClick={go}
       >
         <Icon name="plus" />
-        Request
+        {t('lumen.games.requestAction', 'Request')}
       </button>
     )
   ) : null;
@@ -597,7 +610,10 @@ function GameDetailView({
                 className="btn btn-quiet btn-sm"
                 to={`/patches?${patchSearch}`}
               >
-                Translations and Hacks for This Game
+                {t(
+                  'lumen.games.translationsForGame',
+                  'Translations and Hacks for This Game'
+                )}
               </Link>
             )}
             {cat === 'game' &&
@@ -642,9 +658,13 @@ function GameDetailView({
               {cat === 'game' ? (
                 <>
                   <label className="sel">
-                    <span className="lbl">System</span>
+                    <span className="lbl">
+                      {t('lumen.games.systemLabel', 'System')}
+                    </span>
                     <select value={os} onChange={(e) => setOs(e.target.value)}>
-                      <option value="">Choose…</option>
+                      <option value="">
+                        {t('lumen.games.chooseOption', 'Choose…')}
+                      </option>
                       {PC_OS.map(([v, t]) => (
                         <option key={v} value={v}>
                           {t}
@@ -653,12 +673,16 @@ function GameDetailView({
                     </select>
                   </label>
                   <label className="sel">
-                    <span className="lbl">Build</span>
+                    <span className="lbl">
+                      {t('lumen.games.buildLabel', 'Build')}
+                    </span>
                     <select
                       value={arch}
                       onChange={(e) => setArch(e.target.value)}
                     >
-                      <option value="">Choose…</option>
+                      <option value="">
+                        {t('lumen.games.chooseOption', 'Choose…')}
+                      </option>
                       {PC_ARCH.map(([v, t]) => (
                         <option key={v} value={v}>
                           {t}
@@ -669,12 +693,18 @@ function GameDetailView({
                 </>
               ) : systems.length ? (
                 <label className="sel">
-                  <span className="lbl">Console</span>
+                  <span className="lbl">
+                    {t('lumen.games.consoleLabel', 'Console')}
+                  </span>
                   <select
                     value={sys}
                     onChange={(e) => setSystem(e.target.value)}
                   >
-                    {!sys && <option value="">Choose a console</option>}
+                    {!sys && (
+                      <option value="">
+                        {t('lumen.games.chooseConsole', 'Choose a console')}
+                      </option>
+                    )}
                     {systems.map((x) => (
                       <option key={x.slug} value={x.slug}>
                         {x.name}
@@ -684,9 +714,15 @@ function GameDetailView({
                 </label>
               ) : (
                 <p className="note">
-                  This game isn’t listed for any{' '}
-                  {cat === 'retro' ? 'retro' : 'modern'} console this server
-                  supports.
+                  {cat === 'retro'
+                    ? t(
+                        'lumen.games.noRetroConsole',
+                        'This game isn’t listed for any retro console this server supports.'
+                      )
+                    : t(
+                        'lumen.games.noModernConsole',
+                        'This game isn’t listed for any modern console this server supports.'
+                      )}
                 </p>
               )}
             </div>
@@ -781,7 +817,7 @@ function GameDetailView({
                   className="chip"
                   to={`/requests?softwareRequestId=${requestId}`}
                 >
-                  Request History
+                  {t('lumen.gameLibrary.requestHistory', 'Request History')}
                 </Link>
               </div>
             )}

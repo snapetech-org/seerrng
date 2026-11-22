@@ -6721,3 +6721,16 @@ The game detail request form still has untranslated controls and is tracked as a
 remaining parity gap. Live service behavior and independent linguistic review
 remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/`.
+
+The PC game detail request form now localizes its operating-system and build
+selectors, choice prompts, request action, pending-approval and success
+feedback, quota error, and game-specific translations link in the same three
+locales. Twelve additional cases cover these form controls across the same
+four viewports. Request payloads, permission checks, and provider error handling
+remain unchanged. French baseline and candidate desktop and iPhone captures
+were compared; only the selector prompts and request button change, while the
+existing mobile action bar remains intact. Console-specific detail copy remains
+a parity gap. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-baseline/`
+and
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-candidate/`.

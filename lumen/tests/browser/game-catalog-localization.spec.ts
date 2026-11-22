@@ -164,3 +164,95 @@ test('Games catalog controls and empty state follow the saved locale', async ({
   await expect(page.getByText(copy.tryTitle)).toBeVisible();
   await expect(page).toHaveURL(/\/games\?c=retro&q=missing\+title$/);
 });
+
+const detailCopy = {
+  en: {
+    system: 'System',
+    build: 'Build',
+    choose: 'Choose…',
+    request: 'Request',
+  },
+  fr: {
+    system: 'Système',
+    build: 'Architecture',
+    choose: 'Choisir…',
+    request: 'Demander',
+  },
+  ar: {
+    system: 'نظام التشغيل',
+    build: 'البنية',
+    choose: 'اختر…',
+    request: 'طلب',
+  },
+}[locale];
+
+test('Game detail request controls follow the saved locale', async ({
+  page,
+}, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Player', permissions: 2 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          softwareEnabled: true,
+          romarrEnabled: true,
+          enabledMediaCategories: { game: true, retro: true, modern: true },
+        },
+      });
+    if (path.startsWith('/request/software/catalog/games/'))
+      return route.fulfill({
+        json: {
+          game: {
+            title: 'Fixture Detail Game',
+            catalogId: '42',
+            catalogProvider: 'steam',
+            coverUrl: null,
+            releaseDate: '2025-01-01',
+            genres: [],
+            platforms: ['Windows'],
+          },
+        },
+      });
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto('/game/game/42');
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Detail Game' })
+  ).toBeVisible();
+  const captureDirectory = process.env.LUMEN_GAME_DETAIL_FORM_CAPTURE_DIR;
+  if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDirectory}/${info.project.name}.png`,
+      fullPage: true,
+    });
+  if (process.env.LUMEN_GAME_DETAIL_FORM_BASELINE === '1') {
+    await expect(page.getByLabel('System')).toBeVisible();
+    await expect(page.getByLabel('Build')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Request' })).toBeVisible();
+    return;
+  }
+  await expect(page.getByLabel(detailCopy.system)).toBeVisible();
+  await expect(page.getByLabel(detailCopy.build)).toBeVisible();
+  await expect(
+    page.getByLabel(detailCopy.system).locator('option').first()
+  ).toHaveText(detailCopy.choose);
+  await expect(
+    page.getByLabel(detailCopy.build).locator('option').first()
+  ).toHaveText(detailCopy.choose);
+  await expect(
+    page.getByRole('button', { name: detailCopy.request })
+  ).toBeVisible();
+});

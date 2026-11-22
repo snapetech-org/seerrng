@@ -4818,5 +4818,18 @@
   "lumen.games.catalogueUnavailable",
   "lumen.games.catalogueWhat",
   "lumen.games.noGamesFound",
-  "lumen.games.tryFullTitle"
+  "lumen.games.tryFullTitle",
+  "lumen.games.systemLabel",
+  "lumen.games.buildLabel",
+  "lumen.games.consoleLabel",
+  "lumen.games.chooseOption",
+  "lumen.games.chooseConsole",
+  "lumen.games.noRetroConsole",
+  "lumen.games.noModernConsole",
+  "lumen.games.requestAction",
+  "lumen.games.translationsForGame",
+  "lumen.games.waitingApproval",
+  "lumen.games.requestedTitle",
+  "lumen.games.quotaReached",
+  "lumen.games.gameWhat"
 ]

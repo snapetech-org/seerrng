@@ -5890,6 +5890,21 @@ export const localeData = [
       'lumen.games.catalogueWhat': 'الألعاب',
       'lumen.games.noGamesFound': 'لم يتم العثور على ألعاب',
       'lumen.games.tryFullTitle': 'جرّب كتابة اسم اللعبة كاملاً.',
+      'lumen.games.systemLabel': 'نظام التشغيل',
+      'lumen.games.buildLabel': 'البنية',
+      'lumen.games.consoleLabel': 'جهاز الألعاب',
+      'lumen.games.chooseOption': 'اختر…',
+      'lumen.games.chooseConsole': 'اختر جهاز ألعاب',
+      'lumen.games.noRetroConsole':
+        'هذه اللعبة غير مدرجة لأي جهاز ألعاب قديم يدعمه هذا الخادم.',
+      'lumen.games.noModernConsole':
+        'هذه اللعبة غير مدرجة لأي جهاز ألعاب حديث يدعمه هذا الخادم.',
+      'lumen.games.requestAction': 'طلب',
+      'lumen.games.translationsForGame': 'ترجمات وتعديلات هذه اللعبة',
+      'lumen.games.waitingApproval': 'بانتظار الموافقة',
+      'lumen.games.requestedTitle': 'تم طلب {title}',
+      'lumen.games.quotaReached': 'لقد وصلت إلى الحد الأقصى لطلبات الألعاب.',
+      'lumen.games.gameWhat': 'هذه اللعبة',
     },
   },
   {
@@ -15753,6 +15768,21 @@ export const localeData = [
       'lumen.games.catalogueWhat': 'games',
       'lumen.games.noGamesFound': 'No games found',
       'lumen.games.tryFullTitle': 'Try the game’s full title.',
+      'lumen.games.systemLabel': 'System',
+      'lumen.games.buildLabel': 'Build',
+      'lumen.games.consoleLabel': 'Console',
+      'lumen.games.chooseOption': 'Choose…',
+      'lumen.games.chooseConsole': 'Choose a console',
+      'lumen.games.noRetroConsole':
+        'This game isn’t listed for any retro console this server supports.',
+      'lumen.games.noModernConsole':
+        'This game isn’t listed for any modern console this server supports.',
+      'lumen.games.requestAction': 'Request',
+      'lumen.games.translationsForGame': 'Translations and Hacks for This Game',
+      'lumen.games.waitingApproval': 'Waiting for approval',
+      'lumen.games.requestedTitle': 'Requested {title}',
+      'lumen.games.quotaReached': 'You’ve reached your game request limit.',
+      'lumen.games.gameWhat': 'this game',
     },
   },
   {
@@ -26545,6 +26575,23 @@ export const localeData = [
       'lumen.games.catalogueWhat': 'jeux',
       'lumen.games.noGamesFound': 'Aucun jeu trouvé',
       'lumen.games.tryFullTitle': 'Essayez le titre complet du jeu.',
+      'lumen.games.systemLabel': 'Système',
+      'lumen.games.buildLabel': 'Architecture',
+      'lumen.games.consoleLabel': 'Console',
+      'lumen.games.chooseOption': 'Choisir…',
+      'lumen.games.chooseConsole': 'Choisir une console',
+      'lumen.games.noRetroConsole':
+        'Ce jeu ne figure dans aucune console rétro prise en charge par ce serveur.',
+      'lumen.games.noModernConsole':
+        'Ce jeu ne figure dans aucune console moderne prise en charge par ce serveur.',
+      'lumen.games.requestAction': 'Demander',
+      'lumen.games.translationsForGame':
+        'Traductions et modifications pour ce jeu',
+      'lumen.games.waitingApproval': 'En attente d’approbation',
+      'lumen.games.requestedTitle': 'Demande envoyée : {title}',
+      'lumen.games.quotaReached':
+        'Vous avez atteint votre limite de demandes de jeux.',
+      'lumen.games.gameWhat': 'ce jeu',
     },
   },
   {
