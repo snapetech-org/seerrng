@@ -6959,3 +6959,26 @@ request policy. English baseline/candidate modal captures match pixel-for-pixel
 at desktop and iPhone. Live resolver and barcode services and independent
 linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-share-localization-20261122/`.
+
+
+### First-run Setup localization
+
+The Setup wizard and first-run sign-in now receive Lumen's saved account
+locale, or the browser locale before sign-in. Page-owned step navigation,
+service grouping, review results, loading and recovery messages, and Plex,
+Jellyfin, and Emby sign-in labels are localized in English, French, and
+Arabic. Shared category, library, download-client, Prowlarr, and Servarr
+settings forms also consume the selected locale through the same provider.
+Service names, library names, credentials, authentication routes, category
+permissions, and setup API writes remain unchanged.
+
+Twenty-four browser cases pass across desktop, iPhone, Android, and tablet for
+the guided review/service steps and anonymous first-run sign-in in all three
+locales. Five existing setup regressions pass, covering administrator access,
+Plex authentication, Jellyfin and Emby sign-in, category saves, and request
+service configuration. English baseline/candidate review and service-step
+captures are pixel-identical at desktop and iPhone sizes. French iPhone and
+Arabic desktop renders were inspected; Arabic direction and page overflow pass
+at all viewports. Live media-server discovery and independent linguistic
+review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-setup-localization-20261122/`.

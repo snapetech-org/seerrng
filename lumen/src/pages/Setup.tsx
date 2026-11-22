@@ -17,6 +17,7 @@ import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi, type PublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { invalidatePublicSettings } from '../mediaServer';
 import AdminCategories from './AdminCategories';
 import AdminMediaLibraries from './AdminMediaLibraries';
@@ -43,6 +44,7 @@ function mediaServerSettings(type?: number) {
 }
 
 function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
+  const { t } = useLumenLocale();
   const connection = useApi<SetupConnection>(
     mediaServerSettings(mediaServerType)
   );
@@ -59,15 +61,17 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
     (client) => client.enabled
   ).length;
   return (
-    <Section title="Review Setup">
+    <Section title={t('lumen.setup.reviewSetup', 'Review Setup')}>
       <ServiceNote
-        what="saved media libraries"
+        what={t('lumen.setup.savedLibraries', 'saved media libraries')}
         error={connection.error}
         retry={connection.reload}
       />
       {enabled?.length ? (
         <>
-          <p className="note">Enabled Media Libraries</p>
+          <p className="note">
+            {t('lumen.setup.enabledLibraries', 'Enabled Media Libraries')}
+          </p>
           <ul className="setlist">
             {enabled.map(({ id, name }) => (
               <li key={id} className="set">
@@ -78,49 +82,59 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
         </>
       ) : connection.data ? (
         <p className="note">
-          Enable at least one media library before finishing setup.
+          {t(
+            'lumen.setup.libraryRequired',
+            'Enable at least one media library before finishing setup.'
+          )}
         </p>
       ) : !connection.error ? (
         <p className="note" role="status">
-          Checking saved media libraries…
+          {t(
+            'lumen.setup.checkingLibraries',
+            'Checking saved media libraries…'
+          )}
         </p>
       ) : null}
       <dl className="setlist">
         <div className="set">
-          <dt>Download Clients</dt>
+          <dt>{t('lumen.setup.downloadClients', 'Download Clients')}</dt>
           <dd>
             {enabledClients === undefined
               ? downloads.error
-                ? 'Unavailable'
-                : 'Checking…'
-              : `${enabledClients} enabled`}
+                ? t('lumen.setup.unavailable', 'Unavailable')
+                : t('lumen.setup.checking', 'Checking…')
+              : t('lumen.setup.enabledCount', '{count} enabled', {
+                  count: enabledClients,
+                })}
           </dd>
         </div>
         <div className="set">
-          <dt>Prowlarr</dt>
+          <dt>{t('lumen.setup.prowlarr', 'Prowlarr')}</dt>
           <dd>
             {prowlarr.data
               ? prowlarr.data.hostname && prowlarr.data.apiKeyConfigured
-                ? 'Configured'
-                : 'Not configured'
+                ? t('lumen.setup.configured', 'Configured')
+                : t('lumen.setup.notConfigured', 'Not configured')
               : prowlarr.error
-                ? 'Unavailable'
-                : 'Checking…'}
+                ? t('lumen.setup.unavailable', 'Unavailable')
+                : t('lumen.setup.checking', 'Checking…')}
           </dd>
         </div>
       </dl>
       <ServiceNote
-        what="saved download clients"
+        what={t('lumen.setup.savedDownloadClients', 'saved download clients')}
         error={downloads.error}
         retry={downloads.reload}
       />
       <ServiceNote
-        what="saved Prowlarr settings"
+        what={t('lumen.setup.savedProwlarr', 'saved Prowlarr settings')}
         error={prowlarr.error}
         retry={prowlarr.reload}
       />
       <details className="adv">
-        <summary>Review Request Services</summary>
+        <summary>
+          {t('lumen.setup.reviewRequestServices', 'Review Request Services')}
+        </summary>
         {requestServices.map(([provider, label]) => (
           <SetupEditor key={provider} label={label}>
             <RequestServiceReview provider={provider} label={label} />
@@ -128,7 +142,10 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
         ))}
       </details>
       <p className="note">
-        Request services, download clients, and Prowlarr are optional.
+        {t(
+          'lumen.setup.optionalServices',
+          'Request services, download clients, and Prowlarr are optional.'
+        )}
       </p>
     </Section>
   );
@@ -148,15 +165,24 @@ const requestServices = [
 
 const setupServiceGroups: Record<
   string,
-  { label: string; categories: string[] }
+  { key: string; label: string; categories: string[] }
 > = {
-  video: { label: 'Movies and Series', categories: ['movie', 'tv'] },
+  video: {
+    key: 'videoGroup',
+    label: 'Movies and Series',
+    categories: ['movie', 'tv'],
+  },
   reading: {
+    key: 'readingGroup',
     label: 'Books, Audiobooks, Comics, and Magazines',
     categories: ['ebook', 'audiobook', 'comic', 'magazine'],
   },
-  music: { label: 'Music', categories: ['music'] },
-  other: { label: 'Sports and Adult', categories: ['sports', 'adult'] },
+  music: { key: 'musicGroup', label: 'Music', categories: ['music'] },
+  other: {
+    key: 'otherGroup',
+    label: 'Sports and Adult',
+    categories: ['sports', 'adult'],
+  },
 };
 
 function SetupRequestServices({
@@ -164,6 +190,7 @@ function SetupRequestServices({
 }: {
   categories?: PublicSettings['enabledMediaCategories'];
 }) {
+  const { t } = useLumenLocale();
   const [group, setGroup] = useState('');
   const groupCategories = setupServiceGroups[group]?.categories;
   const recommended = requestServices.filter(([, , keys]) =>
@@ -172,22 +199,27 @@ function SetupRequestServices({
   return (
     <>
       <label className="sel">
-        Service Group
+        {t('lumen.setup.serviceGroup', 'Service Group')}
         <select
           value={group}
           onChange={(event) => setGroup(event.target.value)}
         >
-          <option value="">All Request Services</option>
-          {Object.entries(setupServiceGroups).map(([id, { label }]) => (
+          <option value="">
+            {t('lumen.setup.allRequestServices', 'All Request Services')}
+          </option>
+          {Object.entries(setupServiceGroups).map(([id, { key, label }]) => (
             <option key={id} value={id}>
-              {label}
+              {t(`lumen.setup.${key}`, label)}
             </option>
           ))}
         </select>
       </label>
       {recommended.length > 0 && (
         <p className="note">
-          Services for your enabled categories appear first.
+          {t(
+            'lumen.setup.recommendedFirst',
+            'Services for your enabled categories appear first.'
+          )}
         </p>
       )}
       {[
@@ -216,13 +248,18 @@ function RequestServiceReview({
   provider: (typeof requestServices)[number][0];
   label: string;
 }) {
+  const { t } = useLumenLocale();
   const services = useApi<{ id: number; name: string }[]>(
     `/settings/${provider}`
   );
   if (services.error) {
     return (
       <ServiceNote
-        what={`saved ${label} settings`}
+        what={t(
+          'lumen.setup.savedServiceSettings',
+          'saved {service} settings',
+          { service: label }
+        )}
         error={services.error}
         retry={services.reload}
       />
@@ -231,11 +268,15 @@ function RequestServiceReview({
   if (!services.data)
     return (
       <p className="note" role="status">
-        Checking saved services…
+        {t('lumen.setup.checkingServices', 'Checking saved services…')}
       </p>
     );
   if (!services.data.length)
-    return <p className="note">No services configured.</p>;
+    return (
+      <p className="note">
+        {t('lumen.setup.noServices', 'No services configured.')}
+      </p>
+    );
   return (
     <ul className="setlist">
       {services.data.map(({ id, name }) => (
@@ -258,6 +299,7 @@ function SetupEditor({
   active?: boolean;
   hidden?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const [opened, setOpened] = useState(false);
   return (
     <details
@@ -273,7 +315,7 @@ function SetupEditor({
         <Suspense
           fallback={
             <p className="note" role="status">
-              Loading services…
+              {t('lumen.setup.loadingServices', 'Loading services…')}
             </p>
           }
         >
@@ -285,6 +327,7 @@ function SetupEditor({
 }
 
 export default function Setup() {
+  const { t } = useLumenLocale();
   const { user, refresh } = useAuth();
   const settings = useApi<PublicSettings>('/settings/public', {
     keepDuringRefresh: true,
@@ -325,7 +368,12 @@ export default function Setup() {
     try {
       await action();
     } catch (failure) {
-      setError(friendlyError(failure, 'Setup could not continue.'));
+      setError(
+        friendlyError(
+          failure,
+          t('lumen.setup.couldNotContinue', 'Setup could not continue.')
+        )
+      );
     } finally {
       setBusy(false);
       pending.current = false;
@@ -369,14 +417,22 @@ export default function Setup() {
     );
     if (!connection.libraries?.some((library) => library.enabled)) {
       throw new Error(
-        'Enable at least one media library before finishing setup.'
+        t(
+          'lumen.setup.libraryRequired',
+          'Enable at least one media library before finishing setup.'
+        )
       );
     }
     const result = await api<{ initialized: boolean }>('/settings/initialize', {
       method: 'POST',
     });
     if (!result.initialized)
-      throw new Error('The server did not confirm setup completion.');
+      throw new Error(
+        t(
+          'lumen.setup.completionUnconfirmed',
+          'The server did not confirm setup completion.'
+        )
+      );
     forget('/settings/public');
     window.location.replace(import.meta.env.BASE_URL);
   }
@@ -403,15 +459,30 @@ export default function Setup() {
       return (
         <p className="note" role="alert">
           {reopening
-            ? 'Only administrators can open the setup guide.'
-            : 'An administrator must finish setup.'}
+            ? t(
+                'lumen.setup.adminGuideOnly',
+                'Only administrators can open the setup guide.'
+              )
+            : t(
+                'lumen.setup.adminMustFinish',
+                'An administrator must finish setup.'
+              )}
         </p>
       );
     }
     return (
       <Shell>
-        <ExtraHeader title={reopening ? 'Setup Guide' : 'Finish Setup'} />
-        <nav className="toolbar" aria-label="Setup steps">
+        <ExtraHeader
+          title={
+            reopening
+              ? t('lumen.setup.setupGuide', 'Setup Guide')
+              : t('lumen.setup.finishSetup', 'Finish Setup')
+          }
+        />
+        <nav
+          className="toolbar"
+          aria-label={t('lumen.setup.setupSteps', 'Setup steps')}
+        >
           {activeStep ? (
             setupSteps.map(([id, label]) => (
               <Link
@@ -421,7 +492,7 @@ export default function Setup() {
                 aria-current={activeStep === id ? 'step' : undefined}
                 {...stepNavigation}
               >
-                {label}
+                {t(`lumen.setup.step.${id}`, label)}
               </Link>
             ))
           ) : (
@@ -430,7 +501,7 @@ export default function Setup() {
               to={stepLink(setupSteps[0][0])}
               {...stepNavigation}
             >
-              Start Guided Setup
+              {t('lumen.setup.startGuided', 'Start Guided Setup')}
             </Link>
           )}
           {activeStep && (
@@ -439,7 +510,7 @@ export default function Setup() {
               to={stepLink()}
               {...stepNavigation}
             >
-              Show All Setup Options
+              {t('lumen.setup.showAllOptions', 'Show All Setup Options')}
             </Link>
           )}
         </nav>
@@ -456,7 +527,9 @@ export default function Setup() {
           hidden={!!activeStep && activeStep !== 'categories'}
           open={activeStep === 'categories' || undefined}
         >
-          <summary>Configure Media Categories</summary>
+          <summary>
+            {t('lumen.setup.configureCategories', 'Configure Media Categories')}
+          </summary>
           <AdminCategories
             inSetup
             onAvailableCategoriesSaved={settings.reload}
@@ -467,13 +540,21 @@ export default function Setup() {
           hidden={!!activeStep && activeStep !== 'services'}
           open={activeStep === 'services' || undefined}
         >
-          <summary>Configure Request Services</summary>
+          <summary>
+            {t(
+              'lumen.setup.configureRequestServices',
+              'Configure Request Services'
+            )}
+          </summary>
           <SetupRequestServices
             categories={settings.data.enabledMediaCategories}
           />
         </details>
         <SetupEditor
-          label="Configure Download Clients"
+          label={t(
+            'lumen.setup.configureDownloadClients',
+            'Configure Download Clients'
+          )}
           active={activeStep === 'downloads' || downloadDirty}
           hidden={!!activeStep && activeStep !== 'downloads' && !downloadDirty}
         >
@@ -481,11 +562,14 @@ export default function Setup() {
         </SetupEditor>
         {downloadDirty && (
           <p className="note" role="status">
-            Save or discard download client changes before continuing setup.
+            {t(
+              'lumen.setup.saveOrDiscardDownloads',
+              'Save or discard download client changes before continuing setup.'
+            )}
           </p>
         )}
         <SetupEditor
-          label="Configure Prowlarr"
+          label={t('lumen.setup.configureProwlarr', 'Configure Prowlarr')}
           active={activeStep === 'indexer'}
           hidden={!!activeStep && activeStep !== 'indexer'}
         >
@@ -503,7 +587,7 @@ export default function Setup() {
                 to={stepLink(setupSteps[stepIndex - 1][0])}
                 {...stepNavigation}
               >
-                Previous Step
+                {t('lumen.setup.previousStep', 'Previous Step')}
               </Link>
             )}
             {stepIndex < setupSteps.length - 1 && (
@@ -512,14 +596,14 @@ export default function Setup() {
                 to={stepLink(setupSteps[stepIndex + 1][0])}
                 {...stepNavigation}
               >
-                Next Step
+                {t('lumen.setup.nextStep', 'Next Step')}
               </Link>
             )}
           </div>
         )}
         {reopening ? (
           <Link className="btn btn-primary" to="/admin" {...stepNavigation}>
-            Return to Administration
+            {t('lumen.setup.returnToAdmin', 'Return to Administration')}
           </Link>
         ) : (
           <button
@@ -527,7 +611,7 @@ export default function Setup() {
             disabled={busy || downloadDirty}
             onClick={() => void run(finish)}
           >
-            Finish Setup
+            {t('lumen.setup.finishSetup', 'Finish Setup')}
           </button>
         )}
       </Shell>
@@ -542,14 +626,14 @@ export default function Setup() {
   return (
     <div className="login">
       <div className="login-card">
-        <h1>Set Up SeerrNG</h1>
+        <h1>{t('lumen.setup.setUpSeerrNG', 'Set Up SeerrNG')}</h1>
         {error && (
           <p className="login-err" role="alert">
             {error}
           </p>
         )}
         <label className="sel">
-          Media server
+          {t('lumen.setup.mediaServer', 'Media server')}
           <select
             value={provider}
             disabled={busy}
@@ -573,16 +657,16 @@ export default function Setup() {
               })
             }
           >
-            Sign in with Plex
+            {t('lumen.setup.signInPlex', 'Sign in with Plex')}
           </button>
         ) : (
           <form className="login-local" key={provider} onSubmit={connect}>
             <label>
-              Hostname
+              {t('lumen.setup.hostname', 'Hostname')}
               <input name="hostname" required />
             </label>
             <label>
-              Port
+              {t('lumen.setup.port', 'Port')}
               <input
                 name="port"
                 type="number"
@@ -593,19 +677,19 @@ export default function Setup() {
               />
             </label>
             <label>
-              URL base
+              {t('lumen.setup.urlBase', 'URL base')}
               <input name="urlBase" />
             </label>
             <label>
-              Use HTTPS
+              {t('lumen.setup.useHttps', 'Use HTTPS')}
               <input name="useSsl" type="checkbox" />
             </label>
             <label>
-              Username
+              {t('lumen.setup.username', 'Username')}
               <input name="username" autoComplete="username" required />
             </label>
             <label>
-              Password
+              {t('lumen.setup.password', 'Password')}
               <input
                 name="password"
                 type="password"
@@ -613,11 +697,11 @@ export default function Setup() {
               />
             </label>
             <label>
-              Email
+              {t('lumen.setup.email', 'Email')}
               <input name="email" type="email" required />
             </label>
             <button className="btn btn-primary login-primary" disabled={busy}>
-              Connect and Sign In
+              {t('lumen.setup.connectSignIn', 'Connect and Sign In')}
             </button>
           </form>
         )}

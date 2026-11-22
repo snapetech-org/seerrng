@@ -314,9 +314,11 @@ function App() {
   }, [user, location.hash]);
   if (setup) {
     return (
-      <Suspense fallback={<div className="boot" aria-busy="true" />}>
-        <Setup />
-      </Suspense>
+      <LumenLocaleProvider userId={user?.id}>
+        <Suspense fallback={<div className="boot" aria-busy="true" />}>
+          <Setup />
+        </Suspense>
+      </LumenLocaleProvider>
     );
   }
   if (resetLink || resetRequest) {

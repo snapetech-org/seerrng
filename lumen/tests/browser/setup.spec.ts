@@ -451,10 +451,10 @@ for (const [provider, serverType] of [
     await expect(library).toBeChecked();
     await page.getByText('Configure Media Categories', { exact: true }).click();
     const defaults = page
-      .getByRole('group', { name: 'Enabled Media Categories' })
+      .getByRole('group', { name: 'Available Categories' })
       .last();
     await defaults
-      .getByRole('checkbox', { name: 'Ebooks', exact: true })
+      .getByRole('checkbox', { name: 'Books', exact: true })
       .check();
     await page.getByRole('button', { name: 'Save Default Categories' }).click();
     await expect(page.getByText('Default categories saved.')).toBeVisible();
