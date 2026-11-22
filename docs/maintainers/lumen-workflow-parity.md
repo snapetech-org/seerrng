@@ -186,8 +186,9 @@ save. Twelve standalone and twelve bundled `/lumen/` cases passed across
 desktop, iPhone, Android, and tablet. French and Arabic baseline/candidate
 states for categories, maturity,
 and quotas were inspected at 1440 × 900 and 390 × 844. Longer labels wrap
-within the existing controls; the existing fixed mobile navigation still
-overlaps lower content in the tall user row. Evidence is retained at
+within the existing controls. The shared mobile navigation now yields after a
+user expands a panel if the bar would cover an action, while keeping its
+initial visibility and normal scroll-direction behavior. Evidence is retained at
 `seerrng-admin-users-localization-20261120/admin-settings-*`.
 
 Media-server user import and linked-account management now also follow the
@@ -6153,3 +6154,17 @@ viewport. Browser fixtures do not verify live catalogue or provider services,
 and independent language review remains unverified. Screenshots and test
 results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-detail-localization-20261121/test-results/`.
+
+### Mobile navigation avoids expanded-panel actions
+
+The shared fixed mobile tab bar now recalculates after a user-triggered content
+resize. When an expanded panel places an action beneath the tab bar, the bar
+yields until ordinary scrolling brings it back into view. Initial visibility,
+focus handling, and scroll-direction behavior remain unchanged. The existing
+admin-user localization flow passes on all four viewport projects with an
+assertion that visible actions are not covered; the mobile-navigation suite
+passes all six narrow-viewport cases with two expected desktop skips. At
+390 × 844, the Arabic maturity-panel baseline showed the tab bar over lower
+controls; the candidate keeps the same content geometry and hides the bar
+while those controls are exposed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-tabbar-20261121/`.

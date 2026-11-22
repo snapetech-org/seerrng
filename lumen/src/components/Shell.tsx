@@ -235,8 +235,37 @@ export default function Shell({ children }: { children: ReactNode }) {
   useEffect(() => {
     history.scrollRestoration = 'manual';
     let raf = 0;
+    let interactionResizePending = false;
+    let interactionTimer = 0;
     let directionAnchor = window.scrollY;
-    const save = () => {
+    const tabbarCoversAction = () => {
+      const tabbar = document.querySelector<HTMLElement>('.tabbar');
+      const view = document.querySelector<HTMLElement>('#view');
+      if (!tabbar || !view) return false;
+      const bar = tabbar.getBoundingClientRect();
+      const hiddenOffset = tabbar.hasAttribute('data-hidden')
+        ? bar.height + 14
+        : 0;
+      const top = bar.top - hiddenOffset;
+      const bottom = bar.bottom - hiddenOffset;
+      const actions = view.querySelectorAll<HTMLElement>(
+        'a[href], button, input, select, textarea, [role="button"]'
+      );
+      return Array.from(actions).some((action) => {
+        if (!action.getClientRects().length) return false;
+        const rect = action.getBoundingClientRect();
+        const style = getComputedStyle(action);
+        return (
+          style.visibility !== 'hidden' &&
+          style.display !== 'none' &&
+          rect.right > bar.left + 4 &&
+          rect.left < bar.right - 4 &&
+          rect.bottom > top + 4 &&
+          rect.top < bottom - 4
+        );
+      });
+    };
+    const save = (checkOverlap = false) => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const offset = window.scrollY;
@@ -252,7 +281,12 @@ export default function Shell({ children }: { children: ReactNode }) {
         const focusInEditor =
           document.activeElement instanceof HTMLElement &&
           document.activeElement.matches(EDITABLE_CONTROL);
+        const obscuresAction =
+          checkOverlap && !focusInTabs && tabbarCoversAction();
         if (focusInEditor) {
+          setTabsHidden(true);
+          directionAnchor = offset;
+        } else if (obscuresAction) {
           setTabsHidden(true);
           directionAnchor = offset;
         } else if (
@@ -270,9 +304,32 @@ export default function Shell({ children }: { children: ReactNode }) {
         }
       });
     };
-    window.addEventListener('scroll', save, { passive: true });
+    const onScroll = () => save();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const view = document.querySelector('#view');
+    let viewHeight = view?.getBoundingClientRect().height ?? 0;
+    const markInteraction = () => {
+      interactionResizePending = true;
+      window.clearTimeout(interactionTimer);
+      interactionTimer = window.setTimeout(() => {
+        interactionResizePending = false;
+      }, 3000);
+    };
+    const resize = new ResizeObserver(() => {
+      const nextHeight = view?.getBoundingClientRect().height ?? viewHeight;
+      if (Math.abs(nextHeight - viewHeight) <= 1) return;
+      viewHeight = nextHeight;
+      if (interactionResizePending) save(true);
+    });
+    if (view) {
+      view.addEventListener('click', markInteraction, true);
+      resize.observe(view);
+    }
     return () => {
-      window.removeEventListener('scroll', save);
+      window.removeEventListener('scroll', onScroll);
+      view?.removeEventListener('click', markInteraction, true);
+      window.clearTimeout(interactionTimer);
+      resize.disconnect();
       cancelAnimationFrame(raf);
     };
   }, [detail]);

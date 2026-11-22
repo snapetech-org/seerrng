@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const locale = process.env.LUMEN_ADMIN_USERS_LOCALE ?? 'en';
@@ -247,6 +247,38 @@ const labels = {
 } as const;
 const english = labels.en;
 
+async function expectTabbarDoesNotCoverActions(page: Page) {
+  if ((page.viewportSize()?.width ?? 1440) > 1039) return;
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const tabbar = document.querySelector<HTMLElement>('.tabbar');
+        const view = document.querySelector<HTMLElement>('#view');
+        if (!tabbar || !view || tabbar.hasAttribute('data-hidden'))
+          return false;
+        const bar = tabbar.getBoundingClientRect();
+        return Array.from(
+          view.querySelectorAll<HTMLElement>(
+            'a[href], button, input, select, textarea, [role="button"]'
+          )
+        ).some((action) => {
+          if (!action.getClientRects().length) return false;
+          const rect = action.getBoundingClientRect();
+          const style = getComputedStyle(action);
+          return (
+            style.visibility !== 'hidden' &&
+            style.display !== 'none' &&
+            rect.right > bar.left + 4 &&
+            rect.left < bar.right - 4 &&
+            rect.bottom > bar.top + 4 &&
+            rect.top < bar.bottom - 4
+          );
+        });
+      })
+    )
+    .toBe(false);
+}
+
 test('user directory and local-account creation use the saved locale and retain a failed submit', async ({
   page,
 }) => {
@@ -411,6 +443,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await expect(
     page.getByRole('heading', { name: copy.title, exact: true })
   ).toBeVisible();
+  await expectTabbarDoesNotCoverActions(page);
   await expect(
     page.getByRole('link', { name: copy.administration, exact: true })
   ).toBeVisible();
@@ -438,6 +471,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.episodeQueue, exact: true })
     .click();
+  await expectTabbarDoesNotCoverActions(page);
   await expect(page.locator('.user-panel')).toHaveAttribute(
     'data-title',
     copy.episodeQueue
@@ -498,6 +532,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.mediaCategories, exact: true })
     .click();
+  await expectTabbarDoesNotCoverActions(page);
   await expect(
     page.getByRole('checkbox', { name: translated.categoryMovie, exact: true })
   ).toBeVisible();
@@ -519,6 +554,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.maturityLimits, exact: true })
     .click();
+  await expectTabbarDoesNotCoverActions(page);
   await expect(page.getByLabel(copy.movieRatingLimit)).toBeVisible();
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
     await page.screenshot({
@@ -536,6 +572,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.requestQuotas, exact: true })
     .click();
+  await expectTabbarDoesNotCoverActions(page);
   await expect(page.getByLabel(copy.quotaLimit)).toBeVisible();
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
     await page.screenshot({
