@@ -1,5 +1,11 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   api,
   artUrl,
@@ -12,6 +18,10 @@ import {
   type VideoDetailPins,
 } from '../api';
 import { useAuth } from '../auth';
+import {
+  getDiscoverNavigationState,
+  type DiscoverMediaType,
+} from '../discoverNavigation';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
@@ -413,6 +423,7 @@ export function DetailTop({
   by,
   line,
   status,
+  navigation,
 }: {
   backdrop?: string;
   poster?: string;
@@ -424,6 +435,7 @@ export function DetailTop({
   line: ReactNode[];
   // in the library, requested or downloading: the posters' corner glyph, on this poster too
   status?: Stat;
+  navigation?: ReactNode;
 }) {
   // the floating back button lives in Shell, so it's there while the page loads or if it fails
   // art that fails to load is left out, as if there were none
@@ -467,9 +479,68 @@ export function DetailTop({
               <span key={i}>{x}</span>
             ))}
           </div>
+          {navigation}
         </div>
       </div>
     </>
+  );
+}
+
+export function DiscoverDetailNavigation({
+  id,
+  mediaType,
+}: {
+  id: number;
+  mediaType: DiscoverMediaType;
+}) {
+  const { t } = useLumenLocale();
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const contextId = params.get('discoverContext');
+  const key = `${contextId ?? ''}:${mediaType}:${id}`;
+  const [stored, setStored] = useState<{
+    key: string;
+    state?: ReturnType<typeof getDiscoverNavigationState>;
+  }>();
+  useEffect(() => {
+    setStored({
+      key,
+      state: getDiscoverNavigationState(contextId, { id, mediaType }),
+    });
+  }, [contextId, id, key, mediaType]);
+  const state = stored?.key === key ? stored.state : undefined;
+  if (!state?.previous && !state?.next) return null;
+  const open = (item: { id: number; mediaType: DiscoverMediaType }) => {
+    if (!contextId) return;
+    navigate(
+      `/${item.mediaType}/${item.id}?discoverContext=${encodeURIComponent(contextId)}`
+    );
+  };
+  return (
+    <div className="toolbar">
+      {state.previous && (
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label={t('i18n.previous', 'Previous')}
+          title={t('i18n.previous', 'Previous')}
+          onClick={() => open(state.previous!)}
+        >
+          <Icon name="chevL" />
+        </button>
+      )}
+      {state.next && (
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label={t('i18n.next', 'Next')}
+          title={t('i18n.next', 'Next')}
+          onClick={() => open(state.next!)}
+        >
+          <Icon name="chev" />
+        </button>
+      )}
+    </div>
   );
 }
 

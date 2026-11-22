@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import type { Paged, TitleResult } from '../api';
 import { GridSkeleton, TitleCard } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import {
+  createDiscoverNavigationContextId,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
@@ -11,6 +16,7 @@ interface PublicListPage extends Paged<TitleResult> {
 }
 
 export default function TmdbList() {
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const [params, setParams] = useSearchParams();
@@ -31,6 +37,12 @@ export default function TmdbList() {
       (item.mediaType === 'movie' && movieEnabled) ||
       (item.mediaType === 'tv' && tvEnabled)
   );
+  const discoverItems: DiscoverNavigationItem[] =
+    results?.flatMap((item) =>
+      item.mediaType === 'movie' || item.mediaType === 'tv'
+        ? [{ id: item.id, mediaType: item.mediaType }]
+        : []
+    ) ?? [];
 
   function move(next: number) {
     setParams(next === 1 ? {} : { page: String(next) });
@@ -69,7 +81,12 @@ export default function TmdbList() {
       {!!results?.length && (
         <div className="grid">
           {results.map((item) => (
-            <TitleCard key={`${item.mediaType}:${item.id}`} it={item} />
+            <TitleCard
+              key={`${item.mediaType}:${item.id}`}
+              it={item}
+              discoverContextId={discoverContextId}
+              discoverItems={discoverItems}
+            />
           ))}
         </div>
       )}

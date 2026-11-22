@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { VideoSearchResult } from '../api';
 import { useAuth } from '../auth';
@@ -8,6 +9,10 @@ import {
   TitleCard,
 } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
+import {
+  createDiscoverNavigationContextId,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
 import {
   discoveryVisibility,
   showDiscoveryTitle,
@@ -29,6 +34,7 @@ const windows = [
 const identity = (item: VideoSearchResult) => `${item.mediaType}:${item.id}`;
 
 export default function Trending() {
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const [params, setParams] = useSearchParams();
   const { t } = useLumenLocale();
   const extras = useExtras();
@@ -72,6 +78,11 @@ export default function Trending() {
   });
   const empty = items.length === 0;
   const filtered = items.length < list.items.length;
+  const discoverItems: DiscoverNavigationItem[] = items.flatMap((item) =>
+    item.mediaType === 'movie' || item.mediaType === 'tv'
+      ? [{ id: item.id, mediaType: item.mediaType }]
+      : []
+  );
   function select(key: string, value: string) {
     const next = new URLSearchParams(params);
     next.set(key, value);
@@ -145,7 +156,12 @@ export default function Trending() {
           ) : item.mediaType === 'collection' ? (
             <CollectionCard key={identity(item)} collection={item} />
           ) : (
-            <TitleCard key={identity(item)} it={item} />
+            <TitleCard
+              key={identity(item)}
+              it={item}
+              discoverContextId={discoverContextId}
+              discoverItems={discoverItems}
+            />
           )
         )}
       </div>

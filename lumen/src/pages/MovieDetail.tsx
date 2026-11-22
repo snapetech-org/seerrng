@@ -30,6 +30,7 @@ import {
   canRequest4k,
   CreditsDisclosure,
   DetailTop,
+  DiscoverDetailNavigation,
   Facts,
   fmtRun,
   originalLanguageLink,
@@ -293,6 +294,7 @@ export default function MovieDetail() {
   return (
     <article className="detail">
       <DetailTop
+        navigation={<DiscoverDetailNavigation id={m.id} mediaType="movie" />}
         status={visibleStatus}
         backdrop={tmdbImg(m.backdropPath, 'w1280')}
         poster={tmdbImg(m.posterPath)}

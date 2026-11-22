@@ -28,6 +28,10 @@ import {
 import { useAuth, useMediaServerName } from '../auth';
 import { cardTitleModes } from '../cardTitleModes';
 import { localToday } from '../dates';
+import {
+  storeDiscoverNavigationContext,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
 import { friendlyError } from '../errors';
 import {
   bookMediaWithLibrary,
@@ -371,7 +375,17 @@ export function CollectionCard({
   );
 }
 
-export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
+export function TitleCard({
+  it,
+  meta,
+  discoverContextId,
+  discoverItems,
+}: {
+  it: TitleResult;
+  meta?: string;
+  discoverContextId?: string;
+  discoverItems?: DiscoverNavigationItem[];
+}) {
   const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const toast = useToast();
@@ -392,6 +406,17 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
   const date = it.releaseDate || it.firstAirDate;
   const unreleased = !!date && date > localToday();
   const href = `/${tv ? 'tv' : 'movie'}/${it.id}`;
+  const detailHref =
+    discoverContextId && discoverItems
+      ? `${href}?discoverContext=${encodeURIComponent(discoverContextId)}`
+      : href;
+  const saveDiscoverContext = () => {
+    if (discoverContextId && discoverItems)
+      storeDiscoverNavigationContext(discoverContextId, discoverItems, {
+        id: it.id,
+        mediaType: tv ? 'tv' : 'movie',
+      });
+  };
   const m =
     meta ||
     [unreleased ? shortDate(date) : yearOf(it), tv ? 'Series' : '']
@@ -440,7 +465,11 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           {t('lumen.tv.watchOn', 'Watch on {server}', { server: serverName })}
         </a>
       ) : (
-        <Link className="qbtn okb" to={href}>
+        <Link
+          className="qbtn okb"
+          to={detailHref}
+          onClick={saveDiscoverContext}
+        >
           <Icon name="play" size="sm" />
           {t('lumen.status.onServer', 'On {server}', { server: serverName })}
         </Link>
@@ -454,7 +483,11 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
     );
   else if (tv && !prefs.wholeSeriesDefault)
     qb = (
-      <Link className="qbtn go" to={href + '#seasons'}>
+      <Link
+        className="qbtn go"
+        to={detailHref + '#seasons'}
+        onClick={saveDiscoverContext}
+      >
         <Icon name="list" size="sm" />
         Choose seasons
       </Link>
@@ -474,7 +507,8 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
         {tv && (
           <Link
             className="qbtn ghost"
-            to={href + '#seasons'}
+            to={detailHref + '#seasons'}
+            onClick={saveDiscoverContext}
             aria-label="Choose seasons"
             title="Choose seasons"
           >
@@ -496,7 +530,12 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           icon={tv ? 'tv' : 'film'}
         />
         <Glyph s={visibleRequestStatus || shown} />
-        <Link className="hit" to={href} aria-label={titleOf(it)} />
+        <Link
+          className="hit"
+          to={detailHref}
+          onClick={saveDiscoverContext}
+          aria-label={titleOf(it)}
+        />
         {prefs.hoverRequest &&
           quick.allowed &&
           !s &&
@@ -530,7 +569,13 @@ export function TitleCard({ it, meta }: { it: TitleResult; meta?: string }) {
           </div>
         </div>
       </div>
-      <Link className="t" to={href} tabIndex={-1} aria-hidden="true">
+      <Link
+        className="t"
+        to={detailHref}
+        onClick={saveDiscoverContext}
+        tabIndex={-1}
+        aria-hidden="true"
+      >
         {titleOf(it)}
       </Link>
       <div className="m">{m}</div>

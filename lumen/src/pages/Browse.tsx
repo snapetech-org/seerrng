@@ -12,6 +12,10 @@ import { Avatar } from '../components/Shell';
 import { StreamingDiscoveryFilter } from '../components/StreamingDiscoveryFilter';
 import { StudioFilter } from '../components/StudioFilter';
 import { SubjectTagFilter } from '../components/SubjectTagFilter';
+import {
+  createDiscoverNavigationContextId,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
 import { tvNetworks } from '../discoverNetworks';
 import {
   discoveryVisibility,
@@ -421,6 +425,7 @@ export function GenreDirectory({ kind }: { kind: 'movie' | 'tv' }) {
 // Movies and Series share one page: availability switch, sort, genres, grid
 export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
   const { t, locale } = useLumenLocale();
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const [params, setP] = useSearchParams();
   const p = normalizeNativeFilters(params);
   const [filterReset, setFilterReset] = useState(0);
@@ -676,6 +681,10 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       (!filterCatalogRows || (show === 'have' ? onServer(x) : !onServer(x))) &&
       showDiscoveryTitle(x, visibility)
   );
+  const discoverItems: DiscoverNavigationItem[] = items.map(({ id }) => ({
+    id,
+    mediaType: kind,
+  }));
   const locallyFiltered = filterCatalogRows || items.length < list.items.length;
   // Catalog availability views read TMDB’s list a
   // page at a time. With a small library almost nothing matches, and an open-ended loop
@@ -1417,7 +1426,12 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
         list.page === 0 && <GridSkeleton />}
       <div className="grid">
         {items.map((x) => (
-          <TitleCard key={x.id} it={{ ...x, mediaType: kind }} />
+          <TitleCard
+            key={x.id}
+            it={{ ...x, mediaType: kind }}
+            discoverContextId={discoverContextId}
+            discoverItems={discoverItems}
+          />
         ))}
       </div>
       {capped && !list.loading && (

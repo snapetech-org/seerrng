@@ -31,6 +31,7 @@ import {
   canRequestSeries,
   CreditsDisclosure,
   DetailTop,
+  DiscoverDetailNavigation,
   Facts,
   fmtRun,
   originalLanguageLink,
@@ -562,6 +563,7 @@ export default function TvDetail() {
   return (
     <article className="detail">
       <DetailTop
+        navigation={<DiscoverDetailNavigation id={t.id} mediaType="tv" />}
         status={visibleStatus}
         backdrop={tmdbImg(t.backdropPath, 'w1280')}
         poster={tmdbImg(t.posterPath)}

@@ -26,6 +26,10 @@ import { ServiceNote } from '../components/extra';
 import GenreTiles from '../components/GenreTiles';
 import { Avatar } from '../components/Shell';
 import {
+  createDiscoverNavigationContextId,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
+import {
   discoveryVisibility,
   showDiscoveryTitle,
 } from '../discoveryVisibility';
@@ -116,6 +120,7 @@ const CHIPS: [IconName, string, string, string][] = [
 
 export default function Discover() {
   const { t, locale } = useLumenLocale();
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const serverName = useMediaServerName();
   const { prefs, adminConfigState } = usePrefs();
   const extras = useExtras();
@@ -195,6 +200,12 @@ export default function Discover() {
   const movieCards = movies.data?.results.filter(visible);
   const seriesCards = series.data?.results.filter(visible);
   const upcomingCards = soon.data?.results.filter(visible);
+  const movieNavigationItems: DiscoverNavigationItem[] =
+    movieCards?.map(({ id }) => ({ id, mediaType: 'movie' })) ?? [];
+  const seriesNavigationItems: DiscoverNavigationItem[] =
+    seriesCards?.map(({ id }) => ({ id, mediaType: 'tv' })) ?? [];
+  const upcomingNavigationItems: DiscoverNavigationItem[] =
+    upcomingCards?.map(({ id }) => ({ id, mediaType: 'movie' })) ?? [];
   const hero = (trending.data?.results || [])
     .filter(
       (r): r is TitleResult =>
@@ -370,7 +381,12 @@ export default function Discover() {
             {movieCards ? (
               <Rail restoreId="movies">
                 {movieCards.map((m) => (
-                  <TitleCard key={m.id} it={{ ...m, mediaType: 'movie' }} />
+                  <TitleCard
+                    key={m.id}
+                    it={{ ...m, mediaType: 'movie' }}
+                    discoverContextId={discoverContextId}
+                    discoverItems={movieNavigationItems}
+                  />
                 ))}
               </Rail>
             ) : movies.error ? (
@@ -394,7 +410,12 @@ export default function Discover() {
             {seriesCards ? (
               <Rail restoreId="series">
                 {seriesCards.map((t) => (
-                  <TitleCard key={t.id} it={{ ...t, mediaType: 'tv' }} />
+                  <TitleCard
+                    key={t.id}
+                    it={{ ...t, mediaType: 'tv' }}
+                    discoverContextId={discoverContextId}
+                    discoverItems={seriesNavigationItems}
+                  />
                 ))}
               </Rail>
             ) : series.error ? (
@@ -474,6 +495,8 @@ export default function Discover() {
                   <TitleCard
                     key={m.id}
                     it={{ ...m, mediaType: 'movie' }}
+                    discoverContextId={discoverContextId}
+                    discoverItems={upcomingNavigationItems}
                     meta={shortDate(m.releaseDate)}
                   />
                 ))}

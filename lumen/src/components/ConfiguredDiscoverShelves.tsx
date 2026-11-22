@@ -12,6 +12,10 @@ import {
   type DiscoverCompanyKind,
 } from '../discoverCompanies';
 import {
+  createDiscoverNavigationContextId,
+  type DiscoverNavigationItem,
+} from '../discoverNavigation';
+import {
   defaultDiscoverNetworks,
   type DiscoverCompanyData,
 } from '../discoverNetworks';
@@ -171,6 +175,7 @@ function DiscoverShelf({
   title?: string;
   visibility: ReturnType<typeof discoveryVisibility>;
 }) {
+  const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const { data, error, reload } = useApi<ShelfPage>(visible ? endpoint : null);
@@ -199,6 +204,14 @@ function DiscoverShelf({
       return showDiscoveryTitle(item, visibility);
     return item.mediaType === 'person' || item.mediaType === 'collection';
   });
+  const discoverItems: DiscoverNavigationItem[] =
+    items?.flatMap((item) =>
+      (item.mediaType === 'movie' || item.mediaType === 'tv') &&
+      Number.isSafeInteger(Number(item.id)) &&
+      Number(item.id) > 0
+        ? [{ id: Number(item.id), mediaType: item.mediaType }]
+        : []
+    ) ?? [];
   if (items?.length === 0) return null;
 
   return (
@@ -224,7 +237,14 @@ function DiscoverShelf({
                 return <CollectionCard key={key} collection={item} />;
               if (item.mediaType === 'person')
                 return <PersonCard key={key} person={item} />;
-              return <TitleCard key={key} it={item} />;
+              return (
+                <TitleCard
+                  key={key}
+                  it={item}
+                  discoverContextId={discoverContextId}
+                  discoverItems={discoverItems}
+                />
+              );
             })}
           </Rail>
         ) : error ? (
