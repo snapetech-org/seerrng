@@ -6246,3 +6246,21 @@ The fixture blocks external requests, so screenshot image payloads and live
 provider values remain unverified; independent linguistic review is also open.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-detail-metadata-20261121/`.
+
+### Bulk book request localization
+
+The shared author and book-series bulk-request sheet now localizes its format,
+advanced destination and requester controls, selection limit, load/submit/retry
+feedback, result counts, accessibility labels, and dismissal action in English,
+French, and Arabic. Request eligibility, the selected work and edition identity,
+format-specific destination options, bulk request payload, and result handling
+remain unchanged.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet. They
+exercise the selected-work state and fully configured destination fields in all
+three locales, including Arabic RTL. English and Arabic captures were inspected;
+the sheet remains within the viewport and keeps its existing shared sheet and
+form-row owners. Existing author and series request contract tests were rerun.
+Live provider submission and independent linguistic review remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-bulk-book-localization-20261122/`.

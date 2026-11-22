@@ -4,6 +4,7 @@ import { api, bookMediaForFormat, MediaStatus, type BookResult } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { dropBookStates, useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canRequestAs } from './detail';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
@@ -66,6 +67,7 @@ function RequestSheet({
   close: () => void;
   onComplete: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const dialog = useRef<HTMLDivElement>(null);
   const pending = useRef(false);
@@ -130,7 +132,12 @@ function RequestSheet({
         next > offset && next < page.pagination.totalItems ? next : undefined
       );
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not load more books.'));
+      setError(
+        friendlyError(
+          failure,
+          t('lumen.bulkBooks.loadMoreFailure', 'Could not load more books.')
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -168,7 +175,15 @@ function RequestSheet({
       );
       dropBookStates();
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not submit the bulk request.'));
+      setError(
+        friendlyError(
+          failure,
+          t(
+            'lumen.bulkBooks.submitFailure',
+            'Could not submit the bulk request.'
+          )
+        )
+      );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -198,18 +213,25 @@ function RequestSheet({
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Request Books"
+        aria-label={t('lumen.bulkBooks.title', 'Request Books')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Request Books</h3>
+            <h3>{t('lumen.bulkBooks.title', 'Request Books')}</h3>
           </header>
           {result ? (
             <>
               <p role="status">
-                {result.created.length} requested, {result.skipped.length}{' '}
-                skipped, {result.failed.length} failed.
+                {t(
+                  'lumen.bulkBooks.resultSummary',
+                  '{created} requested, {skipped} skipped, {failed} failed.',
+                  {
+                    created: result.created.length,
+                    skipped: result.skipped.length,
+                    failed: result.failed.length,
+                  }
+                )}
               </p>
               {!!(result.skipped.length + result.failed.length) && (
                 <ul className="slist">
@@ -224,7 +246,9 @@ function RequestSheet({
           ) : (
             <>
               <label className="sel">
-                <span className="lbl">Format</span>
+                <span className="lbl">
+                  {t('lumen.bulkBooks.format', 'Format')}
+                </span>
                 <select
                   disabled={busy}
                   value={format}
@@ -236,10 +260,14 @@ function RequestSheet({
                   }}
                 >
                   {formats.includes('ebook') && (
-                    <option value="ebook">Ebook</option>
+                    <option value="ebook">
+                      {t('lumen.bulkBooks.ebook', 'Ebook')}
+                    </option>
                   )}
                   {formats.includes('audiobook') && (
-                    <option value="audiobook">Audiobook</option>
+                    <option value="audiobook">
+                      {t('lumen.bulkBooks.audiobook', 'Audiobook')}
+                    </option>
                   )}
                 </select>
               </label>
@@ -250,11 +278,18 @@ function RequestSheet({
                     if (event.currentTarget.open) setAdvanced(true);
                   }}
                 >
-                  <summary>Advanced Request Options</summary>
+                  <summary>
+                    {t(
+                      'lumen.bulkBooks.advancedOptions',
+                      'Advanced Request Options'
+                    )}
+                  </summary>
                   <div className="adv-grid">
                     {asAllowed && !!users.data?.results?.length && (
                       <label className="sel">
-                        <span className="lbl">Request As</span>
+                        <span className="lbl">
+                          {t('lumen.bulkBooks.requestAs', 'Request As')}
+                        </span>
                         <select
                           value={destination.userId ?? ''}
                           disabled={busy}
@@ -266,7 +301,9 @@ function RequestSheet({
                             }));
                           }}
                         >
-                          <option value="">Me</option>
+                          <option value="">
+                            {t('lumen.bulkBooks.me', 'Me')}
+                          </option>
                           {users.data.results
                             .filter((person) => person.id !== user?.id)
                             .map((person) => (
@@ -278,7 +315,9 @@ function RequestSheet({
                       </label>
                     )}
                     <label className="sel">
-                      <span className="lbl">Book Service</span>
+                      <span className="lbl">
+                        {t('lumen.bulkBooks.bookService', 'Book Service')}
+                      </span>
                       <select
                         value={destination.serverId ?? ''}
                         disabled={busy}
@@ -290,7 +329,9 @@ function RequestSheet({
                           }));
                         }}
                       >
-                        <option value="">Use Default</option>
+                        <option value="">
+                          {t('lumen.bulkBooks.useDefault', 'Use Default')}
+                        </option>
                         {available.map((server) => (
                           <option key={server.id} value={server.id}>
                             {server.name}
@@ -300,10 +341,20 @@ function RequestSheet({
                     </label>
                     {(
                       [
-                        ['profileId', 'Quality Profile', chosen?.profiles],
+                        [
+                          'profileId',
+                          t(
+                            'lumen.bulkBooks.qualityProfile',
+                            'Quality Profile'
+                          ),
+                          chosen?.profiles,
+                        ],
                         [
                           'metadataProfileId',
-                          'Metadata Profile',
+                          t(
+                            'lumen.bulkBooks.metadataProfile',
+                            'Metadata Profile'
+                          ),
                           chosen?.metadataProfiles,
                         ],
                       ] as const
@@ -323,7 +374,9 @@ function RequestSheet({
                                 }));
                               }}
                             >
-                              <option value="">Use Default</option>
+                              <option value="">
+                                {t('lumen.bulkBooks.useDefault', 'Use Default')}
+                              </option>
                               {options.map((option) => (
                                 <option key={option.id} value={option.id}>
                                   {option.name}
@@ -335,7 +388,9 @@ function RequestSheet({
                     )}
                     {!!chosen?.rootFolders.length && (
                       <label className="sel">
-                        <span className="lbl">Root Folder</span>
+                        <span className="lbl">
+                          {t('lumen.bulkBooks.rootFolder', 'Root Folder')}
+                        </span>
                         <select
                           value={destination.rootFolder ?? ''}
                           disabled={busy}
@@ -347,7 +402,9 @@ function RequestSheet({
                             }));
                           }}
                         >
-                          <option value="">Use Default</option>
+                          <option value="">
+                            {t('lumen.bulkBooks.useDefault', 'Use Default')}
+                          </option>
                           {chosen.rootFolders.map(
                             ({ path }) =>
                               path && (
@@ -364,7 +421,10 @@ function RequestSheet({
                     <div
                       className="setlist"
                       role="group"
-                      aria-label="Request Tags"
+                      aria-label={t(
+                        'lumen.bulkBooks.requestTags',
+                        'Request Tags'
+                      )}
                     >
                       {chosen.tags.map((tag) => (
                         <label className="set cfg-row" key={tag.id}>
@@ -388,18 +448,24 @@ function RequestSheet({
                     </div>
                   )}
                   <ServiceNote
-                    what="book services"
+                    what={t('lumen.bulkBooks.bookServices', 'book services')}
                     error={servers.error}
                     retry={servers.reload}
                   />
                   <ServiceNote
-                    what="book service options"
+                    what={t(
+                      'lumen.bulkBooks.serviceOptions',
+                      'book service options'
+                    )}
                     error={details.error}
                     retry={details.reload}
                   />
                   {!destinationReady && !details.error && (
                     <p className="note" role="status">
-                      Loading book service options…
+                      {t(
+                        'lumen.bulkBooks.loadingServiceOptions',
+                        'Loading book service options…'
+                      )}
                     </p>
                   )}
                 </details>
@@ -413,7 +479,12 @@ function RequestSheet({
                       <span>
                         {book.title}
                         {!requestable && (
-                          <small>In library, requested, or blocked</small>
+                          <small>
+                            {t(
+                              'lumen.bulkBooks.ineligible',
+                              'In library, requested, or blocked'
+                            )}
+                          </small>
                         )}
                       </span>
                       <input
@@ -438,12 +509,16 @@ function RequestSheet({
                     disabled={busy}
                     onClick={() => void loadMore()}
                   >
-                    Load More Books
+                    {t('lumen.bulkBooks.loadMore', 'Load More Books')}
                   </button>
                 </div>
               )}
               <p className="note" role="status">
-                {selected.size} of {limit} selected
+                {t(
+                  'lumen.bulkBooks.selectedCount',
+                  '{selected} of {limit} selected',
+                  { selected: selected.size, limit }
+                )}
               </p>
               {error && (
                 <p className="note" role="alert">
@@ -460,7 +535,7 @@ function RequestSheet({
                 disabled={busy || !selected.size || !destinationReady}
                 onClick={() => void submit()}
               >
-                Request Selected Books
+                {t('lumen.bulkBooks.submit', 'Request Selected Books')}
               </button>
             )}
             <button
@@ -469,7 +544,7 @@ function RequestSheet({
               disabled={busy}
               onClick={finish}
             >
-              Close
+              {t('lumen.bulkBooks.close', 'Close')}
             </button>
           </div>
         </div>
@@ -488,6 +563,7 @@ export default function BulkBookRequest({
   onComplete: () => void;
   fixedFormat?: Format;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const settings = usePublicSettings();
   const [open, setOpen] = useState(false);
@@ -526,7 +602,7 @@ export default function BulkBookRequest({
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        Request Books
+        {t('lumen.bulkBooks.title', 'Request Books')}
       </button>
       {open && (
         <RequestSheet
