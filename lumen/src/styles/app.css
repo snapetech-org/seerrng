@@ -2557,6 +2557,12 @@ section section,
   .toolbar-search {
     flex-basis: 100%;
   }
+  .toolbar-search:has(> button[type='button']) {
+    flex-wrap: wrap;
+  }
+  .toolbar-search:has(> button[type='button']) .search {
+    min-width: 0;
+  }
 }
 .chip[aria-current='page'] {
   background: var(--ink);

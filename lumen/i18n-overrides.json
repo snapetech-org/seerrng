@@ -3565,7 +3565,21 @@
     "lumen.magazineRequest.backendFailure": "The Magazine Request Failed.",
     "lumen.magazineRequest.requested": "Magazine Requested",
     "lumen.magazineRequest.requestFailure": "Request Failed",
-    "lumen.magazineRequest.cancel": "Cancel"
+    "lumen.magazineRequest.cancel": "Cancel",
+    "lumen.requests.filters.requester": "Requester",
+    "lumen.requests.filters.previousUsers": "Previous Users",
+    "lumen.requests.filters.moreUsers": "More Users",
+    "lumen.requests.filters.retryUsers": "Retry Loading Users",
+    "lumen.requests.filters.booksAndAudiobooks": "Books and Audiobooks",
+    "lumen.requests.filters.allFormats": "All Formats",
+    "lumen.requests.filters.audiobook": "Audiobook",
+    "lumen.requests.filters.dateAdded": "Date Added",
+    "lumen.requests.sort.priority": "Request Priority",
+    "lumen.requests.sort.newest": "Newest First",
+    "lumen.requests.sort.oldest": "Oldest First",
+    "lumen.requests.sort.updated": "Recently Updated",
+    "lumen.requests.sort.titleAscending": "Title A–Z",
+    "lumen.requests.sort.titleDescending": "Title Z–A"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7292,7 +7306,21 @@
     "lumen.magazineRequest.backendFailure": "La demande de magazine a échoué.",
     "lumen.magazineRequest.requested": "Magazine demandé",
     "lumen.magazineRequest.requestFailure": "Échec de la demande",
-    "lumen.magazineRequest.cancel": "Annuler"
+    "lumen.magazineRequest.cancel": "Annuler",
+    "lumen.requests.filters.requester": "Demandeur",
+    "lumen.requests.filters.previousUsers": "Utilisateurs précédents",
+    "lumen.requests.filters.moreUsers": "Plus d’utilisateurs",
+    "lumen.requests.filters.retryUsers": "Réessayer de charger les utilisateurs",
+    "lumen.requests.filters.booksAndAudiobooks": "Livres et livres audio",
+    "lumen.requests.filters.allFormats": "Tous les formats",
+    "lumen.requests.filters.audiobook": "Livre audio",
+    "lumen.requests.filters.dateAdded": "Date d’ajout",
+    "lumen.requests.sort.priority": "Priorité des demandes",
+    "lumen.requests.sort.newest": "Plus récentes",
+    "lumen.requests.sort.oldest": "Plus anciennes",
+    "lumen.requests.sort.updated": "Récemment modifiées",
+    "lumen.requests.sort.titleAscending": "Titre A à Z",
+    "lumen.requests.sort.titleDescending": "Titre Z à A"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -11023,6 +11051,20 @@
     "lumen.magazineRequest.backendFailure": "فشل طلب المجلة.",
     "lumen.magazineRequest.requested": "تم طلب المجلة",
     "lumen.magazineRequest.requestFailure": "فشل الطلب",
-    "lumen.magazineRequest.cancel": "إلغاء"
+    "lumen.magazineRequest.cancel": "إلغاء",
+    "lumen.requests.filters.requester": "مقدم الطلب",
+    "lumen.requests.filters.previousUsers": "المستخدمون السابقون",
+    "lumen.requests.filters.moreUsers": "مستخدمون إضافيون",
+    "lumen.requests.filters.retryUsers": "إعادة تحميل المستخدمين",
+    "lumen.requests.filters.booksAndAudiobooks": "كتب وكتب صوتية",
+    "lumen.requests.filters.allFormats": "جميع التنسيقات",
+    "lumen.requests.filters.audiobook": "كتاب صوتي",
+    "lumen.requests.filters.dateAdded": "تاريخ الإضافة",
+    "lumen.requests.sort.priority": "أولوية الطلبات",
+    "lumen.requests.sort.newest": "الأحدث أولاً",
+    "lumen.requests.sort.oldest": "الأقدم أولاً",
+    "lumen.requests.sort.updated": "الأحدث تحديثًا",
+    "lumen.requests.sort.titleAscending": "العنوان أ–ي",
+    "lumen.requests.sort.titleDescending": "العنوان ي–أ"
   }
 }

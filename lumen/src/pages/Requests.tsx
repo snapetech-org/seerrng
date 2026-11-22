@@ -980,32 +980,56 @@ function gameRow(g: SoftwareRequest): Row {
 }
 
 const REQUEST_SORTS = [
-  ['priority', 'Request priority', 'added', 'desc'],
-  ['newest', 'Newest first', 'added', 'desc'],
-  ['oldest', 'Oldest first', 'added', 'asc'],
-  ['updated', 'Recently updated', 'modified', 'desc'],
-  ['title-asc', 'Title A–Z', 'title', 'asc'],
-  ['title-desc', 'Title Z–A', 'title', 'desc'],
+  [
+    'priority',
+    'Request priority',
+    'lumen.requests.sort.priority',
+    'added',
+    'desc',
+  ],
+  ['newest', 'Newest first', 'lumen.requests.sort.newest', 'added', 'desc'],
+  ['oldest', 'Oldest first', 'lumen.requests.sort.oldest', 'added', 'asc'],
+  [
+    'updated',
+    'Recently updated',
+    'lumen.requests.sort.updated',
+    'modified',
+    'desc',
+  ],
+  [
+    'title-asc',
+    'Title A–Z',
+    'lumen.requests.sort.titleAscending',
+    'title',
+    'asc',
+  ],
+  [
+    'title-desc',
+    'Title Z–A',
+    'lumen.requests.sort.titleDescending',
+    'title',
+    'desc',
+  ],
 ] as const;
 
 const REQUEST_TIME_FRAMES = [
-  ['all', 'All time'],
-  ['7d', 'Last 7 days'],
-  ['14d', 'Last 14 days'],
-  ['30d', 'Last 30 days'],
-  ['6m', 'Last 6 months'],
+  ['all', 'All time', 'components.Requests.allTime'],
+  ['7d', 'Last 7 days', 'components.Requests.last7Days'],
+  ['14d', 'Last 14 days', 'components.Requests.last14Days'],
+  ['30d', 'Last 30 days', 'components.Requests.last30Days'],
+  ['6m', 'Last 6 months', 'components.Requests.last6Months'],
 ] as const;
 
 const REQUEST_MEDIA_TYPES = [
-  ['all', 'All media'],
-  ['movie', 'Movies'],
-  ['tv', 'Series'],
-  ['music', 'Music'],
-  ['book', 'Books and audiobooks'],
-  ['comic', 'Comics'],
-  ['magazine', 'Magazines'],
-  ['sports', 'Sports'],
-  ['adult', 'Adult'],
+  ['all', 'All media', 'components.Requests.allMedia'],
+  ['movie', 'Movies', 'components.Requests.movies'],
+  ['tv', 'Series', 'components.Requests.series'],
+  ['music', 'Music', 'components.Requests.music'],
+  ['book', 'Books and audiobooks', 'lumen.requests.filters.booksAndAudiobooks'],
+  ['comic', 'Comics', 'components.Requests.comics'],
+  ['magazine', 'Magazines', 'components.Requests.magazines'],
+  ['sports', 'Sports', 'components.Requests.sports'],
+  ['adult', 'Adult', 'components.Requests.adult'],
 ] as const;
 
 const SOFTWARE_CATEGORIES = [
@@ -1037,6 +1061,7 @@ function RequesterFilter({
   value: string;
   change: (value: string) => void;
 }) {
+  const { t } = useLumenLocale();
   const [page, setPage] = useState(0);
   const { data, error, reload } = useApi<{
     results: { id: number; displayName: string }[];
@@ -1046,9 +1071,13 @@ function RequesterFilter({
   return (
     <>
       <label className="sel">
-        <span className="lbl">Requester</span>
+        <span className="lbl">
+          {t('lumen.requests.filters.requester', 'Requester')}
+        </span>
         <select value={value} onChange={(event) => change(event.target.value)}>
-          <option value="all">Everyone</option>
+          <option value="all">
+            {t('components.Requests.allUsers', 'All Users')}
+          </option>
           {value !== 'all' && !users.some(({ id }) => String(id) === value) && (
             <option value={value}>User #{value}</option>
           )}
@@ -1064,7 +1093,7 @@ function RequesterFilter({
           className="btn btn-quiet btn-sm"
           onClick={() => setPage(page - 1)}
         >
-          Previous Users
+          {t('lumen.requests.filters.previousUsers', 'Previous Users')}
         </button>
       )}
       {!!data &&
@@ -1074,12 +1103,12 @@ function RequesterFilter({
             className="btn btn-quiet btn-sm"
             onClick={() => setPage(page + 1)}
           >
-            More Users
+            {t('lumen.requests.filters.moreUsers', 'More Users')}
           </button>
         )}
       {error && (
         <button className="btn btn-quiet btn-sm" onClick={reload}>
-          Retry Loading Users
+          {t('lumen.requests.filters.retryUsers', 'Retry Loading Users')}
         </button>
       )}
     </>
@@ -1260,7 +1289,7 @@ export default function Requests() {
     REQUEST_TIME_FRAMES.find(([value]) => value === timeFrameParam)?.[0] ??
     'all';
   const search = (p.get('search') ?? '').trim().slice(0, 200);
-  const [sortMode, , sortField, sortDirection] =
+  const [sortMode, , , sortField, sortDirection] =
     REQUEST_SORTS.find(([value]) => value === p.get('order')) ??
     REQUEST_SORTS[0];
   const priorityOrder = sortMode === 'priority';
@@ -1953,7 +1982,11 @@ export default function Requests() {
         </div>
       )}
       {everyone && (
-        <div className="toolbar" role="group" aria-label="Request filters">
+        <div
+          className="toolbar"
+          role="group"
+          aria-label={t('components.Requests.mediaFilters', 'Media Filters')}
+        >
           <RequesterFilter
             value={requester}
             change={(value) => setRequestFilter('requestedBy', value)}
@@ -1961,68 +1994,85 @@ export default function Requests() {
           {show !== 'software' && (
             <>
               <label className="sel">
-                <span className="lbl">Media Type</span>
+                <span className="lbl">
+                  {t('components.Requests.mediaType', 'Media Type')}
+                </span>
                 <select
                   value={mediaType}
                   onChange={(event) =>
                     setRequestFilter('mediaType', event.target.value)
                   }
                 >
-                  {mediaTypes.map(([value, label]) => (
+                  {mediaTypes.map(([value, label, message]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(message, label)}
                     </option>
                   ))}
                 </select>
               </label>
               {mediaType === 'book' && (
                 <label className="sel">
-                  <span className="lbl">Book Format</span>
+                  <span className="lbl">
+                    {t('components.Requests.format', 'Format')}
+                  </span>
                   <select
                     value={bookFormat}
                     onChange={(event) =>
                       setRequestFilter('bookFormat', event.target.value)
                     }
                   >
-                    <option value="all">All formats</option>
-                    <option value="ebook">Ebook</option>
-                    <option value="audiobook">Audiobook</option>
+                    <option value="all">
+                      {t('lumen.requests.filters.allFormats', 'All formats')}
+                    </option>
+                    <option value="ebook">
+                      {t('components.Requests.ebook', 'Book')}
+                    </option>
+                    <option value="audiobook">
+                      {t('lumen.requests.filters.audiobook', 'Audiobook')}
+                    </option>
                   </select>
                 </label>
               )}
               <label className="sel">
-                <span className="lbl">Sort</span>
+                <span className="lbl">
+                  {t('components.Requests.sortBy', 'Sort By')}
+                </span>
                 <select
                   value={sortMode}
                   onChange={(event) =>
                     setRequestFilter('order', event.target.value)
                   }
                 >
-                  {REQUEST_SORTS.map(([value, label]) => (
+                  {REQUEST_SORTS.map(([value, label, message]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(message, label)}
                     </option>
                   ))}
                 </select>
               </label>
               <label className="sel">
-                <span className="lbl">Date Added</span>
+                <span className="lbl">
+                  {t('lumen.requests.filters.dateAdded', 'Date Added')}
+                </span>
                 <select
                   value={timeFrame}
                   onChange={(event) =>
                     setRequestFilter('timeFrame', event.target.value)
                   }
                 >
-                  {REQUEST_TIME_FRAMES.map(([value, label]) => (
+                  {REQUEST_TIME_FRAMES.map(([value, label, message]) => (
                     <option key={value} value={value}>
-                      {label}
+                      {t(message, label)}
                     </option>
                   ))}
                 </select>
               </label>
               <form
                 className="toolbar-search"
-                aria-label="Search media requests"
+                aria-label={t(
+                  'components.Requests.searchRequests',
+                  'Search Requests'
+                )}
                 onSubmit={(event) => {
                   event.preventDefault();
                   const value = new FormData(event.currentTarget).get('search');
@@ -2037,20 +2087,31 @@ export default function Requests() {
                     key={search}
                     name="search"
                     type="search"
-                    aria-label="Search media requests"
-                    placeholder="Search media requests"
+                    aria-label={t(
+                      'components.Requests.searchRequests',
+                      'Search Requests'
+                    )}
+                    placeholder={t(
+                      'components.Requests.searchRequests',
+                      'Search Requests'
+                    )}
                     maxLength={200}
                     defaultValue={search}
                   />
                 </label>
-                <button className="btn btn-tonal btn-sm">Search</button>
+                <button className="btn btn-tonal btn-sm">
+                  {t('components.BookSeriesSearch.search', 'Search')}
+                </button>
                 {search && (
                   <button
                     type="button"
                     className="btn btn-quiet btn-sm"
                     onClick={() => setRequestFilter('search', '')}
                   >
-                    Clear Search
+                    {t(
+                      'components.Discover.DiscoverAdult.clearSearch',
+                      'Clear Search'
+                    )}
                   </button>
                 )}
               </form>

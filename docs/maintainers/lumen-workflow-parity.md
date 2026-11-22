@@ -6370,3 +6370,22 @@ loading state with the fixture, so the adult button’s matched visual acceptanc
 is unverified. Live submission and independent linguistic review are also
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-request-localization-20261122/`.
+
+### Requests manager filter localization and mobile search recovery
+
+The Lumen Requests manager now localizes requester, media type, format, sort,
+date range, search, clear-search, and paging controls in English, French, and
+Arabic. Existing filter values and URL/API behavior are unchanged. On narrow
+screens, the search field wraps its clear action when needed; the shared search
+owner scopes this behavior to toolbars that contain a separate button, leaving
+the Admin Users search layout unchanged.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet for all
+three locales. They verify translated labels/options, the existing URL filters,
+search/clear behavior, and no horizontal overflow after searching. A focused
+French iPhone Admin Users consumer check passed after the CSS was scoped.
+English desktop and iPhone baseline/candidate captures were inspected, as were
+French desktop and Arabic iPhone candidate captures. The standalone production
+build and localization checker pass; provider-backed requests and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-filter-localization-20261122/`.
