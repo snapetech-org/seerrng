@@ -1463,6 +1463,7 @@ function MagazineRequestSheet({
 }
 
 export function Magazines() {
+  const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? params.get('query') ?? '';
   const [q, setQ] = useState(query);
@@ -1503,27 +1504,43 @@ export function Magazines() {
   return (
     <ExtraGate k="magazine">
       <ExtraHeader
-        title="Magazines"
+        title={t('lumen.magazines.title', 'Magazines')}
         sub={
           query
-            ? 'Search results. Request a title to start getting new issues.'
+            ? t(
+                'lumen.magazines.searchResultsGuidance',
+                'Search results. Request a title to start getting new issues.'
+              )
             : catalog === 'public'
-              ? 'Search Google Books for magazine titles.'
-              : 'Titles the library follows.'
+              ? t(
+                  'lumen.magazines.publicGuidance',
+                  'Search Google Books for magazine titles.'
+                )
+              : t(
+                  'lumen.magazines.trackedGuidance',
+                  'Titles the library follows.'
+                )
         }
       >
         <ExtraSearch
           value={q}
           onChange={setQ}
-          placeholder="Search magazines…"
+          placeholder={t('lumen.magazines.search', 'Search magazines…')}
         />
       </ExtraHeader>
       <div className="toolbar">
-        <div className="seg" role="group" aria-label="Magazine Catalogue">
+        <div
+          className="seg"
+          role="group"
+          aria-label={t('lumen.magazines.catalogue', 'Magazine Catalogue')}
+        >
           {(
             [
-              ['tracked', 'Tracked Titles'],
-              ['public', 'Public Catalogue'],
+              ['tracked', t('lumen.magazines.trackedTitles', 'Tracked Titles')],
+              [
+                'public',
+                t('lumen.magazines.publicCatalogue', 'Public Catalogue'),
+              ],
             ] as const
           ).map(([value, label]) => (
             <button
@@ -1545,7 +1562,10 @@ export function Magazines() {
         <div
           className="toolbar"
           role="group"
-          aria-label="Suggested Magazine Searches"
+          aria-label={t(
+            'lumen.magazines.suggestedSearches',
+            'Suggested Magazine Searches'
+          )}
         >
           {MAGAZINE_SEARCH_SUGGESTIONS.map((suggestion) => (
             <button
@@ -1573,7 +1593,13 @@ export function Magazines() {
             disabled={title === requested}
             onClick={() => setRequestTitle(title)}
           >
-            {title === requested ? `Requested ${title}` : `Request “${title}”`}
+            {title === requested
+              ? t('lumen.magazines.requestedTitle', 'Requested {title}', {
+                  title,
+                })
+              : t('lumen.magazines.requestTitle', 'Request “{title}”', {
+                  title,
+                })}
           </button>
         </div>
       )}
@@ -1589,7 +1615,7 @@ export function Magazines() {
       )}
       <ServiceNote
         error={list.items.length ? null : list.error}
-        what="magazines"
+        what={t('lumen.magazines.magazines', 'magazines')}
         retry={list.retry}
       />
       {!needsPublicQuery &&
@@ -1597,10 +1623,20 @@ export function Magazines() {
         !list.items.length &&
         !list.loading && (
           <div className="empty">
-            <b>{query ? 'No magazines found' : 'No magazines yet'}</b>
+            <b>
+              {query
+                ? t('lumen.magazines.noResults', 'No magazines found')
+                : t('lumen.magazines.noTracked', 'No magazines yet')}
+            </b>
             {query
-              ? 'Try the magazine’s full title.'
-              : 'Search for a title to request it.'}
+              ? t(
+                  'lumen.magazines.tryFullTitle',
+                  'Try the magazine’s full title.'
+                )
+              : t(
+                  'lumen.magazines.searchToRequest',
+                  'Search for a title to request it.'
+                )}
           </div>
         )}
       <div className="grid">
@@ -1620,6 +1656,7 @@ export function Magazines() {
 }
 
 export function MagazineDetail() {
+  const { t } = useLumenLocale();
   const { title = '' } = useParams();
   const { user } = useAuth();
   const [requestTitle, setRequestTitle] = useState('');
@@ -1634,7 +1671,11 @@ export function MagazineDetail() {
   if (error)
     return (
       <ExtraGate k="magazine">
-        <ServiceNote error={error} what="this magazine" retry={reload} />
+        <ServiceNote
+          error={error}
+          what={t('lumen.magazines.thisMagazine', 'this magazine')}
+          retry={reload}
+        />
       </ExtraGate>
     );
   if (!m) return <div className="detail-loading" aria-busy="true" />;
@@ -1652,7 +1693,7 @@ export function MagazineDetail() {
         onClick={() => setRequestTitle(m.title)}
       >
         <Icon name="plus" />
-        Request magazine
+        {t('lumen.magazines.requestMagazine', 'Request magazine')}
       </button>
     ) : null;
   return (
@@ -1676,7 +1717,11 @@ export function MagazineDetail() {
           line={[
             m.publisher,
             m.firstPublishYear,
-            m.issueCount ? `${m.issueCount} issues` : '',
+            m.issueCount
+              ? t('lumen.magazines.issueCount', '{count} issues', {
+                  count: m.issueCount,
+                })
+              : '',
           ]}
         />
         <div className="dbody">
@@ -1684,7 +1729,13 @@ export function MagazineDetail() {
             <StatPill s={s} />
             {have > 0 && (
               <Pill k="ok" icon="check">
-                {have} issue{have === 1 ? '' : 's'} in library
+                {t(
+                  'lumen.magazines.issuesInLibrary',
+                  '{count} issues in library',
+                  {
+                    count: have,
+                  }
+                )}
               </Pill>
             )}
             <IndexerSearchLink category="magazine" title={m.title} />
@@ -1713,7 +1764,9 @@ export function MagazineDetail() {
             <div>
               {!!m.issues?.length && (
                 <>
-                  <div className="h2">Issues</div>
+                  <div className="h2">
+                    {t('lumen.comicDetail.issues', 'Issues')}
+                  </div>
                   <ol className="slist tlist">
                     {m.issues.map((i) => (
                       <li key={i.id} className="trow">
@@ -1723,10 +1776,12 @@ export function MagazineDetail() {
                         </span>
                         {i.available ? (
                           <Pill k="ok" icon="check">
-                            In library
+                            {t('lumen.comicDetail.inLibrary', 'In library')}
                           </Pill>
                         ) : (
-                          <span className="tl">Not yet</span>
+                          <span className="tl">
+                            {t('lumen.magazines.notYet', 'Not yet')}
+                          </span>
                         )}
                       </li>
                     ))}
@@ -1737,11 +1792,14 @@ export function MagazineDetail() {
             <aside>
               <Facts
                 rows={[
-                  ['Publisher', m.publisher],
-                  ['Latest issue', m.latestIssue],
-                  ['Status', m.status],
+                  [t('lumen.comicDetail.publisher', 'Publisher'), m.publisher],
                   [
-                    'Source',
+                    t('lumen.magazines.latestIssue', 'Latest issue'),
+                    m.latestIssue,
+                  ],
+                  [t('lumen.comicDetail.status', 'Status'), m.status],
+                  [
+                    t('lumen.magazines.source', 'Source'),
                     m.provider === 'googlebooks'
                       ? 'Google Books'
                       : 'LazyLibrarian',

@@ -155,6 +155,24 @@ responses and independent language review remain unverified. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-detail-localization-20261122/`.
 
+### Magazine discovery and detail localization
+
+Magazine browse and detail screens now localize tracked/public catalogue
+controls, search guidance, suggested-search accessibility text, request
+actions, empty states, issue counts, detail facts, and issue availability in
+English, French, and Arabic. Suggested magazine names and provider-owned issue
+data remain unchanged. Saved catalogue mode, search query, and request flow are
+preserved.
+
+The Comic/Magazine browser suite passes 108 cases with 28 existing
+viewport/interaction skips. Twelve new locale/device cases verify public
+catalogue search, empty feedback, request action copy, and no horizontal page
+overflow. Matched baseline/candidate screenshots were captured at iPhone and
+desktop sizes; French iPhone and Arabic desktop were inspected. Live Google
+Books/LazyLibrarian results, magazine request submission, and independent
+linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-magazine-localization-20261122/`.
+
 ### Account-synced Lumen preferences
 
 Theme, Discover shelf visibility, and personal request/display choices now load
