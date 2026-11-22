@@ -483,10 +483,12 @@ export interface Game {
   }[];
   availability?:
     'available' | 'owned' | 'tracked' | 'downloading' | 'missing' | 'unknown';
+  steamOwned?: boolean;
   rating?: number | null;
   publishers?: string[];
   developers?: string[];
   screenshots?: string[];
+  videos?: { name: string; videoId: string }[];
   timeToBeat?: {
     hastily?: number;
     normally?: number;

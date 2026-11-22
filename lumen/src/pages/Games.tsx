@@ -18,7 +18,6 @@ import {
   canUseRequestAccess,
   DetailTop,
   Facts,
-  fmtHrs,
   Pill,
 } from '../components/detail';
 import {
@@ -350,7 +349,7 @@ function GameDetailView({
   platform: string;
 }) {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
   const {
     data,
     error: loadError,
@@ -532,6 +531,20 @@ function GameDetailView({
         .filter((url): url is string => !!url)
     ),
   ].slice(0, 6);
+  const videos = (Array.isArray(g.videos) ? g.videos : []).filter(
+    (video) =>
+      video &&
+      typeof video.videoId === 'string' &&
+      /^[A-Za-z0-9_-]{11}$/.test(video.videoId)
+  );
+  const hours = (value: number | undefined) =>
+    typeof value === 'number' && Number.isFinite(value) && value > 0
+      ? t('lumen.games.hoursValue', '{hours} h', {
+          hours: new Intl.NumberFormat(locale, {
+            maximumFractionDigits: 1,
+          }).format(value),
+        })
+      : '';
   return (
     <ExtraGate k="game">
       <article className="detail">
@@ -580,6 +593,11 @@ function GameDetailView({
             {g.rating != null && (
               <Pill k="neutral" icon="star">
                 {Math.round(g.rating)} / 100
+              </Pill>
+            )}
+            {cat === 'game' && !dat && g.steamOwned && (
+              <Pill k="neutral">
+                {t('lumen.games.steamLibrary', 'Steam Library')}
               </Pill>
             )}
           </div>
@@ -742,23 +760,75 @@ function GameDetailView({
             <div style={{ display: 'grid', gap: 22 }}>
               {g.summary && <p className="ov">{g.summary}</p>}
               {!!screenshots.length && (
-                <div className="shots">
-                  {screenshots.map((u) => (
-                    <img key={u} src={u} alt="" loading="lazy" />
-                  ))}
-                </div>
+                <section
+                  aria-label={t('lumen.games.screenshots', 'Screenshots')}
+                >
+                  <h3 className="tagline">
+                    {t('lumen.games.screenshots', 'Screenshots')}
+                  </h3>
+                  <div className="shots">
+                    {screenshots.map((u) => (
+                      <img key={u} src={u} alt="" loading="lazy" />
+                    ))}
+                  </div>
+                </section>
+              )}
+              {!!videos.length && (
+                <section aria-label={t('lumen.games.videos', 'Videos')}>
+                  <h3 className="tagline">
+                    {t('lumen.games.videos', 'Videos')}
+                  </h3>
+                  <nav
+                    className="toolbar"
+                    aria-label={t('lumen.games.videos', 'Videos')}
+                  >
+                    {videos.map((video) => (
+                      <a
+                        key={video.videoId}
+                        className="chip"
+                        href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t('lumen.games.watchVideo', 'Watch {name}', {
+                          name:
+                            typeof video.name === 'string' && video.name.trim()
+                              ? video.name.trim()
+                              : t('lumen.games.gameVideo', 'Game video'),
+                        })}
+                      </a>
+                    ))}
+                  </nav>
+                </section>
               )}
             </div>
             <aside>
               <Facts
                 rows={[
-                  ['Released', g.releaseDate],
-                  ['Developer', g.developers?.join(', ')],
-                  ['Publisher', g.publishers?.join(', ')],
-                  ['Platforms', g.platforms.slice(0, 6).join(', ')],
+                  [t('lumen.games.released', 'Released'), g.releaseDate],
                   [
-                    'Time to beat',
-                    g.timeToBeat?.normally ? fmtHrs(g.timeToBeat.normally) : '',
+                    t('lumen.games.developer', 'Developer'),
+                    g.developers?.join(', '),
+                  ],
+                  [
+                    t('lumen.games.publisher', 'Publisher'),
+                    g.publishers?.join(', '),
+                  ],
+                  [
+                    t('lumen.games.platforms', 'Platforms'),
+                    g.platforms.slice(0, 6).join(', '),
+                  ],
+                  [
+                    t('lumen.games.quickFinish', 'Quick Finish'),
+                    hours(g.timeToBeat?.hastily),
+                  ],
+                  [
+                    t('lumen.games.mainStory', 'Main Story'),
+                    hours(g.timeToBeat?.normally),
+                  ],
+                  [
+                    t('lumen.games.completionist', 'Completionist'),
+                    hours(g.timeToBeat?.completely),
                   ],
                 ]}
               />
