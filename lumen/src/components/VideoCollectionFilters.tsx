@@ -1,4 +1,5 @@
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 type FilterState = Record<
   'status' | 'year' | 'genre' | 'rating' | 'language',
@@ -52,6 +53,7 @@ export default function VideoCollectionFilters({
   onChange: (filters: FilterState) => void;
   disabled: boolean;
 }) {
+  const { t } = useLumenLocale();
   const genres = useApi<{ id: number; name: string }[]>(`/genres/${kind}`).data;
   const languages =
     useApi<{ iso_639_1: string; english_name: string }[]>('/languages').data;
@@ -60,17 +62,20 @@ export default function VideoCollectionFilters({
     [
       {
         key: 'year',
-        label: 'Release Year',
+        label: t('lumen.videoCollectionFilters.releaseYear', 'Release Year'),
         options: [
           ...Array.from({ length: currentYear - 1969 }, (_, index) =>
             textOption(String(currentYear - index))
           ),
-          { value: 'before-1970', label: 'Before 1970' },
+          {
+            value: 'before-1970',
+            label: t('lumen.videoCollectionFilters.before1970', 'Before 1970'),
+          },
         ],
       },
       {
         key: 'genre',
-        label: 'Genre',
+        label: t('lumen.videoCollectionFilters.genre', 'Genre'),
         options: (Array.isArray(genres) ? genres : []).map(({ id, name }) => ({
           value: String(id),
           label: name,
@@ -78,7 +83,10 @@ export default function VideoCollectionFilters({
       },
       {
         key: 'rating',
-        label: 'Minimum Rating',
+        label: t(
+          'lumen.videoCollectionFilters.minimumRating',
+          'Minimum Rating'
+        ),
         options: Array.from({ length: 10 }, (_, index) => ({
           value: String(index + 1),
           label: `${index + 1}+`,
@@ -86,7 +94,7 @@ export default function VideoCollectionFilters({
       },
       {
         key: 'language',
-        label: 'Language',
+        label: t('lumen.videoCollectionFilters.language', 'Language'),
         options: (Array.isArray(languages) ? languages : [])
           .map(({ iso_639_1, english_name }) => ({
             value: iso_639_1,
@@ -98,20 +106,48 @@ export default function VideoCollectionFilters({
   if (kind === 'tv') {
     fields.unshift({
       key: 'status',
-      label: 'Series Status',
+      label: t('lumen.videoCollectionFilters.seriesStatus', 'Series Status'),
       options: [
-        'Returning Series',
-        'Planned',
-        'In Production',
-        'Ended',
-        'Canceled',
-        'Pilot',
-      ].map(textOption),
+        {
+          value: 'Returning Series',
+          label: t(
+            'lumen.videoCollectionFilters.returning',
+            'Returning Series'
+          ),
+        },
+        {
+          value: 'Planned',
+          label: t('lumen.videoCollectionFilters.planned', 'Planned'),
+        },
+        {
+          value: 'In Production',
+          label: t(
+            'lumen.videoCollectionFilters.inProduction',
+            'In Production'
+          ),
+        },
+        {
+          value: 'Ended',
+          label: t('lumen.videoCollectionFilters.ended', 'Ended'),
+        },
+        {
+          value: 'Canceled',
+          label: t('lumen.videoCollectionFilters.canceled', 'Canceled'),
+        },
+        {
+          value: 'Pilot',
+          label: t('lumen.videoCollectionFilters.pilot', 'Pilot'),
+        },
+      ],
     });
   }
 
   return (
-    <div className="toolbar" role="group" aria-label="Collection Filters">
+    <div
+      className="toolbar"
+      role="group"
+      aria-label={t('lumen.videoCollectionFilters.group', 'Collection Filters')}
+    >
       {fields.map(({ key, label, options }) => (
         <label className="sel" key={key}>
           <span className="lbl">{label}</span>
@@ -122,7 +158,9 @@ export default function VideoCollectionFilters({
               onChange({ ...filters, [key]: event.target.value })
             }
           >
-            <option value="">Any</option>
+            <option value="">
+              {t('lumen.videoCollectionFilters.any', 'Any')}
+            </option>
             {options.map(({ value, label: name }) => (
               <option key={value} value={value}>
                 {name}
@@ -137,7 +175,7 @@ export default function VideoCollectionFilters({
         disabled={disabled || !Object.values(filters).some(Boolean)}
         onClick={() => onChange(emptyVideoFilters)}
       >
-        Clear Filters
+        {t('lumen.videoCollectionFilters.clear', 'Clear Filters')}
       </button>
     </div>
   );

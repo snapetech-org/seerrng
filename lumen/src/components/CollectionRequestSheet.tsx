@@ -9,6 +9,7 @@ import {
   type RequestOptions,
   type TitleResult,
 } from '../api';
+import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 import { AdvancedOptions, canChooseRequestOptions } from './detail';
 import { streamingOverrideMessage } from './requestSheet';
@@ -34,21 +35,27 @@ type Outcome = {
   overrideOptions?: RequestOptions;
 };
 
-function eligibility(part: TitleResult, is4k: boolean) {
+type EligibilityReason =
+  'unavailable' | 'blocklisted' | 'inLibrary' | 'alreadyRequested';
+
+function eligibility(
+  part: TitleResult,
+  is4k: boolean
+): EligibilityReason | undefined {
   if (
     part.mediaType !== 'movie' ||
     !Number.isSafeInteger(part.id) ||
     part.id <= 0
   )
-    return 'Unavailable';
+    return 'unavailable';
   const status = is4k ? part.mediaInfo?.status4k : part.mediaInfo?.status;
   if (
     part.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
     status === MediaStatus.BLOCKLISTED
   )
-    return 'Blocklisted';
+    return 'blocklisted';
   if (status === MediaStatus.AVAILABLE || status === MediaStatus.PARTIAL)
-    return 'In Library';
+    return 'inLibrary';
   if (
     status === MediaStatus.PROCESSING ||
     part.mediaInfo?.requests?.some(
@@ -57,7 +64,7 @@ function eligibility(part: TitleResult, is4k: boolean) {
         (request.status === 1 || request.status === 2)
     )
   )
-    return 'Already Requested';
+    return 'alreadyRequested';
 }
 
 export default function CollectionRequestSheet({
@@ -71,6 +78,17 @@ export default function CollectionRequestSheet({
   permissions?: number;
   close: (submitted: boolean) => void;
 }) {
+  const { t } = useLumenLocale();
+  const eligibilityLabel = (reason: EligibilityReason) =>
+    t(
+      `lumen.collectionRequest.eligibility.${reason}`,
+      {
+        unavailable: 'Unavailable',
+        blocklisted: 'Blocklisted',
+        inLibrary: 'In Library',
+        alreadyRequested: 'Already Requested',
+      }[reason]
+    );
   const box = useRef<HTMLDivElement>(null);
   const working = useRef(false);
   const [quality, setQuality] = useState(qualities[0]);
@@ -133,11 +151,24 @@ export default function CollectionRequestSheet({
       for (const { id, options: requestOptions } of requests) {
         if (sessionGeneration() !== session) return;
         const part = current.get(id);
-        const reason = part
-          ? eligibility(part, is4k)
-          : 'No longer in this collection';
+        const reason = part ? eligibility(part, is4k) : undefined;
         if (reason) {
-          results.push({ id, message: reason, accepted: false });
+          results.push({
+            id,
+            message: eligibilityLabel(reason),
+            accepted: false,
+          });
+          continue;
+        }
+        if (!part) {
+          results.push({
+            id,
+            message: t(
+              'lumen.collectionRequest.noLongerInCollection',
+              'No longer in this collection'
+            ),
+            accepted: false,
+          });
           continue;
         }
         try {
@@ -147,15 +178,30 @@ export default function CollectionRequestSheet({
               ? { ...requestOptions, bypassStreamingRequestPolicy: true }
               : requestOptions
           );
-          results.push({ id, message: 'Request Submitted', accepted: true });
+          results.push({
+            id,
+            message: t(
+              'lumen.collectionRequest.requestSubmitted',
+              'Request Submitted'
+            ),
+            accepted: true,
+          });
         } catch (failure) {
           const message = override
             ? undefined
             : streamingOverrideMessage(failure);
           if (message !== undefined) {
+            const visibleMessage =
+              failure instanceof ApiError &&
+              failure.code === 'STREAMING_REQUEST_POLICY_REJECTED'
+                ? t(
+                    'lumen.collectionRequest.streamingPolicyBlocked',
+                    'Available on your streaming service.'
+                  )
+                : message;
             results.push({
               id,
-              message,
+              message: visibleMessage,
               accepted: false,
               overrideOptions: requestOptions,
             });
@@ -165,8 +211,14 @@ export default function CollectionRequestSheet({
             id,
             message:
               failure instanceof ApiError && failure.status < 500
-                ? 'Request Rejected'
-                : 'Result Unconfirmed',
+                ? t(
+                    'lumen.collectionRequest.requestRejected',
+                    'Request Rejected'
+                  )
+                : t(
+                    'lumen.collectionRequest.resultUnconfirmed',
+                    'Result Unconfirmed'
+                  ),
             accepted: false,
           });
         }
@@ -180,7 +232,12 @@ export default function CollectionRequestSheet({
           : results
       );
     } catch {
-      setError('Could not verify the collection. Try again before submitting.');
+      setError(
+        t(
+          'lumen.collectionRequest.verifyFailure',
+          'Could not verify the collection. Try again before submitting.'
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -195,17 +252,19 @@ export default function CollectionRequestSheet({
         ref={box}
         role="dialog"
         aria-modal="true"
-        aria-label="Request Collection"
+        aria-label={t('lumen.collectionRequest.title', 'Request Collection')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>Request Collection</h2>
+            <h2>{t('lumen.collectionRequest.title', 'Request Collection')}</h2>
             <p className="note">{collection.name}</p>
           </header>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Quality</span>
+              <span className="lbl">
+                {t('lumen.collectionRequest.quality', 'Quality')}
+              </span>
               <select
                 aria-label="Collection Request Quality"
                 value={quality}
@@ -237,8 +296,14 @@ export default function CollectionRequestSheet({
                 }
               >
                 {targets.length > 0 && targets.length === eligible.length
-                  ? 'Clear Selection'
-                  : 'Select Eligible Movies'}
+                  ? t(
+                      'lumen.collectionRequest.clearSelection',
+                      'Clear Selection'
+                    )
+                  : t(
+                      'lumen.collectionRequest.selectEligibleMovies',
+                      'Select Eligible Movies'
+                    )}
               </button>
             )}
           </div>
@@ -254,7 +319,10 @@ export default function CollectionRequestSheet({
                     setReady(false);
                   }}
                 />{' '}
-                Choose Request Destination
+                {t(
+                  'lumen.collectionRequest.chooseDestination',
+                  'Choose Request Destination'
+                )}
               </label>
               {advanced && !busy && (
                 <AdvancedOptions
@@ -277,7 +345,12 @@ export default function CollectionRequestSheet({
             />
           )}
           {!visible.length && (
-            <p className="note">No movies match these filters.</p>
+            <p className="note">
+              {t(
+                'lumen.collectionRequest.noFilterMatches',
+                'No movies match these filters.'
+              )}
+            </p>
           )}
           <ul className="setlist">
             {visible.map((part) => {
@@ -305,7 +378,10 @@ export default function CollectionRequestSheet({
                     )}
                     {titleOf(part)}
                     {(outcome || reason) && (
-                      <small>{outcome?.message || reason}</small>
+                      <small>
+                        {outcome?.message ||
+                          (reason ? eligibilityLabel(reason) : '')}
+                      </small>
                     )}
                   </label>
                 </li>
@@ -319,15 +395,24 @@ export default function CollectionRequestSheet({
           )}
           {outcomes && (
             <p className="note" role="status">
-              {outcomes.filter(({ accepted }) => accepted).length} of{' '}
-              {outcomes.length} requests submitted.
+              {t(
+                'lumen.collectionRequest.resultSummary',
+                '{accepted} of {total} requests submitted.',
+                {
+                  accepted: outcomes.filter(({ accepted }) => accepted).length,
+                  total: outcomes.length,
+                }
+              )}
               {outcomes.some(({ accepted }) => !accepted) &&
-                ' Review the individual results and the refreshed collection before trying again.'}
+                ` ${t(
+                  'lumen.collectionRequest.resultReview',
+                  'Review the individual results and the refreshed collection before trying again.'
+                )}`}
             </p>
           )}
           <div className="pk-foot">
             <button className="btn btn-quiet" disabled={busy} onClick={dismiss}>
-              Close
+              {t('lumen.collectionRequest.close', 'Close')}
             </button>
             {permittedOverrides.length > 0 && (
               <button
@@ -336,8 +421,15 @@ export default function CollectionRequestSheet({
                 onClick={() => void submit(true)}
               >
                 {busy
-                  ? 'Submitting Requests…'
-                  : `Request Anyway (${permittedOverrides.length})`}
+                  ? t(
+                      'lumen.collectionRequest.submitting',
+                      'Submitting Requests…'
+                    )
+                  : t(
+                      'lumen.collectionRequest.requestAnyway',
+                      'Request Anyway ({count})',
+                      { count: permittedOverrides.length }
+                    )}
               </button>
             )}
             {!outcomes && (
@@ -347,8 +439,15 @@ export default function CollectionRequestSheet({
                 onClick={() => void submit()}
               >
                 {busy
-                  ? 'Submitting Requests…'
-                  : `Request Selected (${targets.length})`}
+                  ? t(
+                      'lumen.collectionRequest.submitting',
+                      'Submitting Requests…'
+                    )
+                  : t(
+                      'lumen.collectionRequest.requestSelected',
+                      'Request Selected ({count})',
+                      { count: targets.length }
+                    )}
               </button>
             )}
           </div>

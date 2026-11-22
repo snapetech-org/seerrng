@@ -275,6 +275,130 @@ test('bulk collection requests exclude blocked titles and show partial results',
   ]);
 });
 
+test('collection request sheet localizes eligibility and submission feedback', async ({
+  page,
+}, info) => {
+  const submitted: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 32 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { movie4kEnabled: false } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Collection exemple',
+          parts: [
+            { id: 20, mediaType: 'movie', title: 'Film admissible' },
+            {
+              id: 21,
+              mediaType: 'movie',
+              title: 'Film bloqué',
+              mediaInfo: { status: 6 },
+            },
+            {
+              id: 22,
+              mediaType: 'movie',
+              title: 'Film demandé',
+              mediaInfo: { status: 3 },
+            },
+            {
+              id: 23,
+              mediaType: 'movie',
+              title: 'Film en bibliothèque',
+              mediaInfo: { status: 5 },
+            },
+          ],
+        },
+      });
+    if (path === '/request' && request.method() === 'POST') {
+      const body = request.postDataJSON();
+      submitted.push(body);
+      return body.bypassStreamingRequestPolicy
+        ? route.fulfill({ status: 201, json: { id: 8 } })
+        : route.fulfill({
+            status: 403,
+            json: {
+              code: 'STREAMING_REQUEST_POLICY_REJECTED',
+              message: 'Available on your streaming service.',
+              allowOverride: true,
+            },
+          });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(`${mount}/collection/30`);
+  await page
+    .getByRole('button', { name: /Request Collection|Demander la collection/ })
+    .click();
+  const sheet = page.getByRole('dialog');
+  await page.screenshot({
+    path: info.outputPath('collection-request-sheet.png'),
+    animations: 'disabled',
+  });
+  await expect(sheet).toHaveAttribute('aria-label', 'Demander la collection');
+  const filters = sheet.getByRole('group', { name: 'Filtres de collection' });
+  await expect(
+    filters.getByRole('combobox', { name: 'Année de sortie' })
+  ).toHaveValue('');
+  await expect(filters.getByRole('combobox', { name: 'Genre' })).toHaveValue(
+    ''
+  );
+  await expect(
+    filters.getByRole('combobox', { name: 'Note minimale' })
+  ).toHaveValue('');
+  await expect(filters.getByRole('combobox', { name: 'Langue' })).toHaveValue(
+    ''
+  );
+  await expect(
+    filters.getByRole('button', { name: 'Effacer les filtres' })
+  ).toBeDisabled();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Film bloqué Bloqué' })
+  ).toBeDisabled();
+  await expect(
+    sheet.getByRole('checkbox', { name: 'Film demandé Déjà demandé' })
+  ).toBeDisabled();
+  await expect(
+    sheet.getByRole('checkbox', {
+      name: 'Film en bibliothèque Dans la bibliothèque',
+    })
+  ).toBeDisabled();
+  await sheet
+    .getByRole('button', { name: 'Sélectionner les films admissibles' })
+    .click();
+  await sheet
+    .getByRole('button', { name: 'Demander la sélection (1)' })
+    .click();
+  await expect(
+    sheet.getByText('Disponible sur votre service de streaming.', {
+      exact: true,
+    })
+  ).toBeVisible();
+  await sheet.getByRole('button', { name: 'Demander quand même (1)' }).click();
+  await expect(sheet.getByText('Demandes envoyées : 1/1.')).toBeVisible();
+  await expect(
+    sheet.getByText('Demande envoyée', { exact: true })
+  ).toBeVisible();
+  expect(submitted).toEqual([
+    { mediaId: 20, mediaType: 'movie', is4k: false },
+    {
+      mediaId: 20,
+      mediaType: 'movie',
+      is4k: false,
+      bypassStreamingRequestPolicy: true,
+    },
+  ]);
+});
+
 test('collection playback uses ordered internal IDs, skips shared copies, and opens a safe playlist link', async ({
   page,
 }) => {
