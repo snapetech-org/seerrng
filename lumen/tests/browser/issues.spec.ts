@@ -63,9 +63,29 @@ for (const permissions of [4194304, 2097152, 32]) {
       expect(reads).toBe(0);
       return;
     }
+    await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+    const captureDir = process.env.LUMEN_CAPTURE_DIR;
+    if (
+      captureDir &&
+      permissions === 4194304 &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    )
+      await page.screenshot({
+        path: `${captureDir}/issues-list-${test.info().project.name}.png`,
+        fullPage: true,
+      });
     await page.getByRole('link', { name: 'Video #7' }).click();
     await expect(page.getByText('Season 2', { exact: true })).toBeVisible();
     await expect(page.getByText('Season 3 · Episodes 4, 5')).toBeVisible();
+    if (
+      captureDir &&
+      permissions === 4194304 &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    )
+      await page.screenshot({
+        path: `${captureDir}/issue-detail-${test.info().project.name}.png`,
+        fullPage: true,
+      });
     const resolve = page.getByRole('button', { name: 'Resolve Issue' });
     if (permissions === 2097152) {
       await expect(resolve).toHaveCount(0);
@@ -75,7 +95,21 @@ for (const permissions of [4194304, 2097152, 32]) {
       return;
     }
     await page.getByRole('textbox', { name: 'Comment' }).fill('Tested again');
-    await page.getByRole('button', { name: 'Add Comment' }).click();
+    const addComment = page.getByRole('button', { name: 'Add Comment' });
+    await addComment.scrollIntoViewIfNeeded();
+    if (['iphone', 'android'].includes(test.info().project.name)) {
+      const tabs = page.locator('.tabbar');
+      const buttonBox = await addComment.boundingBox();
+      const tabsBox = await tabs.boundingBox();
+      expect(buttonBox).not.toBeNull();
+      expect(tabsBox).not.toBeNull();
+      expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(tabsBox!.y);
+      if (captureDir && test.info().project.name === 'iphone')
+        await page.screenshot({
+          path: `${captureDir}/issue-comment-iphone.png`,
+        });
+    }
+    await addComment.click();
     await expect(page.getByText('Tested again')).toBeVisible();
     await resolve.click();
     await expect(

@@ -60,6 +60,16 @@ for (const permissions of [32, 1073741824, 268435456]) {
       return;
     }
     await expect(page.getByText('Example Book', { exact: true })).toBeVisible();
+    const captureDir = process.env.LUMEN_CAPTURE_DIR;
+    if (
+      captureDir &&
+      permissions === 268435456 &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    )
+      await page.screenshot({
+        path: `${captureDir}/blocklist-list-${test.info().project.name}.png`,
+        fullPage: true,
+      });
     await page.getByLabel('Media Type', { exact: true }).selectOption('book');
     await expect.poll(() => queries.at(-1)?.get('mediaType')).toBe('book');
     const remove = page.getByRole('button', {
