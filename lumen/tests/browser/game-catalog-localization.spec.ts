@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_GAME_CATALOG_LOCALE ?? ''
@@ -255,4 +255,94 @@ test('Game detail request controls follow the saved locale', async ({
   await expect(
     page.getByRole('button', { name: detailCopy.request })
   ).toBeVisible();
+});
+
+const consoleCopy = {
+  en: {
+    label: 'Console',
+    patches: 'Translations and Hacks for This Game',
+    unsupported:
+      'This game isn’t listed for any modern console this server supports.',
+  },
+  fr: {
+    label: 'Console',
+    patches: 'Traductions et modifications pour ce jeu',
+    unsupported:
+      'Ce jeu ne figure dans aucune console moderne prise en charge par ce serveur.',
+  },
+  ar: {
+    label: 'جهاز الألعاب',
+    patches: 'ترجمات وتعديلات هذه اللعبة',
+    unsupported: 'هذه اللعبة غير مدرجة لأي جهاز ألعاب حديث يدعمه هذا الخادم.',
+  },
+}[locale];
+
+async function openConsoleGame(
+  page: Page,
+  category: 'retro' | 'modern',
+  systems: { slug: string; name: string; group: 'retro' | 'modern' }[]
+) {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Player', permissions: 2 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          softwareEnabled: true,
+          romarrEnabled: true,
+          enabledMediaCategories: { game: true, retro: true, modern: true },
+        },
+      });
+    if (path.startsWith('/request/software/catalog/games/'))
+      return route.fulfill({
+        json: {
+          game: {
+            title: 'Fixture Console Game',
+            catalogId: '42',
+            catalogProvider: 'igdb',
+            coverUrl: null,
+            releaseDate: '1992-01-01',
+            genres: [],
+            platforms: ['SNES'],
+            emulationSystems: systems,
+          },
+        },
+      });
+    return route.fulfill({ json: { results: [] } });
+  });
+  await page.goto(`/game/${category}/42`);
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Console Game' })
+  ).toBeVisible();
+}
+
+test('Console game request controls follow the saved locale', async ({
+  page,
+}) => {
+  await openConsoleGame(page, 'retro', [
+    { slug: 'snes', name: 'Super Nintendo', group: 'retro' },
+  ]);
+  await expect(page.getByLabel(consoleCopy.label)).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: consoleCopy.patches })
+  ).toHaveAttribute('href', /\/patches\?/);
+  await expect(
+    page.getByRole('button', { name: detailCopy.request })
+  ).toBeVisible();
+});
+
+test('Unsupported console state follows the saved locale', async ({ page }) => {
+  await openConsoleGame(page, 'modern', []);
+  await expect(page.getByText(consoleCopy.unsupported)).toBeVisible();
 });

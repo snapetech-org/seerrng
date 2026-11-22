@@ -6729,8 +6729,10 @@ locales. Twelve additional cases cover these form controls across the same
 four viewports. Request payloads, permission checks, and provider error handling
 remain unchanged. French baseline and candidate desktop and iPhone captures
 were compared; only the selector prompts and request button change, while the
-existing mobile action bar remains intact. Console-specific detail copy remains
-a parity gap. Evidence is retained at
+existing mobile action bar remains intact. A further 24 browser cases cover
+supported retro-console selection and its patch link, plus the unsupported
+modern-console message, across English, French, and Arabic on desktop, iPhone,
+Android, and tablet. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-baseline/`
 and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-20261122/detail-candidate/`.
