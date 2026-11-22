@@ -6036,3 +6036,14 @@ label wrapping, RTL, and overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-associations-20261121/book-series-baseline/`.
 Bundled Express mount, live provider behavior, and independent linguistic
 review remain open.
+
+### Video credits localization
+
+Movie and series credit routes now follow the saved English, French, or Arabic
+locale for cast/crew headings, back and alternate-credit navigation, invalid
+links, loading, retry context, and empty results. The existing detail API,
+identity validation, and route behavior are unchanged. Twelve browser cases
+passed across desktop, iPhone, Android, and tablet, including cast-to-crew
+navigation, RTL direction, and horizontal overflow checks. Bundled Express
+mount, live provider behavior, matched baseline comparison, and independent
+linguistic review remain open.
