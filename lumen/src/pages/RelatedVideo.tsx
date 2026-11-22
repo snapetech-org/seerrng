@@ -3,6 +3,7 @@ import type { TitleResult } from '../api';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useApi, usePaged } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 export function RelatedVideo({
   media,
@@ -11,16 +12,17 @@ export function RelatedVideo({
   media: 'movie' | 'tv';
   relation: 'recommendations' | 'similar';
 }) {
+  const { t } = useLumenLocale();
   const { id } = useParams();
   const detailPath = `/${media}/${id}`;
   const title = useApi<TitleResult>(detailPath).data;
   const name = title?.title ?? title?.name;
   const heading =
     relation === 'recommendations'
-      ? 'Recommendations'
+      ? t('lumen.relatedVideo.recommendations', 'Recommendations')
       : media === 'movie'
-        ? 'Similar Movies'
-        : 'Similar Series';
+        ? t('lumen.relatedVideo.similarMovies', 'Similar Movies')
+        : t('lumen.relatedVideo.similarSeries', 'Similar Series');
   const list = usePaged<TitleResult>(`${detailPath}/${relation}`);
   const empty = list.items.length === 0;
 
@@ -29,21 +31,21 @@ export function RelatedVideo({
       <ExtraHeader title={heading} sub={name}>
         <div className="toolbar">
           <Link className="chip" to={detailPath}>
-            Back to Details
+            {t('lumen.relatedVideo.backToDetails', 'Back to Details')}
           </Link>
         </div>
       </ExtraHeader>
       {empty && (
         <ServiceNote
           error={list.error}
-          what={heading.toLowerCase()}
+          what={t('lumen.relatedVideo.what', 'related titles')}
           retry={list.retry}
         />
       )}
       {empty && list.loading && <GridSkeleton />}
       {empty && list.done && !list.error && (
         <div className="empty">
-          <b>No titles found</b>
+          <b>{t('lumen.relatedVideo.empty', 'No titles found')}</b>
         </div>
       )}
       <div className="grid">

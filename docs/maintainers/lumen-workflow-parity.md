@@ -6047,3 +6047,13 @@ passed across desktop, iPhone, Android, and tablet, including cast-to-crew
 navigation, RTL direction, and horizontal overflow checks. Bundled Express
 mount, live provider behavior, matched baseline comparison, and independent
 linguistic review remain open.
+
+### Related movie and series pages localization
+
+Recommendation and similar-title pages follow the saved English, French, or
+Arabic locale for page headings, return navigation, error context, and empty
+results. URL state, viewer-filtered API reads, media identity, and pagination
+remain unchanged. Twelve locale checks and the existing related-video paging,
+identity, and retry test passed across desktop, iPhone, Android, and tablet
+(16 cases). Bundled Express mount, live metadata, matched visual review, and
+independent linguistic review remain open.
