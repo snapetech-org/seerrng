@@ -93,16 +93,36 @@ interface Row {
 
 // Everyone tab: SeerrNG's request filters, and how many requests load at a time
 const EVERYONE_FILTERS = [
-  ['all', 'All', 'total'],
-  ['pending', 'Waiting', 'pending'],
-  ['processing', 'Downloading', 'processing'],
-  ['incomplete', 'Incomplete', 'incomplete'],
-  ['attention', 'Needs attention', 'attention'],
-  ['unavailable', 'Unavailable', 'unavailable'],
-  ['failed', 'Failed', 'failed'],
-  ['completed', 'Completed', 'completed'],
-  ['available', 'Available', 'available'],
-  ['software', 'Software', 'software'],
+  ['all', 'All', 'total', 'lumen.requests.filter.all'],
+  ['pending', 'Waiting', 'pending', 'lumen.requests.filter.pending'],
+  [
+    'processing',
+    'Downloading',
+    'processing',
+    'lumen.requests.filter.processing',
+  ],
+  [
+    'incomplete',
+    'Incomplete',
+    'incomplete',
+    'lumen.requests.filter.incomplete',
+  ],
+  [
+    'attention',
+    'Needs attention',
+    'attention',
+    'lumen.requests.filter.attention',
+  ],
+  [
+    'unavailable',
+    'Unavailable',
+    'unavailable',
+    'lumen.requests.filter.unavailable',
+  ],
+  ['failed', 'Failed', 'failed', 'lumen.requests.filter.failed'],
+  ['completed', 'Completed', 'completed', 'lumen.requests.filter.completed'],
+  ['available', 'Available', 'available', 'lumen.requests.filter.available'],
+  ['software', 'Software', 'software', 'lumen.requests.filter.software'],
 ] as const;
 const PAGE = 20;
 
@@ -2085,14 +2105,14 @@ export default function Requests() {
           role="group"
           aria-label={t('lumen.requests.page.whichRequests', 'Which requests')}
         >
-          {EVERYONE_FILTERS.map(([v, t, key]) => (
+          {EVERYONE_FILTERS.map(([v, label, key, translationKey]) => (
             <button
               key={v}
               className="chip"
               aria-pressed={show === v}
               onClick={() => setRequestFilter('show', v)}
             >
-              {t}
+              {t(translationKey, label)}
               {!mediaQuery && counts?.[key] != null && (
                 <span className="n">{counts[key]}</span>
               )}

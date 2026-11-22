@@ -6,6 +6,8 @@ const locale = ['en', 'fr', 'ar'].includes(
   ? (process.env.LUMEN_REQUESTS_LOCALE as 'en' | 'fr' | 'ar')
   : 'en';
 const candidate = process.env.LUMEN_CAPTURE_MODE !== 'baseline';
+const filtersBaseline = process.env.LUMEN_REQUEST_FILTERS_BASELINE === '1';
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const copy = {
   en: {
     title: 'Requests',
@@ -15,6 +17,19 @@ const copy = {
     ready: 'Ready',
     all: 'All',
     everyone: 'Everyone',
+    whichRequests: 'Which requests',
+    requestFilters: [
+      'All',
+      'Waiting',
+      'Downloading',
+      'Incomplete',
+      'Needs attention',
+      'Unavailable',
+      'Failed',
+      'Completed',
+      'Available',
+      'Software',
+    ],
     loadFailed: 'Couldn’t load requests',
     retry: 'Retry',
     emptyTitle: 'No requests yet',
@@ -46,6 +61,19 @@ const copy = {
     ready: 'Prêtes',
     all: 'Toutes',
     everyone: 'Tout le monde',
+    whichRequests: 'Quelles demandes',
+    requestFilters: [
+      'Toutes',
+      'En attente',
+      'Téléchargement',
+      'Incomplètes',
+      'À traiter',
+      'Indisponibles',
+      'Échec',
+      'Terminées',
+      'Disponibles',
+      'Logiciels',
+    ],
     loadFailed: 'Impossible de charger les demandes',
     retry: 'Réessayer',
     emptyTitle: 'Aucune demande pour le moment',
@@ -77,6 +105,19 @@ const copy = {
     ready: 'جاهز',
     all: 'الكل',
     everyone: 'الجميع',
+    whichRequests: 'الطلبات المعروضة',
+    requestFilters: [
+      'الكل',
+      'قيد الانتظار',
+      'قيد التنزيل',
+      'غير مكتملة',
+      'يتطلب الانتباه',
+      'غير متاحة',
+      'فشل',
+      'مكتملة',
+      'متاحة',
+      'البرامج',
+    ],
     loadFailed: 'تعذر تحميل الطلبات',
     retry: 'إعادة المحاولة',
     emptyTitle: 'لا توجد طلبات بعد',
@@ -139,7 +180,7 @@ test('manager request filters follow the saved locale and keep URL behavior', as
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/requests?tab=everyone&mediaType=book');
+  await page.goto(`${mount}/requests?tab=everyone&mediaType=book`);
   const text = {
     ...copy[locale],
     ...(!candidate
@@ -158,6 +199,9 @@ test('manager request filters follow the saved locale and keep URL behavior', as
         }
       : {}),
   };
+  const expectedRequestFilters = filtersBaseline
+    ? copy.en.requestFilters
+    : copy[locale].requestFilters;
   await expect(
     page.getByRole('heading', { name: text.title, exact: true })
   ).toBeVisible();
@@ -168,6 +212,14 @@ test('manager request filters follow the saved locale and keep URL behavior', as
   for (const label of [text.active, text.ready, text.all, text.everyone]) {
     await expect(
       scope.getByRole('button', { name: new RegExp(label) })
+    ).toBeVisible();
+  }
+  const requestFilters = page.getByRole('group', {
+    name: text.whichRequests,
+  });
+  for (const label of expectedRequestFilters) {
+    await expect(
+      requestFilters.getByRole('button', { name: label, exact: true })
     ).toBeVisible();
   }
   const filters = page.getByRole('group', { name: text.group });

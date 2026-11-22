@@ -6583,3 +6583,20 @@ Viewport overflow checks pass for the tested locales and layouts. Live
 request-list behavior and independent linguistic review remain unverified.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/`.
+
+### Request lifecycle filter localization
+
+The manager's ten Requests lifecycle filters now follow the saved English,
+French, or Arabic locale, including the All, Waiting, Downloading, Incomplete,
+Needs attention, Unavailable, Failed, Completed, Available, and Software
+labels. Filter values, counts, query parameters, and manager access checks are
+unchanged.
+
+Twelve standalone browser cases pass across the three locales and desktop,
+iPhone, Android, and tablet. Matched French desktop and iPhone baseline and
+candidate captures were inspected; the translated filters wrap naturally in
+the existing chip layout, with no horizontal overflow. Live filter results and
+independent linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/filters-baseline/`
+and
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-paging-localization-20261122/filters-candidate/`.
