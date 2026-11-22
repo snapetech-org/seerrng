@@ -55,6 +55,7 @@ import {
   type Magazine,
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 
@@ -1023,6 +1024,7 @@ function MagazineRequestSheet({
   onClose: () => void;
   onRequested: () => void;
 }) {
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const toast = useToast();
   const [sending, setSending] = useState(false);
@@ -1052,13 +1054,19 @@ function MagazineRequestSheet({
     media?.requests?.some(({ status }) => status === 1 || status === 2);
   const unavailable = existing.data?.requestable === false;
   const requestStatus = available
-    ? 'Already in the library'
+    ? t('lumen.magazineRequest.alreadyAvailable', 'Already in the Library')
     : blocked
-      ? 'This magazine is blocklisted'
+      ? t('lumen.magazineRequest.blocklisted', 'This Magazine Is Blocklisted')
       : covered
-        ? 'This magazine has already been requested'
+        ? t(
+            'lumen.magazineRequest.alreadyRequested',
+            'This Magazine Has Already Been Requested'
+          )
         : unavailable
-          ? 'This magazine is unavailable for requests'
+          ? t(
+              'lumen.magazineRequest.unavailable',
+              'This Magazine Is Unavailable for Requests'
+            )
           : undefined;
   const magazineQuota = quota.data?.magazine;
   // Admin, Manage Requests, Auto Approve, or Auto Approve Magazines.
@@ -1069,26 +1077,36 @@ function MagazineRequestSheet({
   const advanced = canChooseRequestOptions(permissions);
   const [serviceId, setServiceId] = useState<number>();
   const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
-    advanced ? '/service/magazine' : null,
+    '/service/magazine',
     { currentPathOnly: true }
   );
   const selectedService =
     advanced && services.data?.some(({ id }) => id === serviceId)
       ? serviceId
       : undefined;
+  const selectedServiceDetails = services.data?.find(
+    ({ id }) => id === selectedService
+  );
+  const defaultService = services.data?.find(({ isDefault }) => isDefault);
+  const serviceUnavailable = !!services.data && services.data.length === 0;
+  const canSelectService = advanced && (services.data?.length ?? 0) > 1;
+  const displayedStatus = requestStatus
+    ? requestStatus
+    : t('lumen.magazineRequest.ready', 'Ready to Request');
   return (
     <ConfirmSheet
-      title="Request Magazine"
+      title={t('lumen.magazineRequest.title', 'Request Magazine')}
       body={requestTitle}
-      confirm="Send Request"
-      cancel="Cancel"
+      confirm={t('lumen.magazineRequest.send', 'Send Request')}
+      cancel={t('lumen.magazineRequest.cancel', 'Cancel')}
       busy={sending}
       confirmDisabled={
         (!quota.data && !quota.error) ||
         (!existing.data && !existing.error) ||
+        (!services.data && !services.error) ||
         !!requestStatus ||
         magazineQuota?.restricted ||
-        (advanced && services.data?.length === 0)
+        serviceUnavailable
       }
       onClose={() => {
         if (!activeRequest.current) onClose();
@@ -1104,46 +1122,88 @@ function MagazineRequestSheet({
             selectedService
           );
           if ((result as { status?: number } | null)?.status === 4)
-            throw new Error('The magazine request failed.');
+            throw new Error(
+              t(
+                'lumen.magazineRequest.backendFailure',
+                'The Magazine Request Failed.'
+              )
+            );
           onRequested();
-          toast('Magazine requested');
+          toast(t('lumen.magazineRequest.requested', 'Magazine Requested'));
         } catch (error) {
-          toast(friendlyError(error, 'Request failed'));
+          toast(
+            friendlyError(
+              error,
+              t('lumen.magazineRequest.requestFailure', 'Request Failed')
+            )
+          );
         } finally {
           activeRequest.current = false;
           setSending(false);
         }
       }}
     >
-      {requestStatus ? (
-        <p className="sub" role="status">
-          {requestStatus}
-        </p>
-      ) : (
-        <p className="sub">
-          {autoApprove ? 'Automatically approved' : 'Approval required'}
-        </p>
-      )}
+      <Facts
+        rows={[
+          [
+            t('lumen.magazineRequest.latestIssue', 'Latest Issue'),
+            existing.data?.latestIssue ??
+              t('lumen.magazineRequest.notAvailable', 'Not Available'),
+          ],
+          [t('lumen.magazineRequest.status', 'Status'), displayedStatus],
+          [
+            t('lumen.magazineRequest.service', 'Service'),
+            selectedServiceDetails?.name ??
+              defaultService?.name ??
+              t('lumen.magazineRequest.notAvailable', 'Not Available'),
+          ],
+          [
+            t('lumen.magazineRequest.approval', 'Approval'),
+            autoApprove
+              ? t(
+                  'lumen.magazineRequest.autoApproved',
+                  'Automatically Approved'
+                )
+              : t(
+                  'lumen.magazineRequest.approvalRequired',
+                  'Approval Required'
+                ),
+          ],
+        ]}
+      />
       {!!magazineQuota?.limit && (
         <p
           className="sub"
           role={magazineQuota.restricted ? 'status' : undefined}
         >
           {magazineQuota.restricted
-            ? 'Magazine request quota reached.'
-            : `${magazineQuota.remaining ?? 0} of ${magazineQuota.limit} magazine requests remaining.`}
-          {!!magazineQuota.days && ` Quota period: ${magazineQuota.days} days.`}
+            ? t(
+                'lumen.magazineRequest.quotaReached',
+                'Magazine Request Quota Reached.'
+              )
+            : t(
+                'lumen.magazineRequest.quotaRemaining',
+                '{remaining} of {limit} magazine requests remaining.',
+                {
+                  remaining: magazineQuota.remaining ?? 0,
+                  limit: magazineQuota.limit,
+                }
+              )}
+          {!!magazineQuota.days &&
+            ` ${t('lumen.magazineRequest.quotaPeriod', 'Quota Period: {days} Days.', { days: magazineQuota.days })}`}
         </p>
       )}
       {magazineQuota?.restricted && (
         <button className="chip" type="button" onClick={quota.reload}>
-          Recheck Quota
+          {t('lumen.magazineRequest.recheckQuota', 'Recheck Quota')}
         </button>
       )}
-      {advanced && !!services.data?.length && (
+      {canSelectService && services.data && (
         <div className="toolbar">
           <label className="sel">
-            <span className="lbl">Magazine Service</span>
+            <span className="lbl">
+              {t('lumen.magazineRequest.service', 'Service')}
+            </span>
             <select
               value={selectedService ?? ''}
               disabled={sending}
@@ -1153,7 +1213,17 @@ function MagazineRequestSheet({
                 )
               }
             >
-              <option value="">Default Service</option>
+              <option value="">
+                {defaultService
+                  ? t(
+                      'lumen.magazineRequest.defaultService',
+                      'Default ({name})',
+                      {
+                        name: defaultService.name,
+                      }
+                    )
+                  : t('lumen.magazineRequest.notAvailable', 'Not Available')}
+              </option>
               {services.data.map(({ id, name, isDefault }) => (
                 <option key={id} value={id}>
                   {name}
@@ -1164,8 +1234,13 @@ function MagazineRequestSheet({
           </label>
         </div>
       )}
-      {advanced && services.data?.length === 0 && (
-        <p role="status">No magazine service is configured.</p>
+      {serviceUnavailable && (
+        <p role="status">
+          {t(
+            'lumen.magazineRequest.noService',
+            'No magazine service is configured. Magazine requests are unavailable.'
+          )}
+        </p>
       )}
     </ConfirmSheet>
   );

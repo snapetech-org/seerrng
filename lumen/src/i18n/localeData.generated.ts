@@ -3879,6 +3879,32 @@ export const localeData = [
       'lumen.login.useQuickConnect': 'استخدام Quick Connect',
       'lumen.login.useServerInstead': 'استخدام حساب {serverName}',
       'lumen.login.username': 'اسم المستخدم',
+      'lumen.magazineRequest.alreadyAvailable': 'موجود بالفعل في المكتبة',
+      'lumen.magazineRequest.alreadyRequested': 'تم طلب هذه المجلة بالفعل',
+      'lumen.magazineRequest.approval': 'الموافقة',
+      'lumen.magazineRequest.approvalRequired': 'الموافقة مطلوبة',
+      'lumen.magazineRequest.autoApproved': 'موافقة تلقائية',
+      'lumen.magazineRequest.backendFailure': 'فشل طلب المجلة.',
+      'lumen.magazineRequest.blocklisted': 'هذه المجلة محظورة',
+      'lumen.magazineRequest.cancel': 'إلغاء',
+      'lumen.magazineRequest.defaultService': 'الافتراضي ({name})',
+      'lumen.magazineRequest.latestIssue': 'أحدث عدد',
+      'lumen.magazineRequest.noService':
+        'لم يتم إعداد خدمة للمجلات. طلبات المجلات غير متاحة.',
+      'lumen.magazineRequest.notAvailable': 'غير متاح',
+      'lumen.magazineRequest.quotaPeriod': 'فترة الحصة: {days} يومًا.',
+      'lumen.magazineRequest.quotaReached': 'تم بلوغ حد طلب المجلات.',
+      'lumen.magazineRequest.quotaRemaining':
+        'المتبقي {remaining} من أصل {limit} من طلبات المجلات.',
+      'lumen.magazineRequest.ready': 'جاهز للطلب',
+      'lumen.magazineRequest.recheckQuota': 'إعادة التحقق من الحصة',
+      'lumen.magazineRequest.requestFailure': 'فشل الطلب',
+      'lumen.magazineRequest.requested': 'تم طلب المجلة',
+      'lumen.magazineRequest.send': 'إرسال الطلب',
+      'lumen.magazineRequest.service': 'الخدمة',
+      'lumen.magazineRequest.status': 'الحالة',
+      'lumen.magazineRequest.title': 'طلب مجلة',
+      'lumen.magazineRequest.unavailable': 'لا يمكن طلب هذه المجلة',
       'lumen.managedEpisodeQueue.confirmBody':
         'ينطبق هذا على طلبات التلفاز التفاعلية الحالية والمستقبلية. تظل الحلقات المطلوبة بالفعل كما هي.',
       'lumen.managedEpisodeQueue.confirmTitle':
@@ -13420,6 +13446,34 @@ export const localeData = [
       'lumen.login.useQuickConnect': 'Use Quick Connect Instead',
       'lumen.login.useServerInstead': 'Use Your {serverName} Account Instead',
       'lumen.login.username': 'Username',
+      'lumen.magazineRequest.alreadyAvailable': 'Already in the Library',
+      'lumen.magazineRequest.alreadyRequested':
+        'This Magazine Has Already Been Requested',
+      'lumen.magazineRequest.approval': 'Approval',
+      'lumen.magazineRequest.approvalRequired': 'Approval Required',
+      'lumen.magazineRequest.autoApproved': 'Automatically Approved',
+      'lumen.magazineRequest.backendFailure': 'The Magazine Request Failed.',
+      'lumen.magazineRequest.blocklisted': 'This Magazine Is Blocklisted',
+      'lumen.magazineRequest.cancel': 'Cancel',
+      'lumen.magazineRequest.defaultService': 'Default ({name})',
+      'lumen.magazineRequest.latestIssue': 'Latest Issue',
+      'lumen.magazineRequest.noService':
+        'No magazine service is configured. Magazine requests are unavailable.',
+      'lumen.magazineRequest.notAvailable': 'Not Available',
+      'lumen.magazineRequest.quotaPeriod': 'Quota Period: {days} Days.',
+      'lumen.magazineRequest.quotaReached': 'Magazine Request Quota Reached.',
+      'lumen.magazineRequest.quotaRemaining':
+        '{remaining} of {limit} magazine requests remaining.',
+      'lumen.magazineRequest.ready': 'Ready to Request',
+      'lumen.magazineRequest.recheckQuota': 'Recheck Quota',
+      'lumen.magazineRequest.requestFailure': 'Request Failed',
+      'lumen.magazineRequest.requested': 'Magazine Requested',
+      'lumen.magazineRequest.send': 'Send Request',
+      'lumen.magazineRequest.service': 'Service',
+      'lumen.magazineRequest.status': 'Status',
+      'lumen.magazineRequest.title': 'Request Magazine',
+      'lumen.magazineRequest.unavailable':
+        'This Magazine Is Unavailable for Requests',
       'lumen.managedEpisodeQueue.confirmBody':
         'This applies to existing and future interactive TV requests. Episodes already requested stay in place.',
       'lumen.managedEpisodeQueue.confirmTitle':
@@ -23587,6 +23641,36 @@ export const localeData = [
       'lumen.login.useQuickConnect': 'Utiliser Quick Connect',
       'lumen.login.useServerInstead': 'Utiliser votre compte {serverName}',
       'lumen.login.username': 'Nom d’utilisateur',
+      'lumen.magazineRequest.alreadyAvailable': 'Déjà dans la bibliothèque',
+      'lumen.magazineRequest.alreadyRequested':
+        'Ce magazine a déjà été demandé',
+      'lumen.magazineRequest.approval': 'Approbation',
+      'lumen.magazineRequest.approvalRequired': 'Approbation requise',
+      'lumen.magazineRequest.autoApproved': 'Approbation automatique',
+      'lumen.magazineRequest.backendFailure':
+        'La demande de magazine a échoué.',
+      'lumen.magazineRequest.blocklisted': 'Ce magazine est bloqué',
+      'lumen.magazineRequest.cancel': 'Annuler',
+      'lumen.magazineRequest.defaultService': 'Par défaut ({name})',
+      'lumen.magazineRequest.latestIssue': 'Dernier numéro',
+      'lumen.magazineRequest.noService':
+        'Aucun service de magazines n’est configuré. Les demandes de magazines sont indisponibles.',
+      'lumen.magazineRequest.notAvailable': 'Non disponible',
+      'lumen.magazineRequest.quotaPeriod': 'Période de quota : {days} jours.',
+      'lumen.magazineRequest.quotaReached':
+        'Quota de demandes de magazines atteint.',
+      'lumen.magazineRequest.quotaRemaining':
+        '{remaining} demande(s) de magazine restante(s) sur {limit}.',
+      'lumen.magazineRequest.ready': 'Prêt à être demandé',
+      'lumen.magazineRequest.recheckQuota': 'Vérifier à nouveau le quota',
+      'lumen.magazineRequest.requestFailure': 'Échec de la demande',
+      'lumen.magazineRequest.requested': 'Magazine demandé',
+      'lumen.magazineRequest.send': 'Envoyer la demande',
+      'lumen.magazineRequest.service': 'Service',
+      'lumen.magazineRequest.status': 'État',
+      'lumen.magazineRequest.title': 'Demander un magazine',
+      'lumen.magazineRequest.unavailable':
+        'Ce magazine ne peut pas être demandé',
       'lumen.managedEpisodeQueue.confirmBody':
         'Cela s’applique aux demandes TV interactives existantes et futures. Les épisodes déjà demandés restent inchangés.',
       'lumen.managedEpisodeQueue.confirmTitle':

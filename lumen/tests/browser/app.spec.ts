@@ -9888,9 +9888,9 @@ for (const { advanced, detail } of [
     await request.click();
     const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
     await expect(sheet).toContainText('Unlisted');
-    await expect(sheet).toContainText('Approval required');
+    await expect(sheet).toContainText(/Approval required/i);
     await expect(
-      sheet.getByText('Magazine request quota reached.', { exact: false })
+      sheet.getByText(/Magazine request quota reached\./i)
     ).toBeVisible();
     await expect(
       sheet.getByRole('button', { name: 'Send Request' })
@@ -9901,7 +9901,7 @@ for (const { advanced, detail } of [
     await request.click();
     await sheet.getByRole('button', { name: 'Recheck Quota' }).click();
     await expect(sheet).toContainText('2 of 3 magazine requests remaining.');
-    const service = sheet.getByRole('combobox', { name: 'Magazine Service' });
+    const service = sheet.getByRole('combobox', { name: 'Service' });
     if (advanced) await service.selectOption('7');
     else await expect(service).toHaveCount(0);
     await sheet.getByRole('button', { name: 'Send Request' }).click();
@@ -9918,7 +9918,7 @@ for (const { advanced, detail } of [
         ...(advanced ? { serverId: 7 } : {}),
       },
     ]);
-    expect(serviceReads > 0).toBe(advanced);
+    expect(serviceReads).toBeGreaterThan(0);
   });
 }
 
@@ -9950,9 +9950,9 @@ test('magazine discovery prevents duplicate title requests', async ({
   await page.goto('/magazines?query=Existing');
   await page.getByRole('button', { name: 'Request “Existing”' }).click();
   const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
-  await expect(sheet.getByRole('status')).toHaveText(
-    'This magazine has already been requested'
-  );
+  await expect(
+    sheet.getByText('This Magazine Has Already Been Requested', { exact: true })
+  ).toBeVisible();
   await expect(
     sheet.getByRole('button', { name: 'Send Request' })
   ).toBeDisabled();

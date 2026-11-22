@@ -23,6 +23,25 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Translate remaining account subroutes and fields; finish failure recovery and role/state matrices; verify real authorization, provider persistence/readback, and native-matched visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
+### Magazine request sheet parity
+
+The Lumen magazine request sheet now shows the latest issue, current request
+eligibility/status, effective magazine service, and approval requirement before
+submission. It loads configured magazine services for all requesters, permits
+destination choice only to eligible users when multiple services exist, and
+blocks submission when no magazine service is configured. Existing request
+permissions, selected destination behavior, and request payload are preserved.
+The sheet's request feedback and controls follow English, French, and Arabic.
+
+Sixteen browser cases pass across desktop, iPhone, Android, and tablet. They
+cover all three locales, default and alternate service selection and submitted
+identity, and no-service blocking. Existing magazine request regression cases
+are also required for final acceptance. Matched baseline/candidate desktop and
+iPhone screenshots show the taller content within the existing sheet surface
+and spacing. Fixtures do not verify live magazine provider data or submission;
+independent language review remains unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-magazine-request-parity-20261122/`.
+
 ### Global Search localization
 
 Global Search now localizes its category scopes, search prompts, sort controls,
