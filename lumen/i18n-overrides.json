@@ -2,6 +2,7 @@
   "en": {
     "lumen.nav.administration": "Administration",
     "lumen.nav.lumenSettings": "Lumen Settings",
+    "lumen.nav.pendingRequests": "Pending requests: {count}",
     "lumen.nav.seerrAdministration": "SeerrNG Administration",
     "lumen.nav.signedIn": "Signed in",
     "lumen.status.queued": "Queued",
@@ -4447,6 +4448,7 @@
     "components.Layout.Sidebar.watchSessions": "Séances de visionnage",
     "lumen.nav.administration": "Administration",
     "lumen.nav.lumenSettings": "Paramètres de Lumen",
+    "lumen.nav.pendingRequests": "Demandes en attente : {count}",
     "lumen.nav.seerrAdministration": "Administration de SeerrNG",
     "lumen.nav.signedIn": "Connecté",
     "lumen.status.queued": "En attente de téléchargement",
@@ -8990,6 +8992,7 @@
     "components.Layout.Sidebar.watchSessions": "جلسات المشاهدة",
     "lumen.nav.administration": "الإدارة",
     "lumen.nav.lumenSettings": "إعدادات Lumen",
+    "lumen.nav.pendingRequests": "الطلبات المعلّقة: {count}",
     "lumen.nav.seerrAdministration": "إدارة SeerrNG",
     "lumen.nav.signedIn": "تم تسجيل الدخول",
     "lumen.status.queued": "في قائمة الانتظار",

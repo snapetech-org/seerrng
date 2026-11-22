@@ -414,7 +414,10 @@ export default function Shell({ children }: { children: ReactNode }) {
   return (
     <>
       <div className="app">
-        <nav className="side" aria-label="Main">
+        <nav
+          className="side"
+          aria-label={t('i18n.primaryNavigation', 'Main navigation')}
+        >
           <Link
             className="brand"
             to="/"
@@ -480,7 +483,11 @@ export default function Shell({ children }: { children: ReactNode }) {
             {pendingRequests > 0 && (
               <span
                 className="n"
-                aria-label={`${pendingRequests} pending requests`}
+                aria-label={t(
+                  'lumen.nav.pendingRequests',
+                  'Pending requests: {count}',
+                  { count: pendingRequests }
+                )}
               >
                 {pendingRequests}
               </span>
@@ -632,7 +639,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       )}
       <nav
         className="tabbar"
-        aria-label="Tabs"
+        aria-label={t('i18n.tabs', 'Tabs')}
         aria-hidden={tabsHidden || undefined}
         data-hidden={tabsHidden || undefined}
         inert={tabsHidden}
@@ -652,7 +659,11 @@ export default function Shell({ children }: { children: ReactNode }) {
             {h === '/requests' && pendingRequests > 0 && (
               <span
                 className="badge"
-                aria-label={`${pendingRequests} pending requests`}
+                aria-label={t(
+                  'lumen.nav.pendingRequests',
+                  'Pending requests: {count}',
+                  { count: pendingRequests }
+                )}
               >
                 {pendingRequests}
               </span>

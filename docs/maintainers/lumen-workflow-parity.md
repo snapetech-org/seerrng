@@ -6460,6 +6460,14 @@ controls; the candidate keeps the same content geometry and hides the bar
 while those controls are exposed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-tabbar-20261121/`.
 
+Shell navigation landmark names and pending-request badge labels now follow the
+saved account locale. The primary navigation and tab names reuse SeerrNG's
+translated `i18n.primaryNavigation` and `i18n.tabs` entries; request counts use
+localized English, French, and Arabic labels. The focused browser check passes
+in both standalone and production `/lumen/` deployments across desktop,
+iPhone, Android, and tablet (24 cases). This changes accessibility labels only;
+the navigation structure, visible copy, and layout are unchanged.
+
 ### Add catalog games to My Games
 
 Signed-in users can add an eligible IGDB catalog game from its Lumen detail

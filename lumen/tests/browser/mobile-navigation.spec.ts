@@ -1,5 +1,54 @@
 import { expect, test } from '@playwright/test';
 
+test('shell navigation landmarks and request badges follow the account locale', async ({
+  page,
+}) => {
+  const locale = ['en', 'fr', 'ar'].includes(process.env.LUMEN_NAV_LOCALE ?? '')
+    ? (process.env.LUMEN_NAV_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const labels = {
+    en: {
+      primary: 'Main navigation',
+      tabs: 'Tabs',
+      pending: 'Pending requests: 4',
+    },
+    fr: {
+      primary: 'Navigation principale',
+      tabs: 'Onglets',
+      pending: 'Demandes en attente : 4',
+    },
+    ar: {
+      primary: 'التنقل الرئيسي',
+      tabs: 'علامات التبويب',
+      pending: 'الطلبات المعلّقة: 4',
+    },
+  }[locale];
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2, userType: 2 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/request/count')
+      return route.fulfill({ json: { pending: 4 } });
+    return route.fulfill({ json: {} });
+  });
+
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  await page.goto(`${mount}/me`);
+  await expect(page.locator('.side')).toHaveAttribute(
+    'aria-label',
+    labels.primary
+  );
+  await expect(page.locator('.tabbar')).toHaveAttribute(
+    'aria-label',
+    labels.tabs
+  );
+  await expect(page.locator(`[aria-label="${labels.pending}"]`)).toHaveCount(2);
+});
+
 test('mobile tabs yield to long forms on scroll and return on scroll up', async ({
   page,
 }, testInfo) => {
