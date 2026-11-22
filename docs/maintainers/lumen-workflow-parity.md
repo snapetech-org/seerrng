@@ -7227,3 +7227,19 @@ screenshots at desktop (1440px) and iPhone (390px) are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-upcoming-series-20261122/`.
 The candidate was inspected at both sizes; baseline comparison and live catalog
 provider behavior were not exercised in this increment.
+
+### Software catalog filters
+
+Lumen's Games catalog now sends the filters supported by SeerrNG's software
+catalog API: operating system for PC games, emulation system for retro and
+modern catalogs, and genre and release year where the selected catalog supports
+those fields. Release years outside 1950–2200 are rejected in the UI before a
+catalog request is sent. ROMarrNG DAT catalogs expose their supported system
+filter while hiding genre and year controls that the backend cannot apply.
+
+Browser coverage verifies filter query parameters and invalid-year recovery,
+including DAT behavior, across desktop and iPhone in English, French, and
+Arabic. The Lumen production build passes. Matched baseline/candidate captures
+at desktop (1440px) and iPhone (390px) were inspected; evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-filters-20261122/`.
+Live QuestarrNG and ROMarrNG catalog responses were not exercised.

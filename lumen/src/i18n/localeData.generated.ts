@@ -1585,6 +1585,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'للبالغين',
       'components.Discover.DiscoverAdult.unavailable':
         'البحث في مشاهد البالغين غير متاح حاليًا.',
+      'components.Discover.FilterPanel.filters': 'عوامل التصفية',
+      'components.SoftwareCatalog.allPcPlatforms': 'جميع منابر PC',
+      'components.SoftwareCatalog.allSystems': 'جميع النظم',
+      'components.SoftwareCatalog.genreFilter': 'النوع',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'أدخل سنة الإفراج من 1950 إلى 2200',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'سنة الإصدار',
+      'components.SoftwareCatalog.windows': 'النوافذ',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
       'components.Layout.Sidebar.you': 'أنت',
@@ -10691,6 +10701,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Erwachsene Inhalte',
       'components.Discover.DiscoverAdult.unavailable':
         'Die Suche nach erwachsenen Szenen ist derzeit nicht verfügbar.',
+      'components.Discover.FilterPanel.filters': 'Filter',
+      'components.SoftwareCatalog.allPcPlatforms': 'Alle PC Plattformen',
+      'components.SoftwareCatalog.allSystems': 'Alle Systeme',
+      'components.SoftwareCatalog.genreFilter': 'Genre',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Geben Sie ein Release-Jahr von 1950 bis 2200 ein.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Erscheinungsjahr',
+      'components.SoftwareCatalog.windows': 'Windows',
     },
   },
   {
@@ -12319,6 +12339,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Adult',
       'components.Discover.DiscoverAdult.unavailable':
         'Adult scene search is unavailable right now.',
+      'components.Discover.FilterPanel.filters': 'Filters',
+      'components.SoftwareCatalog.allPcPlatforms': 'All PC platforms',
+      'components.SoftwareCatalog.allSystems': 'All systems',
+      'components.SoftwareCatalog.genreFilter': 'Genre',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Enter a release year from 1950 to 2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Release year',
+      'components.SoftwareCatalog.windows': 'Windows',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -19464,6 +19494,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Para adultos',
       'components.Discover.DiscoverAdult.unavailable':
         'La búsqueda de escenas para adultos no está disponible ahora mismo.',
+      'components.Discover.FilterPanel.filters': 'Filtros',
+      'components.SoftwareCatalog.allPcPlatforms': 'Todas las plataformas PC',
+      'components.SoftwareCatalog.allSystems': 'Todos los sistemas',
+      'components.SoftwareCatalog.genreFilter': 'Género',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Introduzca un año de liberación de 1950 a 2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Año de lanzamiento',
+      'components.SoftwareCatalog.windows': 'Windows',
     },
   },
   {
@@ -21121,6 +21161,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Para adultos',
       'components.Discover.DiscoverAdult.unavailable':
         'La búsqueda de escenas para adultos no está disponible ahora mismo.',
+      'components.Discover.FilterPanel.filters': 'Filtros',
+      'components.SoftwareCatalog.allPcPlatforms': 'Todas las plataformas PC',
+      'components.SoftwareCatalog.allSystems': 'Todos los sistemas',
+      'components.SoftwareCatalog.genreFilter': 'Género',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Introduzca un año de liberación de 1950 a 2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Año de lanzamiento',
+      'components.SoftwareCatalog.windows': 'Windows',
     },
   },
   {
@@ -23630,6 +23680,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Adulte',
       'components.Discover.DiscoverAdult.unavailable':
         "La recherche de scènes pour adultes n'est pas disponible pour le moment.",
+      'components.Discover.FilterPanel.filters': 'Filtres',
+      'components.SoftwareCatalog.allPcPlatforms': 'Toutes les plateformes PC',
+      'components.SoftwareCatalog.allSystems': 'Tous les systèmes',
+      'components.SoftwareCatalog.genreFilter': 'Genre',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Entrez une année de sortie de 1950 à 2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'MACOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Année de sortie',
+      'components.SoftwareCatalog.windows': 'Fenêtres',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
       'components.Layout.Sidebar.you': 'Vous',
@@ -31452,6 +31512,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'अडल्ट',
       'components.Discover.DiscoverAdult.unavailable':
         'अडल्ट सीन खोज अभी उपलब्ध नहीं है।',
+      'components.Discover.FilterPanel.filters': 'फ़िल्टर',
+      'components.SoftwareCatalog.allPcPlatforms': 'सभी पीसी प्लेटफॉर्म',
+      'components.SoftwareCatalog.allSystems': 'सभी प्रणालियों',
+      'components.SoftwareCatalog.genreFilter': 'शैली',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        '1950 से 2200 तक एक रिलीज वर्ष दर्ज करें।',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'MacOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'रिलीज वर्ष',
+      'components.SoftwareCatalog.windows': 'विंडोज',
     },
   },
   {
@@ -33712,6 +33782,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Dewasa',
       'components.Discover.DiscoverAdult.unavailable':
         'Pencarian scene dewasa saat ini tidak tersedia.',
+      'components.Discover.FilterPanel.filters': 'Filter',
+      'components.SoftwareCatalog.allPcPlatforms': 'Semua platform PC',
+      'components.SoftwareCatalog.allSystems': 'Semua sistem',
+      'components.SoftwareCatalog.genreFilter': 'Genre',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Masukkan tahun lepas dari 1950-2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'MaOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Rilis tahun',
+      'components.SoftwareCatalog.windows': 'Jendela',
     },
   },
   {
@@ -35958,6 +36038,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'アダルト',
       'components.Discover.DiscoverAdult.unavailable':
         'アダルトシーン検索は現在利用できません。',
+      'components.Discover.FilterPanel.filters': 'フィルター',
+      'components.SoftwareCatalog.allPcPlatforms': 'すべてのPCプラットフォーム',
+      'components.SoftwareCatalog.allSystems': 'すべてのシステム',
+      'components.SoftwareCatalog.genreFilter': 'ジャンル',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        '1950年から2200年にかけてリリース年を入力してください。',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'マックオース',
+      'components.SoftwareCatalog.releaseYearFilter': 'リリース年',
+      'components.SoftwareCatalog.windows': 'ウィンドウズ',
     },
   },
   {
@@ -37533,6 +37623,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': '성인',
       'components.Discover.DiscoverAdult.unavailable':
         '현재 성인 장면 검색을 사용할 수 없습니다.',
+      'components.Discover.FilterPanel.filters': '필터',
+      'components.SoftwareCatalog.allPcPlatforms': '모든 PC 플랫폼',
+      'components.SoftwareCatalog.allSystems': '모든 시스템',
+      'components.SoftwareCatalog.genreFilter': '장르',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        '1950년부터 2200년까지 릴리스 해를 입력하십시오.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': '맥 OS',
+      'components.SoftwareCatalog.releaseYearFilter': '출시 년',
+      'components.SoftwareCatalog.windows': '윈도우',
     },
   },
   {
@@ -41014,6 +41114,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Adulto',
       'components.Discover.DiscoverAdult.unavailable':
         'A pesquisa de cenas adultas não está disponível no momento.',
+      'components.Discover.FilterPanel.filters': 'Filtros',
+      'components.SoftwareCatalog.allPcPlatforms': 'Todas as plataformas PC',
+      'components.SoftwareCatalog.allSystems': 'Todos os sistemas.',
+      'components.SoftwareCatalog.genreFilter': 'Gênero',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Entre em um ano de lançamento de 1950 a 2200.',
+      'components.SoftwareCatalog.linux': 'Linux.',
+      'components.SoftwareCatalog.macos': 'MacOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Ano de lançamento',
+      'components.SoftwareCatalog.windows': 'Janelas',
     },
   },
   {
@@ -46506,6 +46616,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': '成人',
       'components.Discover.DiscoverAdult.unavailable':
         '成人场景搜索当前不可用。',
+      'components.Discover.FilterPanel.filters': '筛选条件',
+      'components.SoftwareCatalog.allPcPlatforms': '所有个人电脑平台',
+      'components.SoftwareCatalog.allSystems': '所有系统',
+      'components.SoftwareCatalog.genreFilter': '类型',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        '从1950年到2200年进入发行年.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': '马科斯',
+      'components.SoftwareCatalog.releaseYearFilter': '发布年份',
+      'components.SoftwareCatalog.windows': '窗口',
     },
   },
   {
@@ -48021,6 +48141,15 @@ export const localeData = [
       'components.Discover.DiscoverAdult.serverFilter': '瀏覽伺服器',
       'components.Discover.DiscoverAdult.title': '成人',
       'components.Discover.DiscoverAdult.unavailable': '目前無法搜尋成人場景。',
+      'components.Discover.FilterPanel.filters': '篩選條件',
+      'components.SoftwareCatalog.allPcPlatforms': '所有PC平台',
+      'components.SoftwareCatalog.allSystems': '所有系統',
+      'components.SoftwareCatalog.genreFilter': '類型',
+      'components.SoftwareCatalog.invalidReleaseYear': '1950年到2200年',
+      'components.SoftwareCatalog.linux': 'Linux 中',
+      'components.SoftwareCatalog.macos': 'macOS',
+      'components.SoftwareCatalog.releaseYearFilter': '发布年份',
+      'components.SoftwareCatalog.windows': '視窗',
     },
   },
   {
@@ -49648,6 +49777,16 @@ export const localeData = [
       'components.Discover.DiscoverAdult.title': 'Người lớn',
       'components.Discover.DiscoverAdult.unavailable':
         'Tìm kiếm cảnh người lớn hiện không khả dụng.',
+      'components.Discover.FilterPanel.filters': 'Bộ lọc',
+      'components.SoftwareCatalog.allPcPlatforms': 'Mọi nền tảng PC',
+      'components.SoftwareCatalog.allSystems': 'Mọi hệ thống',
+      'components.SoftwareCatalog.genreFilter': 'Thể loại',
+      'components.SoftwareCatalog.invalidReleaseYear':
+        'Nhập một năm giải phóng từ 1950 đến 2200.',
+      'components.SoftwareCatalog.linux': 'Linux',
+      'components.SoftwareCatalog.macos': 'MacOS',
+      'components.SoftwareCatalog.releaseYearFilter': 'Phát hành năm',
+      'components.SoftwareCatalog.windows': 'Cửa sổ',
     },
   },
 ] as const;

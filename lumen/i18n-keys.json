@@ -5480,5 +5480,14 @@
   "lumen.account.themePresetHelp",
   "lumen.account.applyThemePreset",
   "lumen.account.resetThemeOverrides",
-  "lumen.account.themeOverridesReset"
+  "lumen.account.themeOverridesReset",
+  "components.Discover.FilterPanel.filters",
+  "components.SoftwareCatalog.allPcPlatforms",
+  "components.SoftwareCatalog.allSystems",
+  "components.SoftwareCatalog.genreFilter",
+  "components.SoftwareCatalog.invalidReleaseYear",
+  "components.SoftwareCatalog.linux",
+  "components.SoftwareCatalog.macos",
+  "components.SoftwareCatalog.releaseYearFilter",
+  "components.SoftwareCatalog.windows"
 ]

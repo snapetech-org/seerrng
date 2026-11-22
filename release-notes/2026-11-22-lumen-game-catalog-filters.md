@@ -1,0 +1,1 @@
+Lumen's Games catalog now filters PC games by operating system and emulation titles by system, genre, and release year. ROMarrNG DAT catalogs show only the system filter they support, and invalid release years are rejected before searching.

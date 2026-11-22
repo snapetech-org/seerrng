@@ -73,15 +73,27 @@ const statOf = (g: Game, t: Translate): Stat => {
         : { k: 'wait', word: t('lumen.status.requested', w), ico: 'clock' };
 };
 
+type CatalogFilters = {
+  platform: string;
+  system: string;
+  genre: string;
+  releaseYear: string;
+};
+
 // the software catalogue pages by offset when browsing and by cursor when searching
-function useGames(category: GameCategory | undefined, query: string) {
+function useGames(
+  category: GameCategory | undefined,
+  query: string,
+  filters: CatalogFilters
+) {
+  const { platform, system, genre, releaseYear } = filters;
   const [items, setItems] = useState<Game[]>([]);
   const [next, setNext] = useState<string | number | null | undefined>(
     undefined
   ); // undefined = not loaded yet
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const key = `${category}|${query}`;
+  const key = `${category}|${query}|${JSON.stringify(filters)}`;
   const live = useRef(key);
   const inFlight = useRef<symbol | null>(null);
   // where a failed page was, so Retry asks for it again
@@ -113,6 +125,10 @@ function useGames(category: GameCategory | undefined, query: string) {
       setError(null);
       const p = new URLSearchParams({ category, limit: '24' });
       if (query) p.set('q', query);
+      if (category === 'game' && platform) p.set('platform', platform);
+      if (category !== 'game' && system) p.set('system', system);
+      if (genre) p.set('genre', genre);
+      if (releaseYear) p.set('releaseYear', releaseYear);
       if (position !== undefined)
         p.set(query ? 'cursor' : 'offset', String(position));
       try {
@@ -158,7 +174,7 @@ function useGames(category: GameCategory | undefined, query: string) {
         }
       }
     },
-    [category, query, key]
+    [category, query, platform, system, genre, releaseYear, key]
   );
   const more = useCallback(() => void load(next), [load, next]);
   useEffect(() => {
@@ -202,6 +218,51 @@ export function Games() {
     x.games.includes(p.get('c') as GameCategory) ? p.get('c') : x.games[0]
   ) as GameCategory | undefined;
   const query = (p.get('q') ?? '').trim().slice(0, 200);
+  const [filterDraft, setFilterDraft] = useState({
+    genre: '',
+    releaseYear: '',
+  });
+  const [textFilters, setTextFilters] = useState({
+    genre: '',
+    releaseYear: '',
+  });
+  const [platformFilter, setPlatformFilter] = useState('');
+  const [systemFilter, setSystemFilter] = useState('');
+  const systemCatalog = useApi<{
+    results?: { slug: string; group: GameCategory | null; name: string }[];
+    catalogProvider?: 'questarr' | 'igdb' | 'dat';
+    catalogSystemSlugs?: string[];
+  }>(cat && cat !== 'game' ? '/request/software/catalog/systems' : null);
+  const isDatCatalog =
+    cat !== 'game' && systemCatalog.data?.catalogProvider === 'dat';
+  const datSystemSlugs = new Set(systemCatalog.data?.catalogSystemSlugs ?? []);
+  const systems = (systemCatalog.data?.results ?? []).filter(
+    (system) =>
+      system.group === cat && (!isDatCatalog || datSystemSlugs.has(system.slug))
+  );
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setTextFilters({
+        genre: filterDraft.genre.trim().slice(0, 64),
+        releaseYear: /^(19[5-9]\d|20\d\d|21\d\d|2200)$/.test(
+          filterDraft.releaseYear
+        )
+          ? filterDraft.releaseYear
+          : '',
+      });
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [filterDraft]);
+  const validReleaseYear =
+    isDatCatalog ||
+    filterDraft.releaseYear === '' ||
+    /^(19[5-9]\d|20\d\d|21\d\d|2200)$/.test(filterDraft.releaseYear);
+  const catalogFilters: CatalogFilters = {
+    platform: cat === 'game' ? platformFilter : '',
+    system: cat !== 'game' ? systemFilter : '',
+    genre: isDatCatalog ? '' : textFilters.genre,
+    releaseYear: isDatCatalog ? '' : textFilters.releaseYear,
+  };
   const [draft, setDraft] = useState({ key: locationKey, value: query });
   const q = draft.key === locationKey ? draft.value : query;
   useEffect(() => {
@@ -219,7 +280,11 @@ export function Games() {
     return () => clearTimeout(t);
   }, [p, q, query, setP]);
   // no game service behind the category: the gate explains, so don't ask SeerrNG for lists
-  const list = useGames(x.enabled('game') ? cat : undefined, query);
+  const list = useGames(
+    x.enabled('game') && validReleaseYear ? cat : undefined,
+    query,
+    catalogFilters
+  );
   const checking = x.enabled('game') && !x.gamesChecked;
   const setCat = (c: GameCategory) => {
     const n = new URLSearchParams(p);
@@ -275,7 +340,11 @@ export function Games() {
               <button
                 key={c}
                 aria-pressed={cat === c}
-                onClick={() => setCat(c)}
+                onClick={() => {
+                  setSystemFilter('');
+                  setPlatformFilter('');
+                  setCat(c);
+                }}
               >
                 {categoryLabel(c, t)}
               </button>
@@ -295,6 +364,120 @@ export function Games() {
             }[cat || 'game']
           }
         />
+        {cat && (
+          <div
+            className="field-grid"
+            role="group"
+            aria-label={t('components.Discover.FilterPanel.filters', 'Filters')}
+          >
+            <label className="field">
+              <span className="lbl">
+                {t(
+                  cat === 'game'
+                    ? 'components.SoftwareCatalog.allPcPlatforms'
+                    : 'components.SoftwareCatalog.allSystems',
+                  cat === 'game' ? 'All PC platforms' : 'All systems'
+                )}
+              </span>
+              <select
+                className="cfg-input cfg-select"
+                aria-label={t(
+                  cat === 'game'
+                    ? 'components.SoftwareCatalog.allPcPlatforms'
+                    : 'components.SoftwareCatalog.allSystems',
+                  cat === 'game' ? 'All PC platforms' : 'All systems'
+                )}
+                value={cat === 'game' ? platformFilter : systemFilter}
+                onChange={(event) =>
+                  cat === 'game'
+                    ? setPlatformFilter(event.target.value)
+                    : setSystemFilter(event.target.value)
+                }
+              >
+                <option value="">
+                  {t(
+                    cat === 'game'
+                      ? 'components.SoftwareCatalog.allPcPlatforms'
+                      : 'components.SoftwareCatalog.allSystems',
+                    cat === 'game' ? 'All PC platforms' : 'All systems'
+                  )}
+                </option>
+                {cat === 'game'
+                  ? PC_OS.map(([value, fallback]) => (
+                      <option key={value} value={value}>
+                        {t(
+                          `components.SoftwareCatalog.${value === 'macos' ? 'macos' : value}`,
+                          fallback
+                        )}
+                      </option>
+                    ))
+                  : systems.map((system) => (
+                      <option key={system.slug} value={system.slug}>
+                        {system.name}
+                      </option>
+                    ))}
+              </select>
+            </label>
+            {!isDatCatalog && (
+              <>
+                <label className="field">
+                  <span className="lbl">
+                    {t('components.SoftwareCatalog.genreFilter', 'Genre')}
+                  </span>
+                  <input
+                    className="cfg-input"
+                    aria-label={t(
+                      'components.SoftwareCatalog.genreFilter',
+                      'Genre'
+                    )}
+                    maxLength={64}
+                    value={filterDraft.genre}
+                    onChange={(event) =>
+                      setFilterDraft((current) => ({
+                        ...current,
+                        genre: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className="field">
+                  <span className="lbl">
+                    {t(
+                      'components.SoftwareCatalog.releaseYearFilter',
+                      'Release year'
+                    )}
+                  </span>
+                  <input
+                    className="cfg-input"
+                    aria-label={t(
+                      'components.SoftwareCatalog.releaseYearFilter',
+                      'Release year'
+                    )}
+                    type="number"
+                    min={1950}
+                    max={2200}
+                    value={filterDraft.releaseYear}
+                    aria-invalid={!validReleaseYear}
+                    onChange={(event) =>
+                      setFilterDraft((current) => ({
+                        ...current,
+                        releaseYear: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+              </>
+            )}
+          </div>
+        )}
+        {!isDatCatalog && !validReleaseYear && (
+          <p className="note bad" role="alert">
+            {t(
+              'components.SoftwareCatalog.invalidReleaseYear',
+              'Enter a release year from 1950 to 2200.'
+            )}
+          </p>
+        )}
       </ExtraHeader>
       {/* the catalogue checks are still out, or none of them answered */}
       {checking ? (
