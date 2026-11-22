@@ -6769,3 +6769,20 @@ unchanged, and all tested pages avoid horizontal overflow. Live recommendation
 providers and independent linguistic review remain unverified. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-swipe-localization-20261122/`.
+
+### Adult catalog localization
+
+The Adult catalog now localizes its heading, guidance, search field, service
+filter, partial-result warning, empty states, and pagination error/retry/loading
+messages in English, French, and Arabic. Compact localized service labels keep
+the existing mobile selector geometry usable. Provider-supplied scene titles,
+service names, permissions, queries, and request behavior are unchanged.
+
+The browser fixture covers loaded partial results, service filtering, search
+empty states, RTL direction, and viewport overflow across desktop, iPhone,
+Android, and tablet (12 locale/viewport cases). French desktop and iPhone
+baseline/candidate renders and Arabic desktop and iPhone candidates were
+inspected; the existing layout and controls remain intact. Live Whisparr
+behavior and independent linguistic review remain unverified. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-catalog-localization-20261122/`.

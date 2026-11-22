@@ -3901,7 +3901,10 @@
     "lumen.swipe.requestPreferences": "request preferences",
     "lumen.swipe.backToRecommendations": "Back to Recommendations",
     "lumen.swipe.viewHistory": "View Swipe History",
-    "lumen.swipe.categoryLabel": "Category"
+    "lumen.swipe.categoryLabel": "Category",
+    "lumen.adult.bookmarkedService": "Bookmarked service",
+    "lumen.adult.serverFilter": "Service",
+    "lumen.adult.allServices": "All"
   },
   "fr": {
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -7964,7 +7967,10 @@
     "lumen.swipe.requestPreferences": "préférences de demande",
     "lumen.swipe.backToRecommendations": "Retour aux recommandations",
     "lumen.swipe.viewHistory": "Afficher l’historique Swipe",
-    "lumen.swipe.categoryLabel": "Catégorie"
+    "lumen.swipe.categoryLabel": "Catégorie",
+    "lumen.adult.bookmarkedService": "Serveur enregistré",
+    "lumen.adult.serverFilter": "Serveur",
+    "lumen.adult.allServices": "Tous"
   },
   "ar": {
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
@@ -12031,6 +12037,9 @@
     "lumen.swipe.requestPreferences": "تفضيلات الطلب",
     "lumen.swipe.backToRecommendations": "العودة إلى التوصيات",
     "lumen.swipe.viewHistory": "عرض سجل Swipe",
-    "lumen.swipe.categoryLabel": "الفئة"
+    "lumen.swipe.categoryLabel": "الفئة",
+    "lumen.adult.bookmarkedService": "الخادم المحفوظ",
+    "lumen.adult.serverFilter": "الخادم",
+    "lumen.adult.allServices": "الكل"
   }
 }

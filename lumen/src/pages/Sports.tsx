@@ -660,6 +660,7 @@ export function Adult() {
 }
 
 function AdultCatalogue() {
+  const { t } = useLumenLocale();
   const { q, setQ, query, p, setP } = useSearchBox();
   const serviceId = p.get('serverId') ?? '';
   const { data: services } =
@@ -674,23 +675,34 @@ function AdultCatalogue() {
   return (
     <>
       <ExtraHeader
-        title="Adult"
+        title={t('components.Discover.DiscoverAdult.title', 'Adult')}
         sub={
           query
-            ? 'Search results.'
-            : 'What the library has. Search to find more.'
+            ? t(
+                'components.Discover.DiscoverAdult.searchResults',
+                'Search results'
+              )
+            : t(
+                'components.Discover.DiscoverAdult.searchHint',
+                'Browse scenes in your Whisparr libraries or search by title, performer, or studio.'
+              )
         }
       >
         <ExtraSearch
           value={q}
           onChange={setQ}
-          placeholder="Search scenes, studios, performers…"
+          placeholder={t(
+            'components.Discover.DiscoverAdult.searchPlaceholder',
+            'Title, performer, or studio'
+          )}
         />
       </ExtraHeader>
       {((services?.length ?? 0) > 1 || serviceId) && (
         <div className="toolbar">
           <label className="sel">
-            <span className="lbl">Whisparr Service</span>
+            <span className="lbl">
+              {t('lumen.adult.serverFilter', 'Service')}
+            </span>
             <select
               value={serviceId}
               onChange={(event) => {
@@ -701,10 +713,12 @@ function AdultCatalogue() {
                 setP(next, { replace: true });
               }}
             >
-              <option value="">All Services</option>
+              <option value="">{t('lumen.adult.allServices', 'All')}</option>
               {serviceId &&
                 !services?.some(({ id }) => String(id) === serviceId) && (
-                  <option value={serviceId}>Bookmarked Service</option>
+                  <option value={serviceId}>
+                    {t('lumen.adult.bookmarkedService', 'Bookmarked service')}
+                  </option>
                 )}
               {services?.map(({ id, name }) => (
                 <option key={id} value={id}>
@@ -717,16 +731,29 @@ function AdultCatalogue() {
       )}
       <ServiceNote
         error={list.items.length ? null : list.error}
-        what="this section"
+        what={t('components.Discover.DiscoverAdult.title', 'Adult')}
       />
       {partial && (
         <p className="note" role="status">
-          Whisparr returned partial results. Some matches may be missing.
+          {t(
+            'components.Discover.DiscoverAdult.partialResults',
+            'Some Whisparr servers could not be searched. Results may be incomplete.'
+          )}
         </p>
       )}
       {!partial && !list.error && !list.items.length && !list.loading && (
         <div className="empty">
-          <b>Nothing found</b>Try a studio or performer.
+          <b>
+            {query
+              ? t(
+                  'components.Discover.DiscoverAdult.noResults',
+                  'No scenes match this search.'
+                )
+              : t(
+                  'components.Discover.DiscoverAdult.noLibraryScenes',
+                  'No scenes are in your Whisparr libraries yet. Search above to browse the scene catalog.'
+                )}
+          </b>
         </div>
       )}
       <div className="wideg grid">
@@ -749,6 +776,20 @@ function AdultCatalogue() {
         more={list.more}
         error={list.error}
         retry={list.retry}
+        labels={{
+          error: t(
+            'components.Discover.DiscoverAdult.unavailable',
+            'Adult scene search is unavailable right now.'
+          ),
+          retry: t(
+            'components.Discover.DiscoverAdult.retrySearch',
+            'Try again'
+          ),
+          loading: t(
+            'components.Discover.DiscoverAdult.loadingMore',
+            'Loading more scenes…'
+          ),
+        }}
       />
     </>
   );

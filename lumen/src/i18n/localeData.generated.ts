@@ -1559,6 +1559,30 @@ export const localeData = [
         'هذا الدوري في "سبورتيار" ولكنه غير مُراقب',
       'components.SportarrDetails.unmonitoredHint':
         'يمكن رصد هذا الدوري في سبورتر لرؤية أحداثه هنا',
+      'components.Discover.DiscoverAdult.allServers': 'جميع خوادم Whisparr',
+      'components.Discover.DiscoverAdult.available': 'في مكتبتك',
+      'components.Discover.DiscoverAdult.loadMore': 'تحميل المزيد من المشاهد',
+      'components.Discover.DiscoverAdult.loadingMore':
+        'جارٍ تحميل المزيد من المشاهد…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'لا توجد مشاهد في مكتبات Whisparr الخاصة بك بعد. ابحث أعلاه لتصفح كتالوج المشاهد.',
+      'components.Discover.DiscoverAdult.noResults':
+        'لا توجد مشاهد تطابق هذا البحث.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'تعذّر البحث في بعض خوادم Whisparr. قد تكون النتائج غير مكتملة.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'المشاهد المضافة مؤخرًا',
+      'components.Discover.DiscoverAdult.retrySearch': 'إعادة المحاولة',
+      'components.Discover.DiscoverAdult.search': 'البحث في المشاهد للبالغين',
+      'components.Discover.DiscoverAdult.searchHint':
+        'تصفّح المشاهد في مكتبات Whisparr الخاصة بك أو ابحث بالاسم أو المنفّذ أو الاستوديو.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'الاسم أو المنفّذ أو الاستوديو',
+      'components.Discover.DiscoverAdult.searchResults': 'نتائج البحث',
+      'components.Discover.DiscoverAdult.serverFilter': 'تصفّح الخادم',
+      'components.Discover.DiscoverAdult.title': 'للبالغين',
+      'components.Discover.DiscoverAdult.unavailable':
+        'البحث في مشاهد البالغين غير متاح حاليًا.',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
       'components.Layout.Sidebar.you': 'أنت',
@@ -6081,6 +6105,9 @@ export const localeData = [
       'lumen.swipe.undoDecision': 'التراجع عن القرار الأخير',
       'lumen.swipe.updateError': 'تعذر تحديث Swipe. حاول مجددًا.',
       'lumen.swipe.viewHistory': 'عرض سجل Swipe',
+      'lumen.adult.bookmarkedService': 'الخادم المحفوظ',
+      'lumen.adult.serverFilter': 'الخادم',
+      'lumen.adult.allServices': 'الكل',
     },
   },
   {
@@ -10104,6 +10131,31 @@ export const localeData = [
         'Diese Liga ist in Sportarr, wird aber nicht überwacht.',
       'components.SportarrDetails.unmonitoredHint':
         'Ermöglichen Sie die Überwachung dieser Liga in Sportarr, um ihre Ereignisse hier zu sehen.',
+      'components.Discover.DiscoverAdult.allServers': 'Alle Whisparr-Server',
+      'components.Discover.DiscoverAdult.available': 'In deiner Bibliothek',
+      'components.Discover.DiscoverAdult.loadMore': 'Weitere Szenen laden',
+      'components.Discover.DiscoverAdult.loadingMore':
+        'Weitere Szenen werden geladen…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'In deinen Whisparr-Bibliotheken befinden sich noch keine Szenen. Suche oben, um den Szenen-Katalog zu durchsuchen.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Keine Szenen entsprechen dieser Suche.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'Einige Whisparr-Server konnten nicht durchsucht werden. Die Ergebnisse können unvollständig sein.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Kürzlich hinzugefügte Szenen',
+      'components.Discover.DiscoverAdult.retrySearch': 'Erneut versuchen',
+      'components.Discover.DiscoverAdult.search':
+        'Erwachsene Szenen durchsuchen',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Durchsuchen Sie Szenen in Ihren Whisparr-Bibliotheken oder suchen Sie nach Titel, Darsteller oder Studio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Titel, Darsteller oder Studio',
+      'components.Discover.DiscoverAdult.searchResults': 'Suchergebnisse',
+      'components.Discover.DiscoverAdult.serverFilter': 'Server durchsuchen',
+      'components.Discover.DiscoverAdult.title': 'Erwachsene Inhalte',
+      'components.Discover.DiscoverAdult.unavailable':
+        'Die Suche nach erwachsenen Szenen ist derzeit nicht verfügbar.',
     },
   },
   {
@@ -11708,6 +11760,28 @@ export const localeData = [
         'This league is in Sportarr but is not monitored.',
       'components.SportarrDetails.unmonitoredHint':
         'Enable monitoring for this league in Sportarr to see its events here.',
+      'components.Discover.DiscoverAdult.allServers': 'All Whisparr servers',
+      'components.Discover.DiscoverAdult.available': 'In your library',
+      'components.Discover.DiscoverAdult.loadMore': 'Load more scenes',
+      'components.Discover.DiscoverAdult.loadingMore': 'Loading more scenes…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'No scenes are in your Whisparr libraries yet. Search above to browse the scene catalog.',
+      'components.Discover.DiscoverAdult.noResults':
+        'No scenes match this search.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'Some Whisparr servers could not be searched. Results may be incomplete.',
+      'components.Discover.DiscoverAdult.recentScenes': 'Recently added scenes',
+      'components.Discover.DiscoverAdult.retrySearch': 'Try again',
+      'components.Discover.DiscoverAdult.search': 'Search adult scenes',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Browse scenes in your Whisparr libraries or search by title, performer, or studio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Title, performer, or studio',
+      'components.Discover.DiscoverAdult.searchResults': 'Search results',
+      'components.Discover.DiscoverAdult.serverFilter': 'Browse server',
+      'components.Discover.DiscoverAdult.title': 'Adult',
+      'components.Discover.DiscoverAdult.unavailable':
+        'Adult scene search is unavailable right now.',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -16211,6 +16285,9 @@ export const localeData = [
       'lumen.swipe.undoDecision': 'Undo Last Decision',
       'lumen.swipe.updateError': 'Could not update Swipe. Try again.',
       'lumen.swipe.viewHistory': 'View Swipe History',
+      'lumen.adult.bookmarkedService': 'Bookmarked service',
+      'lumen.adult.serverFilter': 'Service',
+      'lumen.adult.allServices': 'All',
     },
   },
   {
@@ -18280,6 +18357,31 @@ export const localeData = [
         'Esta liga está en Sportarr pero no es monitorizada.',
       'components.SportarrDetails.unmonitoredHint':
         'Permite monitorear esta liga en Sportarr para ver sus eventos aquí.',
+      'components.Discover.DiscoverAdult.allServers':
+        'Todos los servidores Whisparr',
+      'components.Discover.DiscoverAdult.available': 'En tu biblioteca',
+      'components.Discover.DiscoverAdult.loadMore': 'Cargar más escenas',
+      'components.Discover.DiscoverAdult.loadingMore': 'Cargando más escenas…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Aún no hay escenas en tus bibliotecas de Whisparr. Usa la búsqueda anterior para explorar el catálogo de escenas.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Ninguna escena coincide con esta búsqueda.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'No se pudieron buscar algunos servidores Whisparr. Los resultados pueden ser incompletos.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Escenas añadidas recientemente',
+      'components.Discover.DiscoverAdult.retrySearch': 'Intentar de nuevo',
+      'components.Discover.DiscoverAdult.search': 'Buscar escenas para adultos',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Explora las escenas en tus bibliotecas de Whisparr o busca por título, intérprete o estudio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Título, intérprete o estudio',
+      'components.Discover.DiscoverAdult.searchResults':
+        'Resultados de la búsqueda',
+      'components.Discover.DiscoverAdult.serverFilter': 'Explorar servidor',
+      'components.Discover.DiscoverAdult.title': 'Para adultos',
+      'components.Discover.DiscoverAdult.unavailable':
+        'La búsqueda de escenas para adultos no está disponible ahora mismo.',
     },
   },
   {
@@ -19910,6 +20012,31 @@ export const localeData = [
         'Esta liga está en Sportarr pero no es monitorizada.',
       'components.SportarrDetails.unmonitoredHint':
         'Permite monitorear esta liga en Sportarr para ver sus eventos aquí.',
+      'components.Discover.DiscoverAdult.allServers':
+        'Todos los servidores Whisparr',
+      'components.Discover.DiscoverAdult.available': 'En tu biblioteca',
+      'components.Discover.DiscoverAdult.loadMore': 'Cargar más escenas',
+      'components.Discover.DiscoverAdult.loadingMore': 'Cargando más escenas…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Aún no hay escenas en tus bibliotecas de Whisparr. Usa la búsqueda anterior para explorar el catálogo de escenas.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Ninguna escena coincide con esta búsqueda.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'No se pudieron buscar algunos servidores Whisparr. Los resultados pueden ser incompletos.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Escenas añadidas recientemente',
+      'components.Discover.DiscoverAdult.retrySearch': 'Intentar de nuevo',
+      'components.Discover.DiscoverAdult.search': 'Buscar escenas para adultos',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Explora las escenas en tus bibliotecas de Whisparr o busca por título, intérprete o estudio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Título, intérprete o estudio',
+      'components.Discover.DiscoverAdult.searchResults':
+        'Resultados de la búsqueda',
+      'components.Discover.DiscoverAdult.serverFilter': 'Explorar servidor',
+      'components.Discover.DiscoverAdult.title': 'Para adultos',
+      'components.Discover.DiscoverAdult.unavailable':
+        'La búsqueda de escenas para adultos no está disponible ahora mismo.',
     },
   },
   {
@@ -22390,6 +22517,33 @@ export const localeData = [
         "Cette ligue est en Sportarr mais n'est pas surveillée.",
       'components.SportarrDetails.unmonitoredHint':
         'Permettre la surveillance de cette ligue à Sportarr pour voir ses événements ici.',
+      'components.Discover.DiscoverAdult.allServers':
+        'Tous les serveurs Whisparr',
+      'components.Discover.DiscoverAdult.available': 'Dans votre bibliothèque',
+      'components.Discover.DiscoverAdult.loadMore': 'Charger plus de scènes',
+      'components.Discover.DiscoverAdult.loadingMore':
+        'Chargement de plus de scènes…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        "Aucune scène n'est dans vos bibliothèques Whisparr pour le moment. Recherchez ci-dessus pour parcourir le catalogue de scènes.",
+      'components.Discover.DiscoverAdult.noResults':
+        'Aucune scène ne correspond à cette recherche.',
+      'components.Discover.DiscoverAdult.partialResults':
+        "Certains serveurs Whisparr n'ont pas pu être consultés. Les résultats peuvent être incomplets.",
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Scènes ajoutées récemment',
+      'components.Discover.DiscoverAdult.retrySearch': 'Réessayer',
+      'components.Discover.DiscoverAdult.search':
+        'Rechercher des scènes pour adultes',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Parcourez les scènes de vos bibliothèques Whisparr ou recherchez par titre, interprète ou studio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Titre, interprète ou studio',
+      'components.Discover.DiscoverAdult.searchResults':
+        'Résultats de recherche',
+      'components.Discover.DiscoverAdult.serverFilter': 'Parcourir le serveur',
+      'components.Discover.DiscoverAdult.title': 'Adulte',
+      'components.Discover.DiscoverAdult.unavailable':
+        "La recherche de scènes pour adultes n'est pas disponible pour le moment.",
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
       'components.Layout.Sidebar.you': 'Vous',
@@ -27353,6 +27507,9 @@ export const localeData = [
       'lumen.swipe.updateError':
         'Impossible de mettre à jour Swipe. Réessayez.',
       'lumen.swipe.viewHistory': 'Afficher l’historique Swipe',
+      'lumen.adult.bookmarkedService': 'Serveur enregistré',
+      'lumen.adult.serverFilter': 'Serveur',
+      'lumen.adult.allServices': 'Tous',
     },
   },
   {
@@ -29604,6 +29761,28 @@ export const localeData = [
         'यह लीग स्पोर्टार में है लेकिन इसकी निगरानी नहीं की जाती है।',
       'components.SportarrDetails.unmonitoredHint':
         'स्पोर्टार में इस लीग के लिए यहां अपनी घटनाओं को देखने के लिए निगरानी सक्षम करें।',
+      'components.Discover.DiscoverAdult.allServers': 'सभी Whisparr सर्वर',
+      'components.Discover.DiscoverAdult.available': 'आपकी लाइब्रेरी में',
+      'components.Discover.DiscoverAdult.loadMore': 'और सीन लोड करें',
+      'components.Discover.DiscoverAdult.loadingMore': 'और सीन लोड हो रहे हैं…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'आपकी Whisparr लाइब्रेरी में अभी कोई सीन नहीं है। सीन कैटलॉग ब्राउज़ करने के लिए ऊपर खोजें।',
+      'components.Discover.DiscoverAdult.noResults':
+        'इस खोज से कोई सीन मेल नहीं खाता।',
+      'components.Discover.DiscoverAdult.partialResults':
+        'कुछ Whisparr सर्वर खोजे नहीं जा सके। परिणाम अधूरे हो सकते हैं।',
+      'components.Discover.DiscoverAdult.recentScenes': 'हाल में जोड़े गए सीन',
+      'components.Discover.DiscoverAdult.retrySearch': 'फिर से कोशिश करें',
+      'components.Discover.DiscoverAdult.search': 'अडल्ट सीन खोजें',
+      'components.Discover.DiscoverAdult.searchHint':
+        'अपने Whisparr लाइब्रेरी में सीन ब्राउज़ करें या शीर्षक, अभिनेत्री या स्टूडियो द्वारा खोजें।',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'शीर्षक, अभिनेत्री या स्टूडियो',
+      'components.Discover.DiscoverAdult.searchResults': 'खोज परिणाम',
+      'components.Discover.DiscoverAdult.serverFilter': 'सर्वर ब्राउज़ करें',
+      'components.Discover.DiscoverAdult.title': 'अडल्ट',
+      'components.Discover.DiscoverAdult.unavailable':
+        'अडल्ट सीन खोज अभी उपलब्ध नहीं है।',
     },
   },
   {
@@ -31838,6 +32017,30 @@ export const localeData = [
         'Liga ini di Sportarr tapi tidak dipantau.',
       'components.SportarrDetails.unmonitoredHint':
         'Aktifkan pemantauan untuk liga di Sportarr untuk melihat kejadiannya di sini.',
+      'components.Discover.DiscoverAdult.allServers': 'Semua server Whisparr',
+      'components.Discover.DiscoverAdult.available': 'Di perpustakaan Anda',
+      'components.Discover.DiscoverAdult.loadMore': 'Muat lebih banyak scene',
+      'components.Discover.DiscoverAdult.loadingMore':
+        'Memuat lebih banyak scene…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Belum ada scene di perpustakaan Whisparr Anda. Cari di atas untuk menelusuri katalog scene.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Tidak ada scene yang cocok dengan pencarian ini.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'Beberapa server Whisparr tidak dapat dicari. Hasil mungkin tidak lengkap.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Scene yang baru ditambahkan',
+      'components.Discover.DiscoverAdult.retrySearch': 'Coba lagi',
+      'components.Discover.DiscoverAdult.search': 'Cari scene dewasa',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Jelajahi scene di perpustakaan Whisparr Anda atau cari berdasarkan judul, performer, atau studio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Judul, performer, atau studio',
+      'components.Discover.DiscoverAdult.searchResults': 'Hasil pencarian',
+      'components.Discover.DiscoverAdult.serverFilter': 'Jelajahi server',
+      'components.Discover.DiscoverAdult.title': 'Dewasa',
+      'components.Discover.DiscoverAdult.unavailable':
+        'Pencarian scene dewasa saat ini tidak tersedia.',
     },
   },
   {
@@ -34058,6 +34261,30 @@ export const localeData = [
         'このリーグはSportarrですが監視されていません。',
       'components.SportarrDetails.unmonitoredHint':
         'Sportarrのこのリーグの監視を有効にして、このイベントを見ることができます。',
+      'components.Discover.DiscoverAdult.allServers':
+        'すべての Whisparr サーバー',
+      'components.Discover.DiscoverAdult.available': 'ライブラリにあり',
+      'components.Discover.DiscoverAdult.loadMore': 'さらにシーンを読み込む',
+      'components.Discover.DiscoverAdult.loadingMore':
+        'さらにシーンを読み込み中…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Whisparr ライブラリにまだシーンがありません。上記で検索してシーンカタログを閲覧してください。',
+      'components.Discover.DiscoverAdult.noResults':
+        'この検索に一致するシーンはありません。',
+      'components.Discover.DiscoverAdult.partialResults':
+        '一部のWhisparrサーバーを検索できませんでした。結果が不完全である可能性があります。',
+      'components.Discover.DiscoverAdult.recentScenes': '最近追加されたシーン',
+      'components.Discover.DiscoverAdult.retrySearch': '再試行',
+      'components.Discover.DiscoverAdult.search': 'アダルトシーン検索',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Whisparrライブラリのシーンを閲覧するか、タイトル、出演者、スタジオで検索します。',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'タイトル、出演者、またはスタジオ',
+      'components.Discover.DiscoverAdult.searchResults': '検索結果',
+      'components.Discover.DiscoverAdult.serverFilter': 'サーバーを閲覧',
+      'components.Discover.DiscoverAdult.title': 'アダルト',
+      'components.Discover.DiscoverAdult.unavailable':
+        'アダルトシーン検索は現在利用できません。',
     },
   },
   {
@@ -35608,6 +35835,29 @@ export const localeData = [
         '이 리그는 Sportarr에 있지만 모니터링되지 않습니다.',
       'components.SportarrDetails.unmonitoredHint':
         'Sportarr의이 리그에 대한 모니터링이 여기에 이벤트를 볼 수 있습니다.',
+      'components.Discover.DiscoverAdult.allServers': '모든 Whisparr 서버',
+      'components.Discover.DiscoverAdult.available': '내 라이브러리에 있음',
+      'components.Discover.DiscoverAdult.loadMore': '더 많은 장면 불러오기',
+      'components.Discover.DiscoverAdult.loadingMore':
+        '더 많은 장면 불러오는 중…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        '아직 Whisparr 라이브러리에 등록된 장면이 없습니다. 위에서 검색하여 장면 카탈로그를 탐색하세요.',
+      'components.Discover.DiscoverAdult.noResults':
+        '이 검색과 일치하는 장면이 없습니다.',
+      'components.Discover.DiscoverAdult.partialResults':
+        '일부 Whisparr 서버를 검색할 수 없습니다. 결과가 불완전할 수 있습니다.',
+      'components.Discover.DiscoverAdult.recentScenes': '최근 추가된 장면',
+      'components.Discover.DiscoverAdult.retrySearch': '다시 시도',
+      'components.Discover.DiscoverAdult.search': '성인 장면 검색',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Whisparr 라이브러리의 장면을 탐색하거나 제목, 출연자, 스튜디오로 검색하세요.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        '제목, 출연자 또는 스튜디오',
+      'components.Discover.DiscoverAdult.searchResults': '검색 결과',
+      'components.Discover.DiscoverAdult.serverFilter': '서버 탐색',
+      'components.Discover.DiscoverAdult.title': '성인',
+      'components.Discover.DiscoverAdult.unavailable':
+        '현재 성인 장면 검색을 사용할 수 없습니다.',
     },
   },
   {
@@ -39062,6 +39312,31 @@ export const localeData = [
         'Esta liga está em Sportarr mas não é monitorada.',
       'components.SportarrDetails.unmonitoredHint':
         'Habilite o monitoramento desta liga em Sportarr para ver seus eventos aqui.',
+      'components.Discover.DiscoverAdult.allServers':
+        'Todos os servidores Whisparr',
+      'components.Discover.DiscoverAdult.available': 'Na sua biblioteca',
+      'components.Discover.DiscoverAdult.loadMore': 'Carregar mais cenas',
+      'components.Discover.DiscoverAdult.loadingMore': 'Carregando mais cenas…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Nenhuma cena está nas suas bibliotecas Whisparr ainda. Pesquise acima para navegar no catálogo de cenas.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Nenhuma cena corresponde a esta pesquisa.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'Alguns servidores Whisparr não puderam ser pesquisados. Os resultados podem estar incompletos.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Cenas adicionadas recentemente',
+      'components.Discover.DiscoverAdult.retrySearch': 'Tentar novamente',
+      'components.Discover.DiscoverAdult.search': 'Pesquisar cenas adultas',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Navegue pelas cenas em suas bibliotecas Whisparr ou pesquise por título, performer ou estúdio.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Título, performer ou estúdio',
+      'components.Discover.DiscoverAdult.searchResults':
+        'Resultados da pesquisa',
+      'components.Discover.DiscoverAdult.serverFilter': 'Navegar no servidor',
+      'components.Discover.DiscoverAdult.title': 'Adulto',
+      'components.Discover.DiscoverAdult.unavailable':
+        'A pesquisa de cenas adultas não está disponível no momento.',
     },
   },
   {
@@ -44531,6 +44806,27 @@ export const localeData = [
         '这个联赛位于斯波特尔,但没有受到监控.',
       'components.SportarrDetails.unmonitoredHint':
         '启用对 Sportarr 中的此联盟的监视可在此查看其事件 。',
+      'components.Discover.DiscoverAdult.allServers': '所有 Whisparr 服务器',
+      'components.Discover.DiscoverAdult.available': '在你的库中',
+      'components.Discover.DiscoverAdult.loadMore': '加载更多场景',
+      'components.Discover.DiscoverAdult.loadingMore': '正在加载更多场景…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        '你的 Whisparr 库中暂无场景。请在上方搜索以浏览场景目录。',
+      'components.Discover.DiscoverAdult.noResults': '没有场景匹配此搜索。',
+      'components.Discover.DiscoverAdult.partialResults':
+        '部分 Whisparr 服务器无法搜索。结果可能不完整。',
+      'components.Discover.DiscoverAdult.recentScenes': '最近添加的场景',
+      'components.Discover.DiscoverAdult.retrySearch': '重试',
+      'components.Discover.DiscoverAdult.search': '搜索成人场景',
+      'components.Discover.DiscoverAdult.searchHint':
+        '浏览您 Whisparr 库中的场景，或按标题、演员或工作室搜索。',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        '标题、演员或工作室',
+      'components.Discover.DiscoverAdult.searchResults': '搜索结果',
+      'components.Discover.DiscoverAdult.serverFilter': '浏览服务器',
+      'components.Discover.DiscoverAdult.title': '成人',
+      'components.Discover.DiscoverAdult.unavailable':
+        '成人场景搜索当前不可用。',
     },
   },
   {
@@ -46025,6 +46321,25 @@ export const localeData = [
       'components.SportarrDetails.unmonitored': '這支聯賽在Sportarr,',
       'components.SportarrDetails.unmonitoredHint':
         '啟動 Sportarr 監控此聯盟的情況 。',
+      'components.Discover.DiscoverAdult.allServers': '所有 Whisparr 伺服器',
+      'components.Discover.DiscoverAdult.available': '在你的圖書館中',
+      'components.Discover.DiscoverAdult.loadMore': '載入更多場景',
+      'components.Discover.DiscoverAdult.loadingMore': '正在載入更多場景…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        '你的 Whisparr 圖書館中尚無場景。請在上方搜尋以瀏覽場景目錄。',
+      'components.Discover.DiscoverAdult.noResults': '沒有符合此搜尋的場景。',
+      'components.Discover.DiscoverAdult.partialResults':
+        '部分 Whisparr 伺服器無法搜尋。結果可能不完整。',
+      'components.Discover.DiscoverAdult.recentScenes': '最近新增的場景',
+      'components.Discover.DiscoverAdult.retrySearch': '重試',
+      'components.Discover.DiscoverAdult.search': '搜尋成人場景',
+      'components.Discover.DiscoverAdult.searchHint':
+        '瀏覽您 Whisparr 資料庫中的場景，或依標題、演員或片商搜尋。',
+      'components.Discover.DiscoverAdult.searchPlaceholder': '標題、演員或片商',
+      'components.Discover.DiscoverAdult.searchResults': '搜尋結果',
+      'components.Discover.DiscoverAdult.serverFilter': '瀏覽伺服器',
+      'components.Discover.DiscoverAdult.title': '成人',
+      'components.Discover.DiscoverAdult.unavailable': '目前無法搜尋成人場景。',
     },
   },
   {
@@ -47626,6 +47941,30 @@ export const localeData = [
         'Liên minh này nằm ở Sportarr nhưng không được theo dõi.',
       'components.SportarrDetails.unmonitoredHint':
         'Cho phép giám sát cho liên minh này ở Sportarr xem các sự kiện của nó ở đây.',
+      'components.Discover.DiscoverAdult.allServers':
+        'Tất cả các máy chủ Whisparr',
+      'components.Discover.DiscoverAdult.available': 'Trong thư viện của bạn',
+      'components.Discover.DiscoverAdult.loadMore': 'Tải thêm cảnh',
+      'components.Discover.DiscoverAdult.loadingMore': 'Đang tải thêm cảnh…',
+      'components.Discover.DiscoverAdult.noLibraryScenes':
+        'Chưa có cảnh nào trong thư viện Whisparr của bạn. Tìm kiếm ở trên để duyệt danh mục cảnh.',
+      'components.Discover.DiscoverAdult.noResults':
+        'Không có cảnh nào khớp với tìm kiếm này.',
+      'components.Discover.DiscoverAdult.partialResults':
+        'Một số máy chủ Whisparr không thể được tìm kiếm. Kết quả có thể không đầy đủ.',
+      'components.Discover.DiscoverAdult.recentScenes':
+        'Cảnh được thêm gần đây',
+      'components.Discover.DiscoverAdult.retrySearch': 'Thử lại',
+      'components.Discover.DiscoverAdult.search': 'Tìm kiếm cảnh người lớn',
+      'components.Discover.DiscoverAdult.searchHint':
+        'Duyệt các cảnh trong thư viện Whisparr của bạn hoặc tìm kiếm theo tiêu đề, diễn viên hoặc hãng phim.',
+      'components.Discover.DiscoverAdult.searchPlaceholder':
+        'Tiêu đề, diễn viên hoặc hãng phim',
+      'components.Discover.DiscoverAdult.searchResults': 'Kết quả tìm kiếm',
+      'components.Discover.DiscoverAdult.serverFilter': 'Duyệt máy chủ',
+      'components.Discover.DiscoverAdult.title': 'Người lớn',
+      'components.Discover.DiscoverAdult.unavailable':
+        'Tìm kiếm cảnh người lớn hiện không khả dụng.',
     },
   },
 ] as const;
