@@ -540,19 +540,29 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       picker: 'Choose an edition',
       recommended: 'Recommended',
       volumes: 'Volumes',
+      readerShelf: 'Manage Reader Shelf',
     },
     fr: {
       picker: 'Choisir une édition',
       recommended: 'Recommandée',
       volumes: 'Volumes',
+      readerShelf: 'Gérer l’étagère de lecture',
     },
-    ar: { picker: 'اختر نسخة', recommended: 'موصى بها', volumes: 'المجلدات' },
+    ar: {
+      picker: 'اختر نسخة',
+      recommended: 'موصى بها',
+      volumes: 'المجلدات',
+      readerShelf: 'إدارة رف القراءة',
+    },
   }[baseline ? 'en' : locale];
   test(`comic detail localizes edition and issue controls in ${locale}`, async ({
     page,
   }, info) => {
     await fixtures(page, { locale });
     await page.goto('/comic/al-105778');
+    await expect(
+      page.getByRole('button', { name: copy.readerShelf })
+    ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: copy.picker })
     ).toBeVisible();

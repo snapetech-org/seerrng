@@ -6892,11 +6892,28 @@ three locales, including RTL direction and horizontal-overflow checks. The
 complete Comics and Manga browser workflow passes 84 cases with 28 existing
 device skips. Matched English baseline/candidate captures at 360, 768, and
 1280 pixels were generated from the same fixture; the 360-pixel views were
-inspected. French and Arabic desktop and phone candidates were inspected. The
-catalog detail and issue pages still contain English-only UI copy and remain a
-separate localization gap. Live AniList/ComicVine behavior and independent
-linguistic review remain unverified. Evidence is retained at
+inspected. French and Arabic desktop and phone candidates were inspected.
+Catalog detail and issue pages now localize their shared Reader Shelf controls;
+see the Reader Shelf entry below. Live AniList/ComicVine behavior and
+independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-comics-localization-20261122/`.
+
+### Reader Shelf localization
+
+The shared Reader Shelf panel now localizes its setup, preview, create, save,
+and saved-result controls in English, French, and Arabic. This closes the
+English-only control gap on Comics detail and the shared author and book-series
+entry points. Existing reader visibility restrictions, consent before creating
+an empty shelf, provider targets, and API payloads are preserved.
+
+The focused browser suite passes 24 cases across desktop, iPhone, Android, and
+tablet, including exact save payload/readback assertions and the BookOrbit
+visibility lock. The same workflow also passes through a production build
+served by SeerrNG's Express `/lumen/` mount. Matched French iPhone comic-detail
+baseline/candidate captures and French/Arabic mobile Reader Shelf states were
+inspected; no horizontal overflow was found. Live reader integrations and
+independent linguistic review remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-shelf-localization-20261122/`.
 
 ### Book author and series localization
 

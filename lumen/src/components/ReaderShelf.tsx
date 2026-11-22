@@ -5,6 +5,7 @@ import { api, ApiError, readerServiceUrl } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -47,6 +48,7 @@ function ShelfEditor({
   groupings: Grouping[];
   pending: { current: boolean };
 }) {
+  const { t } = useLumenLocale();
   const [provider, setProvider] = useState(
     configured[preferred]
       ? preferred
@@ -122,8 +124,14 @@ function ShelfEditor({
         friendlyError(
           failure,
           save
-            ? 'Could not save the reader shelf.'
-            : 'Could not check the reader library.'
+            ? t(
+                'lumen.readerShelf.saveFailed',
+                'Could not save the reader shelf.'
+              )
+            : t(
+                'lumen.readerShelf.previewFailed',
+                'Could not check the reader library.'
+              )
         )
       );
     } finally {
@@ -136,17 +144,25 @@ function ShelfEditor({
 
   return result ? (
     <>
-      <p role="status">Reader shelf saved</p>
+      <p role="status">{t('lumen.readerShelf.saved', 'Reader shelf saved')}</p>
       <p className="note">
         {result.grouping.countVerified
-          ? `${result.grouping.lastMatchCount} items confirmed.`
-          : `${result.grouping.lastMatchCount} preview matches. The reader has yet to confirm the final count.`}
+          ? t('lumen.readerShelf.confirmedCount', 'Confirmed items: {count}.', {
+              count: result.grouping.lastMatchCount,
+            })
+          : t(
+              'lumen.readerShelf.previewCount',
+              '{count} preview matches. The reader has yet to confirm the final count.',
+              { count: result.grouping.lastMatchCount }
+            )}
       </p>
       {result.warning && <p className="note">{result.warning}</p>}
       <div className="toolbar">
         {href && (
           <a className="btn btn-tonal btn-sm" href={href}>
-            Open {names[provider]}
+            {t('lumen.readerShelf.openProvider', 'Open {provider}', {
+              provider: names[provider],
+            })}
           </a>
         )}
       </div>
@@ -154,11 +170,14 @@ function ShelfEditor({
   ) : (
     <>
       <p className="note">
-        Create a shelf that updates as matching titles enter the reader library.
+        {t(
+          'lumen.readerShelf.description',
+          'Create a shelf that updates as matching titles enter the reader library.'
+        )}
       </p>
       <div className="setlist">
         <label className="set cfg-row">
-          <span>Reader Service</span>
+          <span>{t('lumen.readerShelf.service', 'Reader Service')}</span>
           <select
             className="cfg-select"
             disabled={busy}
@@ -184,9 +203,14 @@ function ShelfEditor({
         </label>
         <label className="set cfg-row">
           <span>
-            Share With Other Reader Users
+            {t('lumen.readerShelf.shareUsers', 'Share With Other Reader Users')}
             {provider === 'bookorbit' && existing && (
-              <small>BookOrbit locks visibility after creation.</small>
+              <small>
+                {t(
+                  'lumen.readerShelf.visibilityLocked',
+                  'BookOrbit locks visibility after creation.'
+                )}
+              </small>
             )}
           </span>
           <input
@@ -198,7 +222,7 @@ function ShelfEditor({
         </label>
         {provider === 'bookorbit' && (
           <label className="set cfg-row">
-            <span>Sync to Kobo</span>
+            <span>{t('lumen.readerShelf.syncKobo', 'Sync to Kobo')}</span>
             <input
               type="checkbox"
               checked={syncToKobo}
@@ -210,7 +234,11 @@ function ShelfEditor({
       </div>
       {preview && (
         <>
-          <p role="status">{preview.matchedCount} current matches</p>
+          <p role="status">
+            {t('lumen.readerShelf.currentMatches', 'Current matches: {count}', {
+              count: preview.matchedCount,
+            })}
+          </p>
           {preview.ruleSummary && <p className="note">{preview.ruleSummary}</p>}
           {!!preview.sampleTitles.length && (
             <ul>
@@ -221,7 +249,12 @@ function ShelfEditor({
           )}
           {!preview.matchedCount && (
             <label className="set cfg-row">
-              <span>Create an Empty Shelf for Future Matches</span>
+              <span>
+                {t(
+                  'lumen.readerShelf.createEmpty',
+                  'Create an Empty Shelf for Future Matches'
+                )}
+              </span>
               <input
                 type="checkbox"
                 checked={allowEmpty}
@@ -244,7 +277,7 @@ function ShelfEditor({
           disabled={busy}
           onClick={() => void run(false)}
         >
-          Preview Matches
+          {t('lumen.readerShelf.previewMatches', 'Preview Matches')}
         </button>
         <button
           type="button"
@@ -252,7 +285,9 @@ function ShelfEditor({
           disabled={busy || !preview || (!preview.matchedCount && !allowEmpty)}
           onClick={() => void run(true)}
         >
-          {existing ? 'Save Shelf Updates' : 'Create Shelf'}
+          {existing
+            ? t('lumen.readerShelf.saveUpdates', 'Save Shelf Updates')
+            : t('lumen.readerShelf.createShelf', 'Create Shelf')}
         </button>
       </div>
     </>
@@ -260,6 +295,7 @@ function ShelfEditor({
 }
 
 function ShelfSheet({ target, close }: { target: Target; close: () => void }) {
+  const { t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const settings = useApi<{
     preferredProvider: Provider;
@@ -281,21 +317,21 @@ function ShelfSheet({ target, close }: { target: Target; close: () => void }) {
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Reader Shelf"
+        aria-label={t('lumen.readerShelf.title', 'Reader Shelf')}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Reader Shelf</h3>
+            <h3>{t('lumen.readerShelf.title', 'Reader Shelf')}</h3>
             <p className="note">{target.name}</p>
           </header>
           <ServiceNote
-            what="reader connections"
+            what={t('lumen.readerShelf.connections', 'reader connections')}
             error={settings.error}
             retry={settings.reload}
           />
           <ServiceNote
-            what="reader shelves"
+            what={t('lumen.readerShelf.shelves', 'reader shelves')}
             error={groupings.error}
             retry={groupings.reload}
           />
@@ -313,14 +349,14 @@ function ShelfSheet({ target, close }: { target: Target; close: () => void }) {
               />
             ) : (
               <Link className="go" to="/admin/reader-delivery">
-                Configure Reader Delivery
+                {t('lumen.readerShelf.configure', 'Configure Reader Delivery')}
               </Link>
             )
           ) : (
             !settings.error &&
             !groupings.error && (
               <p className="note" role="status">
-                Loading reader settings…
+                {t('lumen.readerShelf.loading', 'Loading reader settings…')}
               </p>
             )
           )}
@@ -330,7 +366,7 @@ function ShelfSheet({ target, close }: { target: Target; close: () => void }) {
               type="button"
               onClick={dismiss}
             >
-              Close
+              {t('lumen.readerShelf.close', 'Close')}
             </button>
           </div>
         </div>
@@ -342,6 +378,7 @@ function ShelfSheet({ target, close }: { target: Target; close: () => void }) {
 
 export default function ReaderShelf({ target }: { target: Target }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const [open, setOpen] = useState(false);
   if (!isAdministrator(user?.permissions) || !target.id || !target.name)
     return null;
@@ -353,7 +390,7 @@ export default function ReaderShelf({ target }: { target: Target }) {
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        Manage Reader Shelf
+        {t('lumen.readerShelf.manage', 'Manage Reader Shelf')}
       </button>
       {open && <ShelfSheet target={target} close={() => setOpen(false)} />}
     </>

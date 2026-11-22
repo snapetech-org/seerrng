@@ -6256,6 +6256,33 @@ export const localeData = [
       'lumen.comicDetail.volumeCount': '{count} مجلدات',
       'lumen.comicDetail.volumeUnitPlural': 'مجلدات',
       'lumen.comicDetail.volumes': 'المجلدات',
+      'lumen.readerShelf.manage': 'إدارة رف القراءة',
+      'lumen.readerShelf.title': 'رف القراءة',
+      'lumen.readerShelf.connections': 'اتصالات القارئ',
+      'lumen.readerShelf.shelves': 'أرفف القراءة',
+      'lumen.readerShelf.loading': 'جارٍ تحميل إعدادات القراءة…',
+      'lumen.readerShelf.description':
+        'أنشئ رفًا يتحدّث عند إضافة العناوين المطابقة إلى مكتبة القراءة.',
+      'lumen.readerShelf.service': 'خدمة القراءة',
+      'lumen.readerShelf.shareUsers':
+        'مشاركة الرف مع مستخدمي خدمة القراءة الآخرين',
+      'lumen.readerShelf.visibilityLocked':
+        'يقفل BookOrbit إعداد الظهور بعد الإنشاء.',
+      'lumen.readerShelf.syncKobo': 'مزامنة مع Kobo',
+      'lumen.readerShelf.saved': 'تم حفظ رف القراءة',
+      'lumen.readerShelf.confirmedCount': 'العناصر المؤكدة: {count}.',
+      'lumen.readerShelf.previewCount':
+        '{count} تطابقًا في المعاينة. لم يؤكد القارئ العدد النهائي بعد.',
+      'lumen.readerShelf.openProvider': 'فتح {provider}',
+      'lumen.readerShelf.createShelf': 'إنشاء الرف',
+      'lumen.readerShelf.saveUpdates': 'حفظ تعديلات الرف',
+      'lumen.readerShelf.currentMatches': 'التطابقات الحالية: {count}',
+      'lumen.readerShelf.createEmpty': 'إنشاء رف فارغ للتطابقات المستقبلية',
+      'lumen.readerShelf.previewMatches': 'معاينة التطابقات',
+      'lumen.readerShelf.close': 'إغلاق',
+      'lumen.readerShelf.configure': 'إعداد التوصيل إلى القراء',
+      'lumen.readerShelf.saveFailed': 'تعذّر حفظ رف القراءة.',
+      'lumen.readerShelf.previewFailed': 'تعذّر التحقق من مكتبة القراءة.',
       'lumen.magazines.title': 'المجلات',
       'lumen.magazines.searchResultsGuidance':
         'نتائج البحث. اطلب عنوانًا لبدء تلقي الأعداد الجديدة.',
@@ -16930,6 +16957,33 @@ export const localeData = [
       'lumen.comicDetail.volumeCount': '{count} volumes',
       'lumen.comicDetail.volumeUnitPlural': 'vols',
       'lumen.comicDetail.volumes': 'Volumes',
+      'lumen.readerShelf.manage': 'Manage Reader Shelf',
+      'lumen.readerShelf.title': 'Reader Shelf',
+      'lumen.readerShelf.connections': 'reader connections',
+      'lumen.readerShelf.shelves': 'reader shelves',
+      'lumen.readerShelf.loading': 'Loading reader settings…',
+      'lumen.readerShelf.description':
+        'Create a shelf that updates as matching titles enter the reader library.',
+      'lumen.readerShelf.service': 'Reader Service',
+      'lumen.readerShelf.shareUsers': 'Share With Other Reader Users',
+      'lumen.readerShelf.visibilityLocked':
+        'BookOrbit locks visibility after creation.',
+      'lumen.readerShelf.syncKobo': 'Sync to Kobo',
+      'lumen.readerShelf.saved': 'Reader shelf saved',
+      'lumen.readerShelf.confirmedCount': 'Confirmed items: {count}.',
+      'lumen.readerShelf.previewCount':
+        '{count} preview matches. The reader has yet to confirm the final count.',
+      'lumen.readerShelf.openProvider': 'Open {provider}',
+      'lumen.readerShelf.createShelf': 'Create Shelf',
+      'lumen.readerShelf.saveUpdates': 'Save Shelf Updates',
+      'lumen.readerShelf.currentMatches': 'Current matches: {count}',
+      'lumen.readerShelf.createEmpty':
+        'Create an Empty Shelf for Future Matches',
+      'lumen.readerShelf.previewMatches': 'Preview Matches',
+      'lumen.readerShelf.close': 'Close',
+      'lumen.readerShelf.configure': 'Configure Reader Delivery',
+      'lumen.readerShelf.saveFailed': 'Could not save the reader shelf.',
+      'lumen.readerShelf.previewFailed': 'Could not check the reader library.',
       'lumen.magazines.title': 'Magazines',
       'lumen.magazines.searchResultsGuidance':
         'Search results. Request a title to start getting new issues.',
@@ -28663,6 +28717,37 @@ export const localeData = [
       'lumen.comicDetail.volumeCount': '{count} vol.',
       'lumen.comicDetail.volumeUnitPlural': 'vol.',
       'lumen.comicDetail.volumes': 'Volumes',
+      'lumen.readerShelf.manage': 'Gérer l’étagère de lecture',
+      'lumen.readerShelf.title': 'Étagère de lecture',
+      'lumen.readerShelf.connections': 'connexions au lecteur',
+      'lumen.readerShelf.shelves': 'étagères de lecture',
+      'lumen.readerShelf.loading': 'Chargement des paramètres du lecteur…',
+      'lumen.readerShelf.description':
+        'Créez une étagère qui se met à jour à mesure que les titres correspondants sont ajoutés à la bibliothèque de lecture.',
+      'lumen.readerShelf.service': 'Service de lecture',
+      'lumen.readerShelf.shareUsers':
+        'Partager avec les autres utilisateurs du service',
+      'lumen.readerShelf.visibilityLocked':
+        'BookOrbit verrouille la visibilité après la création.',
+      'lumen.readerShelf.syncKobo': 'Synchroniser avec Kobo',
+      'lumen.readerShelf.saved': 'Étagère de lecture enregistrée',
+      'lumen.readerShelf.confirmedCount': 'Éléments confirmés : {count}.',
+      'lumen.readerShelf.previewCount':
+        '{count} correspondances en aperçu. Le lecteur n’a pas encore confirmé le total final.',
+      'lumen.readerShelf.openProvider': 'Ouvrir {provider}',
+      'lumen.readerShelf.createShelf': 'Créer l’étagère',
+      'lumen.readerShelf.saveUpdates':
+        'Enregistrer les modifications de l’étagère',
+      'lumen.readerShelf.currentMatches': 'Correspondances actuelles : {count}',
+      'lumen.readerShelf.createEmpty':
+        'Créer une étagère vide pour les correspondances futures',
+      'lumen.readerShelf.previewMatches': 'Prévisualiser les correspondances',
+      'lumen.readerShelf.close': 'Fermer',
+      'lumen.readerShelf.configure': 'Configurer la distribution aux lecteurs',
+      'lumen.readerShelf.saveFailed':
+        'Impossible d’enregistrer l’étagère de lecture.',
+      'lumen.readerShelf.previewFailed':
+        'Impossible de vérifier la bibliothèque de lecture.',
       'lumen.magazines.title': 'Magazines',
       'lumen.magazines.searchResultsGuidance':
         'Résultats de recherche. Demandez un titre pour recevoir les nouveaux numéros.',
