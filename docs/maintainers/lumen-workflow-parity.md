@@ -14,7 +14,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Area | Native reference | Lumen baseline | Parity work |
 | --- | --- | --- | --- |
 | Discovery and search | `/`, `/search`, `/discover/*` | Lumen browses and searches enabled movie, series, book, audiobook, music, comic, magazine, game, patch, sports, and adult catalogs, with Following and linked discovery pages. Personal Discover shelves and display controls sync through the authenticated SeerrNG user settings API. Direct routes, navigation, Search, Discover shelves, Watchlists, and My Media enforce global and per-account category access before loading catalogs. Discover shell labels, shelf headings, empty/error/retry states, recent-media dates, and card title-view actions follow English, French, and Arabic locale in standalone and bundled deployments. Trending localizes its media/time filters and load/empty states and retains API filters after retry. Music discovery and its album/artist detail pages now localize their page-owned labels, filters, metadata headings, track groups, request action, empty/error feedback, and paging. | Finish other route localization, shared music-action copy, native-matched visual acceptance, and verify remaining live provider data separately. |
-| Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. Focused software request history and its permission-aware management actions are verified in standalone and bundled Lumen. | Verify live acquisition and imports, remaining catalog/content actions, and native-matched visual acceptance. |
+| Software and games | `/software`, `/discover/games`, `/discover/patches`, `/games` | Game Finder, PC/retro/modern catalogs, patch discovery and requests, software request history, My Games, household sharing, and Steam import are present. Focused software request history and its permission-aware management actions are verified in standalone and bundled Lumen. IGDB catalog detail now adds eligible games directly to the viewer's private My Games library without requiring software request permission. | Verify live acquisition and imports, remaining catalog/content actions, and native-matched visual acceptance. |
 | Library and saved items | `/library`, `/profile/watchlist`, `/discover/watchlist`, `/share`, `/following` | My Media, personal and Discover Watchlists, Share, Following, availability/play links, and private/household Games have dedicated screens. Movie, TV, book, music, comic, and magazine poster cards expose safe Watchlist add/remove actions. My Media supports account recovery, private identity mapping packs, tracking updates, and resumable scans. Delegated Watchlists and ambiguous combined-list ownership are covered. | Verify live provider mutations, determine whether a separate delegated library-sharing workflow exists in native SeerrNG, and complete native-matched/bundled acceptance. |
 | Calendar and group viewing | `/calendar`, `/coming-soon`, `/swipe`, `/watch-sessions` | Release Calendar supports the native month, media, authorized scope, and administrator unmonitored filters, plus partial/truncated/empty states and title destinations. Its copy and release details are localized for English, French, and Arabic in standalone and bundled deployments. Coming Soon, Swipe, and watch-session creation, invitations, ballots, membership, and confirmed host/guest actions are implemented. | Verify live calendar provider results, real multi-user playback, and remaining native-matched and bundled acceptance. |
 | Requests | `/requests`, `/track-requests`, user request routes, detail request dialogs | Request history and lifecycle, title/edition identity, progress, permission-aware retry, explicit Sonarr season mapping, managed-copy cleanup that preserves history, and supported 4K paths. Lumen’s TV request state covers exact season and episode selection, quota approval, destination-specific settings, fixture-covered season-metadata retry with selection preservation, and localized episode selection/recovery in English, French, and Arabic. The large-series failure in the tester screenshot remains unconfirmed against a live provider. Role fixtures cover own-request scope, read-only household visibility, manager moderation of a foreign request, owner cancellation, category-authorized retry, season mapping, and managed-copy removal in standalone and bundled deployments. | Compare each media category independently; verify live season metadata, live service handoff, and matched native visuals. Request-role evidence is in `requests-pages.spec.ts`, `request-status.spec.ts`, and `request-retry-coverage.spec.ts`; episode-sheet localization evidence is in `tv-episode-request-localization.spec.ts`. Fixtures do not establish live server/provider behavior. |
@@ -6199,3 +6199,23 @@ passes all six narrow-viewport cases with two expected desktop skips. At
 controls; the candidate keeps the same content geometry and hides the bar
 while those controls are exposed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-tabbar-20261121/`.
+
+### Add catalog games to My Games
+
+Signed-in users can add an eligible IGDB catalog game from its Lumen detail
+page directly to their private My Games backlog, even when they cannot submit
+software requests. Existing entries link to My Games, lookup and add failures
+can be retried, and the action is omitted for DAT-only titles without an IGDB
+identity. The feature uses the authenticated `/game-library/lookup` and
+`POST /game-library` API, preserving request permissions and acquisition
+behavior.
+
+The browser suite passes 16 cases in standalone and 16 against the production
+Express `/lumen/` mount across desktop, iPhone, Android, and tablet. It covers
+no-request-permission users, existing entries, lookup/add retry, DAT exclusion,
+payload identity, and navigation. Matching baseline/candidate desktop and
+iPhone renders were inspected for both deployments; the added section follows
+the existing page width and spacing. API/provider effects against a live
+SeerrNG instance and native-matched visual comparison remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-action-20261121/`.

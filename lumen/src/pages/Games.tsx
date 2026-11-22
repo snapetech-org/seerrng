@@ -33,6 +33,7 @@ import FollowButton from '../components/FollowButton';
 import GameContentPicker from '../components/GameContentPicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import { useToast } from '../components/toast';
+import { friendlyError } from '../errors';
 import {
   GAME_LABEL,
   gameState,
@@ -377,9 +378,30 @@ function GameDetailView({
   const pending = useRef(false);
   const [done, setDone] = useState('');
   const [requestId, setRequestId] = useState<number>();
+  const [libraryEntryId, setLibraryEntryId] = useState<number>();
+  const [addingToLibrary, setAddingToLibrary] = useState(false);
+  const [libraryFeedback, setLibraryFeedback] = useState('');
+  const [libraryError, setLibraryError] = useState('');
+  const libraryPending = useRef(false);
   const [selection, setSelection] = useState<
     GameContentSelection | null | undefined
   >(null);
+  const libraryCatalogId =
+    g?.catalogProvider === 'igdb' &&
+    typeof g.igdbId === 'number' &&
+    Number.isSafeInteger(g.igdbId) &&
+    g.igdbId > 0 &&
+    g.igdbId <= 2_147_483_647 &&
+    ['game', 'retro', 'modern'].includes(cat)
+      ? g.igdbId
+      : undefined;
+  const libraryLookupPath =
+    user && libraryCatalogId
+      ? `/game-library/lookup?category=${encodeURIComponent(cat)}&catalogId=${libraryCatalogId}`
+      : null;
+  const libraryLookup = useApi<{ entry: { id: number } | null }>(
+    libraryLookupPath
+  );
   if (error)
     return (
       <ExtraGate k="game">
@@ -387,6 +409,50 @@ function GameDetailView({
       </ExtraGate>
     );
   if (!g) return <div className="detail-loading" aria-busy="true" />;
+  const existingLibraryEntryId =
+    libraryEntryId ?? libraryLookup.data?.entry?.id;
+  const addToLibrary = async () => {
+    if (!user || !libraryCatalogId || libraryPending.current) return;
+    libraryPending.current = true;
+    setAddingToLibrary(true);
+    setLibraryError('');
+    setLibraryFeedback('');
+    try {
+      const result = await api<{ entry: { id: number } }>('/game-library', {
+        method: 'POST',
+        body: JSON.stringify({ category: cat, catalogId: libraryCatalogId }),
+      });
+      if (!Number.isSafeInteger(result.entry?.id) || result.entry.id <= 0)
+        throw new Error(
+          t(
+            'lumen.gameLibrary.couldNotAddGameToMyGames',
+            'This game could not be added to My Games.'
+          )
+        );
+      setLibraryEntryId(result.entry.id);
+      setLibraryFeedback(
+        t(
+          'lumen.gameLibrary.addedAsPrivateBacklogGame',
+          'Added as a private backlog game.'
+        )
+      );
+      libraryLookup.reload();
+    } catch (cause) {
+      setLibraryError(
+        friendlyError(
+          cause,
+          t(
+            'lumen.gameLibrary.couldNotAddGameToMyGames',
+            'This game could not be added to My Games.'
+          ),
+          t
+        )
+      );
+    } finally {
+      libraryPending.current = false;
+      setAddingToLibrary(false);
+    }
+  };
   const s = statOf(g);
   const systems = (g.emulationSystems || []).filter((x) => x.group === cat);
   const sys = system
@@ -579,6 +645,87 @@ function GameDetailView({
             </div>
           )}
           <div className="dacts pc">{main}</div>
+          {user && libraryCatalogId && (
+            <>
+              <section
+                className="setlist"
+                aria-label={t(
+                  'lumen.gameLibrary.privateGameLibrary',
+                  'Private Game Library'
+                )}
+              >
+                <div className="set">
+                  <div>
+                    <b>{t('lumen.gameLibrary.myGames', 'My Games')}</b>
+                    <small>
+                      {t(
+                        'lumen.gameLibrary.privateGameLibraryDescription',
+                        'Add it to your private game library, then track progress and choose whether to share it with your household.'
+                      )}
+                    </small>
+                  </div>
+                  <div className="toolbar">
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      disabled={
+                        addingToLibrary ||
+                        existingLibraryEntryId !== undefined ||
+                        (!libraryLookup.data && !libraryLookup.error)
+                      }
+                      onClick={() => void addToLibrary()}
+                    >
+                      {addingToLibrary
+                        ? t('lumen.gameLibrary.addingToMyGames', 'Adding…')
+                        : existingLibraryEntryId !== undefined
+                          ? t(
+                              'lumen.gameLibrary.alreadyInMyGames',
+                              'Already in My Games'
+                            )
+                          : !libraryLookup.data && !libraryLookup.error
+                            ? t(
+                                'lumen.gameLibrary.checkingMyGames',
+                                'Checking My Games…'
+                              )
+                            : t(
+                                'lumen.gameLibrary.addToMyGames',
+                                'Add to My Games'
+                              )}
+                    </button>
+                    {existingLibraryEntryId !== undefined && (
+                      <Link className="chip" to={`/game-library?c=${cat}`}>
+                        {t('lumen.gameLibrary.openMyGames', 'Open My Games')}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+                {libraryFeedback && (
+                  <p className="note" role="status">
+                    {libraryFeedback}
+                  </p>
+                )}
+              </section>
+              {libraryLookup.error && (
+                <ServiceNote
+                  error={libraryLookup.error}
+                  title={t(
+                    'lumen.gameLibrary.myGamesLookupFailure',
+                    'Could not check My Games.'
+                  )}
+                  what={t('lumen.gameLibrary.myGames', 'My Games')}
+                  retryLabel={t(
+                    'lumen.gameLibrary.retryMyGamesCheck',
+                    'Retry My Games Check'
+                  )}
+                  retry={libraryLookup.reload}
+                />
+              )}
+              {libraryError && (
+                <p className="note" role="alert">
+                  {libraryError}
+                </p>
+              )}
+            </>
+          )}
           {typeof requestId === 'number' &&
             Number.isSafeInteger(requestId) &&
             requestId > 0 && (

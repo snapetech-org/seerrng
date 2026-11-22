@@ -3444,6 +3444,19 @@ export const localeData = [
       'lumen.gameLibrary.allSharedGames': 'كل الألعاب المشتركة',
       'lumen.gameLibrary.allTypes': 'كل الأنواع',
       'lumen.gameLibrary.alsoOwnedOutsideSteam': 'مملوكة أيضًا خارج Steam',
+      'lumen.gameLibrary.addToMyGames': 'أضف إلى ألعابي',
+      'lumen.gameLibrary.addingToMyGames': 'جارٍ الإضافة…',
+      'lumen.gameLibrary.alreadyInMyGames': 'موجود بالفعل في ألعابي',
+      'lumen.gameLibrary.addedAsPrivateBacklogGame':
+        'أُضيف إلى مكتبتك الخاصة كإضافة في قائمة الانتظار.',
+      'lumen.gameLibrary.couldNotAddGameToMyGames':
+        'تعذرت إضافة هذه اللعبة إلى ألعابي.',
+      'lumen.gameLibrary.checkingMyGames': 'جارٍ التحقق من ألعابي…',
+      'lumen.gameLibrary.myGamesLookupFailure': 'تعذر التحقق من ألعابي.',
+      'lumen.gameLibrary.openMyGames': 'فتح ألعابي',
+      'lumen.gameLibrary.privateGameLibraryDescription':
+        'أضفها إلى مكتبتك الخاصة، ثم تابع تقدمك واختر ما إذا كنت تريد مشاركتها مع أفراد أسرتك.',
+      'lumen.gameLibrary.retryMyGamesCheck': 'إعادة التحقق من ألعابي',
       'lumen.gameLibrary.applyFilters': 'تطبيق عوامل التصفية',
       'lumen.gameLibrary.backlog': 'قائمة الانتظار',
       'lumen.gameLibrary.browseGameCatalogue': 'تصفح كتالوج الألعاب',
@@ -12923,6 +12936,19 @@ export const localeData = [
       'lumen.gameLibrary.allSharedGames': 'All Shared Games',
       'lumen.gameLibrary.allTypes': 'All Types',
       'lumen.gameLibrary.alsoOwnedOutsideSteam': 'Also Owned Outside Steam',
+      'lumen.gameLibrary.addToMyGames': 'Add to My Games',
+      'lumen.gameLibrary.addingToMyGames': 'Adding…',
+      'lumen.gameLibrary.alreadyInMyGames': 'Already in My Games',
+      'lumen.gameLibrary.addedAsPrivateBacklogGame':
+        'Added as a private backlog game.',
+      'lumen.gameLibrary.couldNotAddGameToMyGames':
+        'This game could not be added to My Games.',
+      'lumen.gameLibrary.checkingMyGames': 'Checking My Games…',
+      'lumen.gameLibrary.myGamesLookupFailure': 'Could not check My Games.',
+      'lumen.gameLibrary.openMyGames': 'Open My Games',
+      'lumen.gameLibrary.privateGameLibraryDescription':
+        'Add it to your private game library, then track progress and choose whether to share it with your household.',
+      'lumen.gameLibrary.retryMyGamesCheck': 'Retry My Games Check',
       'lumen.gameLibrary.applyFilters': 'Apply Filters',
       'lumen.gameLibrary.backlog': 'Backlog',
       'lumen.gameLibrary.browseGameCatalogue': 'Browse Game Catalogue',
@@ -22998,6 +23024,20 @@ export const localeData = [
       'lumen.gameLibrary.allSharedGames': 'Tous les jeux partagés',
       'lumen.gameLibrary.allTypes': 'Tous les types',
       'lumen.gameLibrary.alsoOwnedOutsideSteam': 'Également possédé hors Steam',
+      'lumen.gameLibrary.addToMyGames': 'Ajouter à Mes jeux',
+      'lumen.gameLibrary.addingToMyGames': 'Ajout…',
+      'lumen.gameLibrary.alreadyInMyGames': 'Déjà dans Mes jeux',
+      'lumen.gameLibrary.addedAsPrivateBacklogGame':
+        'Ajouté à votre bibliothèque privée comme jeu à découvrir.',
+      'lumen.gameLibrary.couldNotAddGameToMyGames':
+        'Impossible d’ajouter ce jeu à Mes jeux.',
+      'lumen.gameLibrary.checkingMyGames': 'Vérification de Mes jeux…',
+      'lumen.gameLibrary.myGamesLookupFailure':
+        'Impossible de vérifier Mes jeux.',
+      'lumen.gameLibrary.openMyGames': 'Ouvrir Mes jeux',
+      'lumen.gameLibrary.privateGameLibraryDescription':
+        'Ajoutez-le à votre bibliothèque de jeux privée, puis suivez votre progression et choisissez de le partager ou non avec votre foyer.',
+      'lumen.gameLibrary.retryMyGamesCheck': 'Réessayer la vérification',
       'lumen.gameLibrary.applyFilters': 'Appliquer les filtres',
       'lumen.gameLibrary.backlog': 'À faire',
       'lumen.gameLibrary.browseGameCatalogue': 'Parcourir le catalogue de jeux',
