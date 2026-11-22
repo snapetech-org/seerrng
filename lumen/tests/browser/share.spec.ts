@@ -159,8 +159,8 @@ for (const permissions of [32, 2]) {
     });
 
     await page.goto('/');
-    const discoverShortcut = page.getByRole('link', {
-      name: 'Share',
+    const discoverShortcut = page.locator('#view').getByRole('link', {
+      name: 'Share & Identify',
       exact: true,
     });
     await discoverShortcut.scrollIntoViewIfNeeded();

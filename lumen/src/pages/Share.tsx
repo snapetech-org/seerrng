@@ -13,6 +13,7 @@ import { streamingOverrideMessage } from '../components/requestSheet';
 import { embedded } from '../deployment';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { canDetectBarcodes, detectBarcodes } from '../shareBarcode';
 import { takeNativeSharedImage, takeSharedForm } from '../shareInbox';
 
@@ -70,6 +71,7 @@ function candidatePath(candidate: ResolveCandidate, format: ShareFormat) {
 }
 
 export default function Share() {
+  const { t } = useLumenLocale();
   const [params] = useSearchParams();
   const { hash, pathname, search } = useLocation();
   const navigate = useNavigate();
@@ -107,11 +109,16 @@ export default function Share() {
   async function attachImage(file: File, inputText = text) {
     if (working.current || !acceptsImage) return;
     if (!file.type.startsWith('image/') || !file.size) {
-      setError('Choose a readable image file.');
+      setError(t('lumen.share.readableImage', 'Choose a readable image file.'));
       return;
     }
     if (file.size > (caps.data?.maxImageBytes ?? 6 * 1024 * 1024)) {
-      setError('This image exceeds the server’s upload limit.');
+      setError(
+        t(
+          'lumen.share.imageTooLarge',
+          'This image exceeds the server’s upload limit.'
+        )
+      );
       return;
     }
     setImage(imageEnabled ? file : undefined);
@@ -132,11 +139,17 @@ export default function Share() {
         if (next.length <= 16000) setText(next);
         setNotice(
           next.length <= 16000
-            ? `Found ISBN ${isbn}.`
-            : `Found ISBN ${isbn}. Shorten the text to add it.`
+            ? t('lumen.share.foundIsbn', 'Found ISBN {isbn}.', { isbn })
+            : t(
+                'lumen.share.foundIsbnTooLong',
+                'Found ISBN {isbn}. Shorten the text to add it.',
+                { isbn }
+              )
         );
       } else if (!imageEnabled) {
-        setError('No ISBN barcode was found in this image.');
+        setError(
+          t('lumen.share.noIsbn', 'No ISBN barcode was found in this image.')
+        );
       }
     } finally {
       working.current = false;
@@ -151,7 +164,10 @@ export default function Share() {
         : takeSharedForm(id));
       if (!form) {
         setError(
-          'This share could not be opened. Try sharing again or paste it here.'
+          t(
+            'lumen.share.openFailed',
+            'This share could not be opened. Try sharing again or paste it here.'
+          )
         );
         return;
       }
@@ -165,17 +181,28 @@ export default function Share() {
       if (incoming) setText(incoming);
       const file = form.get('image');
       if (form.has('imageTooLarge'))
-        setError('This shared image exceeds the upload limit.');
+        setError(
+          t(
+            'lumen.share.sharedImageTooLarge',
+            'This shared image exceeds the upload limit.'
+          )
+        );
       if (file instanceof File) {
         if (acceptsImage) await attachImage(file, incoming || text);
         else
           setError(
-            'Image recognition is unavailable. You can still use shared text.'
+            t(
+              'lumen.share.imageUnavailable',
+              'Image recognition is unavailable. You can still use shared text.'
+            )
           );
       }
     } catch {
       setError(
-        'This share could not be opened. Try sharing again or paste it here.'
+        t(
+          'lumen.share.openFailed',
+          'This share could not be opened. Try sharing again or paste it here.'
+        )
       );
     }
   });
@@ -232,7 +259,10 @@ export default function Share() {
           )
             throw failure;
           setNotice(
-            'The image could not be read. Showing matches from the text.'
+            t(
+              'lumen.share.imageReadFailed',
+              'The image could not be read. Showing matches from the text.'
+            )
           );
         }
       }
@@ -248,7 +278,13 @@ export default function Share() {
       setChoices(response.groups.map((group) => group.autoSelected ?? -1));
       setSubmitted([]);
     } catch (failure) {
-      setError(friendlyError(failure, 'Could not read the shared input.'));
+      setError(
+        friendlyError(
+          failure,
+          t('lumen.share.readFailed', 'Could not read the shared input.'),
+          t
+        )
+      );
     } finally {
       working.current = false;
       setBusy(false);
@@ -293,13 +329,23 @@ export default function Share() {
             overrides.push({ index, body, title, message });
           else
             failures.push(
-              friendlyError(failure, `Could not request ${title}.`)
+              friendlyError(
+                failure,
+                t('lumen.share.requestFailed', 'Could not request {title}.', {
+                  title,
+                }),
+                t
+              )
             );
         }
       }
       if (count)
         setNotice(
-          `Submitted ${count} ${count === 1 ? 'request' : 'requests'}.`
+          count === 1
+            ? t('lumen.share.submittedOne', 'Submitted 1 request.')
+            : t('lumen.share.submittedMany', 'Submitted {count} requests.', {
+                count,
+              })
         );
       if (failures.length) setError(failures.join(' '));
       setStreamingOverrides(overrides);
@@ -313,27 +359,30 @@ export default function Share() {
     <>
       {streamingOverrides.length > 0 && (
         <ConfirmSheet
-          title="Streaming Request Policy"
+          title={t('lumen.share.streamingPolicy', 'Streaming Request Policy')}
           body={streamingOverrides
             .map(({ title, message }) => `${title}: ${message}`)
             .join(' ')}
-          confirm="Request Anyway"
-          cancel="Cancel"
+          confirm={t('lumen.share.requestAnyway', 'Request Anyway')}
+          cancel={t('lumen.share.cancel', 'Cancel')}
           onClose={() => setStreamingOverrides([])}
           onConfirm={() => void requestSelected(streamingOverrides, true)}
         />
       )}
       <header className="ph">
-        <h1>Share</h1>
+        <h1>{t('lumen.share.title', 'Share')}</h1>
       </header>
       <ServiceNote
         error={caps.error}
-        what="recognition settings"
+        what={t('lumen.share.recognitionSettings', 'recognition settings')}
         retry={caps.reload}
       />
       {caps.data?.enabled === false && (
         <p className="note">
-          Link and list recognition is turned off on this server.
+          {t(
+            'lumen.share.disabled',
+            'Link and list recognition is turned off on this server.'
+          )}
         </p>
       )}
       {caps.data?.enabled && (
@@ -362,7 +411,9 @@ export default function Share() {
           }}
         >
           <label className="sel">
-            <span className="lbl">Titles, links, or ISBNs</span>
+            <span className="lbl">
+              {t('lumen.share.input', 'Titles, links, or ISBNs')}
+            </span>
             <textarea
               className="cfg-json"
               rows={4}
@@ -375,7 +426,7 @@ export default function Share() {
           {acceptsImage && (
             <div className="toolbar">
               <label>
-                Image
+                {t('lumen.share.image', 'Image')}
                 <input
                   type="file"
                   accept="image/*"
@@ -396,7 +447,7 @@ export default function Share() {
                     disabled={busy}
                     onClick={() => setImage(undefined)}
                   >
-                    Remove Image
+                    {t('lumen.share.removeImage', 'Remove Image')}
                   </button>
                 </>
               )}
@@ -404,7 +455,9 @@ export default function Share() {
           )}
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Book Format</span>
+              <span className="lbl">
+                {t('lumen.share.bookFormat', 'Book Format')}
+              </span>
               <select
                 value={format}
                 disabled={busy}
@@ -414,15 +467,17 @@ export default function Share() {
                   )
                 }
               >
-                <option value="ebook">Ebook</option>
-                <option value="audiobook">Audiobook</option>
+                <option value="ebook">{t('lumen.share.ebook', 'Ebook')}</option>
+                <option value="audiobook">
+                  {t('lumen.share.audiobook', 'Audiobook')}
+                </option>
               </select>
             </label>
             <button
               className="btn btn-tonal"
               disabled={busy || (!text.trim() && !(imageEnabled && image))}
             >
-              Find Matches
+              {t('lumen.share.findMatches', 'Find Matches')}
             </button>
           </div>
         </form>
@@ -438,8 +493,12 @@ export default function Share() {
         </p>
       )}
       {result && (
-        <Section title="Matches">
-          {!result.groups.length && <p className="note">No matches found.</p>}
+        <Section title={t('lumen.share.matches', 'Matches')}>
+          {!result.groups.length && (
+            <p className="note">
+              {t('lumen.share.noMatches', 'No matches found.')}
+            </p>
+          )}
           <ul className="setlist">
             {result.groups.map((group, index) => {
               const candidate = group.candidates[choices[index]];
@@ -449,13 +508,19 @@ export default function Share() {
                     <b>{group.input}</b>
                     {candidate && <small>{candidate.evidence}</small>}
                     {submitted.includes(index) && (
-                      <small>Request submitted</small>
+                      <small>
+                        {t('lumen.share.requestSubmitted', 'Request submitted')}
+                      </small>
                     )}
                   </div>
                   {group.candidates.length ? (
                     <div className="toolbar">
                       <label className="sel">
-                        <span className="lbl">Match for {group.input}</span>
+                        <span className="lbl">
+                          {t('lumen.share.matchFor', 'Match for {input}', {
+                            input: group.input,
+                          })}
+                        </span>
                         <select
                           value={choices[index]}
                           disabled={busy || submitted.includes(index)}
@@ -468,7 +533,9 @@ export default function Share() {
                             );
                           }}
                         >
-                          <option value={-1}>Choose a match</option>
+                          <option value={-1}>
+                            {t('lumen.share.chooseMatch', 'Choose a match')}
+                          </option>
                           {group.candidates.map((item, position) => (
                             <option value={position} key={position}>
                               {[item.title, item.creator, item.year]
@@ -483,12 +550,14 @@ export default function Share() {
                           className="btn btn-quiet btn-sm"
                           to={candidatePath(candidate, format)}
                         >
-                          Open Title
+                          {t('lumen.share.openTitle', 'Open Title')}
                         </Link>
                       )}
                     </div>
                   ) : (
-                    <small>No matches found</small>
+                    <small>
+                      {t('lumen.share.noMatches', 'No matches found.')}
+                    </small>
                   )}
                 </li>
               );
@@ -498,7 +567,9 @@ export default function Share() {
             <div className="toolbar">
               {selected.some(({ body }) => body.mediaType === 'tv') && (
                 <label className="sel">
-                  <span className="lbl">Series Seasons</span>
+                  <span className="lbl">
+                    {t('lumen.share.seriesSeasons', 'Series Seasons')}
+                  </span>
                   <select
                     value={seasons}
                     disabled={busy}
@@ -506,8 +577,12 @@ export default function Share() {
                       setSeasons(event.target.value === 'all' ? 'all' : 'first')
                     }
                   >
-                    <option value="first">First season</option>
-                    <option value="all">All seasons</option>
+                    <option value="first">
+                      {t('lumen.share.firstSeason', 'First season')}
+                    </option>
+                    <option value="all">
+                      {t('lumen.share.allSeasons', 'All seasons')}
+                    </option>
                   </select>
                 </label>
               )}
@@ -516,7 +591,11 @@ export default function Share() {
                 disabled={busy}
                 onClick={() => void requestSelected()}
               >
-                Request Selected ({selected.length})
+                {t(
+                  'lumen.share.requestSelected',
+                  'Request Selected ({count})',
+                  { count: selected.length }
+                )}
               </button>
             </div>
           )}

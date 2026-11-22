@@ -1,0 +1,1 @@
+- Localize the Share and Identify workflow’s recognition controls, image and barcode recovery, match selection, TV season selection, and request feedback in English, French, and Arabic. Preserve provider data, permissions, validation limits, and request payloads.
