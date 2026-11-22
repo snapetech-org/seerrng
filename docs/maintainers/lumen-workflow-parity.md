@@ -6329,6 +6329,8 @@ then retries only seasons missing from the partial response. A 15-season
 fixture verifies one initial batch, a one-season retry, and the preserved
 selection across desktop, iPhone, Android, and tablet. All 36 focused TV
 episode selection and localization cases pass across those viewports. The
-reported real-provider failure remains unverified against the reporter's
+TV request sheet's matching baseline/candidate error and recovered-selection
+states were inspected at 1440 × 900 and 390 × 844; layout remains unchanged.
+The reported real-provider failure remains unverified against the reporter's
 server. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-season-batching-20261122/`.
