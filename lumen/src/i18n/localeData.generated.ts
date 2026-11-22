@@ -628,6 +628,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'الاستخدام القانوني',
       'components.Settings.SettingsAbout.metadataAttribution':
         'نَسب البيانات الوصفية',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'ادعم SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment': 'الدعم الإنمائي',
       'components.Settings.SettingsAbout.timezone': 'المنطقة الزمنية',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -6213,6 +6217,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Документация',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Дискусии в GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Подкрепете Seerr',
       'components.Settings.SettingsAbout.timezone': 'Часова зона',
       'components.Settings.SettingsAbout.totalmedia': 'Общо медия',
       'components.Settings.SettingsAbout.totalrequests': 'Общо заявки',
@@ -6851,6 +6856,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.appDataPath': 'Directori de dades',
       'components.Settings.SettingsAbout.documentation': 'Documentació',
       'components.Settings.SettingsAbout.githubdiscussions': 'Debats de GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Doneu suport a Seer',
       'components.Settings.SettingsAbout.timezone': 'Zona horària',
       'components.Settings.SettingsAbout.totalmedia': 'Total de contingut',
       'components.Settings.SettingsAbout.totalrequests': 'Sol·licituds totals',
@@ -7345,6 +7351,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentace',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Diskuze na GitHubu',
+      'components.Settings.SettingsAbout.supportseerr': 'Podpořit Seerr',
       'components.Settings.SettingsAbout.timezone': 'Časové pásmo',
       'components.Settings.SettingsAbout.totalmedia': 'Celkem médií',
       'components.Settings.SettingsAbout.totalrequests': 'Celkem žádostí',
@@ -7967,6 +7974,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentation',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub-diskussioner',
+      'components.Settings.SettingsAbout.supportseerr': 'Støt Seerr',
       'components.Settings.SettingsAbout.timezone': 'Tidszone',
       'components.Settings.SettingsAbout.totalmedia': 'Samlet antal medier',
       'components.Settings.SettingsAbout.totalrequests':
@@ -8913,6 +8921,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Rechtmäßige Nutzung',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Metadatenzuordnung',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'SeerrNG unterstützen',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Entwicklung unterstützen',
       'components.Settings.SettingsAbout.timezone': 'Zeitzone',
@@ -10459,6 +10471,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Legal Use',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Metadata attribution',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Support SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Support Development',
       'components.Settings.SettingsAbout.timezone': 'Time Zone',
@@ -16798,6 +16814,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Atribución de metadatos',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Apoyar a SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Apoyo al desarrollo',
       'components.Settings.SettingsAbout.timezone': 'Zona horaria',
@@ -18352,6 +18372,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Atribución de metadatos',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Apoya a SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Apoyo al desarrollo',
       'components.Settings.SettingsAbout.timezone': 'Zona horaria',
@@ -19592,6 +19616,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.appDataPath': 'Andmete kataloog',
       'components.Settings.SettingsAbout.documentation': 'Dokumentatsioon',
       'components.Settings.SettingsAbout.githubdiscussions': 'GitHubi arutelud',
+      'components.Settings.SettingsAbout.supportseerr': 'Toeta Seerri',
       'components.Settings.SettingsAbout.timezone': 'Ajavöönd',
       'components.Settings.SettingsAbout.totalmedia': 'Meediat kokku',
       'components.Settings.SettingsAbout.totalrequests': 'Taotlusi kokku',
@@ -19998,6 +20023,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentaatio',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub keskustelut',
+      'components.Settings.SettingsAbout.supportseerr': 'Tue Seerr:iä',
       'components.Settings.SettingsAbout.timezone': 'Aikavyöhyke',
       'components.Settings.SettingsAbout.totalmedia': 'Mediaa yhteensä',
       'components.Settings.SettingsAbout.totalrequests': 'Pyyntöjä yhteensä',
@@ -20755,6 +20781,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Utilisation légale',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Attribution des métadonnées',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Soutenir SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'KO-FI',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Appui au développement',
       'components.Settings.SettingsAbout.timezone': 'Fuseau horaire',
@@ -27771,6 +27801,10 @@ export const localeData = [
         'SeerrNG वैध व्यक्तिगत मीडिया प्रबंधन के लिए है। परियोजना चोरी या कॉपीराइट उल्लंघन की अनुमति नहीं देती है। उपयोगकर्ता अपने क्षेत्र में लागू कानूनों, लाइसेंस और सेवा शर्तों का अनुपालन करने के लिए जिम्मेदार हैं।',
       'components.Settings.SettingsAbout.legalUseTitle': 'कानूनी उपयोग',
       'components.Settings.SettingsAbout.metadataAttribution': 'मेटाडेटा श्रेय',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'SeerrNG को समर्थन दें',
+      'components.Settings.SettingsAbout.kofi': 'को-फाई',
       'components.Settings.SettingsAbout.supportdevelopment': 'समर्थन विकास',
       'components.Settings.SettingsAbout.timezone': 'समय क्षेत्र',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -28988,6 +29022,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentáció',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub‑beszélgetések',
+      'components.Settings.SettingsAbout.supportseerr': 'Seerr támogatása',
       'components.Settings.SettingsAbout.timezone': 'Időzóna',
       'components.Settings.SettingsAbout.totalmedia': 'Teljes média',
       'components.Settings.SettingsAbout.totalrequests': 'Összes kérés',
@@ -29919,6 +29954,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Penggunaan yang sah',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Atribusi metadata',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Dukung SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Pengembangan Dukungan',
       'components.Settings.SettingsAbout.timezone': 'Zona Waktu',
@@ -31143,6 +31182,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Documentazione',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Discussioni su GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Supporta Seerr',
       'components.Settings.SettingsAbout.timezone': 'Fuso Orario',
       'components.Settings.SettingsAbout.totalmedia': 'Media totali',
       'components.Settings.SettingsAbout.totalrequests': 'Totale richieste',
@@ -32066,6 +32106,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': '法的使用について',
       'components.Settings.SettingsAbout.metadataAttribution':
         'メタデータの帰属表示',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'SeerrNG を支援',
+      'components.Settings.SettingsAbout.kofi': 'コフィ',
       'components.Settings.SettingsAbout.supportdevelopment': 'サポート開発',
       'components.Settings.SettingsAbout.timezone': 'タイムゾーン',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -33566,6 +33610,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': '법적 사용',
       'components.Settings.SettingsAbout.metadataAttribution':
         '메타데이터 출처 표시',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'SeerrNG 후원',
+      'components.Settings.SettingsAbout.kofi': '사이트맵',
       'components.Settings.SettingsAbout.supportdevelopment': '지원 개발',
       'components.Settings.SettingsAbout.timezone': '시간대',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -35323,6 +35371,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Documentatie',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub-discussies',
+      'components.Settings.SettingsAbout.supportseerr': 'Seerr ondersteunen',
       'components.Settings.SettingsAbout.timezone': 'Tijdzone',
       'components.Settings.SettingsAbout.totalmedia': 'Totaal aantal media',
       'components.Settings.SettingsAbout.totalrequests':
@@ -35958,6 +36007,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentacja',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Dyskusje na GitHubie',
+      'components.Settings.SettingsAbout.supportseerr': 'Wesprzyj Seerr',
       'components.Settings.SettingsAbout.timezone': 'Strefa czasowa',
       'components.Settings.SettingsAbout.totalmedia': 'Multimedia ogółem',
       'components.Settings.SettingsAbout.totalrequests': 'Łączna liczba próśb',
@@ -36906,6 +36956,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Uso legal',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Atribuição de metadados',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Apoiar o SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi.',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Apoio ao Desenvolvimento',
       'components.Settings.SettingsAbout.timezone': 'Fuso Horário',
@@ -38121,6 +38175,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Documentação',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Discussões no GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Apoiar Seerr',
       'components.Settings.SettingsAbout.timezone': 'Fuso Horário',
       'components.Settings.SettingsAbout.totalmedia': 'Total de Multimédia',
       'components.Settings.SettingsAbout.totalrequests': 'Todos os Pedidos',
@@ -38696,6 +38751,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.appDataPath': 'Directorul de date',
       'components.Settings.SettingsAbout.documentation': 'Documentație',
       'components.Settings.SettingsAbout.githubdiscussions': 'Discuții GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Susține Seerr',
       'components.Settings.SettingsAbout.timezone': 'Fus orar',
       'components.Settings.SettingsAbout.totalmedia': 'Total materiale',
       'components.Settings.SettingsAbout.totalrequests': 'Total cereri',
@@ -39077,6 +39133,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Документация',
       'components.Settings.SettingsAbout.githubdiscussions':
         'Обсуждения на GitHub',
+      'components.Settings.SettingsAbout.supportseerr': 'Поддержать Seerr',
       'components.Settings.SettingsAbout.timezone': 'Часовой пояс',
       'components.Settings.SettingsAbout.totalmedia': 'Всего мультимедиа',
       'components.Settings.SettingsAbout.totalrequests': 'Всего запросов',
@@ -40276,6 +40333,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Dokumentation',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub-diskussioner',
+      'components.Settings.SettingsAbout.supportseerr': 'Stötta Seerr',
       'components.Settings.SettingsAbout.timezone': 'Tidszon',
       'components.Settings.SettingsAbout.totalmedia':
         'Totalt antal mediaobjekt',
@@ -40896,6 +40954,7 @@ export const localeData = [
       'components.Settings.SettingsAbout.documentation': 'Belgeler',
       'components.Settings.SettingsAbout.githubdiscussions':
         'GitHub Tartışmaları',
+      'components.Settings.SettingsAbout.supportseerr': "Seerr'ı Destekle",
       'components.Settings.SettingsAbout.timezone': 'Saat Dilimi',
       'components.Settings.SettingsAbout.totalmedia': 'Toplam Medya',
       'components.Settings.SettingsAbout.totalrequests': 'Toplam Talepler',
@@ -42366,6 +42425,10 @@ export const localeData = [
         'SeerrNG 用于合法的个人媒体管理。 该项目不容许盗版或侵犯版权。 用户有责任遵守本地区适用的法律、许可证和服务条款。',
       'components.Settings.SettingsAbout.legalUseTitle': '合法使用',
       'components.Settings.SettingsAbout.metadataAttribution': '元数据来源标注',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': '支持 SeerrNG',
+      'components.Settings.SettingsAbout.kofi': '高飞',
       'components.Settings.SettingsAbout.supportdevelopment': '支助发展',
       'components.Settings.SettingsAbout.timezone': '时区',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -43797,6 +43860,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': '合法使用',
       'components.Settings.SettingsAbout.metadataAttribution':
         '中繼資料來源標示',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': '支持 SeerrNG',
+      'components.Settings.SettingsAbout.kofi': '高菲',
       'components.Settings.SettingsAbout.supportdevelopment': '支助发展',
       'components.Settings.SettingsAbout.timezone': '時區',
       'components.Settings.SettingsAbout.tmdbAttributionCopy':
@@ -45278,6 +45345,10 @@ export const localeData = [
       'components.Settings.SettingsAbout.legalUseTitle': 'Sử dụng hợp pháp',
       'components.Settings.SettingsAbout.metadataAttribution':
         'Ghi nguồn siêu dữ liệu',
+      'components.Settings.SettingsAbout.tmdbLogoLabel':
+        'The Movie Database (TMDB)',
+      'components.Settings.SettingsAbout.supportseerr': 'Ủng hộ SeerrNG',
+      'components.Settings.SettingsAbout.kofi': 'Ko-fi',
       'components.Settings.SettingsAbout.supportdevelopment':
         'Hỗ trợ phát triển',
       'components.Settings.SettingsAbout.timezone': 'Vùng làm việc',

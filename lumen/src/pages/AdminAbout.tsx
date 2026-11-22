@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import tmdbLogo from '../../../src/assets/tmdb_logo.svg';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import ReleaseHistory from '../components/ReleaseHistory';
@@ -197,14 +198,26 @@ export default function AdminAbout() {
           >
             {t('lumen.adminAbout.discord', 'Discord')}
           </a>
+        </div>
+      </Section>
+      <Section
+        title={t(
+          'components.Settings.SettingsAbout.supportseerr',
+          'Support SeerrNG'
+        )}
+      >
+        <p className="note">
+          {t(
+            'components.Settings.SettingsAbout.supportdevelopment',
+            'Support Development'
+          )}
+        </p>
+        <div className="toolbar">
           <a
             className="btn btn-quiet btn-sm"
             href="https://ko-fi.com/snapetech"
           >
-            {t(
-              'components.Settings.SettingsAbout.supportdevelopment',
-              'Support Development'
-            )}
+            {t('components.Settings.SettingsAbout.kofi', 'Ko-fi')}
           </a>
         </div>
       </Section>
@@ -228,7 +241,24 @@ export default function AdminAbout() {
           'Metadata Attribution'
         )}
       >
-        <p className="note">{tmdbAttributionBody}</p>
+        <div className="media-tmdb-attribution">
+          <a
+            href="https://www.themoviedb.org/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t(
+              'components.Settings.SettingsAbout.tmdbLogoLabel',
+              'The Movie Database (TMDB)'
+            )}
+          >
+            <img
+              className="media-tmdb-attribution-logo"
+              src={tmdbLogo}
+              alt=""
+            />
+          </a>
+          <p className="media-tmdb-attribution-copy">{tmdbAttributionBody}</p>
+        </div>
         <a
           className="btn btn-quiet btn-sm"
           href="https://www.themoviedb.org/api-terms-of-use"

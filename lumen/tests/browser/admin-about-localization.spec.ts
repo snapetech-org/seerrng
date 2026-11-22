@@ -17,10 +17,14 @@ test('About and release history follow the saved locale', async ({ page }) => {
       info: 'Server Information',
       update: 'Update available',
       support: 'Support and Releases',
+      supportSeerr: 'Support SeerrNG',
+      supportDevelopment: 'Support Development',
+      kofi: 'Ko-fi',
       releaseNotes: 'Release Notes',
       legal: 'Legal Use',
       attribution: 'Metadata attribution',
       tmdbTerms: 'TMDB API terms',
+      tmdbLogo: 'The Movie Database (TMDB)',
       history: 'Release History',
       show: 'Show Releases',
       failure: 'Release history could not be loaded.',
@@ -38,10 +42,14 @@ test('About and release history follow the saved locale', async ({ page }) => {
       info: 'Informations du serveur',
       update: 'Mise à jour disponible',
       support: 'Assistance et versions',
+      supportSeerr: 'Soutenir SeerrNG',
+      supportDevelopment: 'Appui au développement',
+      kofi: 'KO-FI',
       releaseNotes: 'Notes de version',
       legal: 'Utilisation légale',
       attribution: 'Attribution des métadonnées',
       tmdbTerms: 'Conditions d’utilisation de l’API TMDB',
+      tmdbLogo: 'The Movie Database (TMDB)',
       history: 'Historique des versions',
       show: 'Afficher les versions',
       failure: 'Impossible de charger l’historique des versions.',
@@ -59,10 +67,14 @@ test('About and release history follow the saved locale', async ({ page }) => {
       info: 'معلومات الخادم',
       update: 'يتوفر تحديث',
       support: 'الدعم والإصدارات',
+      supportSeerr: 'ادعم SeerrNG',
+      supportDevelopment: 'الدعم الإنمائي',
+      kofi: 'Ko-fi',
       releaseNotes: 'ملاحظات الإصدار',
       legal: 'الاستخدام القانوني',
       attribution: 'نَسب البيانات الوصفية',
       tmdbTerms: 'شروط استخدام واجهة TMDB البرمجية',
+      tmdbLogo: 'The Movie Database (TMDB)',
       history: 'سجل الإصدارات',
       show: 'عرض الإصدارات',
       failure: 'تعذّر تحميل سجل الإصدارات.',
@@ -83,10 +95,14 @@ test('About and release history follow the saved locale', async ({ page }) => {
         info: 'Server Information',
         update: 'Update available',
         support: 'Support and Releases',
+        supportSeerr: 'Support SeerrNG',
+        supportDevelopment: 'Support Development',
+        kofi: 'Ko-fi',
         releaseNotes: 'Release Notes',
         legal: 'Legal Use',
         attribution: 'Metadata attribution',
-        tmdbTerms: 'TMDB API Terms',
+        tmdbTerms: 'TMDB API terms',
+        tmdbLogo: 'The Movie Database (TMDB)',
         history: 'Release History',
         show: 'Show Releases',
         failure: 'Release history could not be loaded.',
@@ -171,6 +187,18 @@ test('About and release history follow the saved locale', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: labels.support, exact: true })
   ).toBeVisible();
+  await expect(page.getByText(labels.supportDevelopment)).toBeVisible();
+  if (!baseline) {
+    await expect(
+      page.getByRole('heading', { name: labels.supportSeerr, exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: labels.kofi, exact: true })
+    ).toHaveAttribute('href', 'https://ko-fi.com/snapetech');
+    await expect(
+      page.getByRole('link', { name: labels.tmdbLogo, exact: true })
+    ).toHaveAttribute('href', 'https://www.themoviedb.org/');
+  }
   await expect(
     page.getByRole('link', { name: labels.releaseNotes, exact: true })
   ).toHaveAttribute(

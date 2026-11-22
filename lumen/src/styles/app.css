@@ -1798,6 +1798,25 @@ a.person:hover {
   color: var(--ink-3);
   font-size: 13px;
 }
+.media-tmdb-attribution {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 12px;
+  max-width: 64rem;
+  color: var(--ink-2);
+}
+.media-tmdb-attribution-logo {
+  display: block;
+  width: 72px;
+  height: auto;
+}
+.media-tmdb-attribution-copy {
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+}
 .set .seg {
   flex: none;
 }

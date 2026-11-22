@@ -21,7 +21,7 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Acquisition tools | `/downloads`, `/indexer-search` | Download Inbox supports warning/history, manual import and rejection; Indexer Search supports category-aware search, pagination, and one-use handoff. Both destinations are reachable from the mobile You menu when the signed-in user has the matching permission. | Native matched visuals and live service handoff; verify complete destination and intervention parity. |
 | Issues and blocklist | `/issues`, `/issues/[issueId]`, `/blocklist` | Lumen supports issue reporting, discussion, editing/deletion, filters, pagination, and permission-aware blocklist browse, removal, detail and collection actions. Blocklist media types match the API's supported movie, TV, music, book, comic, and magazine set; canonical identity and view/manage permissions are fixture-covered in standalone and bundled builds. Administrator Discovery settings configure automatic keyword and movie/TV genre rules. | Verify mobile native-matched visuals. |
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Native `/users/:id` and `/profile/*` profile, request, watchlist, and settings bookmarks now redirect to Lumen equivalents with filters preserved and self/manager access enforced. Profile settings links target their existing account subsections, including notification-channel anchors. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Finish remaining per-route failure recovery and role/state matrices; verify live authorization and provider persistence/readback, and complete native-matched visuals. |
-| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
+| Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. The About screen includes SeerrNG support and TMDB logo attribution links. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
 ### Native user profile route compatibility
 
@@ -6689,3 +6689,20 @@ horizontal overflow. The fixture validates mocked settings writes and retries;
 live administrator settings and independent linguistic review remain
 unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-acceptance-20261122/`.
+
+### About page metadata and support parity
+
+The Lumen About screen now shows the TMDB logo linked to TMDB, retains the
+localized API-terms link, and presents Ko-fi under a separate Support SeerrNG
+section, matching the native page's attribution and support destinations. The
+About browser fixture also now checks the logo destination and localized
+support heading. Its English TMDB terms expectation was corrected to match the
+native translation text.
+
+Twelve standalone production browser cases pass across English, French, and
+Arabic on desktop, iPhone, Android, and tablet. They check the logo destination,
+support links, release recovery, and page overflow. Matching English baseline
+and candidate captures were inspected at 1440 and 390 CSS pixels; French and
+Arabic candidate renders were also inspected. Standalone and bundled production
+builds compile. API behavior is unchanged. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-about-parity-20261122/`.
