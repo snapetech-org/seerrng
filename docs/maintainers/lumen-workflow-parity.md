@@ -8694,3 +8694,23 @@ open-only filtering, and direct issue links across desktop, iPhone, Android,
 and tablet. The production build and four viewport captures pass; matched prior
 and candidate desktop/phone captures were reviewed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/open-issue-metadata-visual/`.
+
+### Inline issue discussions on media details (2026-11-23)
+
+Open reports on Lumen book, music, comic, and magazine details now expand their
+existing discussion in place, matching native issue-card behavior. The panel
+loads the existing permission-aware issue discussion only when expanded; its
+comments, comment editing, and resolve workflow retain the issue page's API and
+authorization checks. Issue deletion remains on the dedicated issue route, as
+in native embedded cards. The disclosure starts collapsed and keeps the direct
+issue-detail link.
+
+The shared browser cases verify open-only display, reporter privacy, expansion,
+discussion readback after adding a comment, and direct detail navigation across
+desktop, iPhone, Android, and tablet. The production build keeps the issue page
+in its lazy chunk; the existing Book Series import and main-bundle-size warnings
+remain. Desktop and phone expanded views were inspected with the phone comment
+form fully above the fixed navigation. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/open-issue-discussion-visual/`.
+The fixtures verify client permission and API flows; live account behavior
+remains unverified.

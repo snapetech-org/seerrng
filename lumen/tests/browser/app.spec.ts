@@ -4503,6 +4503,37 @@ test('comic details show open issues only to issue readers', async ({
   await page.route('**/api/v1/comic/1234/issues?*', (route) =>
     route.fulfill({ json: paged([]) })
   );
+  const discussionComments = [
+    {
+      id: 1,
+      message: 'Captions are missing.',
+      createdAt: '2026-11-20T12:00:00.000Z',
+      user: { id: 17, displayName: 'Issue Reporter' },
+    },
+  ];
+  await page.route('**/api/v1/issue/71', (route) =>
+    route.fulfill({
+      json: {
+        id: 71,
+        status: 1,
+        issueType: 3,
+        issueSubtype: 'missing_issue',
+        createdAt: '2026-11-20T12:00:00.000Z',
+        createdBy: { id: 17, displayName: 'Issue Reporter' },
+        comments: discussionComments,
+      },
+    })
+  );
+  await page.route('**/api/v1/issue/71/comment', async (route) => {
+    const body = route.request().postDataJSON() as { message: string };
+    discussionComments.push({
+      id: discussionComments.length + 1,
+      message: body.message,
+      createdAt: '2026-11-21T12:00:00.000Z',
+      user: { id: 1, displayName: 'Viewer' },
+    });
+    await route.fulfill({ json: {} });
+  });
   await page.goto('/comic/al-42');
   await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
     0
@@ -4521,6 +4552,27 @@ test('comic details show open issues only to issue readers', async ({
     panel.getByRole('link', { name: 'Issue Reporter' })
   ).toHaveAttribute('href', '/users/17');
   await expect(panel.getByRole('link', { name: /#72/ })).toHaveCount(0);
+  await panel.getByRole('button', { name: 'View Discussion' }).click();
+  const embeddedDiscussion = panel.getByRole('region', {
+    name: 'Issue Details',
+  });
+  await expect(embeddedDiscussion).toContainText('Captions are missing.');
+  await expect(
+    panel.getByRole('button', { name: 'Hide Details' })
+  ).toHaveAttribute('aria-expanded', 'true');
+  await expect(
+    embeddedDiscussion.getByRole('button', { name: 'Delete Issue' })
+  ).toHaveCount(0);
+  await embeddedDiscussion.getByLabel('Comment').fill('I will investigate.');
+  await embeddedDiscussion.getByRole('button', { name: 'Add Comment' }).click();
+  await expect(embeddedDiscussion).toContainText('I will investigate.');
+  const capture = process.env.LUMEN_COMIC_OPEN_ISSUES_CAPTURE;
+  if (capture) {
+    await embeddedDiscussion.getByLabel('Comment').scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: `${capture}-expanded-${test.info().project.name}.png`,
+    });
+  }
   permissions = 4194304;
   await page.reload();
   const restrictedReporterPanel = page.getByRole('region', {
@@ -4537,7 +4589,6 @@ test('comic details show open issues only to issue readers', async ({
   const visibleReporterPanel = page.getByRole('region', {
     name: 'Open Issues',
   });
-  const capture = process.env.LUMEN_COMIC_OPEN_ISSUES_CAPTURE;
   if (capture) {
     await visibleReporterPanel.scrollIntoViewIfNeeded();
     await page.screenshot({

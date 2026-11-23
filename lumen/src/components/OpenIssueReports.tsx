@@ -1,9 +1,16 @@
+import { lazy, Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IssueStatus } from '../../../server/constants/issue';
 import type { MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { useLumenLocale } from '../i18n';
 import { canReadIssues, canViewIssueReporter } from '../issuePermissions';
+
+const EmbeddedIssueDiscussion = lazy(() =>
+  import('../pages/Issues').then((module) => ({
+    default: module.EmbeddedIssueDiscussion,
+  }))
+);
 
 const ISSUE_TYPE_FALLBACKS = ['Issue', 'Video', 'Audio', 'Subtitles', 'Other'];
 const ISSUE_REASON_MESSAGES: Record<string, { key: string; fallback: string }> =
@@ -70,6 +77,7 @@ export default function OpenIssueReports({
   const { user } = useAuth();
   const { locale, t } = useLumenLocale();
   const canViewReporter = canViewIssueReporter(user?.permissions);
+  const [expandedIssueId, setExpandedIssueId] = useState<number>();
   const openIssues = canReadIssues(user?.permissions)
     ? (issues ?? []).filter((issue) => issue.status === IssueStatus.OPEN)
     : [];
@@ -136,6 +144,37 @@ export default function OpenIssueReports({
             )}
             {issue.comments?.[0]?.message && (
               <p className="det">{issue.comments[0].message}</p>
+            )}
+            <button
+              className="btn btn-quiet btn-sm"
+              type="button"
+              aria-expanded={expandedIssueId === issue.id}
+              aria-controls={`${id}-discussion-${issue.id}`}
+              onClick={() =>
+                setExpandedIssueId((current) =>
+                  current === issue.id ? undefined : issue.id
+                )
+              }
+            >
+              {expandedIssueId === issue.id
+                ? t('lumen.issues.hideDetails', 'Hide Details')
+                : t('lumen.issues.viewDiscussion', 'View Discussion')}
+            </button>
+            {expandedIssueId === issue.id && (
+              <section
+                id={`${id}-discussion-${issue.id}`}
+                aria-label={t('lumen.issues.issueDetails', 'Issue Details')}
+              >
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      {t('lumen.issues.loadingIssue', 'Loading issue…')}
+                    </p>
+                  }
+                >
+                  <EmbeddedIssueDiscussion id={issue.id} />
+                </Suspense>
+              </section>
             )}
           </li>
         ))}

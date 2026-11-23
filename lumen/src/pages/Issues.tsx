@@ -951,6 +951,7 @@ function Discussion({
   const editable =
     !!data && (manager || (canCreate && data.createdBy.id === user?.id));
   const canDeleteIssue =
+    !embedded &&
     !!data &&
     (manager ||
       (editable && Array.isArray(data.comments) && data.comments.length <= 1));
@@ -1334,6 +1335,10 @@ function Discussion({
       )}
     </>
   );
+}
+
+export function EmbeddedIssueDiscussion({ id }: { id: number }) {
+  return <Discussion id={id} embedded />;
 }
 
 export default function Issues() {
