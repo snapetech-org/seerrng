@@ -4609,7 +4609,8 @@
     "lumen.videoPlayback.episodes": "Episodes",
     "lumen.videoPlayback.episodesUnavailable": "No playable episodes are available at this quality.",
     "lumen.videoPlayback.selectEpisode": "Select at least one playable episode.",
-    "lumen.videoPlayback.selectSeason": "Select all episodes from {season}"
+    "lumen.videoPlayback.selectSeason": "Select all episodes from {season}",
+    "lumen.issues.openIssues": "Open Issues"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9384,7 +9385,8 @@
     "lumen.videoPlayback.episodes": "Épisodes",
     "lumen.videoPlayback.episodesUnavailable": "Aucun épisode lisible n’est disponible dans cette qualité.",
     "lumen.videoPlayback.selectEpisode": "Sélectionnez au moins un épisode lisible.",
-    "lumen.videoPlayback.selectSeason": "Sélectionner tous les épisodes de {season}"
+    "lumen.videoPlayback.selectSeason": "Sélectionner tous les épisodes de {season}",
+    "lumen.issues.openIssues": "Problèmes ouverts"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -14163,6 +14165,7 @@
     "lumen.videoPlayback.episodes": "الحلقات",
     "lumen.videoPlayback.episodesUnavailable": "لا تتوفر حلقات قابلة للتشغيل بهذه الجودة.",
     "lumen.videoPlayback.selectEpisode": "حدد حلقة واحدة قابلة للتشغيل على الأقل.",
-    "lumen.videoPlayback.selectSeason": "حدد كل الحلقات من {season}"
+    "lumen.videoPlayback.selectSeason": "حدد كل الحلقات من {season}",
+    "lumen.issues.openIssues": "البلاغات المفتوحة"
   }
 }

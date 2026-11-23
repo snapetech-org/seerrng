@@ -4338,6 +4338,80 @@ test('comic catalogue indexing refreshes into filtered results', async ({
   await expect(page.getByText('Comic catalogue indexing')).toHaveCount(0);
 });
 
+test('comic details show open issues only to issue readers', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let permissions = 2;
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { comic: true } } })
+  );
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Viewer', permissions } })
+  );
+  await page.route('**/api/v1/comic/work/al-42', (route) =>
+    route.fulfill({
+      json: {
+        id: 'al-42',
+        mediaType: 'comic',
+        kind: 'comic',
+        title: 'Night Tales',
+        editions: [{ id: '1234', title: 'Night Tales', issueCount: 10 }],
+        recommendedId: '1234',
+        editionsResolved: true,
+      },
+    })
+  );
+  await page.route('**/api/v1/comic/1234', (route) =>
+    route.fulfill({
+      json: {
+        id: '1234',
+        mediaType: 'comic',
+        title: 'Night Tales',
+        issueCount: 10,
+        mediaInfo: {
+          id: 7,
+          status: 5,
+          issues: [
+            {
+              id: 71,
+              status: 1,
+              issueType: 3,
+              comments: [{ message: 'Captions are missing.' }],
+            },
+            { id: 72, status: 2, issueType: 4, comments: [] },
+          ],
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/comic/1234/issues?*', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.goto('/comic/al-42');
+  await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
+    0
+  );
+  permissions = 7340032;
+  await page.reload();
+  const panel = page.getByRole('region', { name: 'Open Issues' });
+  await expect(
+    panel.getByRole('link', { name: 'Subtitles #71' })
+  ).toHaveAttribute('href', '/issues/71');
+  await expect(panel).toContainText('Captions are missing.');
+  await expect(panel.getByRole('link', { name: /#72/ })).toHaveCount(0);
+  const capture = process.env.LUMEN_COMIC_OPEN_ISSUES_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+});
+
 test('Classic comic discovery bookmarks restore catalogue filters and results', async ({
   page,
 }) => {

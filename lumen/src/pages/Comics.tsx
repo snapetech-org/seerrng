@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { IssueStatus } from '../../../server/constants/issue';
 import { artUrl, kavitaLink, MediaStatus } from '../api';
 import { useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
@@ -57,6 +58,7 @@ import {
 import { useApi, usePaged } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
+import { canReadIssues } from '../issuePermissions';
 import { usePrefs } from '../settings';
 
 // the search box writes ?q= after a pause, so typing doesn't fire a request per letter
@@ -791,6 +793,11 @@ export function ComicDetail() {
     chosen ? `/comic/${chosen.id}` : null
   );
   const c = edition?.id === chosen?.id ? edition : undefined;
+  const openIssues = canReadIssues(user?.permissions)
+    ? (c?.mediaInfo?.issues ?? []).filter(
+        (issue) => issue.status === IssueStatus.OPEN
+      )
+    : [];
   // Keep queue progress tied to the selected edition.
   const shown = chosen
     ? (chosen.mediaInfo ??
@@ -1136,6 +1143,35 @@ export function ComicDetail() {
                 {alsoRead}
               </div>
               {chosen && <ComicIssues id={chosen.id} manga={manga} />}
+              {openIssues.length > 0 && (
+                <section aria-labelledby="comic-open-issues">
+                  <div className="sec-head">
+                    <h2 id="comic-open-issues">
+                      {t('lumen.issues.openIssues', 'Open Issues')}
+                    </h2>
+                  </div>
+                  <ul className="setlist">
+                    {openIssues.map((issue) => (
+                      <li key={issue.id} className="set">
+                        <div>
+                          <Link to={`/issues/${issue.id}`}>
+                            {t(
+                              `lumen.issues.type.${issue.issueType}`,
+                              ['Issue', 'Video', 'Audio', 'Subtitles', 'Other'][
+                                issue.issueType
+                              ] ?? 'Issue'
+                            )}{' '}
+                            #{issue.id}
+                          </Link>
+                        </div>
+                        {issue.comments?.[0]?.message && (
+                          <p className="det">{issue.comments[0].message}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
             </div>
             <aside>
               <Facts

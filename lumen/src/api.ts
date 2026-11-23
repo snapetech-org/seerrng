@@ -138,6 +138,12 @@ export interface MediaInfo {
       episodeNumbers?: number[] | null;
     }[];
   }[];
+  issues?: {
+    id: number;
+    status: number;
+    issueType: number;
+    comments?: { message: string }[];
+  }[];
   hasPlexAudiobookFile?: boolean;
   availableEbookServiceIds?: number[] | null;
   availableAudiobookServiceIds?: number[] | null;

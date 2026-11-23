@@ -7015,6 +7015,7 @@ export const localeData = [
       'lumen.videoPlayback.selectEpisode':
         'حدد حلقة واحدة قابلة للتشغيل على الأقل.',
       'lumen.videoPlayback.selectSeason': 'حدد كل الحلقات من {season}',
+      'lumen.issues.openIssues': 'البلاغات المفتوحة',
     },
   },
   {
@@ -18350,6 +18351,7 @@ export const localeData = [
       'lumen.videoPlayback.selectEpisode':
         'Select at least one playable episode.',
       'lumen.videoPlayback.selectSeason': 'Select all episodes from {season}',
+      'lumen.issues.openIssues': 'Open Issues',
     },
   },
   {
@@ -30854,6 +30856,7 @@ export const localeData = [
         'Sélectionnez au moins un épisode lisible.',
       'lumen.videoPlayback.selectSeason':
         'Sélectionner tous les épisodes de {season}',
+      'lumen.issues.openIssues': 'Problèmes ouverts',
     },
   },
   {

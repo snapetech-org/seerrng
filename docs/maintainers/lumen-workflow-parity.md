@@ -8607,3 +8607,21 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-media-server-visual/`.
 These fixtures verify the client contract; live Plex/Jellyfin/Emby account
 behavior still requires provider-backed verification.
+
+### Open issue reports on comic details (2026-11-23)
+
+Native comic details surface open issue reports to users with issue-reading
+permission. Lumen's comic detail previously offered issue reporting but omitted
+existing open reports. It now shows the open reports associated with the
+selected edition's SeerrNG media record, only for users allowed to read issues,
+and links each report to Lumen's existing issue detail and discussion workflow.
+Resolved reports are omitted. The rendering reuses the existing Lumen detail
+section and list styles; no issue permission or API contract changed.
+
+The browser check verifies denial for a regular viewer, visibility for an issue
+reader, direct issue-detail links, and exclusion of resolved reports. It passes
+on desktop, iPhone, Android, and tablet. Matched baseline/candidate captures
+were inspected at desktop and phone sizes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/comic-open-issues-visual/`.
+The fixture validates permission and display behavior; a live issue-reader
+account and persisted provider data remain unverified.

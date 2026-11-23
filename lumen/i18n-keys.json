@@ -5768,5 +5768,6 @@
   "lumen.videoPlayback.episodes",
   "lumen.videoPlayback.episodesUnavailable",
   "lumen.videoPlayback.selectEpisode",
-  "lumen.videoPlayback.selectSeason"
+  "lumen.videoPlayback.selectSeason",
+  "lumen.issues.openIssues"
 ]
