@@ -1,0 +1,1 @@
+- Confirm live download progress settings through a fresh readback before clearing administrator drafts or credential intent. Failed confirmations preserve the edits for retry while keeping saved passwords redacted.

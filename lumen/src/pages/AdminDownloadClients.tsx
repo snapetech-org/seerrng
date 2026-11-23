@@ -175,8 +175,53 @@ function Editor({
           }),
         });
         if (generation !== sessionGeneration()) return;
-        setSaved(result);
-        reset(result);
+        const readback = await api<Settings>(endpoint);
+        if (generation !== sessionGeneration()) return;
+        const expectedClients = clients.map((client) => {
+          const existing = saved.clients.find((item) => item.id === client.id);
+          return {
+            ...(client.id === undefined ? {} : { id: client.id }),
+            type: client.type,
+            name: client.name.trim(),
+            hostname: client.hostname.trim(),
+            port: client.port,
+            useSsl: client.useSsl,
+            enabled: client.enabled,
+            baseUrl: client.baseUrl.trim()
+              ? `/${client.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+              : '',
+            username:
+              client.type === 'qbittorrent' || client.type === 'transmission'
+                ? client.username
+                : '',
+            passwordConfigured: client.clearPassword
+              ? false
+              : Boolean(client.secret || existing?.passwordConfigured),
+          };
+        });
+        const matches = (candidate: Settings) =>
+          candidate.pollIntervalSeconds === interval &&
+          candidate.clients.length === expectedClients.length &&
+          expectedClients.every((expected, index) =>
+            Object.entries(expected).every(
+              ([field, value]) =>
+                candidate.clients[index]?.[
+                  field as keyof (typeof candidate.clients)[number]
+                ] === value
+            )
+          );
+        if (!matches(result) || !matches(readback)) {
+          setFeedback({
+            text: t(
+              'lumen.adminDownloadClients.saveFailure',
+              'Could not update download client settings.'
+            ),
+            error: true,
+          });
+          return;
+        }
+        setSaved(readback);
+        reset(readback);
         health.refresh();
         setFeedback({
           text: t(

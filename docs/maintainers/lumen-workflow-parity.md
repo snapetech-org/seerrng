@@ -7529,6 +7529,20 @@ recoverable error captures were inspected; the settings and retry action remain
 visible. Fixtures do not prove live Navidrome/Jellystat connectivity or
 filesystem persistence.
 
+### Download client settings save readback
+
+Lumen's Live Download Progress settings now verify the polling interval and
+each configured client's public connection fields and credential-configured
+state in both the PUT response and a fresh GET. Saved credentials remain
+write-only. A stale readback keeps the edits and credential intent in place so
+the administrator can retry.
+
+The existing credential save flow passes on desktop, iPhone, Android, and
+tablet, with failure/retry coverage and English, French, and Arabic. Desktop
+and iPhone failure-state screenshots show the existing client settings and
+retry controls visible without horizontal overflow. The mocked API does not
+verify live download-client connectivity or settings-file persistence.
+
 ### Managed user profile save readback
 
 Lumen's administrator-managed user profile editor now checks the saved

@@ -16,6 +16,7 @@ const labels = {
     apiKey: 'API Key',
     test: 'Test Client',
     connected: 'Connected to Usenet (fixture).',
+    saveFailure: 'Could not update download client settings.',
     saved: 'Download client settings saved.',
     save: 'Save Changes',
     lastCheck: 'Last check passed.',
@@ -28,6 +29,8 @@ const labels = {
     apiKey: 'Clé API',
     test: 'Tester le client',
     connected: 'Connecté à Usenet (fixture).',
+    saveFailure:
+      'Impossible de mettre à jour les paramètres du client de téléchargement.',
     saved: 'Paramètres du client de téléchargement enregistrés.',
     save: 'Enregistrer les modifications',
     lastCheck: 'La dernière vérification a réussi.',
@@ -40,6 +43,7 @@ const labels = {
     apiKey: 'مفتاح API',
     test: 'اختبار العميل',
     connected: 'تم الاتصال بـ Usenet (fixture).',
+    saveFailure: 'تعذر تحديث إعدادات عميل التنزيل.',
     saved: 'تم حفظ إعدادات عميل التنزيل.',
     save: 'حفظ التغييرات',
     lastCheck: 'نجح آخر فحص.',
@@ -60,12 +64,17 @@ test('download clients test and save with the existing credential', async ({
         type: 'sabnzbd',
         hostname: 'sab.internal',
         port: 8080,
+        useSsl: false,
         enabled: true,
+        baseUrl: '',
+        username: '',
         passwordConfigured: true,
         password: '[REDACTED]',
       },
     ],
   };
+  let staleReadback: typeof saved | undefined;
+  let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -85,9 +94,18 @@ test('download clients test and save with the existing credential', async ({
       return route.fulfill({ json: { success: true, version: 'fixture' } });
     }
     if (path !== endpoint) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (request.method() === 'PUT') {
       const body = request.postDataJSON();
       writes.push(body);
+      if (saveCount === 0) staleReadback = saved;
       saved = {
         ...body,
         clients: body.clients.map((row: object) => ({
@@ -96,6 +114,7 @@ test('download clients test and save with the existing credential', async ({
           password: '[REDACTED]',
         })),
       };
+      saveCount++;
     }
     return route.fulfill({ json: saved });
   });
@@ -130,6 +149,14 @@ test('download clients test and save with the existing credential', async ({
     fullPage: true,
   });
   await page.getByRole('button', { name: text.save }).click();
+  await expect(page.getByText(text.saved, { exact: true })).toHaveCount(0);
+  await expect(page.getByText(text.saveFailure)).toBeVisible();
+  await expect(page.getByLabel(text.interval)).toHaveValue('8');
+  await page.getByText(text.saveFailure).scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('readback-failure.png'),
+  });
+  await page.getByRole('button', { name: text.save }).click();
   await expect(page.getByText(text.saved)).toBeVisible();
   expect(writes[0]).toMatchObject({
     id: 7,
@@ -137,9 +164,11 @@ test('download clients test and save with the existing credential', async ({
     clearPassword: false,
   });
   expect(writes[0]).not.toHaveProperty('password');
-  expect(writes[1]).toMatchObject({
-    pollIntervalSeconds: 8,
-    clients: [{ id: 7, type: 'sabnzbd' }],
-  });
-  expect((writes[1].clients as unknown[])[0]).not.toHaveProperty('password');
+  for (const write of writes.slice(1)) {
+    expect(write).toMatchObject({
+      pollIntervalSeconds: 8,
+      clients: [{ id: 7, type: 'sabnzbd' }],
+    });
+    expect((write.clients as unknown[])[0]).not.toHaveProperty('password');
+  }
 });
