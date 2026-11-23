@@ -2512,6 +2512,8 @@
   "lumen.detail.keepOpen",
   "lumen.detail.movieDetails",
   "lumen.detail.movieDetailsPreference",
+  "lumen.detail.bookDetails",
+  "lumen.detail.bookDetailsPreference",
   "lumen.detail.languageProfile",
   "lumen.detail.loadingServers",
   "lumen.detail.me",

@@ -1223,6 +1223,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     detailDisclosurePins: {
       movie: { cast: false, details: false },
       tv: { cast: false },
+      book: { details: false },
     },
   };
   const writes: unknown[] = [];
@@ -1249,6 +1250,16 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
       },
     })
   );
+  await page.route('**/api/v1/book/OL123W', (route) =>
+    route.fulfill({
+      json: {
+        id: 'OL123W',
+        title: 'Fixture Book',
+        firstPublishYear: 2001,
+        subjects: ['Science Fiction'],
+      },
+    })
+  );
   await page.route(
     '**/api/v1/user/1/settings/detail-disclosures/movie',
     (route) => {
@@ -1266,6 +1277,15 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
       writes.push(body);
       Object.assign(settings.detailDisclosurePins.tv, body);
       return route.fulfill({ json: settings.detailDisclosurePins.tv });
+    }
+  );
+  await page.route(
+    '**/api/v1/user/1/settings/detail-disclosures/book',
+    (route) => {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(settings.detailDisclosurePins.book, body);
+      return route.fulfill({ json: settings.detailDisclosurePins.book });
     }
   );
 
@@ -1350,6 +1370,26 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   await expect(restoredOverview).toHaveAttribute('open', '');
   await expect(restoredOverview).toContainText('A persistent series overview.');
 
+  await page.goto('/book/OL123W');
+  const bookDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Book Details' });
+  await expect(bookDetails).toBeVisible();
+  await expect(bookDetails).not.toHaveAttribute('open', '');
+  await bookDetails.locator('summary').click();
+  await expect(bookDetails).toContainText('Science Fiction');
+  const bookDetailsPin = bookDetails.getByRole('button', {
+    name: 'Keep Book Details Open',
+  });
+  await bookDetailsPin.click();
+  await expect(bookDetailsPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  const restoredBookDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Book Details' });
+  await expect(restoredBookDetails).toHaveAttribute('open', '');
+  await expect(restoredBookDetails).toContainText('Science Fiction');
+
   for (const path of ['/movie/101#crew', '/tv/202#crew', '/tv/202#cast']) {
     await page.goto(path);
     const credit = path.endsWith('#cast') ? 'Starring' : 'Crew';
@@ -1366,7 +1406,13 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     await summary.click();
     await expect(person).toBeHidden();
   }
-  expect(writes).toHaveLength(4);
+  expect(writes).toEqual([
+    { cast: true },
+    { cast: true },
+    { details: true },
+    { overview: true },
+    { details: true },
+  ]);
 });
 
 test('subject tags share browser visibility and open filtered video discovery', async ({

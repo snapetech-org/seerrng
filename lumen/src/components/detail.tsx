@@ -284,7 +284,7 @@ export function VideoDisclosure({
   label,
   children,
 }: {
-  media: 'movie' | 'tv';
+  media: 'movie' | 'tv' | 'book' | 'music';
   panel: keyof VideoDetailPins;
   label: string;
   children: ReactNode;
@@ -320,7 +320,9 @@ export function VideoDisclosure({
       : panel === 'overview'
         ? t('lumen.detail.overviewPreference', 'overview')
         : panel === 'details'
-          ? t('lumen.detail.movieDetailsPreference', 'movie details')
+          ? media === 'book'
+            ? t('lumen.detail.bookDetailsPreference', 'book details')
+            : t('lumen.detail.movieDetailsPreference', 'movie details')
           : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {

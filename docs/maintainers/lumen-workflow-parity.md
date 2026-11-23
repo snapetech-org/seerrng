@@ -8436,3 +8436,27 @@ This closes only movie facts disclosure parity. Other movie detail disclosures,
 book and music detail panels, TV facts and media-server panels, collection
 disclosures, broader route-level visual acceptance, and live provider
 verification remain open in the overall Lumen parity initiative.
+
+### Persistent book details disclosure (2026-11-23)
+
+Native book details expose a per-user Details disclosure. Lumen previously
+rendered book facts continuously. The facts now use the shared disclosure
+component and authenticated `detail-disclosures/book` settings route, with
+server response confirmation and user-settings refresh. The disclosure and
+saved-preference labels are localized in English, French, and Arabic. Fact
+content and its links are unchanged; no CSS owner changed.
+
+The detail-pin browser fixture verifies the closed default, expansion, saved
+pin, and restored open state after reload across desktop, iPhone, Android, and
+tablet (4 passes). The production build passes. Baseline `9115eb8fb` and
+candidate captures use the same fixture at 1440×900 and 390×844; collapsed
+baseline/candidate and expanded candidate states were inspected. The phone
+panel stays in the existing information column and the page remains vertically
+scrollable without horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/book-detail-visual/`.
+
+This closes only book Details disclosure parity. Book collection and subject-tag
+pin behavior, other book panels, music detail disclosures, TV facts and
+media-server panels, collection disclosures, broader route-level visual
+acceptance, and live provider verification remain open in the overall Lumen
+parity initiative.

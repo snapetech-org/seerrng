@@ -28,6 +28,7 @@ import {
   Facts,
   fmtHrs,
   Pill,
+  VideoDisclosure,
 } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
@@ -944,38 +945,46 @@ export default function BookDetail() {
             </div>
           </div>
           <aside>
-            <Facts
-              rows={[
-                [
-                  t('lumen.bookDetail.series', 'Series'),
-                  series?.id && series.title ? (
-                    <Link to={`/book-series/${encodeURIComponent(series.id)}`}>
-                      {series.title}
-                      {series.position ? ` #${series.position}` : ''}
-                    </Link>
-                  ) : series?.title ? (
-                    `${series.title}${series.position ? ' #' + series.position : ''}`
-                  ) : (
-                    ''
-                  ),
-                ],
-                [
-                  t('lumen.bookDetail.firstPublished', 'First published'),
-                  b.firstPublishYear,
-                ],
-                [
-                  t('lumen.bookDetail.listeningTime', 'Listening time'),
-                  audio && longest ? fmtHrs(longest) : '',
-                ],
-                [
-                  t('lumen.bookDetail.subjects', 'Subjects'),
-                  (b.subjects || [])
-                    .filter((t) => !FORMAT_TAG.test(t))
-                    .slice(0, 4)
-                    .join(', '),
-                ],
-              ]}
-            />
+            <VideoDisclosure
+              media="book"
+              panel="details"
+              label={t('lumen.detail.bookDetails', 'Book Details')}
+            >
+              <Facts
+                rows={[
+                  [
+                    t('lumen.bookDetail.series', 'Series'),
+                    series?.id && series.title ? (
+                      <Link
+                        to={`/book-series/${encodeURIComponent(series.id)}`}
+                      >
+                        {series.title}
+                        {series.position ? ` #${series.position}` : ''}
+                      </Link>
+                    ) : series?.title ? (
+                      `${series.title}${series.position ? ' #' + series.position : ''}`
+                    ) : (
+                      ''
+                    ),
+                  ],
+                  [
+                    t('lumen.bookDetail.firstPublished', 'First published'),
+                    b.firstPublishYear,
+                  ],
+                  [
+                    t('lumen.bookDetail.listeningTime', 'Listening time'),
+                    audio && longest ? fmtHrs(longest) : '',
+                  ],
+                  [
+                    t('lumen.bookDetail.subjects', 'Subjects'),
+                    (b.subjects || [])
+                      .filter((t) => !FORMAT_TAG.test(t))
+                      .slice(0, 4)
+                      .join(', '),
+                  ],
+                ]}
+              />
+            </VideoDisclosure>
           </aside>
         </div>
       </div>
