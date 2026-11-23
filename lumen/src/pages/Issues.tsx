@@ -365,7 +365,6 @@ function IssueList() {
   return (
     <>
       <form
-        className="toolbar"
         onSubmit={(event) => {
           event.preventDefault();
           const form = new FormData(event.currentTarget);
@@ -379,76 +378,178 @@ function IssueList() {
           setBookmark(next);
         }}
       >
-        {issueFilters.map(({ key, label, options }) => (
-          <label className="sel" key={key}>
-            <select
-              aria-label={t(`lumen.issues.filter.${key}`, label)}
-              value={params.get(key) ?? 'all'}
-              onChange={(event) =>
-                update(
-                  key,
-                  event.target.value === 'all' ? '' : event.target.value
-                )
-              }
-            >
-              {Object.entries(options).map(([value, name]) => (
-                <option key={value} value={value}>
-                  {t(`lumen.issues.option.${key}.${value}`, name)}
-                </option>
+        <details>
+          <summary className="sel">
+            {t('lumen.issues.group.task', 'Task Filters')}
+          </summary>
+          <div className="toolbar">
+            {issueFilters
+              .filter(({ key }) => key === 'filter' || key === 'issueType')
+              .map(({ key, label, options }) => (
+                <label className="sel" key={key}>
+                  <select
+                    aria-label={t(`lumen.issues.filter.${key}`, label)}
+                    value={params.get(key) ?? 'all'}
+                    onChange={(event) =>
+                      update(
+                        key,
+                        event.target.value === 'all' ? '' : event.target.value
+                      )
+                    }
+                  >
+                    {Object.entries(options).map(([value, name]) => (
+                      <option key={value} value={value}>
+                        {t(`lumen.issues.option.${key}.${value}`, name)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               ))}
-            </select>
-          </label>
-        ))}
-        <label className="search">
-          <input
-            type="search"
-            aria-label={t('lumen.issues.searchLabel', 'Search Issues')}
-            placeholder={t('lumen.issues.searchPlaceholder', 'Search issues')}
-            maxLength={512}
-            key={submitted}
-            name="search"
-            defaultValue={submitted}
-          />
-        </label>
-        {metadata.map(({ key, label }) => (
-          <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
-            <span className="lbl">
-              {t(`lumen.issues.metadata.${key}`, label)}
-            </span>
-            {key === 'albumType' ? (
-              <select name={key} defaultValue={params.get(key) ?? ''}>
-                <option value="">
-                  {t('lumen.issues.anyAlbumType', 'Any Album Type')}
-                </option>
-                <option value="album">
-                  {t('lumen.issues.album', 'Album')}
-                </option>
-                <option value="ep">{t('lumen.issues.ep', 'EP')}</option>
-                <option value="single">
-                  {t('lumen.issues.single', 'Single')}
-                </option>
-              </select>
-            ) : (
+          </div>
+        </details>
+        <details>
+          <summary className="sel">
+            {t('lumen.issues.group.media', 'Media Filters')}
+          </summary>
+          <div className="toolbar">
+            {issueFilters
+              .filter(({ key }) => key === 'mediaType')
+              .map(({ key, label, options }) => (
+                <label className="sel" key={key}>
+                  <select
+                    aria-label={t(`lumen.issues.filter.${key}`, label)}
+                    value={params.get(key) ?? 'all'}
+                    onChange={(event) =>
+                      update(
+                        key,
+                        event.target.value === 'all' ? '' : event.target.value
+                      )
+                    }
+                  >
+                    {Object.entries(options).map(([value, name]) => (
+                      <option key={value} value={value}>
+                        {t(`lumen.issues.option.${key}.${value}`, name)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+          </div>
+        </details>
+        <details>
+          <summary className="sel">
+            {t('lumen.issues.group.filters', 'Filters')}
+          </summary>
+          <div className="toolbar">
+            {issueFilters
+              .filter(({ key }) => key === 'timeFrame')
+              .map(({ key, label, options }) => (
+                <label className="sel" key={key}>
+                  <select
+                    aria-label={t(`lumen.issues.filter.${key}`, label)}
+                    value={params.get(key) ?? 'all'}
+                    onChange={(event) =>
+                      update(
+                        key,
+                        event.target.value === 'all' ? '' : event.target.value
+                      )
+                    }
+                  >
+                    {Object.entries(options).map(([value, name]) => (
+                      <option key={value} value={value}>
+                        {t(`lumen.issues.option.${key}.${value}`, name)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+            <label className="search">
               <input
-                className="cfg-json"
-                name={key}
-                defaultValue={params.get(key) ?? ''}
-                maxLength={key === 'releaseYear' ? 11 : 128}
-                pattern={
-                  key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
-                }
-                placeholder={
-                  key === 'releaseYear'
-                    ? t('lumen.issues.yearPlaceholder', 'YYYY or before-1970')
-                    : undefined
-                }
+                type="search"
+                aria-label={t('lumen.issues.searchLabel', 'Search Issues')}
+                placeholder={t(
+                  'lumen.issues.searchPlaceholder',
+                  'Search issues'
+                )}
+                maxLength={512}
+                key={submitted}
+                name="search"
+                defaultValue={submitted}
               />
-            )}
-          </label>
-        ))}
-        <button className="btn btn-tonal btn-sm">
-          {t('lumen.issues.search', 'Search')}
-        </button>
+            </label>
+            {metadata.map(({ key, label }) => (
+              <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
+                <span className="lbl">
+                  {t(`lumen.issues.metadata.${key}`, label)}
+                </span>
+                {key === 'albumType' ? (
+                  <select name={key} defaultValue={params.get(key) ?? ''}>
+                    <option value="">
+                      {t('lumen.issues.anyAlbumType', 'Any Album Type')}
+                    </option>
+                    <option value="album">
+                      {t('lumen.issues.album', 'Album')}
+                    </option>
+                    <option value="ep">{t('lumen.issues.ep', 'EP')}</option>
+                    <option value="single">
+                      {t('lumen.issues.single', 'Single')}
+                    </option>
+                  </select>
+                ) : (
+                  <input
+                    className="cfg-json"
+                    name={key}
+                    defaultValue={params.get(key) ?? ''}
+                    maxLength={key === 'releaseYear' ? 11 : 128}
+                    pattern={
+                      key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
+                    }
+                    placeholder={
+                      key === 'releaseYear'
+                        ? t(
+                            'lumen.issues.yearPlaceholder',
+                            'YYYY or before-1970'
+                          )
+                        : undefined
+                    }
+                  />
+                )}
+              </label>
+            ))}
+            <button className="btn btn-tonal btn-sm">
+              {t('lumen.issues.search', 'Search')}
+            </button>
+          </div>
+        </details>
+        <details>
+          <summary className="sel">
+            {t('lumen.issues.group.sort', 'Sort By')}
+          </summary>
+          <div className="toolbar">
+            {issueFilters
+              .filter(({ key }) => key === 'sort' || key === 'sortDirection')
+              .map(({ key, label, options }) => (
+                <label className="sel" key={key}>
+                  <select
+                    aria-label={t(`lumen.issues.filter.${key}`, label)}
+                    value={params.get(key) ?? 'all'}
+                    onChange={(event) =>
+                      update(
+                        key,
+                        event.target.value === 'all' ? '' : event.target.value
+                      )
+                    }
+                  >
+                    {Object.entries(options).map(([value, name]) => (
+                      <option key={value} value={value}>
+                        {t(`lumen.issues.option.${key}.${value}`, name)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+          </div>
+        </details>
       </form>
       <ServiceNote error={error} what="issues" retry={reload} />
       {!data && !error && (

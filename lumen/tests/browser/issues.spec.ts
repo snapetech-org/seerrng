@@ -645,6 +645,16 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await page.goto(
     testAppPath('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2')
   );
+  await expect(page.getByText('Task Filters', { exact: true })).toBeVisible();
+  if (
+    process.env.LUMEN_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_DIR}/issues-filter-groups-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  await page.getByText('Media Filters', { exact: true }).click();
   await expect(page.getByLabel('Media Type')).toHaveValue('book');
   await expect.poll(() => queries.at(-1)?.get('skip')).toBe('10');
   expect(queries.at(-1)?.get('issueType')).toBe('audio');
@@ -655,10 +665,12 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await expect(page).toHaveURL(
     /\/issues\?mediaType=book&issueType=audio&timeFrame=7d&page=2$/
   );
+  await page.getByText('Task Filters', { exact: true }).click();
   await page.getByLabel('Issue Type').selectOption('subtitle');
   await expect.poll(() => queries.at(-1)?.get('issueType')).toBe('subtitle');
   expect(queries.at(-1)?.get('skip')).toBe('0');
   expect(new URL(page.url()).searchParams.has('page')).toBe(false);
+  await page.getByText('Filters', { exact: true }).click();
   await page.getByLabel('Search Issues').fill('missing & audio');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect
@@ -670,8 +682,10 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBe('2020');
   expect(queries.at(-1)?.get('genre')).toBe('science fiction');
+  await page.getByText('Sort By', { exact: true }).click();
   await page.getByLabel('Sort Issues').selectOption('modified');
   await expect.poll(() => queries.at(-1)?.get('sort')).toBe('modified');
+  await page.getByText('Media Filters', { exact: true }).click();
   await page.getByLabel('Media Type').selectOption('all');
   await expect(page.getByLabel('Release Year')).toHaveCount(0);
   await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBeNull();
