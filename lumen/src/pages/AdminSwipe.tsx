@@ -61,8 +61,39 @@ function Editor({ initial }: { initial: Settings }) {
       } else {
         const result = await api<Settings>(path, { method: 'PUT', body });
         if (generation !== sessionGeneration()) return;
-        setSaved(result);
-        setDraft(result);
+        const readback = await api<Settings>(path);
+        if (generation !== sessionGeneration()) return;
+        const expected = {
+          enabled,
+          aiProvider,
+          aiModel:
+            aiModel.trim() ||
+            (aiProvider === 'anthropic' ? defaultAnthropicModel : ''),
+          aiBaseUrl: aiBaseUrl.trim() || 'https://api.openai.com/v1',
+          aiEffort,
+          aiApiKeyConfigured: clear
+            ? false
+            : key
+              ? true
+              : saved.aiApiKeyConfigured,
+        };
+        const confirmed = Object.entries(expected).every(
+          ([field, value]) =>
+            result[field as keyof Settings] === value &&
+            readback[field as keyof Settings] === value
+        );
+        if (!confirmed) {
+          setFeedback({
+            text: t(
+              'components.Settings.SettingsSwipe.saveError',
+              'Could not save Swipe settings.'
+            ),
+            error: true,
+          });
+          return;
+        }
+        setSaved(readback);
+        setDraft(readback);
         setKey('');
         setClear(false);
         invalidatePublicSettings();

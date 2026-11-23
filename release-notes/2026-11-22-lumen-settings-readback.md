@@ -1,0 +1,1 @@
+- Confirm administrator Swipe and Share-to-Request recognition settings against a fresh persisted readback before reporting success or clearing drafts and credential intent. Failed confirmations remain editable and retryable.

@@ -80,8 +80,39 @@ function Editor({
         }),
       });
       if (generation !== sessionGeneration()) return;
-      setSaved(result);
-      setDraft(result);
+      const readback = await api<Settings>(path);
+      if (generation !== sessionGeneration()) return;
+      const expected = {
+        enabled,
+        localOcr,
+        visionProvider,
+        visionModel: visionModel.trim(),
+        visionBaseUrl,
+        externalConsent,
+        maxImageBytes: maxImageBytes || 6 * mib,
+        visionApiKeyConfigured: clearKey
+          ? false
+          : key
+            ? true
+            : saved.visionApiKeyConfigured,
+      };
+      const confirmed = Object.entries(expected).every(
+        ([field, value]) =>
+          result[field as keyof Settings] === value &&
+          readback[field as keyof Settings] === value
+      );
+      if (!confirmed) {
+        setFeedback({
+          text: t(
+            'lumen.adminRecognition.saveFailure',
+            'Could not save recognition settings.'
+          ),
+          error: true,
+        });
+        return;
+      }
+      setSaved(readback);
+      setDraft(readback);
       setKey('');
       setClearKey(false);
       onSaved();

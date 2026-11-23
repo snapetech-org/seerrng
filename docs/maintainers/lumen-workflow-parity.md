@@ -7482,6 +7482,24 @@ the compact phone candidate was inspected as well. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-more-20261122/`.
 Live permission changes and route/API authorization remain server-owned.
 
+### Swipe and recognition settings save readback
+
+The administrator Swipe and Share-to-Request recognition forms now confirm
+each write against both the PUT projection and a fresh GET before clearing
+drafts, API-key intent, or reporting success. They compare normalized public
+settings and configured/cleared key state without reading or echoing secrets.
+On a mismatch, the forms retain edits and offer the existing retryable error.
+
+Stale-readback failure and retry cases pass on desktop, iPhone, Android, and
+tablet (28 cases), including the Swipe navigation permission matrix. The
+recognition save flow also passes in French and Arabic at desktop and phone
+sizes. Desktop and iPhone failure-state captures were inspected; the alert and
+retry controls remain visible in the viewport. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/`.
+Fixtures verify the client behavior only; live filesystem/settings persistence,
+provider connectivity, matched native baseline comparison, and independent
+translations remain unverified.
+
 ### Managed user profile save readback
 
 Lumen's administrator-managed user profile editor now checks the saved

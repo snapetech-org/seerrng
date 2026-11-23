@@ -77,6 +77,8 @@ test('recognition settings retain edits after rejection and handle saved API key
     externalConsent: true,
     maxImageBytes: 6 * 1024 * 1024,
   };
+  let staleReadback: typeof saved | undefined;
+  let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -92,6 +94,14 @@ test('recognition settings retain edits after rejection and handle saved API key
     if (path.endsWith('/resolve/capabilities'))
       return route.fulfill({ json: { localOcr: true } });
     if (path !== settingsPath) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (request.method() === 'PUT') {
       const change = request.postDataJSON();
       writes.push(change);
@@ -101,11 +111,13 @@ test('recognition settings retain edits after rejection and handle saved API key
           json: { error: 'Confirm that uploaded images may be sent.' },
         });
       }
+      if (saveCount === 0) staleReadback = saved;
       saved = { ...saved, ...change };
       if (change.clearVisionApiKey) {
         saved.visionApiKey = '';
         saved.visionApiKeyConfigured = false;
       }
+      saveCount++;
     }
     return route.fulfill({ json: saved });
   });
@@ -145,6 +157,12 @@ test('recognition settings retain edits after rejection and handle saved API key
   await expect(base).toHaveValue('https://new-recognition.example.test/v1');
   await consent.check();
   await save.click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(base).toHaveValue('https://new-recognition.example.test/v1');
+  await expect(consent).toBeChecked();
+  await page.getByRole('alert').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('readback-failure.png') });
+  await save.click();
   await expect(page.getByText(text.saved)).toBeVisible();
   await expect(save).toBeDisabled();
   expect(writes.every((write) => !('visionApiKey' in write))).toBe(true);
@@ -156,7 +174,7 @@ test('recognition settings retain edits after rejection and handle saved API key
   await expect(key).toBeDisabled();
   await save.click();
   await expect(page.getByLabel(text.savedKey)).toHaveCount(0);
-  expect(writes[2]).toHaveProperty('clearVisionApiKey', true);
+  expect(writes[3]).toHaveProperty('clearVisionApiKey', true);
   await page.getByLabel(text.provider).selectOption('none');
   await expect(key).toHaveCount(0);
   await page.getByRole('button', { name: text.discard }).click();

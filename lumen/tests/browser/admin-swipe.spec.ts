@@ -32,7 +32,10 @@ for (const permissions of [0, 4, 32, 2]) {
     await page.goto(testAppPath('/'));
     const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
     if (desktop) {
-      const nav = page.getByRole('navigation', { name: 'Main', exact: true });
+      const nav = page.getByRole('navigation', {
+        name: 'Main navigation',
+        exact: true,
+      });
       const link = nav.getByRole('link', { name: 'Swipe', exact: true });
       await expect(link).toHaveCount(canUseSwipe ? 1 : 0);
       await page.screenshot({ path: info.outputPath('discover.png') });
@@ -76,6 +79,8 @@ test('Swipe settings test the provider and save enablement without resending its
     aiEffort: 'low',
     aiApiKeyConfigured: true,
   };
+  let staleReadback: typeof saved | undefined;
+  let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -93,10 +98,20 @@ test('Swipe settings test the provider and save enablement without resending its
       return route.fulfill({ json: { success: true } });
     }
     if (url !== path) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (request.method() === 'PUT') {
       const body = request.postDataJSON();
       writes.push(body);
+      if (saveCount === 0) staleReadback = saved;
       saved = { ...saved, ...body };
+      saveCount++;
     }
     return route.fulfill({ json: saved });
   });
@@ -112,7 +127,20 @@ test('Swipe settings test the provider and save enablement without resending its
     path: info.outputPath('swipe-admin.png'),
     fullPage: true,
   });
-  await page.getByRole('button', { name: 'Save Changes' }).click();
+  const save = page.getByRole('button', { name: 'Save Changes' });
+  await save.click();
+  await expect(
+    page.getByText('Swipe settings saved.', { exact: true })
+  ).toHaveCount(0);
+  await expect(page.getByRole('alert')).toContainText(
+    'Swipe settings could not be saved.'
+  );
+  await expect(page.getByLabel('Enable Swipe')).toBeChecked();
+  await page.getByRole('alert').scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: info.outputPath('swipe-readback-failure.png'),
+  });
+  await save.click();
   await expect(page.getByText('Swipe settings saved.')).toBeVisible();
   for (const write of writes) {
     expect(write).toMatchObject({
@@ -123,7 +151,7 @@ test('Swipe settings test the provider and save enablement without resending its
     });
     expect(write).not.toHaveProperty('aiApiKey');
   }
-  expect(writes).toHaveLength(2);
+  expect(writes).toHaveLength(3);
   await page.getByRole('link', { name: 'Administration', exact: true }).click();
   await expect(page).toHaveURL(/\/admin$/);
   await page.goto(testAppPath('/me'));
