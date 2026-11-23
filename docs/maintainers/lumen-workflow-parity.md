@@ -1216,10 +1216,12 @@ only confirmed catalog identities. Linked-account return/recovery, identity
 repair and private mapping packs, provider tracking writes, episode progress,
 and resumable scans have fixture-backed coverage. Personal and delegated
 Watchlists preserve combined-list ownership and have standalone and bundled
-fixture coverage. The native route audit has not yet established whether a
-separate delegated library-sharing workflow exists; household Games sharing is
-a separate workflow. Live provider effects and matched native/bundled visual
-acceptance remain open.
+fixture coverage. The native library route reads the signed-in user's own
+connected media-server and tracking accounts (`req.user.id`); it exposes no
+delegated library-sharing API or permission, and Lumen uses that same current
+user contract. Therefore there is no separate delegated-library-sharing
+workflow to reproduce. Household Games sharing is a separate workflow. Live
+provider effects and matched native/bundled visual acceptance remain open.
 
 Headed Chrome at 1440 × 1000 verified the My Media screen using a synthetic
 Plex connection. It selected the first visible library, linked the matched
@@ -7908,3 +7910,25 @@ place and allows implemented Lumen routes to reach its SPA. All 58 Lumen unit,
 runtime, and production-image proxy tests pass, including the route ownership
 assertion. This does not complete the broader route-by-route native/Lumen
 comparison or establish live companion deployments.
+
+### Administration shortcuts and browser-suite fixture recovery (2026-11-23)
+
+The broader browser run found that French and Arabic searches could not find
+Default User Permissions or Default User Categories because these shortcut
+labels had no localized destination keys. They now use localized labels. The
+permissions shortcut also pointed to General Settings after the editor had
+moved to Request Defaults; it now links to `/admin/requests` with the existing
+anchor. The Requests list now matches the existing history label's “Over
+Quota” casing.
+
+The initial browser run also exposed stale test assumptions: the primary
+navigation's accessible name is “Main navigation”; Games requires an enabled
+ROM/Questarr category fixture; the TV row test's route mock missed query
+strings; and its expected failure copy belonged to an older implementation.
+The fixtures now model those current contracts. The focused verification passes
+32 cases on desktop, iPhone, Android, and tablet. French and Arabic
+Administration search captures were inspected at desktop size and RTL layout;
+the result row follows existing geometry. The full Lumen browser matrix was
+started but stopped after 555 cases (5 skips and 4,223 not run) because 16-way
+parallel execution produced timeouts; no full-suite pass is claimed. Live
+settings persistence and independent linguistic review remain unverified.

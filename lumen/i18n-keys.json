@@ -1152,6 +1152,8 @@
   "lumen.admin.dest.prowlarr",
   "lumen.admin.dest.quotas",
   "lumen.admin.dest.requestDefaults",
+  "lumen.admin.dest.defaultPermissions",
+  "lumen.admin.dest.defaultCategories",
   "lumen.admin.dest.radarr",
   "lumen.admin.dest.readerDelivery",
   "lumen.admin.dest.readmeabook",

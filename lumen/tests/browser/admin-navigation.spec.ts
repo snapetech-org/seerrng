@@ -76,7 +76,10 @@ test('administration is visible in navigation and at the start of You', async ({
   ).toBeVisible();
   await page.screenshot({ path: info.outputPath('you.png') });
   await page.goto(testAppPath('/'));
-  const nav = page.getByRole('navigation', { name: 'Main', exact: true });
+  const nav = page.getByRole('navigation', {
+    name: 'Main navigation',
+    exact: true,
+  });
   const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
   await page.screenshot({ path: info.outputPath('discover.png') });
   if (desktop) {
@@ -254,13 +257,13 @@ for (const locale of [
     });
     await expect(permissionsLink).toHaveAttribute(
       'href',
-      testAppPath('/admin/general#default-user-permissions')
+      testAppPath('/admin/requests#default-user-permissions')
     );
     await page.screenshot({
       path: info.outputPath(`admin-permissions-search-${locale.tag}.png`),
     });
     await permissionsLink.click();
-    await expect(page).toHaveURL(/\/admin\/general#default-user-permissions$/);
+    await expect(page).toHaveURL(/\/admin\/requests#default-user-permissions$/);
     await expect(
       page.locator('#default-user-permissions details')
     ).toHaveAttribute('open', '');

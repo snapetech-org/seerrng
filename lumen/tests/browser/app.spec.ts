@@ -10595,6 +10595,19 @@ test('Classic Software search bookmarks open the matching Lumen catalog and quer
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        softwareEnabled: true,
+        enabledMediaCategories: { game: true, retro: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { game: true, retro: true } },
+    })
+  );
   await page.goto('/search?type=software&query=Fixture+Game&category=retro');
   await expect(page).toHaveURL(/\/games\?c=retro&q=Fixture\+Game$/);
 });

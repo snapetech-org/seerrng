@@ -51,6 +51,8 @@ const destinationMessages: Record<string, string> = {
   'Spotify Playlist Import': 'lumen.admin.dest.spotifyImport',
   'Steam Library Import': 'lumen.admin.dest.steamImport',
   'Default Request Quotas': 'lumen.admin.dest.quotas',
+  'Default User Permissions': 'lumen.admin.dest.defaultPermissions',
+  'Default User Categories': 'lumen.admin.dest.defaultCategories',
   'Request Defaults': 'lumen.admin.dest.requestDefaults',
 };
 
@@ -239,7 +241,7 @@ const shortcuts = [
   ],
   [
     'Default User Permissions',
-    '/admin/general#default-user-permissions',
+    '/admin/requests#default-user-permissions',
     'permissions roles grants access defaults',
   ],
   [

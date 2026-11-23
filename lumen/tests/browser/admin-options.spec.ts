@@ -1618,14 +1618,16 @@ test('a failed page stops endless scrolling until Retry', async ({ page }) => {
 
 test('a Discover row that fails to load says so', async ({ page }) => {
   await fixtures(page);
-  await page.route('**/api/v1/discover/tv', (route) =>
+  await page.route('**/api/v1/discover/tv**', (route) =>
     route.fulfill({ status: 500, json: { message: 'Server error' } })
   );
   await page.goto('/');
   const row = page.locator('section', {
     has: page.getByRole('heading', { name: 'Popular series' }),
   });
-  await expect(row.getByText('Couldn’t load this row')).toBeVisible();
+  await expect(
+    row.getByText('This section could not be loaded.')
+  ).toBeVisible();
   await expect(row.locator('.skel')).toHaveCount(0);
 });
 
