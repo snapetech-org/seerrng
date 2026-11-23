@@ -7233,6 +7233,10 @@ the final batch is still loading. This fixture verifies client behavior, not
 the reporter's live metadata provider or reverse-proxy timeout. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-large-series-episode-batching-20261122/`.
+The standalone 15-season and partial-recovery matrix was rerun on 2026-11-23;
+all 16 cases passed across desktop, iPhone, Android, and tablet. This confirms
+the Lumen fixture behavior and does not resolve the reported live SeerrNG
+provider failure.
 
 ### General and request-default administration navigation
 
