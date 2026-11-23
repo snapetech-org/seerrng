@@ -29,6 +29,9 @@
   html {
     scroll-padding-block-end: calc(120px + env(safe-area-inset-bottom));
   }
+  .view:has(.actionbar) {
+    padding-bottom: calc(var(--mobile-actionbar-clearance, 320px) + 24px);
+  }
 }
 .side,
 .topbar {

@@ -254,6 +254,31 @@ test('music album details disclose each unique contributing artist in the saved 
       fullPage: true,
     });
   }
+  if ((page.viewportSize()?.width ?? 1040) < 1040) {
+    await page.evaluate(() =>
+      window.scrollTo(0, document.documentElement.scrollHeight)
+    );
+    const actionbar = await page.locator('.actionbar').boundingBox();
+    const facts = await page.locator('dl.facts2').boundingBox();
+    expect(actionbar).not.toBeNull();
+    expect(facts).not.toBeNull();
+    const clearance = await page
+      .locator('#view')
+      .evaluate((view) =>
+        Number.parseFloat(
+          getComputedStyle(view).getPropertyValue(
+            '--mobile-actionbar-clearance'
+          )
+        )
+      );
+    expect(clearance).toBeGreaterThanOrEqual(actionbar!.height);
+    expect(facts!.y + facts!.height).toBeLessThanOrEqual(actionbar!.y + 1);
+    if (capture) {
+      await page.screenshot({
+        path: `${capture}-bottom-${test.info().project.name}.png`,
+      });
+    }
+  }
 });
 
 test('artist details follow new album releases with native rule identity', async ({

@@ -253,5 +253,25 @@ for (const locale of locales) {
           document.documentElement.clientWidth
       )
     ).toBe(false);
+    if ((page.viewportSize()?.width ?? 1040) < 1040) {
+      await page.evaluate(() =>
+        window.scrollTo(0, document.documentElement.scrollHeight)
+      );
+      const actionbar = await page.locator('.actionbar').boundingBox();
+      const detail = await page.locator('.detail').boundingBox();
+      expect(actionbar).not.toBeNull();
+      expect(detail).not.toBeNull();
+      const clearance = await page
+        .locator('#view')
+        .evaluate((view) =>
+          Number.parseFloat(
+            getComputedStyle(view).getPropertyValue(
+              '--mobile-actionbar-clearance'
+            )
+          )
+        );
+      expect(clearance).toBeGreaterThanOrEqual(actionbar!.height);
+      expect(detail!.y + detail!.height).toBeLessThanOrEqual(actionbar!.y + 1);
+    }
   });
 }

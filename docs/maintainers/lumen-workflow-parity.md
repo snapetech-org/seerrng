@@ -8169,3 +8169,26 @@ over the lower part of the portrait-cropped album poster. This comparison checks
 Music discovery only; album detail and other media detail routes still need their
 own matched-state review. Native and candidate captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-parity-20261123/music-discovery-refresh/`.
+
+### Mobile detail action-bar clearance (2026-11-23)
+
+A phone-width Music album capture showed the fixed request bar covering the
+bottom of the album facts card. At maximum scroll, the card extended about 20
+CSS pixels below the bar's top edge. The previous `.view` bottom padding used a
+fixed value that could not account for localized and multi-control action bars.
+Lumen now measures the active action bar, reserves its rendered height plus a
+24-pixel content gap, and recalculates when a route, viewport, or bar size
+changes. The measured bar height already includes its device safe-area inset.
+The shared `.view` owner applies this to Music,
+movie, TV, book, game, comic, and sports detail bars without changing desktop
+geometry.
+
+Regression checks scroll to the bottom of Music and TV details and verify that
+the facts card or detail content ends above the bar and that reserved clearance
+is at least the measured bar height. Sixteen standalone browser cases pass for
+Music and TV details across desktop, iPhone, Android, and tablet; the bundled
+`/lumen/` Music route passes desktop and phone integration cases. The Lumen
+production build passes. Before/after phone captures and desktop review are
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artists-20261123/`.
+Other action-bar consumers still need route-specific visual review.

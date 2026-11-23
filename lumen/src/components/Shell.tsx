@@ -326,7 +326,7 @@ export default function Shell({ children }: { children: ReactNode }) {
     };
     const onScroll = () => save();
     window.addEventListener('scroll', onScroll, { passive: true });
-    const view = document.querySelector('#view');
+    const view = document.querySelector<HTMLElement>('#view');
     let viewHeight = view?.getBoundingClientRect().height ?? 0;
     const markInteraction = () => {
       interactionResizePending = true;
@@ -339,17 +339,59 @@ export default function Shell({ children }: { children: ReactNode }) {
       const nextHeight = view?.getBoundingClientRect().height ?? viewHeight;
       if (Math.abs(nextHeight - viewHeight) <= 1) return;
       viewHeight = nextHeight;
+      syncActionbarClearance();
       if (interactionResizePending) save(true);
     });
+    let observedActionbar: HTMLElement | null = null;
+    const syncActionbarClearance = () => {
+      if (!view) return;
+      const actionbar = view.querySelector<HTMLElement>('.actionbar');
+      if (actionbar !== observedActionbar) {
+        actionbarResize.disconnect();
+        observedActionbar = actionbar;
+        if (actionbar) actionbarResize.observe(actionbar);
+      }
+      const isMobile = window.matchMedia('(max-width: 1039px)').matches;
+      const isVisible =
+        !!actionbar &&
+        getComputedStyle(actionbar).display !== 'none' &&
+        isMobile;
+      const clearance = isVisible
+        ? `${Math.ceil(actionbar!.getBoundingClientRect().height)}px`
+        : '0px';
+      if (
+        view.style.getPropertyValue('--mobile-actionbar-clearance') !==
+        clearance
+      )
+        view.style.setProperty('--mobile-actionbar-clearance', clearance);
+    };
+    const actionbarResize = new ResizeObserver(syncActionbarClearance);
+    const containsActionbar = (node: Node) =>
+      node instanceof HTMLElement &&
+      (node.matches('.actionbar') || !!node.querySelector('.actionbar'));
+    const actionbarChanges = new MutationObserver((records) => {
+      const actionbarChanged = records.some((record) =>
+        [...record.addedNodes, ...record.removedNodes].some(containsActionbar)
+      );
+      if (actionbarChanged) syncActionbarClearance();
+    });
+    const syncOnWindowResize = () => syncActionbarClearance();
     if (view) {
       view.addEventListener('click', markInteraction, true);
       resize.observe(view);
+      actionbarChanges.observe(view, { childList: true, subtree: true });
+      syncActionbarClearance();
     }
+    window.addEventListener('resize', syncOnWindowResize);
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', syncOnWindowResize);
       view?.removeEventListener('click', markInteraction, true);
       window.clearTimeout(interactionTimer);
       resize.disconnect();
+      actionbarResize.disconnect();
+      actionbarChanges.disconnect();
+      view?.style.removeProperty('--mobile-actionbar-clearance');
       cancelAnimationFrame(raf);
     };
   }, [detail]);

@@ -126,5 +126,25 @@ for (const viewport of [
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(viewport.width);
+    if (viewport.width < 1040) {
+      await page.evaluate(() =>
+        window.scrollTo(0, document.documentElement.scrollHeight)
+      );
+      const actionbar = await page.locator('.actionbar').boundingBox();
+      const facts = await page.locator('dl.facts2').boundingBox();
+      expect(actionbar).not.toBeNull();
+      expect(facts).not.toBeNull();
+      const clearance = await page
+        .locator('#view')
+        .evaluate((view) =>
+          Number.parseFloat(
+            getComputedStyle(view).getPropertyValue(
+              '--mobile-actionbar-clearance'
+            )
+          )
+        );
+      expect(clearance).toBeGreaterThanOrEqual(actionbar!.height);
+      expect(facts!.y + facts!.height).toBeLessThanOrEqual(actionbar!.y + 1);
+    }
   });
 }
