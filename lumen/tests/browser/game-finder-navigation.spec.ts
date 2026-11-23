@@ -33,6 +33,10 @@ async function fixture(
       return route.fulfill({
         json: { locale, enabledMediaCategories: categories },
       });
+    if (path === '/game-library')
+      return route.fulfill({
+        json: { results: [], total: 0, nextOffset: null },
+      });
     if (path.startsWith('/request/software/catalog/popular'))
       return route.fulfill({ json: { results: [] } });
     return route.fulfill({ json: {} });
@@ -57,13 +61,29 @@ async function openNavigation(page: Page) {
 }
 
 for (const locale of [
-  { tag: 'en', label: 'Game Finder', games: 'Games' },
-  { tag: 'fr', label: 'Recherche de jeux', games: 'Jeux' },
-  { tag: 'ar', label: 'مستكشف الألعاب', games: 'ألعاب' },
+  {
+    tag: 'en',
+    label: 'Game Finder',
+    games: 'Games',
+    myGames: 'My Games',
+  },
+  {
+    tag: 'fr',
+    label: 'Recherche de jeux',
+    games: 'Jeux',
+    myGames: 'Mes jeux',
+  },
+  {
+    tag: 'ar',
+    label: 'مستكشف الألعاب',
+    games: 'ألعاب',
+    myGames: 'ألعابي',
+  },
 ]) {
-  test(`Game Finder has a direct menu entry for authorized PC game users in ${locale.tag}`, async ({
+  test(`Game Finder and My Games have direct entries for PC game users in ${locale.tag}`, async ({
     page,
   }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
     await fixture(page, 2, { game: true }, locale.tag);
     await page.goto(appPath('/me'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale.tag);
@@ -76,10 +96,25 @@ for (const locale of [
       name: locale.label,
       exact: true,
     });
+    const myGames = menu.getByRole('link', {
+      name: locale.myGames,
+      exact: true,
+    });
     await expect(games).toBeVisible();
     await expect(games).toHaveAttribute('href', appPath('/games'));
     await expect(finder).toBeVisible();
     await expect(finder).toHaveAttribute('href', appPath('/games/discovery'));
+    if (baseline) {
+      await myGames.evaluate((element) => element.remove());
+      await expect(myGames).toHaveCount(0);
+      await menu.evaluate((element) => {
+        element.scrollTop = element.scrollHeight;
+      });
+    } else {
+      await expect(myGames).toBeVisible();
+      await expect(myGames).toHaveAttribute('href', appPath('/game-library'));
+      await myGames.scrollIntoViewIfNeeded();
+    }
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
@@ -94,15 +129,26 @@ for (const locale of [
       locale.tag === 'en' &&
       ['desktop', 'iphone'].includes(info.project.name)
     )
-      await page.screenshot({
-        path: `${captureDir}/candidate-${info.project.name}.png`,
-        fullPage: true,
+      await menu.screenshot({
+        path: `${captureDir}/my-games-${baseline ? 'baseline' : 'candidate'}-${info.project.name}.png`,
       });
     await finder.click();
     await expect(page).toHaveURL(/\/games\/discovery$/);
     await expect(
       page.getByRole('heading', { name: locale.label, exact: true })
     ).toBeVisible();
+    if (!baseline) {
+      await page.goto(appPath('/me'));
+      await expect(page.locator('html')).toHaveAttribute('lang', locale.tag);
+      const reopenedMenu = await openNavigation(page);
+      await reopenedMenu
+        .getByRole('link', { name: locale.myGames, exact: true })
+        .click();
+      await expect(page).toHaveURL(/\/game-library$/);
+      await expect(
+        page.getByRole('heading', { name: locale.myGames, exact: true })
+      ).toBeVisible();
+    }
   });
 }
 
@@ -129,8 +175,25 @@ for (const scenario of [
     await expect(
       menu.getByRole('link', { name: 'Game Finder', exact: true })
     ).toHaveCount(0);
+    await expect(
+      menu.getByRole('link', { name: 'My Games', exact: true })
+    ).toHaveAttribute('href', appPath('/game-library'));
   });
 }
+
+test('My Games stays hidden when game categories are disabled', async ({
+  page,
+}) => {
+  await fixture(page, 32, {});
+  await page.goto(appPath('/me'));
+  const menu = await openNavigation(page);
+  await expect(
+    menu.getByRole('link', { name: 'Games', exact: true })
+  ).toHaveCount(0);
+  await expect(
+    menu.getByRole('link', { name: 'My Games', exact: true })
+  ).toHaveCount(0);
+});
 
 test('Game Finder stays reachable in the compact phone navigation', async ({
   page,

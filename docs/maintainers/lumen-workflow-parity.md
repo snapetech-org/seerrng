@@ -37,24 +37,27 @@ a valid baseline for this comparison: it expects English status copy although
 the committed baseline already renders that text in the selected locale. Native
 matched visual acceptance therefore remains open.
 
-### Game Finder navigation parity
+### Game Finder and My Games navigation parity
 
 Native SeerrNG exposes Game Finder and the personal Games library as separate
 navigation destinations. Lumen previously exposed Games in its global menu and
-required users to open that page before finding the Game Finder link. Lumen now
+required users to open that page before finding either destination. Lumen now
 places a localized Game Finder entry beside Games when the PC game catalog is
-available to the account and the user has request access. The entry stays hidden
-for users without request access and households that have only console game
-catalogs enabled.
+available to the account and the user has request access, and a localized My
+Games entry in the personal library section whenever game categories are enabled.
+My Games remains available without software-request permission and for households
+with only console game catalogs enabled; both entries disappear when game
+categories are disabled.
 
 Browser fixtures verify direct navigation, the permission and catalog gates,
 and French, Arabic, and English labels across desktop, phone, Android, and tablet
-viewports. A compact 320-pixel phone case confirms the entry remains reachable
-without horizontal overflow. Baseline and candidate Account-page menu captures
-are retained in
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-finder-navigation-20261123/`.
-These fixtures do not verify a live QuestarrNG catalog or full production-server
-mount behavior.
+viewports. A compact 320-pixel phone case confirms the Finder entry remains
+reachable without horizontal overflow. Matched desktop and iPhone sidebar
+captures show My Games in the personal library section; evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-state-guidance-20261123/my-games-nav/`.
+The standalone Lumen build and 28-case navigation suite pass (25 passed, 3
+project-specific skips). Fixtures do not verify live QuestarrNG catalog results
+or production-server mount behavior.
 
 ### Native Discover bookmark compatibility
 

@@ -566,6 +566,12 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Icon name="book" />
             {t('components.Layout.Sidebar.myMedia', 'My Media')}
           </NavLink>
+          {extras.list.some(({ key }) => key === 'game') && (
+            <NavLink to="/game-library">
+              <Icon name="game" />
+              {t('lumen.gameLibrary.myGames', 'My Games')}
+            </NavLink>
+          )}
           {swipeEnabled && canUseRequestAccess(user?.permissions) && (
             <NavLink to="/swipe">
               <Icon name="star" />
