@@ -518,14 +518,27 @@ export default function Shell({ children }: { children: ReactNode }) {
               {e.key === 'game' &&
                 extras.games.includes('game') &&
                 canUseRequestAccess(user?.permissions) && (
-                  <NavLink
-                    to="/games/discovery"
-                    onClick={toTop('/games/discovery')}
-                    className={({ isActive }) => (isActive ? 'active' : '')}
-                  >
-                    <Icon name="game" />
-                    {t('lumen.gameFinder.title', 'Game Finder')}
-                  </NavLink>
+                  <>
+                    <NavLink
+                      to="/games/discovery"
+                      onClick={toTop('/games/discovery')}
+                      className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                      <Icon name="game" />
+                      {t('lumen.gameFinder.title', 'Game Finder')}
+                    </NavLink>
+                    <NavLink
+                      to="/software"
+                      onClick={toTop('/software')}
+                      className={({ isActive }) => (isActive ? 'active' : '')}
+                    >
+                      <Icon name="game" />
+                      {t(
+                        'components.Layout.Sidebar.browsesoftware',
+                        'Software'
+                      )}
+                    </NavLink>
+                  </>
                 )}
             </Fragment>
           ))}

@@ -8319,13 +8319,13 @@ remain unverified. Candidate UI evidence is retained under
 ### Direct Discover destinations in Lumen navigation (2026-11-23)
 
 The shared Lumen desktop and mobile menu now exposes Book Recommendations,
-Collector Picks, and Browse Patches as direct destinations, alongside Game
-Finder. Visibility follows SeerrNG request permission and enabled media
+Collector Picks, Software, and Browse Patches as direct destinations, alongside
+Game Finder. Visibility follows SeerrNG request permission and enabled media
 categories; the book recommendation link selects Audiobooks when Ebooks are
 turned off. This supplements the existing in-page shortcuts and keeps route
 checks authoritative.
 
-Browser fixtures cover all four menu destinations, unavailable request
+Browser fixtures cover all five menu destinations, unavailable request
 permission, account category restrictions, the audiobook-only route, and menu
 scrolling at desktop, iPhone, Android, and tablet sizes. Candidate screenshots
 and Playwright traces are retained at

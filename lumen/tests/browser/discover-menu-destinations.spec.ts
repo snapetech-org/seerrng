@@ -54,6 +54,7 @@ test('native Discover destinations have direct Lumen menu links', async ({
     ['Book Recommendations', '/books/recommendations'],
     ['Collector Picks', '/music/collectors'],
     ['Game Finder', '/games/discovery'],
+    ['Software', '/software'],
     ['Browse Patches', '/patches'],
   ] as const;
   for (const [label, href] of destinations) {
@@ -77,6 +78,7 @@ test('request-only Discover links stay hidden without request access', async ({
     'Book Recommendations',
     'Collector Picks',
     'Game Finder',
+    'Software',
     'Browse Patches',
   ])
     await expect(
@@ -97,6 +99,7 @@ test('Discover menu destinations follow account category restrictions', async ({
     'Book Recommendations',
     'Collector Picks',
     'Game Finder',
+    'Software',
     'Browse Patches',
   ])
     await expect(
