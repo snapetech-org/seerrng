@@ -4799,6 +4799,9 @@ export const localeData = [
       'lumen.recordings.followUpdateFailed': 'تعذّر تحديث متابعة الفريق.',
       'lumen.recordings.keep': 'الاحتفاظ بالتسجيل',
       'lumen.recordings.liveTvStatus': 'حالة البث التلفزيوني المباشر',
+      'lumen.recordings.loading': 'جارٍ تحميل التسجيلات…',
+      'lumen.recordings.statusLoadError':
+        'تعذّر تحميل حالة البث التلفزيوني المباشر.',
       'lumen.recordings.loadingSchedules': 'جارٍ تحميل جداول الفرق…',
       'lumen.recordings.loadingTeams': 'جارٍ تحميل الفرق التي تتابعها…',
       'lumen.recordings.maxFollowedTeams': 'يمكنك متابعة 20 فريقًا كحد أقصى.',
@@ -15522,6 +15525,8 @@ export const localeData = [
         'Could not update the team follow.',
       'lumen.recordings.keep': 'Keep Recording',
       'lumen.recordings.liveTvStatus': 'Live TV status',
+      'lumen.recordings.loading': 'Loading recordings…',
+      'lumen.recordings.statusLoadError': 'Live TV status could not be loaded.',
       'lumen.recordings.loadingSchedules': 'Loading team schedules…',
       'lumen.recordings.loadingTeams': 'Loading followed teams…',
       'lumen.recordings.maxFollowedTeams': 'You can follow up to 20 teams.',
@@ -27237,6 +27242,9 @@ export const localeData = [
         'Impossible de modifier le suivi de l’équipe.',
       'lumen.recordings.keep': 'Conserver l’enregistrement',
       'lumen.recordings.liveTvStatus': 'État de la télévision en direct',
+      'lumen.recordings.loading': 'Chargement des enregistrements…',
+      'lumen.recordings.statusLoadError':
+        'Impossible de charger l’état de la télévision en direct.',
       'lumen.recordings.loadingSchedules':
         'Chargement des calendriers des équipes…',
       'lumen.recordings.loadingTeams': 'Chargement des équipes suivies…',

@@ -1,5 +1,7 @@
 {
   "en": {
+    "lumen.recordings.loading": "Loading recordings…",
+    "lumen.recordings.statusLoadError": "Live TV status could not be loaded.",
     "lumen.nav.administration": "Administration",
     "lumen.nav.more": "More",
     "lumen.nav.lumenSettings": "Lumen Settings",
@@ -4386,6 +4388,8 @@
     "lumen.account.themeOverridesReset": "Theme overrides cleared."
   },
   "fr": {
+    "lumen.recordings.loading": "Chargement des enregistrements…",
+    "lumen.recordings.statusLoadError": "Impossible de charger l’état de la télévision en direct.",
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
     "lumen.me.signedInTo": "Connecté à SeerrNG",
     "lumen.me.userManagement": "Gestion des utilisateurs",
@@ -8931,6 +8935,8 @@
     "lumen.account.themeOverridesReset": "Les remplacements du thème ont été effacés."
   },
   "ar": {
+    "lumen.recordings.loading": "جارٍ تحميل التسجيلات…",
+    "lumen.recordings.statusLoadError": "تعذّر تحميل حالة البث التلفزيوني المباشر.",
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",
     "lumen.me.signedInTo": "تم تسجيل الدخول إلى SeerrNG",
     "lumen.me.userManagement": "إدارة المستخدمين",

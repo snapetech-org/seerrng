@@ -3699,6 +3699,8 @@
   "lumen.recordings.followUpdateFailed",
   "lumen.recordings.keep",
   "lumen.recordings.liveTvStatus",
+  "lumen.recordings.loading",
+  "lumen.recordings.statusLoadError",
   "lumen.recordings.loadingSchedules",
   "lumen.recordings.loadingTeams",
   "lumen.recordings.maxFollowedTeams",

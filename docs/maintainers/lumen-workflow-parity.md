@@ -5635,6 +5635,17 @@ controls remain in use, and all three locales fit the viewport. Evidence is
 retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-validation-44600171238/recordings-fullpage-candidate/`.
 
+Follow-up validation found that the populated page was localized but its list
+loading message and Live TV status failure title still fell back to English.
+Both messages now use the locale catalog in English, French, and Arabic; the
+existing recording-list error translation is used for list failures. Browser
+coverage holds the recordings response to verify loading copy, checks both
+status and list failures in all three locales, and retains manager approval,
+member cancellation, and unconfigured-service cases. Nine desktop cases pass.
+Populated English, French, and Arabic captures at 1440 × 900 are pixel-identical
+to the previous reviewed captures. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-recordings-recovery-20261122/`.
+
 ### General application settings localization
 
 The Application panel on `/admin/general` now follows the signed-in Lumen

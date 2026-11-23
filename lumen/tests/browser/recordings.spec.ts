@@ -16,16 +16,23 @@ async function fixture(
   page: Page,
   permissions: number,
   configured = true,
-  locale = 'en'
+  locale = 'en',
+  holdRecordings = false,
+  failure?: 'status' | 'recordings'
 ) {
   let status = active.status;
   const writes: string[] = [];
   const reads: string[] = [];
+  let releaseRecordings: (() => void) | undefined;
+  let markRecordingsStarted: (() => void) | undefined;
+  const recordingsStarted = new Promise<void>((resolve) => {
+    markRecordingsStarted = resolve;
+  });
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
-  await page.route('**/api/v1/**', (route) => {
+  await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
     const url = new URL(request.url());
     const path = url.pathname.slice(7);
@@ -33,6 +40,11 @@ async function fixture(
       return route.fulfill({ json: { id: 1, permissions } });
     if (path === '/user/1/settings/main')
       return route.fulfill({ json: { locale } });
+    if (path === '/live-tv/status' && failure === 'status')
+      return route.fulfill({
+        status: 503,
+        json: { message: 'fixture offline' },
+      });
     if (path === '/live-tv/status')
       return route.fulfill({
         json: { configured, canRequest: true, guideReady: configured },
@@ -48,6 +60,16 @@ async function fixture(
     if (path === '/live-tv/sports/follows')
       return route.fulfill({ json: { results: [] } });
     if (path === '/live-tv/recordings') {
+      markRecordingsStarted?.();
+      if (failure === 'recordings')
+        return route.fulfill({
+          status: 503,
+          json: { message: 'fixture offline' },
+        });
+      if (holdRecordings)
+        await new Promise<void>((resolve) => {
+          releaseRecordings = resolve;
+        });
       reads.push(url.searchParams.get('scope') ?? '');
       const all = url.searchParams.get('filter') === 'all';
       return route.fulfill({
@@ -67,12 +89,18 @@ async function fixture(
     }
     return route.fulfill({ json: {} });
   });
-  return { writes, reads };
+  return {
+    writes,
+    reads,
+    recordingsStarted,
+    releaseRecordings: () => releaseRecordings?.(),
+  };
 }
 
 for (const {
   locale,
   label,
+  loading,
   teamsHeading,
   teamLabel,
   chooseTeam,
@@ -81,6 +109,7 @@ for (const {
   {
     locale: 'en',
     label: 'Recordings',
+    loading: 'Loading recordings…',
     teamsHeading: 'Followed Teams',
     teamLabel: 'Team',
     chooseTeam: 'Choose a team',
@@ -89,6 +118,7 @@ for (const {
   {
     locale: 'fr',
     label: 'Enregistrements',
+    loading: 'Chargement des enregistrements…',
     teamsHeading: 'Équipes suivies',
     teamLabel: 'Équipe',
     chooseTeam: 'Choisir une équipe',
@@ -97,6 +127,7 @@ for (const {
   {
     locale: 'ar',
     label: 'التسجيلات',
+    loading: 'جارٍ تحميل التسجيلات…',
     teamsHeading: 'الفرق التي تتابعها',
     teamLabel: 'الفريق',
     chooseTeam: 'اختر الفريق',
@@ -107,8 +138,19 @@ for (const {
     page,
   }, info) => {
     test.skip(info.project.name !== 'desktop');
-    await fixture(page, 2, true, locale);
+    const { recordingsStarted, releaseRecordings } = await fixture(
+      page,
+      2,
+      true,
+      locale,
+      true
+    );
     await page.goto('/recordings');
+    await recordingsStarted;
+    await expect(
+      page.getByRole('status').filter({ hasText: loading })
+    ).toBeVisible();
+    releaseRecordings();
     await expect(page.getByText('Fixture Airing')).toBeVisible();
     await expect(
       page.getByRole('heading', { name: label, exact: true })
@@ -132,7 +174,7 @@ for (const {
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.locator('html')).toHaveAttribute('dir', direction);
     await expect(
-      page.getByRole('navigation', { name: 'Main' }).getByRole('link', {
+      page.getByRole('navigation').getByRole('link', {
         name: label,
         exact: true,
       })
@@ -144,6 +186,41 @@ for (const {
       path: info.outputPath(`recordings-page-${locale}.png`),
       fullPage: true,
     });
+  });
+}
+
+for (const { locale, recordingsError, statusError } of [
+  {
+    locale: 'en',
+    recordingsError: 'Recordings could not be loaded.',
+    statusError: 'Live TV status could not be loaded.',
+  },
+  {
+    locale: 'fr',
+    recordingsError: 'Les enregistrements ne pouvaient pas être chargés.',
+    statusError: 'Impossible de charger l’état de la télévision en direct.',
+  },
+  {
+    locale: 'ar',
+    recordingsError: 'تعذّر تحميل التسجيلات.',
+    statusError: 'تعذّر تحميل حالة البث التلفزيوني المباشر.',
+  },
+]) {
+  test(`the ${locale} Recordings page localizes API failures`, async ({
+    page,
+  }, info) => {
+    test.skip(info.project.name !== 'desktop');
+    await fixture(page, 32, true, locale, false, 'status');
+    await page.goto('/recordings');
+    await expect(page.getByRole('alert')).toContainText(statusError);
+
+    const recordingsPage = await page.context().newPage();
+    await fixture(recordingsPage, 32, true, locale, false, 'recordings');
+    await recordingsPage.goto('/recordings');
+    await expect(recordingsPage.getByRole('alert')).toContainText(
+      recordingsError
+    );
+    await recordingsPage.close();
   });
 }
 

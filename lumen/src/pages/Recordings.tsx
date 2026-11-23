@@ -140,6 +140,10 @@ export default function Recordings() {
       </header>
       <ServiceNote
         what={t('lumen.recordings.liveTvStatus', 'Live TV status')}
+        title={t(
+          'lumen.recordings.statusLoadError',
+          'Live TV status could not be loaded.'
+        )}
         error={status.error}
         retry={status.reload}
       />
@@ -209,7 +213,11 @@ export default function Recordings() {
             </button>
           </div>
           <ServiceNote
-            what="recordings"
+            what={t('lumen.recordings.liveTvStatus', 'Live TV status')}
+            title={t(
+              'components.LiveTv.RecordingList.loadError',
+              'Recordings could not be loaded.'
+            )}
             error={rows.error}
             retry={rows.reload}
           />
@@ -220,7 +228,7 @@ export default function Recordings() {
           )}
           {!rows.data && !rows.error && (
             <p className="note" role="status">
-              Loading recordings…
+              {t('lumen.recordings.loading', 'Loading recordings…')}
             </p>
           )}
           {rows.data?.results.length === 0 && (
