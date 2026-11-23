@@ -120,3 +120,35 @@ test('book recommendations selects audiobook when ebooks are unavailable', async
     menu.getByRole('link', { name: 'Book Recommendations', exact: true })
   ).toHaveAttribute('href', '/books/recommendations?format=audiobook');
 });
+
+test('all Discover menu links remain reachable without horizontal overflow at 320px', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  const menu = await prepare(page, 32, {
+    ebook: true,
+    audiobook: true,
+    music: true,
+    game: true,
+  });
+  const labels = [
+    'Book Recommendations',
+    'Collector Picks',
+    'Game Finder',
+    'Software',
+    'Browse Patches',
+  ];
+  for (const label of labels) {
+    const link = menu.getByRole('link', { name: label, exact: true });
+    await link.scrollIntoViewIfNeeded();
+    await expect(link).toBeInViewport();
+  }
+  const dimensions = await menu.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+    320
+  );
+});
