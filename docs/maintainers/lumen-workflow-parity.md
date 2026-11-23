@@ -1462,17 +1462,19 @@ acceptance for the complete Indexer Search workflow.
 
 Native `/settings/*` bookmarks now resolve to Lumen's matching administration
 pages, including per-channel notifications, media-server libraries, Prowlarr,
-users, and general settings. Legacy Prowlarr search targets and the `4K` and
-application API-key targets map to the corresponding Lumen pages. Query
-parameters and fragments survive the redirect. Lumen's existing administrator
-route guards continue to deny non-administrators before loading administrator
-settings.
+the user directory, and general settings. The legacy user-settings bookmark
+opens User Management, and the `4K` search target opens Request Settings; the
+application API-key target opens General Settings. Service bookmarks retain
+their supported query context, and browser fragments survive redirects. Lumen's
+existing administrator route guards continue to deny non-administrators before
+loading administrator settings.
 
 Eight browser cases pass across desktop, iPhone, Android, and tablet in both
 standalone and production `/lumen/` Express-mounted builds. The cases exercise
 the native route set, legacy search targets, query/fragment preservation, and
 denied request-manager access with no administrator settings reads. TypeScript
-and production builds pass. Evidence is retained at
+and production builds pass. Direct server middleware tests verify the user and
+4K redirect destinations. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-bookmarks-20261123/`.
 
 Administrator System Logs now follow the saved account locale for search,

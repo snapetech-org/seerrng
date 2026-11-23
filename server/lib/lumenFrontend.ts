@@ -982,7 +982,7 @@ export const mountLumenFrontend = (
           ? `/admin?serviceCategory=${category}`
           : '/admin';
     } else if (section === 'users') {
-      destination = '/admin/general#default-request-quotas';
+      destination = '/admin/users';
     } else if (section === 'logs') {
       const page = req.query.page;
       destination =
@@ -991,13 +991,14 @@ export const mountLumenFrontend = (
           : '/admin/logs';
     } else if (!section || section === 'main') {
       const target = req.query.settingsSearchTarget;
-      destination =
-        section === 'main' &&
-        (target === 'spotifyClientId' ||
-          target === 'apiKey' ||
-          target === 'enable4k')
-          ? `/admin/general#${target}`
-          : '/admin/general';
+      destination = '/admin/general';
+      if (section === 'main') {
+        if (target === 'enable4k') {
+          destination = '/admin/requests#enable4k';
+        } else if (target === 'spotifyClientId' || target === 'apiKey') {
+          destination = `/admin/general#${target}`;
+        }
+      }
     } else if (
       /^(jobs|about|categories|network|discovery|metadata|library-migration|prowlarr)$/.test(
         section

@@ -117,16 +117,15 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         );
         assert.equal(
           response.headers.location,
-          `/lumen/admin/general#${target}`
+          target === 'enable4k'
+            ? '/lumen/admin/requests#enable4k'
+            : `/lumen/admin/general#${target}`
         );
         assert.equal(response.headers['cache-control'], 'no-store');
       }
     }
     const userDefaults = await request(app).get('/lumen/settings/users/');
-    assert.equal(
-      userDefaults.headers.location,
-      '/lumen/admin/general#default-request-quotas'
-    );
+    assert.equal(userDefaults.headers.location, '/lumen/admin/users');
     const services = await request(app).get('/lumen/settings/services/');
     assert.equal(services.status, 302);
     assert.equal(services.headers.location, '/lumen/admin');
