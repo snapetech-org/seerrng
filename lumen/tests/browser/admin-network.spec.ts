@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function fixtures(page: Page, permissions = 2, overrides: string[] = []) {
+async function fixtures(
+  page: Page,
+  permissions = 2,
+  overrides: string[] = [],
+  locale = 'en'
+) {
   const patches: unknown[] = [];
   let failed = false;
   const settings = {
@@ -30,6 +35,8 @@ async function fixtures(page: Page, permissions = 2, overrides: string[] = []) {
       return route.fulfill({
         json: { id: 1, permissions, displayName: 'User' },
       });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
     if (path === '/status/tls')
       return route.fulfill({ json: { environmentOverrides: overrides } });
     if (path !== '/settings/network') return route.fulfill({ json: {} });
@@ -146,3 +153,46 @@ test('non-administrators cannot open network settings', async ({ page }) => {
     page.getByRole('link', { name: 'Open Network Settings' })
   ).toHaveCount(0);
 });
+
+for (const { locale, certificateFile, guidance } of [
+  {
+    locale: 'en',
+    certificateFile: 'Certificate file',
+    guidance:
+      'Use paths visible inside the SeerrNG process. Mount certificate files into the container; private keys are never uploaded through this form.',
+  },
+  {
+    locale: 'fr',
+    certificateFile: 'Fichier de certificat',
+    guidance:
+      "Utilisez les chemins visibles à l'intérieur du processus SeerrNG. Monter les fichiers de certificat dans le conteneur; les clés privées ne sont jamais téléchargées via ce formulaire.",
+  },
+  {
+    locale: 'ar',
+    certificateFile: 'ملف الشهادة',
+    guidance:
+      'استخدام الطرق المرئية داخل SeerrNG عملية ملفات شهادات المتحركة في الحاوية؛ والمفاتيح الخاصة لا يتم تحميلها من خلال هذا الشكل.',
+  },
+]) {
+  test(`provided certificate settings render the ${locale} safety guidance`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, 2, [], locale);
+    await page.goto('/admin/network');
+    const safetyGuidance = page.getByText(guidance, { exact: true });
+    await expect(safetyGuidance).toHaveCount(0);
+    await page.getByRole('combobox').selectOption('provided');
+    await expect(page.getByLabel(certificateFile)).toBeVisible();
+    await expect(safetyGuidance).toBeVisible();
+    await expect(page.locator('input[type="file"]')).toHaveCount(0);
+    await page.screenshot({
+      path: info.outputPath(`provided-certificate-paths-${locale}.png`),
+      fullPage: true,
+    });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    await page.getByRole('combobox').selectOption('self-signed');
+    await expect(safetyGuidance).toHaveCount(0);
+  });
+}

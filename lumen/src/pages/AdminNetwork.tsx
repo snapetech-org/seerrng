@@ -570,6 +570,11 @@ function NetworkForm({
                     )}
             </p>
           )}
+          {group === 'tls' && draft['tls.mode'] === 'provided' && (
+            <p className="note">
+              {t('components.Settings.SettingsNetwork.providedFileTip')}
+            </p>
+          )}
           <div className="setlist">
             {fields.map((field) => {
               const id = fieldId(group, field.key);

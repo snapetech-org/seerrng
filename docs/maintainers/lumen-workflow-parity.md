@@ -3299,6 +3299,16 @@ sizes; no horizontal overflow or unrelated layout changes were found. Live
 TLS restarts and network enforcement were not exercised. Evidence is retained
 at `seerrng-admin-network-localization-20261120`.
 
+The provided-certificate mode now includes SeerrNG's existing file-path
+guidance: certificate files must be mounted where the SeerrNG process can read
+them, and private keys are not uploaded through this form. The message appears
+only in provided-certificate mode, follows English, French, and Arabic, and
+does not introduce a file-upload control. Six desktop and iPhone browser cases
+verified the mode transitions and guidance. Baseline/candidate captures at the
+same viewport sizes show the added note without changing the form controls or
+causing horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-network-certificate-guidance-20261122/`.
+
 ### Swipe Settings
 
 The Lumen Swipe administration page now follows saved English, French, and
