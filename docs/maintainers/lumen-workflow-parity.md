@@ -8385,3 +8385,28 @@ after the next read confirms the saved value. Build and i18n checks pass;
 catalog review still reports the repository's existing untranslated and
 unreviewed entries. Error and success captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/admin-jobs/visual/`.
+
+### Persistent TV overview disclosure (2026-11-23)
+
+Native SeerrNG lets a user collapse the TV overview and pin it open through
+`detailDisclosurePins.tv.overview`. Lumen previously rendered the overview as
+permanent text. TV details now use the existing Lumen disclosure component and
+authenticated `detail-disclosures/tv` settings endpoint, including response
+confirmation, user-settings refresh, and retryable save errors. The control and
+preference label are localized in English, French, and Arabic; no stylesheet or
+shared layout owner changed.
+
+The regression extends the existing TV credit-pin fixture and verifies the
+overview's collapsed default, saved preference, and restored open state after
+reload. It passes in desktop, iPhone, Android, and tablet Playwright projects.
+The Lumen production build and repository i18n check pass; the latter continues
+to report the existing untranslated/unreviewed catalog backlog. Baseline
+`9273c3593` and the candidate were rendered with the same API fixture at
+1440×900 and iPhone 13 viewport sizes. Desktop and phone captures were inspected
+for collapsed and expanded states; the overview remains in the information
+column with no clipping or horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-overview-visual/`.
+
+This closes only TV overview disclosure parity. Movie/book/music detail panels,
+TV facts and media-server panels, broader route-level visual acceptance, and
+live provider verification remain open in the overall Lumen parity initiative.

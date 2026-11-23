@@ -2517,6 +2517,8 @@
   "lumen.detail.noCredits",
   "lumen.detail.noServer",
   "lumen.detail.noSubjectTags",
+  "lumen.detail.overview",
+  "lumen.detail.overviewPreference",
   "lumen.detail.openFullCast",
   "lumen.detail.openFullCrew",
   "lumen.detail.quality",

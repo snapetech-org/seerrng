@@ -36,6 +36,7 @@ import {
   Facts,
   fmtRun,
   originalLanguageLink,
+  OverviewDisclosure,
   Pill,
   productionCountryLinks,
   SubjectTagsDisclosure,
@@ -802,7 +803,7 @@ export default function TvDetail() {
         )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
-            <p className="ov">{t.overview}</p>
+            <OverviewDisclosure overview={t.overview} />
             <div id="seasons">
               <div className="sec-head">
                 <h2>{translate('lumen.tv.seasons', 'Seasons')}</h2>

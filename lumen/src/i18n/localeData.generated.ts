@@ -3460,6 +3460,8 @@ export const localeData = [
       'lumen.detail.noServer':
         'لا يوجد خادم {service} للاختيار؛ يستخدم SeerrNG الإعدادات الافتراضية.',
       'lumen.detail.noSubjectTags': 'لا توجد وسوم.',
+      'lumen.detail.overview': 'نظرة عامة',
+      'lumen.detail.overviewPreference': 'نظرة عامة',
       'lumen.detail.openFullCast': 'عرض طاقم التمثيل كاملًا',
       'lumen.detail.openFullCrew': 'عرض طاقم العمل كاملًا',
       'lumen.detail.quality': 'الجودة',
@@ -14781,6 +14783,8 @@ export const localeData = [
       'lumen.detail.noServer':
         'No {service} server to choose; SeerrNG uses its defaults.',
       'lumen.detail.noSubjectTags': 'No subject tags.',
+      'lumen.detail.overview': 'Overview',
+      'lumen.detail.overviewPreference': 'overview',
       'lumen.detail.openFullCast': 'Open Full Cast',
       'lumen.detail.openFullCrew': 'Open Full Crew',
       'lumen.detail.quality': 'Quality',
@@ -26928,6 +26932,8 @@ export const localeData = [
       'lumen.detail.noServer':
         'Aucun serveur {service} à choisir ; SeerrNG utilise ses paramètres par défaut.',
       'lumen.detail.noSubjectTags': 'Aucun mot-clé.',
+      'lumen.detail.overview': 'Synopsis',
+      'lumen.detail.overviewPreference': 'synopsis',
       'lumen.detail.openFullCast': 'Voir toute la distribution',
       'lumen.detail.openFullCrew': 'Voir toute l’équipe',
       'lumen.detail.quality': 'Qualité',

@@ -1244,6 +1244,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
         name: 'Fixture Series',
         mediaType: 'tv',
         seasons: [],
+        overview: 'A persistent series overview.',
         credits: { cast, crew },
       },
     })
@@ -1256,6 +1257,15 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
       if (reject) return route.fulfill({ status: 503, json: {} });
       Object.assign(settings.detailDisclosurePins.movie, body);
       return route.fulfill({ json: settings.detailDisclosurePins.movie });
+    }
+  );
+  await page.route(
+    '**/api/v1/user/1/settings/detail-disclosures/tv',
+    (route) => {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(settings.detailDisclosurePins.tv, body);
+      return route.fulfill({ json: settings.detailDisclosurePins.tv });
     }
   );
 
@@ -1306,6 +1316,21 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   await page.goto('/tv/202');
   await expect(page.getByText('Starring', { exact: true })).toBeVisible();
   await expect(actor).toBeHidden();
+  const overview = page.locator('details.adv').filter({ hasText: 'Overview' });
+  await expect(overview).toBeVisible();
+  await expect(overview).not.toHaveAttribute('open', '');
+  await overview.locator('summary').click();
+  const overviewPin = overview.getByRole('button', {
+    name: 'Keep Overview Open',
+  });
+  await overviewPin.click();
+  await expect(overviewPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  const restoredOverview = page
+    .locator('details.adv')
+    .filter({ hasText: 'Overview' });
+  await expect(restoredOverview).toHaveAttribute('open', '');
+  await expect(restoredOverview).toContainText('A persistent series overview.');
 
   for (const path of ['/movie/101#crew', '/tv/202#crew', '/tv/202#cast']) {
     await page.goto(path);
@@ -1323,7 +1348,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     await summary.click();
     await expect(person).toBeHidden();
   }
-  expect(writes).toHaveLength(2);
+  expect(writes).toHaveLength(3);
 });
 
 test('subject tags share browser visibility and open filtered video discovery', async ({

@@ -264,6 +264,20 @@ export function SubjectTagsDisclosure({
   );
 }
 
+export function OverviewDisclosure({ overview }: { overview?: string }) {
+  const { t } = useLumenLocale();
+  if (!overview) return null;
+  return (
+    <VideoDisclosure
+      media="tv"
+      panel="overview"
+      label={t('lumen.detail.overview', 'Overview')}
+    >
+      <p className="ov">{overview}</p>
+    </VideoDisclosure>
+  );
+}
+
 function VideoDisclosure({
   media,
   panel,
@@ -303,7 +317,9 @@ function VideoDisclosure({
   const preference =
     panel === 'subjectTags'
       ? t('lumen.detail.subjectTagPreference', 'subject tag')
-      : t('lumen.detail.creditPreference', 'credit');
+      : panel === 'overview'
+        ? t('lumen.detail.overviewPreference', 'overview')
+        : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
     if (!user || pending.current) return;
