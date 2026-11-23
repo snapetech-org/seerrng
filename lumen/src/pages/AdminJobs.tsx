@@ -136,6 +136,7 @@ export default function AdminJobs() {
   const [edit, setEdit] = useState<{ job: Job; schedule: string }>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
+  const [notice, setNotice] = useState('');
   const working = useRef(false);
 
   useEffect(() => {
@@ -153,11 +154,28 @@ export default function AdminJobs() {
     working.current = true;
     setBusy(true);
     setFailure('');
+    setNotice('');
     try {
       await api(`/settings/jobs/${encodeURIComponent(job.id)}/${action}`, {
         method: 'POST',
         body: body ? JSON.stringify(body) : undefined,
       });
+      if (action === 'schedule') {
+        const updated = await api<Job[]>('/settings/jobs');
+        const persisted = updated.find((item) => item.id === job.id);
+        const expectedSchedule = (body as { schedule?: string } | undefined)
+          ?.schedule;
+        if (!persisted || persisted.cronSchedule !== expectedSchedule) {
+          setFailure(
+            t(
+              'lumen.adminJobs.confirmFailure',
+              'Could not confirm the saved schedule. Try again.'
+            )
+          );
+          return;
+        }
+        setNotice(t('lumen.adminJobs.scheduleSaved', 'Schedule saved.'));
+      }
       setEdit(undefined);
     } catch (error) {
       setFailure(
@@ -208,6 +226,11 @@ export default function AdminJobs() {
       {failure && (
         <p className="note" role="alert">
           {failure}
+        </p>
+      )}
+      {notice && (
+        <p className="note" role="status">
+          {notice}
         </p>
       )}
       {!data && !error && (

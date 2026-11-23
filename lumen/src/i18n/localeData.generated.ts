@@ -2299,6 +2299,8 @@ export const localeData = [
       'lumen.adminJobs.frequency.seconds.one': 'كل {count} ثانية',
       'lumen.adminJobs.frequency.seconds.other': 'كل {count} ثانية',
       'lumen.adminJobs.frequency.seconds.two': 'كل {count} ثانيتين',
+      'lumen.adminJobs.confirmFailure':
+        'تعذّر تأكيد حفظ الجدول. حاول مرة أخرى.',
       'lumen.adminJobs.goBack': 'رجوع',
       'lumen.adminJobs.idle': 'خاملة',
       'lumen.adminJobs.loading': 'جارٍ تحميل المهام المجدولة…',
@@ -2307,6 +2309,7 @@ export const localeData = [
       'lumen.adminJobs.running': 'قيد التشغيل',
       'lumen.adminJobs.saveSchedule': 'حفظ الجدول',
       'lumen.adminJobs.scheduledJobs': 'المهام المجدولة',
+      'lumen.adminJobs.scheduleSaved': 'تم حفظ الجدول.',
       'lumen.adminJobs.systemCaches': 'ذاكرات النظام المؤقتة',
       'lumen.adminJobs.title': 'المهام المجدولة',
       'lumen.adminJobs.updateFailure': 'تعذّر تحديث المهمة.',
@@ -13584,6 +13587,8 @@ export const localeData = [
       'lumen.adminJobs.frequency.seconds.one': 'Every {count} second',
       'lumen.adminJobs.frequency.seconds.other': 'Every {count} seconds',
       'lumen.adminJobs.frequency.seconds.two': 'Every {count} seconds',
+      'lumen.adminJobs.confirmFailure':
+        'Could not confirm the saved schedule. Try again.',
       'lumen.adminJobs.goBack': 'Go Back',
       'lumen.adminJobs.idle': 'Idle',
       'lumen.adminJobs.loading': 'Loading scheduled jobs…',
@@ -13592,6 +13597,7 @@ export const localeData = [
       'lumen.adminJobs.running': 'Running',
       'lumen.adminJobs.saveSchedule': 'Save Schedule',
       'lumen.adminJobs.scheduledJobs': 'scheduled jobs',
+      'lumen.adminJobs.scheduleSaved': 'Schedule saved.',
       'lumen.adminJobs.systemCaches': 'System Caches',
       'lumen.adminJobs.title': 'Scheduled Jobs',
       'lumen.adminJobs.updateFailure': 'The job could not be updated.',
@@ -25633,6 +25639,8 @@ export const localeData = [
       'lumen.adminJobs.frequency.seconds.one': 'Toutes les {count} seconde',
       'lumen.adminJobs.frequency.seconds.other': 'Toutes les {count} secondes',
       'lumen.adminJobs.frequency.seconds.two': 'Toutes les {count} secondes',
+      'lumen.adminJobs.confirmFailure':
+        'Impossible de confirmer l’enregistrement du planning. Réessayez.',
       'lumen.adminJobs.goBack': 'Retour',
       'lumen.adminJobs.idle': 'Inactive',
       'lumen.adminJobs.loading': 'Chargement des tâches planifiées…',
@@ -25641,6 +25649,7 @@ export const localeData = [
       'lumen.adminJobs.running': 'En cours',
       'lumen.adminJobs.saveSchedule': 'Enregistrer le planning',
       'lumen.adminJobs.scheduledJobs': 'tâches planifiées',
+      'lumen.adminJobs.scheduleSaved': 'Planning enregistré.',
       'lumen.adminJobs.systemCaches': 'Caches système',
       'lumen.adminJobs.title': 'Tâches planifiées',
       'lumen.adminJobs.updateFailure':
