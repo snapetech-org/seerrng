@@ -1,0 +1,1 @@
+- Verify Prowlarr settings against persisted connection fields and API-key configured state before clearing administrator edits or reporting success. Stale readbacks keep the draft available for retry.

@@ -7500,6 +7500,20 @@ Fixtures verify the client behavior only; live filesystem/settings persistence,
 provider connectivity, matched native baseline comparison, and independent
 translations remain unverified.
 
+### Prowlarr administration save readback
+
+Prowlarr administration now verifies the saved connection fields and API-key
+configured state in both the successful PUT response and a fresh GET before
+clearing the draft or showing success. A stale readback preserves the current
+configuration draft and displays the existing retryable save error. The API key
+remains write-only in the public settings projection.
+
+All 12 Prowlarr browser cases pass across desktop, iPhone, Android, and tablet.
+Coverage includes stale readback followed by a successful retry, indexer
+routing edits, existing secret preservation, localization, and page overflow.
+Fixtures exercise client behavior only; live Prowlarr persistence, indexer
+connectivity, and matched native visual comparison remain unverified.
+
 ### Managed user profile save readback
 
 Lumen's administrator-managed user profile editor now checks the saved

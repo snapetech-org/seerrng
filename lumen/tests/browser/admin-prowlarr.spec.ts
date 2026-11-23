@@ -15,6 +15,9 @@ test('Prowlarr tests the draft without overwriting the saved API key', async ({
     useSsl: false,
     apiKeyConfigured: true,
   };
+  let saved = initial;
+  let staleReadback: typeof initial | undefined;
+  let saveCount = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -26,11 +29,22 @@ test('Prowlarr tests the draft without overwriting the saved API key', async ({
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (endpoint === path + '/coverage')
       return route.fulfill({ json: { configured: true, totalIndexers: 1 } });
-    if (endpoint === path && request.method() === 'GET')
-      return route.fulfill({ json: initial });
+    if (endpoint === path && request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (endpoint === path + '/test' || endpoint === path) {
       const body = request.postDataJSON();
       writes.push({ method: request.method(), body });
+      if (request.method() === 'PUT') {
+        if (saveCount === 0) staleReadback = saved;
+        saved = { ...saved, ...body };
+        saveCount++;
+      }
       return route.fulfill({
         json: endpoint.endsWith('/test')
           ? {
@@ -63,9 +77,18 @@ test('Prowlarr tests the draft without overwriting the saved API key', async ({
   await page
     .getByRole('button', { name: 'Save Prowlarr settings', exact: true })
     .click();
+  await expect(
+    page.getByText('Prowlarr settings saved.', { exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByText('Prowlarr settings could not be saved.', { exact: true })
+  ).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Save Prowlarr settings', exact: true })
+    .click();
   await expect(page.getByText('Prowlarr settings saved.')).toBeVisible();
   expect(writes).toEqual(
-    ['POST', 'PUT'].map((method) => ({
+    ['POST', 'PUT', 'PUT'].map((method) => ({
       method,
       body: {
         hostname: 'prowlarr',
@@ -103,6 +126,7 @@ test('Prowlarr routing edits preserve explicit empty assignments and clear limit
     indexerIdsByCategory: { movie: [4] },
     searchLimitByIndexer: { 4: 8 },
   };
+  let persisted = initial;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -127,10 +151,11 @@ test('Prowlarr routing edits preserve explicit empty assignments and clear limit
         },
       });
     if (!path.endsWith('/prowlarr')) return route.fulfill({ json: {} });
-    if (request.method() === 'GET') return route.fulfill({ json: initial });
+    if (request.method() === 'GET') return route.fulfill({ json: persisted });
     const body = request.postDataJSON();
     changes.push(body);
-    return route.fulfill({ json: { ...initial, ...body } });
+    persisted = { ...persisted, ...body };
+    return route.fulfill({ json: persisted });
   });
   await page.goto(appPath('/admin/prowlarr'));
   const movies = page.getByLabel('Movies Category IDs', { exact: true });
@@ -216,6 +241,7 @@ test('Prowlarr administration follows the saved locale and confirms changes', as
     useSsl: false,
     apiKeyConfigured: true,
   };
+  let persisted = initial;
   const inventory = {
     configured: true,
     version: '1.0',
@@ -245,10 +271,11 @@ test('Prowlarr administration follows the saved locale and confirms changes', as
     )
       return route.fulfill({ json: inventory });
     if (endpoint.endsWith('/settings/prowlarr')) {
-      if (request.method() === 'GET') return route.fulfill({ json: initial });
+      if (request.method() === 'GET') return route.fulfill({ json: persisted });
       const body = request.postDataJSON();
       writes.push(body);
-      return route.fulfill({ json: { ...initial, ...body } });
+      persisted = { ...persisted, ...body };
+      return route.fulfill({ json: persisted });
     }
     return route.fulfill({ json: {} });
   });

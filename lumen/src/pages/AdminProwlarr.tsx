@@ -334,8 +334,39 @@ function ConnectionForm({ initial }: { initial: Settings }) {
       } else {
         const updated = await api<Settings>(path, { method: 'PUT', body });
         if (generation !== sessionGeneration()) return;
-        setSaved(updated);
-        setDraft(formSettings(updated));
+        const readback = await api<Settings>(path);
+        if (generation !== sessionGeneration()) return;
+        const expected = {
+          hostname: draft.hostname.trim(),
+          port,
+          baseUrl: draft.baseUrl.trim()
+            ? `/${draft.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+            : '',
+          useSsl: draft.useSsl,
+          apiKeyConfigured: draft.clearApiKey
+            ? false
+            : draft.apiKey.trim()
+              ? true
+              : saved.apiKeyConfigured,
+          searchLimitPerUserPerMinute: limit,
+          showIndexerDetails: draft.showIndexerDetails,
+        };
+        const confirmed = Object.entries(expected).every(
+          ([field, value]) =>
+            updated[field as keyof Settings] === value &&
+            readback[field as keyof Settings] === value
+        );
+        if (!confirmed) {
+          setFailure(
+            t(
+              'components.SettingsProwlarr.saveFailed',
+              'Prowlarr settings could not be saved.'
+            )
+          );
+          return;
+        }
+        setSaved(readback);
+        setDraft(formSettings(readback));
         setResult(undefined);
         coverage.reload();
         setNotice(
