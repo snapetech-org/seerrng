@@ -6669,7 +6669,7 @@ test('Instance Age Gate saves changed settings without submitting category draft
 
 test('General Settings retains application edits after failure and saves only changed fields', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   const saved = {
     applicationTitle: 'SeerrNG',
@@ -6705,8 +6705,16 @@ test('General Settings retains application edits after failure and saves only ch
     'Could not save settings.'
   );
   await expect(title).toHaveValue('Family Library');
+  await page.screenshot({
+    path: info.outputPath('general-settings-write-failure.png'),
+    fullPage: true,
+  });
   await save.click();
   await expect(page.getByText('Application settings saved.')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('general-settings-write-recovered.png'),
+    fullPage: true,
+  });
   await expect(save).toBeDisabled();
   const address = page.getByLabel('Application URL');
   await expect(address).toHaveValue('https://seerr.example.test');
@@ -6739,6 +6747,62 @@ test('General Settings retains application edits after failure and saves only ch
   await expect(page.getByLabel('Other Users’ Availability')).toHaveValue(
     'distinguish'
   );
+});
+
+test('General Settings preserves edits when saved values fail persisted readback', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  const saved = {
+    applicationTitle: 'SeerrNG',
+    applicationUrl: 'https://seerr.example.test',
+    cacheImages: true,
+    versionCheck: true,
+    otherUsersAvailability: 'show',
+  };
+  let persistWrites = false;
+  const writes: unknown[] = [];
+  const reads: unknown[] = [];
+  await page.route('**/api/v1/settings/main', (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      if (persistWrites) Object.assign(saved, body);
+      return route.fulfill({ json: { ...saved, ...body } });
+    }
+    reads.push({ ...saved });
+    return route.fulfill({ json: saved });
+  });
+  await page.goto('/admin/general');
+  const title = page.getByLabel('Application Title');
+  const save = page.getByRole('button', { name: 'Save Application Settings' });
+  await title.fill('Family Library');
+  await save.click();
+  await expect.poll(() => writes.length).toBe(1);
+  await expect.poll(() => reads.length).toBeGreaterThan(1);
+  expect(reads.at(-1)).toMatchObject({ applicationTitle: 'SeerrNG' });
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not confirm the saved application settings.'
+  );
+  await expect(title).toHaveValue('Family Library');
+  await expect(save).toBeEnabled();
+  await page.screenshot({
+    path: info.outputPath('general-settings-readback-failure.png'),
+    fullPage: true,
+  });
+  persistWrites = true;
+  await save.click();
+  await expect(page.getByText('Application settings saved.')).toBeVisible();
+  await expect(title).toHaveValue('Family Library');
+  await expect(save).toBeDisabled();
+  await page.screenshot({
+    path: info.outputPath('general-settings-readback-recovered.png'),
+    fullPage: true,
+  });
+  expect(writes).toEqual([
+    { applicationTitle: 'Family Library' },
+    { applicationTitle: 'Family Library' },
+  ]);
 });
 
 test('General Settings selects bundled or standalone Lumen and scopes the native lock', async ({

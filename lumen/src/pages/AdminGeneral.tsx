@@ -154,9 +154,13 @@ function ApplicationForm({
         ),
       });
       if (generation !== sessionGeneration()) return;
-      invalidatePublicSettings();
-      forget('/settings/public');
-      if (changed.some((key) => result[key] !== values[key])) {
+      const readback = await api<ApplicationSettings>(path);
+      if (generation !== sessionGeneration()) return;
+      if (
+        changed.some(
+          (key) => result[key] !== values[key] || readback[key] !== values[key]
+        )
+      ) {
         setFailure(
           n(
             'lumen.adminGeneral.confirmFailure',
@@ -165,6 +169,8 @@ function ApplicationForm({
         );
         return;
       }
+      invalidatePublicSettings();
+      forget('/settings/public');
       setDraft(values);
       setSaved(values);
       setNotice(n('lumen.adminGeneral.saved', 'Application settings saved.'));

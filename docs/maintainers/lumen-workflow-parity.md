@@ -177,6 +177,24 @@ verify live database persistence, proxy secret handling, or listener restart
 behavior. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-network-settings-readback-20261122/`.
 
+### General application settings persisted readback
+
+General Settings now confirms each edited value in a fresh read of
+`/settings/main` after its write response. A stale or mismatched readback keeps
+the user's draft intact, reports the existing localized confirmation failure,
+and leaves Save available for retry. Public settings caches are invalidated
+only after persistence is confirmed.
+
+The focused browser cases pass on desktop, iPhone, Android, and tablet. They
+cover a rejected write and recovery, a successful write with stale persisted
+readback and retry, plus the existing sparse-save and reload behavior. Matched
+full-page captures at 1440 CSS px and iPhone 13 width show the same form and
+navigation geometry as the prior write-failure state; only the localized
+failure text differs. The production Lumen build passes. Fixture persistence
+does not verify a live SeerrNG database or dependent login behavior. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-general-settings-readback-20261122/`.
+
 ### Per-user external request lists
 
 Lumen Account Settings now exposes SeerrNG's authenticated external request list
