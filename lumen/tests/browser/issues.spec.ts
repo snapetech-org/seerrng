@@ -1,9 +1,39 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const testAppPath = (path: string) => `${testMount}${path}`;
 const testApiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
+async function authenticateNativeComparison(page: Page, baseURL: string) {
+  if (process.env.LUMEN_TEST_NATIVE_SESSION !== 'true') return;
+  const response = await page
+    .context()
+    .request.post(`${baseURL}/api/v1/auth/local`, {
+      data: { email: 'admin@seerr.dev', password: 'test1234' },
+      headers: { 'X-Forwarded-Proto': 'https' },
+    });
+  expect(response.status()).toBe(200);
+  const sessionId = response
+    .headersArray()
+    .find((header) => header.name.toLowerCase() === 'set-cookie')
+    ?.value.match(/^connect\.sid=([^;]+)/)?.[1];
+  expect(sessionId).toBeTruthy();
+  await page.context().addCookies([
+    {
+      name: 'connect.sid',
+      value: sessionId!,
+      url: baseURL,
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
+    },
+  ]);
+}
+
+test.beforeEach(async ({ page, baseURL }) => {
+  await authenticateNativeComparison(page, baseURL!);
+});
 
 for (const permissions of [4194304, 2097152, 32]) {
   test(`issue discussion follows account permissions ${permissions}`, async ({
@@ -18,7 +48,24 @@ for (const permissions of [4194304, 2097152, 32]) {
       id: 7,
       status,
       issueType: 1,
-      createdBy: { id: 2, displayName: 'Viewer' },
+      media: {
+        mediaType: 'tv',
+        tmdbId: 123,
+        identifiers: [],
+        seasons: [
+          { seasonNumber: 1 },
+          { seasonNumber: 2 },
+          { seasonNumber: 3 },
+          { seasonNumber: 4 },
+        ],
+        posterPath: '/images/default-poster.png',
+        title: 'Test Series',
+      },
+      createdBy: {
+        id: 2,
+        displayName: 'Viewer',
+        avatar: '/images/default.png',
+      },
       createdAt: '2026-11-12T00:00:00Z',
       comments,
       problemEpisodeSelections: [
@@ -30,7 +77,28 @@ for (const permissions of [4194304, 2097152, 32]) {
     await page.route('**/api/v1/**', (route) => {
       const path = testApiPath(route.request().url());
       if (path === '/auth/me')
-        return route.fulfill({ json: { id: 2, permissions } });
+        return route.fulfill({
+          json: {
+            id: 2,
+            permissions,
+            avatar: '/images/default.png',
+          },
+        });
+      if (path === '/tv/123')
+        return route.fulfill({
+          json: {
+            mediaType: 'tv',
+            tmdbId: 123,
+            title: 'Test Series',
+            posterPath: '/images/default-poster.png',
+            seasons: [
+              { seasonNumber: 1 },
+              { seasonNumber: 2 },
+              { seasonNumber: 3 },
+              { seasonNumber: 4 },
+            ],
+          },
+        });
       if (path === '/issue') {
         reads++;
         return route.fulfill({
@@ -63,7 +131,14 @@ for (const permissions of [4194304, 2097152, 32]) {
       expect(reads).toBe(0);
       return;
     }
-    await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+    const nativeComparison = process.env.LUMEN_TEST_NATIVE_SESSION === 'true';
+    if (nativeComparison) {
+      await expect(
+        page.getByRole('link', { name: 'Test Series' })
+      ).toBeVisible();
+    } else {
+      await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+    }
     const captureDir = process.env.LUMEN_CAPTURE_DIR;
     if (
       captureDir &&
@@ -74,9 +149,22 @@ for (const permissions of [4194304, 2097152, 32]) {
         path: `${captureDir}/issues-list-${test.info().project.name}.png`,
         fullPage: true,
       });
-    await page.getByRole('link', { name: 'Video #7' }).click();
-    await expect(page.getByText('Season 2', { exact: true })).toBeVisible();
-    await expect(page.getByText('Season 3 · Episodes 4, 5')).toBeVisible();
+    if (nativeComparison) {
+      await page.getByRole('button', { name: 'View Details' }).click();
+    } else {
+      await page.getByRole('link', { name: 'Video #7' }).click();
+    }
+    if (nativeComparison) {
+      await expect(
+        page.getByRole('heading', { name: 'Affected Episodes' })
+      ).toBeVisible();
+      await expect(
+        page.getByRole('textbox', { name: 'Add Comment' })
+      ).toBeVisible();
+    } else {
+      await expect(page.getByText('Season 2', { exact: true })).toBeVisible();
+      await expect(page.getByText('Season 3 · Episodes 4, 5')).toBeVisible();
+    }
     if (
       captureDir &&
       permissions === 4194304 &&
@@ -86,6 +174,7 @@ for (const permissions of [4194304, 2097152, 32]) {
         path: `${captureDir}/issue-detail-${test.info().project.name}.png`,
         fullPage: true,
       });
+    if (nativeComparison) return;
     const resolve = page.getByRole('button', { name: 'Resolve Issue' });
     if (permissions === 2097152) {
       await expect(resolve).toHaveCount(0);
