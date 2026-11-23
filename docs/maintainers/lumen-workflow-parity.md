@@ -8330,3 +8330,13 @@ permission, account category restrictions, the audiobook-only route, and menu
 scrolling at desktop, iPhone, Android, and tablet sizes. Candidate screenshots
 and Playwright traces are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/navigation-discover/`.
+
+### Direct user management navigation (2026-11-23)
+
+Lumen navigation now links administrators and delegated user managers directly
+to User Management, matching native access while keeping the regular-user menu
+free of management actions. The destination remains guarded by the existing
+administrator or `MANAGE_USERS` route check.
+
+Four-project browser fixtures verify direct access for both authorized roles
+and hide the link for standard users.

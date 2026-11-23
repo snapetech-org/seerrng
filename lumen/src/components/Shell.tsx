@@ -592,9 +592,23 @@ export default function Shell({ children }: { children: ReactNode }) {
                 <Icon name="list" />
                 {t('lumen.nav.seerrAdministration', 'SeerrNG Administration')}
               </Link>
+              <Link to="/admin/users">
+                <Icon name="user" />
+                {t('components.Layout.Sidebar.users', 'Users')}
+              </Link>
             </>
           )}
           <div className="lbl">{t('components.Layout.Sidebar.you', 'You')}</div>
+          {!isAdministrator(user?.permissions) &&
+            ((user?.permissions ?? 0) & 8) !== 0 && (
+              <NavLink
+                to="/admin/users"
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <Icon name="user" />
+                {t('components.Layout.Sidebar.users', 'Users')}
+              </NavLink>
+            )}
           <NavLink to="/requests">
             <Icon name="inbox" />
             {t('components.Layout.Sidebar.requests', 'Requests')}
