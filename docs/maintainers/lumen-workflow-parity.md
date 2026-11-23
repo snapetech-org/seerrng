@@ -8155,3 +8155,17 @@ job card remains readable and links to a separate System Caches screen. Captures
 are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-state-guidance-20261123/native-jobs/`
 and `.../lumen-jobs/`.
+
+### Matched Music discovery visual check (2026-11-23)
+
+The native and Lumen Music discovery pages were rendered with the same populated
+album fixture at 1440×900 desktop and 390×844 phone sizes. Both cases passed and
+reported no horizontal overflow. The Lumen candidate retains search, request
+history, playlist import, sorting, release-type filters, and the album result;
+its poster uses the existing square-art role, matching the square MusicBrainz
+cover asset. On the phone capture, the album artwork and metadata remain above
+Lumen's fixed navigation. The native full-page capture places its fixed tab bar
+over the lower part of the portrait-cropped album poster. This comparison checks
+Music discovery only; album detail and other media detail routes still need their
+own matched-state review. Native and candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-parity-20261123/music-discovery-refresh/`.
