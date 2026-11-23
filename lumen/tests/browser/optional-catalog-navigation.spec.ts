@@ -103,10 +103,7 @@ for (const locale of locales) {
     });
 
     await page.goto(testAppPath('/'));
-    const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
-    const menu = desktop
-      ? page.getByRole('navigation', { name: 'Main', exact: true })
-      : page.locator('.navchips');
+    const menu = page.locator('.navchips');
     const categories = [
       [locale.music, '/music'],
       [locale.comics, '/comics'],

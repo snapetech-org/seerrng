@@ -37,6 +37,25 @@ a valid baseline for this comparison: it expects English status copy although
 the committed baseline already renders that text in the selected locale. Native
 matched visual acceptance therefore remains open.
 
+### Game Finder navigation parity
+
+Native SeerrNG exposes Game Finder and the personal Games library as separate
+navigation destinations. Lumen previously exposed Games in its global menu and
+required users to open that page before finding the Game Finder link. Lumen now
+places a localized Game Finder entry beside Games when the PC game catalog is
+available to the account and the user has request access. The entry stays hidden
+for users without request access and households that have only console game
+catalogs enabled.
+
+Browser fixtures verify direct navigation, the permission and catalog gates,
+and French, Arabic, and English labels across desktop, phone, Android, and tablet
+viewports. A compact 320-pixel phone case confirms the entry remains reachable
+without horizontal overflow. Baseline and candidate Account-page menu captures
+are retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-finder-navigation-20261123/`.
+These fixtures do not verify a live QuestarrNG catalog or full production-server
+mount behavior.
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens

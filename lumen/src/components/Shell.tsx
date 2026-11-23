@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Link,
   NavLink,
@@ -464,15 +464,28 @@ export default function Shell({ children }: { children: ReactNode }) {
           ))}
           {/* music, comics, games and the rest: only the ones this server has turned on */}
           {extras.list.map((e) => (
-            <NavLink
-              key={e.path}
-              to={e.path}
-              onClick={toTop(e.path)}
-              className={({ isActive }) => (isActive ? 'active' : '')}
-            >
-              <Icon name={e.icon} />
-              {t(e.message, e.label)}
-            </NavLink>
+            <Fragment key={e.path}>
+              <NavLink
+                to={e.path}
+                onClick={toTop(e.path)}
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <Icon name={e.icon} />
+                {t(e.message, e.label)}
+              </NavLink>
+              {e.key === 'game' &&
+                extras.games.includes('game') &&
+                canUseRequestAccess(user?.permissions) && (
+                  <NavLink
+                    to="/games/discovery"
+                    onClick={toTop('/games/discovery')}
+                    className={({ isActive }) => (isActive ? 'active' : '')}
+                  >
+                    <Icon name="game" />
+                    {t('lumen.gameFinder.title', 'Game Finder')}
+                  </NavLink>
+                )}
+            </Fragment>
           ))}
           {shareAvailable && (
             <NavLink
