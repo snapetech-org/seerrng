@@ -1333,6 +1333,21 @@ checks when the image build reported TypeScript errors in
 isolated test instance, so native sheet comparison remains unverified; live
 service handoff remains open.
 
+The import and rejection presentations have since been compared using the same
+synthetic warning, library match, eligible/ineligible files, and rejection
+defaults. Native SeerrNG expands each action inline within its warning card;
+Lumen uses its established centered dialog on desktop and bottom sheet on
+phones. This is a composition difference, while both surfaces expose the same
+target/file decisions, copy-versus-move choice, blocklist default, and opt-in
+client removal. The native import and rejection states were inspected at
+1440 × 900; rejection was also inspected at 390 × 844. The current Lumen
+production bundle was inspected at 1440 × 900 and 390 × 844 for both actions;
+the phone sheet keeps the complete rejection controls visible and the import
+selection usable. All 16 current `download-inbox.spec.ts` cases passed against
+that bundle across desktop, iPhone, Android, and tablet. Captures are retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-download-native-20261123/native/`.
+These fixture renders do not verify live service handoff.
+
 The Inbox and both intervention sheets now read the signed-in user's locale for
 warning states and resolutions, history, pagination, dates, service errors,
 import controls, rejection controls, and action feedback. The page reuses
@@ -1349,8 +1364,8 @@ Inbox, history, import, and rejection states were inspected. Evidence is retaine
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-downloads-localization-20261120/`.
 Provider-supplied warning text remains as returned, custom fallback messages
 use English outside English, French, and Arabic, and live service handoff
-remains unverified. Active-list native comparison is recorded above; the
-intervention sheets still need native comparison. The page also includes the
+remains unverified. Active-list and intervention-sheet native comparisons are
+recorded above. The page also includes the
 native Download Inbox description from SeerrNG's localized catalog. The same
 fixture was captured before and after this addition at desktop and iPhone sizes;
 French and Arabic candidate layouts were inspected.
