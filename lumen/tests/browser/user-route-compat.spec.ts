@@ -54,6 +54,44 @@ test('native user request bookmark preserves filters and enforces the path user'
   expect(url.searchParams.get('requestedBy')).toBe('19');
 });
 
+test('standalone request bookmark keeps the path user and legacy filters in Lumen', async ({
+  page,
+}) => {
+  await authenticate(page, 16384);
+  const reads: URLSearchParams[] = [];
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const pathname = url.pathname.replace(/^\/lumen(?=\/)/, '');
+    if (pathname !== '/api/v1/request' && pathname !== '/api/v1/request/status')
+      return route.fallback();
+    reads.push(url.searchParams);
+    return route.fulfill({
+      json: { pageInfo: { pages: 1, results: 0 }, results: [] },
+    });
+  });
+
+  await page.goto(
+    appPath(
+      '/requests/by-user/19?userId=12&requestedBy=11&filter=pending&mediaType=audiobook&bookFormat=ebook&search=Night+%26+Day'
+    )
+  );
+  await expect(page).toHaveURL(
+    new RegExp(`^https?://[^/]+${mount}/requests\\?`)
+  );
+  const url = new URL(page.url());
+  expect(url.searchParams.has('userId')).toBe(false);
+  expect(url.searchParams.get('requestedBy')).toBe('19');
+  await expect.poll(() => reads.length).toBeGreaterThan(0);
+  for (const params of reads) {
+    expect(params.get('requestedBy')).toBe('19');
+    expect(params.has('userId')).toBe(false);
+    expect(params.get('filter')).toBe('pending');
+    expect(params.get('mediaType')).toBe('book');
+    expect(params.get('bookFormat')).toBe('ebook');
+    expect(params.get('search')).toBe('Night & Day');
+  }
+});
+
 test('native self settings bookmark opens the matching Lumen account section', async ({
   page,
 }) => {

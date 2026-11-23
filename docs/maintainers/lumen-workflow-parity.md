@@ -858,6 +858,17 @@ contextual-route inventory, matched native screenshots for every menu state,
 headed verification in the shipped image, or live account authorization. Those
 parity checks remain open.
 
+### Standalone request bookmark compatibility (2026-11-23)
+
+The compatibility route `/requests/by-user/:requesterId` now has a Lumen
+browser assertion in addition to the `/users/:requesterId/requests` bookmark
+check. It verifies that the path requester replaces conflicting query values,
+legacy filters are retained in the request-list query, and audiobook format and
+search state survive the redirect. The route-compatibility suite passes 32
+cases across desktop, iPhone, Android, and tablet on Node 24.22.2. This fixture
+checks URL and client-query behavior; live account authorization and the full
+contextual-route inventory remain open.
+
 The account profile now localizes save rejection, permission denial, mismatched
 server readback, and failed confirmation, plus Plex-managed email, profile and
 password loading/retry states, administrator and empty-permission notices, and
