@@ -6727,7 +6727,9 @@ their media identity. A follow fixture checks the exact artist rule payload.
 Native and Lumen album detail were captured at desktop size;
 Lumen was also captured on phone, where the sticky bar was adjusted after visual
 inspection to keep both format workflows within the screen. Native phone visual
-comparison remains unverified. Evidence is retained at
+comparison for the album action bar remains unverified. Native and Lumen artist
+detail were captured and inspected at desktop and iPhone sizes; the follow and
+discography actions stay within the existing responsive action group. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-request-native-visual-20261122/`.
 Live Lidarr submission, live provider states, and independent linguistic review
 remain unverified.
