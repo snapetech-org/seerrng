@@ -8658,3 +8658,22 @@ report section scrolled into the actual viewport so the fixed mobile action
 bar does not obscure the comparison. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/book-music-open-issues-visual/`.
 The fixtures do not verify live issue-reader accounts or provider-backed data.
+
+### TV episode availability localization (2026-11-23)
+
+The existing per-episode availability disclosure now follows the saved Lumen
+locale for its heading, season label, generated season names, loading and empty
+states, provider-quality labels, shared-copy labels, missing-file states, and
+load failure/retry feedback. English, French, and Arabic use the same source
+availability and per-user visibility rules; provider names and episode titles
+remain provider data.
+
+Fixtures exercise delayed loading, failed reads and retry, Plex availability,
+an episode with no reported file, and all three saved locales. The existing
+season-switch behavior also remains covered. Eight cases pass across desktop,
+iPhone, Android, and tablet. Matched English baseline/candidate captures were
+inspected at desktop and phone sizes; French and Arabic candidate layouts were
+also inspected at both sizes with no clipping or overflow. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-episode-availability-localization/`.
+The fixture does not verify live provider data, and translations have not had
+independent linguistic review.

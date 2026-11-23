@@ -4610,7 +4610,20 @@
     "lumen.videoPlayback.episodesUnavailable": "No playable episodes are available at this quality.",
     "lumen.videoPlayback.selectEpisode": "Select at least one playable episode.",
     "lumen.videoPlayback.selectSeason": "Select all episodes from {season}",
-    "lumen.issues.openIssues": "Open Issues"
+    "lumen.issues.openIssues": "Open Issues",
+    "lumen.tvAvailability.title": "Episode Availability",
+    "lumen.tvAvailability.seasonLabel": "Availability Season",
+    "lumen.tvAvailability.what": "episode availability",
+    "lumen.tvAvailability.loadFailure": "Could not load episode availability",
+    "lumen.tvAvailability.retry": "Retry",
+    "lumen.tvAvailability.loading": "Loading episodes…",
+    "lumen.tvAvailability.empty": "No episodes found.",
+    "lumen.tvAvailability.noVisibleFile": "No visible file reported",
+    "lumen.tvAvailability.noFile": "No file reported",
+    "lumen.tvAvailability.sourceHd": "{source} HD",
+    "lumen.tvAvailability.source4k": "{source} 4K",
+    "lumen.tvAvailability.sharedHd": "Shared HD",
+    "lumen.tvAvailability.shared4k": "Shared 4K"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9386,7 +9399,20 @@
     "lumen.videoPlayback.episodesUnavailable": "Aucun épisode lisible n’est disponible dans cette qualité.",
     "lumen.videoPlayback.selectEpisode": "Sélectionnez au moins un épisode lisible.",
     "lumen.videoPlayback.selectSeason": "Sélectionner tous les épisodes de {season}",
-    "lumen.issues.openIssues": "Problèmes ouverts"
+    "lumen.issues.openIssues": "Problèmes ouverts",
+    "lumen.tvAvailability.title": "Disponibilité des épisodes",
+    "lumen.tvAvailability.seasonLabel": "Saison pour la disponibilité",
+    "lumen.tvAvailability.what": "disponibilité des épisodes",
+    "lumen.tvAvailability.loadFailure": "Impossible de charger la disponibilité des épisodes",
+    "lumen.tvAvailability.retry": "Réessayer",
+    "lumen.tvAvailability.loading": "Chargement des épisodes…",
+    "lumen.tvAvailability.empty": "Aucun épisode trouvé.",
+    "lumen.tvAvailability.noVisibleFile": "Aucun fichier visible signalé",
+    "lumen.tvAvailability.noFile": "Aucun fichier signalé",
+    "lumen.tvAvailability.sourceHd": "{source} HD",
+    "lumen.tvAvailability.source4k": "{source} 4K",
+    "lumen.tvAvailability.sharedHd": "HD partagé",
+    "lumen.tvAvailability.shared4k": "4K partagé"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -14166,6 +14192,19 @@
     "lumen.videoPlayback.episodesUnavailable": "لا تتوفر حلقات قابلة للتشغيل بهذه الجودة.",
     "lumen.videoPlayback.selectEpisode": "حدد حلقة واحدة قابلة للتشغيل على الأقل.",
     "lumen.videoPlayback.selectSeason": "حدد كل الحلقات من {season}",
-    "lumen.issues.openIssues": "البلاغات المفتوحة"
+    "lumen.issues.openIssues": "البلاغات المفتوحة",
+    "lumen.tvAvailability.title": "توفر الحلقات",
+    "lumen.tvAvailability.seasonLabel": "الموسم المطلوب لعرض التوفر",
+    "lumen.tvAvailability.what": "توفر الحلقات",
+    "lumen.tvAvailability.loadFailure": "تعذر تحميل توفر الحلقات",
+    "lumen.tvAvailability.retry": "إعادة المحاولة",
+    "lumen.tvAvailability.loading": "جارٍ تحميل الحلقات…",
+    "lumen.tvAvailability.empty": "لم يتم العثور على حلقات.",
+    "lumen.tvAvailability.noVisibleFile": "لا يوجد ملف ظاهر مُبلّغ عنه",
+    "lumen.tvAvailability.noFile": "لا يوجد ملف مُبلّغ عنه",
+    "lumen.tvAvailability.sourceHd": "{source} HD",
+    "lumen.tvAvailability.source4k": "{source} 4K",
+    "lumen.tvAvailability.sharedHd": "HD مشترك",
+    "lumen.tvAvailability.shared4k": "4K مشترك"
   }
 }

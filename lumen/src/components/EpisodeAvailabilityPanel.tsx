@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { MediaInfo, Season } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import {
   isSharedVideoSeason,
@@ -40,19 +41,33 @@ function EpisodeFiles({
   const { data, error, reload } = useApi<{ episodes: Episode[] }>(
     `/tv/${tvId}/season/${season}`
   );
+  const { t } = useLumenLocale();
   const episodes = data?.episodes ?? [];
   const mode = useVideoAvailability();
   const sharedHd = isSharedVideoSeason(coverage, season, false, mode);
   const shared4k = isSharedVideoSeason(coverage, season, true, mode);
   return (
     <>
-      <ServiceNote error={error} what="episode availability" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.tvAvailability.what', 'episode availability')}
+        title={t(
+          'lumen.tvAvailability.loadFailure',
+          'Could not load episode availability'
+        )}
+        retryLabel={t('lumen.tvAvailability.retry', 'Retry')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading episodes…
+          {t('lumen.tvAvailability.loading', 'Loading episodes…')}
         </p>
       )}
-      {data && !episodes.length && <p className="note">No episodes found.</p>}
+      {data && !episodes.length && (
+        <p className="note">
+          {t('lumen.tvAvailability.empty', 'No episodes found.')}
+        </p>
+      )}
       {!!episodes.length && (
         <Facts
           rows={episodes.map((episode) => {
@@ -70,22 +85,37 @@ function EpisodeFiles({
               const source = sources[sourceType];
               if (!source) return [];
               return [
-                ...(hd && !sharedHd ? [`${source} HD`] : []),
-                ...(fourK && !shared4k ? [`${source} 4K`] : []),
+                ...(hd && !sharedHd
+                  ? [
+                      t('lumen.tvAvailability.sourceHd', '{source} HD', {
+                        source,
+                      }),
+                    ]
+                  : []),
+                ...(fourK && !shared4k
+                  ? [
+                      t('lumen.tvAvailability.source4k', '{source} 4K', {
+                        source,
+                      }),
+                    ]
+                  : []),
               ];
             });
             if (mode === 'distinguish') {
               if (sharedHd && reported.some(({ hd }) => hd))
-                labels.push('Shared HD');
+                labels.push(t('lumen.tvAvailability.sharedHd', 'Shared HD'));
               if (shared4k && reported.some(({ fourK }) => fourK))
-                labels.push('Shared 4K');
+                labels.push(t('lumen.tvAvailability.shared4k', 'Shared 4K'));
             }
             return [
               `E${episode.episodeNumber} ${episode.name}`,
               labels.join(' · ') ||
                 (mode === 'hide'
-                  ? 'No visible file reported'
-                  : 'No file reported'),
+                  ? t(
+                      'lumen.tvAvailability.noVisibleFile',
+                      'No visible file reported'
+                    )
+                  : t('lumen.tvAvailability.noFile', 'No file reported')),
             ];
           })}
         />
@@ -105,6 +135,7 @@ export function EpisodeAvailabilityPanel({
 }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number>();
+  const { t } = useLumenLocale();
   const season =
     seasons.find((item) => item.seasonNumber === selected) ??
     seasons.find((item) => item.seasonNumber > 0) ??
@@ -116,15 +147,20 @@ export function EpisodeAvailabilityPanel({
     >
       <summary>
         <Icon name="chev" size="sm" />
-        Episode Availability
+        {t('lumen.tvAvailability.title', 'Episode Availability')}
       </summary>
       {open && season && (
         <>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Availability Season</span>
+              <span className="lbl">
+                {t('lumen.tvAvailability.seasonLabel', 'Availability Season')}
+              </span>
               <select
-                aria-label="Availability Season"
+                aria-label={t(
+                  'lumen.tvAvailability.seasonLabel',
+                  'Availability Season'
+                )}
                 value={season.seasonNumber}
                 onChange={(event) => setSelected(Number(event.target.value))}
               >
@@ -132,8 +168,14 @@ export function EpisodeAvailabilityPanel({
                   <option value={seasonNumber} key={seasonNumber}>
                     {name ||
                       (seasonNumber === 0
-                        ? 'Specials'
-                        : `Season ${seasonNumber}`)}
+                        ? t('lumen.tvEpisodeRequest.specials', 'Specials')
+                        : t(
+                            'lumen.tvEpisodeRequest.seasonNumber',
+                            'Season {number}',
+                            {
+                              number: seasonNumber,
+                            }
+                          ))}
                   </option>
                 ))}
               </select>

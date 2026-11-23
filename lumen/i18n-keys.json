@@ -5769,5 +5769,18 @@
   "lumen.videoPlayback.episodesUnavailable",
   "lumen.videoPlayback.selectEpisode",
   "lumen.videoPlayback.selectSeason",
-  "lumen.issues.openIssues"
+  "lumen.issues.openIssues",
+  "lumen.tvAvailability.title",
+  "lumen.tvAvailability.seasonLabel",
+  "lumen.tvAvailability.what",
+  "lumen.tvAvailability.loadFailure",
+  "lumen.tvAvailability.retry",
+  "lumen.tvAvailability.loading",
+  "lumen.tvAvailability.empty",
+  "lumen.tvAvailability.noVisibleFile",
+  "lumen.tvAvailability.noFile",
+  "lumen.tvAvailability.sourceHd",
+  "lumen.tvAvailability.source4k",
+  "lumen.tvAvailability.sharedHd",
+  "lumen.tvAvailability.shared4k"
 ]

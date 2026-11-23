@@ -2319,6 +2319,115 @@ test('episode availability loads on demand and switches source results with the 
   expect(reads).toEqual([1, 2]);
 });
 
+test('episode availability labels follow the saved locale', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const locales = {
+    en: {
+      title: 'Episode Availability',
+      season: 'Availability Season',
+      loading: 'Loading episodes…',
+      failure: 'Could not load episode availability',
+      retry: 'Retry',
+      empty: 'No file reported',
+      source: 'Plex HD',
+    },
+    fr: {
+      title: 'Disponibilité des épisodes',
+      season: 'Saison pour la disponibilité',
+      loading: 'Chargement des épisodes…',
+      failure: 'Impossible de charger la disponibilité des épisodes',
+      retry: 'Réessayer',
+      empty: 'Aucun fichier signalé',
+      source: 'Plex HD',
+    },
+    ar: {
+      title: 'توفر الحلقات',
+      season: 'الموسم المطلوب لعرض التوفر',
+      loading: 'جارٍ تحميل الحلقات…',
+      failure: 'تعذر تحميل توفر الحلقات',
+      retry: 'إعادة المحاولة',
+      empty: 'لا يوجد ملف مُبلّغ عنه',
+      source: 'Plex HD',
+    },
+  } as const;
+  let locale: keyof typeof locales = 'en';
+  let mediaId = 202;
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { applicationTitle: 'SeerrNG', trackEpisodeAvailability: true },
+    })
+  );
+  await page.route('**/api/v1/tv/*', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: mediaId,
+        mediaType: 'tv',
+        name: 'Fixture Series',
+        seasons: [{ id: 21, seasonNumber: 1, episodeCount: 2 }],
+      },
+    })
+  );
+  let failNextEpisodeRead = true;
+  let releaseEpisodeRead: (() => void) | undefined;
+  await page.route('**/api/v1/tv/*/season/1', (route) => {
+    if (failNextEpisodeRead) {
+      failNextEpisodeRead = false;
+      return new Promise<void>((resolve) => {
+        releaseEpisodeRead = resolve;
+      }).then(() =>
+        route.fulfill({ status: 503, json: { message: 'fixture failure' } })
+      );
+    }
+    return route.fulfill({
+      json: {
+        episodes: [
+          {
+            episodeNumber: 1,
+            name: 'Pilot',
+            availabilitySources: [
+              { sourceType: 'plex', hd: true, fourK: false },
+            ],
+          },
+          { episodeNumber: 2, name: 'Second' },
+        ],
+      },
+    });
+  });
+
+  for (const [index, [entryLocale, copy]] of Object.entries(
+    locales
+  ).entries()) {
+    // Change the fixture's saved locale before loading the detail again.
+    locale = entryLocale as keyof typeof locales;
+    mediaId = 202 + index;
+    failNextEpisodeRead = true;
+    await page.goto(`/tv/${mediaId}`);
+    await page.getByText(copy.title, { exact: true }).click();
+    await expect(page.getByText(copy.loading, { exact: true })).toBeVisible();
+    releaseEpisodeRead?.();
+    await expect(page.getByText(copy.failure, { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: copy.retry, exact: true }).click();
+    await expect(page.getByLabel(copy.season)).toBeVisible();
+    await expect(page.getByText(copy.source, { exact: true })).toBeVisible();
+    await expect(page.getByText(copy.empty, { exact: true })).toBeVisible();
+    const capture = process.env.LUMEN_TV_AVAILABILITY_CAPTURE;
+    if (capture) {
+      await page
+        .getByText(copy.title, { exact: true })
+        .scrollIntoViewIfNeeded();
+      await page.screenshot({
+        path: `${capture}-${locale}-${page.context().pages().length}-${page.viewportSize()?.width}.png`,
+      });
+    }
+  }
+});
+
 test('series watch rule keeps the rejected selection and links playback accounts', async ({
   page,
 }) => {
