@@ -8571,3 +8571,20 @@ passes on desktop, iPhone, Android, and tablet. Matched baseline/candidate
 captures were inspected at 1440px and 390px, including open state; the fixed
 request action and mobile navigation remain clear. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-detail-visual/`.
+
+### Movie collection disclosure
+
+Movie details now include a persistent Collection disclosure when the metadata
+contains a collection. The collection endpoint is fetched only after opening
+or pinning the panel; the summary shows its description, collection size, and a
+link to the full collection workflow. The existing movie-scoped preference
+persists the pin, independent of cast, crew, subject tags, and movie facts.
+Load failures provide an explicit retry action.
+
+The browser workflow checks that the collection endpoint stays untouched while
+the panel is collapsed, verifies the summary and destination link on open, then
+saves, reloads, unpins, and verifies the collapsed state. It passes on desktop,
+iPhone, Android, and tablet. Matched 1440px desktop and 390px phone captures
+were inspected in closed/open states; no horizontal overflow or fixed-action
+obstruction was observed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/movie-collection-visual/`.

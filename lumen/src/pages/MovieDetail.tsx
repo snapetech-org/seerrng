@@ -24,6 +24,7 @@ import {
   TitleCard,
   withoutPending4k,
 } from '../components/cards';
+import type { MovieCollection } from '../components/CollectionRequestSheet';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   ActionBar,
@@ -76,6 +77,44 @@ function movieCurrency(value?: number) {
   return typeof value === 'number' && Number.isFinite(value) && value > 0
     ? usd.format(value)
     : '';
+}
+
+function MovieCollectionSummary({ id, name }: { id: number; name: string }) {
+  const { t } = useLumenLocale();
+  const { data, error, reload } = useApi<MovieCollection>(`/collection/${id}`);
+  const collection = data?.id === id ? data : undefined;
+
+  return (
+    <section className="card" data-testid="movie-collection-summary">
+      <h2>
+        <Link to={`/collection/${id}`}>{collection?.name || name}</Link>
+      </h2>
+      {collection?.overview ? <p>{collection.overview}</p> : null}
+      {collection ? (
+        <p>
+          {t('lumen.movie.collectionSize', 'Collection size: {count} movies', {
+            count: collection.parts.length,
+          })}
+        </p>
+      ) : error ? (
+        <div role="status">
+          <span>
+            {t(
+              'lumen.movie.collectionLoadFailed',
+              'Collection details could not be loaded.'
+            )}
+          </span>{' '}
+          <button className="chip" type="button" onClick={() => void reload()}>
+            {t('lumen.common.retry', 'Retry')}
+          </button>
+        </div>
+      ) : (
+        <p role="status">
+          {t('lumen.movie.collectionLoading', 'Loading collection details…')}
+        </p>
+      )}
+    </section>
+  );
 }
 
 export default function MovieDetail() {
@@ -417,6 +456,20 @@ export default function MovieDetail() {
           {fourK}
           {trailerBtn}
         </div>
+        {m.collection && (
+          <VideoDisclosure
+            media="movie"
+            panel="collection"
+            label={t('lumen.movie.collection', 'Collection')}
+            testId="movie-collection"
+            deferChildrenUntilOpen
+          >
+            <MovieCollectionSummary
+              id={m.collection.id}
+              name={m.collection.name}
+            />
+          </VideoDisclosure>
+        )}
         {!s && (
           <AdvancedOptions
             key={pub?.movie4kEnabled && can4k && !has4k ? 'with-4k' : 'hd'}

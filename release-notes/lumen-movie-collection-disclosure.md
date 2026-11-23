@@ -1,0 +1,1 @@
+Lumen movie details now include a pinnable Collection summary with its description, movie count, and a link to the complete collection. Summary data loads only when the panel opens, and load failures can be retried.

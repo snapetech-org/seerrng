@@ -1221,12 +1221,13 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   const settings = {
     detailDisclosureCastPinned: true,
     detailDisclosurePins: {
-      movie: { cast: false, details: false },
+      movie: { cast: false, details: false, collection: false },
       tv: { cast: false, details: false },
       book: { details: false },
     },
   };
   const writes: unknown[] = [];
+  let collectionReads = 0;
   let reject = true;
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
@@ -1234,8 +1235,28 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     })
   );
   await page.route('**/api/v1/movie/101', (route) =>
-    route.fulfill({ json: { ...movie, credits: { cast, crew } } })
+    route.fulfill({
+      json: {
+        ...movie,
+        collection: { id: 77, name: 'Fixture Collection' },
+        credits: { cast, crew },
+      },
+    })
   );
+  await page.route('**/api/v1/collection/77', (route) => {
+    collectionReads++;
+    return route.fulfill({
+      json: {
+        id: 77,
+        name: 'Fixture Collection',
+        overview: 'A persistent movie collection summary.',
+        parts: [
+          { id: 101, title: 'The Test Film', mediaType: 'movie' },
+          { id: 102, title: 'Another Film', mediaType: 'movie' },
+        ],
+      },
+    });
+  });
   await page.route('**/api/v1/tv/202', (route) =>
     route.fulfill({
       json: {
@@ -1298,6 +1319,16 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   );
 
   await page.goto('/movie/101');
+  const movieCapture = process.env.LUMEN_MOVIE_COLLECTION_CAPTURE;
+  await expect(
+    page.getByRole('heading', { name: 'The Test Film' })
+  ).toBeVisible();
+  if (movieCapture) {
+    await page.screenshot({
+      path: `${movieCapture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   const actor = page.locator('.person').filter({ hasText: 'Fixture Actor' });
   await expect(actor).toBeHidden();
   await page.getByText('Starring', { exact: true }).click();
@@ -1332,6 +1363,40 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     .filter({ hasText: 'Movie Details' });
   await expect(restoredMovieDetails).toHaveAttribute('open', '');
   await expect(restoredMovieDetails).toContainText('Runtime');
+  const collection = page.getByTestId('movie-collection');
+  await expect(collection).toHaveJSProperty('open', false);
+  expect(collectionReads).toBe(0);
+  await collection.locator('summary').click();
+  const collectionSummary = page.getByTestId('movie-collection-summary');
+  await expect(collectionSummary).toContainText(
+    'A persistent movie collection summary.'
+  );
+  await expect(collectionSummary).toContainText('Collection size: 2 movies');
+  await expect(
+    collectionSummary.getByRole('link', { name: 'Fixture Collection' })
+  ).toHaveAttribute('href', '/collection/77');
+  if (movieCapture) {
+    await page.screenshot({
+      path: `${movieCapture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  const collectionPin = collection.getByRole('button', {
+    name: 'Keep Collection Open',
+  });
+  await collectionPin.click();
+  await expect(collectionPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.getByTestId('movie-collection')).toHaveAttribute(
+    'open',
+    ''
+  );
+  await page.getByRole('button', { name: 'Keep Collection Open' }).click();
+  await page.reload();
+  await expect(page.getByTestId('movie-collection')).not.toHaveAttribute(
+    'open',
+    ''
+  );
   await page.getByText('Crew', { exact: true }).click();
   await expect(
     page.locator('.person').filter({ hasText: 'Fixture Director' })
@@ -1445,6 +1510,8 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     { cast: true },
     { cast: true },
     { details: true },
+    { collection: true },
+    { collection: false },
     { overview: true },
     { details: true },
     { details: true },
