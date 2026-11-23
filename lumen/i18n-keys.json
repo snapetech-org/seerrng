@@ -4510,6 +4510,7 @@
   "lumen.tv.requestedOn",
   "lumen.tv.seasonCount",
   "lumen.tv.seasons",
+  "lumen.tv.mediaServerDetails",
   "lumen.tv.similar",
   "lumen.tv.specials",
   "lumen.tv.status.everySeasonOn",

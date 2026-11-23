@@ -680,20 +680,27 @@ export default function TvDetail() {
             mediaType="tv"
             tmdbId={t.id}
           />
-          {t.mediaInfo?.id &&
-            user &&
-            canRequestSeries(user.permissions) &&
-            watchable && (
-              <VideoPlaybackButton
-                mediaId={t.mediaInfo.id}
-                is4k={!!is4k}
-                mediaType="tv"
-                blockedGroupIndexes={[...sharedSeasons]}
-                title={t.name || ''}
-              />
-            )}
-          {[1, 2, 3].includes(pub?.mediaServerType ?? 0) && (
-            <>
+        </div>
+        {[1, 2, 3].includes(pub?.mediaServerType ?? 0) && (
+          <VideoDisclosure
+            media="tv"
+            panel="mediaServer"
+            label={translate('lumen.tv.mediaServerDetails', 'Media Server')}
+            testId="tv-media-server"
+          >
+            <div className="toolbar">
+              {t.mediaInfo?.id &&
+                user &&
+                canRequestSeries(user.permissions) &&
+                watchable && (
+                  <VideoPlaybackButton
+                    mediaId={t.mediaInfo.id}
+                    is4k={!!is4k}
+                    mediaType="tv"
+                    blockedGroupIndexes={[...sharedSeasons]}
+                    title={t.name || ''}
+                  />
+                )}
               <MediaServerSavedItemButton
                 key={`media-server-saved:${t.id}:${pub?.mediaServerType}:${is4k}`}
                 tvId={t.id}
@@ -707,9 +714,9 @@ export default function TvDetail() {
                 serverType={pub!.mediaServerType!}
                 is4k={!!is4k}
               />
-            </>
-          )}
-        </div>
+            </div>
+          </VideoDisclosure>
+        )}
         <TvCollectionLinks key={t.id} id={t.id} />
         <div className="dacts pc">
           {main}

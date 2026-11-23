@@ -1222,7 +1222,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     detailDisclosureCastPinned: true,
     detailDisclosurePins: {
       movie: { cast: false, details: false, collection: false },
-      tv: { cast: false, details: false },
+      tv: { cast: false, details: false, mediaServer: false },
       book: { details: false },
     },
   };
@@ -1417,7 +1417,49 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     page.getByRole('heading', { name: 'Supporting Actor 10' })
   ).toBeVisible();
 
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: {},
+        movie4kEnabled: false,
+        mediaServerType: 2,
+      },
+    })
+  );
+  await page.route(
+    '**/api/v1/tv/202/media-server-saved-item?is4k=false',
+    (route) =>
+      route.fulfill({
+        json: {
+          serverType: 2,
+          kind: 'favorites',
+          available: true,
+          saved: false,
+        },
+      })
+  );
+  await page.route(
+    '**/api/v1/tv/202/media-server-collections?is4k=false',
+    (route) =>
+      route.fulfill({
+        json: {
+          serverType: 2,
+          available: true,
+          collections: [
+            { id: 'fixture', name: 'Fixture Collection', member: false },
+          ],
+        },
+      })
+  );
   await page.goto('/tv/202');
+  const mediaServerCapture = process.env.LUMEN_TV_MEDIA_SERVER_CAPTURE;
+  if (mediaServerCapture) {
+    await page.screenshot({
+      path: `${mediaServerCapture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   const seriesCapture = process.env.LUMEN_TV_DETAILS_CAPTURE;
   await expect(
     page.getByRole('heading', { name: 'Fixture Series' })
@@ -1469,6 +1511,42 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     .filter({ hasText: 'Series Details' });
   await expect(restoredSeriesDetails).toHaveAttribute('open', '');
   await expect(restoredSeriesDetails).toContainText('Episode length');
+  const mediaServerPanel = page.getByTestId('tv-media-server');
+  await expect(mediaServerPanel).toHaveJSProperty('open', false);
+  await mediaServerPanel.locator('summary').first().click();
+  await expect(
+    mediaServerPanel.getByRole('button', {
+      name: 'Add Fixture Series to Jellyfin Favorites',
+    })
+  ).toBeVisible();
+  await mediaServerPanel
+    .getByTestId('media-server-collections')
+    .locator('summary')
+    .click();
+  await expect(
+    mediaServerPanel.getByRole('button', {
+      name: 'Add to Fixture Collection',
+    })
+  ).toBeVisible();
+  if (mediaServerCapture) {
+    await page.screenshot({
+      path: `${mediaServerCapture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  const mediaServerPin = mediaServerPanel.getByRole('button', {
+    name: 'Keep Media Server Open',
+  });
+  await mediaServerPin.click();
+  await expect(mediaServerPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.getByTestId('tv-media-server')).toHaveAttribute('open', '');
+  await page.getByRole('button', { name: 'Keep Media Server Open' }).click();
+  await page.reload();
+  await expect(page.getByTestId('tv-media-server')).not.toHaveAttribute(
+    'open',
+    ''
+  );
 
   await page.goto('/book/OL123W');
   const bookDetails = page
@@ -1514,6 +1592,8 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     { collection: false },
     { overview: true },
     { details: true },
+    { mediaServer: true },
+    { mediaServer: false },
     { details: true },
   ]);
 });

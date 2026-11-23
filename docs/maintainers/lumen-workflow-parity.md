@@ -8588,3 +8588,22 @@ iPhone, Android, and tablet. Matched 1440px desktop and 390px phone captures
 were inspected in closed/open states; no horizontal overflow or fixed-action
 obstruction was observed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/movie-collection-visual/`.
+
+### TV media-server actions disclosure (2026-11-23)
+
+TV playback options, saved-item state, and media-server collections now live in
+a persistent Media Server disclosure instead of occupying the always-visible
+action row. The disclosure appears only when the configured media server is
+Plex, Jellyfin, or Emby; it keeps the existing action components, server API
+contracts, request permission checks, and TV-scoped saved preference. Opening
+collections remains a separate lazy disclosure inside the panel.
+
+The browser workflow verifies the closed state, Jellyfin favorite and collection
+actions, nested collection disclosure, save/readback/reload, and unpin behavior.
+It passes on desktop, iPhone, Android, and tablet. Matched baseline/candidate
+captures were inspected at desktop and phone sizes, with the surrounding detail
+panels and fixed mobile request/navigation controls visible. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-media-server-visual/`.
+These fixtures verify the client contract; live Plex/Jellyfin/Emby account
+behavior still requires provider-backed verification.
