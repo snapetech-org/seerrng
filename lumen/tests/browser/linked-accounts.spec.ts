@@ -1,5 +1,59 @@
 import { expect, test } from '@playwright/test';
 
+test('Plex links the signed-in user without calling Plex sign-in', async ({
+  page,
+}) => {
+  const apiCalls: string[] = [];
+  let linked = false;
+  await page.route('https://app.plex.tv/**', (route) =>
+    route.fulfill({ body: 'Fixture Plex authorization' })
+  );
+  await page.route('https://plex.tv/api/v2/pins?strong=true', (route) =>
+    route.fulfill({ json: { id: 123, code: 'fixture-code' } })
+  );
+  await page.route('https://plex.tv/api/v2/pins/123', (route) =>
+    route.fulfill({ json: { authToken: 'fixture-token' } })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    apiCalls.push(`${request.method()} ${path}`);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          permissions: 32,
+          userType: linked ? 1 : 2,
+          plexUsername: linked ? 'Fixture Viewer' : null,
+        },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({ json: [] });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/user/2/settings/linked-accounts/plex') {
+      expect(request.method()).toBe('POST');
+      expect(request.postDataJSON()).toEqual({ authToken: 'fixture-token' });
+      linked = true;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('./me/account/linked-accounts');
+  await page.bringToFront();
+  const popupOpened = page.waitForEvent('popup');
+  await page.getByRole('button', { name: 'Authorize Plex' }).click();
+  const popup = await popupOpened;
+  await expect(page.getByText('Account linked.')).toBeVisible();
+  await expect(page.getByText('Fixture Viewer')).toBeVisible();
+  expect(apiCalls).toContain('POST /user/2/settings/linked-accounts/plex');
+  expect(apiCalls).not.toContain('POST /auth/plex');
+  await popup.close().catch(() => undefined);
+});
+
 test('Quick Connect links the signed-in account without calling login', async ({
   page,
 }) => {
