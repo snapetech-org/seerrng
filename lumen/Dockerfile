@@ -1,10 +1,15 @@
 # Lumen: build the static app, then serve it with nginx in front of SeerrNG.
 FROM mirror.gcr.io/library/node:24.22.1-alpine3.23@sha256:4b00b6d1aa138805aace94cc2482808f2b4f01e5e9c9f8cdc0e217fd70600ef9 AS build
-WORKDIR /app
+WORKDIR /app/lumen
 RUN apk upgrade --no-cache zlib
-COPY package.json package-lock.json ./
+COPY lumen/package.json lumen/package-lock.json ./
 RUN npm ci
-COPY . .
+COPY lumen/ .
+COPY config/i18n/locales.json /app/config/i18n/locales.json
+COPY src/i18n/locale/ /app/src/i18n/locale/
+COPY src/assets/tmdb_logo.svg /app/src/assets/tmdb_logo.svg
+COPY src/utils/advancedThemePresets.ts src/utils/imdbWatchlistCsv.ts /app/src/utils/
+COPY server/utils/advancedThemeOverrides.ts /app/server/utils/advancedThemeOverrides.ts
 RUN npm run build
 
 FROM nginx:1.30.7-alpine@sha256:bef154735288bc38d99fac41ae63730684bcc661503673a04a0f9bc526ba8598
@@ -19,16 +24,16 @@ ENV SEERR_FULL_URL=http://seerrng:5055
 # reverse proxy/tunnel in front of Lumen whose forwarding headers are believed (none by default)
 ENV LUMEN_TRUSTED_PROXIES=
 ENV LUMEN_REAL_IP_HEADER=X-Forwarded-For
-COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
-COPY deploy/05-lumen-env-aliases.envsh /docker-entrypoint.d/05-lumen-env-aliases.envsh
-COPY deploy/15-lumen-trusted-proxies.sh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
+COPY lumen/deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY lumen/deploy/05-lumen-env-aliases.envsh /docker-entrypoint.d/05-lumen-env-aliases.envsh
+COPY lumen/deploy/15-lumen-trusted-proxies.sh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
 RUN chmod 755 /docker-entrypoint.d/05-lumen-env-aliases.envsh /docker-entrypoint.d/15-lumen-trusted-proxies.sh
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/lumen/dist /usr/share/nginx/html
 # "Lumen settings for everyone" are saved by a small nginx script (njs, shipped with this
 # image) into /lumen-data: a folder the installer mounts, writable by user 101 (nginx). It is
 # deliberately not created here, so settings are never saved inside a container that an
 # update would replace. Without it the admin page offers lumen-config.json as a download.
-COPY deploy/lumen-config.js /etc/nginx/lumen/lumen-config.js
+COPY lumen/deploy/lumen-config.js /etc/nginx/lumen/lumen-config.js
 RUN sed -i '1i load_module modules/ngx_http_js_module.so;' /etc/nginx/nginx.conf
 # The entrypoint renders only proxy configuration. Everything nginx writes (that
 # configuration, its temporary files and PID) goes under /tmp, so the image runs as any

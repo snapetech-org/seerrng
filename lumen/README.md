@@ -113,9 +113,10 @@ docker run -d -p 5080:80 \
   ghcr.io/snapetech-org/seerrng-lumen:latest
 ```
 
-For local development, `docker build -t seerrng-lumen:local .` builds from this
-folder; run that local tag instead. The Compose examples retain a commented build
-fallback.
+To build locally from a SeerrNG checkout, run this from the repository root:
+`docker build -f lumen/Dockerfile -t seerrng-lumen:local .`. The image needs
+shared SeerrNG utility and locale sources from the repository. The Compose
+examples retain a commented build fallback with the repository root as context.
 
 The container runs as the unprivileged `nginx` user; its static app remains read-only, and only its generated proxy configuration, cache and temporary PID location are writable.
 

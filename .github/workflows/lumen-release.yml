@@ -97,7 +97,7 @@ jobs:
           docker build --label "org.opencontainers.image.revision=$RELEASE_SHA" \
             --label "org.opencontainers.image.version=$RELEASE_TAG" \
             --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
-            -t "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH" lumen
+            -f lumen/Dockerfile -t "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH" .
           test "$(docker image inspect --format '{{.Architecture}}' "$LUMEN_IMAGE:$RELEASE_TAG-$IMAGE_ARCH")" = "$IMAGE_ARCH"
           python3 - <<'PY'
           import json, os, subprocess, tarfile

@@ -14,7 +14,9 @@ services:
   lumen:
     image: ghcr.io/snapetech-org/seerrng-lumen:latest
     # Pin v3.72.29 for a fixed release. Optional local build instead of the image:
-    # build: https://github.com/snapetech-org/seerrng.git#main:lumen
+    # build:
+    #   context: https://github.com/snapetech-org/seerrng.git#main
+    #   dockerfile: lumen/Dockerfile
     # image: seerrng-lumen:local
     container_name: lumen
     environment:
