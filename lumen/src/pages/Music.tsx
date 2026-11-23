@@ -21,6 +21,7 @@ import {
   ServiceNote,
   StatPill,
 } from '../components/extra';
+import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -874,6 +875,22 @@ export function Artist() {
         />
         <div className="dbody">
           <div className="dstatus">
+            <FollowButton
+              label={t(
+                'components.ArtistDetails.followreleases',
+                'Follow New Albums'
+              )}
+              subject={{
+                kind: 'artist-release-type',
+                subjectKey: `mb-artist:${id.toLowerCase()}`,
+                subjectLabel: a.artist.name,
+                conditions: {
+                  includeTypes: ['Album'],
+                  excludeTypes: ['Single', 'Compilation', 'Live', 'reissue'],
+                  ref: { mbid: id.toLowerCase() },
+                },
+              }}
+            />
             {canRequestMusic(user?.permissions) && (
               <Link
                 className="btn btn-tonal btn-sm"

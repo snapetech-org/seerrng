@@ -9,6 +9,7 @@ export const localeData = [
       'components.Common.FormatRequestControl.request': 'طلب',
       'components.ArtistDetails.requestdiscography':
         'طلب قائمة الأعمال الموسيقية',
+      'components.ArtistDetails.followreleases': 'متابعة الألبومات الجديدة',
       'components.MusicDetails.requestdiscography': 'اطلب قائمة إصدارات الفنان',
       'components.Settings.lidarrsettings': 'Lidarr التركيبات',
       'components.MusicDetails.blocklisted': 'هذا العنوان مدرج في قائمة الحظر.',
@@ -9174,6 +9175,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serien',
       'components.Common.FormatRequestControl.request': 'Anfordern',
       'components.ArtistDetails.requestdiscography': 'Discographie anfordern',
+      'components.ArtistDetails.followreleases': 'Neue Alben verfolgen',
       'components.MusicDetails.requestdiscography': 'Discographie anfordern',
       'components.Settings.lidarrsettings': 'Lidarr Einstellungen',
       'components.MusicDetails.blocklisted':
@@ -10868,6 +10870,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'components.Common.FormatRequestControl.request': 'Request',
       'components.ArtistDetails.requestdiscography': 'Request Discography',
+      'components.ArtistDetails.followreleases': 'Follow New Albums',
       'components.MusicDetails.requestdiscography': 'Request Discography',
       'components.Settings.lidarrsettings': 'Lidarr Settings',
       'components.MusicDetails.blocklisted': 'This title is blocklisted.',
@@ -18113,6 +18116,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'components.Common.FormatRequestControl.request': 'Solicitar',
       'components.ArtistDetails.requestdiscography': 'Solicitud de discografía',
+      'components.ArtistDetails.followreleases': 'Seguir nuevos álbumes',
       'components.MusicDetails.requestdiscography': 'Solicitar discografía',
       'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
       'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
@@ -19816,6 +19820,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serie',
       'components.Common.FormatRequestControl.request': 'Solicitar',
       'components.ArtistDetails.requestdiscography': 'Solicitud de discografía',
+      'components.ArtistDetails.followreleases': 'Seguir nuevos álbumes',
       'components.MusicDetails.requestdiscography': 'Solicitud de discografía',
       'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
       'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
@@ -22342,6 +22347,7 @@ export const localeData = [
       'components.Common.FormatRequestControl.request': 'Demander',
       'components.ArtistDetails.requestdiscography':
         'Demander une discographie',
+      'components.ArtistDetails.followreleases': 'Suivre les nouveaux albums',
       'components.MusicDetails.requestdiscography': 'Demander une discographie',
       'components.Settings.lidarrsettings': 'Paramètres Lidarr',
       'components.MusicDetails.blocklisted': 'Ce titre est bloqué.',
@@ -30378,6 +30384,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'श्रृंखला',
       'components.Common.FormatRequestControl.request': 'अनुरोध करें',
       'components.ArtistDetails.requestdiscography': 'अनुरोध डिस्कोग्राफी',
+      'components.ArtistDetails.followreleases': 'नए एल्बम फॉलो करें',
       'components.MusicDetails.requestdiscography':
         'डिस्कोग्राफी का अनुरोध करें',
       'components.Settings.lidarrsettings': 'Lidarr सेटिंग्स',
@@ -32653,6 +32660,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Serial',
       'components.Common.FormatRequestControl.request': 'Minta',
       'components.ArtistDetails.requestdiscography': 'Permintaan Diskografi',
+      'components.ArtistDetails.followreleases': 'Ikuti Album Baru',
       'components.MusicDetails.requestdiscography':
         'Ajukan permintaan diskografi',
       'components.Settings.lidarrsettings': 'Pengaturan Lidarr',
@@ -34935,6 +34943,7 @@ export const localeData = [
       'components.Common.FormatRequestControl.request': 'リクエスト',
       'components.ArtistDetails.requestdiscography':
         'リクエスト・ディスコグラフィー',
+      'components.ArtistDetails.followreleases': '新譜を追跡',
       'components.MusicDetails.requestdiscography':
         'ディスコグラフィーをリクエスト',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
@@ -36594,6 +36603,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '시리즈',
       'components.Common.FormatRequestControl.request': '요청',
       'components.ArtistDetails.requestdiscography': '음반 요청',
+      'components.ArtistDetails.followreleases': '새 앨범 팔로우',
       'components.MusicDetails.requestdiscography': '음반 요청',
       'components.Settings.lidarrsettings': 'Lidarr 설정',
       'components.MusicDetails.blocklisted':
@@ -40034,6 +40044,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
       'components.Common.FormatRequestControl.request': 'Solicitar',
       'components.ArtistDetails.requestdiscography': 'Pedir discografia.',
+      'components.ArtistDetails.followreleases': 'Acompanhar Novos Álbuns',
       'components.MusicDetails.requestdiscography': 'Pedir discografia',
       'components.Settings.lidarrsettings': 'Configurações do Lidarr',
       'components.MusicDetails.blocklisted':
@@ -45711,6 +45722,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '剧集',
       'components.Common.FormatRequestControl.request': '提交请求',
       'components.ArtistDetails.requestdiscography': '请求完整唱片目录',
+      'components.ArtistDetails.followreleases': '关注新专辑',
       'components.MusicDetails.requestdiscography': '请求完整唱片目录',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
       'components.MusicDetails.blocklisted': '此标题已加入屏蔽列表。',
@@ -47255,6 +47267,7 @@ export const localeData = [
       'components.Discover.DiscoverMediaTabs.series': '影集',
       'components.Common.FormatRequestControl.request': '提出請求',
       'components.ArtistDetails.requestdiscography': '請求完整唱片目錄',
+      'components.ArtistDetails.followreleases': '追蹤新專輯',
       'components.MusicDetails.requestdiscography': '要求完整唱片目錄',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
       'components.MusicDetails.blocklisted': '此標題已列入封鎖清單。',
@@ -48797,6 +48810,7 @@ export const localeData = [
       'components.Common.FormatRequestControl.request': 'Yêu cầu',
       'components.ArtistDetails.requestdiscography':
         'Yêu cầu danh mục đĩa nhạc',
+      'components.ArtistDetails.followreleases': 'Theo dõi Album mới',
       'components.MusicDetails.requestdiscography': 'Yêu cầu danh mục đĩa nhạc',
       'components.Settings.lidarrsettings': 'Cài đặt Lidarr',
       'components.MusicDetails.blocklisted':

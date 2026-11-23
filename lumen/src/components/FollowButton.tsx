@@ -11,6 +11,8 @@ interface FollowIdentity {
   subjectLabel: string;
   conditions?: {
     language?: string;
+    includeTypes?: string[];
+    excludeTypes?: string[];
     ref: Record<string, string | number | boolean>;
   };
 }

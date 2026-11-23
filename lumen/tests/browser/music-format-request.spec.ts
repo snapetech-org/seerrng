@@ -9,7 +9,11 @@ type MusicRequest = {
 
 async function fixture(
   page: Page,
-  options: { services?: unknown[]; availableServices?: unknown[] } = {},
+  options: {
+    services?: unknown[];
+    availableServices?: unknown[];
+    followWrites?: unknown[];
+  } = {},
   route = '/music/42'
 ) {
   const writes: unknown[] = [];
@@ -64,6 +68,12 @@ async function fixture(
           releaseGroups: [],
         },
       });
+    if (path === '/follow' && request.method() === 'GET')
+      return route.fulfill({ json: { results: [] } });
+    if (path === '/follow' && request.method() === 'POST') {
+      options.followWrites?.push(request.postDataJSON());
+      return route.fulfill({ json: { id: 99, kind: 'artist-release-type' } });
+    }
     if (path.startsWith('/blocklist/'))
       return route.fulfill({
         status: 404,
@@ -112,6 +122,30 @@ test('music details link to the request discography workflow with exact identity
     'href',
     '/collections/music/fixture-artist?view=discography'
   );
+});
+
+test('artist details follow new album releases with native rule identity', async ({
+  page,
+}) => {
+  const followWrites: unknown[] = [];
+  await fixture(page, { followWrites }, '/artist/fixture-artist');
+  await page.getByRole('button', { name: 'Follow New Albums' }).click();
+  await expect(page.getByRole('button', { name: 'Following' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+  expect(followWrites).toEqual([
+    {
+      kind: 'artist-release-type',
+      subjectKey: 'mb-artist:fixture-artist',
+      subjectLabel: 'Fixture Artist',
+      conditions: {
+        includeTypes: ['Album'],
+        excludeTypes: ['Single', 'Compilation', 'Live', 'reissue'],
+        ref: { mbid: 'fixture-artist' },
+      },
+    },
+  ]);
 });
 
 test('music requests select MP3 or FLAC service and preserve per-quality availability', async ({

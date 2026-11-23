@@ -2,6 +2,7 @@
   "components.Discover.DiscoverMediaTabs.series",
   "components.Common.FormatRequestControl.request",
   "components.ArtistDetails.requestdiscography",
+  "components.ArtistDetails.followreleases",
   "components.MusicDetails.requestdiscography",
   "components.Settings.lidarrsettings",
   "components.MusicDetails.blocklisted",
