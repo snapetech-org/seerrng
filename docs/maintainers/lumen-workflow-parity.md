@@ -8320,15 +8320,24 @@ remain unverified. Candidate UI evidence is retained under
 
 The shared Lumen desktop and mobile menu now exposes Book Recommendations,
 Collector Picks, Software, and Browse Patches as direct destinations, alongside
-Game Finder. Visibility follows SeerrNG request permission and enabled media
-categories; the book recommendation link selects Audiobooks when Ebooks are
-turned off. This supplements the existing in-page shortcuts and keeps route
-checks authoritative.
+Game Finder. Book Recommendations, Collector Picks, Game Finder, and Browse
+Patches follow SeerrNG request permission and enabled media categories; Software
+follows enabled game categories and provider availability so browse-only users
+retain catalog access. Book Recommendations selects Audiobooks when Ebooks are
+turned off. This supplements existing in-page shortcuts and keeps route checks
+authoritative.
 
 Browser fixtures cover all five menu destinations, unavailable request
-permission, account category restrictions, the audiobook-only route, and menu
-scrolling at desktop, iPhone, Android, and tablet sizes. Candidate screenshots
-and Playwright traces are retained at
+permission while preserving Software browsing without request permission,
+account category restrictions, the audiobook-only route, and menu scrolling at
+desktop, iPhone, Android, and tablet sizes. The 20-case destination suite passes
+against both the standalone production build and the generated embedded
+`/lumen/` production bundle. The browse-only menu was inspected on desktop and
+iPhone; the added link uses the existing navigation owner and preserves the
+drawer and phone-tab layout. Candidate screenshots and Playwright traces are
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/software-browse/`
+and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/navigation-discover/`.
 
 ### Direct user management navigation (2026-11-23)

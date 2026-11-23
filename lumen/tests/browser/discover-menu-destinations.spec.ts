@@ -61,13 +61,13 @@ test('native Discover destinations have direct Lumen menu links', async ({
     const link = menu.getByRole('link', { name: label, exact: true });
     await link.scrollIntoViewIfNeeded();
     await expect(link).toBeInViewport();
-    await expect(link).toHaveAttribute('href', href);
+    await expect(link).toHaveAttribute('href', `${mount}${href}`);
   }
 });
 
-test('request-only Discover links stay hidden without request access', async ({
+test('request actions stay hidden while software browsing remains available', async ({
   page,
-}) => {
+}, info) => {
   const menu = await prepare(page, 0, {
     ebook: true,
     audiobook: true,
@@ -78,12 +78,32 @@ test('request-only Discover links stay hidden without request access', async ({
     'Book Recommendations',
     'Collector Picks',
     'Game Finder',
-    'Software',
     'Browse Patches',
   ])
     await expect(
       menu.getByRole('link', { name: label, exact: true })
     ).toHaveCount(0);
+  const software = menu.getByRole('link', { name: 'Software', exact: true });
+  await expect(software).toBeVisible();
+  if (
+    process.env.LUMEN_CAPTURE_BROWSE_ONLY &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_BROWSE_ONLY}/${info.project.name}.png`,
+      fullPage: true,
+    });
+  await software.click();
+  await expect(page).toHaveURL(/\/games$/);
+  await expect(
+    page.getByRole('heading', { name: 'Games', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Game Finder', exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Request', exact: true })
+  ).toHaveCount(0);
 });
 
 test('Discover menu destinations follow account category restrictions', async ({
@@ -118,7 +138,7 @@ test('book recommendations selects audiobook when ebooks are unavailable', async
   });
   await expect(
     menu.getByRole('link', { name: 'Book Recommendations', exact: true })
-  ).toHaveAttribute('href', '/books/recommendations?format=audiobook');
+  ).toHaveAttribute('href', `${mount}/books/recommendations?format=audiobook`);
 });
 
 test('all Discover menu links remain reachable without horizontal overflow at 320px', async ({
