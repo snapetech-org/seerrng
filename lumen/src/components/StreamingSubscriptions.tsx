@@ -89,7 +89,15 @@ export function StreamingSubscriptions({
       });
       if (generation !== sessionGeneration()) return;
       const ids = result.streamingSubscriptionProviderIds;
-      if (!Array.isArray(ids) || !sameSelection(new Set(ids), draft)) {
+      const readback = await api<ProviderSettings>(path);
+      if (generation !== sessionGeneration()) return;
+      const persistedIds = readback.streamingSubscriptionProviderIds;
+      if (
+        !Array.isArray(ids) ||
+        !sameSelection(new Set(ids), draft) ||
+        !Array.isArray(persistedIds) ||
+        !sameSelection(new Set(persistedIds), draft)
+      ) {
         setFailure(
           t(
             'lumen.account.streamingSubscriptionsConfirmFailure',

@@ -1,0 +1,1 @@
+Lumen now verifies streaming subscription settings through a fresh account settings read after saving. If persisted settings do not match the submitted selection, the draft remains available for retry.

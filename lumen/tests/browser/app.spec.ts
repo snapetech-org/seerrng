@@ -10731,3 +10731,56 @@ test('audiobook discovery bookmarks apply search, author and narrator and show s
     /search=|author=|narrator=|firstPublishYear=|language=|minRating=/
   );
 });
+
+test('Streaming Subscriptions retains edits after stale persisted readback and retries', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let persisted: number[] = [];
+  let writes = 0;
+  let readsAfterWrite = 0;
+  await page.route('**/api/v1/user/1/settings/main', async (route) => {
+    if (route.request().method() === 'POST') {
+      writes += 1;
+      return route.fulfill({
+        json: { streamingSubscriptionProviderIds: [42] },
+      });
+    }
+    if (writes > 0) {
+      readsAfterWrite += 1;
+      if (writes > 1 && readsAfterWrite > 1) persisted = [42];
+    }
+    return route.fulfill({
+      json: { streamingSubscriptionProviderIds: persisted },
+    });
+  });
+  await page.route('**/api/v1/watchproviders/movies?*', (route) =>
+    route.fulfill({ json: [{ id: 42, name: 'Fixture Stream' }] })
+  );
+  await page.route('**/api/v1/watchproviders/tv?*', (route) =>
+    route.fulfill({ json: [] })
+  );
+  await page.goto('/me/account');
+  const section = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Streaming Subscriptions' }),
+  });
+  const provider = section.getByRole('checkbox', { name: 'Fixture Stream' });
+  await provider.check();
+  const save = section.getByRole('button', {
+    name: 'Save Streaming Subscriptions',
+  });
+  await save.click();
+  await expect(
+    section.getByRole('alert').filter({
+      hasText: 'Could not confirm the saved subscriptions. Try again.',
+    })
+  ).toBeVisible();
+  await expect(provider).toBeChecked();
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(
+    section.getByText('Streaming subscriptions saved.', { exact: true })
+  ).toBeVisible();
+  await expect(save).toBeDisabled();
+  expect(writes).toBe(2);
+});

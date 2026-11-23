@@ -7636,3 +7636,14 @@ username fields. The email fixture now edits both values and verifies the
 redacted response/readback projection while keeping password values write-only.
 The focused email workflow and all 28 notification browser cases pass across
 desktop, iPhone, Android, and tablet.
+
+### Streaming subscription settings persisted readback
+
+Lumen now verifies a user's streaming-provider subscription selection in a
+fresh read of the same account settings after the write response. A stale
+readback leaves the selected providers editable and offers a retryable error;
+the saved state advances only after both responses match.
+
+The focused stale-readback and retry workflow passes on desktop, iPhone,
+Android, and tablet (4 cases). Fixture results do not verify live account
+settings persistence.
