@@ -34,6 +34,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import OpenIssueReports from '../components/OpenIssueReports';
 import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { ReaderDownloads } from '../components/RequestFiles';
@@ -769,6 +770,10 @@ export default function BookDetail() {
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
             {b.description && <p className="ov long">{b.description.trim()}</p>}
+            <OpenIssueReports
+              id="book-open-issues"
+              issues={b.mediaInfo?.issues}
+            />
             {showNarr ? (
               <div id="narr">
                 <div className="sec-head">

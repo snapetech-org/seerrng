@@ -27,6 +27,7 @@ import {
 import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import OpenIssueReports from '../components/OpenIssueReports';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
@@ -1139,6 +1140,10 @@ export function AlbumDetail() {
           <div className="dacts pc">{main}</div>
           <div className="dcols">
             <div>
+              <OpenIssueReports
+                id="music-open-issues"
+                issues={a.mediaInfo?.issues}
+              />
               {!!a.tracks?.length && (
                 <>
                   <div className="h2">{t('lumen.music.tracks', 'Tracks')}</div>

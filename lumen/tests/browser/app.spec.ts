@@ -4471,6 +4471,120 @@ test('magazine details show open issues only to issue readers', async ({
   }
 });
 
+test('book and music details show open issues only to issue readers', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let permissions = 2;
+  const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Viewer', permissions } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        musicEnabled: true,
+        enabledMediaCategories: { book: true, music: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { enabledMediaCategories: { book: true, music: true } },
+    })
+  );
+  await page.route('**/api/v1/book/OL123W*', (route) =>
+    route.fulfill({
+      json: {
+        id: 'OL123W',
+        provider: 'openlibrary',
+        title: 'Fixture Book',
+        author: 'Fixture Author',
+        authorId: 'author-1',
+        mediaInfo: {
+          id: 9,
+          status: 5,
+          issues: [
+            {
+              id: 91,
+              status: 1,
+              issueType: 1,
+              comments: [{ message: 'The audiobook is incomplete.' }],
+            },
+          ],
+        },
+      },
+    })
+  );
+  await page.route('**/api/v1/book/OL123W/ratings*', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route(`**/api/v1/music/${album}`, (route) =>
+    route.fulfill({
+      json: {
+        id: album,
+        title: 'Fixture Album',
+        artist: { id: 'artist-1', name: 'Fixture Artist' },
+        tracks: [],
+        mediaInfo: {
+          id: 10,
+          status: 5,
+          issues: [
+            {
+              id: 92,
+              status: 1,
+              issueType: 2,
+              comments: [{ message: 'The track audio is distorted.' }],
+            },
+          ],
+        },
+      },
+    })
+  );
+
+  await page.goto('/book/OL123W');
+  await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
+    0
+  );
+  permissions = 7340032;
+  await page.reload();
+  const bookIssues = page.getByRole('region', { name: 'Open Issues' });
+  await expect(
+    bookIssues.getByRole('link', { name: 'Video #91' })
+  ).toHaveAttribute('href', '/issues/91');
+  await expect(bookIssues).toContainText('The audiobook is incomplete.');
+  const capture = process.env.LUMEN_BOOK_MUSIC_OPEN_ISSUES_CAPTURE;
+  if (capture) {
+    await bookIssues.scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: `${capture}-book-${test.info().project.name}.png`,
+    });
+  }
+
+  permissions = 2;
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
+    0
+  );
+  await page.goto(`/music/${album}`);
+  await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
+    0
+  );
+  permissions = 7340032;
+  await page.reload();
+  const musicIssues = page.getByRole('region', { name: 'Open Issues' });
+  await expect(
+    musicIssues.getByRole('link', { name: 'Audio #92' })
+  ).toHaveAttribute('href', '/issues/92');
+  await expect(musicIssues).toContainText('The track audio is distorted.');
+  if (capture) {
+    await musicIssues.scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: `${capture}-music-${test.info().project.name}.png`,
+    });
+  }
+});
+
 test('Classic comic discovery bookmarks restore catalogue filters and results', async ({
   page,
 }) => {

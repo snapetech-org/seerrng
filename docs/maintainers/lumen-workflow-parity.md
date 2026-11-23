@@ -8640,3 +8640,21 @@ inspected; the new list uses the existing detail row style and keeps the fixed
 request action visible. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/magazine-open-issues-visual/`.
 Live account and provider-backed verification remain open.
+
+### Shared open issue reports on book and music details (2026-11-23)
+
+Native book and music details also show open issue reports to issue readers.
+Lumen now uses one shared `OpenIssueReports` component across book, music,
+comic, and magazine details. It filters to open reports, applies the existing
+issue-reading permission boundary, uses localized issue type labels, and links
+to the existing Lumen issue detail and discussion workflow. No API or
+permission behavior changed.
+
+The browser workflow verifies that ordinary viewers do not see the reports,
+issue readers see the correct report and comment on both details, and each link
+opens the matching issue. It passes on desktop, iPhone, Android, and tablet.
+Matched baseline/candidate desktop and iPhone views were inspected with the
+report section scrolled into the actual viewport so the fixed mobile action
+bar does not obscure the comparison. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/book-music-open-issues-visual/`.
+The fixtures do not verify live issue-reader accounts or provider-backed data.
