@@ -2510,6 +2510,8 @@
   "lumen.detail.folder",
   "lumen.detail.ignoreQuota",
   "lumen.detail.keepOpen",
+  "lumen.detail.movieDetails",
+  "lumen.detail.movieDetailsPreference",
   "lumen.detail.languageProfile",
   "lumen.detail.loadingServers",
   "lumen.detail.me",

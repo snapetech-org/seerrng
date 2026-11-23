@@ -8407,6 +8407,32 @@ for collapsed and expanded states; the overview remains in the information
 column with no clipping or horizontal overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-overview-visual/`.
 
-This closes only TV overview disclosure parity. Movie/book/music detail panels,
-TV facts and media-server panels, broader route-level visual acceptance, and
-live provider verification remain open in the overall Lumen parity initiative.
+This closes only TV overview disclosure parity. Other movie detail disclosures,
+book/music detail panels, TV facts and media-server panels, broader route-level
+visual acceptance, and live provider verification remain open in the overall
+Lumen parity initiative.
+
+### Persistent movie facts disclosure (2026-11-23)
+
+Native movie details expose a separately collapsible and pinnable Details
+panel. Lumen previously rendered all movie Facts rows continuously in the
+right-hand column. The existing facts block now uses the shared Lumen video
+disclosure and the authenticated `detail-disclosures/movie` settings route;
+all fact rows, links, provider availability values, and data filtering remain
+unchanged. The control and saved-preference label are localized in English,
+French, and Arabic. No CSS or shared layout owner changed.
+
+The existing detail-pin browser fixture verifies the closed default, expanded
+facts, saved pin response, and restored open state after reload. It passes in
+desktop, iPhone, Android, and tablet projects. The Lumen production build passes.
+Baseline `cc4412be7` and candidate captures use the same series/movie fixture at
+1440×900 and iPhone 13 sizes. Collapsed and expanded candidate states were
+inspected at both sizes; the information stays in the existing facts column and
+the phone layout remains scrollable without horizontal overflow. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/movie-details-visual/`.
+
+This closes only movie facts disclosure parity. Other movie detail disclosures,
+book and music detail panels, TV facts and media-server panels, collection
+disclosures, broader route-level visual acceptance, and live provider
+verification remain open in the overall Lumen parity initiative.

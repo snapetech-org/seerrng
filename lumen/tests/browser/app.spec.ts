@@ -1221,7 +1221,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   const settings = {
     detailDisclosureCastPinned: true,
     detailDisclosurePins: {
-      movie: { cast: false },
+      movie: { cast: false, details: false },
       tv: { cast: false },
     },
   };
@@ -1293,6 +1293,24 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   expect(writes).toEqual([{ cast: true }, { cast: true }]);
   await page.reload();
   await expect(actor).toBeVisible();
+  const movieDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Movie Details' });
+  await expect(movieDetails).toBeVisible();
+  await expect(movieDetails).not.toHaveAttribute('open', '');
+  await movieDetails.locator('summary').click();
+  await expect(movieDetails).toContainText('Runtime');
+  const movieDetailsPin = movieDetails.getByRole('button', {
+    name: 'Keep Movie Details Open',
+  });
+  await movieDetailsPin.click();
+  await expect(movieDetailsPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  const restoredMovieDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Movie Details' });
+  await expect(restoredMovieDetails).toHaveAttribute('open', '');
+  await expect(restoredMovieDetails).toContainText('Runtime');
   await page.getByText('Crew', { exact: true }).click();
   await expect(
     page.locator('.person').filter({ hasText: 'Fixture Director' })
@@ -1348,7 +1366,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     await summary.click();
     await expect(person).toBeHidden();
   }
-  expect(writes).toHaveLength(3);
+  expect(writes).toHaveLength(4);
 });
 
 test('subject tags share browser visibility and open filtered video discovery', async ({

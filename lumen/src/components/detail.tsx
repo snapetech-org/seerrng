@@ -278,7 +278,7 @@ export function OverviewDisclosure({ overview }: { overview?: string }) {
   );
 }
 
-function VideoDisclosure({
+export function VideoDisclosure({
   media,
   panel,
   label,
@@ -319,7 +319,9 @@ function VideoDisclosure({
       ? t('lumen.detail.subjectTagPreference', 'subject tag')
       : panel === 'overview'
         ? t('lumen.detail.overviewPreference', 'overview')
-        : t('lumen.detail.creditPreference', 'credit');
+        : panel === 'details'
+          ? t('lumen.detail.movieDetailsPreference', 'movie details')
+          : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
     if (!user || pending.current) return;
