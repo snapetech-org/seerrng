@@ -4,10 +4,12 @@ async function fixtures(
   page: Page,
   permissions = 2,
   overrides: string[] = [],
-  locale = 'en'
+  locale = 'en',
+  failFirstWrite = true
 ) {
   const patches: unknown[] = [];
-  let failed = false;
+  let persistWrites = true;
+  let failed = !failFirstWrite;
   const settings = {
     apiRequestTimeout: 10000,
     dnsCache: { enabled: true, forceMinTtl: 0, forceMaxTtl: -1 },
@@ -50,22 +52,27 @@ async function fixtures(
         json: { message: 'Check the network settings.' },
       });
     }
-    return route.fulfill({
-      json: {
-        ...settings,
-        ...patch,
-        dnsCache: { ...settings.dnsCache, ...patch.dnsCache },
-        tls: { ...settings.tls, ...patch.tls },
-      },
-    });
+    const result = {
+      ...settings,
+      ...patch,
+      dnsCache: { ...settings.dnsCache, ...patch.dnsCache },
+      tls: { ...settings.tls, ...patch.tls },
+    };
+    if (persistWrites) Object.assign(settings, result);
+    return route.fulfill({ json: result });
   });
-  return patches;
+  return {
+    patches,
+    setPersistWrites: (persist: boolean) => {
+      persistWrites = persist;
+    },
+  };
 }
 
 test('network settings send only edited values and recover from a rejected save', async ({
   page,
-}) => {
-  const patches = await fixtures(page);
+}, info) => {
+  const { patches } = await fixtures(page);
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Network Settings' }).click();
   await expect(
@@ -85,8 +92,16 @@ test('network settings send only edited values and recover from a rejected save'
   await save.click();
   await expect(page.getByText('Check the network settings.')).toBeVisible();
   await expect(page.getByLabel('DNS Cache Minimum TTL')).toHaveValue('60');
+  await page.screenshot({
+    path: info.outputPath('network-settings-rejected-save.png'),
+    fullPage: true,
+  });
   await save.click();
   await expect(page.getByText(/Network settings saved/)).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('network-settings-retried-save.png'),
+    fullPage: true,
+  });
   await expect(save).toBeDisabled();
   expect(patches).toEqual(
     Array.from({ length: 2 }, () => ({
@@ -102,6 +117,57 @@ test('network settings send only edited values and recover from a rejected save'
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
+
+test('network settings keep drafts when a save response fails persisted readback', async ({
+  page,
+}, info) => {
+  const fixture = await fixtures(page, 2, [], 'en', false);
+  fixture.setPersistWrites(false);
+  await page.goto('/admin/network');
+  await page.getByLabel('API Request Timeout').fill('3.125');
+  await page.getByLabel('DNS Cache Minimum TTL').fill('60');
+  await page.getByLabel('Built-in HTTPS mode').selectOption('self-signed');
+  const save = page.getByRole('button', { name: 'Save Network Settings' });
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not confirm the saved network settings.'
+  );
+  await expect(page.getByLabel('DNS Cache Minimum TTL')).toHaveValue('60');
+  await expect(save).toBeEnabled();
+  await page.screenshot({
+    path: info.outputPath('network-settings-readback-failure.png'),
+    fullPage: true,
+  });
+  fixture.setPersistWrites(true);
+  await save.click();
+  await expect(page.getByText(/Network settings saved/)).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('network-settings-readback-recovered.png'),
+    fullPage: true,
+  });
+  await expect(page.getByLabel('DNS Cache Minimum TTL')).toHaveValue('60');
+  await expect(save).toBeDisabled();
+  expect(fixture.patches).toEqual([
+    {
+      apiRequestTimeout: 3125,
+      dnsCache: { forceMinTtl: 60 },
+      tls: {
+        mode: 'self-signed',
+        allowHttpAuth: false,
+        httpAuthAcknowledged: false,
+      },
+    },
+    {
+      apiRequestTimeout: 3125,
+      dnsCache: { forceMinTtl: 60 },
+      tls: {
+        mode: 'self-signed',
+        allowHttpAuth: false,
+        httpAuthAcknowledged: false,
+      },
+    },
+  ]);
 });
 
 test('administration search opens the saved proxy password control safely', async ({

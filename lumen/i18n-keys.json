@@ -1533,6 +1533,7 @@
   "lumen.adminMediaLibraries.typeUpdated",
   "lumen.adminNetwork.ackRequired",
   "lumen.adminNetwork.clearProxyPassword",
+  "lumen.adminNetwork.confirmFailure",
   "lumen.adminNetwork.currentIpRequired",
   "lumen.adminNetwork.differentHttpsPort",
   "lumen.adminNetwork.loadFailure",

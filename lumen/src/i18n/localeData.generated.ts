@@ -2298,6 +2298,7 @@ export const localeData = [
       'lumen.adminNetwork.ackRequired':
         'أقرّ بأن جلسات تسجيل الدخول عبر HTTP قد تُعترض قبل تفعيل تسجيل الدخول عبر HTTP.',
       'lumen.adminNetwork.clearProxyPassword': 'مسح كلمة مرور الوكيل المحفوظة',
+      'lumen.adminNetwork.confirmFailure': 'تعذّر تأكيد حفظ إعدادات الشبكة.',
       'lumen.adminNetwork.currentIpRequired':
         'أضف عنوان IP الحالي إلى الشبكات المسموح بها قبل تفعيل هذا التقييد أو تغييره.',
       'lumen.adminNetwork.differentHttpsPort':
@@ -13196,6 +13197,8 @@ export const localeData = [
       'lumen.adminNetwork.ackRequired':
         'Confirm that HTTP login sessions can be intercepted before enabling sign-in over HTTP.',
       'lumen.adminNetwork.clearProxyPassword': 'Clear Saved Proxy Password',
+      'lumen.adminNetwork.confirmFailure':
+        'Could not confirm the saved network settings.',
       'lumen.adminNetwork.currentIpRequired':
         'Include your current client IP in the allowed networks before enabling or changing this restriction.',
       'lumen.adminNetwork.differentHttpsPort':
@@ -24821,6 +24824,8 @@ export const localeData = [
         'Confirmez que les sessions de connexion HTTP peuvent être interceptées avant d’activer la connexion en HTTP.',
       'lumen.adminNetwork.clearProxyPassword':
         'Effacer le mot de passe du proxy enregistré',
+      'lumen.adminNetwork.confirmFailure':
+        'Impossible de confirmer l’enregistrement des paramètres réseau.',
       'lumen.adminNetwork.currentIpRequired':
         'Ajoutez l’adresse IP actuelle aux réseaux autorisés avant d’activer ou de modifier cette restriction.',
       'lumen.adminNetwork.differentHttpsPort':

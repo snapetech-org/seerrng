@@ -157,6 +157,26 @@ form controls. Evidence is retained at
 Live Servarr/Kapowarr calls and independent translation review remain
 unverified.
 
+### Network settings persisted readback
+
+Lumen's Network Settings save now verifies every changed field in both the
+write response and a fresh read from `/settings/network`. If either response
+does not contain the requested value, the page reports a localized recovery
+message and keeps the edited draft enabled for retry. A verified save refreshes
+the form from persisted settings. Proxy-password clearing is included in the
+same check without exposing the saved password.
+
+The focused Network Settings browser suite passes across desktop, iPhone,
+Android, and tablet (32 cases). It covers a rejected write, a successful write
+with stale persisted readback, retry after persistence recovers, numeric unit
+conversion, DNS settings, and TLS settings. Matched full-page baseline and
+candidate failure states were inspected on desktop and iPhone; the form,
+spacing, and navigation geometry are unchanged, and the new alert uses the
+existing failure treatment. The production Lumen build passes. Fixtures do not
+verify live database persistence, proxy secret handling, or listener restart
+behavior. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-network-settings-readback-20261122/`.
+
 ### Per-user external request lists
 
 Lumen Account Settings now exposes SeerrNG's authenticated external request list
