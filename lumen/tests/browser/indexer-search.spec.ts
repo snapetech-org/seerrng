@@ -197,7 +197,7 @@ test('indexer search honors enabled categories, submitted pagination and one-use
               title: body.offset ? 'Second Result' : 'First Result',
               indexer: 'Hidden Indexer',
               protocol: 'usenet',
-              size: 1000000,
+              size: 512,
               infoUrl: 'https://example.test/info',
               grabs: null,
               seeders: null,
@@ -208,6 +208,23 @@ test('indexer search honors enabled categories, submitted pagination and one-use
                 ? null
                 : 'df924acb-ad33-490f-a44e-150b0e7d6985',
             },
+            ...(!body.offset
+              ? [
+                  {
+                    title: 'Large Result',
+                    indexer: 'Hidden Indexer',
+                    protocol: 'usenet',
+                    size: 1.5 * 1024 ** 3,
+                    infoUrl: null,
+                    grabs: null,
+                    seeders: null,
+                    leechers: null,
+                    publishDate: null,
+                    categories: [],
+                    grabId: null,
+                  },
+                ]
+              : []),
           ],
         },
       });
@@ -226,6 +243,8 @@ test('indexer search honors enabled categories, submitted pagination and one-use
   await expect(page.getByRole('option', { name: 'Adult' })).toHaveCount(0);
   await page.getByRole('button', { name: 'Search indexers' }).click();
   await expect(page.getByText('First Result')).toBeVisible();
+  await expect(page.getByRole('listitem').nth(0)).toContainText('512 B');
+  await expect(page.getByRole('listitem').nth(1)).toContainText('1.5 GB');
   await expect(page.getByText('Hidden Indexer')).toHaveCount(0);
   await expect(
     page.getByRole('link', { name: 'Open indexer details' })
