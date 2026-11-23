@@ -38,6 +38,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
       adultEnabledNote:
         'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.',
       serverProblem: 'The server had a problem. Try again in a moment.',
+      confirmFailure: 'The server did not confirm the saved categories.',
       description:
         'Choose which categories everyone can browse and request. Disabled categories disappear from navigation and discovery, and new requests are blocked. Existing requests and download history stay available in Request Status.',
       groupDescription:
@@ -73,6 +74,8 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
         'La découverte de contenus pour adultes nécessite un service Whisparr v3 configuré et l’autorisation correspondante du compte. Les comptes restreints n’y ont pas accès.',
       serverProblem:
         'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      confirmFailure:
+        'Le serveur n’a pas confirmé l’enregistrement des catégories.',
       description:
         'Choisissez les catégories que chacun peut découvrir et demander. Les catégories désactivées disparaissent de la navigation et de la découverte, et les nouvelles demandes sont bloquées. Les demandes existantes et leur historique de téléchargement restent accessibles dans le suivi des demandes.',
       groupDescription:
@@ -107,6 +110,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
       adultEnabledNote:
         'يتطلب استكشاف محتوى البالغين إعداد خدمة Whisparr v3 ومنح الحساب الإذن المناسب. لا يمكن للحسابات المقيّدة الوصول إليه.',
       serverProblem: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+      confirmFailure: 'لم يؤكد الخادم حفظ الفئات.',
       description:
         'اختر الفئات التي يمكن للجميع استعراضها وطلبها. تُخفى الفئات المعطّلة من التنقل والاكتشاف، وتُمنع الطلبات الجديدة. تظل الطلبات الحالية وسجل تنزيلاتها متاحين في حالة الطلب.',
       groupDescription: 'تحدد مفاتيح التبديل هذه الفئات المتاحة في SeerrNG.',
@@ -161,6 +165,8 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   };
   const writes: Record<string, unknown>[] = [];
   let failEbookSave = true;
+  let staleMovieReadback: Record<string, boolean> | undefined;
+  let returnStaleMovieReadback = false;
 
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -191,19 +197,36 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
             json: { message: 'Service unavailable.' },
           });
         }
+        if (
+          body.enabledMediaCategories?.movie === false &&
+          !staleMovieReadback
+        ) {
+          staleMovieReadback = { ...categories };
+          returnStaleMovieReadback = true;
+        }
         if (body.enabledMediaCategories)
           Object.assign(categories, body.enabledMediaCategories);
         if (body.defaultEnabledMediaCategories)
           Object.assign(defaults, body.defaultEnabledMediaCategories);
         if (body.ageGate) Object.assign(ageGate, body.ageGate);
+        return route.fulfill({
+          json: {
+            enabledMediaCategories: categories,
+            defaultEnabledMediaCategories: defaults,
+            ageGate,
+          },
+        });
       }
-      return route.fulfill({
-        json: {
-          enabledMediaCategories: categories,
-          defaultEnabledMediaCategories: defaults,
-          ageGate,
-        },
-      });
+      const response = {
+        enabledMediaCategories: categories,
+        defaultEnabledMediaCategories: defaults,
+        ageGate,
+      };
+      if (returnStaleMovieReadback && staleMovieReadback) {
+        returnStaleMovieReadback = false;
+        response.enabledMediaCategories = staleMovieReadback;
+      }
+      return route.fulfill({ json: response });
     }
     return route.fulfill({ json: {} });
   });
@@ -273,6 +296,16 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   await available
     .getByRole('checkbox', { name: labels.movie, exact: true })
     .uncheck();
+  await available
+    .getByRole('button', { name: labels.saveCategories, exact: true })
+    .click();
+  await expect(page.getByRole('alert')).toContainText(labels.confirmFailure);
+  await expect(
+    available.getByRole('checkbox', { name: labels.movie, exact: true })
+  ).not.toBeChecked();
+  await expect(
+    available.getByRole('button', { name: labels.saveCategories, exact: true })
+  ).toBeEnabled();
   await available
     .getByRole('button', { name: labels.saveCategories, exact: true })
     .click();
@@ -353,6 +386,7 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   ).toBeEnabled();
 
   expect(writes).toEqual([
+    { enabledMediaCategories: { movie: false } },
     { enabledMediaCategories: { movie: false } },
     { enabledMediaCategories: { ebook: false } },
     { enabledMediaCategories: { ebook: false } },
