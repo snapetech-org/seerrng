@@ -727,6 +727,17 @@ export function AlbumDetail() {
         />
         <div className="dbody">
           <div className="dstatus">
+            {canRequestMusic(user?.permissions) && (
+              <Link
+                className="btn btn-tonal btn-sm"
+                to={`/collections/music/${encodeURIComponent(a.artist.id)}?view=discography&albumId=${encodeURIComponent(a.id)}`}
+              >
+                {t(
+                  'components.MusicDetails.requestdiscography',
+                  'Request Discography'
+                )}
+              </Link>
+            )}
             <StatPill s={s} />
             {!!a.stats?.totalListenCount && (
               <Pill k="neutral" icon="headphones">
@@ -817,6 +828,7 @@ export function AlbumDetail() {
 export function Artist() {
   const { id = '' } = useParams();
   const { t } = useLumenLocale();
+  const { user } = useAuth();
   const { data: a, error } = useApi<ArtistDetails>(`/artist/${id}`);
   if (error)
     return (
@@ -862,6 +874,17 @@ export function Artist() {
         />
         <div className="dbody">
           <div className="dstatus">
+            {canRequestMusic(user?.permissions) && (
+              <Link
+                className="btn btn-tonal btn-sm"
+                to={`/collections/music/${encodeURIComponent(id)}?view=discography`}
+              >
+                {t(
+                  'components.ArtistDetails.requestdiscography',
+                  'Request Discography'
+                )}
+              </Link>
+            )}
             <Link
               className="btn btn-tonal btn-sm"
               to={`/collections/music/${encodeURIComponent(id)}?view=discography`}

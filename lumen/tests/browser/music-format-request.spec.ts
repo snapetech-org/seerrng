@@ -9,7 +9,8 @@ type MusicRequest = {
 
 async function fixture(
   page: Page,
-  options: { services?: unknown[]; availableServices?: unknown[] } = {}
+  options: { services?: unknown[]; availableServices?: unknown[] } = {},
+  route = '/music/42'
 ) {
   const writes: unknown[] = [];
   const services = options.services ?? [
@@ -56,6 +57,13 @@ async function fixture(
           mediaInfo: { status: 1, requests },
         },
       });
+    if (path === '/artist/fixture-artist')
+      return route.fulfill({
+        json: {
+          artist: { name: 'Fixture Artist' },
+          releaseGroups: [],
+        },
+      });
     if (path.startsWith('/blocklist/'))
       return route.fulfill({
         status: 404,
@@ -77,12 +85,34 @@ async function fixture(
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/music/42');
+  await page.goto(route);
   await expect(
-    page.getByRole('heading', { name: 'Fixture Album' })
+    page.getByRole('heading', {
+      name: route.startsWith('/artist/') ? 'Fixture Artist' : 'Fixture Album',
+    })
   ).toBeVisible();
   return writes;
 }
+
+test('music details link to the request discography workflow with exact identity', async ({
+  page,
+}) => {
+  await fixture(page);
+  await expect(
+    page.getByRole('link', { name: 'Request Discography' })
+  ).toHaveAttribute(
+    'href',
+    '/collections/music/fixture-artist?view=discography&albumId=42'
+  );
+
+  await fixture(page, {}, '/artist/fixture-artist');
+  await expect(
+    page.getByRole('link', { name: 'Request Discography' })
+  ).toHaveAttribute(
+    'href',
+    '/collections/music/fixture-artist?view=discography'
+  );
+});
 
 test('music requests select MP3 or FLAC service and preserve per-quality availability', async ({
   page,

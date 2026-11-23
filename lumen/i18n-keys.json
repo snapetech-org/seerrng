@@ -1,6 +1,8 @@
 [
   "components.Discover.DiscoverMediaTabs.series",
   "components.Common.FormatRequestControl.request",
+  "components.ArtistDetails.requestdiscography",
+  "components.MusicDetails.requestdiscography",
   "components.Settings.lidarrsettings",
   "components.MusicDetails.blocklisted",
   "components.MusicDetails.flacAvailable",

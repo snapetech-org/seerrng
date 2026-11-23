@@ -6713,11 +6713,15 @@ SeerrNG's format choices. Each action uses a matching configured Lidarr service,
 reports when that format is already available, blocklisted, pending, or has no
 configured service, and sends the selected destination server ID. Users with
 request-option permission can choose among multiple services for that format.
+Album and artist details also expose the native Request Discography entry
+points. The album link retains its exact album ID; the artist link opens the
+artist-wide workflow. Both remain behind the music request permission gate.
 
 The focused browser suite passes 96 cases across desktop, iPhone, Android, and
 tablet, including localization and request-permission coverage. The MP3/FLAC
 payload, availability and pending states, and unconfigured-format recovery are
-fixture checked. Native and Lumen album detail were captured at desktop size;
+fixture checked. A route fixture verifies both discography destinations and
+their media identity. Native and Lumen album detail were captured at desktop size;
 Lumen was also captured on phone, where the sticky bar was adjusted after visual
 inspection to keep both format workflows within the screen. Native phone visual
 comparison remains unverified. Evidence is retained at

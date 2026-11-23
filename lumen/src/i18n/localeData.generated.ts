@@ -7,6 +7,9 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'مسلسلات',
       'components.Common.FormatRequestControl.request': 'طلب',
+      'components.ArtistDetails.requestdiscography':
+        'طلب قائمة الأعمال الموسيقية',
+      'components.MusicDetails.requestdiscography': 'اطلب قائمة إصدارات الفنان',
       'components.Settings.lidarrsettings': 'Lidarr التركيبات',
       'components.MusicDetails.blocklisted': 'هذا العنوان مدرج في قائمة الحظر.',
       'components.MusicDetails.flacAvailable': 'ونسخة FLAC متاحة بالفعل.',
@@ -9170,6 +9173,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serien',
       'components.Common.FormatRequestControl.request': 'Anfordern',
+      'components.ArtistDetails.requestdiscography': 'Discographie anfordern',
+      'components.MusicDetails.requestdiscography': 'Discographie anfordern',
       'components.Settings.lidarrsettings': 'Lidarr Einstellungen',
       'components.MusicDetails.blocklisted':
         'Dieser Titel steht auf der Sperrliste.',
@@ -10862,6 +10867,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'components.Common.FormatRequestControl.request': 'Request',
+      'components.ArtistDetails.requestdiscography': 'Request Discography',
+      'components.MusicDetails.requestdiscography': 'Request Discography',
       'components.Settings.lidarrsettings': 'Lidarr Settings',
       'components.MusicDetails.blocklisted': 'This title is blocklisted.',
       'components.MusicDetails.flacAvailable':
@@ -18105,6 +18112,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Series',
       'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.ArtistDetails.requestdiscography': 'Solicitud de discografía',
+      'components.MusicDetails.requestdiscography': 'Solicitar discografía',
       'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
       'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
       'components.MusicDetails.flacAvailable':
@@ -19806,6 +19815,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serie',
       'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.ArtistDetails.requestdiscography': 'Solicitud de discografía',
+      'components.MusicDetails.requestdiscography': 'Solicitud de discografía',
       'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
       'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
       'components.MusicDetails.flacAvailable':
@@ -22329,6 +22340,9 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
       'components.Common.FormatRequestControl.request': 'Demander',
+      'components.ArtistDetails.requestdiscography':
+        'Demander une discographie',
+      'components.MusicDetails.requestdiscography': 'Demander une discographie',
       'components.Settings.lidarrsettings': 'Paramètres Lidarr',
       'components.MusicDetails.blocklisted': 'Ce titre est bloqué.',
       'components.MusicDetails.flacAvailable':
@@ -30363,6 +30377,9 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'श्रृंखला',
       'components.Common.FormatRequestControl.request': 'अनुरोध करें',
+      'components.ArtistDetails.requestdiscography': 'अनुरोध डिस्कोग्राफी',
+      'components.MusicDetails.requestdiscography':
+        'डिस्कोग्राफी का अनुरोध करें',
       'components.Settings.lidarrsettings': 'Lidarr सेटिंग्स',
       'components.MusicDetails.blocklisted': 'यह शीर्षक ब्लॉकलिस्ट में है।',
       'components.MusicDetails.flacAvailable':
@@ -32635,6 +32652,9 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serial',
       'components.Common.FormatRequestControl.request': 'Minta',
+      'components.ArtistDetails.requestdiscography': 'Permintaan Diskografi',
+      'components.MusicDetails.requestdiscography':
+        'Ajukan permintaan diskografi',
       'components.Settings.lidarrsettings': 'Pengaturan Lidarr',
       'components.MusicDetails.blocklisted': 'Judul ini diblokir.',
       'components.MusicDetails.flacAvailable': 'Versi FLAC sudah tersedia.',
@@ -34913,6 +34933,10 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'シリーズ',
       'components.Common.FormatRequestControl.request': 'リクエスト',
+      'components.ArtistDetails.requestdiscography':
+        'リクエスト・ディスコグラフィー',
+      'components.MusicDetails.requestdiscography':
+        'ディスコグラフィーをリクエスト',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
       'components.MusicDetails.blocklisted':
         'このタイトルはブロックリストに登録されています。',
@@ -36569,6 +36593,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '시리즈',
       'components.Common.FormatRequestControl.request': '요청',
+      'components.ArtistDetails.requestdiscography': '음반 요청',
+      'components.MusicDetails.requestdiscography': '음반 요청',
       'components.Settings.lidarrsettings': 'Lidarr 설정',
       'components.MusicDetails.blocklisted':
         '이 제목은 차단 목록에 등록되어 있습니다.',
@@ -40007,6 +40033,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
       'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.ArtistDetails.requestdiscography': 'Pedir discografia.',
+      'components.MusicDetails.requestdiscography': 'Pedir discografia',
       'components.Settings.lidarrsettings': 'Configurações do Lidarr',
       'components.MusicDetails.blocklisted':
         'Este título está na lista de bloqueio.',
@@ -45682,6 +45710,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '剧集',
       'components.Common.FormatRequestControl.request': '提交请求',
+      'components.ArtistDetails.requestdiscography': '请求完整唱片目录',
+      'components.MusicDetails.requestdiscography': '请求完整唱片目录',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
       'components.MusicDetails.blocklisted': '此标题已加入屏蔽列表。',
       'components.MusicDetails.flacAvailable': 'FLAC 版本已经提供.',
@@ -47224,6 +47254,8 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '影集',
       'components.Common.FormatRequestControl.request': '提出請求',
+      'components.ArtistDetails.requestdiscography': '請求完整唱片目錄',
+      'components.MusicDetails.requestdiscography': '要求完整唱片目錄',
       'components.Settings.lidarrsettings': 'Lidarr 设置',
       'components.MusicDetails.blocklisted': '此標題已列入封鎖清單。',
       'components.MusicDetails.flacAvailable': '已提供 FLAC 版本 。',
@@ -48763,6 +48795,9 @@ export const localeData = [
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Loạt phim',
       'components.Common.FormatRequestControl.request': 'Yêu cầu',
+      'components.ArtistDetails.requestdiscography':
+        'Yêu cầu danh mục đĩa nhạc',
+      'components.MusicDetails.requestdiscography': 'Yêu cầu danh mục đĩa nhạc',
       'components.Settings.lidarrsettings': 'Cài đặt Lidarr',
       'components.MusicDetails.blocklisted':
         'Tiêu đề này nằm trong danh sách chặn.',
