@@ -7613,3 +7613,18 @@ labels remain visible and the page has no horizontal overflow. Fixture behavior
 does not establish live ROMarrNG/QuestarrNG connectivity or persistence.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/software-acquisition/`.
+
+### Notification settings save readback
+
+Lumen's notification channel forms now verify the saved enabled state, event
+mask, public options, and configured-secret projections against both the save
+response and a fresh GET. Webhook header values are checked as redacted secrets,
+and its JSON payload editor retains its existing local draft behavior. A
+mismatch keeps the edits and displays the existing retryable error.
+
+All 28 notification browser cases pass across desktop, iPhone, Android, and
+tablet, including rejected and stale saves, secret preservation, messaging and
+server channels, Discord/Slack actions, and webhook header handling. The email
+retry-state capture was inspected. Mocks do not verify live delivery or
+filesystem persistence. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/notifications/`.

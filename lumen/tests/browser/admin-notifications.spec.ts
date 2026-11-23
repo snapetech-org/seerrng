@@ -19,6 +19,9 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
       allowSelfSigned: false,
     },
   };
+  let staleEmailReadback = false;
+  const persistedChannels = new Map<string, Record<string, unknown>>();
+  persistedChannels.set('email', email);
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -39,10 +42,16 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!path.startsWith(prefix)) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
+      if (path.endsWith('/email') && staleEmailReadback) {
+        staleEmailReadback = false;
+        return route.fulfill({ json: email });
+      }
       return route.fulfill({
-        json: path.endsWith('/email')
-          ? email
-          : { enabled: false, embedPoster: false, options: {} },
+        json: persistedChannels.get(path.slice(prefix.length)) ?? {
+          enabled: false,
+          embedPoster: false,
+          options: {},
+        },
       });
     }
     const body = request.postDataJSON();
@@ -53,6 +62,13 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
       writes.filter((entry) => entry.path === 'email').length === 1
     )
       return route.fulfill({ status: 400, json: { message: 'Rejected.' } });
+    if (path.endsWith('/email')) {
+      persistedChannels.set('email', body);
+      staleEmailReadback =
+        writes.filter((entry) => entry.path === 'email').length === 2;
+    } else {
+      persistedChannels.set(path.slice(prefix.length), body);
+    }
     return route.fulfill({ json: body });
   });
   await page.goto('/me');
@@ -76,21 +92,34 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   await expect(page.getByRole('alert')).toHaveText(
     'Email notification settings failed to save.'
   );
+  if (process.env.LUMEN_ADMIN_NOTIFICATION_READBACK_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_ADMIN_NOTIFICATION_READBACK_CAPTURE_DIR}/email-readback-failure-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
   await expect(
     page.getByLabel('Use public Seerr logo instead of instance logo')
   ).toBeChecked();
   await save.click();
-  await expect(page.getByText('Email notification settings saved successfully!')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Email notification settings failed to save.'
+  );
+  await expect(
+    page.getByLabel('Use public Seerr logo instead of instance logo')
+  ).toBeChecked();
+  await save.click();
+  await expect(
+    page.getByText('Email notification settings saved successfully!')
+  ).toBeVisible();
   await page
     .getByRole('navigation', { name: 'Notification Channels' })
     .getByRole('link', { name: 'Web Push', exact: true })
     .click();
-  await page
-    .getByRole('checkbox', { name: 'Enable Agent' })
-    .last()
-    .check();
+  await page.getByRole('checkbox', { name: 'Enable Agent' }).last().check();
   await page.getByRole('button', { name: 'Save Web Push' }).click();
-  await expect(page.getByText('Web push notification settings saved successfully!')).toBeVisible();
+  await expect(
+    page.getByText('Web push notification settings saved successfully!')
+  ).toBeVisible();
   expect(writes.at(-1)).toEqual({
     path: 'webpush',
     body: { enabled: true, embedPoster: false, options: {} },
@@ -207,23 +236,6 @@ test('messaging channels preserve credentials and independent event masks', asyn
       available: 'المحتوى المطلوب متاح',
     },
   }[baseline ? 'en' : locale];
-  const shellLabels = {
-    en: {
-      title: 'Instance Notifications',
-      account: 'Back to Account',
-      channels: 'Notification Channels',
-    },
-    fr: {
-      title: 'Notifications de l’instance',
-      account: 'Retour au compte',
-      channels: 'Canaux de notification',
-    },
-    ar: {
-      title: 'إشعارات المثيل',
-      account: 'العودة إلى الحساب',
-      channels: 'قنوات الإشعارات',
-    },
-  }[baseline ? 'en' : locale];
   const controlLabels = {
     en: {
       enable: 'Enable Agent',
@@ -259,38 +271,6 @@ test('messaging channels preserve credentials and independent event masks', asyn
       savePushover: 'حفظ Pushover',
     },
   }[baseline ? 'en' : locale];
-  const providerFieldLabels = {
-    en: {
-      email: 'Sender Name',
-      gotify: 'Server URL',
-      ntfy: 'Topic',
-      apprise: 'Configuration Key',
-      discord: 'Webhook URL',
-      slack: 'Webhook URL',
-      webhook: 'JSON Payload',
-      webpush: 'Enable Agent',
-    },
-    fr: {
-      email: "Nom de l'expéditeur",
-      gotify: 'URL du serveur',
-      ntfy: 'Sujet',
-      apprise: 'Nom de la configuration',
-      discord: 'URL du webhook',
-      slack: 'URL du webhook',
-      webhook: 'Données utiles JSON',
-      webpush: 'Activer l’agent de notification',
-    },
-    ar: {
-      email: 'اسم المرسل',
-      gotify: 'عنوان URL للخادم',
-      ntfy: 'الموضوع',
-      apprise: 'اسم الإعداد',
-      discord: 'خطاف الويب URL',
-      slack: 'عنوان URL لخطاف الويب',
-      webhook: 'حمولة JSON',
-      webpush: 'تفعيل خدمة الإشعارات',
-    },
-  }[baseline ? 'en' : locale];
   const saved: { path: string; body: unknown }[] = [];
   const agents = {
     telegram: {
@@ -321,6 +301,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
       },
     },
   };
+  const persistedAgents: Record<string, unknown> = { ...agents };
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -340,9 +321,10 @@ test('messaging channels preserve credentials and independent event masks', asyn
         json: { enabled: false, embedPoster: false, options: {} },
       });
     if (request.method() === 'GET')
-      return route.fulfill({ json: agents[channel] });
+      return route.fulfill({ json: persistedAgents[channel] });
     const body = request.postDataJSON();
     saved.push({ path: channel, body });
+    if (!path.endsWith('/test')) persistedAgents[channel] = body;
     return route.fulfill({ json: body });
   });
   await page.goto('/admin/notifications/telegram');
@@ -463,6 +445,12 @@ test('server notification channels save and test with their own options', async 
       locale: 'en',
     },
   };
+  const persistedAgents: Record<string, unknown> = Object.fromEntries(
+    Object.entries(agents).map(([channel, options]) => [
+      channel,
+      { enabled: false, embedPoster: false, types: 0, options },
+    ])
+  );
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -488,17 +476,14 @@ test('server notification channels save and test with their own options', async 
     if (request.method() === 'GET')
       return route.fulfill({
         json: {
-          enabled: false,
-          embedPoster: false,
-          types: 0,
-          options: agents[channel] ?? {},
+          ...(persistedAgents[channel] as Record<string, unknown>),
         },
       });
-    const body = request.postDataJSON();
+    const body = request.postDataJSON() ?? { options: {} };
     calls.push({ path: name, options: body.options });
-    return name.endsWith('/test')
-      ? route.fulfill({ status: 204 })
-      : route.fulfill({ json: body });
+    if (name.endsWith('/test')) return route.fulfill({ status: 204 });
+    persistedAgents[channel] = body;
+    return route.fulfill({ json: body });
   });
 
   await page.goto('/admin/notifications/gotify');
@@ -568,6 +553,12 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
       signingSecret: '[REDACTED]',
     },
   };
+  const persistedAgents: Record<string, unknown> = Object.fromEntries(
+    Object.entries(agents).map(([channel, options]) => [
+      channel,
+      { enabled: false, embedPoster: false, types: 0, options },
+    ])
+  );
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -592,18 +583,18 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
     const channel = name.split('/')[0] as keyof typeof agents;
     if (request.method() === 'GET')
       return route.fulfill({
-        json: {
+        json: persistedAgents[channel] ?? {
           enabled: false,
           embedPoster: false,
           types: 0,
-          options: agents[channel] ?? {},
+          options: {},
         },
       });
     const body = request.postDataJSON();
     calls.push({ path: name, body });
-    return name.endsWith('/test')
-      ? route.fulfill({ status: 204 })
-      : route.fulfill({ json: body });
+    if (name.endsWith('/test')) return route.fulfill({ status: 204 });
+    persistedAgents[channel] = body;
+    return route.fulfill({ json: body });
   });
   await page.goto('/admin/notifications/discord');
   const discord = page.locator('#discord');
@@ -673,6 +664,7 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
   page,
 }, info) => {
   const calls: { path: string; body: Record<string, unknown> }[] = [];
+  let persistedWebhook: Record<string, unknown> | undefined;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -682,9 +674,11 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
     const path = new URL(request.url()).pathname;
     if (path.endsWith('/auth/me'))
       return route.fulfill({ json: { id: 1, permissions: 2 } });
-    if (request.method() === 'GET')
+    if (request.method() === 'GET' && path.endsWith('/settings/public'))
+      return route.fulfill({ json: {} });
+    if (request.method() === 'GET' && path.endsWith('/notifications/webhook'))
       return route.fulfill({
-        json: {
+        json: persistedWebhook ?? {
           enabled: false,
           embedPoster: false,
           types: 0,
@@ -697,22 +691,27 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
             : {},
         },
       });
+    if (request.method() === 'GET') return route.fulfill({ json: {} });
     const body = request.postDataJSON();
     calls.push({ path: path.split('/').at(-1)!, body });
-    return path.endsWith('/test')
-      ? route.fulfill({ status: 204 })
-      : route.fulfill({
-          json: {
-            ...body,
-            options: {
-              ...body.options,
-              jsonPayload: 'encoded',
-              customHeaders: body.options.customHeaders.map(
-                ({ key }: { key: string }) => ({ key, value: '[REDACTED]' })
-              ),
-            },
-          },
-        });
+    if (path.endsWith('/test')) return route.fulfill({ status: 204 });
+    const response = {
+      ...body,
+      options: {
+        ...body.options,
+        jsonPayload: 'encoded',
+        customHeaders: Array.isArray(body.options?.customHeaders)
+          ? body.options.customHeaders.map(({ key }: { key: string }) => ({
+              key,
+              value: '[REDACTED]',
+            }))
+          : [],
+      },
+    };
+    persistedWebhook = response;
+    return route.fulfill({
+      json: response,
+    });
   });
   await page.goto('/admin/notifications/webhook');
   const section = page.locator('#webhook');

@@ -7,8 +7,8 @@ import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
-import { Icon } from '../icons';
 import { useLumenLocale } from '../i18n';
+import { Icon } from '../icons';
 import { invalidatePublicSettings } from '../mediaServer';
 import { sessionGeneration } from '../sessionState';
 
@@ -481,18 +481,77 @@ function AgentForm({
             )
           );
       } else {
+        const submitted = JSON.parse(String(request.body)) as Configuration;
         const updated = await api<Configuration>(endpoint, request);
         if (generation !== sessionGeneration()) return;
+        const readback = await api<Configuration>(endpoint);
+        if (generation !== sessionGeneration()) return;
+        const secretOptions = new Set([
+          'accessToken',
+          'authHeader',
+          'authPass',
+          'botAPI',
+          'password',
+          'pgpPassword',
+          'pgpPrivateKey',
+          'signingSecret',
+          'token',
+          'userToken',
+          'webhookUrl',
+        ]);
+        const optionsMatch = (actual: Configuration['options']) =>
+          Object.entries(submitted.options).every(([key, expected]) => {
+            if (channel === 'webhook' && key === 'jsonPayload') return true;
+            const received = actual[key];
+            if (key === 'customHeaders' && Array.isArray(expected)) {
+              return (
+                Array.isArray(received) &&
+                received.length === expected.length &&
+                expected.every((header, index) => {
+                  const current = received[index];
+                  return (
+                    current?.key === header.key &&
+                    (header.value === redacted
+                      ? current.value === redacted
+                      : header.value
+                        ? Boolean(current.value)
+                        : current.value === '')
+                  );
+                })
+              );
+            }
+            if (secretOptions.has(key))
+              return expected === redacted
+                ? received === redacted
+                : expected
+                  ? received === redacted || received === expected
+                  : received === '';
+            return JSON.stringify(received) === JSON.stringify(expected);
+          });
+        const matches = (value: Configuration) =>
+          value.enabled === submitted.enabled &&
+          value.embedPoster === submitted.embedPoster &&
+          (!eventChannel || value.types === submitted.types) &&
+          optionsMatch(value.options);
+        if (!matches(updated) || !matches(readback)) {
+          setFailure(
+            n(
+              notificationMessageKey(channel, settingsFailedMessage[channel]),
+              'Could not save notification settings. Try again.'
+            )
+          );
+          return;
+        }
         const active =
           channel === 'webhook'
             ? {
-                ...updated,
+                ...readback,
                 options: {
-                  ...updated.options,
+                  ...readback.options,
                   jsonPayload: options.jsonPayload,
                 },
               }
-            : updated;
+            : readback;
         setSaved(active);
         setDraft(active);
         if (
