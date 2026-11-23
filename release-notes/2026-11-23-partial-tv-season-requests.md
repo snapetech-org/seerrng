@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-TV requests can proceed with episode metadata from seasons that loaded successfully when other seasons are unavailable. The request dialog explains that changing the selection excludes unloaded seasons, preserves the loaded episode selection, and keeps retry available to load the remaining seasons.
+TV requests can proceed with episode metadata from seasons that loaded successfully when other seasons are unavailable. Ordinary requests explain that changing the selection excludes unloaded seasons; Episode Queue requests can choose a starting episode from a loaded season. Both keep retry available to load the remaining seasons.

@@ -260,8 +260,11 @@ for (const width of process.env.SEERR_EPISODE_WIDTHS?.split(',').map(
 }
 
 test.describe('TV request season loading', () => {
-  for (const width of [390, 1440]) {
-    test(`a 13-season series can request loaded episodes after partial metadata failure at ${width}px`, async ({
+  const requests = [0, 2].flatMap((queueLength) =>
+    [390, 1440].map((width) => ({ queueLength, width }))
+  );
+  for (const { queueLength, width } of requests) {
+    test(`a 13-season series can request loaded episodes after partial metadata failure with queue ${queueLength} at ${width}px`, async ({
       page,
       baseURL,
     }, info) => {
@@ -287,7 +290,9 @@ test.describe('TV request season loading', () => {
         route.fulfill({ json: series })
       );
       await page.route('**/api/v1/user/1/settings/episode-queue', (route) =>
-        route.fulfill({ json: { status: 'approved', defaultEpisodeCount: 0 } })
+        route.fulfill({
+          json: { status: 'approved', defaultEpisodeCount: queueLength },
+        })
       );
       const sonarr = {
         id: 1,
@@ -376,11 +381,18 @@ test.describe('TV request season loading', () => {
         dialog.getByText('Episodes Could Not Be Loaded')
       ).toBeVisible();
       await expect(
-        dialog.getByText('Choose episodes from loaded seasons', {
-          exact: false,
-        })
+        dialog.getByText(
+          queueLength > 0
+            ? 'Choose a starting episode from a loaded season'
+            : 'Choose episodes from loaded seasons',
+          {
+            exact: false,
+          }
+        )
       ).toBeVisible();
-      await dialog.getByRole('button', { name: 'Clear Selection' }).click();
+      if (queueLength === 0) {
+        await dialog.getByRole('button', { name: 'Clear Selection' }).click();
+      }
       await dialog.getByRole('button', { name: 'Expand Season 01' }).click();
       await dialog
         .getByRole('button', { name: 'Select episode 1: Pilot' })
