@@ -8240,3 +8240,29 @@ subscription persistence remain unverified.
 
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/`.
+
+### Linked media-server collections on TV details (2026-11-23)
+
+When Plex, Jellyfin, or Emby is configured, Lumen TV details now read the
+signed-in user's accessible collections for the selected HD/4K series and
+allow adding or removing that whole series from an existing collection. The
+control never creates or deletes collections. It validates the complete
+bounded server response, rereads membership before acting, preserves the
+chosen add/remove intent if another client changed membership, and displays
+success only after the server confirms the requested membership. Unavailable,
+unlinked, unauthorized, missing-series, oversized, empty, and failed states
+remain explicit. Server-side account, scope, provider, and collection
+authorization remain authoritative.
+
+Eight standalone browser cases cover add/remove and the no-partial-list limit
+state across desktop, iPhone, Android, and tablet. Two bundled `/lumen/`
+cases verify the real production bundle at desktop and phone widths. The
+standalone TypeScript/build and bundled production build pass. Candidate
+phone and desktop captures were inspected; the existing SeerrNG TV control is
+a provider-branded dropdown in its playback action row, while Lumen uses its
+existing detail disclosure and chip owners. A state-matched native screenshot
+with a configured collection provider is not available, so comparative visual
+acceptance and live provider round trips remain unverified.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/`.

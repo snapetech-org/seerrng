@@ -6926,6 +6926,27 @@ export const localeData = [
         'لم يعد لهذا العنوان طلب نشط من مستخدم آخر.',
       'lumen.availabilitySubscription.updateFailed':
         'تعذر تحديث إشعارات التوفر. يرجى المحاولة مرة أخرى.',
+      'lumen.mediaServerCollections.title': 'مجموعات {server}',
+      'lumen.mediaServerCollections.add': 'إضافة إلى {name}',
+      'lumen.mediaServerCollections.remove': 'إزالة من {name}',
+      'lumen.mediaServerCollections.added': 'تمت الإضافة إلى {name}',
+      'lumen.mediaServerCollections.removed': 'تمت الإزالة من {name}',
+      'lumen.mediaServerCollections.updateFailed':
+        'تعذر تأكيد تغيير المجموعة. أعد تحميل القائمة ثم حاول مجددًا.',
+      'lumen.mediaServerCollections.link': 'اربط حساب {server} أولًا.',
+      'lumen.mediaServerCollections.permission':
+        'لا يستطيع حساب {server} إدارة المجموعات.',
+      'lumen.mediaServerCollections.missing':
+        'هذا المسلسل غير موجود في مكتبة {server} المتاحة لك.',
+      'lumen.mediaServerCollections.limit':
+        'قائمة مجموعات {server} كبيرة جدًا لعرضها بأمان.',
+      'lumen.mediaServerCollections.unavailable':
+        'المجموعات غير متاحة لهذا الخادم.',
+      'lumen.mediaServerCollections.empty': 'أنشئ مجموعة في {server} أولًا.',
+      'lumen.mediaServerCollections.loading': 'جارٍ تحميل المجموعات…',
+      'lumen.mediaServerCollections.loadFailed':
+        'تعذر تحميل المجموعات أو تأكيد التغيير.',
+      'lumen.mediaServerCollections.retry': 'إعادة تحميل المجموعات',
     },
   },
   {
@@ -18168,6 +18189,28 @@ export const localeData = [
         'This title no longer has an active request from another user.',
       'lumen.availabilitySubscription.updateFailed':
         'Unable to update availability notifications. Please try again.',
+      'lumen.mediaServerCollections.title': '{server} Collections',
+      'lumen.mediaServerCollections.add': 'Add to {name}',
+      'lumen.mediaServerCollections.remove': 'Remove from {name}',
+      'lumen.mediaServerCollections.added': 'Added to {name}',
+      'lumen.mediaServerCollections.removed': 'Removed from {name}',
+      'lumen.mediaServerCollections.updateFailed':
+        'Could not confirm the collection change. Reload and retry.',
+      'lumen.mediaServerCollections.link': 'Link your {server} account first.',
+      'lumen.mediaServerCollections.permission':
+        'Your {server} account cannot manage collections.',
+      'lumen.mediaServerCollections.missing':
+        'This series is not in your accessible {server} library.',
+      'lumen.mediaServerCollections.limit':
+        'The {server} collection list is too large to show safely.',
+      'lumen.mediaServerCollections.unavailable':
+        'Collections are unavailable for this server.',
+      'lumen.mediaServerCollections.empty':
+        'Create a collection in {server} first.',
+      'lumen.mediaServerCollections.loading': 'Loading collections…',
+      'lumen.mediaServerCollections.loadFailed':
+        'Collections could not be loaded or confirmed.',
+      'lumen.mediaServerCollections.retry': 'Reload collections',
     },
   },
   {
@@ -30571,6 +30614,29 @@ export const localeData = [
         "Ce titre n'a plus de demande active d'un autre utilisateur.",
       'lumen.availabilitySubscription.updateFailed':
         'Impossible de mettre à jour les notifications de disponibilité. Veuillez réessayer.',
+      'lumen.mediaServerCollections.title': 'Collections {server}',
+      'lumen.mediaServerCollections.add': 'Ajouter à {name}',
+      'lumen.mediaServerCollections.remove': 'Retirer de {name}',
+      'lumen.mediaServerCollections.added': 'Ajouté à {name}',
+      'lumen.mediaServerCollections.removed': 'Retiré de {name}',
+      'lumen.mediaServerCollections.updateFailed':
+        'Impossible de confirmer le changement. Rechargez la liste et réessayez.',
+      'lumen.mediaServerCollections.link':
+        "Liez d'abord votre compte {server}.",
+      'lumen.mediaServerCollections.permission':
+        'Votre compte {server} ne peut pas gérer les collections.',
+      'lumen.mediaServerCollections.missing':
+        'Cette série est absente de votre bibliothèque {server} accessible.',
+      'lumen.mediaServerCollections.limit':
+        'La liste des collections {server} est trop volumineuse pour être affichée sans risque.',
+      'lumen.mediaServerCollections.unavailable':
+        'Les collections ne sont pas disponibles sur ce serveur.',
+      'lumen.mediaServerCollections.empty':
+        "Créez d'abord une collection sur {server}.",
+      'lumen.mediaServerCollections.loading': 'Chargement des collections…',
+      'lumen.mediaServerCollections.loadFailed':
+        'Impossible de charger ou de confirmer les collections.',
+      'lumen.mediaServerCollections.retry': 'Recharger les collections',
     },
   },
   {

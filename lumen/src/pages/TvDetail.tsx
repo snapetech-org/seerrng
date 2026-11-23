@@ -45,6 +45,7 @@ import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import LiveTvAirings from '../components/LiveTvAirings';
+import MediaServerCollectionsButton from '../components/MediaServerCollectionsButton';
 import MediaServerSavedItemButton from '../components/MediaServerSavedItemButton';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useOffers4k, useVideoRequestQuota } from '../components/requestSheet';
@@ -653,13 +654,21 @@ export default function TvDetail() {
             tmdbId={t.id}
           />
           {[1, 2, 3].includes(pub?.mediaServerType ?? 0) && (
-            <MediaServerSavedItemButton
-              key={`media-server-saved:${t.id}:${pub?.mediaServerType}:${is4k}`}
-              tvId={t.id}
-              title={t.name || 'series'}
-              serverType={pub!.mediaServerType!}
-              is4k={!!is4k}
-            />
+            <>
+              <MediaServerSavedItemButton
+                key={`media-server-saved:${t.id}:${pub?.mediaServerType}:${is4k}`}
+                tvId={t.id}
+                title={t.name || 'series'}
+                serverType={pub!.mediaServerType!}
+                is4k={!!is4k}
+              />
+              <MediaServerCollectionsButton
+                key={`media-server-collections:${t.id}:${pub?.mediaServerType}:${is4k}`}
+                tvId={t.id}
+                serverType={pub!.mediaServerType!}
+                is4k={!!is4k}
+              />
+            </>
           )}
         </div>
         <TvCollectionLinks key={t.id} id={t.id} />

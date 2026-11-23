@@ -5695,5 +5695,20 @@
   "lumen.availabilitySubscription.subscribed",
   "lumen.availabilitySubscription.unsubscribed",
   "lumen.availabilitySubscription.requestEnded",
-  "lumen.availabilitySubscription.updateFailed"
+  "lumen.availabilitySubscription.updateFailed",
+  "lumen.mediaServerCollections.title",
+  "lumen.mediaServerCollections.add",
+  "lumen.mediaServerCollections.remove",
+  "lumen.mediaServerCollections.added",
+  "lumen.mediaServerCollections.removed",
+  "lumen.mediaServerCollections.updateFailed",
+  "lumen.mediaServerCollections.link",
+  "lumen.mediaServerCollections.permission",
+  "lumen.mediaServerCollections.missing",
+  "lumen.mediaServerCollections.limit",
+  "lumen.mediaServerCollections.unavailable",
+  "lumen.mediaServerCollections.empty",
+  "lumen.mediaServerCollections.loading",
+  "lumen.mediaServerCollections.loadFailed",
+  "lumen.mediaServerCollections.retry"
 ]

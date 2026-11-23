@@ -245,6 +245,18 @@ export interface UserAvailabilitySubscriptionResponse {
   scope?: { is4k: boolean | null; seasonNumber: number | null };
 }
 
+export interface MediaServerCollectionsStatus {
+  serverType: number;
+  available: boolean;
+  reason?:
+    | 'account-not-linked'
+    | 'not-authorized'
+    | 'series-not-found'
+    | 'unsupported-server'
+    | 'collection-limit';
+  collections: { id: string; name: string; member: boolean }[];
+}
+
 export interface User {
   plexUsername?: string | null;
   jellyfinUsername?: string | null;
