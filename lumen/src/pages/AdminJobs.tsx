@@ -219,7 +219,12 @@ export default function AdminJobs() {
           {data.map((job) => (
             <li className="set" key={job.id}>
               <div>
-                <b>{job.name}</b>
+                <b>
+                  {t(
+                    `components.Settings.SettingsJobsCache.${job.id}`,
+                    job.name
+                  )}
+                </b>
                 <small>
                   {t(
                     `components.Settings.SettingsJobsCache.${job.type}`,

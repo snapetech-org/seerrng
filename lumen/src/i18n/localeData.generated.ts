@@ -724,6 +724,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'مسلسلات',
       'components.Settings.SettingsCategories.tvDescription':
         'السماح باستكشاف المسلسلات وطلبها.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr مسح المشاهد البالغ',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'دمج توفر المحتويات',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'فحص قصص BackIssue المصورة',
       'components.Settings.SettingsJobsCache.cachehits':
         'إصابات ذاكرة التخزين المؤقت',
       'components.Settings.SettingsJobsCache.cachekeys': 'مفاتيح',
@@ -736,14 +742,65 @@ export const localeData = [
         'ذاكرة تخزين DNS المؤقتة',
       'components.Settings.SettingsJobsCache.dnscachehits': 'إصابات DNS',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'تفويتات DNS',
+      'components.Settings.SettingsJobsCache.download-recovery': 'التعبئة',
+      'components.Settings.SettingsJobsCache.download-sync': 'تحميل الدمج',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'تحميل إعادة تعيين الدمج',
       'components.Settings.SettingsJobsCache.enabled': 'تم التمكين',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'مزامنة قائمة الطلبات الخارجية',
       'components.Settings.SettingsJobsCache.failures': 'الإخفاقات',
       'components.Settings.SettingsJobsCache.flushcache': 'محو الملفات المؤقتة',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'مزامنة الاهتمامات المتتبَّع',
       'components.Settings.SettingsJobsCache.hitRate': 'معدّل الإصابة',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'تنظيف تخزين الصور المؤقت',
       'components.Settings.SettingsJobsCache.imagecachecount': 'صور مخزنة',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'استرجاعات IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'الفحص الكلي لمكتبة Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'فحص المحتوى المضاف مؤخراً في Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'قائمة حلقات الطلبات',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr مسحوق كوميدي',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'مسح Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'البث التلفزيوني المباشر',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'مجلة LazyLibrarian',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'قائمة انتظار مجموعات الأفلام',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar مسحوق كوميدي',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'مسح Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex مكن المكتبة الكاملة',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'تحليل تشغيل Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex أضيف مؤخرا',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'تحديث رمز Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex مشاهده',
       'components.Settings.SettingsJobsCache.process': 'تنفيذ',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'معالجة الوسوم المحظورة',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'مسح Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf طلب إعادة النظر',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'مسح رف الكتب',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'مزامنة مجموعة BookOrbit Kobo',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'تاريخ الإصدار',
       'components.Settings.SettingsJobsCache.runnow': 'تنفيذ " الآن "',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'طلب البرمجيات',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'مسح Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'مزامنة Soulseek',
       'components.Settings.SettingsLogs.copiedLogMessage': 'نسخ رسائل السجل.',
       'components.Settings.SettingsLogs.copyToClipboard': 'نسخ',
       'components.Settings.SettingsLogs.filterDebug': 'متابعة عميقة " Debug "',
@@ -7186,6 +7243,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Общо заявки',
       'components.Settings.SettingsAbout.uptodate': 'Актуална версия',
       'components.Settings.SettingsAbout.version': 'Версия',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Синхронизиране на наличността на медиите',
       'components.Settings.SettingsJobsCache.cachehits': 'Попадения',
       'components.Settings.SettingsJobsCache.cachekeys': 'Общо ключове',
       'components.Settings.SettingsJobsCache.cachemisses': 'Пропуски',
@@ -7194,15 +7253,39 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS кеш',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Попадения',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Пропуски',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Синхронизиране на изтеглянията',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Нулиране на синхронизирането на изтеглянията',
       'components.Settings.SettingsJobsCache.failures': 'Грешки',
       'components.Settings.SettingsJobsCache.flushcache': 'Изчистване на кеша',
       'components.Settings.SettingsJobsCache.hitRate': 'Процент попадения',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Почистване на кеша с изображения',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Кеширани изображения',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Резервни IPv4 адреси',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Пълно сканиране на библиотеката в Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Сканиране на наскоро добавени в Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Пълно сканиране на библиотеката в Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Сканиране на наскоро добавени в Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Обновяване на токена за Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Синхронизиране на списъка за гледане в Plex',
       'components.Settings.SettingsJobsCache.process': 'Процес',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Обработване на блокираните етикети',
+      'components.Settings.SettingsJobsCache.radarr-scan':
+        'Сканиране на Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Изпълни сега',
+      'components.Settings.SettingsJobsCache.sonarr-scan':
+        'Сканиране на Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Съобщението от лог файла е копирано в клипборда.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -7827,6 +7910,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Sol·licituds totals',
       'components.Settings.SettingsAbout.uptodate': 'Actualitzat',
       'components.Settings.SettingsAbout.version': 'Versió',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronització de disponibilitat de contingut',
       'components.Settings.SettingsJobsCache.cachehits': 'Consultes',
       'components.Settings.SettingsJobsCache.cachekeys': 'Claus totals',
       'components.Settings.SettingsJobsCache.cachemisses': 'Errades',
@@ -7836,16 +7921,38 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Memòria cau DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Consultes',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Fallades',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sincronitza les baixades',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Restableix la sincronització de descàrregues',
       'components.Settings.SettingsJobsCache.failures': 'Errors',
       'components.Settings.SettingsJobsCache.flushcache':
         'Buida la memòria cau',
       'components.Settings.SettingsJobsCache.hitRate': 'Taxa de consultes',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        "Neteja de la memòria cau d'imatges",
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imatges a la memòria cau',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         "Alternatives d'IPv4",
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Exploració completa de la biblioteca Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        "Exploració d'elements de Jellyfin afegits recentment",
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Exploració completa de la biblioteca plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        "Exploració d'elements de Plex afegits recentment",
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Actualiza el testimoni de Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronització de la llista de seguiment de Plex',
       'components.Settings.SettingsJobsCache.process': 'Procés',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Processa les etiquetes bloquejades',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Escaneig de Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Executa-ho ara',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Escaneig de Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         "S'ha copiat el missatge de registre al porta-retalls.",
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -8324,6 +8431,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Celkem žádostí',
       'components.Settings.SettingsAbout.uptodate': 'Aktuální',
       'components.Settings.SettingsAbout.version': 'Verze',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synchronizace dostupnosti médií',
       'components.Settings.SettingsJobsCache.cachehits': 'Úspěchy',
       'components.Settings.SettingsJobsCache.cachekeys': 'Celkem klíčů',
       'components.Settings.SettingsJobsCache.cachemisses': 'Neúspěchy',
@@ -8332,15 +8441,37 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Mezipaměť DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Úspěchy',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Neúspěchy',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Synchronizace stahování',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Obnovit synchronizaci stahování',
       'components.Settings.SettingsJobsCache.failures': 'Selhání',
       'components.Settings.SettingsJobsCache.flushcache':
         'Vyprázdnit mezipaměť',
       'components.Settings.SettingsJobsCache.hitRate': 'Míra úspěšnosti',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Vyčištění mezipaměti obrázků',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Obrázky v mezipaměti',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Záložní IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Úplné prohledání knihovny Jellyfinu',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Prohledání nedávno přidaných do Jellyfinu',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Úplné prohledání knihovny Plexu',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Prohledání nedávno přidaných do Plexu',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Obnovovací token Plexu',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Synchronizace seznamu ke zhlédnutí Plex',
       'components.Settings.SettingsJobsCache.process': 'Zpracování',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Zpracovat štítky blokování',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Prohledat Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Spustit nyní',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Prohledat Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Zkopírování zprávy protokolu do schránky.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -8950,6 +9081,8 @@ export const localeData = [
         'Samlet antal anmodninger',
       'components.Settings.SettingsAbout.uptodate': 'Opdateret',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synkronisering af medietilgængelighed',
       'components.Settings.SettingsJobsCache.cachehits': 'Træffere',
       'components.Settings.SettingsJobsCache.cachekeys': 'Samlet antal nøgler',
       'components.Settings.SettingsJobsCache.cachemisses': 'Missere',
@@ -8958,14 +9091,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Træffere',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Missere',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Downloadsynkronisering',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Nulstil downloadsynkronisering',
       'components.Settings.SettingsJobsCache.failures': 'Fejl',
       'components.Settings.SettingsJobsCache.flushcache': 'Tøm cache',
       'components.Settings.SettingsJobsCache.hitRate': 'Træfferate',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Oprydning af billedcache',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Cachelagrede billeder',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-reserver',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin - Fuld biblioteksscanning',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin - Senest tilføjet-scanning',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex - Fuld biblioteksscanning',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex - Senest tilføjet-scanning',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex - Opdatér token',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex - Synkronisering af Se senere-liste',
       'components.Settings.SettingsJobsCache.process': 'Proces',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Behandl skjulnings-tags',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-scanning',
       'components.Settings.SettingsJobsCache.runnow': 'Kør nu',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-scanning',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Kopierede logmeddelelse til udklipsholder.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -9993,6 +10148,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Serien',
       'components.Settings.SettingsCategories.tvDescription':
         'Ermöglichen Sie Serienentdeckung und Anfragen.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr-Scan nach Szenen für Erwachsene',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Medienverfügbarkeit Sync',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'BackIssue-Comics-Scan',
       'components.Settings.SettingsJobsCache.cachehits': 'Cache-Treffer',
       'components.Settings.SettingsJobsCache.cachekeys': 'Schlüssel insgesamt',
       'components.Settings.SettingsJobsCache.cachemisses': 'Cache-Fehlzugriff',
@@ -10002,15 +10163,69 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-Cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Zugriffe',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Fehlschläge',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Download Wiederherstellung',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Download Synchronisierung',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Download Synchronisierung Zurücksetzen',
       'components.Settings.SettingsJobsCache.enabled': 'Aktiviert',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Synchronisation der externen Anforderungsliste',
       'components.Settings.SettingsJobsCache.failures': 'Fehlschläge',
       'components.Settings.SettingsJobsCache.flushcache': 'Cache leeren',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Synchronisation der verfolgten Interessen',
       'components.Settings.SettingsJobsCache.hitRate': 'Trefferquote',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Bild-Cache-Bereinigung',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Bilder im Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-Fallbacks',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Vollständiger Jellyfin-Bibliotheksscan',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Scan kürzlich hinzugefügter Jellyfin-Medien',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Warteschlange angeforderter Episoden',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr-Comics-Scan',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr-Scan',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Live-TV-Synchronisierung',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian-Zeitschriftenscan',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Warteschlange für Filmsammlungen',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar-Comics-Scan',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome-Scan',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Vollständiger Plex-Bibliotheksscan',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex-Wiedergabeanalyse',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Scan kürzlich hinzugefügter Plex-Medien',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex-Aktualisierungs-Token',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex-Merklisten-Synchronisierung',
       'components.Settings.SettingsJobsCache.process': 'Prozess',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Verarbeiten von Tags auf der Sperrliste',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-Scan',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Wiederholungsversuch für Bookshelf-Anfragen',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bücherregal-Scan',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo-Bibliothek-Synchronisation',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Verlauf des Veröffentlichungskalenders',
       'components.Settings.SettingsJobsCache.runnow': 'Jetzt ausführen',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Software-Anforderungsabgleich',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr Scannen',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Soulseek-Synchronisierung',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Protokollnachricht in die Zwischenablage kopiert.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -11679,6 +11894,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Series',
       'components.Settings.SettingsCategories.tvDescription':
         'Allow series discovery and requests.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Adult Scene Scan',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Media Availability Sync',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'BackIssue Comics Scan',
       'components.Settings.SettingsJobsCache.cachehits': 'Hits',
       'components.Settings.SettingsJobsCache.cachekeys': 'Total Keys',
       'components.Settings.SettingsJobsCache.cachemisses': 'Misses',
@@ -11688,14 +11909,65 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS Cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Hits',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Misses',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Download Recovery',
+      'components.Settings.SettingsJobsCache.download-sync': 'Download Sync',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Download Sync Reset',
       'components.Settings.SettingsJobsCache.enabled': 'Enabled',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'External Request List Sync',
       'components.Settings.SettingsJobsCache.failures': 'Failures',
       'components.Settings.SettingsJobsCache.flushcache': 'Flush Cache',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Followed Interests Sync',
       'components.Settings.SettingsJobsCache.hitRate': 'Hit Rate',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Image Cache Cleanup',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Images Cached',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 Fallbacks',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin Full Library Scan',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin Recently Added Scan',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Requested Episode Queue',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr Comics Scan',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr Scan',
+      'components.Settings.SettingsJobsCache.live-tv-sync': 'Live TV Sync',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian Magazine Scan',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Movie Collection Queue',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar Comics Scan',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome Scan',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex Full Library Scan',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex Playback Analysis',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex Recently Added Scan',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex Refresh Token',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex Watchlist Sync',
       'components.Settings.SettingsJobsCache.process': 'Process',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Process Blocklist Rules',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr Scan',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf Request Retry',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bookshelf Scan',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo Collection Sync',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Release Calendar History',
       'components.Settings.SettingsJobsCache.runnow': 'Run Now',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Software Request Reconciliation',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr Scan',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'Soulseek Sync',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Copied log message to clipboard.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Copy to Clipboard',
@@ -18100,17 +18372,37 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Σύνολο αιτημάτων',
       'components.Settings.SettingsAbout.uptodate': 'Ενημερωμένο',
       'components.Settings.SettingsAbout.version': 'Έκδοση',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Συγχρονισμός διαθεσιμότητας περιεχομένου',
       'components.Settings.SettingsJobsCache.cachehits': 'Κλήσεις',
       'components.Settings.SettingsJobsCache.cachekeys': 'Σύνολο κλειδιών',
       'components.Settings.SettingsJobsCache.cachemisses': 'Χαμένες',
       'components.Settings.SettingsJobsCache.canceljob': 'Ακύρωση Εργασίας',
       'components.Settings.SettingsJobsCache.command': 'Εντολή',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Λήψη συγχρονισμού',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Επαναρύθμιση Λήψης Συγχρονισμού',
       'components.Settings.SettingsJobsCache.flushcache':
         'Εκκαθάριση κρυφής μνήμης',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Καθαρισμός cached εικόνων',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Οι εικόνες έγιναν cache',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Σάρωση πλήρους βιβλιοθήκης Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Σάρωση Jellyfin για μέσα που προστέθηκαν πρόσφατα',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Σάρωση πλήρους βιβλιοθήκης Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Σάρωση Plex για μέσα που προστέθηκαν πρόσφατα',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Συγχρονισμός λίστας παρακολούθησης Plex',
       'components.Settings.SettingsJobsCache.process': 'Διεργασία',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Σάρωση Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Τρέξε τώρα',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Σάρωση Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Αντιγράφηκε το μήνυμα καταγραφής στο πρόχειρο.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -19014,6 +19306,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Serie',
       'components.Settings.SettingsCategories.tvDescription':
         'Permitir el descubrimiento de series y solicitudes.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Escaneo de Escenas para Adultos',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronización de la disponibilidad de medios',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Escaneo de cómics BackIssue',
       'components.Settings.SettingsJobsCache.cachehits': 'Consultas',
       'components.Settings.SettingsJobsCache.cachekeys': 'Claves Totales',
       'components.Settings.SettingsJobsCache.cachemisses': 'Fallos',
@@ -19024,15 +19322,72 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Caché DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Aciertos',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Fallos',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Descargar Recuperación',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Descarga Sincronizada',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reiniciar Descarga Sincronizada',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Sincronización de lista de solicitudes externas',
       'components.Settings.SettingsJobsCache.failures': 'Fallos',
       'components.Settings.SettingsJobsCache.flushcache': 'Vaciar Caché',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Sincronización de intereses seguidos',
       'components.Settings.SettingsJobsCache.hitRate': 'Tasa de aciertos',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Limpieza de la caché de imágenes',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imágenes en caché',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Fallbacks IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Escaneo Completo de la libreria de Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Escanear Añadidos Recientemente de Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Cola de episodios solicitados',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Escaneo de cómics de Kapowarr',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Escaneo Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Sincronización de TV en directo',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'Escaneo de revistas LazyLibrarian',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Cola de películas de una colección',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Escaneo de cómics de Mylar',
+      'components.Settings.SettingsJobsCache.navidrome-scan':
+        'Escaneo de Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Escaneo Completo de la Biblioteca de Plex',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Análisis de reproducción de Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Escaneo de Recien Añadidos de Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token de actualización Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronización de la lista de seguimiento de Plex',
       'components.Settings.SettingsJobsCache.process': 'Procesamiento',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Procesar etiquetas bloqueadas',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Escaneo de Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf Solicitud Retry',
+      'components.Settings.SettingsJobsCache.readarr-scan':
+        'Escaneo de estanterías',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Sincronización de colección Kobo de BookOrbit',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Historia del calendario de lanzamiento',
       'components.Settings.SettingsJobsCache.runnow': 'Ejecutar Ahora',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Solicitud de software',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Escaneo de Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Sincronización de Soulseek',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Copiar log al portapapeles.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -20709,6 +21064,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Serie',
       'components.Settings.SettingsCategories.tvDescription':
         'Permitir el descubrimiento de series y solicitudes.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Escaneo de Escenas para Adultos',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronización de la disponibilidad de medios',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Escaneo de cómics de números atrasados',
       'components.Settings.SettingsJobsCache.cachehits': 'Consultas',
       'components.Settings.SettingsJobsCache.cachekeys': 'Claves Totales',
       'components.Settings.SettingsJobsCache.cachemisses': 'Fallos',
@@ -20719,15 +21080,72 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Caché DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Golpes',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'falla',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Descargar Recuperación',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Descarga Sincronizada',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reiniciar Descarga Sincronizada',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Sincronización de lista de solicitudes externas',
       'components.Settings.SettingsJobsCache.failures': 'Fallos',
       'components.Settings.SettingsJobsCache.flushcache': 'Vaciar Caché',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Sincronización de intereses seguidos',
       'components.Settings.SettingsJobsCache.hitRate': 'Tasa de crecimiento',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Limpieza de la caché de imágenes',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imágenes en caché',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Reservas de IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin Escaneo completo de la biblioteca',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin recientemente Añadido escán',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Cola de episodios solicitados',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Escaneo de cómics de Kapowarr',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Escaneo Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Sincronización de TV en vivo',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'Escaneo de la revista LazyLibrarian',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Cola de películas de una colección',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Escaneo de cómics de Mylar',
+      'components.Settings.SettingsJobsCache.navidrome-scan':
+        'Escaneo de Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Escaneo Completo de la Biblioteca de Plex',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Análisis de reproducción de Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Escaneo de Recien Añadidos de Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token de actualización Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronización de la lista de seguimiento de Plex',
       'components.Settings.SettingsJobsCache.process': 'Procesamiento',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Procesar etiquetas bloqueadas',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Escaneo de Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf Solicitud Retry',
+      'components.Settings.SettingsJobsCache.readarr-scan':
+        'Escaneo de estantería',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Sincronización de colección Kobo de BookOrbit',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Historia del calendario de lanzamiento',
       'components.Settings.SettingsJobsCache.runnow': 'Ejecutar Ahora',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Solicitud de software',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Escaneo de Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Sincronización de búsqueda de almas',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Copiar log al portapapeles.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -21997,6 +22415,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Taotlusi kokku',
       'components.Settings.SettingsAbout.uptodate': 'Ajakohane',
       'components.Settings.SettingsAbout.version': 'Versioon',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Meedia saadavuse sünkroonimine',
       'components.Settings.SettingsJobsCache.cachehits': 'Tabamused',
       'components.Settings.SettingsJobsCache.cachekeys': 'Võtmeid kokku',
       'components.Settings.SettingsJobsCache.cachemisses': 'Möödalasud',
@@ -22005,15 +22425,37 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-puhver',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Tabamused',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Möödalasud',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Allalaadimiste sünkroonimine',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Allalaadimiste sünkroonimise lähtestamine',
       'components.Settings.SettingsJobsCache.failures': 'Ebaõnnestumised',
       'components.Settings.SettingsJobsCache.flushcache': 'Tühjenda puhver',
       'components.Settings.SettingsJobsCache.hitRate': 'Tabamuste määr',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Pildipuhvri puhastus',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Puhverdatud pilte',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'IPv4-varulahendused',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfini täielik meediakogu skannimine',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfini viimati lisatud sisu skannimine',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plexi täielik meediakogu skannimine',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plexi viimati lisatud sisu skannimine',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plexi värskendustõend (token)',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plexi sooviloendi sünkroonimine',
       'components.Settings.SettingsJobsCache.process': 'Protsess',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Töötle mustas nimekirjas olevaid silte',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarri skannimine',
       'components.Settings.SettingsJobsCache.runnow': 'Käivita kohe',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarri skannimine',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Logiteade on kopeeritud lõikelauale.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Kopeeri lõikelauale',
@@ -22406,6 +22848,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Pyyntöjä yhteensä',
       'components.Settings.SettingsAbout.uptodate': 'Ajan tasalla',
       'components.Settings.SettingsAbout.version': 'Versio',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Median saatavuuden synkronointi',
       'components.Settings.SettingsJobsCache.cachehits': 'Osumia',
       'components.Settings.SettingsJobsCache.cachemisses': 'Huteja',
       'components.Settings.SettingsJobsCache.canceljob': 'Peruuta tehtävä',
@@ -22413,11 +22857,23 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS välimuisti',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Osumia',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Huteja',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Latauksien synkronointi',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Latauksien synkronoin',
       'components.Settings.SettingsJobsCache.failures': 'Virheitä',
       'components.Settings.SettingsJobsCache.flushcache': 'Tyhjennä välimuisti',
       'components.Settings.SettingsJobsCache.hitRate': 'Osumisprosentti',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Kuvavälimuistin tyhjennys',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Kuvia välimuistissa',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin kirjaston täydellinen skannaus',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin viimeksi lisättyjen skannaus',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Käsittele estolistatut tägit',
       'components.Settings.SettingsJobsCache.runnow': 'Käynnistä',
       'components.Settings.SettingsLogs.filterDebug': 'Vianhaku',
       'components.Settings.SettingsLogs.filterError': 'Virhe',
@@ -23263,6 +23719,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Séries',
       'components.Settings.SettingsCategories.tvDescription':
         'Permettre la découverte et les demandes de séries.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Scan de scènes pour adultes',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synchronisation de la disponibilité des médias',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Scannage BD de BackIssue',
       'components.Settings.SettingsJobsCache.cachehits': 'Succès',
       'components.Settings.SettingsJobsCache.cachekeys': 'Clés',
       'components.Settings.SettingsJobsCache.cachemisses': 'Manquées',
@@ -23272,14 +23734,70 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Succès',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Manquées',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Télécharger la récupération',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Synchronisation des téléchargements',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reset de la synchronisation des téléchargements',
       'components.Settings.SettingsJobsCache.enabled': 'Activé',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Synchronisation de la liste de demandes externe',
       'components.Settings.SettingsJobsCache.failures': 'Échecs',
       'components.Settings.SettingsJobsCache.flushcache': 'Vider le cache',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Synchronisation des intérêts suivis',
       'components.Settings.SettingsJobsCache.hitRate': 'Taux de succès',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        "Nettoyage du cache d'images",
       'components.Settings.SettingsJobsCache.imagecachecount': 'images',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Recours à IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Analyse complète des bibliothèques Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Analyse des ajouts récents aux bibliothèques Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        "File d'attente des épisodes demandés",
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Scannage des comics Kapowarr',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Scan Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Synchronisation TV en direct',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'Scannage du magazine LazyLibrarian',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'File d’attente des collections de films',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Scannage des comiques Mylar',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Scan Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Analyse complète des bibliothèques Plex',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Analyse de lecture Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Analyse des ajouts récents Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Actualiser le token Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Synchronisation de la liste de suivi Plex',
       'components.Settings.SettingsJobsCache.process': 'Processus',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Traiter les tags bloqués',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Analyse de Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        "Nouvelle tentative de demande d'étagère",
+      'components.Settings.SettingsJobsCache.readarr-scan':
+        "Numérisation d'étagère",
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Synchronisation de la collection Kobo BookOrbit',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Historique du calendrier de publication',
       'components.Settings.SettingsJobsCache.runnow': 'Exécuter',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Rapprochement des demandes de logiciels',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Analyse de Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        "Synchronisation de recherche d'âme",
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Message journal copié dans le presse-papiers.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -30211,17 +30729,35 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Ukupno zahtjeva',
       'components.Settings.SettingsAbout.uptodate': 'Aktualno',
       'components.Settings.SettingsAbout.version': 'Verzija',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sinkronizacija dostupnosti medija',
       'components.Settings.SettingsJobsCache.cachehits': 'Pogodci',
       'components.Settings.SettingsJobsCache.cachekeys': 'Ukupno ključeva',
       'components.Settings.SettingsJobsCache.cachemisses': 'Promašaji',
       'components.Settings.SettingsJobsCache.canceljob': 'Prekini zadatak',
       'components.Settings.SettingsJobsCache.command': 'Naredba',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sinkronizacija preuzimanja',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Resetiraj sinkronizaciju preuzimanja',
       'components.Settings.SettingsJobsCache.flushcache':
         'Isprazni predmemoriju',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Brisanje predmemorije slika',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Slike spremljene u predmemoriju',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Pretraživanje cijele Plex biblioteke',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Pretraživanje nedavno dodanih u Plex biblioteku',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sinkronizacija Plex popisa gledanja',
       'components.Settings.SettingsJobsCache.process': 'Obrada',
+      'components.Settings.SettingsJobsCache.radarr-scan':
+        'Radarr pretraživanje',
       'components.Settings.SettingsJobsCache.runnow': 'Pokreni sada',
+      'components.Settings.SettingsJobsCache.sonarr-scan':
+        'Sonarr pretraživanje',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Poruka zapisnika je kopirana u međuspremnik.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -31337,6 +31873,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'श्रृंखला',
       'components.Settings.SettingsCategories.tvDescription':
         'श्रृंखला खोज और अनुरोध की अनुमति दें।',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr वयस्क सीन स्कैन',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'मीडिया उपलब्धता सिंक',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'BackIssue कॉमिक्स स्कैन',
       'components.Settings.SettingsJobsCache.cachehits': 'हिट',
       'components.Settings.SettingsJobsCache.cachekeys': 'कुल कुंजी',
       'components.Settings.SettingsJobsCache.cachemisses': 'मिस',
@@ -31346,14 +31888,64 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS कैश',
       'components.Settings.SettingsJobsCache.dnscachehits': 'हिट',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'मिस',
+      'components.Settings.SettingsJobsCache.download-recovery': 'रिकवरी',
+      'components.Settings.SettingsJobsCache.download-sync': 'Sync डाउनलोड',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Sync रीसेट डाउनलोड करें',
       'components.Settings.SettingsJobsCache.enabled': 'सक्षम',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'बाहरी अनुरोध सूची सिंक',
       'components.Settings.SettingsJobsCache.failures': 'विफलता',
       'components.Settings.SettingsJobsCache.flushcache': 'फ्लश कैश',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'फॉलो किए गए रुचि सिंक',
       'components.Settings.SettingsJobsCache.hitRate': 'हिट दर',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'छवि कैश क्लीनअप',
       'components.Settings.SettingsJobsCache.imagecachecount': 'तस्वीरें',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 फ़ॉलबैक',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin पूर्ण पुस्तकालय स्कैन',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin हाल ही में जोड़ा स्कैन',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'अनुरोधित एपिसोड कतार',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr कॉमिक्स स्कैन',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr स्कैन',
+      'components.Settings.SettingsJobsCache.live-tv-sync': 'लाइव टीवी सिंक',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian पत्रिका स्कैन',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'फ़िल्म संग्रह कतार',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar कॉमिक्स स्कैन',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome स्कैन',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex पूर्ण पुस्तकालय स्कैन',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex प्लेबैक विश्लेषण',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'हाल ही में Plex जोड़ा गया स्कैन',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex ताज़ा टोकन',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex वॉचलिस्ट सिंक',
       'components.Settings.SettingsJobsCache.process': 'प्रक्रिया',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'ब्लॉकलिस्ट टैग संसाधित करें',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr स्कैन',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'बुकशेल्फ़ अनुरोध पुनः प्रयास करें',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'बुकशेल्फ़ स्कैन',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo संग्रह सिंक',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'रिलीज कैलेंडर इतिहास',
       'components.Settings.SettingsJobsCache.runnow': 'अब चलायें',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'सॉफ्टवेयर अनुरोध पारस्परिकता',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr स्कैन',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'सोलसीक सिंक',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Copied लॉग संदेश क्लिपबोर्ड करने के लिए।',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -32599,6 +33191,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Összes kérés',
       'components.Settings.SettingsAbout.uptodate': 'Naprakész',
       'components.Settings.SettingsAbout.version': 'Verzió',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Média elérhetőség szinkronizálása',
       'components.Settings.SettingsJobsCache.cachehits': 'Találatok',
       'components.Settings.SettingsJobsCache.cachekeys': 'Összes "API lékérés"',
       'components.Settings.SettingsJobsCache.cachemisses': 'Hiányzók',
@@ -32607,14 +33201,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-gyorsítótár',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Találatok',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Hiányzók',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Letöltési szinkron',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Letöltési szinkron visszaállítása',
       'components.Settings.SettingsJobsCache.failures': 'Hibák',
       'components.Settings.SettingsJobsCache.flushcache': 'Gyorsítótár ürítése',
       'components.Settings.SettingsJobsCache.hitRate': 'Találati arány',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Képgyorsítótár tisztítása',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Képek gyorsítótárban',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 tartalék',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin összes könyvtárának beolvasása',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin "nemrégiben hozzáadott" beolvasása',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex összes könyvtárának beolvasása',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex "nemrégiben hozzáadott" beolvasása',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex Token frissítése',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex figyelőlista szinkronizálása',
       'components.Settings.SettingsJobsCache.process': 'Folyamat',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Tiltólistázott címkék feldolgozása',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr szkennelés',
       'components.Settings.SettingsJobsCache.runnow': 'Futtatás most',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr szkennelés',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Naplóüzenet másolása a vágólapra.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Másolás a vágólapra',
@@ -33625,6 +34241,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Serial',
       'components.Settings.SettingsCategories.tvDescription':
         'Ijinkan serangkaian penemuan dan permintaan.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Pindai Scene Dewasa',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sinkronisasi Ketersediaan Media',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Pindai ReckIssue Comics',
       'components.Settings.SettingsJobsCache.cachehits': 'Pukulan',
       'components.Settings.SettingsJobsCache.cachekeys': 'Total Kunci',
       'components.Settings.SettingsJobsCache.cachemisses': 'Hilang',
@@ -33634,14 +34256,68 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Pukulan',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Hilang',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Unduh Pemulihan',
+      'components.Settings.SettingsJobsCache.download-sync': 'Unduh Selaraskan',
+      'components.Settings.SettingsJobsCache.download-sync-reset': 'undo-type',
       'components.Settings.SettingsJobsCache.enabled': 'Diaktifkan',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Sinkronisasi Daftar Permintaan Eksternal',
       'components.Settings.SettingsJobsCache.failures': 'Gagal',
       'components.Settings.SettingsJobsCache.flushcache': 'Quush Cache',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Sinkronisasi Minat yang Diikuti',
       'components.Settings.SettingsJobsCache.hitRate': 'Laju Tekan',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Pembersih Cache Gambar',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Cache Gambar',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Fallbacks IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Pindai Pustaka Penuh Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin Yang Terkini Ditambahkan Pindai',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Antrean Episode yang Diminta',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Pemindaian Komik Kapowarr',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Pindai Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Siaran TV Langsung',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian Revista Scan',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Antrean Koleksi Film',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Pindai Komik Mylar',
+      'components.Settings.SettingsJobsCache.navidrome-scan':
+        'Pindai Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Pindai Pustaka Penuh Plex',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Analisis pemutaran Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex Yang Baru-baru Ini Ditambahkan',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token Plex Refresh',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex Watchlist Selaraskan',
       'components.Settings.SettingsJobsCache.process': 'Proses',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Proses Tag Terblok',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Pemindaian Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf Minta Coba Lagi',
+      'components.Settings.SettingsJobsCache.readarr-scan':
+        'Pemindaian Bookshelf',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Sinkronisasi Koleksi BookOrbit Kobo',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Rilis Riwayat Kalender',
       'components.Settings.SettingsJobsCache.runnow': 'Jalankan Sekarang',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Permintaan Software Rekonsiliasi',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Pindai Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Soulseek Selaraskan',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Salin pesan log ke papan klip.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Salin ke Papan Klip',
@@ -34892,6 +35568,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Totale richieste',
       'components.Settings.SettingsAbout.uptodate': 'Aggiornato',
       'components.Settings.SettingsAbout.version': 'Versione',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronizzazione della disponibilità dei media',
       'components.Settings.SettingsJobsCache.cachehits': 'Chiamate',
       'components.Settings.SettingsJobsCache.cachekeys': 'Chiavi totali',
       'components.Settings.SettingsJobsCache.cachemisses': 'Mancanti',
@@ -34902,14 +35580,36 @@ export const localeData = [
         'Richieste dalla memoria',
       'components.Settings.SettingsJobsCache.dnscachemisses':
         'Richieste non in memoria',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Scarica sincronizzazione',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reimposta sincronizzazione di scaricamento',
       'components.Settings.SettingsJobsCache.failures': 'Fallimenti',
       'components.Settings.SettingsJobsCache.flushcache': 'Svuota cache',
       'components.Settings.SettingsJobsCache.hitRate': 'Tasso di successo',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Pulizia della cache delle immagini',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Immagini memorizzate nella cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Ripiega su IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Scansione completa della libreria Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Scansione degli elementi aggiunti di recente di Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Scansione completa della libreria di Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Scansione aggiunti di recente su Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token di aggiornamento Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronizza Plex Watchlist',
       'components.Settings.SettingsJobsCache.process': 'Processo',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Processa i Tag bloccati',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Scansione Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Esegui ora',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Scansione Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Messaggio di registro copiato negli appunti.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Copia negli appunti',
@@ -35915,6 +36615,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'シリーズ',
       'components.Settings.SettingsCategories.tvDescription':
         'シリーズの発見と要求を許可します。',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr 成人向けシーンスキャン',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'メディア可用性の同期',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'BackIsssueコミックスキャン',
       'components.Settings.SettingsJobsCache.cachehits': 'ヒット数',
       'components.Settings.SettingsJobsCache.cachekeys': 'キーの総数',
       'components.Settings.SettingsJobsCache.cachemisses': 'ミス',
@@ -35924,16 +36630,69 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNSキャッシュ',
       'components.Settings.SettingsJobsCache.dnscachehits': 'ヒット数',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'ミス',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        '回復をダウンロード',
+      'components.Settings.SettingsJobsCache.download-sync': 'ダウンロード同期',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'ダウンロード同期のリセット',
       'components.Settings.SettingsJobsCache.enabled': '有効化',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        '外部リクエストリスト同期',
       'components.Settings.SettingsJobsCache.failures': '失敗',
       'components.Settings.SettingsJobsCache.flushcache': 'キャッシュクリア',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'フォロー中アイテムの同期',
       'components.Settings.SettingsJobsCache.hitRate': 'ヒット率',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        '画像キャッシュのクリーンアップ',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'キャッシュされた画像',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'IPv4フォールバック',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin フルライブラリスキャン',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfinの最近の追加をスキャン',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'リクエスト済みエピソードキュー',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarrコミックスキャン',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
+      'components.Settings.SettingsJobsCache.live-tv-sync': 'ライブTVシンク',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarianマガジンスキャン',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        '映画コレクションキュー',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Mylar コミックスキャン',
+      'components.Settings.SettingsJobsCache.navidrome-scan':
+        'Navidromeスキャン',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex フルライブラリスキャン',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex再生解析',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plexの最近の追加をスキャン',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex リフレッシュトークン',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex ウォッチリストの同期',
       'components.Settings.SettingsJobsCache.process': 'プロセス',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'ブロックリストに登録されたタグを処理する',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarrをスキャン',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf のリクエストを再試行',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bookshelf 扫描',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Koboコレクション同期',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'リリースカレンダー履歴',
       'components.Settings.SettingsJobsCache.runnow': '今すぐ実行',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'ソフトウェア要求の承諾',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarrをスキャン',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'Soulseek 同期',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'ログメッセージをクリップボードにコピーしました。',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -37551,6 +38310,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': '시리즈',
       'components.Settings.SettingsCategories.tvDescription':
         '시리즈 발견 및 요청을 허용하십시오.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr 성인 씬 스캔',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        '사용가능한 미디어 동기화',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'BackIssue 만화 검사',
       'components.Settings.SettingsJobsCache.cachehits': '조회 수',
       'components.Settings.SettingsJobsCache.cachekeys': '전체 키',
       'components.Settings.SettingsJobsCache.cachemisses': '누락',
@@ -37560,14 +38325,65 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 캐시',
       'components.Settings.SettingsJobsCache.dnscachehits': '적중 수',
       'components.Settings.SettingsJobsCache.dnscachemisses': '실패',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        '다운로드 Recovery',
+      'components.Settings.SettingsJobsCache.download-sync': '다운로드 동기화',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        '다운로드 동기화 재설정',
       'components.Settings.SettingsJobsCache.enabled': '활성화됨',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        '외부 요청 목록 동기화',
       'components.Settings.SettingsJobsCache.failures': '실패',
       'components.Settings.SettingsJobsCache.flushcache': '캐시 플러시',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        '팔로우 중인 관심사 동기화',
       'components.Settings.SettingsJobsCache.hitRate': '적중률',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        '이미지 캐시 비우기',
       'components.Settings.SettingsJobsCache.imagecachecount': '저장된 이미지',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 가을',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin 전체 도서관 검사',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin 최근 추가된 스캔',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        '요청된 에피소드 대기열',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr 만화 검사',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 검사',
+      'components.Settings.SettingsJobsCache.live-tv-sync': '라이브 TV 동기화',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian 매거진 스캔',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        '영화 컬렉션 대기열',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar 만화 검사',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome 스캔',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex 전체 라이브러리 스캔',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex 재생 분석',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex 최근 추가 스캔',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex는 토큰을 새로 고침',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex 시청 목록 동기화',
       'components.Settings.SettingsJobsCache.process': '프로세스',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        '차단 목록 태그 처리',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr 스캔',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf 요청 시',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bookshelf 검사',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo 컬렉션 동기화',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        '릴리스 일정 기록',
       'components.Settings.SettingsJobsCache.runnow': '지금 실행',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        '소프트웨어 요청 재구성',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr 스캔',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'Soulseek 동기화',
       'components.Settings.SettingsLogs.copiedLogMessage':
         '로그 메시지를 클립보드에 복사했습니다.',
       'components.Settings.SettingsLogs.copyToClipboard': '클립보드에 복사',
@@ -38580,6 +39396,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachekeys': 'Viso raktų',
       'components.Settings.SettingsJobsCache.cachemisses': 'Praleisti',
       'components.Settings.SettingsJobsCache.command': 'Komanda',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Parsisiuntimų sinchronizavimas',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Parsiuntimų sinchronizacijos atstatymas',
       'components.Settings.SettingsJobsCache.process': 'Procesas',
       'components.Settings.SettingsJobsCache.runnow': 'Paleisti dabar',
       'components.Settings.SettingsLogs.filterError': 'Klaida',
@@ -38881,9 +39701,21 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachemisses': 'Bom',
       'components.Settings.SettingsJobsCache.canceljob': 'Avbryt',
       'components.Settings.SettingsJobsCache.command': 'Kommando',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Nedlastningssynkronisering',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Nullstill nedlastningssynkronisering',
       'components.Settings.SettingsJobsCache.flushcache': 'Tøm mellomlager',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Full Skanning av Plex-biblioteket',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Sjekk for nye titler i Plex-biblioteket',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Synkronisering av Plex Visningsliste',
       'components.Settings.SettingsJobsCache.process': 'Prosess',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-skann',
       'components.Settings.SettingsJobsCache.runnow': 'Kjør nå',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-skann',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Kopierte loggmelding til utklippstavlen.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -39360,6 +40192,8 @@ export const localeData = [
         'Totaal aantal aanvragen',
       'components.Settings.SettingsAbout.uptodate': 'Bijgewerkt',
       'components.Settings.SettingsAbout.version': 'Versie',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synchronisatie van mediabeschikbaarheid',
       'components.Settings.SettingsJobsCache.cachehits': 'Treffers',
       'components.Settings.SettingsJobsCache.cachekeys':
         'Totaal aantal sleutels',
@@ -39369,14 +40203,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Treffers',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Missers',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Synchronisatie downloads',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reset download sync',
       'components.Settings.SettingsJobsCache.failures': 'Fouten',
       'components.Settings.SettingsJobsCache.flushcache': 'Cache wissen',
       'components.Settings.SettingsJobsCache.hitRate': 'Trefferpercentage',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Afbeeldingcache legen',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Afbeeldingen in cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-fallbacks',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Volledige bibliotheekscan Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        "Scan van 'onlangs toegevoegd' in Jellyfin",
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex volledige bibliotheekscan',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex recent toegevoegde scan',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex-verversingstoken',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex-kijklijst synchroniseren',
       'components.Settings.SettingsJobsCache.process': 'Proces',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Geblokkeerde labels verwerken',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-scan',
       'components.Settings.SettingsJobsCache.runnow': 'Nu uitvoeren',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-scan',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Logbericht naar klembord gekopieerd.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -39997,6 +40853,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Łączna liczba próśb',
       'components.Settings.SettingsAbout.uptodate': 'Aktualne',
       'components.Settings.SettingsAbout.version': 'Wersja',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synchronizacja dostępności mediów',
       'components.Settings.SettingsJobsCache.cachehits': 'Trafienia',
       'components.Settings.SettingsJobsCache.cachekeys': 'Klucze ogółem',
       'components.Settings.SettingsJobsCache.cachemisses': 'Chybienia',
@@ -40005,16 +40863,38 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Pamięć podręczna DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Trafienia',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Chybienia',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Synchronizuj pobierania',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Zresetuj synchronizację pobierania',
       'components.Settings.SettingsJobsCache.failures': 'Błędy',
       'components.Settings.SettingsJobsCache.flushcache':
         'Opróżnij pamięć podręczną',
       'components.Settings.SettingsJobsCache.hitRate': 'Współczynnik trafień',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Czyszczenie pamięci podręcznej obrazów',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Zbuforowane obrazy',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Przełączenia awaryjne na IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Pełne skanowanie bibliotek Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Ostatnio dodane skanowanie Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Pełne skanowanie biblioteki Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Skanowanie ostatnio dodanych na Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token odświeżania Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Synchronizacja listy Do obejrzenia Plex',
       'components.Settings.SettingsJobsCache.process': 'Proces',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Przetwarzaj tagi czarnej listy',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Skan Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Uruchom teraz',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Skanowanie Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Skopiowano komunikat dziennika do schowka.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Skopiuj do schowka',
@@ -41044,6 +41924,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Séries',
       'components.Settings.SettingsCategories.tvDescription':
         'Permita uma série de descobertas e pedidos.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Verificação de cenas adultas do Whisparr',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronização de Disponibilidade de Mídia',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Digitalização de quadrinhos da BackIssue',
       'components.Settings.SettingsJobsCache.cachehits': 'Encontrado',
       'components.Settings.SettingsJobsCache.cachekeys': 'Total de Chaves',
       'components.Settings.SettingsJobsCache.cachemisses': 'Não Encontrado',
@@ -41053,16 +41939,75 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Acertos',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Falhas',
+      'components.Settings.SettingsJobsCache.download-recovery':
+        'Baixar Recuperação',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sincronizar Downloads',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Limpar Sincronização de Download',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Sincronização de Lista de Solicitações Externa',
       'components.Settings.SettingsJobsCache.failures': 'Falhas',
       'components.Settings.SettingsJobsCache.flushcache': 'Limpar Cache',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Sincronização de Interesses Seguidos',
       'components.Settings.SettingsJobsCache.hitRate': 'Taxa de acertos',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Limpeza de Cache de Imagens',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imagens Armazenadas em Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Alternativos IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Escaneamento completa da biblioteca Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Escanear adicionados recentemente ao Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Fila de Episódios Solicitados',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr Scan de quadrinhos',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Varredura Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Sincronia ao vivo da TV',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian Revista Scan',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Fila de coleções de filmes',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Mylar Scan de quadrinhos',
+      'components.Settings.SettingsJobsCache.navidrome-scan':
+        'Varredura Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Escaneamento de Todas Bibliotecas do Plex',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Análise de reprodução do Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Recentemente Adicionado ao Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token de atualização do Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronizar Lista Para Assistir do Plex',
       'components.Settings.SettingsJobsCache.process': 'Processo',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Processar tags bloqueadas',
+      'components.Settings.SettingsJobsCache.radarr-scan':
+        'Escanemento do Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf Requisito Repetição',
+      'components.Settings.SettingsJobsCache.readarr-scan':
+        'Digitalização de estante',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Sincronização de Coleção Kobo BookOrbit',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Histórico do calendário de lançamento',
       'components.Settings.SettingsJobsCache.runnow': 'Executar Agora',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Solicitação de Software Reconciliação',
+      'components.Settings.SettingsJobsCache.sonarr-scan':
+        'Escaneamento do Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Sincronização Soulseek',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Mensagem copiada para área de transferência.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Copiar',
@@ -42302,6 +43247,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Todos os Pedidos',
       'components.Settings.SettingsAbout.uptodate': 'Atualizado',
       'components.Settings.SettingsAbout.version': 'Versão',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronização de disponibilidade de média',
       'components.Settings.SettingsJobsCache.cachehits': 'Acertos',
       'components.Settings.SettingsJobsCache.cachekeys': 'Chaves Totais',
       'components.Settings.SettingsJobsCache.cachemisses': 'Falhas',
@@ -42310,14 +43257,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Acertos',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Falhas',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sincronizar Transferências',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Reiniciar Sincronização de Transferências',
       'components.Settings.SettingsJobsCache.failures': 'Falhas',
       'components.Settings.SettingsJobsCache.flushcache': 'Limpar Cache',
       'components.Settings.SettingsJobsCache.hitRate': 'Taxa de acertos',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Limpeza de Cache de Imagens',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imagens Armazenadas em Cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Recursos a IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Sincronização Completa da Biblioteca Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Sincronizar Adicionado Recentemente do Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Sincronização Completa da Biblioteca Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Sincronizar Adicionado Recentemente do Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Token de atualização do Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Sincronização da lista para ver do Plex',
       'components.Settings.SettingsJobsCache.process': 'Processo',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Processar tags bloqueadas',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Sincronizar Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Executar Agora',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sincronizar Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Mensagem do registo copiada para o área de transferência.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -42880,6 +43849,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Total cereri',
       'components.Settings.SettingsAbout.uptodate': 'La zi',
       'components.Settings.SettingsAbout.version': 'Versiune',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Sincronizare disponibilitate materiale',
       'components.Settings.SettingsJobsCache.cachehits': 'Accesări',
       'components.Settings.SettingsJobsCache.cachekeys': 'Total chei',
       'components.Settings.SettingsJobsCache.cachemisses': 'Ratări',
@@ -42888,13 +43859,21 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Accesări',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Ratări',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sincronizare descărcări',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Resetare sincronizare download-uri',
       'components.Settings.SettingsJobsCache.failures': 'Eșecuri',
       'components.Settings.SettingsJobsCache.flushcache': 'Golește cache',
       'components.Settings.SettingsJobsCache.hitRate': 'Rate de succes',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Curățare cache imagini',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Imagini stocate în cache',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Fallback-uri IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Scanare completă librărie Jellyfin',
       'components.UserProfile.UserSettings.UserGeneralSettings.originallanguage':
         'Limbă Descoperire',
       'components.UserProfile.UserSettings.UserPasswordChange.confirmpassword':
@@ -43264,6 +44243,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Всего запросов',
       'components.Settings.SettingsAbout.uptodate': 'Актуальная',
       'components.Settings.SettingsAbout.version': 'Версия',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Синхронизировать доступность медиа',
       'components.Settings.SettingsJobsCache.cachehits': 'Удачных обращений',
       'components.Settings.SettingsJobsCache.cachekeys': 'Всего ключей',
       'components.Settings.SettingsJobsCache.cachemisses':
@@ -43273,15 +44254,39 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Кеш DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Попаданий',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Промахов',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Синхронизировать загрузки',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Сбросить синхронизацию загрузок',
       'components.Settings.SettingsJobsCache.failures': 'Ошибки',
       'components.Settings.SettingsJobsCache.flushcache': 'Очистить кэш',
       'components.Settings.SettingsJobsCache.hitRate': 'Процент попаданий',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Очистка кэша изображения',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Изображений кэшированно',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks':
         'Переходов на IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Сканировать всю библиотеку Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Сканировать недавно добавленное в Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Полное сканирование библиотек Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Сканирование недавно добавленных медиафайлов в Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Токен обновления Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Синхронизация списка просмотра Plex',
       'components.Settings.SettingsJobsCache.process': 'Процесс',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Обработать заблокированные теги',
+      'components.Settings.SettingsJobsCache.radarr-scan':
+        'Сканирование Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Выполнить сейчас',
+      'components.Settings.SettingsJobsCache.sonarr-scan':
+        'Сканирование Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Сообщение лога скопировано в буфер обмена.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -43832,9 +44837,19 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachemisses': 'Mungesa',
       'components.Settings.SettingsJobsCache.canceljob': 'Anuloni punën',
       'components.Settings.SettingsJobsCache.command': 'Komandë',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Sinkonizim Shkarkimi',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Rivendos Sinkronizimin e Shkarkimit',
       'components.Settings.SettingsJobsCache.flushcache': 'Pastro Cache',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Skanimi i plotë i Librarisë Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Skanimi i të shtuarave kohët e fundit nga Plex',
       'components.Settings.SettingsJobsCache.process': 'Procesi',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Skanimi i Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Nise Tani',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Skanimi i Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Mesazhi i regjistrit u kopjua.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Kopjo',
@@ -44053,9 +45068,13 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.cachemisses': 'Gospođica',
       'components.Settings.SettingsJobsCache.canceljob': 'Otkaži posao',
       'components.Settings.SettingsJobsCache.command': 'Komanda',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Download sinhronizacija',
       'components.Settings.SettingsJobsCache.flushcache': 'Obriši keš',
       'components.Settings.SettingsJobsCache.process': 'Proces',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr skeniranje',
       'components.Settings.SettingsJobsCache.runnow': 'Pokreni sada',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr skeniranje',
       'components.Settings.SettingsLogs.filterDebug': 'Otklanjanje grešaka',
       'components.Settings.SettingsLogs.filterError': 'Greška',
       'components.Settings.SettingsLogs.filterInfo': 'Info',
@@ -44472,6 +45491,8 @@ export const localeData = [
         'Totalt antal förfrågningar',
       'components.Settings.SettingsAbout.uptodate': 'Uppdaterad',
       'components.Settings.SettingsAbout.version': 'Version',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Synkronisering av mediatillgänglighet',
       'components.Settings.SettingsJobsCache.cachehits': 'Träffar',
       'components.Settings.SettingsJobsCache.cachekeys': 'Totalt antal nycklar',
       'components.Settings.SettingsJobsCache.cachemisses': 'Missar',
@@ -44480,13 +45501,35 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Träffar',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Missar',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Nedladdningssynkronisering',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Nollställ nedladdningssynkronisering',
       'components.Settings.SettingsJobsCache.failures': 'Misslyckanden',
       'components.Settings.SettingsJobsCache.flushcache': 'Rensa cache',
       'components.Settings.SettingsJobsCache.hitRate': 'Träffratio',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Rensning av bildcache',
       'components.Settings.SettingsJobsCache.imagecachecount': 'Bilder cachade',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4-reserv',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Full Jellyfin-biblioteksskanning',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Skanning av nyligen tillagda objekt i Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Full biblioteksskanning för Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Skanning av senast tillagda i Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex uppdateringstoken',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Synkronisering av bevakningslista från Plex',
       'components.Settings.SettingsJobsCache.process': 'Process',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Bearbeta blockerade taggar',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-skanning',
       'components.Settings.SettingsJobsCache.runnow': 'Kör nu',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-skanning',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Kopierat loggmeddelande till urklipp.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -45093,6 +46136,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Toplam Talepler',
       'components.Settings.SettingsAbout.uptodate': 'Güncel',
       'components.Settings.SettingsAbout.version': 'Sürüm',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Medya Kullanılabilirlik Senkronizasyonu',
       'components.Settings.SettingsJobsCache.cachehits': 'İsabet',
       'components.Settings.SettingsJobsCache.cachekeys': 'Toplam Anahtar',
       'components.Settings.SettingsJobsCache.cachemisses': 'Kaçırma',
@@ -45101,14 +46146,36 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS Önbelleği',
       'components.Settings.SettingsJobsCache.dnscachehits': 'İsabet',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Kaçırma',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'İndirme Senkronizasyonu',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'İndirme Senkronizasyonu Sıfırlama',
       'components.Settings.SettingsJobsCache.failures': 'Başarısızlıklar',
       'components.Settings.SettingsJobsCache.flushcache': 'Önbelleği Temizle',
       'components.Settings.SettingsJobsCache.hitRate': 'İsabet Oranı',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Resim Önbelleği Temizleme',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Önbelleğe Alınan Resimler',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 Yedekleri',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin Tam Kütüphane Taraması',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin Son Eklenenler Taraması',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Plex Tam Kütüphane Taraması',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex Son Eklenenler Taraması',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex Token Yenileme',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex İzleme Listesi Senkronizasyonu',
       'components.Settings.SettingsJobsCache.process': 'İşle',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Engellenen Etiketleri İşle',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr Taraması',
       'components.Settings.SettingsJobsCache.runnow': 'Şimdi Çalıştır',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr Taraması',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Günlük mesajı panoya kopyalandı.',
       'components.Settings.SettingsLogs.copyToClipboard': 'Panoya Kopyala',
@@ -45697,6 +46764,8 @@ export const localeData = [
       'components.Settings.SettingsAbout.totalrequests': 'Усього запитів',
       'components.Settings.SettingsAbout.uptodate': 'Актуальна',
       'components.Settings.SettingsAbout.version': 'Версія',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Синхронізація доступності медіа',
       'components.Settings.SettingsJobsCache.cachehits': 'Вдалих звернень',
       'components.Settings.SettingsJobsCache.cachekeys': 'Усього ключів',
       'components.Settings.SettingsJobsCache.cachemisses': 'Невдалих звернень',
@@ -45706,14 +46775,34 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnscachehits': 'Вдалих звернень',
       'components.Settings.SettingsJobsCache.dnscachemisses':
         'Невдалих звернень',
+      'components.Settings.SettingsJobsCache.download-sync':
+        'Синхронізувати завантаження',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        'Скинути синхронізацію завантажень',
       'components.Settings.SettingsJobsCache.failures': 'Помилки',
       'components.Settings.SettingsJobsCache.flushcache': 'Очистити кеш',
       'components.Settings.SettingsJobsCache.hitRate': 'Частка вдалих',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Очищення кешу зображень',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Зображення кешовані',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Запасні IPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Сканування повної бібліотеки Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Нещодавно додане сканування Jellyfin',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Повне сканування бібліотек Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Сканування нещодавно доданих медіафайлів у Plex',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Оновлення токена Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Синхронізація списку перегляду Plex',
       'components.Settings.SettingsJobsCache.process': 'Процес',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Сканування Radarr',
       'components.Settings.SettingsJobsCache.runnow': 'Виконати зараз',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Сканування Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Повідомлення лога скопійовано в буфер обміну.',
       'components.Settings.SettingsLogs.copyToClipboard':
@@ -46651,6 +47740,11 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': '剧集',
       'components.Settings.SettingsCategories.tvDescription':
         '允许系列发现和请求.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr 成人场景扫描',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        '同步媒体可用性',
+      'components.Settings.SettingsJobsCache.backissue-scan': '后期漫画扫描',
       'components.Settings.SettingsJobsCache.cachehits': '击中数',
       'components.Settings.SettingsJobsCache.cachekeys': '键数',
       'components.Settings.SettingsJobsCache.cachemisses': '失误数',
@@ -46660,14 +47754,62 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 缓存',
       'components.Settings.SettingsJobsCache.dnscachehits': '点击数',
       'components.Settings.SettingsJobsCache.dnscachemisses': '错过',
+      'components.Settings.SettingsJobsCache.download-recovery': '下载回收',
+      'components.Settings.SettingsJobsCache.download-sync': '下载状态同步',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        '下载状态同步复位',
       'components.Settings.SettingsJobsCache.enabled': '已启用',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        '外部请求列表同步',
       'components.Settings.SettingsJobsCache.failures': '失败',
       'components.Settings.SettingsJobsCache.flushcache': '清除缓存',
+      'components.Settings.SettingsJobsCache.follow-sync': '关注兴趣同步',
       'components.Settings.SettingsJobsCache.hitRate': '点击率',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        '清理图片缓存',
       'components.Settings.SettingsJobsCache.imagecachecount': '已缓存图片',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 退缩',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin全库扫描',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin最近新增扫描',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        '请求剧集队列',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr 漫画扫描',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
+      'components.Settings.SettingsJobsCache.live-tv-sync': '现场电视同步',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian杂志扫描',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        '电影合集队列',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar 漫画扫描',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome 扫描',
+      'components.Settings.SettingsJobsCache.plex-full-scan': 'Plex 媒体库扫描',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex 播放分析',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex 最新添加扫描',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Plex 刷新令牌',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        '同步 Plex 关注列表',
       'components.Settings.SettingsJobsCache.process': '程序',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        '处理屏蔽标签',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr 扫描',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf 请求重试',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bookshelf 扫描',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo 合集同步',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        '发布日历历史',
       'components.Settings.SettingsJobsCache.runnow': '执行',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        '软件请求调节',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr 扫描',
+      'components.Settings.SettingsJobsCache.soulseek-sync': '灵魂同步',
       'components.Settings.SettingsLogs.copiedLogMessage':
         '日志消息已复制到剪贴板。',
       'components.Settings.SettingsLogs.copyToClipboard': '复制到剪贴板',
@@ -48201,6 +49343,11 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': '影集',
       'components.Settings.SettingsCategories.tvDescription':
         '允許系列發現與要求 。',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr 成人場景掃描',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        '同步媒體可用性',
+      'components.Settings.SettingsJobsCache.backissue-scan': '后期漫畫掃描',
       'components.Settings.SettingsJobsCache.cachehits': '擊中數',
       'components.Settings.SettingsJobsCache.cachekeys': '鍵數',
       'components.Settings.SettingsJobsCache.cachemisses': '失誤數',
@@ -48210,14 +49357,61 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 快取',
       'components.Settings.SettingsJobsCache.dnscachehits': '命中',
       'components.Settings.SettingsJobsCache.dnscachemisses': '失誤',
+      'components.Settings.SettingsJobsCache.download-recovery': '下載回收',
+      'components.Settings.SettingsJobsCache.download-sync': '下載狀態同步',
+      'components.Settings.SettingsJobsCache.download-sync-reset':
+        '下載狀態同步復位',
       'components.Settings.SettingsJobsCache.enabled': '已開啟',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        '外部請求清單同步',
       'components.Settings.SettingsJobsCache.failures': '失敗',
       'components.Settings.SettingsJobsCache.flushcache': '清除快取',
+      'components.Settings.SettingsJobsCache.follow-sync': '關注興趣同步',
       'components.Settings.SettingsJobsCache.hitRate': '命中率',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        '清理影像快取',
       'components.Settings.SettingsJobsCache.imagecachecount': '快取的影像',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'IPv4 後退',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Jellyfin 完整文庫掃瞄',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        '最近添加的 Jellyfin 掃描',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        '已請求集數佇列',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Kapowarr 漫畫掃描',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
+      'components.Settings.SettingsJobsCache.live-tv-sync': '直播電視同步',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'LazyLibrarian雜志掃描',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        '電影合集佇列',
+      'components.Settings.SettingsJobsCache.mylar-scan': 'Mylar 漫畫掃描',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Navidrome 掃描',
+      'components.Settings.SettingsJobsCache.plex-full-scan': 'Plex 媒體庫掃描',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Plex 播放分析',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Plex 最近新增掃描',
+      'components.Settings.SettingsJobsCache.plex-refresh-token': 'Plex 刷新',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Plex 關注列表同步',
       'components.Settings.SettingsJobsCache.process': '程序',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        '處理封鎖清單標籤',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr 掃描',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Bookshelf 请求重试',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Bookshelf 扫描',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'BookOrbit Kobo 收藏同步',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        '釋放行事曆歷史',
       'components.Settings.SettingsJobsCache.runnow': '執行',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        '軟體要求對應',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr 掃描',
+      'components.Settings.SettingsJobsCache.soulseek-sync': 'Soulseek 同步',
       'components.Settings.SettingsLogs.copiedLogMessage':
         '日誌訊息已複製到剪貼板。',
       'components.Settings.SettingsLogs.copyToClipboard': '複製到剪貼板',
@@ -49805,6 +50999,12 @@ export const localeData = [
       'components.Settings.SettingsCategories.tv': 'Loạt phim',
       'components.Settings.SettingsCategories.tvDescription':
         'Cho phép phát hiện và yêu cầu loạt.',
+      'components.Settings.SettingsJobsCache.adult-scan':
+        'Whisparr Quét Cảnh Người Lớn',
+      'components.Settings.SettingsJobsCache.availability-sync':
+        'Đồng bộ thiết bị lưu trữName',
+      'components.Settings.SettingsJobsCache.backissue-scan':
+        'Quét truyện tranh ngược',
       'components.Settings.SettingsJobsCache.cachehits': 'Trúng',
       'components.Settings.SettingsJobsCache.cachekeys': 'Tổng phím',
       'components.Settings.SettingsJobsCache.cachemisses': 'Bỏ lỡ',
@@ -49814,15 +51014,67 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.dnsCache': 'Bộ nhớ tạm DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Trúng',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Bỏ lỡ',
+      'components.Settings.SettingsJobsCache.download-recovery': 'Tải về',
+      'components.Settings.SettingsJobsCache.download-sync': 'Đồng bộ tải về',
+      'components.Settings.SettingsJobsCache.download-sync-reset': 'Tải về',
       'components.Settings.SettingsJobsCache.enabled': 'Bật',
+      'components.Settings.SettingsJobsCache.external-request-list-sync':
+        'Đồng bộ danh sách yêu cầu bên ngoài',
       'components.Settings.SettingsJobsCache.failures': 'Lỗi',
       'components.Settings.SettingsJobsCache.flushcache': 'Bộ nhớ tạm Flush',
+      'components.Settings.SettingsJobsCache.follow-sync':
+        'Đồng bộ quan tâm đã theo dõi',
       'components.Settings.SettingsJobsCache.hitRate': 'Trúng',
+      'components.Settings.SettingsJobsCache.image-cache-cleanup':
+        'Bộ nhớ tạm ảnh',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Hình ảnh được lưu vào bộ nhớ đệm',
       'components.Settings.SettingsJobsCache.ipv4Fallbacks': 'Gặp lỗi lPv4',
+      'components.Settings.SettingsJobsCache.jellyfin-full-scan':
+        'Quét toàn bộ thư viện Jellyfin',
+      'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
+        'Jellyfin Quét bổ sung gần đây',
+      'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
+        'Hàng đợi tập đã yêu cầu',
+      'components.Settings.SettingsJobsCache.kapowarr-scan':
+        'Quét truyện tranh Kapowarr',
+      'components.Settings.SettingsJobsCache.lidarr-scan': 'Quét Lidarr',
+      'components.Settings.SettingsJobsCache.live-tv-sync':
+        'Đồng bộ hoá chương trình truyền hình trực tiếp',
+      'components.Settings.SettingsJobsCache.magazine-scan':
+        'Quét tạp chí LazyLibrarian',
+      'components.Settings.SettingsJobsCache.movie-collection-queue':
+        'Hàng đợi bộ sưu tập phim',
+      'components.Settings.SettingsJobsCache.mylar-scan':
+        'Quét truyện tranh Mylar',
+      'components.Settings.SettingsJobsCache.navidrome-scan': 'Quét Navidrome',
+      'components.Settings.SettingsJobsCache.plex-full-scan':
+        'Quét thư viện Plex đầy đủ',
+      'components.Settings.SettingsJobsCache.plex-playback-analysis':
+        'Phân tích phát lại Plex',
+      'components.Settings.SettingsJobsCache.plex-recently-added-scan':
+        'Quét thêm Plex gần đây',
+      'components.Settings.SettingsJobsCache.plex-refresh-token':
+        'Mã thông báo làm mới Plex',
+      'components.Settings.SettingsJobsCache.plex-watchlist-sync':
+        'Đồng bộ hoá danh sách Plex',
       'components.Settings.SettingsJobsCache.process': 'Tiến trình',
+      'components.Settings.SettingsJobsCache.process-blocklisted-tags':
+        'Xử lý thẻ thuộc danh sách chặn',
+      'components.Settings.SettingsJobsCache.radarr-scan': 'Quét Radarr',
+      'components.Settings.SettingsJobsCache.readarr-request-retry':
+        'Yêu cầu giá sách Thử lại',
+      'components.Settings.SettingsJobsCache.readarr-scan': 'Quét giá sách',
+      'components.Settings.SettingsJobsCache.reader-delivery-kobo-sync':
+        'Đồng bộ bộ sưu tập Kobo của BookOrbit',
+      'components.Settings.SettingsJobsCache.release-calendar-history':
+        'Lịch sử ra đời',
       'components.Settings.SettingsJobsCache.runnow': 'Chạy ngay',
+      'components.Settings.SettingsJobsCache.software-request-reconciliation':
+        'Yêu cầu hòa giải phần mềm',
+      'components.Settings.SettingsJobsCache.sonarr-scan': 'Quét Sonarr',
+      'components.Settings.SettingsJobsCache.soulseek-sync':
+        'Đồng bộ tìm kiếm linh hồn',
       'components.Settings.SettingsLogs.copiedLogMessage':
         'Sao chép tin nhắn vào bảng nháp',
       'components.Settings.SettingsLogs.copyToClipboard':
