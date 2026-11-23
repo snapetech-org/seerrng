@@ -7949,3 +7949,14 @@ and Arabic before-and-after captures at desktop and iPhone sizes are in
 and `.../my-media-audit-wrap-fix/`. The French phone control wraps onto two
 lines inside its button after the fix; desktop and Arabic geometry remains
 stable. Fixture results do not prove live tracking-provider connectivity.
+
+### Large-series episode request recovery (2026-11-23)
+
+A new 15-season Lumen browser regression models failure of the first five-season
+batch, confirms later seasons remain selectable, retries only the missing first
+batch, and checks that selections made before retry remain in the final request.
+The exact request succeeds in standalone and bundled `/lumen/` builds across
+desktop, iPhone, Android, and tablet (8 browser cases). The server's TV route
+suite also passes its 15-season concurrent-provider recovery case (6 tests in
+the file). These provider fixtures and route mocks verify batching and recovery
+contracts, not live metadata-provider availability or latency.
