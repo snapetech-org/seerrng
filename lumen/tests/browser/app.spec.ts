@@ -4412,6 +4412,65 @@ test('comic details show open issues only to issue readers', async ({
   }
 });
 
+test('magazine details show open issues only to issue readers', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let permissions = 2;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({ json: { id: 1, displayName: 'Viewer', permissions } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { magazine: true } } })
+  );
+  await page.route('**/api/v1/magazine/*', (route) =>
+    route.fulfill({
+      json: {
+        id: 'fixture-monthly',
+        title: 'Fixture Monthly',
+        provider: 'lazylibrarian',
+        issueCount: 12,
+        mediaInfo: {
+          id: 8,
+          status: 5,
+          issues: [
+            {
+              id: 81,
+              status: 1,
+              issueType: 4,
+              comments: [{ message: 'The cover is missing.' }],
+            },
+            { id: 82, status: 2, issueType: 1, comments: [] },
+          ],
+        },
+      },
+    })
+  );
+  await page.goto('/magazine/Fixture%20Monthly');
+  await expect(page.getByRole('heading', { name: 'Open Issues' })).toHaveCount(
+    0
+  );
+  permissions = 7340032;
+  await page.reload();
+  const panel = page.getByRole('region', { name: 'Open Issues' });
+  await expect(panel.getByRole('link', { name: 'Other #81' })).toHaveAttribute(
+    'href',
+    '/issues/81'
+  );
+  await expect(panel).toContainText('The cover is missing.');
+  await expect(panel.getByRole('link', { name: /#82/ })).toHaveCount(0);
+  const capture = process.env.LUMEN_MAGAZINE_OPEN_ISSUES_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+});
+
 test('Classic comic discovery bookmarks restore catalogue filters and results', async ({
   page,
 }) => {

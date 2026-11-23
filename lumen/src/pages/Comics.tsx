@@ -1717,6 +1717,11 @@ export function MagazineDetail() {
   if (!m) return <div className="detail-loading" aria-busy="true" />;
   const s = extraStat(m.mediaInfo);
   const have = (m.issues || []).filter((i) => i.available).length;
+  const openIssues = canReadIssues(user?.permissions)
+    ? (m.mediaInfo?.issues ?? []).filter(
+        (issue) => issue.status === IssueStatus.OPEN
+      )
+    : [];
   const main =
     m.requestable === false ? null : s || requested === m.title ? (
       <button className="btn btn-tonal" disabled>
@@ -1823,6 +1828,35 @@ export function MagazineDetail() {
                     ))}
                   </ol>
                 </>
+              )}
+              {openIssues.length > 0 && (
+                <section aria-labelledby="magazine-open-issues">
+                  <div className="sec-head">
+                    <h2 id="magazine-open-issues">
+                      {t('lumen.issues.openIssues', 'Open Issues')}
+                    </h2>
+                  </div>
+                  <ul className="setlist">
+                    {openIssues.map((issue) => (
+                      <li key={issue.id} className="set">
+                        <div>
+                          <Link to={`/issues/${issue.id}`}>
+                            {t(
+                              `lumen.issues.type.${issue.issueType}`,
+                              ['Issue', 'Video', 'Audio', 'Subtitles', 'Other'][
+                                issue.issueType
+                              ] ?? 'Issue'
+                            )}{' '}
+                            #{issue.id}
+                          </Link>
+                        </div>
+                        {issue.comments?.[0]?.message && (
+                          <p className="det">{issue.comments[0].message}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               )}
             </div>
             <aside>

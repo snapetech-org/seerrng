@@ -8625,3 +8625,18 @@ were inspected at desktop and phone sizes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/comic-open-issues-visual/`.
 The fixture validates permission and display behavior; a live issue-reader
 account and persisted provider data remain unverified.
+
+### Open issue reports on magazine details (2026-11-23)
+
+Native magazine details also show open issue reports to issue readers. Lumen's
+magazine detail now shows the open reports associated with its SeerrNG media
+record, using the same permission boundary, localized issue type labels, and
+direct Lumen issue-detail links as comic details. Resolved reports are omitted.
+
+The browser check verifies denied and authorized viewers, the report link and
+description, and exclusion of resolved reports. It passes on desktop, iPhone,
+Android, and tablet. Matched desktop and phone baseline/candidate captures were
+inspected; the new list uses the existing detail row style and keeps the fixed
+request action visible. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/magazine-open-issues-visual/`.
+Live account and provider-backed verification remain open.
