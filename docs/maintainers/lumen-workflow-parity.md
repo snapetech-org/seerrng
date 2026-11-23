@@ -7543,6 +7543,20 @@ and iPhone failure-state screenshots show the existing client settings and
 retry controls visible without horizontal overflow. The mocked API does not
 verify live download-client connectivity or settings-file persistence.
 
+### Grimmory and BookOrbit settings save readback
+
+Reader Delivery now confirms the normalized service URLs, usernames, preferred
+provider, and redacted credential state against both the PUT response and a
+fresh GET before clearing credential intent or reporting success. Stale
+readback preserves the administrator's edits and offers a localized retryable
+error in English, French, and Arabic.
+
+Eight existing browser cases pass across desktop, iPhone, Android, and tablet;
+four additional French and Arabic desktop/phone cases pass. Desktop and iPhone
+failure-state captures show the edited preference and retry control in view.
+Fixtures do not verify live Grimmory or BookOrbit connectivity or persisted
+settings files.
+
 ### Managed user profile save readback
 
 Lumen's administrator-managed user profile editor now checks the saved

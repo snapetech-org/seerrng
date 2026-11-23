@@ -36,6 +36,13 @@ function settingsDraft(settings: Settings): Settings {
   return { ...settings, grimmoryPassword: '', bookorbitPassword: '' };
 }
 
+function serviceUrl(value: string) {
+  return value
+    .trim()
+    .replace(/\/+$/, '')
+    .replace(/\/(?:api\/v1\/opds|komga\/api)$/i, '');
+}
+
 function Connections({ initial }: { initial: Settings }) {
   const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
@@ -89,8 +96,43 @@ function Connections({ initial }: { initial: Settings }) {
             clearBookorbitCredentials: clear.bookorbit,
           }),
         });
-        setSaved(result);
-        setDraft(settingsDraft(result));
+        const readback = await api<Settings>(path);
+        const expected = {
+          grimmoryUrl: serviceUrl(draft.grimmoryUrl),
+          grimmoryUsername: clear.grimmory ? '' : draft.grimmoryUsername.trim(),
+          grimmoryPassword: clear.grimmory
+            ? ''
+            : grimmoryPassword
+              ? '[REDACTED]'
+              : (saved.grimmoryPassword ?? ''),
+          bookorbitUrl: serviceUrl(draft.bookorbitUrl),
+          bookorbitUsername: clear.bookorbit
+            ? ''
+            : draft.bookorbitUsername.trim(),
+          bookorbitPassword: clear.bookorbit
+            ? ''
+            : bookorbitPassword
+              ? '[REDACTED]'
+              : (saved.bookorbitPassword ?? ''),
+          preferredProvider: draft.preferredProvider,
+        };
+        const confirmed = Object.entries(expected).every(
+          ([field, value]) =>
+            result[field as keyof Settings] === value &&
+            readback[field as keyof Settings] === value
+        );
+        if (!confirmed) {
+          setNotice({
+            text: t(
+              'lumen.adminReaderDelivery.saveFailure',
+              'Reader settings could not be saved.'
+            ),
+            error: true,
+          });
+          return;
+        }
+        setSaved(readback);
+        setDraft(settingsDraft(readback));
         setClear({ grimmory: false, bookorbit: false });
         setNotice({
           text: t(

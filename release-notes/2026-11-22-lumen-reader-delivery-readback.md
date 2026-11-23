@@ -1,0 +1,1 @@
+- Confirm Grimmory and BookOrbit connection settings through persisted readback before clearing credentials or reporting success. Stale results preserve the administrator's edits with localized retry feedback.

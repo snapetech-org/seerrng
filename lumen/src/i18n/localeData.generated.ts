@@ -2404,6 +2404,7 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeShelfTitle': 'إزالة {name}؟',
       'lumen.adminReaderDelivery.removeShelfWithKobo':
         'سيؤدي هذا إلى إزالة رف القارئ ومجموعة Kobo. ستبقى ملفات المكتبة كما هي.',
+      'lumen.adminReaderDelivery.saveFailure': 'تعذر حفظ إعدادات القارئ.',
       'lumen.adminReaderDelivery.saveSettings': 'حفظ إعدادات القارئ',
       'lumen.adminReaderDelivery.savedCredential': 'بيانات اعتماد محفوظة',
       'lumen.adminReaderDelivery.settingsSaved': 'تم حفظ إعدادات القارئ.',
@@ -13311,6 +13312,8 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeShelfTitle': 'Remove {name}?',
       'lumen.adminReaderDelivery.removeShelfWithKobo':
         'This removes the reader shelf and its Kobo Collection. Library files are kept.',
+      'lumen.adminReaderDelivery.saveFailure':
+        'Reader settings could not be saved.',
       'lumen.adminReaderDelivery.saveSettings': 'Save Reader Settings',
       'lumen.adminReaderDelivery.savedCredential': 'Saved Credential',
       'lumen.adminReaderDelivery.settingsSaved': 'Reader settings saved.',
@@ -24950,6 +24953,8 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeShelfTitle': 'Supprimer {name} ?',
       'lumen.adminReaderDelivery.removeShelfWithKobo':
         'Cette action supprime le rayon et sa collection Kobo. Les fichiers de la bibliothèque sont conservés.',
+      'lumen.adminReaderDelivery.saveFailure':
+        'Impossible d’enregistrer les paramètres du lecteur.',
       'lumen.adminReaderDelivery.saveSettings':
         'Enregistrer les paramètres du lecteur',
       'lumen.adminReaderDelivery.savedCredential': 'Identifiant enregistré',

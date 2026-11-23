@@ -1619,6 +1619,7 @@
   "lumen.adminReaderDelivery.removeShelfBody",
   "lumen.adminReaderDelivery.removeShelfTitle",
   "lumen.adminReaderDelivery.removeShelfWithKobo",
+  "lumen.adminReaderDelivery.saveFailure",
   "lumen.adminReaderDelivery.saveSettings",
   "lumen.adminReaderDelivery.savedCredential",
   "lumen.adminReaderDelivery.settingsSaved",

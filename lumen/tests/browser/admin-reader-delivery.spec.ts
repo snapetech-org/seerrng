@@ -15,6 +15,8 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
   };
   let deleteCount = 0;
   let reject = true;
+  let staleReadback: typeof saved | undefined;
+  let saveCount = 0;
   const changes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -54,6 +56,14 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
             ],
       });
     if (pathname !== path) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (request.method() === 'PUT') {
       const change = request.postDataJSON();
       changes.push(change);
@@ -62,7 +72,17 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
           status: 400,
           json: { error: 'Reader settings rejected.' },
         });
+      if (saveCount === 0) staleReadback = saved;
       saved = { ...saved, ...change };
+      if (change.clearGrimmoryCredentials) {
+        saved.grimmoryUsername = '';
+        saved.grimmoryPassword = '';
+      }
+      if (change.clearBookorbitCredentials) {
+        saved.bookorbitUsername = '';
+        saved.bookorbitPassword = '';
+      }
+      saveCount++;
     }
     return route.fulfill({ json: saved });
   });
@@ -89,9 +109,16 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
   await expect(preferred).toHaveValue('bookorbit');
   reject = false;
   await save.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Reader settings could not be saved.'
+  );
+  await expect(preferred).toHaveValue('bookorbit');
+  await page.getByRole('alert').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath('readback-failure.png') });
+  await save.click();
   await expect(page.getByText('Reader settings saved.')).toBeVisible();
-  expect(changes[1]).not.toHaveProperty('grimmoryPassword');
-  expect(changes[1]).not.toHaveProperty('bookorbitPassword');
+  expect(changes[2]).not.toHaveProperty('grimmoryPassword');
+  expect(changes[2]).not.toHaveProperty('bookorbitPassword');
   await testAccess.click();
   await expect(
     page.getByText('BookOrbit connected.', { exact: false })

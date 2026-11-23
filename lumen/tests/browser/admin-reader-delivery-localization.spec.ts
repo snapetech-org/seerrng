@@ -23,6 +23,7 @@ const labels = {
     save: 'Save Reader Settings',
     discard: 'Discard Changes',
     savedMessage: 'Reader settings saved.',
+    saveFailure: 'Reader settings could not be saved.',
     testAccess: 'Test BookOrbit Grouping Access',
     connected: 'BookOrbit connected. Existing shelves found: 1.',
     shelves: 'Managed Reader Shelves',
@@ -50,6 +51,7 @@ const labels = {
     save: 'Enregistrer les paramètres du lecteur',
     discard: 'Annuler les modifications',
     savedMessage: 'Paramètres du lecteur enregistrés.',
+    saveFailure: 'Impossible d’enregistrer les paramètres du lecteur.',
     testAccess: 'Tester l’accès aux groupements BookOrbit',
     connected: 'BookOrbit connecté. Rayons existants : 1.',
     shelves: 'Rayons de lecture gérés',
@@ -77,6 +79,7 @@ const labels = {
     save: 'حفظ إعدادات القارئ',
     discard: 'تجاهل التغييرات',
     savedMessage: 'تم حفظ إعدادات القارئ.',
+    saveFailure: 'تعذر حفظ إعدادات القارئ.',
     testAccess: 'اختبار الوصول إلى تجميعات BookOrbit',
     connected: 'تم الاتصال بـ BookOrbit. الرفوف الموجودة: 1.',
     shelves: 'رفوف القارئ المُدارة',
@@ -107,6 +110,8 @@ test('reader delivery settings and managed shelves use the saved locale', async 
   };
   let deleteCount = 0;
   let reject = true;
+  let staleReadback: typeof saved | undefined;
+  let saveCount = 0;
   const changes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -155,6 +160,14 @@ test('reader delivery settings and managed shelves use the saved locale', async 
             ],
       });
     if (pathname !== path) return route.fulfill({ json: {} });
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      return route.fulfill({ json: saved });
+    }
     if (request.method() === 'PUT') {
       const change = request.postDataJSON();
       changes.push(change);
@@ -163,11 +176,13 @@ test('reader delivery settings and managed shelves use the saved locale', async 
           status: 400,
           json: { error: 'Reader settings rejected.' },
         });
+      if (saveCount === 0) staleReadback = saved;
       saved = { ...saved, ...change };
       if (change.clearGrimmoryCredentials) {
         saved.grimmoryUsername = '';
         saved.grimmoryPassword = '';
       }
+      saveCount++;
     }
     return route.fulfill({ json: saved });
   });
@@ -216,10 +231,13 @@ test('reader delivery settings and managed shelves use the saved locale', async 
   await expect(preferred).toHaveValue('bookorbit');
   reject = false;
   await save.click();
+  await expect(page.getByRole('alert')).toHaveText(text.saveFailure);
+  await expect(preferred).toHaveValue('bookorbit');
+  await save.click();
   await expect(page.getByText(text.savedMessage)).toBeVisible();
   expect(changes[1]).not.toHaveProperty('grimmoryPassword');
   expect(changes[1]).not.toHaveProperty('bookorbitPassword');
-  expect(changes[1]).toHaveProperty('clearGrimmoryCredentials', true);
+  expect(changes[2]).toHaveProperty('clearGrimmoryCredentials', true);
   await testAccess.click();
   await expect(page.getByText(text.connected)).toBeVisible();
 
