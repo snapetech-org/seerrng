@@ -166,6 +166,13 @@ export default function TvEpisodeRequestSheet({
       episodeNumber,
     }))
   );
+  const latestSelectableSeasonNumber = seasons.reduce(
+    (latest, { seasonNumber }) =>
+      seasonNumber > latest && selectableEpisodeNumbers(seasonNumber).length
+        ? seasonNumber
+        : latest,
+    0
+  );
   const selectedSelectableCount = allSelectableEpisodes.filter(
     ({ seasonNumber, episodeNumber }) =>
       picked.get(seasonNumber)?.has(episodeNumber)
@@ -191,6 +198,16 @@ export default function TvEpisodeRequestSheet({
       }
       return next;
     });
+  };
+  const selectLatestSeason = () => {
+    if (latestSelectableSeasonNumber <= 0) return;
+    const episodeNumbers = selectableEpisodeNumbers(
+      latestSelectableSeasonNumber
+    );
+    if (episodeNumbers.length)
+      setPicked(
+        new Map([[latestSelectableSeasonNumber, new Set(episodeNumbers)]])
+      );
   };
   const toggleSeasonSelection = (seasonNumber: number) => {
     const episodeNumbers = selectableEpisodeNumbers(seasonNumber);
@@ -256,6 +273,25 @@ export default function TvEpisodeRequestSheet({
             >
               <Icon name={allSelectable ? 'check' : 'plus'} />
               {t('lumen.tvEpisodeRequest.selectAllShort', 'Select All')}
+            </button>
+            <button
+              className="btn btn-tonal btn-sm"
+              type="button"
+              data-testid="select-latest-requestable-season"
+              aria-label={t(
+                'lumen.tvEpisodeRequest.selectLatestSeason',
+                'Select all requestable episodes in the latest season'
+              )}
+              disabled={
+                latestSelectableSeasonNumber <= 0 ||
+                loading ||
+                loadError ||
+                busy ||
+                !!streamingOverride
+              }
+              onClick={selectLatestSeason}
+            >
+              {t('lumen.tvEpisodeRequest.latestSeason', 'Latest Season')}
             </button>
             <button
               className="btn btn-tonal btn-sm"

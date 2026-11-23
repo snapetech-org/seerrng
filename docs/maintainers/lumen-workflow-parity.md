@@ -8765,3 +8765,19 @@ production Lumen build passes. Candidate screenshots were inspected at desktop
 and iPhone sizes; matched baseline visual acceptance and live provider
 submission remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-selection-parity-20261123/tv-bulk-controls/`.
+
+### Large TV request latest-season shortcut (2026-11-23)
+
+The episode request sheet now includes the native latest-season shortcut. It
+replaces the current selection with every currently requestable episode in the
+highest regular season, excluding specials and unavailable or already-requested
+episodes. The shortcut stays disabled while metadata is loading or incomplete,
+so it cannot mistake the latest loaded season for the latest season in the
+series. English, French, and Arabic labels are included.
+
+The large-series browser fixture verifies that latest-season selection replaces
+a prior all-episodes selection and targets the highest eligible regular season.
+The production build, all 58 Lumen unit and packaging tests, and all 8 large-
+series browser cases across desktop, iPhone, Android, and tablet pass. Candidate
+desktop and iPhone captures show the new control at its target viewports; live
+provider metadata and matched native visual acceptance remain unverified.

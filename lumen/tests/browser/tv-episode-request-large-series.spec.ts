@@ -111,6 +111,16 @@ test('large TV requests retry a transient season batch before showing a load err
     })
   ).toHaveAttribute('aria-checked', 'true');
   await expect(sheet.getByText('Selected: 14')).toBeVisible();
+  await sheet.getByTestId('select-latest-requestable-season').click();
+  await expect(sheet.getByText('Selected: 1')).toBeVisible();
+  await expect(
+    sheet.getByRole('checkbox', {
+      name: 'Deselect all requestable episodes in Season 15',
+    })
+  ).toHaveAttribute('aria-checked', 'true');
+
+  await selectAll.click();
+  await expect(sheet.getByText('Selected: 14')).toBeVisible();
 
   const deselectFirstSeason = sheet.getByRole('checkbox', {
     name: 'Deselect all requestable episodes in Season 2',
@@ -233,6 +243,9 @@ test('large TV requests load in bounded batches and recover only the failed seas
   await expect(sheet.getByRole('alert')).toContainText(
     'Some season details remain unavailable.'
   );
+  await expect(
+    sheet.getByTestId('select-latest-requestable-season')
+  ).toBeDisabled();
   await expect.poll(() => batches.length).toBe(4);
   expect(batches).toEqual([
     '1,2,3,4,5',
@@ -258,6 +271,9 @@ test('large TV requests load in bounded batches and recover only the failed seas
   await sheet.getByRole('button', { name: 'Retry', exact: true }).click();
   await expect.poll(() => batches.length).toBe(5);
   expect(batches[4]).toBe('1,2,3,4,5');
+  await expect(
+    sheet.getByTestId('select-latest-requestable-season')
+  ).toBeEnabled();
   await expect(middleEpisode).toBeChecked();
   await expect(lastEpisode).toBeChecked();
 

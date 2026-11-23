@@ -5754,6 +5754,7 @@ export const localeData = [
       'lumen.tvEpisodeRequest.episodeCount': '{count} حلقة',
       'lumen.tvEpisodeRequest.episodes': 'الحلقات',
       'lumen.tvEpisodeRequest.expandAll': 'توسيع الكل',
+      'lumen.tvEpisodeRequest.latestSeason': 'أحدث موسم',
       'lumen.tvEpisodeRequest.loadFailure': 'تعذر تحميل الحلقات',
       'lumen.tvEpisodeRequest.loadFailureBody':
         'تعذر تحميل بعض تفاصيل المواسم.',
@@ -5769,6 +5770,8 @@ export const localeData = [
       'lumen.tvEpisodeRequest.seasonSelected': 'تم تحديد {count}',
       'lumen.tvEpisodeRequest.selectAll': 'تحديد كل الحلقات القابلة للطلب',
       'lumen.tvEpisodeRequest.selectAllShort': 'تحديد الكل',
+      'lumen.tvEpisodeRequest.selectLatestSeason':
+        'تحديد كل الحلقات القابلة للطلب في أحدث موسم',
       'lumen.tvEpisodeRequest.selectSeason':
         'تحديد كل الحلقات القابلة للطلب في {season}',
       'lumen.tvEpisodeRequest.selected': 'المحدد: {count}',
@@ -17105,6 +17108,7 @@ export const localeData = [
       'lumen.tvEpisodeRequest.episodeCount': '{count} episodes',
       'lumen.tvEpisodeRequest.episodes': 'episodes',
       'lumen.tvEpisodeRequest.expandAll': 'Expand All',
+      'lumen.tvEpisodeRequest.latestSeason': 'Latest Season',
       'lumen.tvEpisodeRequest.loadFailure': 'Could not load episodes',
       'lumen.tvEpisodeRequest.loadFailureBody':
         'Some season details could not be loaded.',
@@ -17120,6 +17124,8 @@ export const localeData = [
       'lumen.tvEpisodeRequest.seasonSelected': '{count} selected',
       'lumen.tvEpisodeRequest.selectAll': 'Select all requestable episodes',
       'lumen.tvEpisodeRequest.selectAllShort': 'Select All',
+      'lumen.tvEpisodeRequest.selectLatestSeason':
+        'Select all requestable episodes in the latest season',
       'lumen.tvEpisodeRequest.selectSeason':
         'Select all requestable episodes in {season}',
       'lumen.tvEpisodeRequest.selected': 'Selected: {count}',
@@ -29575,6 +29581,7 @@ export const localeData = [
       'lumen.tvEpisodeRequest.episodeCount': '{count} épisodes',
       'lumen.tvEpisodeRequest.episodes': 'épisodes',
       'lumen.tvEpisodeRequest.expandAll': 'Tout développer',
+      'lumen.tvEpisodeRequest.latestSeason': 'Dernière saison',
       'lumen.tvEpisodeRequest.loadFailure':
         'Impossible de charger les épisodes',
       'lumen.tvEpisodeRequest.loadFailureBody':
@@ -29592,6 +29599,8 @@ export const localeData = [
       'lumen.tvEpisodeRequest.selectAll':
         'Sélectionner tous les épisodes pouvant être demandés',
       'lumen.tvEpisodeRequest.selectAllShort': 'Tout sélectionner',
+      'lumen.tvEpisodeRequest.selectLatestSeason':
+        'Sélectionner tous les épisodes pouvant être demandés de la dernière saison',
       'lumen.tvEpisodeRequest.selectSeason':
         'Sélectionner tous les épisodes pouvant être demandés de {season}',
       'lumen.tvEpisodeRequest.selected': 'Sélection : {count}',
