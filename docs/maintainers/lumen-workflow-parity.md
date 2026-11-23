@@ -647,6 +647,17 @@ linguistic review and full bundled-suite qualification remain open. Candidate
 captures from these increments are retained in
 `seerrng-lumen-theme-locale-20261120`.
 
+### Navigation entry-point verification
+
+The shared shell navigation check was rerun on desktop, iPhone, Android, and
+tablet. Eleven browser cases passed and five were skipped by the suite's
+explicit viewport guards. The passing cases verified localized navigation
+landmarks and request counts, category and permission filtering, compact
+320 × 568 phone-menu scrolling, and mobile-tab behavior on long forms and the
+ordinary-user library. These fixture-backed checks verify the tested Lumen
+entry points only; matched native screenshots, the complete menu inventory,
+and live account authorization remain open.
+
 The account profile now localizes save rejection, permission denial, mismatched
 server readback, and failed confirmation, plus Plex-managed email, profile and
 password loading/retry states, administrator and empty-permission notices, and
