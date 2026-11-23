@@ -175,7 +175,7 @@ export default function PersonalIdentityPacks({
             'Export title matches'
           )}
         </button>
-        <label className="btn btn-tonal btn-sm cfg-upload">
+        <label className="btn btn-tonal btn-sm cfg-upload" data-label-wrap>
           {t(
             'components.IdentityMappingPackControls.importLabel',
             'Choose a SeerrNG title-match pack'

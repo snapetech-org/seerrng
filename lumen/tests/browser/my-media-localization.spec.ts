@@ -25,6 +25,7 @@ const labels = {
     loadError: 'Could not load My Media',
     packs: 'Personal title matches',
     export: 'Export title matches',
+    importPack: 'Choose a SeerrNG title-match pack',
   },
   fr: {
     title: 'Ma bibliothèque',
@@ -37,6 +38,7 @@ const labels = {
     loadError: 'Impossible de charger Ma bibliothèque',
     packs: 'Correspondance des titres personnels',
     export: 'Exporter les correspondances de titres',
+    importPack: 'Choisissez un pack SeerrNG de correspondances de titres.',
   },
   ar: {
     title: 'مكتبي',
@@ -49,6 +51,7 @@ const labels = {
     loadError: 'تعذر تحميل مكتبي',
     packs: 'مطابقات العناوين الشخصية',
     export: 'تصدير مطابقات العناوين',
+    importPack: 'اختر حزمة مطابقات العناوين من SeerrNG.',
   },
 } as const;
 
@@ -122,6 +125,17 @@ test('My Media follows the saved locale across its library controls', async ({
   await expect(
     page.getByRole('button', { name: translated.export })
   ).toBeVisible();
+  const importPack = page.locator('label.cfg-upload');
+  await expect(importPack).toContainText(translated.importPack);
+  const bounds = await importPack.evaluate((element) => {
+    const { left, right } = element.getBoundingClientRect();
+    return { left, right };
+  });
+  expect(bounds.left).toBeGreaterThanOrEqual(0);
+  expect(bounds.right).toBeLessThanOrEqual(page.viewportSize()!.width);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
   await expect(page.getByText('Fixture Film', { exact: true })).toBeVisible();
 
   if (locale === 'ar' && !baseline)

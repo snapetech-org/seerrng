@@ -7932,3 +7932,20 @@ the result row follows existing geometry. The full Lumen browser matrix was
 started but stopped after 555 cases (5 skips and 4,223 not run) because 16-way
 parallel execution produced timeouts; no full-suite pass is claimed. Live
 settings persistence and independent linguistic review remain unverified.
+
+### My Media narrow-screen import control (2026-11-23)
+
+The rendered `/library` page exposed clipping in the French personal
+title-match import control on iPhone width. Its 390 CSS-pixel viewport placed
+the label's right edge at 450px. The label now opts into Lumen's shared
+`.btn[data-label-wrap]` behavior. A browser assertion checks the control bounds
+and document width against the viewport.
+
+French and Arabic My Media localization/recovery workflows pass across desktop,
+iPhone, Android, and tablet (16 cases); the complete My Media workflow suite
+also passed 44 cases immediately before this styling repair. Matched French
+and Arabic before-and-after captures at desktop and iPhone sizes are in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/my-media-audit/`
+and `.../my-media-audit-wrap-fix/`. The French phone control wraps onto two
+lines inside its button after the fix; desktop and Arabic geometry remains
+stable. Fixture results do not prove live tracking-provider connectivity.
