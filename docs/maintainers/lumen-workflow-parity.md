@@ -8088,4 +8088,11 @@ repository localization check also pass. French desktop and iPhone candidate
 screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/jobs-captures/`
 and were inspected. The historical native `/settings/jobs` captures were also
-reviewed; a matched populated native/Lumen visual comparison remains open.
+reviewed. A matched populated comparison now uses the same Plex scan job and
+schedule at desktop and phone sizes. Lumen keeps the job name, state, next run,
+cron value, and all three actions visible on phones. The native combined
+Jobs & Cache page clips its table columns and actions at that width; the Lumen
+job card remains readable and links to a separate System Caches screen. Captures
+are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-indexer-state-guidance-20261123/native-jobs/`
+and `.../lumen-jobs/`.

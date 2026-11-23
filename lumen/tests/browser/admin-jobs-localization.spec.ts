@@ -5,7 +5,7 @@ const appPath = (path: string) => `${mount}${path}`;
 
 test('scheduled jobs follow the saved locale and confirm schedule changes', async ({
   page,
-}) => {
+}, info) => {
   const locale = ['en', 'fr', 'ar'].includes(
     process.env.LUMEN_JOBS_LOCALE ?? ''
   )
@@ -56,7 +56,7 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     cronSchedule: '0 */15 * * * *',
     enabled: true,
     running: false,
-    nextExecutionTime: '2026-11-21T00:00:00Z',
+    nextExecutionTime: '2026-11-23T16:00:00.000Z',
   };
   const jobName = {
     en: 'Plex Recently Added Scan',
@@ -104,6 +104,14 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
   await expect(
     row.getByText('Raw internal job name', { exact: true })
   ).toHaveCount(0);
+  if (
+    process.env.LUMEN_CAPTURE_JOBS &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_JOBS}/${locale}-initial-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
   await row.getByRole('button', { name: labels[1], exact: true }).click();
   const frequency = page.getByRole('combobox', {
     name: labels[2],
