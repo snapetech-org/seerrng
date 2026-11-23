@@ -239,6 +239,11 @@ test('music requests select MP3 or FLAC service and preserve per-quality availab
   expect(box!.x + box!.width).toBeLessThanOrEqual(viewport!.width);
   const visibleHeight = await page.evaluate(() => window.innerHeight);
   expect(box!.y + box!.height).toBeLessThanOrEqual(visibleHeight);
+  expect(
+    await sheet.locator('.facts').evaluate((element) => {
+      return element.scrollWidth - element.clientWidth;
+    })
+  ).toBeLessThanOrEqual(1);
   await expect(sheet.getByLabel('Server')).toHaveValue('3');
   await expect(sheet.getByLabel('Quality')).toHaveValue('10');
   await expect(sheet.getByLabel('Metadata Profile')).toHaveValue('20');

@@ -7787,11 +7787,12 @@ layout. Changing destination rechecks format availability and pending requests
 against that destination, preventing duplicate requests. Request payload,
 permissions, and format-specific availability checks are preserved.
 
-The focused Music request and shared detail-options suites pass 57 cases across
+The focused Music request and shared detail-options suites pass 60 cases across
 desktop, iPhone, Android, and tablet. TypeScript and the Lumen production build
 pass. Matched native/Lumen request-sheet captures at desktop and phone sizes are
 retained in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-20261123/`.
-The phone sheet requires scrolling to reach advanced controls; this was checked
-in browser fixtures. Live quota/provider behavior and live submission remain
-unverified. This closes the request-dialog workflow gap, not all Music or Lumen
-parity gaps.
+At phone widths, the album facts panel switches to two columns so its values
+remain readable; the sheet still scrolls to advanced controls. Browser fixtures
+check its bounds and overflow. Live quota/provider behavior and live submission
+remain unverified. This closes the request-dialog workflow gap, not all Music or
+Lumen parity gaps.
