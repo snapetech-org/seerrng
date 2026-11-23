@@ -646,6 +646,11 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
     testAppPath('/issues?mediaType=book&issueType=audio&timeFrame=7d&page=2')
   );
   await expect(page.getByText('Task Filters', { exact: true })).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
   if (
     process.env.LUMEN_CAPTURE_DIR &&
     ['desktop', 'iphone'].includes(test.info().project.name)
