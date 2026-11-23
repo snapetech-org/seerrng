@@ -87,6 +87,9 @@ export default function TvDetail() {
   const { t: translate } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
+  const episodeQueue = useApi<{ defaultEpisodeCount: number }>(
+    user?.id ? `/user/${user.id}/settings/episode-queue` : null
+  ).data;
 
   const { id } = useParams();
   const loc = useLocation();
@@ -593,6 +596,27 @@ export default function TvDetail() {
       <div className="dbody">
         <ServiceNote error={error} what="this series" retry={reload} />
         <div className="dstatus">
+          {episodeQueue && (
+            <Pill
+              k={episodeQueue.defaultEpisodeCount > 0 ? 'ok' : 'neutral'}
+              icon="clock"
+            >
+              {episodeQueue.defaultEpisodeCount > 0
+                ? translate(
+                    episodeQueue.defaultEpisodeCount === 1
+                      ? 'lumen.tv.episodeQueue.one'
+                      : 'lumen.tv.episodeQueue.many',
+                    episodeQueue.defaultEpisodeCount === 1
+                      ? 'Episode Queue · 1 episode set by admin'
+                      : 'Episode Queue · {count} episodes set by admin',
+                    { count: episodeQueue.defaultEpisodeCount }
+                  )
+                : translate(
+                    'lumen.tv.episodeQueue.off',
+                    'Episode Queue · off · managed by admin'
+                  )}
+            </Pill>
+          )}
           {watchable && (
             <Pill k="ok" icon="check">
               {statusLine}

@@ -8266,3 +8266,16 @@ acceptance and live provider round trips remain unverified.
 
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/`.
+
+### Episode Queue default on TV details (2026-11-23)
+
+Lumen TV details now display the signed-in user's Episode Queue default, matching
+SeerrNG's read-only detail indicator for off, one episode, or multiple episodes.
+The value comes from the existing self-scoped settings endpoint; signed-out
+viewers do not make the request. The detail badge does not mutate user settings.
+English, French, and Arabic labels are provided.
+
+Four focused browser cases cover off, singular, plural, and signed-out behavior.
+A state-matched native TV screenshot and translated visual review remain
+unverified. The desktop and phone candidates are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/episode-queue/`.

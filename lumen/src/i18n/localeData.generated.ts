@@ -6947,6 +6947,12 @@ export const localeData = [
       'lumen.mediaServerCollections.loadFailed':
         'تعذر تحميل المجموعات أو تأكيد التغيير.',
       'lumen.mediaServerCollections.retry': 'إعادة تحميل المجموعات',
+      'lumen.tv.episodeQueue.off':
+        'قائمة انتظار الحلقات · متوقفة · يديرها المسؤول',
+      'lumen.tv.episodeQueue.one':
+        'قائمة انتظار الحلقات · حلقة واحدة يحددها المسؤول',
+      'lumen.tv.episodeQueue.many':
+        'قائمة انتظار الحلقات · {count} حلقات يحددها المسؤول',
     },
   },
   {
@@ -18211,6 +18217,10 @@ export const localeData = [
       'lumen.mediaServerCollections.loadFailed':
         'Collections could not be loaded or confirmed.',
       'lumen.mediaServerCollections.retry': 'Reload collections',
+      'lumen.tv.episodeQueue.off': 'Episode Queue · off · managed by admin',
+      'lumen.tv.episodeQueue.one': 'Episode Queue · 1 episode set by admin',
+      'lumen.tv.episodeQueue.many':
+        'Episode Queue · {count} episodes set by admin',
     },
   },
   {
@@ -30637,6 +30647,12 @@ export const localeData = [
       'lumen.mediaServerCollections.loadFailed':
         'Impossible de charger ou de confirmer les collections.',
       'lumen.mediaServerCollections.retry': 'Recharger les collections',
+      'lumen.tv.episodeQueue.off':
+        'File d’attente des épisodes · désactivée · gérée par l’administrateur',
+      'lumen.tv.episodeQueue.one':
+        'File d’attente des épisodes · 1 épisode défini par l’administrateur',
+      'lumen.tv.episodeQueue.many':
+        'File d’attente des épisodes · {count} épisodes définis par l’administrateur',
     },
   },
   {

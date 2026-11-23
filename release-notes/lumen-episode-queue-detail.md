@@ -1,0 +1,1 @@
+Lumen TV details now show the signed-in user's administrator-managed Episode Queue default, including whether it is off or how many episodes are queued. The value is read from SeerrNG's existing self-scoped settings endpoint and is not editable on the detail page. English, French, and Arabic labels are included.

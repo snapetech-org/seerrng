@@ -5710,5 +5710,8 @@
   "lumen.mediaServerCollections.empty",
   "lumen.mediaServerCollections.loading",
   "lumen.mediaServerCollections.loadFailed",
-  "lumen.mediaServerCollections.retry"
+  "lumen.mediaServerCollections.retry",
+  "lumen.tv.episodeQueue.off",
+  "lumen.tv.episodeQueue.one",
+  "lumen.tv.episodeQueue.many"
 ]
