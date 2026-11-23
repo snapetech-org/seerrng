@@ -8315,3 +8315,18 @@ episode ID. Desktop, iPhone, Android, and tablet cases pass. A state-matched
 native TV capture with a linked playback device and live provider playback
 remain unverified. Candidate UI evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-playback/`.
+
+### Direct Discover destinations in Lumen navigation (2026-11-23)
+
+The shared Lumen desktop and mobile menu now exposes Book Recommendations,
+Collector Picks, and Browse Patches as direct destinations, alongside Game
+Finder. Visibility follows SeerrNG request permission and enabled media
+categories; the book recommendation link selects Audiobooks when Ebooks are
+turned off. This supplements the existing in-page shortcuts and keeps route
+checks authoritative.
+
+Browser fixtures cover all four menu destinations, unavailable request
+permission, account category restrictions, the audiobook-only route, and menu
+scrolling at desktop, iPhone, Android, and tablet sizes. Candidate screenshots
+and Playwright traces are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/navigation-discover/`.

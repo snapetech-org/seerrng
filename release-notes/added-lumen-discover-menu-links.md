@@ -1,0 +1,1 @@
+Lumen now provides direct desktop and mobile navigation links for Book Recommendations, Collector Picks, and Browse Patches. The links follow account permissions and enabled media categories, including audiobook-only households.

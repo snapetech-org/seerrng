@@ -529,6 +529,47 @@ export default function Shell({ children }: { children: ReactNode }) {
                 )}
             </Fragment>
           ))}
+          {extras.ready &&
+            canUseRequestAccess(user?.permissions) &&
+            (extras.categoryEnabled('ebook') ||
+              extras.categoryEnabled('audiobook')) && (
+              <NavLink
+                to={
+                  extras.categoryEnabled('ebook')
+                    ? '/books/recommendations'
+                    : '/books/recommendations?format=audiobook'
+                }
+                onClick={toTop('/books/recommendations')}
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <Icon name="book" />
+                {t('lumen.books.recommendations', 'Book Recommendations')}
+              </NavLink>
+            )}
+          {extras.ready &&
+            canUseRequestAccess(user?.permissions) &&
+            extras.categoryEnabled('music') && (
+              <NavLink
+                to="/music/collectors"
+                onClick={toTop('/music/collectors')}
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <Icon name="music" />
+                {t('lumen.music.collectorPicks', 'Collector Picks')}
+              </NavLink>
+            )}
+          {extras.list.some((e) => e.key === 'game') &&
+            extras.categoryEnabled('game') &&
+            canUseRequestAccess(user?.permissions) && (
+              <NavLink
+                to="/patches"
+                onClick={toTop('/patches')}
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                <Icon name="game" />
+                {t('lumen.patches.browse', 'Browse Patches')}
+              </NavLink>
+            )}
           {shareAvailable && (
             <NavLink
               to="/share"
