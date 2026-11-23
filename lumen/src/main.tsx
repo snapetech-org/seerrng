@@ -244,6 +244,63 @@ function NativeUsersBookmark() {
   return <Navigate to={`/admin/users${search}${hash}`} replace />;
 }
 
+function NativeSettingsBookmark() {
+  const { pathname, search, hash } = useLocation();
+  const parts = pathname.split('/').filter(Boolean).slice(1);
+  const page = parts[0] ?? 'main';
+  const params = new URLSearchParams(search);
+  const searchTarget = params.get('settingsSearchTarget');
+  let destination = '/admin';
+
+  if (page === 'services' || page === 'prowlarr') {
+    if (
+      page === 'prowlarr' ||
+      searchTarget === 'prowlarr' ||
+      searchTarget === 'prowlarr-settings-title' ||
+      hash === '#prowlarr'
+    )
+      destination = '/admin/prowlarr';
+  } else if (page === 'notifications') {
+    const channel = parts[1];
+    const channels = [
+      'apprise',
+      'discord',
+      'email',
+      'gotify',
+      'ntfy',
+      'pushbullet',
+      'pushover',
+      'slack',
+      'telegram',
+      'webhook',
+      'webpush',
+    ];
+    destination = channels.includes(channel ?? '')
+      ? `/admin/notifications/${channel}`
+      : '/admin/notifications';
+  } else {
+    const destinations: Record<string, string> = {
+      about: '/admin/about',
+      categories: '/admin/categories',
+      discovery: '/admin/discovery',
+      jellyfin: '/admin/media-libraries',
+      jobs: '/admin/jobs',
+      'library-migration': '/admin/library-migration',
+      logs: '/admin/logs',
+      main: '/admin/general',
+      metadata: '/admin/metadata',
+      network: '/admin/network',
+      plex: '/admin/media-libraries',
+      users: '/admin/users',
+    };
+    destination = destinations[page] ?? '/admin';
+    if (searchTarget === 'enable4k') destination = '/admin/requests';
+    if (searchTarget === 'apiKey') destination = '/admin/general';
+  }
+
+  return <Navigate to={`${destination}${search}${hash}`} replace />;
+}
+
 function ProfileSettingsBookmark() {
   const { pathname, search } = useLocation();
   const suffix = pathname.split('/profile/settings')[1] ?? '';
@@ -385,6 +442,10 @@ function App() {
             element={<NativeComingSoonBookmark />}
           />
           <Route path="/users" element={<NativeUsersBookmark />} />
+          <Route
+            path="/settings/*"
+            element={<NativeSettingsBookmark />}
+          />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
