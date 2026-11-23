@@ -1,0 +1,1 @@
+Lumen now confirms managed user profile changes with a fresh server readback before reporting success. If persisted values do not match the submitted username or email, the editor preserves the draft and allows a retry.

@@ -8321,6 +8321,52 @@ test('Users edits a username without writing other profile settings', async ({
   await expect(page.getByLabel('Username')).toHaveValue('Renamed Viewer');
 });
 
+test('Users keep profile edits when a successful save response does not match', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Existing Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let saves = 0;
+  let persistedUsername = 'Existing Viewer';
+  await page.route('**/api/v1/user/19/settings/main', (route) => {
+    if (route.request().method() !== 'POST') {
+      return route.fulfill({ json: { username: persistedUsername } });
+    }
+    expect(route.request().postDataJSON()).toEqual({
+      username: 'Renamed Viewer',
+    });
+    saves++;
+    if (saves > 1) persistedUsername = 'Renamed Viewer';
+    return route.fulfill({
+      json: { username: 'Renamed Viewer' },
+    });
+  });
+  await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Manage Existing Viewer' }).click();
+  await page.getByRole('button', { name: 'Edit Profile' }).click();
+  const username = page.getByLabel('Username');
+  await username.fill('Renamed Viewer');
+  await expect(username).toHaveValue('Renamed Viewer');
+  const save = page.getByRole('button', { name: 'Save Profile' });
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not save the profile.'
+  );
+  await expect(username).toHaveValue('Renamed Viewer');
+  await expect(page.getByText('Profile saved.')).toHaveCount(0);
+  await save.click();
+  await expect(page.getByText('Profile saved.')).toBeVisible();
+  await expect(username).toHaveValue('Renamed Viewer');
+  expect(saves).toBe(2);
+});
+
 test('Users edits local email and keeps Plex email provider-managed', async ({
   page,
 }) => {

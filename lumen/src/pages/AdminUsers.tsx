@@ -249,7 +249,25 @@ function EditProfile({
     setError('');
     setNotice('');
     try {
-      await api(path, { method: 'POST', body: JSON.stringify(update) });
+      const saved = await api<{ username?: string; email?: string }>(path, {
+        method: 'POST',
+        body: JSON.stringify(update),
+      });
+      const readback = await api<{ username?: string; email?: string }>(path);
+      if (
+        (update.username !== undefined &&
+          (saved.username !== update.username ||
+            readback.username !== update.username)) ||
+        (update.email !== undefined &&
+          (saved.email !== update.email || readback.email !== update.email))
+      ) {
+        throw new Error(
+          t(
+            'lumen.adminUsers.profileSaveFailure',
+            'Could not save the profile.'
+          )
+        );
+      }
       setNotice(t('lumen.adminUsers.profileSaved', 'Profile saved.'));
       profile.reload();
       onSaved();

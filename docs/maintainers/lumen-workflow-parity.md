@@ -7384,3 +7384,18 @@ entry. Matched desktop and iPhone baseline/candidate captures were inspected;
 the compact phone candidate was inspected as well. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mobile-more-20261122/`.
 Live permission changes and route/API authorization remain server-owned.
+
+### Managed user profile save readback
+
+Lumen's administrator-managed user profile editor now checks the saved
+username/email in both the successful POST response and a fresh GET before it
+shows success. If the write response and persisted readback disagree, it keeps
+the user's draft and shows the existing recoverable save error so the action can
+be retried. This check remains within SeerrNG's existing user-management
+authorization and profile route.
+
+The focused failure/retry workflow and existing username/email regressions pass
+on desktop, iPhone, Android, and tablet (12 cases). Browser fixtures simulate a
+successful write response with stale persisted data, then a successful retry
+with matching readback. Live account persistence and matched baseline/candidate
+visual comparison remain unverified.
