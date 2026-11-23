@@ -5673,5 +5673,21 @@
   "lumen.music.requestsRemaining",
   "components.RequestModal.Music.requestmusic",
   "components.RequestModal.Music.backendRequestFailed",
-  "components.RequestModal.Music.requesterror"
+  "components.RequestModal.Music.requesterror",
+  "lumen.issues.field.releaseDate",
+  "lumen.issues.field.runtime",
+  "lumen.issues.field.createdBy",
+  "lumen.issues.field.createdDate",
+  "lumen.issues.field.description",
+  "lumen.issues.field.type",
+  "lumen.issues.field.affectedSeasons",
+  "lumen.issues.field.status",
+  "lumen.issues.field.details",
+  "lumen.issues.unavailable",
+  "lumen.issues.viewDiscussion",
+  "lumen.issues.field.firstPublished",
+  "lumen.issues.field.latestIssue",
+  "lumen.issues.field.pages",
+  "lumen.issues.field.issues",
+  "lumen.issues.mediaUnavailable"
 ]

@@ -1970,6 +1970,110 @@ a.person:hover {
   border-radius: 5px;
   object-fit: cover;
 }
+.issue-card {
+  align-items: stretch;
+}
+.issue-card-content {
+  display: grid;
+  grid-template-columns: minmax(15rem, 1.1fr) minmax(12rem, 1fr) minmax(
+      12rem,
+      0.9fr
+    );
+  align-items: stretch;
+  gap: 12px 18px;
+  width: 100%;
+  min-width: 0;
+}
+.issue-card .issue-media-summary {
+  align-items: flex-start;
+  min-width: 0;
+}
+.issue-card .issue-media-summary > a {
+  flex-basis: 64px;
+}
+.issue-card .issue-media-summary img {
+  width: 64px;
+  height: 96px;
+}
+.issue-card .issue-media-summary > div {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+}
+.issue-media-title {
+  color: var(--ink-1);
+  font-size: 17px;
+  line-height: 1.3;
+}
+.issue-media-title a {
+  color: inherit;
+  text-decoration: none;
+}
+.issue-media-title a:hover {
+  text-decoration: underline;
+}
+.issue-media-format {
+  color: var(--ink-2);
+}
+.issue-card-media-facts,
+.issue-card-created-facts,
+.issue-card-type-facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-content: start;
+  gap: 6px 12px;
+  min-width: 0;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 12px;
+}
+.issue-card-media-facts dt,
+.issue-card-created-facts dt,
+.issue-card-type-facts dt {
+  color: var(--ink-1);
+  font-weight: 600;
+}
+.issue-card-media-facts dd,
+.issue-card-created-facts dd,
+.issue-card-type-facts dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.issue-card-created-facts dd:last-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.issue-card-type-facts {
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 14px;
+}
+.issue-card-discussion {
+  justify-self: start;
+}
+.issue-card-content > section[hidden] {
+  display: none;
+}
+@media (max-width: 52rem) {
+  .issue-card-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .issue-card-created-facts,
+  .issue-card-type-facts {
+    border-top: 1px solid var(--line);
+    border-inline-start: 0;
+    padding: 12px 0 0;
+  }
+  .issue-card-type-facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
 .set + .set {
   border-top: 1px solid var(--line);
 }

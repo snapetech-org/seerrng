@@ -40,12 +40,25 @@ test('Issues localizes filters, states, and discussion entry points', async ({
               id: 7,
               status: 1,
               issueType: 1,
+              media: { mediaType: 'tv', tmdbId: 123 },
               createdAt: '2026-11-19T00:00:00Z',
               createdBy: { id: 1 },
+              problemEpisodeSelections: [
+                { seasonNumber: 2, episodeNumbers: [4] },
+              ],
               comments: [{ id: 9, message: 'Playback freezes' }],
             },
           ],
           pageInfo: { page: 1, pages: 2 },
+        },
+      });
+    if (path === '/tv/123')
+      return route.fulfill({
+        json: {
+          mediaType: 'tv',
+          title: 'Test Series',
+          firstAirDate: '2005-09-13',
+          episodeRunTime: [42],
         },
       });
     return route.fulfill({ json: {} });
@@ -65,6 +78,17 @@ test('Issues localizes filters, states, and discussion entry points', async ({
       name: text('Issues', 'Signalements', 'البلاغات'),
     })
   ).toBeVisible();
+  await page
+    .getByText(
+      text('Task Filters', 'Filtres des signalements', 'فلاتر البلاغات'),
+      {
+        exact: true,
+      }
+    )
+    .click();
+  await page
+    .getByText(text('Filters', 'Filtres', 'الفلاتر'), { exact: true })
+    .click();
   await expect(
     page.getByRole('combobox', {
       name: text('Issue Status', 'État du signalement', 'حالة البلاغ'),
@@ -89,6 +113,20 @@ test('Issues localizes filters, states, and discussion entry points', async ({
       .getByRole('listitem')
       .getByText(text('Open', 'Ouvert', 'مفتوح'), { exact: true })
   ).toBeVisible();
+  const row = page
+    .getByRole('listitem')
+    .filter({ hasText: 'Playback freezes' });
+  for (const [english, french, arabic] of [
+    ['Created By:', 'Créé par:', 'أنشأه:'],
+    ['Created Date:', 'Date de création:', 'تاريخ الإنشاء:'],
+    ['Description:', 'Description:', 'الوصف:'],
+    ['Release Date:', 'Date de sortie:', 'تاريخ الإصدار:'],
+    ['Runtime:', 'Durée:', 'مدة العرض:'],
+    ['Affected Seasons:', 'Saisons concernées:', 'المواسم المتأثرة:'],
+  ])
+    await expect(
+      row.getByText(text(english, french, arabic), { exact: true })
+    ).toBeVisible();
   await expect(
     page.getByRole('button', {
       name: text('Next Page', 'Page suivante', 'الصفحة التالية'),

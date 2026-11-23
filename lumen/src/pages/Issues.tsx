@@ -16,6 +16,7 @@ import {
   canCreateIssues,
   canManageIssues,
   canReadIssues,
+  canViewIssueReporter,
 } from '../issuePermissions';
 
 interface Reporter {
@@ -26,6 +27,9 @@ interface IssueMedia {
   mediaType: string;
   tmdbId?: number;
   mbId?: string | null;
+  title?: string;
+  name?: string;
+  posterPath?: string;
   identifiers?: { provider: string; value: string }[];
 }
 
@@ -88,12 +92,13 @@ function IssueMediaTitle({
   media?: IssueMedia;
   is4k?: boolean;
 }) {
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
   const anchor = useRef<HTMLDivElement>(null);
   const [nearView, setNearView] = useState(false);
   const destination = issueTitleLink(media);
+  const destinationPath = destination?.path;
   useEffect(() => {
-    if (!destination || nearView || !anchor.current) return;
+    if (!destinationPath || nearView || !anchor.current) return;
     if (typeof IntersectionObserver === 'undefined') {
       setNearView(true);
       return;
@@ -109,12 +114,12 @@ function IssueMediaTitle({
     );
     observer.observe(anchor.current);
     return () => observer.disconnect();
-  }, [destination?.path, nearView]);
+  }, [destinationPath, nearView]);
   const { data, error } = useApi<IssueMediaTitle>(
     nearView && destination ? destination.path : null,
     { currentPathOnly: true }
   );
-  const title = data?.title || data?.name;
+  const title = data?.title || data?.name || media?.title || media?.name;
   const year =
     (data?.releaseDate || data?.firstAirDate || '').match(/\d{4}/)?.[0] ||
     data?.firstPublishYear ||
@@ -146,35 +151,73 @@ function IssueMediaTitle({
         destination?.label ?? 'Media'
       )
     : undefined;
-  if (!destination || error) return null;
+  const releaseDateLabel =
+    mediaType === 'book' || mediaType === 'comic'
+      ? t('lumen.issues.field.firstPublished', 'First Published')
+      : mediaType === 'magazine'
+        ? t('lumen.issues.field.latestIssue', 'Latest Issue')
+        : t('lumen.issues.field.releaseDate', 'Release Date');
+  const runtimeLabel =
+    mediaType === 'book'
+      ? t('lumen.issues.field.pages', 'Pages')
+      : mediaType === 'comic'
+        ? t('lumen.issues.field.issues', 'Issues')
+        : t('lumen.issues.field.runtime', 'Runtime');
+  const displayDate = (value?: string | number) => {
+    if (value === undefined || value === '') return undefined;
+    const text = String(value);
+    if (/^\d{4}$/.test(text)) return text;
+    const date = new Date(text);
+    return Number.isFinite(date.valueOf())
+      ? new Intl.DateTimeFormat(locale, {
+          dateStyle: 'medium',
+          timeZone: 'UTC',
+        }).format(date)
+      : text;
+  };
+  if (!destination) return null;
   return (
     <div className="issue-media-summary" ref={anchor}>
-      {poster && title && (
-        <Link to={destination.path} aria-label={title}>
-          <img src={poster} alt="" loading="lazy" />
-        </Link>
-      )}
+      <Link to={destination.path} aria-label={title ?? mediaLabel}>
+        <img
+          src={poster || '/images/seerr_poster_not_found.png'}
+          alt=""
+          loading="lazy"
+        />
+      </Link>
       <div>
-        {mediaLabel && (
-          <small>
-            {mediaLabel}
-            {(mediaType === 'movie' || mediaType === 'tv') &&
-              ` · ${is4k ? '4K' : 'HD'}`}
-          </small>
-        )}
-        <small>
+        <strong className="issue-media-title">
           {title ? (
             <Link to={destination.path}>
               {title}
               {year ? ` (${year})` : ''}
             </Link>
+          ) : error ? (
+            t('lumen.issues.mediaUnavailable', 'Media information unavailable')
           ) : nearView ? (
             t('lumen.issues.loadingTitle', 'Loading title…')
           ) : (
             ' '
           )}
+        </strong>
+        <small className="issue-media-format">
+          {mediaLabel}
+          {(mediaType === 'movie' || mediaType === 'tv') &&
+            ` · ${is4k ? '4K' : 'HD'}`}
         </small>
-        {runtime && <small>{runtime}</small>}
+        <dl className="issue-card-media-facts">
+          <dt>{releaseDateLabel}:</dt>
+          <dd>
+            {displayDate(
+              data?.releaseDate ||
+                data?.firstAirDate ||
+                data?.startYear ||
+                data?.firstPublishYear
+            ) || t('lumen.issues.unavailable', 'Not available')}
+          </dd>
+          <dt>{runtimeLabel}:</dt>
+          <dd>{runtime || t('lumen.issues.unavailable', 'Not available')}</dd>
+        </dl>
       </div>
     </div>
   );
@@ -202,6 +245,38 @@ interface Issue {
     user?: Reporter;
     createdAt: string;
   }[];
+}
+
+function issueAffectedScope(
+  issue: Issue,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  if (issue.problemEpisodeSelections?.length) {
+    return issue.problemEpisodeSelections
+      .map(({ seasonNumber, episodeNumbers }) => {
+        const season = t('lumen.issues.season', 'Season {season}', {
+          season: seasonNumber,
+        });
+        return episodeNumbers?.length
+          ? `${season} · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: episodeNumbers.join(', ') })}`
+          : season;
+      })
+      .join(', ');
+  }
+  if (
+    issue.problemSeason === undefined &&
+    issue.problemEpisode === undefined &&
+    !issue.problemEpisodes?.length
+  )
+    return undefined;
+  const season = t('lumen.issues.season', 'Season {season}', {
+    season: issue.problemSeason ?? 0,
+  });
+  if (issue.problemEpisodes?.length)
+    return `${season} · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: issue.problemEpisodes.join(', ') })}`;
+  if (issue.problemEpisode)
+    return `${season} · ${t('lumen.issues.episode', 'Episode {episode}', { episode: issue.problemEpisode })}`;
+  return season;
 }
 
 interface IssueSeason {
@@ -375,6 +450,7 @@ const issueMetadata = [
 
 function IssueList() {
   const { locale, t } = useLumenLocale();
+  const { user } = useAuth();
   const [bookmark, setBookmark] = useSearchParams();
   const [expandedIssue, setExpandedIssue] = useState<number>();
   const submitted = (bookmark.get('search') ?? '').trim().slice(0, 512);
@@ -638,27 +714,76 @@ function IssueList() {
         <ul className="setlist">
           {data.results.map((issue) => (
             <li
-              className={`set${expandedIssue === issue.id ? 'set-expanded' : ''}`}
+              className={`set issue-card${expandedIssue === issue.id ? 'set-expanded' : ''}`}
               key={issue.id}
             >
-              <div className="set-body">
+              <div className="issue-card-content">
                 <IssueMediaTitle media={issue.media} is4k={issue.is4k} />
-                <Link
-                  to={{
-                    pathname: `/issues/${issue.id}`,
-                    search: bookmark.toString(),
-                  }}
-                >
-                  <b>
-                    {t(
-                      `lumen.issues.type.${issue.issueType}`,
-                      TYPES[issue.issueType] ?? 'Issue'
-                    )}{' '}
-                    #{issue.id}
-                  </b>
-                </Link>
+                <dl className="issue-card-created-facts">
+                  <dt>{t('lumen.issues.field.createdBy', 'Created By')}:</dt>
+                  <dd>
+                    {canViewIssueReporter(user?.permissions)
+                      ? (issue.createdBy.displayName ??
+                        t('lumen.issues.reporter', 'Reporter'))
+                      : t('lumen.issues.unavailable', 'Not available')}
+                  </dd>
+                  <dt>
+                    {t('lumen.issues.field.createdDate', 'Created Date')}:
+                  </dt>
+                  <dd>{timestamp(issue.createdAt, locale)}</dd>
+                  <dt>{t('lumen.issues.field.description', 'Description')}:</dt>
+                  <dd>
+                    {issue.comments?.[0]?.message ||
+                      t('lumen.issues.unavailable', 'Not available')}
+                  </dd>
+                </dl>
+                <dl className="issue-card-type-facts">
+                  <dt>{t('lumen.issues.field.type', 'Type')}:</dt>
+                  <dd>
+                    <Link
+                      to={{
+                        pathname: `/issues/${issue.id}`,
+                        search: bookmark.toString(),
+                      }}
+                    >
+                      {t(
+                        `lumen.issues.type.${issue.issueType}`,
+                        TYPES[issue.issueType] ?? 'Issue'
+                      )}{' '}
+                      #{issue.id}
+                    </Link>
+                  </dd>
+                  {issueAffectedScope(issue, t) ? (
+                    <>
+                      <dt>
+                        {t(
+                          'lumen.issues.field.affectedSeasons',
+                          'Affected Seasons'
+                        )}
+                        :
+                      </dt>
+                      <dd>{issueAffectedScope(issue, t)}</dd>
+                    </>
+                  ) : null}
+                  <dt>{t('lumen.issues.field.status', 'Status')}:</dt>
+                  <dd>
+                    <IssueStatus status={issue.status} />
+                  </dd>
+                  <dt>{t('lumen.issues.field.details', 'Details')}:</dt>
+                  <dd>
+                    <Link
+                      className="btn btn-quiet btn-sm"
+                      to={{
+                        pathname: `/issues/${issue.id}`,
+                        search: bookmark.toString(),
+                      }}
+                    >
+                      {t('lumen.issues.viewDetails', 'View Details')}
+                    </Link>
+                  </dd>
+                </dl>
                 <button
-                  className="btn btn-quiet btn-sm"
+                  className="btn btn-quiet btn-sm issue-card-discussion"
                   type="button"
                   aria-expanded={expandedIssue === issue.id}
                   aria-controls={`issue-inline-${issue.id}`}
@@ -670,51 +795,8 @@ function IssueList() {
                 >
                   {expandedIssue === issue.id
                     ? t('lumen.issues.hideDetails', 'Hide Details')
-                    : t('lumen.issues.viewDetails', 'View Details')}
+                    : t('lumen.issues.viewDiscussion', 'View Discussion')}
                 </button>
-                {issue.comments?.[0] && (
-                  <small>{issue.comments[0].message.slice(0, 160)}</small>
-                )}
-                {issue.problemEpisodeSelections?.length ? (
-                  <small>
-                    {issue.problemEpisodeSelections
-                      .map(({ seasonNumber, episodeNumbers }) => {
-                        const season = t(
-                          'lumen.issues.season',
-                          'Season {season}',
-                          {
-                            season: seasonNumber,
-                          }
-                        );
-                        return episodeNumbers?.length
-                          ? `${season} · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: episodeNumbers.join(', ') })}`
-                          : season;
-                      })
-                      .join(', ')}
-                  </small>
-                ) : (
-                  !!(
-                    issue.problemSeason ||
-                    issue.problemEpisode ||
-                    issue.problemEpisodes?.length
-                  ) && (
-                    <small>
-                      {t('lumen.issues.season', 'Season {season}', {
-                        season: issue.problemSeason ?? 0,
-                      })}
-                      {issue.problemEpisodes?.length
-                        ? ` · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: issue.problemEpisodes.join(', ') })}`
-                        : issue.problemEpisode
-                          ? ` · ${t('lumen.issues.episode', 'Episode {episode}', { episode: issue.problemEpisode })}`
-                          : ''}
-                    </small>
-                  )
-                )}
-                <small>
-                  {issue.createdBy.displayName ??
-                    t('lumen.issues.reporter', 'Reporter')}{' '}
-                  · {timestamp(issue.createdAt, locale)}
-                </small>
                 <section
                   id={`issue-inline-${issue.id}`}
                   className="setlist"
@@ -726,7 +808,6 @@ function IssueList() {
                   )}
                 </section>
               </div>
-              <IssueStatus status={issue.status} />
             </li>
           ))}
         </ul>

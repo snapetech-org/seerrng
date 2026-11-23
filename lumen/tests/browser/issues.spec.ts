@@ -92,6 +92,8 @@ for (const permissions of [4194304, 2097152, 32]) {
             tmdbId: 123,
             title: 'Test Series',
             posterPath: '/images/default-poster.png',
+            firstAirDate: '2005-09-13',
+            episodeRunTime: [42],
             seasons: [
               { seasonNumber: 1 },
               { seasonNumber: 2 },
@@ -166,6 +168,18 @@ for (const permissions of [4194304, 2097152, 32]) {
       await expect(
         page.getByText('Season 2, Season 3 · Episodes 4, 5')
       ).toBeVisible();
+      await expect(
+        page.getByText('Created By:', { exact: true })
+      ).toBeVisible();
+      await expect(
+        page.getByText(permissions === 2097152 ? 'Viewer' : 'Not available', {
+          exact: true,
+        })
+      ).toBeVisible();
+      await expect(
+        page.getByText('Playback freezes', { exact: true })
+      ).toBeVisible();
+      await expect(page.getByText('42 min', { exact: true })).toBeVisible();
     }
     const captureDir = process.env.LUMEN_CAPTURE_DIR;
     if (
@@ -250,6 +264,12 @@ test('issue list resolves affected media titles from visible rows', async ({
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/imageproxy/**', (route) =>
     route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="96"><rect width="64" height="96" fill="#30405c"/></svg>',
+    })
+  );
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({
       status: 200,
       contentType: 'image/svg+xml',
       body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>',
@@ -296,6 +316,22 @@ test('issue list resolves affected media titles from visible rows', async ({
     page.locator('.issue-media-summary img').first()
   ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w342/poster.jpg');
   await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+  const posterBox = await page
+    .locator('.issue-media-summary img')
+    .first()
+    .boundingBox();
+  expect(posterBox?.height).toBe(96);
+  if (['iphone', 'android'].includes(test.info().project.name)) {
+    const discussionButton = page.getByRole('button', {
+      name: 'View Discussion',
+    });
+    await discussionButton.scrollIntoViewIfNeeded();
+    const buttonBox = await discussionButton.boundingBox();
+    const tabbarBox = await page.locator('.tabbar').boundingBox();
+    expect(buttonBox).not.toBeNull();
+    expect(tabbarBox).not.toBeNull();
+    expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(tabbarBox!.y);
+  }
   if (
     process.env.LUMEN_CAPTURE_DIR &&
     ['desktop', 'iphone'].includes(test.info().project.name)
@@ -304,6 +340,48 @@ test('issue list resolves affected media titles from visible rows', async ({
       path: `${process.env.LUMEN_CAPTURE_DIR}/issues-metadata-${test.info().project.name}.png`,
       fullPage: true,
     });
+});
+
+test('issue list preserves legacy affected season and episode fields', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 2097152 } });
+    if (path === '/issue')
+      return route.fulfill({
+        json: {
+          results: [
+            {
+              id: 8,
+              status: 1,
+              issueType: 1,
+              media: { mediaType: 'tv', tmdbId: 21 },
+              createdBy: { id: 3, displayName: 'Reporter' },
+              createdAt: '2026-11-12T00:00:00Z',
+              problemSeason: 4,
+              problemEpisodes: [2, 3],
+              comments: [],
+            },
+          ],
+          pageInfo: { page: 1, pages: 1 },
+        },
+      });
+    if (path === '/tv/21')
+      return route.fulfill({
+        json: {
+          mediaType: 'tv',
+          title: 'Legacy Series',
+          firstAirDate: '2012-01-01',
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(testAppPath('/issues'));
+  const card = page.getByRole('listitem').filter({ hasText: 'Legacy Series' });
+  await expect(card.getByText('Season 4 · Episodes 2, 3')).toBeVisible();
 });
 
 test('issue discussions expand inline and preserve list context', async ({

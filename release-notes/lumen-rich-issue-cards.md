@@ -1,0 +1,1 @@
+Lumen issue lists now show the media and report details needed to triage a report, with creator names limited to viewers who can view or manage issues. Direct issue details and inline discussion actions remain available.
