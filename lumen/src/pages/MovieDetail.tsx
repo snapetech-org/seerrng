@@ -29,6 +29,7 @@ import {
   ActionBar,
   AdvancedOptions,
   canRequest4k,
+  canRequestMovies,
   CreditsDisclosure,
   DetailTop,
   DiscoverDetailNavigation,
@@ -46,6 +47,7 @@ import LiveTvAirings from '../components/LiveTvAirings';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
+import VideoPlaybackButton from '../components/VideoPlaybackButton';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -167,6 +169,9 @@ export default function MovieDetail() {
   const available4k =
     s4k === MediaStatus.AVAILABLE || s4k === MediaStatus.PARTIAL;
   const visible4k = available4k && !(shared4k && mode === 'hide');
+  const canPlaySelectedQuality = selected4k
+    ? visible4k
+    : playableStatus?.k === 'ok';
   const fourKLabel = shared4k
     ? t('lumen.status.shared', 'Available to Other Users')
     : s4k === MediaStatus.PARTIAL
@@ -394,6 +399,17 @@ export default function MovieDetail() {
             mediaType="movie"
             tmdbId={m.id}
           />
+          {m.mediaInfo?.id &&
+            user &&
+            canRequestMovies(user.permissions) &&
+            canPlaySelectedQuality &&
+            (!selected4k || (visible4k && !!pub?.movie4kEnabled && can4k)) && (
+              <VideoPlaybackButton
+                mediaId={m.mediaInfo.id}
+                is4k={selected4k}
+                title={m.title || ''}
+              />
+            )}
         </div>
         <div className="dacts pc">
           {main}

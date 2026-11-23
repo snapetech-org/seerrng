@@ -6953,6 +6953,34 @@ export const localeData = [
         'قائمة انتظار الحلقات · حلقة واحدة يحددها المسؤول',
       'lumen.tv.episodeQueue.many':
         'قائمة انتظار الحلقات · {count} حلقات يحددها المسؤول',
+      'lumen.videoPlayback.open': 'خيارات التشغيل',
+      'lumen.videoPlayback.title': 'تشغيل الفيلم',
+      'lumen.videoPlayback.quality4k': 'جودة التشغيل: 4K',
+      'lumen.videoPlayback.qualityHd': 'جودة التشغيل: HD',
+      'lumen.videoPlayback.catalog': 'فيلم قابل للتشغيل',
+      'lumen.videoPlayback.catalogFailure': 'تعذر تحميل عنصر التشغيل',
+      'lumen.videoPlayback.devices': 'أجهزة التشغيل',
+      'lumen.videoPlayback.devicesFailure': 'تعذر تحميل أجهزة التشغيل',
+      'lumen.videoPlayback.retry': 'إعادة المحاولة',
+      'lumen.videoPlayback.unavailable':
+        'لا يتوفر فيلم قابل للتشغيل بهذه الجودة.',
+      'lumen.videoPlayback.loadingDevices': 'جارٍ تحميل أجهزة التشغيل…',
+      'lumen.videoPlayback.device': 'الجهاز',
+      'lumen.videoPlayback.chooseDevice': 'اختر…',
+      'lumen.videoPlayback.starting': 'جارٍ البدء…',
+      'lumen.videoPlayback.playOnDevice': 'التشغيل على الجهاز',
+      'lumen.videoPlayback.noDevices': 'لا تتوفر أجهزة تشغيل نشطة ومصرح بها.',
+      'lumen.videoPlayback.deviceFailure':
+        'تعذر بدء التشغيل. تحقق من الجهاز المحدد.',
+      'lumen.videoPlayback.playlistFailure': 'تعذر إنشاء قائمة تشغيل.',
+      'lumen.videoPlayback.started': 'بدأ التشغيل على {device}.',
+      'lumen.videoPlayback.playlistWarning':
+        'إنشاء قائمة تشغيل يستبدل قائمة «التحديد الحالي» على خادم الوسائط.',
+      'lumen.videoPlayback.creating': 'جارٍ الإنشاء…',
+      'lumen.videoPlayback.createPlaylist': 'إنشاء قائمة تشغيل',
+      'lumen.videoPlayback.openPlaylist': 'فتح على خادم الوسائط',
+      'lumen.videoPlayback.close': 'إغلاق',
+      'lumen.videoPlayback.invalidDevices': 'تعذر التحقق من أجهزة التشغيل.',
     },
   },
   {
@@ -18221,6 +18249,37 @@ export const localeData = [
       'lumen.tv.episodeQueue.one': 'Episode Queue · 1 episode set by admin',
       'lumen.tv.episodeQueue.many':
         'Episode Queue · {count} episodes set by admin',
+      'lumen.videoPlayback.open': 'Playback Options',
+      'lumen.videoPlayback.title': 'Play Movie',
+      'lumen.videoPlayback.quality4k': 'Playback quality: 4K',
+      'lumen.videoPlayback.qualityHd': 'Playback quality: HD',
+      'lumen.videoPlayback.catalog': 'Playable Movie',
+      'lumen.videoPlayback.catalogFailure': 'Couldn’t Load Playback Item',
+      'lumen.videoPlayback.devices': 'Playback Devices',
+      'lumen.videoPlayback.devicesFailure': 'Couldn’t Load Playback Devices',
+      'lumen.videoPlayback.retry': 'Retry',
+      'lumen.videoPlayback.unavailable':
+        'No playable movie is available at this quality.',
+      'lumen.videoPlayback.loadingDevices': 'Loading playback devices…',
+      'lumen.videoPlayback.device': 'Device',
+      'lumen.videoPlayback.chooseDevice': 'Choose…',
+      'lumen.videoPlayback.starting': 'Starting…',
+      'lumen.videoPlayback.playOnDevice': 'Play on Device',
+      'lumen.videoPlayback.noDevices':
+        'No active, authorized playback devices are available.',
+      'lumen.videoPlayback.deviceFailure':
+        'Playback could not be started. Check the selected device.',
+      'lumen.videoPlayback.playlistFailure':
+        'Could not create a playback playlist.',
+      'lumen.videoPlayback.started': 'Playback started on {device}.',
+      'lumen.videoPlayback.playlistWarning':
+        'Creating a playlist replaces the media server’s Current Selection playlist.',
+      'lumen.videoPlayback.creating': 'Creating…',
+      'lumen.videoPlayback.createPlaylist': 'Create Playback Playlist',
+      'lumen.videoPlayback.openPlaylist': 'Open on Media Server',
+      'lumen.videoPlayback.close': 'Close',
+      'lumen.videoPlayback.invalidDevices':
+        'Playback devices could not be verified.',
     },
   },
   {
@@ -30653,6 +30712,39 @@ export const localeData = [
         'File d’attente des épisodes · 1 épisode défini par l’administrateur',
       'lumen.tv.episodeQueue.many':
         'File d’attente des épisodes · {count} épisodes définis par l’administrateur',
+      'lumen.videoPlayback.open': 'Options de lecture',
+      'lumen.videoPlayback.title': 'Lire le film',
+      'lumen.videoPlayback.quality4k': 'Qualité de lecture : 4K',
+      'lumen.videoPlayback.qualityHd': 'Qualité de lecture : HD',
+      'lumen.videoPlayback.catalog': 'Film lisible',
+      'lumen.videoPlayback.catalogFailure': 'Impossible de charger le média',
+      'lumen.videoPlayback.devices': 'Appareils de lecture',
+      'lumen.videoPlayback.devicesFailure':
+        'Impossible de charger les appareils de lecture',
+      'lumen.videoPlayback.retry': 'Réessayer',
+      'lumen.videoPlayback.unavailable':
+        'Aucun film lisible n’est disponible dans cette qualité.',
+      'lumen.videoPlayback.loadingDevices':
+        'Chargement des appareils de lecture…',
+      'lumen.videoPlayback.device': 'Appareil',
+      'lumen.videoPlayback.chooseDevice': 'Choisir…',
+      'lumen.videoPlayback.starting': 'Démarrage…',
+      'lumen.videoPlayback.playOnDevice': 'Lire sur l’appareil',
+      'lumen.videoPlayback.noDevices':
+        'Aucun appareil de lecture actif et autorisé n’est disponible.',
+      'lumen.videoPlayback.deviceFailure':
+        'Impossible de démarrer la lecture. Vérifiez l’appareil sélectionné.',
+      'lumen.videoPlayback.playlistFailure':
+        'Impossible de créer une liste de lecture.',
+      'lumen.videoPlayback.started': 'Lecture démarrée sur {device}.',
+      'lumen.videoPlayback.playlistWarning':
+        'La création d’une liste remplace la liste « Sélection actuelle » du serveur multimédia.',
+      'lumen.videoPlayback.creating': 'Création…',
+      'lumen.videoPlayback.createPlaylist': 'Créer une liste de lecture',
+      'lumen.videoPlayback.openPlaylist': 'Ouvrir sur le serveur multimédia',
+      'lumen.videoPlayback.close': 'Fermer',
+      'lumen.videoPlayback.invalidDevices':
+        'Impossible de vérifier les appareils de lecture.',
     },
   },
   {

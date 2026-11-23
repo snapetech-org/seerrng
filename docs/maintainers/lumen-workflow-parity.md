@@ -8279,3 +8279,22 @@ Four focused browser cases cover off, singular, plural, and signed-out behavior.
 A state-matched native TV screenshot and translated visual review remain
 unverified. The desktop and phone candidates are retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/episode-queue/`.
+
+### Playback options on movie details (2026-11-23)
+
+Lumen movie details now expose SeerrNG's active-device and media-server playlist
+playback actions for users who may request movies and have a playable copy. The
+sheet reads the existing playback catalog and authorized devices, then uses the
+existing authenticated playback and playlist routes with the selected media ID,
+item ID, and quality. SeerrNG remains authoritative for linked-account,
+provider, and playback permission checks. 4K options require the global 4K
+switch, the viewer's 4K permission, and visible available 4K media.
+
+Twenty browser cases cover HD and 4K playback on a selected device, creating and
+opening server playlists, and withholding controls without movie permission,
+4K permission, or the global 4K switch across desktop, iPhone, Android, and
+tablet. The production Lumen build passes. Desktop
+and phone candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/movie-playback/`.
+No state-matched native capture with playback devices is available, so visual
+comparison and live provider playback remain unverified.
