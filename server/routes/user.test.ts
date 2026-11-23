@@ -3436,6 +3436,30 @@ describe('User route input validation', () => {
     );
   });
 
+  it('persists the Book collection pin in the book-scoped preferences', async () => {
+    const agent = await loginAs('admin@seerr.dev', 'test1234');
+    const initial = await agent.get('/user/1/settings/detail-disclosures/book');
+    assert.strictEqual(initial.body.collection, false);
+
+    const saved = await agent
+      .post('/user/1/settings/detail-disclosures/book')
+      .send({ collection: true });
+    assert.strictEqual(saved.status, 200);
+    assert.strictEqual(saved.body.collection, true);
+    assert.strictEqual(saved.body.details, false);
+
+    const fetched = await agent.get('/user/1/settings/detail-disclosures/book');
+    assert.deepStrictEqual(fetched.body, saved.body);
+    const movie = await agent.get('/user/1/settings/detail-disclosures/movie');
+    assert.strictEqual(movie.body.collection, false);
+
+    const invalid = await agent
+      .post('/user/1/settings/detail-disclosures/book')
+      .send({ mediaServer: true });
+    assert.strictEqual(invalid.status, 200);
+    assert.strictEqual(invalid.body.mediaServer, undefined);
+  });
+
   it('does not allow another user to change the TV media server pin', async () => {
     const agent = await loginAs('friend@seerr.dev', 'test1234');
     const response = await agent

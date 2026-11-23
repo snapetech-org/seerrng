@@ -283,18 +283,21 @@ export function VideoDisclosure({
   panel,
   label,
   testId,
+  deferChildrenUntilOpen = false,
   children,
 }: {
   media: 'movie' | 'tv' | 'book' | 'music';
   panel: keyof VideoDetailPins;
   label: string;
   testId?: string;
+  deferChildrenUntilOpen?: boolean;
   children: ReactNode;
 }) {
   const { t } = useLumenLocale();
   const { user, refresh } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const disclosure = useRef<HTMLDetailsElement>(null);
   const { hash, key } = useLocation();
   const anchor = panel === 'subjectTags' ? undefined : panel;
@@ -323,13 +326,15 @@ export function VideoDisclosure({
         ? t('lumen.detail.overviewPreference', 'overview')
         : panel === 'artists'
           ? t('lumen.detail.artistListPreference', 'artist list')
-          : panel === 'details'
-            ? media === 'book'
-              ? t('lumen.detail.bookDetailsPreference', 'book details')
-              : media === 'music'
-                ? t('lumen.detail.albumDetailsPreference', 'album details')
-                : t('lumen.detail.movieDetailsPreference', 'movie details')
-            : t('lumen.detail.creditPreference', 'credit');
+          : panel === 'collection'
+            ? t('lumen.detail.collectionPreference', 'collection')
+            : panel === 'details'
+              ? media === 'book'
+                ? t('lumen.detail.bookDetailsPreference', 'book details')
+                : media === 'music'
+                  ? t('lumen.detail.albumDetailsPreference', 'album details')
+                  : t('lumen.detail.movieDetailsPreference', 'movie details')
+              : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
     if (!user || pending.current) return;
@@ -375,12 +380,17 @@ export function VideoDisclosure({
       className="adv"
       data-testid={testId}
       open={pinned}
+      onToggle={(event) => setExpanded(event.currentTarget.open)}
     >
       <summary>
         <Icon name="chev" size="sm" />
         {label}
       </summary>
-      {children}
+      {deferChildrenUntilOpen
+        ? pinned || expanded
+          ? children
+          : null
+        : children}
       {user && (
         <div className="toolbar">
           <button

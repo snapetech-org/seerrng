@@ -8531,3 +8531,26 @@ other music detail gaps, book collection and subject-tag pin behavior, TV facts
 and media-server panels, collection disclosures, broader route-level visual
 acceptance, and live provider verification remain open in the overall Lumen
 parity initiative.
+
+### Book collection and subject disclosures
+
+Lumen book details now expose persistent Collection and Subjects disclosures.
+Collection summaries load lazily on open, show the series description and book
+count, and link up to three related subjects; the Subjects panel links the
+book's subject tags into filtered Books discovery. Both panels use the shared
+video disclosure control and the user's scoped detail-disclosure preference.
+The server settings contract now accepts the Collection pin for both movie and
+book details, correcting the earlier movie-only validation that silently
+rejected book collection saves. OpenAPI now documents the supported movie/book
+scope.
+
+The focused user-settings API case passes, the Lumen production build passes,
+and the browser workflow passes across desktop, iPhone, Android, and tablet. It
+checks lazy series-summary fetching, filtered links, save/readback/reload and
+unpin behavior, and phone overflow. Matched 1440px desktop and 390px phone
+baseline/candidate captures were inspected in closed and expanded states; the
+new panels follow existing disclosure surfaces and the request action remains
+available. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/book-detail-visual/`.
+The fixture verifies the application contract but does not establish live
+provider availability or independent translation review.

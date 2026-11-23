@@ -1415,6 +1415,143 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   ]);
 });
 
+test('book collections and subjects remember scoped pins', async ({ page }) => {
+  await fixtures(page);
+  const settings = {
+    detailDisclosurePins: {
+      book: { collection: false, subjectTags: false, details: false },
+    },
+  };
+  const writes: unknown[] = [];
+  let seriesReads = 0;
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: 2, settings },
+    })
+  );
+  await page.route('**/api/v1/book/OL123W', (route) =>
+    route.fulfill({
+      json: {
+        id: 'OL123W',
+        title: 'Fixture Book',
+        subjects: ['Science Fiction', 'Fantasy'],
+        series: [{ id: '550', title: 'Fixture Series', position: '1' }],
+      },
+    })
+  );
+  await page.route('**/api/v1/series/550', (route) => {
+    seriesReads++;
+    return route.fulfill({
+      json: {
+        id: '550',
+        title: 'Fixture Series',
+        description: 'A persistent series summary.',
+        books: [
+          { id: 'OL123W', title: 'Fixture Book', subjects: ['Fantasy'] },
+          { id: 'OL456W', title: 'Another Book', subjects: ['Mythology'] },
+        ],
+      },
+    });
+  });
+  await page.route(
+    '**/api/v1/user/1/settings/detail-disclosures/book',
+    (route) => {
+      const body = route.request().postDataJSON();
+      writes.push(body);
+      Object.assign(settings.detailDisclosurePins.book, body);
+      return route.fulfill({ json: settings.detailDisclosurePins.book });
+    }
+  );
+
+  await page.goto('/book/OL123W');
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Book' })
+  ).toBeVisible();
+  const capture = process.env.LUMEN_BOOK_DISCLOSURES_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  expect(seriesReads).toBe(0);
+  const subjects = page.getByTestId('book-subject-tags');
+  await expect(subjects).toHaveJSProperty('open', false);
+  await subjects.locator('summary').click();
+  await expect(
+    subjects.getByRole('link', { name: 'Science Fiction', exact: true })
+  ).toHaveAttribute('href', '/books?subject=Science%20Fiction');
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-subjects-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  const subjectsPin = subjects.getByRole('button', {
+    name: 'Keep Subjects Open',
+  });
+  await subjectsPin.click();
+  await expect(subjectsPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.getByTestId('book-subject-tags')).toHaveAttribute(
+    'open',
+    ''
+  );
+  await subjectsPin.click();
+  await page.reload();
+  await expect(page.getByTestId('book-subject-tags')).not.toHaveAttribute(
+    'open',
+    ''
+  );
+
+  const collection = page.getByTestId('book-series-collections');
+  await expect(collection).toHaveJSProperty('open', false);
+  await collection.locator('summary').click();
+  const summary = page.getByTestId('book-series-550');
+  await expect(summary).toContainText('A persistent series summary.');
+  await expect(summary).toContainText('Collection size: 2 books');
+  await expect(
+    summary.getByRole('link', { name: 'Fantasy', exact: true })
+  ).toHaveAttribute('href', '/books?subject=Fantasy');
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-collection-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  expect(seriesReads).toBeGreaterThan(0);
+  const collectionPin = collection.getByRole('button', {
+    name: 'Keep Collection Open',
+  });
+  await collectionPin.click();
+  await expect(collectionPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.getByTestId('book-series-collections')).toHaveAttribute(
+    'open',
+    ''
+  );
+  await expect(page.getByTestId('book-series-550')).toBeVisible();
+  await collectionPin.click();
+  await page.reload();
+  await expect(page.getByTestId('book-series-collections')).not.toHaveAttribute(
+    'open',
+    ''
+  );
+  expect(writes).toEqual([
+    { subjectTags: true },
+    { subjectTags: false },
+    { collection: true },
+    { collection: false },
+  ]);
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth
+    )
+  ).toBe(true);
+});
+
 test('subject tags share browser visibility and open filtered video discovery', async ({
   page,
 }) => {

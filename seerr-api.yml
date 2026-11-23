@@ -3021,7 +3021,7 @@ components:
           example: false
         collection:
           type: boolean
-          description: Keeps movie collection panels open. Supported by the movie-scoped detail-disclosures endpoint.
+          description: Keeps movie collections or book-series collections open. Supported by the movie- and book-scoped detail-disclosures endpoints.
           example: false
         cast:
           type: boolean
@@ -18049,7 +18049,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [movie, tv, music, book, comic]
+            enum: [movie, tv, music, book]
       responses:
         '200':
           description: Category-scoped detail disclosure settings returned
@@ -18073,7 +18073,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [movie, tv, music, book, comic]
+            enum: [movie, tv, music, book]
       requestBody:
         required: true
         content:

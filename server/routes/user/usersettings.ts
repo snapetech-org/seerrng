@@ -1080,7 +1080,9 @@ const serializeScopedDetailDisclosurePins = (
 ): UserSettingsDetailDisclosureResponse => {
   const legacyPins: UserSettingsDetailDisclosureResponse = {
     details: false,
-    ...(mediaType === 'movie' ? { collection: false } : {}),
+    ...(mediaType === 'movie' || mediaType === 'book'
+      ? { collection: false }
+      : {}),
     ...(mediaType === 'tv' ? { mediaServer: false, overview: false } : {}),
     cast:
       mediaType === 'movie' && settings?.detailDisclosureCastPinned === true,
@@ -2305,7 +2307,7 @@ userSettingsRoutes.post<
     const { mediaType } = req.params;
     const parsedBody = parseDetailDisclosurePinsBody(
       req.body,
-      mediaType === 'movie',
+      mediaType === 'movie' || mediaType === 'book',
       true,
       mediaType === 'tv',
       mediaType === 'tv'

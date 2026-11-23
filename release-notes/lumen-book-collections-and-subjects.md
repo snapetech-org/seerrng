@@ -1,0 +1,1 @@
+Lumen book details now include pinnable Collection and Subjects panels. Collection summaries load only when opened, include series descriptions and book counts, and link back to related subjects. The authenticated user-settings API now persists Collection pins for books as well as movies, so the preference survives reloads. Subject links open the matching Books filter.
