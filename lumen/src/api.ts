@@ -235,8 +235,21 @@ export const defaultCardTitleModes = {
   book: 'always',
 } satisfies Record<CardTitleKind, CardTitleMode>;
 
-export type VideoDetailPins = Partial<
-  Record<'cast' | 'crew' | 'subjectTags', boolean>
+export type DetailDisclosurePins = Partial<
+  Record<
+    | 'cast'
+    | 'crew'
+    | 'subjectTags'
+    | 'taskFilters'
+    | 'filters'
+    | 'mediaFilters'
+    | 'sortBy',
+    boolean
+  >
+>;
+export type VideoDetailPins = Pick<
+  DetailDisclosurePins,
+  'cast' | 'crew' | 'subjectTags'
 >;
 
 export interface UserAvailabilitySubscriptionResponse {
@@ -273,7 +286,9 @@ export interface User {
     detailDisclosureCastPinned?: boolean;
     detailDisclosureCrewPinned?: boolean;
     detailDisclosureSubjectTagsPinned?: boolean;
-    detailDisclosurePins?: Partial<Record<'movie' | 'tv', VideoDetailPins>>;
+    detailDisclosurePins?: Partial<
+      Record<'movie' | 'tv' | 'music' | 'book', DetailDisclosurePins>
+    >;
     cardTextVisibilityMovie?: CardTitleMode;
     cardTextVisibilityTv?: CardTitleMode;
     cardTextVisibilityAlbum?: CardTitleMode;

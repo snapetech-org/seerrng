@@ -808,6 +808,78 @@ test('issue filters read from bookmarks and reset pagination when changed', asyn
   await expect.poll(() => queries.at(-1)?.get('releaseYear')).toBeNull();
 });
 
+test('issue filter disclosures save and restore per-user media-scoped pins', async ({
+  page,
+}) => {
+  let savedPins: Record<string, boolean> = {};
+  let saves = 0;
+  let attempts = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          permissions: 2097152,
+          settings: { detailDisclosurePins: { tv: savedPins } },
+        },
+      });
+    if (path === '/user/2/settings/detail-disclosures/tv') {
+      attempts++;
+      if (attempts === 1)
+        return route.fulfill({ status: 500, json: { message: 'save failed' } });
+      const change = route.request().postDataJSON() as Record<string, boolean>;
+      savedPins = { ...savedPins, ...change };
+      saves++;
+      return route.fulfill({ json: savedPins });
+    }
+    if (path === '/issue')
+      return route.fulfill({
+        json: { results: [], pageInfo: { page: 1, pages: 1 } },
+      });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(testAppPath('/issues?mediaType=tv'));
+  const mediaFilters = page
+    .locator('details')
+    .filter({ has: page.getByText('Media Filters', { exact: true }) });
+  await expect(mediaFilters).not.toHaveAttribute('open', '');
+  await page.getByText('Media Filters', { exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Keep Media Filters Open', exact: true })
+    .click();
+  await expect.poll(() => attempts).toBe(1);
+  await expect(
+    page.getByText(
+      'Could not save this filter display preference. Try again.',
+      { exact: true }
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Keep Media Filters Open', exact: true })
+  ).toHaveAttribute('aria-pressed', 'false');
+  await page
+    .getByRole('button', { name: 'Keep Media Filters Open', exact: true })
+    .click();
+  await expect.poll(() => saves).toBe(1);
+  await expect(mediaFilters).toHaveAttribute('open', '');
+  await expect(
+    page.getByRole('button', { name: 'Keep Media Filters Open', exact: true })
+  ).toHaveAttribute('aria-pressed', 'true');
+  if (
+    process.env.LUMEN_CAPTURE_PINNED &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_PINNED}/issues-pinned-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  await page.reload();
+  await expect(mediaFilters).toHaveAttribute('open', '');
+  expect(savedPins).toEqual({ mediaFilters: true });
+});
+
 test('deleting the final issue on a page preserves filters and returns to the last available page', async ({
   page,
 }) => {

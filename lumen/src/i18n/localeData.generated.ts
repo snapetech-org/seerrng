@@ -4041,6 +4041,8 @@ export const localeData = [
       'lumen.issues.group.filters': 'الفلاتر',
       'lumen.issues.group.media': 'فلاتر الوسائط',
       'lumen.issues.group.sort': 'ترتيب حسب',
+      'lumen.issues.pinSaveFailed':
+        'تعذر حفظ تفضيل عرض عوامل التصفية. حاول مرة أخرى.',
       'lumen.issues.group.task': 'فلاتر البلاغات',
       'lumen.issues.issue': 'بلاغ',
       'lumen.issues.issues': 'البلاغات',
@@ -15369,6 +15371,8 @@ export const localeData = [
       'lumen.issues.group.filters': 'Filters',
       'lumen.issues.group.media': 'Media Filters',
       'lumen.issues.group.sort': 'Sort By',
+      'lumen.issues.pinSaveFailed':
+        'Could not save this filter display preference. Try again.',
       'lumen.issues.group.task': 'Task Filters',
       'lumen.issues.issue': 'Issue',
       'lumen.issues.issues': 'Issues',
@@ -27561,6 +27565,8 @@ export const localeData = [
       'lumen.issues.group.filters': 'Filtres',
       'lumen.issues.group.media': 'Filtres des médias',
       'lumen.issues.group.sort': 'Trier par',
+      'lumen.issues.pinSaveFailed':
+        'Impossible d’enregistrer cette préférence d’affichage des filtres. Réessayez.',
       'lumen.issues.group.task': 'Filtres des signalements',
       'lumen.issues.issue': 'Signalement',
       'lumen.issues.issues': 'Signalements',

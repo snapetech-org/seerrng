@@ -292,7 +292,7 @@ function VideoDisclosure({
   }, [anchor, hash, key]);
 
   const pending = useRef(false);
-  const legacy = {
+  const legacy: Partial<VideoDetailPins> = {
     cast: user?.settings?.detailDisclosureCastPinned,
     crew: user?.settings?.detailDisclosureCrewPinned,
     subjectTags: user?.settings?.detailDisclosureSubjectTagsPinned,

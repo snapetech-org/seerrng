@@ -1,0 +1,1 @@
+Lumen now saves per-user, media-scoped open preferences for the Issues page's Task Filters, Media Filters, Filters, and Sort By sections. Failed saves remain retryable and are not shown as saved until SeerrNG confirms them.

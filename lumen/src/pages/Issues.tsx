@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   Link,
   useNavigate,
   useParams,
   useSearchParams,
 } from 'react-router-dom';
-import { api, artUrl, tmdbImg } from '../api';
+import { api, artUrl, tmdbImg, type DetailDisclosurePins } from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
+import { useToast } from '../components/toast';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import {
@@ -18,6 +19,7 @@ import {
   canReadIssues,
   canViewIssueReporter,
 } from '../issuePermissions';
+import { sessionGeneration } from '../sessionState';
 
 interface Reporter {
   id: number;
@@ -379,6 +381,47 @@ function IssueStatus({ status }: { status: number }) {
   );
 }
 
+type IssueFilterPin = 'taskFilters' | 'mediaFilters' | 'filters' | 'sortBy';
+type IssuePinMedia = 'movie' | 'tv' | 'music' | 'book';
+
+function IssueFilterDisclosure({
+  label,
+  pinned,
+  onTogglePin,
+  busy,
+  children,
+}: {
+  label: string;
+  pinned: boolean;
+  onTogglePin: () => void;
+  busy: boolean;
+  children: ReactNode;
+}) {
+  const { t } = useLumenLocale();
+  const [open, setOpen] = useState(pinned);
+  useEffect(() => setOpen(pinned), [pinned]);
+  return (
+    <details
+      open={open}
+      onToggle={(event) => setOpen(event.currentTarget.open)}
+    >
+      <summary className="sel">{label}</summary>
+      <div className="toolbar">
+        {children}
+        <button
+          className="btn btn-quiet btn-sm"
+          type="button"
+          aria-pressed={pinned}
+          disabled={busy}
+          onClick={onTogglePin}
+        >
+          {t('lumen.detail.keepOpen', 'Keep {label} Open', { label })}
+        </button>
+      </div>
+    </details>
+  );
+}
+
 const issueFilters = [
   {
     key: 'filter',
@@ -450,9 +493,15 @@ const issueMetadata = [
 
 function IssueList() {
   const { locale, t } = useLumenLocale();
-  const { user } = useAuth();
+  const { user, refresh } = useAuth();
+  const toast = useToast();
   const [bookmark, setBookmark] = useSearchParams();
   const [expandedIssue, setExpandedIssue] = useState<number>();
+  const [pinBusy, setPinBusy] = useState<IssueFilterPin>();
+  const [pinOverrides, setPinOverrides] = useState<
+    Record<string, DetailDisclosurePins>
+  >({});
+  const pinPending = useRef(false);
   const submitted = (bookmark.get('search') ?? '').trim().slice(0, 512);
   const parsedPage = Number(bookmark.get('page'));
   const page =
@@ -472,6 +521,42 @@ function IssueList() {
       params.set(key, value);
   }
   const media = params.get('mediaType') ?? 'all';
+  const pinMedia: IssuePinMedia =
+    media === 'tv' || media === 'music' || media === 'book' ? media : 'movie';
+  const pinKey = `${user?.id ?? 'anonymous'}:${pinMedia}`;
+  const pins = {
+    ...user?.settings?.detailDisclosurePins?.[pinMedia],
+    ...pinOverrides[pinKey],
+  };
+  async function togglePin(section: IssueFilterPin) {
+    if (!user || pinPending.current) return;
+    const nextPinned = pins[section] !== true;
+    const generation = sessionGeneration();
+    pinPending.current = true;
+    setPinBusy(section);
+    try {
+      const saved = await api<DetailDisclosurePins>(
+        `/user/${user.id}/settings/detail-disclosures/${pinMedia}`,
+        { method: 'POST', body: JSON.stringify({ [section]: nextPinned }) }
+      );
+      if (generation !== sessionGeneration()) return;
+      if (saved[section] !== nextPinned)
+        throw new Error('Saved preference could not be confirmed.');
+      setPinOverrides((current) => ({ ...current, [pinKey]: saved }));
+      await refresh();
+    } catch {
+      if (generation === sessionGeneration())
+        toast(
+          t(
+            'lumen.issues.pinSaveFailed',
+            'Could not save this filter display preference. Try again.'
+          )
+        );
+    } finally {
+      pinPending.current = false;
+      setPinBusy(undefined);
+    }
+  }
   const metadata = issueMetadata.filter(({ media: types }) =>
     (types as readonly string[]).includes(media)
   );
@@ -526,178 +611,172 @@ function IssueList() {
           setBookmark(next);
         }}
       >
-        <details>
-          <summary className="sel">
-            {t('lumen.issues.group.task', 'Task Filters')}
-          </summary>
-          <div className="toolbar">
-            {issueFilters
-              .filter(({ key }) => key === 'filter' || key === 'issueType')
-              .map(({ key, label, options }) => (
-                <label className="sel" key={key}>
-                  <select
-                    aria-label={t(`lumen.issues.filter.${key}`, label)}
-                    value={params.get(key) ?? 'all'}
-                    onChange={(event) =>
-                      update(
-                        key,
-                        event.target.value === 'all' ? '' : event.target.value
-                      )
-                    }
-                  >
-                    {Object.entries(options).map(([value, name]) => (
-                      <option key={value} value={value}>
-                        {t(`lumen.issues.option.${key}.${value}`, name)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-          </div>
-        </details>
-        <details>
-          <summary className="sel">
-            {t('lumen.issues.group.media', 'Media Filters')}
-          </summary>
-          <div className="toolbar">
-            {issueFilters
-              .filter(({ key }) => key === 'mediaType')
-              .map(({ key, label, options }) => (
-                <label className="sel" key={key}>
-                  <select
-                    aria-label={t(`lumen.issues.filter.${key}`, label)}
-                    value={params.get(key) ?? 'all'}
-                    onChange={(event) =>
-                      update(
-                        key,
-                        event.target.value === 'all' ? '' : event.target.value
-                      )
-                    }
-                  >
-                    {Object.entries(options).map(([value, name]) => (
-                      <option key={value} value={value}>
-                        {t(`lumen.issues.option.${key}.${value}`, name)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-          </div>
-        </details>
-        <details>
-          <summary className="sel">
-            {t('lumen.issues.group.filters', 'Filters')}
-          </summary>
-          <div className="toolbar">
-            {issueFilters
-              .filter(({ key }) => key === 'timeFrame')
-              .map(({ key, label, options }) => (
-                <label className="sel" key={key}>
-                  <select
-                    aria-label={t(`lumen.issues.filter.${key}`, label)}
-                    value={params.get(key) ?? 'all'}
-                    onChange={(event) =>
-                      update(
-                        key,
-                        event.target.value === 'all' ? '' : event.target.value
-                      )
-                    }
-                  >
-                    {Object.entries(options).map(([value, name]) => (
-                      <option key={value} value={value}>
-                        {t(`lumen.issues.option.${key}.${value}`, name)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-            <label className="search">
-              <input
-                type="search"
-                aria-label={t('lumen.issues.searchLabel', 'Search Issues')}
-                placeholder={t(
-                  'lumen.issues.searchPlaceholder',
-                  'Search issues'
-                )}
-                maxLength={512}
-                key={submitted}
-                name="search"
-                defaultValue={submitted}
-              />
-            </label>
-            {metadata.map(({ key, label }) => (
-              <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
-                <span className="lbl">
-                  {t(`lumen.issues.metadata.${key}`, label)}
-                </span>
-                {key === 'albumType' ? (
-                  <select name={key} defaultValue={params.get(key) ?? ''}>
-                    <option value="">
-                      {t('lumen.issues.anyAlbumType', 'Any Album Type')}
+        <IssueFilterDisclosure
+          label={t('lumen.issues.group.task', 'Task Filters')}
+          pinned={pins.taskFilters === true}
+          busy={pinBusy === 'taskFilters'}
+          onTogglePin={() => void togglePin('taskFilters')}
+        >
+          {issueFilters
+            .filter(({ key }) => key === 'filter' || key === 'issueType')
+            .map(({ key, label, options }) => (
+              <label className="sel" key={key}>
+                <select
+                  aria-label={t(`lumen.issues.filter.${key}`, label)}
+                  value={params.get(key) ?? 'all'}
+                  onChange={(event) =>
+                    update(
+                      key,
+                      event.target.value === 'all' ? '' : event.target.value
+                    )
+                  }
+                >
+                  {Object.entries(options).map(([value, name]) => (
+                    <option key={value} value={value}>
+                      {t(`lumen.issues.option.${key}.${value}`, name)}
                     </option>
-                    <option value="album">
-                      {t('lumen.issues.album', 'Album')}
-                    </option>
-                    <option value="ep">{t('lumen.issues.ep', 'EP')}</option>
-                    <option value="single">
-                      {t('lumen.issues.single', 'Single')}
-                    </option>
-                  </select>
-                ) : (
-                  <input
-                    className="cfg-json"
-                    name={key}
-                    defaultValue={params.get(key) ?? ''}
-                    maxLength={key === 'releaseYear' ? 11 : 128}
-                    pattern={
-                      key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
-                    }
-                    placeholder={
-                      key === 'releaseYear'
-                        ? t(
-                            'lumen.issues.yearPlaceholder',
-                            'YYYY or before-1970'
-                          )
-                        : undefined
-                    }
-                  />
-                )}
+                  ))}
+                </select>
               </label>
             ))}
-            <button className="btn btn-tonal btn-sm">
-              {t('lumen.issues.search', 'Search')}
-            </button>
-          </div>
-        </details>
-        <details>
-          <summary className="sel">
-            {t('lumen.issues.group.sort', 'Sort By')}
-          </summary>
-          <div className="toolbar">
-            {issueFilters
-              .filter(({ key }) => key === 'sort' || key === 'sortDirection')
-              .map(({ key, label, options }) => (
-                <label className="sel" key={key}>
-                  <select
-                    aria-label={t(`lumen.issues.filter.${key}`, label)}
-                    value={params.get(key) ?? 'all'}
-                    onChange={(event) =>
-                      update(
-                        key,
-                        event.target.value === 'all' ? '' : event.target.value
-                      )
-                    }
-                  >
-                    {Object.entries(options).map(([value, name]) => (
-                      <option key={value} value={value}>
-                        {t(`lumen.issues.option.${key}.${value}`, name)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-          </div>
-        </details>
+        </IssueFilterDisclosure>
+        <IssueFilterDisclosure
+          label={t('lumen.issues.group.media', 'Media Filters')}
+          pinned={pins.mediaFilters === true}
+          busy={pinBusy === 'mediaFilters'}
+          onTogglePin={() => void togglePin('mediaFilters')}
+        >
+          {issueFilters
+            .filter(({ key }) => key === 'mediaType')
+            .map(({ key, label, options }) => (
+              <label className="sel" key={key}>
+                <select
+                  aria-label={t(`lumen.issues.filter.${key}`, label)}
+                  value={params.get(key) ?? 'all'}
+                  onChange={(event) =>
+                    update(
+                      key,
+                      event.target.value === 'all' ? '' : event.target.value
+                    )
+                  }
+                >
+                  {Object.entries(options).map(([value, name]) => (
+                    <option key={value} value={value}>
+                      {t(`lumen.issues.option.${key}.${value}`, name)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+        </IssueFilterDisclosure>
+        <IssueFilterDisclosure
+          label={t('lumen.issues.group.filters', 'Filters')}
+          pinned={pins.filters === true}
+          busy={pinBusy === 'filters'}
+          onTogglePin={() => void togglePin('filters')}
+        >
+          {issueFilters
+            .filter(({ key }) => key === 'timeFrame')
+            .map(({ key, label, options }) => (
+              <label className="sel" key={key}>
+                <select
+                  aria-label={t(`lumen.issues.filter.${key}`, label)}
+                  value={params.get(key) ?? 'all'}
+                  onChange={(event) =>
+                    update(
+                      key,
+                      event.target.value === 'all' ? '' : event.target.value
+                    )
+                  }
+                >
+                  {Object.entries(options).map(([value, name]) => (
+                    <option key={value} value={value}>
+                      {t(`lumen.issues.option.${key}.${value}`, name)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+          <label className="search">
+            <input
+              type="search"
+              aria-label={t('lumen.issues.searchLabel', 'Search Issues')}
+              placeholder={t('lumen.issues.searchPlaceholder', 'Search issues')}
+              maxLength={512}
+              key={submitted}
+              name="search"
+              defaultValue={submitted}
+            />
+          </label>
+          {metadata.map(({ key, label }) => (
+            <label className="sel" key={`${key}:${bookmark.get(key) ?? ''}`}>
+              <span className="lbl">
+                {t(`lumen.issues.metadata.${key}`, label)}
+              </span>
+              {key === 'albumType' ? (
+                <select name={key} defaultValue={params.get(key) ?? ''}>
+                  <option value="">
+                    {t('lumen.issues.anyAlbumType', 'Any Album Type')}
+                  </option>
+                  <option value="album">
+                    {t('lumen.issues.album', 'Album')}
+                  </option>
+                  <option value="ep">{t('lumen.issues.ep', 'EP')}</option>
+                  <option value="single">
+                    {t('lumen.issues.single', 'Single')}
+                  </option>
+                </select>
+              ) : (
+                <input
+                  className="cfg-json"
+                  name={key}
+                  defaultValue={params.get(key) ?? ''}
+                  maxLength={key === 'releaseYear' ? 11 : 128}
+                  pattern={
+                    key === 'releaseYear' ? '[0-9]{4}|before-1970' : undefined
+                  }
+                  placeholder={
+                    key === 'releaseYear'
+                      ? t('lumen.issues.yearPlaceholder', 'YYYY or before-1970')
+                      : undefined
+                  }
+                />
+              )}
+            </label>
+          ))}
+          <button className="btn btn-tonal btn-sm">
+            {t('lumen.issues.search', 'Search')}
+          </button>
+        </IssueFilterDisclosure>
+        <IssueFilterDisclosure
+          label={t('lumen.issues.group.sort', 'Sort By')}
+          pinned={pins.sortBy === true}
+          busy={pinBusy === 'sortBy'}
+          onTogglePin={() => void togglePin('sortBy')}
+        >
+          {issueFilters
+            .filter(({ key }) => key === 'sort' || key === 'sortDirection')
+            .map(({ key, label, options }) => (
+              <label className="sel" key={key}>
+                <select
+                  aria-label={t(`lumen.issues.filter.${key}`, label)}
+                  value={params.get(key) ?? 'all'}
+                  onChange={(event) =>
+                    update(
+                      key,
+                      event.target.value === 'all' ? '' : event.target.value
+                    )
+                  }
+                >
+                  {Object.entries(options).map(([value, name]) => (
+                    <option key={value} value={value}>
+                      {t(`lumen.issues.option.${key}.${value}`, name)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
+        </IssueFilterDisclosure>
       </form>
       <ServiceNote error={error} what="issues" retry={reload} />
       {!data && !error && (

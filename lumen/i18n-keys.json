@@ -3009,6 +3009,7 @@
   "lumen.issues.group.filters",
   "lumen.issues.group.media",
   "lumen.issues.group.sort",
+  "lumen.issues.pinSaveFailed",
   "lumen.issues.group.task",
   "lumen.issues.issue",
   "lumen.issues.issues",

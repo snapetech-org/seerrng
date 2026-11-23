@@ -8340,6 +8340,26 @@ retained at
 and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/navigation-discover/`.
 
+### Persisted Issues filter disclosures (2026-11-23)
+
+The native Issues page lets each user pin Task Filters, Media Filters, Filters,
+and Sort By open for their selected media scope. Lumen previously used temporary
+`details` state and lost those choices after navigation or reload. Its four
+disclosures now use SeerrNG's authenticated detail-disclosure settings route,
+verify the saved response, refresh the signed-in settings, and show retryable
+feedback after a failed save. Scope follows the native behavior: TV, music, and
+book filters use their respective settings; all, movie, comic, and magazine use
+movie settings.
+
+The focused standalone browser cases pass on desktop, iPhone, Android, and
+tablet; the built embedded `/lumen/` bundle also passes the persistence case on
+desktop and iPhone. They
+verify failed-save feedback, retry, the saved response, and restored pinned
+state after reload. The production build passes. Desktop and iPhone captures of
+the pinned Media Filters state were inspected; no stylesheet or shared layout
+owner changed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/issue-pinned/`.
+
 ### Direct user management navigation (2026-11-23)
 
 Lumen navigation now links administrators and delegated user managers directly
