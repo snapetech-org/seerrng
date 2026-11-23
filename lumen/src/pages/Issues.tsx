@@ -5,7 +5,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
-import { api } from '../api';
+import { api, artUrl, tmdbImg } from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
@@ -30,12 +30,18 @@ interface IssueMedia {
 }
 
 interface IssueMediaTitle {
+  mediaType?: string;
   title?: string;
   name?: string;
+  posterPath?: string;
   releaseDate?: string;
   firstAirDate?: string;
   firstPublishYear?: number;
   startYear?: string;
+  runtime?: number;
+  episodeRunTime?: number[];
+  numberOfPages?: number;
+  issueCount?: number;
 }
 
 function issueTitleLink(media?: IssueMedia) {
@@ -75,9 +81,15 @@ function issueTitleLink(media?: IssueMedia) {
   };
 }
 
-function IssueMediaTitle({ media }: { media?: IssueMedia }) {
+function IssueMediaTitle({
+  media,
+  is4k = false,
+}: {
+  media?: IssueMedia;
+  is4k?: boolean;
+}) {
   const { t } = useLumenLocale();
-  const anchor = useRef<HTMLSpanElement>(null);
+  const anchor = useRef<HTMLDivElement>(null);
   const [nearView, setNearView] = useState(false);
   const destination = issueTitleLink(media);
   useEffect(() => {
@@ -107,20 +119,64 @@ function IssueMediaTitle({ media }: { media?: IssueMedia }) {
     (data?.releaseDate || data?.firstAirDate || '').match(/\d{4}/)?.[0] ||
     data?.firstPublishYear ||
     data?.startYear;
+  const mediaType = media?.mediaType;
+  const poster =
+    mediaType === 'book' || mediaType === 'comic' || mediaType === 'magazine'
+      ? artUrl(data?.posterPath)
+      : mediaType === 'music'
+        ? artUrl(data?.posterPath)
+        : tmdbImg(data?.posterPath, 'w92');
+  const minutes = data?.runtime || data?.episodeRunTime?.[0];
+  const runtime = minutes
+    ? t('lumen.issues.runtimeMinutes', '{value} min', {
+        value: minutes,
+      })
+    : data?.numberOfPages
+      ? t('lumen.issues.pageCount', '{value} pages', {
+          value: data.numberOfPages,
+        })
+      : data?.issueCount
+        ? t('lumen.issues.issueCount', '{value} issues', {
+            value: data.issueCount,
+          })
+        : undefined;
+  const mediaLabel = mediaType
+    ? t(
+        `lumen.issues.media.${mediaType === 'tv' ? 'series' : mediaType}`,
+        destination?.label ?? 'Media'
+      )
+    : undefined;
   if (!destination || error) return null;
   return (
-    <small ref={anchor}>
-      {title ? (
-        <Link to={destination.path}>
-          {title}
-          {year ? ` (${year})` : ''}
+    <div className="issue-media-summary" ref={anchor}>
+      {poster && title && (
+        <Link to={destination.path} aria-label={title}>
+          <img src={poster} alt="" loading="lazy" />
         </Link>
-      ) : nearView ? (
-        t('lumen.issues.loadingTitle', 'Loading title…')
-      ) : (
-        ' '
       )}
-    </small>
+      <div>
+        {mediaLabel && (
+          <small>
+            {mediaLabel}
+            {(mediaType === 'movie' || mediaType === 'tv') &&
+              ` · ${is4k ? '4K' : 'HD'}`}
+          </small>
+        )}
+        <small>
+          {title ? (
+            <Link to={destination.path}>
+              {title}
+              {year ? ` (${year})` : ''}
+            </Link>
+          ) : nearView ? (
+            t('lumen.issues.loadingTitle', 'Loading title…')
+          ) : (
+            ' '
+          )}
+        </small>
+        {runtime && <small>{runtime}</small>}
+      </div>
+    </div>
   );
 }
 
@@ -413,7 +469,7 @@ function IssueList() {
               key={issue.id}
             >
               <div className="set-body">
-                <IssueMediaTitle media={issue.media} />
+                <IssueMediaTitle media={issue.media} is4k={issue.is4k} />
                 <Link
                   to={{
                     pathname: `/issues/${issue.id}`,

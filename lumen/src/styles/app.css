@@ -1952,6 +1952,21 @@ a.person:hover {
   flex: 1 1 0%;
   min-width: 0;
 }
+.issue-media-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.issue-media-summary > a {
+  flex: 0 0 38px;
+}
+.issue-media-summary img {
+  display: block;
+  width: 38px;
+  aspect-ratio: 2 / 3;
+  border-radius: 5px;
+  object-fit: cover;
+}
 .set + .set {
   border-top: 1px solid var(--line);
 }

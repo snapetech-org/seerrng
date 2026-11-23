@@ -214,6 +214,13 @@ test('issue list resolves affected media titles from visible rows', async ({
   page,
 }) => {
   await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>',
+    })
+  );
   await page.route('**/api/v1/**', (route) => {
     const path = testApiPath(route.request().url());
     if (path === '/auth/me')
@@ -237,14 +244,32 @@ test('issue list resolves affected media titles from visible rows', async ({
       });
     if (path === '/movie/20')
       return route.fulfill({
-        json: { title: 'Example Film', releaseDate: '2023-04-17' },
+        json: {
+          title: 'Example Film',
+          releaseDate: '2023-04-17',
+          posterPath: '/poster.jpg',
+          runtime: 112,
+        },
       });
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto(testAppPath('/issues'));
   const media = page.getByRole('link', { name: 'Example Film (2023)' });
   await expect(media).toHaveAttribute('href', testAppPath('/movie/20'));
+  await expect(page.getByText('112 min')).toBeVisible();
+  await expect(page.getByText('Movie · HD')).toBeVisible();
+  await expect(
+    page.locator('.issue-media-summary img').first()
+  ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w342/poster.jpg');
   await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+  if (
+    process.env.LUMEN_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_DIR}/issues-metadata-${test.info().project.name}.png`,
+      fullPage: true,
+    });
 });
 
 test('issue discussions expand inline and preserve list context', async ({
