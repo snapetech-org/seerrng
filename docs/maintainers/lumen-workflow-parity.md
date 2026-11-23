@@ -7774,18 +7774,24 @@ Express-mounted builds. The shared settings localization suite also passes in
 English, French, and Arabic across all four viewports in both deployments.
 These fixtures do not prove live server persistence.
 
-### Music request dialog parity audit (2026-11-23)
+### Music request dialog parity (2026-11-23)
 
-The matched fixture audit confirms Lumen preserves MP3/FLAC destination choice,
-per-quality availability, pending-request feedback, and successful submission
-for the selected service. The focused browser suite passes 16 cases across
-desktop, iPhone, Android, and tablet. Native source comparison found a remaining
-workflow gap: native Music opens its request dialog and exposes quota state and,
-for authorized users, profile, metadata profile, root folder, tags, and
-request-on-behalf-of controls. Lumen currently submits from the detail action
-and provides only a destination selector. Those controls must be adapted into
-Lumen's request-sheet pattern before Music request parity can be called
-complete. No production code changed in this audit. Matched native/Lumen
-captures at 1440 and 390 CSS pixels are retained at
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-20261123/`;
-the phone native action group needs a scrolled capture before visual acceptance.
+Music requests now open Lumen's request sheet before submission. It preserves
+the selected MP3/FLAC Lidarr destination and, for authorized users, offers the
+destination profile, metadata profile, root folder, tags, and request-on-behalf
+controls. It shows the selected service and destination status, checks the
+selected requester's music quota, blocks restricted requests and failed quota lookups, and returns native-compatible failure
+feedback when Lidarr rejects the request. The sheet includes album identity,
+artist/type/track-count facts, the full album track list, and a scrollable mobile
+layout. Changing destination rechecks format availability and pending requests
+against that destination, preventing duplicate requests. Request payload,
+permissions, and format-specific availability checks are preserved.
+
+The focused Music request and shared detail-options suites pass 57 cases across
+desktop, iPhone, Android, and tablet. TypeScript and the Lumen production build
+pass. Matched native/Lumen request-sheet captures at desktop and phone sizes are
+retained in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-20261123/`.
+The phone sheet requires scrolling to reach advanced controls; this was checked
+in browser fixtures. Live quota/provider behavior and live submission remain
+unverified. This closes the request-dialog workflow gap, not all Music or Lumen
+parity gaps.

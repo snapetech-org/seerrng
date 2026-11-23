@@ -43,7 +43,14 @@ for (const theme of ['seerrOrig', 'seerrNGJ', 'persiusNG'])
       test(`${theme} music request ${width}${trackCount > 1 ? ' with 12 tracks' : ''}`, async ({
         page,
       }, info) => {
-        await page.setViewportSize({ width, height: 900 });
+        const requestedHeight = Number(process.env.NATIVE_MUSIC_HEIGHT);
+        await page.setViewportSize({
+          width,
+          height:
+            Number.isSafeInteger(requestedHeight) && requestedHeight > 0
+              ? requestedHeight
+              : 900,
+        });
         expect(
           (
             await page.request.post('/api/v1/auth/local', {

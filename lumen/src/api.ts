@@ -451,6 +451,7 @@ export interface RequestOptions {
   is4k?: boolean;
   serverId?: number;
   profileId?: number;
+  metadataProfileId?: number;
   rootFolder?: string;
   languageProfileId?: number;
   metadataLanguageId?: number | null;
@@ -459,6 +460,7 @@ export interface RequestOptions {
   requesterSelectedOptions?: {
     tags: boolean;
     profile?: boolean;
+    metadataProfile?: boolean;
     rootFolder?: boolean;
     languageProfile?: boolean;
   };

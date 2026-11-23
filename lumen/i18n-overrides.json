@@ -4471,7 +4471,9 @@
     "lumen.automaticBlocklist.find": "Find Keywords",
     "lumen.automaticBlocklist.limit": "Limit Pages per Blocklist Tag or Genre",
     "lumen.automaticBlocklist.limitHelp": "Enter a whole number from 0 to 250.",
-    "lumen.automaticBlocklist.genreWhat": "genres"
+    "lumen.automaticBlocklist.genreWhat": "genres",
+    "lumen.music.requestQuotaReached": "Music request quota reached.",
+    "lumen.music.requestsRemaining": "{remaining} of {limit} music requests remaining."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9108,7 +9110,9 @@
     "lumen.automaticBlocklist.find": "Rechercher des mots-clés",
     "lumen.automaticBlocklist.limit": "Limiter les pages par balise ou genre bloqué",
     "lumen.automaticBlocklist.limitHelp": "Saisissez un nombre entier de 0 à 250.",
-    "lumen.automaticBlocklist.genreWhat": "genres"
+    "lumen.automaticBlocklist.genreWhat": "genres",
+    "lumen.music.requestQuotaReached": "Le quota de demandes de musique est atteint.",
+    "lumen.music.requestsRemaining": "{remaining} sur {limit} demandes de musique restantes."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -13749,6 +13753,8 @@
     "lumen.automaticBlocklist.find": "البحث عن كلمات",
     "lumen.automaticBlocklist.limit": "حد الصفحات لكل وسم أو نوع محظور",
     "lumen.automaticBlocklist.limitHelp": "أدخل عددًا صحيحًا من 0 إلى 250.",
-    "lumen.automaticBlocklist.genreWhat": "الأنواع"
+    "lumen.automaticBlocklist.genreWhat": "الأنواع",
+    "lumen.music.requestQuotaReached": "تم بلوغ حد طلبات الموسيقى.",
+    "lumen.music.requestsRemaining": "متبقي {remaining} من أصل {limit} طلبات موسيقى."
   }
 }

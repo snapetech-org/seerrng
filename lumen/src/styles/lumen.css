@@ -620,7 +620,7 @@ h3 {
   left: 0;
   right: 0;
   bottom: 0;
-  max-height: 92%;
+  max-height: min(92%, 92dvh);
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--overlay-surface, var(--surface));

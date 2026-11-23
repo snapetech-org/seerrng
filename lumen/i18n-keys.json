@@ -5593,5 +5593,10 @@
   "lumen.automaticBlocklist.find",
   "lumen.automaticBlocklist.limit",
   "lumen.automaticBlocklist.limitHelp",
-  "lumen.automaticBlocklist.genreWhat"
+  "lumen.automaticBlocklist.genreWhat",
+  "lumen.music.requestQuotaReached",
+  "lumen.music.requestsRemaining",
+  "components.RequestModal.Music.requestmusic",
+  "components.RequestModal.Music.backendRequestFailed",
+  "components.RequestModal.Music.requesterror"
 ]

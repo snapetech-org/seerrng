@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { MediaStatus } from '../api';
+import { api, MediaStatus, type RequestOptions } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
+  AdvancedOptions,
   canChooseRequestOptions,
   canRequestMusic,
   canUseRequestAccess,
@@ -35,7 +37,6 @@ import { friendlyError } from '../errors';
 import {
   artistOf,
   fmtTrack,
-  requestExtra,
   type Album,
   type AlbumDetails,
   type ArtistDetails,
@@ -94,6 +95,277 @@ const musicServiceQuality = (
       ? 'mp3'
       : undefined);
 
+function MusicRequestSheet({
+  album,
+  quality,
+  services,
+  serviceIds,
+  initialServerId,
+  onClose,
+  onComplete,
+}: {
+  album: AlbumDetails;
+  quality: 'mp3' | 'flac';
+  services: MusicService[];
+  serviceIds: number[];
+  initialServerId: number;
+  onClose: () => void;
+  onComplete: () => void;
+}) {
+  const { user } = useAuth();
+  const { t } = useLumenLocale();
+  const toast = useToast();
+  const canChoose = canChooseRequestOptions(user?.permissions);
+  const [options, setOptions] = useState<RequestOptions>({
+    serverId: initialServerId,
+  });
+  const [optionsReady, setOptionsReady] = useState(!canChoose);
+  const [busy, setBusy] = useState(false);
+  const quotaUserId = options.userId ?? user?.id;
+  const quota = useApi<{
+    music?: { limit?: number; remaining?: number; restricted?: boolean };
+  }>(quotaUserId ? `/user/${quotaUserId}/quota` : null, {
+    currentPathOnly: true,
+  });
+  const quotaInfo = quota.data?.music;
+  const selectedServerId = options.serverId ?? initialServerId;
+  const blocked = album.mediaInfo?.status === MediaStatus.BLOCKLISTED;
+  const available = album.availableServices?.some(
+    (service) =>
+      service.serverId === selectedServerId &&
+      service.quality.toUpperCase() === quality.toUpperCase()
+  );
+  const pending = album.mediaInfo?.requests?.some((request) => {
+    if (request.status !== 1 && request.status !== 2) return false;
+    const targets = request.serviceTargets ?? [];
+    return (
+      targets.length === 0 ||
+      targets.some(
+        (target) =>
+          target.serviceType === 'lidarr' &&
+          target.serverId === selectedServerId
+      )
+    );
+  });
+  const destinationCovered = blocked || available || pending;
+  const destinationStatus = blocked
+    ? t('components.MusicDetails.blocklisted', 'Blocklisted')
+    : available
+      ? t('components.Common.available', 'Available')
+      : pending
+        ? t('components.RequestModal.Music.requested', 'Requested')
+        : t('components.RequestModal.Music.readyToRequest', 'Ready to Request');
+  const selectedService = services.find(
+    (service) => service.id === selectedServerId
+  );
+  const canSubmit =
+    !busy &&
+    optionsReady &&
+    (!!quota.data || !!quota.error) &&
+    !quota.error &&
+    !quotaInfo?.restricted &&
+    !destinationCovered;
+
+  return (
+    <ConfirmSheet
+      title={t('components.RequestModal.Music.requestmusic', 'Request Music')}
+      body={`${album.artist.name} — ${album.title} · ${quality.toUpperCase()}`}
+      confirm={t('components.Common.ButtonHelp.request', 'Request')}
+      cancel={t('components.Common.ButtonHelp.cancel', 'Cancel')}
+      busy={busy}
+      confirmDisabled={!canSubmit}
+      onClose={onClose}
+      onConfirm={async () => {
+        if (!canSubmit) return;
+        setBusy(true);
+        try {
+          const result = await api<{ status?: number }>('/request', {
+            method: 'POST',
+            body: JSON.stringify({
+              mediaType: 'music',
+              mediaId: album.id,
+              serverId: options.serverId ?? initialServerId,
+              ...(canChoose
+                ? {
+                    ...options,
+                    requesterSelectedOptions: {
+                      tags: options.tags !== undefined,
+                      profile: options.profileId !== undefined,
+                      metadataProfile: options.metadataProfileId !== undefined,
+                      rootFolder: !!options.rootFolder,
+                    },
+                  }
+                : {}),
+            }),
+          });
+          if (result?.status === 4)
+            throw new Error(
+              t(
+                'components.RequestModal.Music.backendRequestFailed',
+                'The request was submitted, but Lidarr rejected it while processing.'
+              )
+            );
+          onComplete();
+          toast(t('lumen.common.requestSubmitted', 'Request submitted.'));
+        } catch (error) {
+          toast(
+            friendlyError(
+              error,
+              t(
+                'components.RequestModal.Music.requesterror',
+                'Something went wrong while submitting the request.'
+              )
+            )
+          );
+          setBusy(false);
+        }
+      }}
+    >
+      <div className="pk-head">
+        <div className="p sq">
+          {album.posterPath && <img src={album.posterPath} alt="" />}
+        </div>
+        <div>
+          <h3>{album.title}</h3>
+          <p className="meta">
+            {album.artist.name} · {quality.toUpperCase()}
+          </p>
+        </div>
+      </div>
+      <dl className="facts">
+        <div>
+          <dt>
+            {t(
+              'components.RequestModal.Music.mediaAndFormat',
+              'Media & Format'
+            )}
+          </dt>
+          <dd>
+            {t('components.Discover.DiscoverMusic.music', 'Music')} ·{' '}
+            {t('components.Discover.DiscoverMusic.album', 'Album')} ·{' '}
+            {quality.toUpperCase()}
+          </dd>
+        </div>
+        <div>
+          <dt>{t('components.RequestModal.Music.artist', 'Artist')}</dt>
+          <dd>{album.artist.name}</dd>
+        </div>
+        <div>
+          <dt>{t('components.RequestModal.Music.albumType', 'Album Type')}</dt>
+          <dd>
+            {album.type ||
+              t('components.RequestModal.Music.notAvailable', 'Not Available')}
+          </dd>
+        </div>
+        <div>
+          <dt>
+            {t('components.RequestModal.Music.trackCount', 'Track Count')}
+          </dt>
+          <dd>{new Intl.NumberFormat().format(album.tracks?.length ?? 0)}</dd>
+        </div>
+        {album.releaseDate && (
+          <div>
+            <dt>
+              {t('components.RequestModal.Music.releaseDate', 'Release Date')}
+            </dt>
+            <dd>{album.releaseDate}</dd>
+          </div>
+        )}
+        <div>
+          <dt>{t('components.RequestModal.Music.status', 'Status')}</dt>
+          <dd>{destinationStatus}</dd>
+        </div>
+        <div>
+          <dt>{t('components.RequestModal.Music.service', 'Service')}</dt>
+          <dd>
+            {selectedService?.name ??
+              t('components.RequestModal.Music.notAvailable', 'Not Available')}
+          </dd>
+        </div>
+      </dl>
+      {!!album.tracks?.length && (
+        <>
+          <p className="note">
+            {t(
+              'components.RequestModal.Music.entireAlbum',
+              'This request includes the entire album.'
+            )}
+          </p>
+          <div>
+            <h4 className="card-title">{t('lumen.music.tracks', 'Tracks')}</h4>
+            <ol className="slist tlist">
+              {album.tracks.map((track) => (
+                <li key={track.position} className="trow">
+                  <span className="tn">{track.position}</span>
+                  <span>
+                    <b>{track.name}</b>
+                  </span>
+                  <span className="tl">{fmtTrack(track.length)}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </>
+      )}
+      {destinationCovered && (
+        <p className="note" role="status">
+          {blocked
+            ? t(
+                'components.MusicDetails.blocklisted',
+                'This title is blocklisted.'
+              )
+            : available
+              ? t(
+                  `components.MusicDetails.${quality}Available`,
+                  `The ${quality.toUpperCase()} version is already available.`
+                )
+              : t(
+                  `components.MusicDetails.${quality}Pending`,
+                  `An open ${quality.toUpperCase()} request already exists.`
+                )}
+        </p>
+      )}
+      {canChoose && (
+        <AdvancedOptions
+          kind="music"
+          is4k={false}
+          inline
+          serverIds={serviceIds}
+          initial={{ serverId: initialServerId }}
+          onChange={setOptions}
+          onReady={setOptionsReady}
+        />
+      )}
+      {!!quotaInfo?.limit && (
+        <p className="note" role={quotaInfo.restricted ? 'status' : undefined}>
+          {quotaInfo.restricted
+            ? t(
+                'lumen.music.requestQuotaReached',
+                'Music request quota reached.'
+              )
+            : t(
+                'lumen.music.requestsRemaining',
+                '{remaining} of {limit} Music requests remaining.',
+                {
+                  remaining: new Intl.NumberFormat().format(
+                    quotaInfo.remaining ?? 0
+                  ),
+                  limit: new Intl.NumberFormat().format(quotaInfo.limit),
+                }
+              )}
+        </p>
+      )}
+      {quota.error && (
+        <ServiceNote
+          error={quota.error}
+          what={t('components.RequestModal.Music.requestmusic', 'Music quota')}
+          retry={quota.reload}
+        />
+      )}
+    </ConfirmSheet>
+  );
+}
+
 function MusicFormatRequestActions({
   album,
   refresh,
@@ -103,10 +375,14 @@ function MusicFormatRequestActions({
 }) {
   const { user } = useAuth();
   const { t } = useLumenLocale();
-  const toast = useToast();
   const serviceState = useApi<MusicService[]>('/service/lidarr');
   const [selected, setSelected] = useState<Record<string, number>>({});
-  const [busy, setBusy] = useState<string>();
+  const [requesting, setRequesting] = useState<{
+    quality: 'mp3' | 'flac';
+    serverId: number;
+    serviceIds: number[];
+    services: MusicService[];
+  }>();
   const canChooseService = canChooseRequestOptions(user?.permissions);
   const services = Array.isArray(serviceState.data) ? serviceState.data : [];
 
@@ -172,7 +448,7 @@ function MusicFormatRequestActions({
                     `An open ${quality.toUpperCase()} request already exists.`
                   )
                 : undefined;
-        const disabled = !!unavailableReason || busy !== undefined;
+        const disabled = !!unavailableReason || requesting !== undefined;
         return (
           <div className="music-format-choice" key={quality}>
             {canChooseService && options.length > 1 && (
@@ -204,28 +480,13 @@ function MusicFormatRequestActions({
                   : `${t('components.Common.FormatRequestControl.request', 'Request')} ${quality.toUpperCase()}`
               }
               onClick={async () => {
-                if (!configured || busy) return;
-                setBusy(quality);
-                try {
-                  await requestExtra('music', album.id, configured.id);
-                  await refresh();
-                  toast(
-                    t('lumen.common.requestSubmitted', 'Request submitted.')
-                  );
-                } catch (error) {
-                  toast(
-                    friendlyError(
-                      error,
-                      t(
-                        'lumen.common.requestFailed',
-                        'The request could not be submitted.'
-                      ),
-                      t
-                    )
-                  );
-                } finally {
-                  setBusy(undefined);
-                }
+                if (!configured || requesting) return;
+                setRequesting({
+                  quality,
+                  serverId: configured.id,
+                  serviceIds: options.map((service) => service.id),
+                  services: options,
+                });
               }}
             >
               {t('components.Common.FormatRequestControl.request', 'Request')}{' '}
@@ -234,6 +495,20 @@ function MusicFormatRequestActions({
           </div>
         );
       })}
+      {requesting && (
+        <MusicRequestSheet
+          album={album}
+          quality={requesting.quality}
+          services={requesting.services}
+          initialServerId={requesting.serverId}
+          serviceIds={requesting.serviceIds}
+          onClose={() => setRequesting(undefined)}
+          onComplete={() => {
+            setRequesting(undefined);
+            void refresh();
+          }}
+        />
+      )}
     </div>
   );
 }

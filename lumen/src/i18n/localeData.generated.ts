@@ -1614,6 +1614,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'سنة الإصدار',
       'components.SoftwareCatalog.windows': 'النوافذ',
+      'components.RequestModal.Music.requestmusic': 'طلب الموسيقى',
+      'components.RequestModal.Music.backendRequestFailed':
+        'تم إرسال الطلب، لكن Lidarr رفضه أثناء المعالجة.',
+      'components.RequestModal.Music.requesterror':
+        'حدث خطأ ما أثناء إرسال الطلب.',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -6788,6 +6793,9 @@ export const localeData = [
       'lumen.automaticBlocklist.limit': 'حد الصفحات لكل وسم أو نوع محظور',
       'lumen.automaticBlocklist.limitHelp': 'أدخل عددًا صحيحًا من 0 إلى 250.',
       'lumen.automaticBlocklist.genreWhat': 'الأنواع',
+      'lumen.music.requestQuotaReached': 'تم بلوغ حد طلبات الموسيقى.',
+      'lumen.music.requestsRemaining':
+        'متبقي {remaining} من أصل {limit} طلبات موسيقى.',
     },
   },
   {
@@ -10879,6 +10887,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Erscheinungsjahr',
       'components.SoftwareCatalog.windows': 'Windows',
+      'components.RequestModal.Music.requestmusic': 'Musik anfordern',
+      'components.RequestModal.Music.backendRequestFailed':
+        'Der Antrag wurde eingereicht, aber Lidarr lehnte ihn während der Bearbeitung ab.',
+      'components.RequestModal.Music.requesterror':
+        'Beim Senden der Anfrage ist etwas schief gelaufen.',
     },
   },
   {
@@ -12539,6 +12552,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Release year',
       'components.SoftwareCatalog.windows': 'Windows',
+      'components.RequestModal.Music.requestmusic': 'Request Music',
+      'components.RequestModal.Music.backendRequestFailed':
+        'The request was submitted, but Lidarr rejected it while processing.',
+      'components.RequestModal.Music.requesterror':
+        'Something went wrong while submitting the request.',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -17718,6 +17736,9 @@ export const localeData = [
       'lumen.automaticBlocklist.limitHelp':
         'Enter a whole number from 0 to 250.',
       'lumen.automaticBlocklist.genreWhat': 'genres',
+      'lumen.music.requestQuotaReached': 'Music request quota reached.',
+      'lumen.music.requestsRemaining':
+        '{remaining} of {limit} music requests remaining.',
     },
   },
   {
@@ -19848,6 +19869,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Año de lanzamiento',
       'components.SoftwareCatalog.windows': 'Windows',
+      'components.RequestModal.Music.requestmusic': 'Solicitar música',
+      'components.RequestModal.Music.backendRequestFailed':
+        'La solicitud se envió, pero Lidarr la rechazó durante el procesamiento.',
+      'components.RequestModal.Music.requesterror':
+        'Algo fue mal al realizar la solicitud.',
     },
   },
   {
@@ -21537,6 +21563,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Año de lanzamiento',
       'components.SoftwareCatalog.windows': 'Windows',
+      'components.RequestModal.Music.requestmusic': 'Solicitud de música',
+      'components.RequestModal.Music.backendRequestFailed':
+        'La solicitud fue presentada, pero Lidarr lo rechazó durante el procesamiento.',
+      'components.RequestModal.Music.requesterror':
+        'Algo fue mal al realizar la solicitud.',
     },
   },
   {
@@ -24083,6 +24114,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MACOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Année de sortie',
       'components.SoftwareCatalog.windows': 'Fenêtres',
+      'components.RequestModal.Music.requestmusic': 'Demander de la musique',
+      'components.RequestModal.Music.backendRequestFailed':
+        "La demande a été présentée, mais Lidarr l'a rejetée pendant le traitement.",
+      'components.RequestModal.Music.requesterror':
+        "Une erreur s'est produite lors de la demande.",
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -29769,6 +29805,10 @@ export const localeData = [
       'lumen.automaticBlocklist.limitHelp':
         'Saisissez un nombre entier de 0 à 250.',
       'lumen.automaticBlocklist.genreWhat': 'genres',
+      'lumen.music.requestQuotaReached':
+        'Le quota de demandes de musique est atteint.',
+      'lumen.music.requestsRemaining':
+        '{remaining} sur {limit} demandes de musique restantes.',
     },
   },
   {
@@ -32080,6 +32120,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MacOS',
       'components.SoftwareCatalog.releaseYearFilter': 'रिलीज वर्ष',
       'components.SoftwareCatalog.windows': 'विंडोज',
+      'components.RequestModal.Music.requestmusic': 'संगीत अनुरोध',
+      'components.RequestModal.Music.backendRequestFailed':
+        'अनुरोध प्रस्तुत किया गया था, लेकिन Lidarr प्रसंस्करण के दौरान इसे खारिज कर दिया गया।',
+      'components.RequestModal.Music.requesterror':
+        'अनुरोध प्रस्तुत करते समय कुछ गलत हो गया।',
     },
   },
   {
@@ -34373,6 +34418,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MaOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Rilis tahun',
       'components.SoftwareCatalog.windows': 'Jendela',
+      'components.RequestModal.Music.requestmusic': 'Permintaan Musik',
+      'components.RequestModal.Music.backendRequestFailed':
+        'Permintaan itu diajukan, tapi Lidarr menolaknya saat memproses.',
+      'components.RequestModal.Music.requesterror':
+        'Sesuatu yang salah saat mengirimkan permintaan.',
     },
   },
   {
@@ -36656,6 +36706,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'マックオース',
       'components.SoftwareCatalog.releaseYearFilter': 'リリース年',
       'components.SoftwareCatalog.windows': 'ウィンドウズ',
+      'components.RequestModal.Music.requestmusic': '音楽のリクエスト',
+      'components.RequestModal.Music.backendRequestFailed':
+        'リクエストは送信されましたが、Lidarr が処理中に拒否しました。',
+      'components.RequestModal.Music.requesterror':
+        'リクエストの送信中に問題が発生しました。',
     },
   },
   {
@@ -38264,6 +38319,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': '맥 OS',
       'components.SoftwareCatalog.releaseYearFilter': '출시 년',
       'components.SoftwareCatalog.windows': '윈도우',
+      'components.RequestModal.Music.requestmusic': '음악 요청',
+      'components.RequestModal.Music.backendRequestFailed':
+        '요청이 제출되었지만 Lidarr은 처리 중에 거부했습니다.',
+      'components.RequestModal.Music.requesterror':
+        '요청을 제출하는 동안 문제가 발생했습니다.',
     },
   },
   {
@@ -41784,6 +41844,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MacOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Ano de lançamento',
       'components.SoftwareCatalog.windows': 'Janelas',
+      'components.RequestModal.Music.requestmusic': 'Pedir Música',
+      'components.RequestModal.Music.backendRequestFailed':
+        'O pedido foi apresentado, mas Lidarr rejeitou enquanto processava.',
+      'components.RequestModal.Music.requesterror':
+        'Algo deu errado ao enviar a solicitação.',
     },
   },
   {
@@ -47320,6 +47385,10 @@ export const localeData = [
       'components.SoftwareCatalog.macos': '马科斯',
       'components.SoftwareCatalog.releaseYearFilter': '发布年份',
       'components.SoftwareCatalog.windows': '窗口',
+      'components.RequestModal.Music.requestmusic': '请求音乐',
+      'components.RequestModal.Music.backendRequestFailed':
+        '请求已提交，但 Lidarr 在处理过程中拒绝了该请求。',
+      'components.RequestModal.Music.requesterror': '提交请求中出了点问题。',
     },
   },
   {
@@ -48862,6 +48931,10 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': '发布年份',
       'components.SoftwareCatalog.windows': '視窗',
+      'components.RequestModal.Music.requestmusic': '要求音樂',
+      'components.RequestModal.Music.backendRequestFailed':
+        '請求已送出，但 Lidarr 在處理時拒絕了該請求。',
+      'components.RequestModal.Music.requesterror': '提出請求時出了點問題。',
     },
   },
   {
@@ -50519,6 +50592,11 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MacOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Phát hành năm',
       'components.SoftwareCatalog.windows': 'Cửa sổ',
+      'components.RequestModal.Music.requestmusic': 'Yêu cầu âm nhạc',
+      'components.RequestModal.Music.backendRequestFailed':
+        'Yêu cầu đã được đệ trình, nhưng Lidarr đã từ chối khi xử lý.',
+      'components.RequestModal.Music.requesterror':
+        'Có gì đó không ổn trong khi gửi yêu cầu.',
     },
   },
 ] as const;
