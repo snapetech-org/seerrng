@@ -138,6 +138,9 @@ for (const permissions of [4194304, 2097152, 32]) {
       ).toBeVisible();
     } else {
       await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
+      await expect(
+        page.getByText('Season 2, Season 3 · Episodes 4, 5')
+      ).toBeVisible();
     }
     const captureDir = process.env.LUMEN_CAPTURE_DIR;
     if (

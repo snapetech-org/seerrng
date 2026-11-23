@@ -427,6 +427,41 @@ function IssueList() {
                 {issue.comments?.[0] && (
                   <small>{issue.comments[0].message.slice(0, 160)}</small>
                 )}
+                {issue.problemEpisodeSelections?.length ? (
+                  <small>
+                    {issue.problemEpisodeSelections
+                      .map(({ seasonNumber, episodeNumbers }) => {
+                        const season = t(
+                          'lumen.issues.season',
+                          'Season {season}',
+                          {
+                            season: seasonNumber,
+                          }
+                        );
+                        return episodeNumbers?.length
+                          ? `${season} · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: episodeNumbers.join(', ') })}`
+                          : season;
+                      })
+                      .join(', ')}
+                  </small>
+                ) : (
+                  !!(
+                    issue.problemSeason ||
+                    issue.problemEpisode ||
+                    issue.problemEpisodes?.length
+                  ) && (
+                    <small>
+                      {t('lumen.issues.season', 'Season {season}', {
+                        season: issue.problemSeason ?? 0,
+                      })}
+                      {issue.problemEpisodes?.length
+                        ? ` · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: issue.problemEpisodes.join(', ') })}`
+                        : issue.problemEpisode
+                          ? ` · ${t('lumen.issues.episode', 'Episode {episode}', { episode: issue.problemEpisode })}`
+                          : ''}
+                    </small>
+                  )
+                )}
                 <small>
                   {issue.createdBy.displayName ??
                     t('lumen.issues.reporter', 'Reporter')}{' '}
