@@ -5587,5 +5587,11 @@
   "lumen.discover.request",
   "lumen.discover.bookSectionsFailed",
   "lumen.tunerr.saveFailed",
-  "lumen.software.saveFailed"
+  "lumen.software.saveFailed",
+  "lumen.automaticBlocklist.what",
+  "lumen.automaticBlocklist.keywordIds",
+  "lumen.automaticBlocklist.find",
+  "lumen.automaticBlocklist.limit",
+  "lumen.automaticBlocklist.limitHelp",
+  "lumen.automaticBlocklist.genreWhat"
 ]

@@ -2748,8 +2748,8 @@ export const localeData = [
       'lumen.associations.view': 'طريقة عرض الارتباطات',
       'lumen.associations.what': 'الارتباطات',
       'lumen.automaticBlocklist.confirmFailure':
-        'تعذر تأكيد حفظ إعدادات الحظر التلقائي.',
-      'lumen.automaticBlocklist.findKeywords': 'البحث عن كلمات',
+        'تعذر تأكيد إعدادات الحظر المحفوظة.',
+      'lumen.automaticBlocklist.findKeywords': 'البحث عن كلمات الحظر',
       'lumen.automaticBlocklist.genreId': 'النوع رقم {id}',
       'lumen.automaticBlocklist.genres': 'الأنواع',
       'lumen.automaticBlocklist.keywordHelp':
@@ -6777,6 +6777,12 @@ export const localeData = [
       'lumen.discover.bookSectionsFailed': 'تعذر تحميل أرفف الكتب الشخصية.',
       'lumen.tunerr.saveFailed': 'تعذر حفظ إعدادات Tunerr.',
       'lumen.software.saveFailed': 'تعذر حفظ إعدادات اقتناء البرامج.',
+      'lumen.automaticBlocklist.what': 'إعدادات الحظر التلقائي',
+      'lumen.automaticBlocklist.keywordIds': 'معرّفات كلمات TMDB المحظورة',
+      'lumen.automaticBlocklist.find': 'البحث عن كلمات',
+      'lumen.automaticBlocklist.limit': 'حد الصفحات لكل وسم أو نوع محظور',
+      'lumen.automaticBlocklist.limitHelp': 'أدخل عددًا صحيحًا من 0 إلى 250.',
+      'lumen.automaticBlocklist.genreWhat': 'الأنواع',
     },
   },
   {
@@ -13669,7 +13675,7 @@ export const localeData = [
       'lumen.associations.what': 'associations',
       'lumen.automaticBlocklist.confirmFailure':
         'Could not confirm the saved blocklist settings.',
-      'lumen.automaticBlocklist.findKeywords': 'Find Keywords',
+      'lumen.automaticBlocklist.findKeywords': 'Find Blocklist Keywords',
       'lumen.automaticBlocklist.genreId': 'Genre #{id}',
       'lumen.automaticBlocklist.genres': 'genres',
       'lumen.automaticBlocklist.keywordHelp':
@@ -17699,6 +17705,14 @@ export const localeData = [
       'lumen.tunerr.saveFailed': 'Could not save Tunerr settings.',
       'lumen.software.saveFailed':
         'Could not save software acquisition settings.',
+      'lumen.automaticBlocklist.what': 'automatic blocklist settings',
+      'lumen.automaticBlocklist.keywordIds': 'Blocklisted TMDB Keyword IDs',
+      'lumen.automaticBlocklist.find': 'Find Keywords',
+      'lumen.automaticBlocklist.limit':
+        'Limit Pages per Blocklist Tag or Genre',
+      'lumen.automaticBlocklist.limitHelp':
+        'Enter a whole number from 0 to 250.',
+      'lumen.automaticBlocklist.genreWhat': 'genres',
     },
   },
   {
@@ -25340,8 +25354,9 @@ export const localeData = [
       'lumen.associations.view': 'Affichage des associations',
       'lumen.associations.what': 'les associations',
       'lumen.automaticBlocklist.confirmFailure':
-        'Impossible de confirmer l’enregistrement des paramètres de blocage automatique.',
-      'lumen.automaticBlocklist.findKeywords': 'Rechercher des mots-clés',
+        'Impossible de confirmer les paramètres de blocage enregistrés.',
+      'lumen.automaticBlocklist.findKeywords':
+        'Rechercher des mots-clés de blocage',
       'lumen.automaticBlocklist.genreId': 'Genre nº {id}',
       'lumen.automaticBlocklist.genres': 'genres',
       'lumen.automaticBlocklist.keywordHelp':
@@ -26145,8 +26160,7 @@ export const localeData = [
       'lumen.discoveryRegions.loading':
         'Chargement des paramètres de région de découverte…',
       'lumen.discoveryRegions.regions': 'régions',
-      'lumen.discoveryRegions.save':
-        'Enregistrer les paramètres de région de découverte',
+      'lumen.discoveryRegions.save': 'Enregistrer les réglages',
       'lumen.discoveryRegions.saveFailure':
         'Impossible d’enregistrer les paramètres de région de découverte.',
       'lumen.discoveryRegions.saved':
@@ -29737,6 +29751,14 @@ export const localeData = [
         'Impossible d’enregistrer les paramètres de Tunerr.',
       'lumen.software.saveFailed':
         'Impossible d’enregistrer les paramètres d’acquisition de logiciels.',
+      'lumen.automaticBlocklist.what': 'paramètres de blocage automatique',
+      'lumen.automaticBlocklist.keywordIds': 'ID de mots-clés TMDB bloqués',
+      'lumen.automaticBlocklist.find': 'Rechercher des mots-clés',
+      'lumen.automaticBlocklist.limit':
+        'Limiter les pages par balise ou genre bloqué',
+      'lumen.automaticBlocklist.limitHelp':
+        'Saisissez un nombre entier de 0 à 250.',
+      'lumen.automaticBlocklist.genreWhat': 'genres',
     },
   },
   {

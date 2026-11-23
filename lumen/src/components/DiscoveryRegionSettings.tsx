@@ -77,15 +77,20 @@ function SettingsForm({ initial }: { initial: Values }) {
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(changes)),
       });
-      if (changes.some(([key, value]) => result[key] !== value))
+      const readback = await api<Values>(endpoint);
+      if (
+        changes.some(
+          ([key, value]) => result[key] !== value || readback[key] !== value
+        )
+      )
         throw new Error(
           t(
             'lumen.discoveryRegions.confirmFailure',
             'Could not confirm the saved discovery settings.'
           )
         );
-      setSaved(result);
-      setDraft(result);
+      setSaved(readback);
+      setDraft(readback);
       invalidatePublicSettings();
       forget('/settings/public');
       forget(endpoint);

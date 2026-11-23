@@ -1,0 +1,1 @@
+Lumen now translates the Automatic Blocklist editor in English, French, and Arabic and verifies its settings through a fresh read after saving. Stale values keep edits available for retry. Discovery Region saves receive the same persistence check, and the shorter French save label prevents phone overflow.

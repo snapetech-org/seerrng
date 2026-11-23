@@ -13,6 +13,10 @@ const labels = {
     limit: 'Limit Pages per Blocklist Tag or Genre',
     next: 'Next Tag Page',
     page2: 'Tag page 2 of 2',
+    movieGenres: 'Blocklisted Movie Genres',
+    tvGenres: 'Blocklisted TV Genres',
+    unknownGenre: 'Genre #999',
+    confirmFailure: 'Could not confirm the saved blocklist settings.',
   },
   fr: {
     title: 'Blocage automatique',
@@ -24,6 +28,11 @@ const labels = {
     limit: 'Limiter les pages par balise ou genre bloqué',
     next: 'Page suivante de balises',
     page2: 'Page 2 des balises sur 2',
+    movieGenres: 'Genres de films bloqués',
+    tvGenres: 'Genres de séries bloqués',
+    unknownGenre: 'Genre nº 999',
+    confirmFailure:
+      'Impossible de confirmer les paramètres de blocage enregistrés.',
   },
   ar: {
     title: 'الحظر التلقائي',
@@ -35,6 +44,10 @@ const labels = {
     limit: 'حد الصفحات لكل وسم أو نوع محظور',
     next: 'صفحة وسوم الموضوع التالية',
     page2: 'صفحة الوسوم 2 من 2',
+    movieGenres: 'أنواع الأفلام المحظورة',
+    tvGenres: 'أنواع المسلسلات المحظورة',
+    unknownGenre: 'النوع رقم 999',
+    confirmFailure: 'تعذر تأكيد إعدادات الحظر المحفوظة.',
   },
 } as const;
 
@@ -46,10 +59,11 @@ test('automatic blocklist settings localize and retain validated edits through s
   let settings: Record<string, unknown> = {
     blocklistedTags: '42',
     blocklistedGenresMovie: '18',
-    blocklistedGenresTv: '',
+    blocklistedGenresTv: '999',
     blocklistedTagsLimit: 50,
   };
   let failOnce = true;
+  let staleReadbackOnce = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -94,6 +108,10 @@ test('automatic blocklist settings localize and retain validated edits through s
             json: { message: 'Service unavailable' },
           });
         }
+        if (staleReadbackOnce) {
+          staleReadbackOnce = false;
+          return route.fulfill({ json: { ...settings, ...body } });
+        }
         settings = { ...settings, ...body };
       }
       return route.fulfill({ json: settings });
@@ -103,13 +121,32 @@ test('automatic blocklist settings localize and retain validated edits through s
 
   await page.goto(`${mount}/admin/discovery`);
   await expect(
-    page.getByRole('heading', { name: text.title, exact: true, level: 2 })
+    page.getByRole('heading', {
+      name: process.env.LUMEN_BLOCKLIST_BASELINE ? labels.en.title : text.title,
+      exact: true,
+      level: 2,
+    })
   ).toBeVisible();
+  if (
+    process.env.LUMEN_BLOCKLIST_BASELINE &&
+    process.env.LUMEN_BLOCKLIST_CAPTURE
+  ) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_BLOCKLIST_CAPTURE}-${page.viewportSize()!.width}.png`,
+      fullPage: true,
+    });
+    return;
+  }
   const keywords = page.getByRole('textbox', {
     name: text.keywords,
     exact: true,
   });
   await expect(keywords).toHaveValue('42');
+  await expect(page.getByText(text.movieGenres, { exact: true })).toBeVisible();
+  await expect(page.getByText(text.tvGenres, { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(text.unknownGenre, { exact: true })
+  ).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute(
     'dir',
     locale === 'ar' ? 'rtl' : 'ltr'
@@ -120,7 +157,25 @@ test('automatic blocklist settings localize and retain validated edits through s
   const viewportWidth = await page.evaluate(
     () => document.documentElement.clientWidth
   );
-  expect(documentWidth).toBeLessThanOrEqual(viewportWidth);
+  const overflow = await page.evaluate(() =>
+    [...document.querySelectorAll('body *')]
+      .map((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          tag: element.tagName,
+          className:
+            typeof element.className === 'string' ? element.className : '',
+          text: element.textContent?.trim().slice(0, 70),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+        };
+      })
+      .filter(({ right }) => right > document.documentElement.clientWidth)
+      .slice(0, 8)
+  );
+  expect(documentWidth, JSON.stringify(overflow)).toBeLessThanOrEqual(
+    viewportWidth
+  );
 
   if (process.env.LUMEN_BLOCKLIST_CAPTURE) {
     await page.screenshot({
@@ -153,8 +208,12 @@ test('automatic blocklist settings localize and retain validated edits through s
   await expect(page.getByRole('alert')).toBeVisible();
   await expect(keywords).toHaveValue('42,73,74');
   await save.click();
+  await expect(page.getByRole('alert')).toContainText(text.confirmFailure);
+  await expect(keywords).toHaveValue('42,73,74');
+  await save.click();
   await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
-  expect(writes).toHaveLength(2);
+  expect(writes).toHaveLength(3);
   expect(writes[1]).toEqual({ blocklistedTags: '42,73,74' });
+  expect(writes[2]).toEqual({ blocklistedTags: '42,73,74' });
   await expect(page.getByLabel(text.limit, { exact: true })).toHaveValue('50');
 });

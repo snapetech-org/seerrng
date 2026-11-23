@@ -7658,3 +7658,32 @@ intent remain available for retry.
 The focused stale-readback and retry workflow passes on desktop, iPhone,
 Android, and tablet (4 cases). Fixture results do not verify live metadata
 provider connectivity or persisted settings files.
+
+### Automatic blocklist settings persisted readback
+
+The Automatic Blocklist editor now localizes its heading, controls, validation
+guidance, loading and error states, and save feedback in English, French, and
+Arabic. It confirms changed keyword, genre, and page limit settings in a fresh
+read after the write response. If storage is stale, the validated draft remains
+editable and save can be retried.
+
+The localized blocklist workflow covers a rejected write, stale persisted
+readback, and successful retry in English, French, and Arabic across desktop,
+iPhone, Android, and tablet (12 standalone and 12 isolated Express `/lumen/`
+cases). Matched French baseline and candidate captures at 1440 and 390 CSS
+pixels show unchanged control geometry;
+the shorter region-save label removes the existing phone overflow. The
+reference was the French `/admin/discovery` render built from `a6d9374db`; the
+candidate is the current standalone Lumen build. French and Arabic no-overflow
+checks pass. Fixture results do not establish live database
+persistence. Full production-server `/lumen/` acceptance remains open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-blocklist-20261122/`.
+
+Discovery Region settings now also verify every edited field in a fresh
+`/settings/main` read before clearing the draft or invalidating public settings.
+A stale readback keeps the selected region, language, and visibility changes
+retryable. Browser coverage combines rejected-write, stale-readback, and retry
+states across desktop, iPhone, Android, and tablet in standalone and isolated
+Express-mounted builds. The shared settings localization suite also passes in
+English, French, and Arabic across all four viewports in both deployments.
+These fixtures do not prove live server persistence.

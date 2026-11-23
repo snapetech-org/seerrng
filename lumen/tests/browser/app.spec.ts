@@ -9084,6 +9084,7 @@ test('Discovery region settings preserve legacy values and retry only changed fi
     originalLanguage: 'en',
   };
   const writes: unknown[] = [];
+  let staleReadbackOnce = true;
   await page.route('**/api/v1/settings/main', (route) => {
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
@@ -9093,6 +9094,10 @@ test('Discovery region settings preserve legacy values and retry only changed fi
           status: 503,
           json: { message: 'Could not save regions.' },
         });
+      if (staleReadbackOnce) {
+        staleReadbackOnce = false;
+        return route.fulfill({ json: { ...saved, ...body } });
+      }
       Object.assign(saved, body);
     }
     return route.fulfill({ json: saved });
@@ -9123,9 +9128,23 @@ test('Discovery region settings preserve legacy values and retry only changed fi
   await expect(includeAdult).toBeChecked();
   await save.click();
   await expect(
+    page.getByText('Could not confirm the saved discovery settings.')
+  ).toBeVisible();
+  await expect(streaming).toHaveValue('CA');
+  await expect(language).toHaveValue('fr');
+  await expect(includeAdult).toBeChecked();
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(
     page.getByText('Discovery region settings saved.')
   ).toBeVisible();
   expect(writes).toEqual([
+    {
+      streamingRegion: 'CA',
+      originalLanguage: 'fr',
+      hideRequested: true,
+      includeAdult: true,
+    },
     {
       streamingRegion: 'CA',
       originalLanguage: 'fr',

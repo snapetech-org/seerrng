@@ -23,7 +23,7 @@ const copy = {
   fr: {
     regions: 'Régions et langues de découverte',
     region: 'Région de découverte',
-    saveRegions: 'Enregistrer les paramètres de région de découverte',
+    saveRegions: 'Enregistrer les réglages',
     savedRegions: 'Les paramètres de région de découverte ont été enregistrés.',
     saveFailure:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
