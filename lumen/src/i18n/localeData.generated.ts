@@ -1614,6 +1614,7 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'macOS',
       'components.SoftwareCatalog.releaseYearFilter': 'سنة الإصدار',
       'components.SoftwareCatalog.windows': 'النوافذ',
+      'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
       'components.Layout.Sidebar.you': 'أنت',
@@ -1626,6 +1627,7 @@ export const localeData = [
       'components.Persius.empty': 'لا توجد عناوين لعرضها.',
       'components.Persius.failed': 'تعذر تحميل هذا القسم.',
       'components.Persius.genres': 'الأنواع',
+      'components.Persius.loading': 'جارٍ التحميل…',
       'components.Persius.movies': 'أفلام',
       'components.Persius.popularAudio': 'كتب صوتية رائجة',
       'components.Persius.popularMovies': 'أفلام رائجة',
@@ -1635,6 +1637,9 @@ export const localeData = [
       'components.Persius.searchAll': 'أفلام ومسلسلات وكتب ورواة…',
       'components.Persius.seeAll': 'عرض الكل',
       'components.Persius.series': 'مسلسلات',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'ربط موفّر الهوية',
+      'components.UserProfile.UserSettings.menuClientTokens': 'رموز العملاء',
       'lumen.account.administratorAccess': 'يملك هذا الحساب صلاحيات المسؤول.',
       'lumen.account.backToSettings': 'العودة إلى إعدادات الحساب',
       'lumen.account.backToYou': 'العودة إلى صفحتك',
@@ -24078,6 +24083,7 @@ export const localeData = [
       'components.SoftwareCatalog.macos': 'MACOS',
       'components.SoftwareCatalog.releaseYearFilter': 'Année de sortie',
       'components.SoftwareCatalog.windows': 'Fenêtres',
+      'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
       'components.Layout.Sidebar.you': 'Vous',
@@ -24090,6 +24096,7 @@ export const localeData = [
       'components.Persius.empty': 'Aucun titre à afficher.',
       'components.Persius.failed': 'Impossible de charger cette section.',
       'components.Persius.genres': 'Genres',
+      'components.Persius.loading': 'Chargement…',
       'components.Persius.movies': 'Films',
       'components.Persius.popularAudio': 'Livres audio populaires',
       'components.Persius.popularMovies': 'Films populaires',
@@ -24101,6 +24108,9 @@ export const localeData = [
       'components.Persius.series': 'Séries',
       'components.UserProfile.UserSettings.UserGeneralSettings.streamingSubscriptions':
         'Abonnements aux services de streaming',
+      'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider':
+        'Lier un fournisseur d’identité',
+      'components.UserProfile.UserSettings.menuClientTokens': 'Jetons client',
       'lumen.account.administratorAccess':
         'Ce compte dispose des droits d’administration.',
       'lumen.account.backToSettings': 'Retour aux paramètres du compte',

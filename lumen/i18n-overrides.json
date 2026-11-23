@@ -4474,6 +4474,10 @@
     "lumen.automaticBlocklist.genreWhat": "genres"
   },
   "fr": {
+    "components.IssueDetails.allepisodes": "Tous les épisodes",
+    "components.Persius.loading": "Chargement…",
+    "components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider": "Lier un fournisseur d’identité",
+    "components.UserProfile.UserSettings.menuClientTokens": "Jetons client",
     "lumen.recordings.loading": "Chargement des enregistrements…",
     "lumen.recordings.statusLoadError": "Impossible de charger l’état de la télévision en direct.",
     "components.Layout.Sidebar.myMedia": "Ma médiathèque",
@@ -9107,6 +9111,10 @@
     "lumen.automaticBlocklist.genreWhat": "genres"
   },
   "ar": {
+    "components.IssueDetails.allepisodes": "جميع الحلقات",
+    "components.Persius.loading": "جارٍ التحميل…",
+    "components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider": "ربط موفّر الهوية",
+    "components.UserProfile.UserSettings.menuClientTokens": "رموز العملاء",
     "lumen.recordings.loading": "جارٍ تحميل التسجيلات…",
     "lumen.recordings.statusLoadError": "تعذّر تحميل حالة البث التلفزيوني المباشر.",
     "components.Layout.Sidebar.myMedia": "مكتبتي الإعلامية",

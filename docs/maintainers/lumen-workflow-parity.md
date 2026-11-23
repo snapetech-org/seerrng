@@ -23,6 +23,20 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 | Accounts | `/profile/*`, `/users/*` | Account Settings/password, linked accounts, client tokens, notifications, household profiles, TV request access, per-user Episode Queue defaults, maturity limits, and delegated user management are implemented. Native `/users/:id` and `/profile/*` profile, request, watchlist, and settings bookmarks now redirect to Lumen equivalents with filters preserved and self/manager access enforced. Profile settings links target their existing account subsections, including notification-channel anchors. Account Settings persists the native per-user display locale; general profile fields, password, permissions, linked-account, client-token, personal-notification, household-profile, playback, and request-limit copy follows the supported locale. Account Settings also exposes native per-service default request folders for users with request management, advanced request, or administrator permission; saved paths survive unavailable services, and successful saves are verified through the settings read endpoint. The saved-language account suite passes 88 cases in each standalone and bundled build across desktop, iPhone, Android, and tablet. Signed-out Lumen login and password recovery follow the browser's supported locale in French and Arabic. TV Request Settings reuses SeerrNG translations for its policy, review queue, and Episode Queue controls. | Finish remaining per-route failure recovery and role/state matrices; verify live authorization and provider persistence/readback, and complete native-matched visuals. |
 | Instance administration | `/setup`, `/settings/*` | Lumen includes setup and dedicated administration pages for general/network settings, users, libraries, services, jobs, logs, notifications, metadata/discovery, categories, indexers, migration, and integrations. Every direct `/admin` route denies a standard user on the bundled `/lumen/` deployment across desktop, iPhone, Android, and tablet. Lumen settings controls, storage guidance, save/upload feedback, and Discover row headings/labels follow English, French, and Arabic. The About screen includes SeerrNG support and TMDB logo attribution links. | Audit each route's validation, dirty-state, save/readback and failed-save recovery against native behavior; finish remaining provider coverage and native-matched/bundled acceptance. |
 
+### Lumen French and Arabic catalog completion
+
+The Lumen paths for Request History, Admin Notifications loading feedback, linked
+identity providers, and the Account navigation's Client Tokens entry now have
+French and Arabic translations. A focused catalog test covers these actual Lumen
+consumers and rejects accidental English fallbacks. This closes those four
+catalog gaps only; it does not establish complete localization coverage for all
+routes or acceptance of every translated screen at every viewport. Candidate
+captures cover desktop and phone layouts and their browser checks report no
+horizontal overflow. The existing Request History baseline-capture mode is not
+a valid baseline for this comparison: it expects English status copy although
+the committed baseline already renders that text in the selected locale. Native
+matched visual acceptance therefore remains open.
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens
