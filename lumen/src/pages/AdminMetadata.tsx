@@ -23,8 +23,10 @@ type Values = Record<string, string>;
 type Field = { key: string; label: string; max?: number };
 type Configuration = {
   title: string;
+  sectionKey: string;
   endpoint: string;
   help: string;
+  helpKey: string;
   fields: Field[];
   providers?: Provider[];
   read: (settings: Record<string, unknown>) => Values;
@@ -49,8 +51,10 @@ const musicFields = [
 const configurations: Configuration[] = [
   {
     title: 'TV and Anime',
+    sectionKey: 'lumen.metadata.section.video',
     endpoint: path,
     help: 'Choose the metadata provider for TV and anime.',
+    helpKey: 'lumen.metadata.help.video',
     fields: videoFields,
     providers: ['tmdb', 'tvdb'],
     read: (settings) => ({
@@ -61,8 +65,10 @@ const configurations: Configuration[] = [
   },
   {
     title: 'Music Metadata',
+    sectionKey: 'lumen.metadata.section.music',
     endpoint: `${path}/music`,
     help: 'Set Cover Art Archive request limits and test both music providers.',
+    helpKey: 'lumen.metadata.help.music',
     fields: musicFields,
     providers: ['musicbrainz', 'coverartarchive'],
     read: (settings) =>
@@ -85,8 +91,10 @@ const configurations: Configuration[] = [
   },
   {
     title: 'Book Language Restrictions',
+    sectionKey: 'lumen.metadata.section.books',
     endpoint: `${path}/books`,
     help: 'Enter up to 50 comma-separated three-letter language codes, such as eng, fre, or ger. Leave blank to allow all languages. Restricted requests require a verified edition in an allowed language.',
+    helpKey: 'lumen.metadata.help.books',
     fields: [{ key: 'languages', label: 'Allowed Book Languages' }],
     read: (settings) => ({
       languages: (settings.allowedLanguages as string[]).join(', '),
@@ -322,20 +330,24 @@ function MetadataSection({ config }: { config: Configuration }) {
     config.endpoint
   );
   return (
-    <Section
-      title={t(
-        `lumen.metadata.section.${config.endpoint === path ? 'video' : config.endpoint.endsWith('/music') ? 'music' : 'books'}`,
-        config.title
-      )}
-    >
-      <p className="note">{config.help}</p>
-      <ServiceNote error={error} what={config.title} retry={reload} />
+    <Section title={t(config.sectionKey, config.title)}>
+      <p className="note">{t(config.helpKey, config.help)}</p>
+      <ServiceNote
+        error={error}
+        what={t(config.sectionKey, config.title)}
+        title={t(
+          'lumen.metadata.loadFailedTitle',
+          'Could not load metadata settings.'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
+        retry={reload}
+      />
       {data ? (
         <MetadataForm config={config} initial={config.read(data)} />
       ) : (
         !error && (
           <p className="note" role="status">
-            Loading settings…
+            {t('lumen.metadata.loadingSettings', 'Loading settings…')}
           </p>
         )
       )}

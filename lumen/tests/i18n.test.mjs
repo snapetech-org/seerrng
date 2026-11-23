@@ -22,6 +22,16 @@ const lumenKeys = [
   'lumen.admin.back',
   'lumen.admin.dest.requestDefaults',
   'lumen.gameLibrary.privateGameLibrary',
+  'lumen.metadata.help.video',
+  'lumen.metadata.help.music',
+  'lumen.metadata.help.books',
+  'lumen.metadata.credential.comicVineApiKey',
+  'lumen.metadata.credential.metronToken',
+  'lumen.metadata.credential.googleBooksApiKey',
+  'lumen.metadata.credential.youtubeApiKey',
+  'lumen.metadata.loadingSettings',
+  'lumen.metadata.loadFailedTitle',
+  'lumen.metadata.credentialsLoadFailedTitle',
 ];
 
 test('Lumen account, request, and settings labels are translated in French and Arabic', async () => {
@@ -46,7 +56,7 @@ test('Lumen account, request, and settings labels are translated in French and A
   }
 });
 
-test('visible Lumen account, administration, and game-library labels are translated', () => {
+test('visible Lumen account, administration, game-library, and metadata labels are translated', () => {
   for (const locale of ['fr', 'ar']) {
     for (const key of lumenKeys) {
       assert.equal(

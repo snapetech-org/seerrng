@@ -55,6 +55,61 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   ).toBeVisible();
 });
 
+for (const locale of [
+  { tag: 'fr', selected: '0 sélectionnés' },
+  { tag: 'ar', selected: 'تم تحديد 0' },
+]) {
+  test(`streaming provider selection count follows the ${locale.tag} locale`, async ({
+    page,
+  }, info) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', async (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname
+        .replace(/^\/lumen(?=\/)/, '')
+        .replace(/^\/api\/v1/, '');
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: {
+            id: 2,
+            displayName: 'Viewer',
+            permissions: 32,
+            userType: 2,
+          },
+        });
+      if (path === '/user/2/settings/main')
+        return route.fulfill({
+          json: { username: 'Viewer', locale: locale.tag, region: 'US' },
+        });
+      if (path.startsWith('/watchproviders/'))
+        return route.fulfill({ json: [{ id: 8, name: 'Fixture Service' }] });
+      if (path === '/languages') return route.fulfill({ json: [] });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto(appPath('./me/account'));
+    await expect(
+      page.getByRole('heading', {
+        name:
+          locale.tag === 'fr'
+            ? 'Abonnements aux services de streaming'
+            : 'اشتراكات خدمات البث',
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(locale.selected, { exact: true })
+    ).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`streaming-selection-${locale.tag}.png`),
+        fullPage: true,
+      });
+  });
+}
+
 test('request folders preserve service choices and confirm persisted values', async ({
   page,
 }) => {

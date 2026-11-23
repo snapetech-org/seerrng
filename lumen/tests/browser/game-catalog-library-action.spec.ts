@@ -7,7 +7,7 @@ const apiPath = (url: string) =>
 
 type FixtureMode = 'empty' | 'existing' | 'lookup-fails' | 'add-fails' | 'dat';
 
-async function openGame(page: Page, mode: FixtureMode) {
+async function openGame(page: Page, mode: FixtureMode, locale = 'fr') {
   let entry = mode === 'existing' ? { id: 8 } : null;
   let lookupFailures = mode === 'lookup-fails' ? 1 : 0;
   let addFailures = ['lookup-fails', 'add-fails'].includes(mode) ? 1 : 0;
@@ -28,7 +28,7 @@ async function openGame(page: Page, mode: FixtureMode) {
     if (path === '/user/1/settings/main')
       return route.fulfill({
         json: {
-          locale: 'fr',
+          locale,
           enabledMediaCategories: { game: true, retro: true, modern: true },
         },
       });
@@ -157,6 +157,9 @@ test('a signed-in user can add an IGDB game to My Games without request access',
     return;
   }
   const add = page.getByRole('button', { name: 'Ajouter à Mes jeux' });
+  await expect(
+    page.getByRole('region', { name: 'Bibliothèque de jeux privée' })
+  ).toBeVisible();
   await expect(add).toBeVisible();
   await capture('candidate');
   await expect(page.getByRole('button', { name: 'Request' })).toHaveCount(0);
@@ -175,6 +178,26 @@ test('a signed-in user can add an IGDB game to My Games without request access',
     page.getByRole('link', { name: 'Fixture Catalogue Game' })
   ).toBeVisible();
 });
+
+for (const [locale, libraryLabel] of [
+  ['fr', 'Bibliothèque de jeux privée'],
+  ['ar', 'مكتبة الألعاب الخاصة'],
+]) {
+  test(`private game library region uses ${locale}`, async ({ page }, info) => {
+    await openGame(page, 'empty', locale);
+    await expect(
+      page.getByRole('region', { name: libraryLabel, exact: true })
+    ).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`private-game-library-${locale}.png`),
+        fullPage: true,
+      });
+  });
+}
 
 test('an existing catalogue game links to its library entry', async ({
   page,

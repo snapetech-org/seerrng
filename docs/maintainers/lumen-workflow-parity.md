@@ -7872,13 +7872,21 @@ Lumen parity gaps.
 
 A static-key audit found five live Lumen labels that relied on English fallback:
 account loading and selected-count feedback, the Metadata page's return label,
-the Request Defaults destination, and the private game library heading. English,
-French, and Arabic overrides are now catalogued and generated for those keys.
-An i18n regression test rejects English fallback for the new French and Arabic
-values. Candidate Account Settings captures were rendered at desktop and phone
-sizes and inspected; their existing layout remains intact and the selected
-count is translated. The browser assertion did not complete reliably because
-the provider fixture did not expose its result in the rendered selection list.
-The Metadata back action and private game-library heading also lack rendered
-browser coverage in this milestone. No workflow behavior changed. Evidence is retained at
+the Request Defaults destination, and the private game library heading. It also
+found untranslated helper copy, a loading state, and credential labels on the
+Metadata administration page. English, French, and Arabic overrides are now
+catalogued and generated for those strings. i18n regression checks reject
+English fallback for each added French and Arabic value.
+
+Thirty-two focused browser cases pass against the candidate production build
+across desktop, iPhone, Android, and tablet: Metadata administration and
+credential fields, independent metadata saves and provider failures,
+streaming-provider selection feedback, and the private game library region.
+French and Arabic Metadata captures were inspected on desktop
+and phone; an English-fallback baseline and French candidate match at 1440 by
+900 pixels with the same layout geometry. The Arabic screens follow RTL and
+the four-viewport checks report no horizontal overflow. The new locale labels
+do not change routes, settings payloads, or library behavior. Live metadata
+provider calls and independent language review remain unverified. Evidence is
+retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/`.

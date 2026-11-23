@@ -4388,6 +4388,21 @@ export const localeData = [
       'lumen.metadata.test': 'اختبار',
       'lumen.metadata.testFailed': 'تعذر اختبار موفري البيانات الوصفية.',
       'lumen.metadata.title': 'موفرو البيانات الوصفية',
+      'lumen.metadata.help.video':
+        'اختر موفر البيانات الوصفية للتلفاز والأنمي.',
+      'lumen.metadata.help.music':
+        'اضبط حدود طلبات Cover Art Archive واختبر موفري الموسيقى.',
+      'lumen.metadata.help.books':
+        'أدخل حتى 50 رمز لغة مكوّناً من ثلاثة أحرف ومفصولاً بفواصل، مثل eng أو fre أو ger. اتركه فارغاً للسماح بجميع اللغات. تتطلب الطلبات المقيّدة إصداراً تم التحقق منه بلغة مسموح بها.',
+      'lumen.metadata.credential.comicVineApiKey':
+        'مفتاح واجهة برمجة تطبيقات ComicVine',
+      'lumen.metadata.credential.metronToken': 'رمز Metron API',
+      'lumen.metadata.credential.googleBooksApiKey': 'مفتاح Google Books API',
+      'lumen.metadata.credential.youtubeApiKey': 'مفتاح YouTube Data API',
+      'lumen.metadata.loadingSettings': 'جارٍ تحميل الإعدادات…',
+      'lumen.metadata.loadFailedTitle': 'تعذر تحميل إعدادات البيانات الوصفية.',
+      'lumen.metadata.credentialsLoadFailedTitle':
+        'تعذر تحميل بيانات اعتماد البيانات الوصفية.',
       'lumen.migration.addServiceFirst':
         'أضف خدمة BookshelfNG من إعدادات خدمات SeerrNG لترحيل مكتبتها.',
       'lumen.migration.allCurrentFolders': 'كل المجلدات الحالية',
@@ -15293,6 +15308,20 @@ export const localeData = [
       'lumen.metadata.test': 'Test',
       'lumen.metadata.testFailed': 'Could not test metadata providers.',
       'lumen.metadata.title': 'Metadata Providers',
+      'lumen.metadata.help.video':
+        'Choose the metadata provider for TV and anime.',
+      'lumen.metadata.help.music':
+        'Set Cover Art Archive request limits and test both music providers.',
+      'lumen.metadata.help.books':
+        'Enter up to 50 comma-separated three-letter language codes, such as eng, fre, or ger. Leave blank to allow all languages. Restricted requests require a verified edition in an allowed language.',
+      'lumen.metadata.credential.comicVineApiKey': 'ComicVine API Key',
+      'lumen.metadata.credential.metronToken': 'Metron API Token',
+      'lumen.metadata.credential.googleBooksApiKey': 'Google Books API Key',
+      'lumen.metadata.credential.youtubeApiKey': 'YouTube Data API Key',
+      'lumen.metadata.loadingSettings': 'Loading settings…',
+      'lumen.metadata.loadFailedTitle': 'Could not load metadata settings.',
+      'lumen.metadata.credentialsLoadFailedTitle':
+        'Could not load metadata credentials.',
       'lumen.migration.addServiceFirst':
         'Add a BookshelfNG service in SeerrNG Service Settings to migrate its library.',
       'lumen.migration.allCurrentFolders': 'All Current Folders',
@@ -27191,6 +27220,21 @@ export const localeData = [
       'lumen.metadata.testFailed':
         'Impossible de tester les fournisseurs de métadonnées.',
       'lumen.metadata.title': 'Fournisseurs de métadonnées',
+      'lumen.metadata.help.video':
+        'Choisissez le fournisseur de métadonnées pour la télévision et l’anime.',
+      'lumen.metadata.help.music':
+        'Définissez les limites de requêtes de Cover Art Archive et testez les deux fournisseurs de musique.',
+      'lumen.metadata.help.books':
+        'Saisissez jusqu’à 50 codes de langue de trois lettres, séparés par des virgules (par exemple eng, fre ou ger). Laissez vide pour autoriser toutes les langues. Les demandes restreintes exigent une édition vérifiée dans une langue autorisée.',
+      'lumen.metadata.credential.comicVineApiKey': 'Clé de l’API ComicVine',
+      'lumen.metadata.credential.metronToken': 'Jeton API Metron',
+      'lumen.metadata.credential.googleBooksApiKey': 'Clé API Google Books',
+      'lumen.metadata.credential.youtubeApiKey': 'Clé de l’API YouTube Data',
+      'lumen.metadata.loadingSettings': 'Chargement des paramètres…',
+      'lumen.metadata.loadFailedTitle':
+        'Impossible de charger les paramètres de métadonnées.',
+      'lumen.metadata.credentialsLoadFailedTitle':
+        'Impossible de charger les identifiants de métadonnées.',
       'lumen.migration.addServiceFirst':
         'Ajoutez un service BookshelfNG dans les paramètres des services SeerrNG pour migrer sa bibliothèque.',
       'lumen.migration.allCurrentFolders': 'Tous les dossiers actuels',

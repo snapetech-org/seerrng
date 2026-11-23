@@ -7,6 +7,17 @@ for (const [locale, labels] of [
     'fr',
     {
       title: 'Fournisseurs de métadonnées',
+      back: 'Retour à l’administration',
+      videoHelp:
+        'Choisissez le fournisseur de métadonnées pour la télévision et l’anime.',
+      musicHelp:
+        'Définissez les limites de requêtes de Cover Art Archive et testez les deux fournisseurs de musique.',
+      booksHelp:
+        'Saisissez jusqu’à 50 codes de langue de trois lettres, séparés par des virgules (par exemple eng, fre ou ger). Laissez vide pour autoriser toutes les langues. Les demandes restreintes exigent une édition vérifiée dans une langue autorisée.',
+      comicVine: 'Clé de l’API ComicVine',
+      metron: 'Jeton API Metron',
+      googleBooks: 'Clé API Google Books',
+      youtube: 'Clé de l’API YouTube Data',
       tv: 'Fournisseur de métadonnées TV',
       music: 'Métadonnées musicales',
       invalid:
@@ -17,6 +28,15 @@ for (const [locale, labels] of [
     'ar',
     {
       title: 'موفرو البيانات الوصفية',
+      back: 'العودة إلى الإدارة',
+      videoHelp: 'اختر موفر البيانات الوصفية للتلفاز والأنمي.',
+      musicHelp: 'اضبط حدود طلبات Cover Art Archive واختبر موفري الموسيقى.',
+      booksHelp:
+        'أدخل حتى 50 رمز لغة مكوّناً من ثلاثة أحرف ومفصولاً بفواصل، مثل eng أو fre أو ger. اتركه فارغاً للسماح بجميع اللغات. تتطلب الطلبات المقيّدة إصداراً تم التحقق منه بلغة مسموح بها.',
+      comicVine: 'مفتاح واجهة برمجة تطبيقات ComicVine',
+      metron: 'رمز Metron API',
+      googleBooks: 'مفتاح Google Books API',
+      youtube: 'مفتاح YouTube Data API',
       tv: 'موفر بيانات التلفاز',
       music: 'بيانات الموسيقى الوصفية',
       invalid: 'أدخل قيماً ضمن النطاقات أو تنسيق اللغة المدعوم.',
@@ -25,7 +45,7 @@ for (const [locale, labels] of [
 ] as const) {
   test(`metadata settings follow the saved ${locale} locale`, async ({
     page,
-  }) => {
+  }, info) => {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -54,10 +74,26 @@ for (const [locale, labels] of [
     await expect(
       page.getByRole('heading', { name: labels.title, exact: true })
     ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: labels.back, exact: true })
+    ).toHaveAttribute('href', `${mount}/admin`);
     await expect(page.getByLabel(labels.tv)).toBeVisible();
+    await expect(
+      page.getByText(labels.videoHelp, { exact: true })
+    ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: labels.music, exact: true })
     ).toBeVisible();
+    await expect(
+      page.getByText(labels.musicHelp, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByText(labels.booksHelp, { exact: true })
+    ).toBeVisible();
+    await expect(page.getByLabel(labels.comicVine)).toBeVisible();
+    await expect(page.getByLabel(labels.metron)).toBeVisible();
+    await expect(page.getByLabel(labels.googleBooks)).toBeVisible();
+    await expect(page.getByLabel(labels.youtube)).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute(
       'dir',
       locale === 'ar' ? 'rtl' : 'ltr'
@@ -65,6 +101,15 @@ for (const [locale, labels] of [
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`metadata-${locale}-viewport.png`),
+      });
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`metadata-${locale}-full.png`),
+        fullPage: true,
+      });
   });
 }
 

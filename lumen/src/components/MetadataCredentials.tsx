@@ -9,10 +9,22 @@ import { ServiceNote } from './extra';
 
 const endpoint = '/settings/main';
 const fields = [
-  ['comicVineApiKey', 'ComicVine API Key'],
-  ['metronToken', 'Metron API Token'],
-  ['googleBooksApiKey', 'Google Books API Key'],
-  ['youtubeApiKey', 'YouTube Data API Key'],
+  [
+    'comicVineApiKey',
+    'ComicVine API Key',
+    'lumen.metadata.credential.comicVineApiKey',
+  ],
+  ['metronToken', 'Metron API Token', 'lumen.metadata.credential.metronToken'],
+  [
+    'googleBooksApiKey',
+    'Google Books API Key',
+    'lumen.metadata.credential.googleBooksApiKey',
+  ],
+  [
+    'youtubeApiKey',
+    'YouTube Data API Key',
+    'lumen.metadata.credential.youtubeApiKey',
+  ],
 ] as const;
 type Field = (typeof fields)[number][0];
 type Settings = Partial<Record<Field, string>>;
@@ -88,8 +100,9 @@ function CredentialsForm({ initial }: { initial: Settings }) {
   return (
     <form onSubmit={(event) => void save(event)}>
       <div className="setlist">
-        {fields.map(([key, label]) => {
+        {fields.map(([key, fallback, labelKey]) => {
           const field = draft[key] ?? empty;
+          const label = t(labelKey, fallback);
           return (
             <Fragment key={key}>
               <label className="set cfg-row">
@@ -160,7 +173,16 @@ export default function MetadataCredentials() {
   const { data, error, reload } = useApi<Settings>(endpoint);
   return (
     <Section title={t('lumen.metadata.credentials', 'Metadata Credentials')}>
-      <ServiceNote error={error} what="metadata credentials" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.metadata.credentials', 'Metadata Credentials')}
+        title={t(
+          'lumen.metadata.credentialsLoadFailedTitle',
+          'Could not load metadata credentials.'
+        )}
+        retryLabel={t('lumen.account.retry', 'Retry')}
+        retry={reload}
+      />
       {data ? (
         <CredentialsForm initial={data} />
       ) : (
