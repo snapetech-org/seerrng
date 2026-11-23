@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   type BookResult,
@@ -10,6 +10,7 @@ import {
 } from '../api';
 import { cached, isFresh, remember } from '../apiCache';
 import { useAuth, useMediaServerName } from '../auth';
+import { BookHomeShelves } from '../components/BookHomeShelves';
 import {
   BookCard,
   FeatCard,
@@ -63,10 +64,13 @@ function useNewOnPlex(
   enabled: boolean,
   categories: { movie: boolean; tv: boolean }
 ) {
-  const filterCategories = (items: Fresh) =>
-    items.filter(
-      (item) => categories[item.mediaType === 'tv' ? 'tv' : 'movie']
-    );
+  const filterCategories = useCallback(
+    (items: Fresh) =>
+      items.filter(
+        (item) => categories[item.mediaType === 'tv' ? 'tv' : 'movie']
+      ),
+    [categories.movie, categories.tv]
+  );
   const [items, setItems] = useState<Fresh | null>(() => {
     const saved = enabled && cached<Fresh>(NEW_ROW);
     return saved ? filterCategories(saved) : null;
@@ -90,7 +94,7 @@ function useNewOnPlex(
     return () => {
       live = false;
     };
-  }, [enabled, categories.movie, categories.tv]);
+  }, [enabled, categories.movie, categories.tv, filterCategories]);
   return items ? filterCategories(items) : null;
 }
 
@@ -547,6 +551,14 @@ export default function Discover() {
             )}
           </Section>
         )}
+
+      {preferencesReady && categorySettingsReady && (
+        <BookHomeShelves
+          userId={user?.id}
+          showEbooks={books_ && ebookEnabled}
+          showAudiobooks={books_ && audiobookEnabled}
+        />
+      )}
 
       {preferencesReady && categorySettingsReady && (
         <ConfiguredDiscoverShelves

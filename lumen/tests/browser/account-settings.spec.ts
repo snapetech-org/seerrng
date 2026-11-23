@@ -137,7 +137,17 @@ test('request folders preserve service choices and confirm persisted values', as
       return route.fulfill({ json: { rootFolders: [{ path: '/comics' }] } });
     if (path === '/user/2/settings/password')
       return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/user/2/settings/discover-book-sections')
+      return route.fulfill({
+        json: {
+          sections: [
+            { key: 'popular:ebook', enabled: true },
+            { key: 'popular:audiobook', enabled: true },
+          ],
+        },
+      });
     if (path === '/languages') return route.fulfill({ json: [] });
+    if (path === '/request/lists') return route.fulfill({ json: [] });
     return route.fulfill({ json: {} });
   });
 
@@ -173,6 +183,230 @@ test('request folders preserve service choices and confirm persisted values', as
     { requestRootFolders: { 'radarr:1': '/media/alt' } },
     { requestRootFolders: { 'radarr:1': '/media/alt' } },
   ]);
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+});
+
+test('external request lists connect, sync, import CSV and remove through account settings', async ({
+  page,
+}, testInfo) => {
+  const calls: { method: string; path: string; body?: unknown }[] = [];
+  let lists = [
+    {
+      id: 7,
+      provider: 'imdb',
+      sourceUrl: 'https://www.imdb.com/user/ur12345678/watchlist/',
+      lastSyncedAt: null,
+      lastSyncError: null,
+    },
+  ];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (['POST', 'DELETE'].includes(request.method())) {
+      const body = request.postData();
+      calls.push({
+        method: request.method(),
+        path,
+        ...(body ? { body: JSON.parse(body) } : {}),
+      });
+    }
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Viewer', permissions: 32, userType: 2 },
+      });
+    if (path === '/user/2/settings/main')
+      return route.fulfill({ json: { username: 'Viewer' } });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/user/2/settings/card-text')
+      return route.fulfill({ json: {} });
+    if (path === '/user/2/settings/discover-book-sections')
+      return route.fulfill({
+        json: {
+          sections: [
+            { key: 'popular:ebook', enabled: true },
+            { key: 'popular:audiobook', enabled: true },
+          ],
+        },
+      });
+    if (path === '/languages') return route.fulfill({ json: [] });
+    if (path === '/request/lists' && request.method() === 'GET')
+      return route.fulfill({ json: lists });
+    if (path === '/request/lists' && request.method() === 'POST') {
+      lists = [
+        ...lists,
+        {
+          id: 8,
+          provider: 'goodreads',
+          sourceUrl: String(request.postDataJSON().url),
+          lastSyncedAt: null,
+          lastSyncError: null,
+        },
+      ];
+      return route.fulfill({ status: 201, json: lists[1] });
+    }
+    if (path === '/request/lists/hardcover')
+      return route.fulfill({ status: 201, json: { validatedBooks: 3 } });
+    if (path === '/request/lists/7/sync')
+      return route.fulfill({
+        json: { requested: 2, alreadyRequested: 1, unmatched: 3, failed: 0 },
+      });
+    if (path === '/request/lists/7/import')
+      return route.fulfill({
+        json: { requested: 1, alreadyRequested: 0, unmatched: 0, failed: 0 },
+      });
+    if (path === '/request/lists/7' && request.method() === 'DELETE') {
+      lists = lists.filter((list) => list.id !== 7);
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(appPath('/me/account'));
+  await expect(
+    page.getByRole('heading', { name: 'External Request Lists' })
+  ).toBeVisible();
+  if (process.env.LUMEN_EXTERNAL_LIST_CAPTURE_DIR) {
+    const { mkdir } = await import('node:fs/promises');
+    await mkdir(process.env.LUMEN_EXTERNAL_LIST_CAPTURE_DIR, {
+      recursive: true,
+    });
+    await page.screenshot({
+      path: `${process.env.LUMEN_EXTERNAL_LIST_CAPTURE_DIR}/account-${testInfo.project.name}.png`,
+      fullPage: true,
+      scale: 'css',
+      animations: 'disabled',
+    });
+  }
+  await page
+    .getByLabel('Public List URL')
+    .fill('https://www.goodreads.com/review/list/123');
+  await page.getByRole('button', { name: 'Add List' }).click();
+  await expect(
+    page.getByRole('link', {
+      name: 'https://www.goodreads.com/review/list/123',
+    })
+  ).toBeVisible();
+  await page.getByLabel('Hardcover API Token').fill('x'.repeat(20));
+  await page.getByRole('button', { name: 'Connect Hardcover' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Books found on your shelf: 3' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Sync Now' }).first().click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: '2 requested, 1 already requested' })
+  ).toBeVisible();
+  await page.getByLabel('Import IMDb CSV').setInputFiles({
+    name: 'watchlist.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from('Const,Title\ntt1234567,Test Title\n'),
+  });
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: '1 requested, 0 already requested' })
+  ).toBeVisible();
+  expect(calls).toContainEqual({
+    method: 'POST',
+    path: '/request/lists/7/import',
+    body: { itemIds: ['tt1234567'] },
+  });
+  await page.getByRole('button', { name: 'Remove' }).first().click();
+  await expect(
+    page.getByRole('link', {
+      name: 'https://www.imdb.com/user/ur12345678/watchlist/',
+    })
+  ).toHaveCount(0);
+  expect(calls).toContainEqual({
+    method: 'POST',
+    path: '/request/lists',
+    body: { url: 'https://www.goodreads.com/review/list/123' },
+  });
+  expect(calls).toContainEqual({
+    method: 'POST',
+    path: '/request/lists/hardcover',
+    body: { apiToken: 'x'.repeat(20) },
+  });
+  expect(calls).toContainEqual({
+    method: 'DELETE',
+    path: '/request/lists/7',
+    body: undefined,
+  });
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
+});
+
+test('book home sections preserve order and enabled state through settings readback', async ({
+  page,
+}) => {
+  const defaults = [
+    { key: 'popular:ebook', enabled: true },
+    { key: 'popular:audiobook', enabled: true },
+  ];
+  let sections = defaults;
+  const writes: unknown[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Viewer', permissions: 32, userType: 2 },
+      });
+    if (path === '/user/2/settings/main')
+      return route.fulfill({ json: { username: 'Viewer' } });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/user/2/settings/discover-book-sections') {
+      if (request.method() === 'POST') {
+        sections = request.postDataJSON().sections;
+        writes.push(request.postDataJSON());
+      }
+      return route.fulfill({ json: { sections } });
+    }
+    if (path === '/request/lists') return route.fulfill({ json: [] });
+    if (path === '/languages') return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(appPath('/me/account'));
+  await expect(
+    page.getByRole('heading', { name: 'Book and Audiobook Home Sections' })
+  ).toBeVisible();
+  const picker = page.locator('#book-home-section-add');
+  await picker.selectOption('new:ebook');
+  await page.getByRole('button', { name: 'Add Section' }).click();
+  const newRow = page.locator('.set').filter({ hasText: 'New Books' });
+  await newRow.getByRole('button', { name: 'Move Up' }).click();
+  await newRow.getByRole('button', { name: 'Move Up' }).click();
+  const enabled = newRow.getByRole('checkbox');
+  await enabled.uncheck();
+  await page.getByRole('button', { name: 'Save Sections' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Book home sections saved.' })
+  ).toBeVisible();
+  expect(writes).toEqual([
+    {
+      sections: [
+        { key: 'new:ebook', enabled: false },
+        { key: 'popular:ebook', enabled: true },
+        { key: 'popular:audiobook', enabled: true },
+      ],
+    },
+  ]);
+  await expect(picker.locator('option[value="new:ebook"]')).toHaveCount(0);
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)

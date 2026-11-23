@@ -157,6 +157,43 @@ form controls. Evidence is retained at
 Live Servarr/Kapowarr calls and independent translation review remain
 unverified.
 
+### Per-user external request lists
+
+Lumen Account Settings now exposes SeerrNG's authenticated external request list
+workflow: public IMDb and Goodreads URLs, Hardcover token validation and shelf
+replacement, manual sync, IMDb CSV import in bounded batches, last-sync feedback,
+and list removal. These actions continue to pass through the existing SeerrNG
+request permissions, approval rules, and daily synchronization job. English,
+French, and Arabic labels are supplied; provider errors remain visible for
+recovery.
+
+The focused browser fixture passes on desktop, iPhone, Android, and tablet. It
+checks URL and Hardcover payloads, sync summary, CSV identity, removal, and page
+overflow. Matched candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-external-lists-20261122/`.
+Live provider behavior and independent translation review remain unverified.
+
+### Per-user book and audiobook Discover sections
+
+Lumen Account Settings now includes the native personal book-home section
+controls. Users can add and remove popular, new, and genre shelves for ebooks
+and audiobooks, toggle visibility, reorder shelves, and save through the
+authenticated per-user settings route. The component reads the saved order
+back after saving and preserves edits when the write or readback fails. All
+option labels and actions have English, French, and Arabic translations. Lumen
+Discover now reads those saved choices and renders enabled shelves in the saved
+order. Ebook rows use the existing catalog and card actions; audiobook rows use
+ReadMeABook's existing discover and request routes, including request status.
+Catalog requests wait until each shelf approaches the viewport.
+
+The focused browser fixture verifies adding a shelf, moving it, hiding it,
+checking the exact persisted payload, and page overflow across desktop, iPhone,
+Android, and tablet. A separate Discover fixture checks shelf order, ebook
+queries, ReadMeABook request identity, updated request state, and overflow in
+the same viewport matrix. Account and Discover captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-external-lists-20261122/`.
+Live provider responses and independent translation review remain unverified.
+
 ### Book Recommendations localization
 
 The Hardcover Book Recommendations route now localizes its feed headings and

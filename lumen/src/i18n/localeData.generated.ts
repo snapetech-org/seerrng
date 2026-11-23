@@ -6678,6 +6678,80 @@ export const localeData = [
       'lumen.account.applyThemePreset': 'تطبيق الإعداد المسبق',
       'lumen.account.resetThemeOverrides': 'إعادة تعيين تجاوزات المظهر',
       'lumen.account.themeOverridesReset': 'تم مسح تجاوزات المظهر.',
+      'lumen.account.external.title': 'قوائم الطلب الخارجية',
+      'lumen.account.external.description':
+        'اربط قائمة IMDb عامة أو رف Goodreads للقراءة أو رف Hardcover Want to Read. تُفحص العناصر الجديدة يوميًا وتُطلب وفق أذوناتك وإعدادات الموافقة. يمكنك استيراد ملف IMDb بصيغة CSV عند تعذر المزامنة من الخادم.',
+      'lumen.account.external.url': 'رابط القائمة العامة',
+      'lumen.account.external.add': 'إضافة قائمة',
+      'lumen.account.external.token': 'رمز API لـ Hardcover',
+      'lumen.account.external.connect': 'ربط Hardcover',
+      'lumen.account.external.empty': 'لا توجد قوائم خارجية مرتبطة.',
+      'lumen.account.external.error':
+        'تعذر تحديث القائمة الخارجية. حاول مرة أخرى.',
+      'lumen.account.external.added': 'تمت إضافة القائمة الخارجية.',
+      'lumen.account.external.connected':
+        'تم ربط Hardcover. الكتب الموجودة على رفك: {count}.',
+      'lumen.account.external.removed': 'تمت إزالة القائمة الخارجية.',
+      'lumen.account.external.summary':
+        'اكتملت المزامنة: طُلب {requested}، مطلوب مسبقًا {already}، غير موجود {unmatched}، فشل {failed}.',
+      'lumen.account.external.tooLarge':
+        'يجب ألا يتجاوز ملف IMDb حجم 5 ميغابايت.',
+      'lumen.account.external.import': 'استيراد IMDb CSV',
+      'lumen.account.external.sync': 'مزامنة الآن',
+      'lumen.account.external.remove': 'إزالة',
+      'lumen.account.external.never': 'لم تتم المزامنة بعد',
+      'lumen.account.external.imdb': 'قائمة IMDb',
+      'lumen.account.external.csv': 'قائمة IMDb (استيراد CSV)',
+      'lumen.account.external.goodreads': 'رف Goodreads للقراءة',
+      'lumen.account.external.hardcover': 'Hardcover Want to Read',
+      'lumen.account.bookSections.title':
+        'أقسام الكتب والكتب الصوتية في الصفحة الرئيسية',
+      'lumen.account.bookSections.description':
+        'اختر صفوف الكتب والكتب الصوتية في الاستكشاف، وأخفِ الصفوف ورتّبها.',
+      'lumen.account.bookSections.add': 'إضافة قسم',
+      'lumen.account.bookSections.choose': 'اختر قسمًا',
+      'lumen.account.bookSections.enabled': 'إظهار في الصفحة الرئيسية',
+      'lumen.account.bookSections.up': 'نقل لأعلى',
+      'lumen.account.bookSections.down': 'نقل لأسفل',
+      'lumen.account.bookSections.empty':
+        'لا توجد أقسام محددة. أضف قسمًا لإظهار الكتب في الاستكشاف.',
+      'lumen.account.bookSections.save': 'حفظ الأقسام',
+      'lumen.account.bookSections.saved': 'تم حفظ أقسام الكتب.',
+      'lumen.account.bookSections.loadFailure': 'تعذر تحميل أقسام الكتب.',
+      'lumen.account.bookSections.saveFailure': 'تعذر حفظ أقسام الكتب.',
+      'lumen.account.bookSections.mismatch':
+        'الأقسام المحفوظة غير مطابقة. راجع القيم الحالية.',
+      'lumen.account.bookSections.option.popular:ebook': 'كتب شائعة',
+      'lumen.account.bookSections.option.new:ebook': 'كتب جديدة',
+      'lumen.account.bookSections.option.popular:audiobook': 'كتب صوتية شائعة',
+      'lumen.account.bookSections.option.new:audiobook': 'كتب صوتية جديدة',
+      'lumen.account.bookSections.option.subject:fantasy:ebook': 'كتب فانتازيا',
+      'lumen.account.bookSections.option.subject:mystery:ebook': 'كتب غموض',
+      'lumen.account.bookSections.option.subject:romance:ebook': 'كتب رومانسية',
+      'lumen.account.bookSections.option.subject:science_fiction:ebook':
+        'كتب خيال علمي',
+      'lumen.account.bookSections.option.subject:history:ebook': 'كتب تاريخ',
+      'lumen.account.bookSections.option.subject:biography:ebook':
+        'كتب سير ذاتية',
+      'lumen.account.bookSections.option.subject:fantasy:audiobook':
+        'كتب صوتية فانتازيا',
+      'lumen.account.bookSections.option.subject:mystery:audiobook':
+        'كتب صوتية غموض',
+      'lumen.account.bookSections.option.subject:romance:audiobook':
+        'كتب صوتية رومانسية',
+      'lumen.account.bookSections.option.subject:science_fiction:audiobook':
+        'كتب صوتية خيال علمي',
+      'lumen.account.bookSections.option.subject:history:audiobook':
+        'كتب صوتية تاريخ',
+      'lumen.account.bookSections.option.subject:biography:audiobook':
+        'كتب صوتية سير ذاتية',
+      'lumen.discover.audiobookRequested': 'تم طلب {title}.',
+      'lumen.discover.audiobookRequestFailed': 'تعذر إكمال طلب الكتاب الصوتي.',
+      'lumen.discover.audiobookLoadFailed': 'تعذر تحميل قسم الكتب الصوتية هذا.',
+      'lumen.discover.requesting': 'جارٍ الطلب…',
+      'lumen.discover.requested': 'تم الطلب',
+      'lumen.discover.request': 'طلب',
+      'lumen.discover.bookSectionsFailed': 'تعذر تحميل أرفف الكتب الشخصية.',
     },
   },
   {
@@ -17457,6 +17531,89 @@ export const localeData = [
       'lumen.account.applyThemePreset': 'Apply Theme Preset',
       'lumen.account.resetThemeOverrides': 'Reset Theme Overrides',
       'lumen.account.themeOverridesReset': 'Theme overrides cleared.',
+      'lumen.account.external.title': 'External Request Lists',
+      'lumen.account.external.description':
+        'Connect a public IMDb watchlist, Goodreads to-read shelf, or Hardcover Want to Read shelf. New items are checked daily and requested through your normal permissions and approval settings. IMDb CSV exports can be imported when server-side sync is unavailable.',
+      'lumen.account.external.url': 'Public List URL',
+      'lumen.account.external.add': 'Add List',
+      'lumen.account.external.token': 'Hardcover API Token',
+      'lumen.account.external.connect': 'Connect Hardcover',
+      'lumen.account.external.empty': 'No external lists are connected.',
+      'lumen.account.external.error':
+        'Could not update the external list. Try again.',
+      'lumen.account.external.added': 'External list added.',
+      'lumen.account.external.connected':
+        'Hardcover connected. Books found on your shelf: {count}.',
+      'lumen.account.external.removed': 'External list removed.',
+      'lumen.account.external.summary':
+        'Sync complete: {requested} requested, {already} already requested, {unmatched} not found, {failed} failed.',
+      'lumen.account.external.tooLarge':
+        'The IMDb export file must be 5 MB or smaller.',
+      'lumen.account.external.import': 'Import IMDb CSV',
+      'lumen.account.external.sync': 'Sync Now',
+      'lumen.account.external.remove': 'Remove',
+      'lumen.account.external.never': 'Not Synced Yet',
+      'lumen.account.external.imdb': 'IMDb Watchlist',
+      'lumen.account.external.csv': 'IMDb Watchlist (CSV Import)',
+      'lumen.account.external.goodreads': 'Goodreads To-Read Shelf',
+      'lumen.account.external.hardcover': 'Hardcover Want to Read',
+      'lumen.account.bookSections.title': 'Book and Audiobook Home Sections',
+      'lumen.account.bookSections.description':
+        'Choose the book and audiobook rows on Discover, hide rows, and arrange their order.',
+      'lumen.account.bookSections.add': 'Add Section',
+      'lumen.account.bookSections.choose': 'Choose a section',
+      'lumen.account.bookSections.enabled': 'Show on Home',
+      'lumen.account.bookSections.up': 'Move Up',
+      'lumen.account.bookSections.down': 'Move Down',
+      'lumen.account.bookSections.empty':
+        'No sections are selected. Add one to show books on Discover.',
+      'lumen.account.bookSections.save': 'Save Sections',
+      'lumen.account.bookSections.saved': 'Book home sections saved.',
+      'lumen.account.bookSections.loadFailure':
+        'Could not load book home sections.',
+      'lumen.account.bookSections.saveFailure':
+        'Could not save book home sections.',
+      'lumen.account.bookSections.mismatch':
+        'Saved sections did not match. Review the current values.',
+      'lumen.account.bookSections.option.popular:ebook': 'Popular Books',
+      'lumen.account.bookSections.option.new:ebook': 'New Books',
+      'lumen.account.bookSections.option.popular:audiobook':
+        'Popular Audiobooks',
+      'lumen.account.bookSections.option.new:audiobook': 'New Audiobooks',
+      'lumen.account.bookSections.option.subject:fantasy:ebook':
+        'Fantasy Books',
+      'lumen.account.bookSections.option.subject:mystery:ebook':
+        'Mystery Books',
+      'lumen.account.bookSections.option.subject:romance:ebook':
+        'Romance Books',
+      'lumen.account.bookSections.option.subject:science_fiction:ebook':
+        'Science Fiction Books',
+      'lumen.account.bookSections.option.subject:history:ebook':
+        'History Books',
+      'lumen.account.bookSections.option.subject:biography:ebook':
+        'Biography Books',
+      'lumen.account.bookSections.option.subject:fantasy:audiobook':
+        'Fantasy Audiobooks',
+      'lumen.account.bookSections.option.subject:mystery:audiobook':
+        'Mystery Audiobooks',
+      'lumen.account.bookSections.option.subject:romance:audiobook':
+        'Romance Audiobooks',
+      'lumen.account.bookSections.option.subject:science_fiction:audiobook':
+        'Science Fiction Audiobooks',
+      'lumen.account.bookSections.option.subject:history:audiobook':
+        'History Audiobooks',
+      'lumen.account.bookSections.option.subject:biography:audiobook':
+        'Biography Audiobooks',
+      'lumen.discover.audiobookRequested': '{title} requested.',
+      'lumen.discover.audiobookRequestFailed':
+        'The audiobook request could not be completed.',
+      'lumen.discover.audiobookLoadFailed':
+        'This audiobook section could not be loaded.',
+      'lumen.discover.requesting': 'Requesting…',
+      'lumen.discover.requested': 'Requested',
+      'lumen.discover.request': 'Request',
+      'lumen.discover.bookSectionsFailed':
+        'Personal book shelves could not be loaded.',
     },
   },
   {
@@ -29332,6 +29489,90 @@ export const localeData = [
         'Réinitialiser les remplacements du thème',
       'lumen.account.themeOverridesReset':
         'Les remplacements du thème ont été effacés.',
+      'lumen.account.external.title': 'Listes de demandes externes',
+      'lumen.account.external.description':
+        'Connectez une liste publique IMDb, une étagère Goodreads À lire ou l’étagère Hardcover Want to Read. Les nouveaux éléments sont vérifiés chaque jour et demandés selon vos autorisations et règles d’approbation. Importez un export CSV IMDb si la synchronisation serveur est indisponible.',
+      'lumen.account.external.url': 'URL de la liste publique',
+      'lumen.account.external.add': 'Ajouter la liste',
+      'lumen.account.external.token': 'Jeton API Hardcover',
+      'lumen.account.external.connect': 'Connecter Hardcover',
+      'lumen.account.external.empty': 'Aucune liste externe connectée.',
+      'lumen.account.external.error':
+        'Impossible de mettre à jour la liste externe. Réessayez.',
+      'lumen.account.external.added': 'Liste externe ajoutée.',
+      'lumen.account.external.connected':
+        'Hardcover connecté. Livres trouvés sur votre étagère : {count}.',
+      'lumen.account.external.removed': 'Liste externe supprimée.',
+      'lumen.account.external.summary':
+        'Synchronisation terminée : {requested} demandés, {already} déjà demandés, {unmatched} introuvables, {failed} échecs.',
+      'lumen.account.external.tooLarge':
+        'Le fichier export IMDb doit faire 5 Mo ou moins.',
+      'lumen.account.external.import': 'Importer un CSV IMDb',
+      'lumen.account.external.sync': 'Synchroniser',
+      'lumen.account.external.remove': 'Supprimer',
+      'lumen.account.external.never': 'Jamais synchronisée',
+      'lumen.account.external.imdb': 'Liste IMDb',
+      'lumen.account.external.csv': 'Liste IMDb (import CSV)',
+      'lumen.account.external.goodreads': 'Étagère Goodreads À lire',
+      'lumen.account.external.hardcover': 'Hardcover Want to Read',
+      'lumen.account.bookSections.title': 'Sections de livres et livres audio',
+      'lumen.account.bookSections.description':
+        'Choisissez les rangées de livres et de livres audio dans Découvrir, masquez-les et définissez leur ordre.',
+      'lumen.account.bookSections.add': 'Ajouter une section',
+      'lumen.account.bookSections.choose': 'Choisir une section',
+      'lumen.account.bookSections.enabled': 'Afficher sur l’accueil',
+      'lumen.account.bookSections.up': 'Monter',
+      'lumen.account.bookSections.down': 'Descendre',
+      'lumen.account.bookSections.empty':
+        'Aucune section sélectionnée. Ajoutez-en une pour afficher les livres dans Découvrir.',
+      'lumen.account.bookSections.save': 'Enregistrer les sections',
+      'lumen.account.bookSections.saved': 'Sections de livres enregistrées.',
+      'lumen.account.bookSections.loadFailure':
+        'Impossible de charger les sections de livres.',
+      'lumen.account.bookSections.saveFailure':
+        'Impossible d’enregistrer les sections de livres.',
+      'lumen.account.bookSections.mismatch':
+        'Les sections enregistrées ne correspondent pas. Vérifiez les valeurs actuelles.',
+      'lumen.account.bookSections.option.popular:ebook': 'Livres populaires',
+      'lumen.account.bookSections.option.new:ebook': 'Nouveaux livres',
+      'lumen.account.bookSections.option.popular:audiobook':
+        'Livres audio populaires',
+      'lumen.account.bookSections.option.new:audiobook':
+        'Nouveaux livres audio',
+      'lumen.account.bookSections.option.subject:fantasy:ebook':
+        'Livres fantastiques',
+      'lumen.account.bookSections.option.subject:mystery:ebook':
+        'Livres policiers',
+      'lumen.account.bookSections.option.subject:romance:ebook':
+        'Livres sentimentaux',
+      'lumen.account.bookSections.option.subject:science_fiction:ebook':
+        'Livres de science-fiction',
+      'lumen.account.bookSections.option.subject:history:ebook':
+        'Livres d’histoire',
+      'lumen.account.bookSections.option.subject:biography:ebook':
+        'Biographies',
+      'lumen.account.bookSections.option.subject:fantasy:audiobook':
+        'Livres audio fantastiques',
+      'lumen.account.bookSections.option.subject:mystery:audiobook':
+        'Livres audio policiers',
+      'lumen.account.bookSections.option.subject:romance:audiobook':
+        'Livres audio sentimentaux',
+      'lumen.account.bookSections.option.subject:science_fiction:audiobook':
+        'Livres audio de science-fiction',
+      'lumen.account.bookSections.option.subject:history:audiobook':
+        'Livres audio d’histoire',
+      'lumen.account.bookSections.option.subject:biography:audiobook':
+        'Livres audio biographiques',
+      'lumen.discover.audiobookRequested': '{title} demandé.',
+      'lumen.discover.audiobookRequestFailed':
+        'La demande de livre audio a échoué.',
+      'lumen.discover.audiobookLoadFailed':
+        'Cette section de livres audio n’a pas pu être chargée.',
+      'lumen.discover.requesting': 'Demande en cours…',
+      'lumen.discover.requested': 'Demandé',
+      'lumen.discover.request': 'Demander',
+      'lumen.discover.bookSectionsFailed':
+        'Impossible de charger les étagères personnelles de livres.',
     },
   },
   {
