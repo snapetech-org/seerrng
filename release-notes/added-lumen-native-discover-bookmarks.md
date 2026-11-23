@@ -1,0 +1,1 @@
+Lumen now opens native SeerrNG Discover bookmarks for genres, studios, networks, keywords, languages, upcoming titles, curated lists, and catalog destinations in their equivalent Lumen views while preserving filters and URL state.

@@ -56,6 +56,23 @@ are retained in
 These fixtures do not verify a live QuestarrNG catalog or full production-server
 mount behavior.
 
+### Native Discover bookmark compatibility
+
+Native SeerrNG emits direct links for movie and TV genres, studios, networks,
+keywords, languages, upcoming titles, curated lists, and catalog destinations.
+Lumen now translates these native `/discover/*` page URLs to its equivalent
+catalog routes, carrying filters, paging, query, and hash state through the
+redirect. Genre, studio, and network IDs and language codes are validated before
+they become Lumen filter values; malformed IDs safely return to Discover.
+Optional catalog routes still pass through their existing Lumen authorization
+and availability gates after redirection.
+
+Thirty-one browser cases pass across desktop, iPhone, Android, and tablet (124
+cases total), including each supported native Discover destination, route
+query/hash preservation, and malformed identifiers.
+This covers route compatibility and does not substitute for production-mounted
+server acceptance or visual comparison of the destination pages.
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens
