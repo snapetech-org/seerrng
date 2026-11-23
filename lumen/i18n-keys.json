@@ -527,6 +527,7 @@
   "components.Settings.SettingsJobsCache.jellyfin-full-scan",
   "components.Settings.SettingsJobsCache.jellyfin-recently-added-scan",
   "components.Settings.SettingsJobsCache.jellyfin-watch-ahead",
+  "components.Settings.SettingsJobsCache.jobsDescription",
   "components.Settings.SettingsJobsCache.kapowarr-scan",
   "components.Settings.SettingsJobsCache.lidarr-scan",
   "components.Settings.SettingsJobsCache.live-tv-sync",

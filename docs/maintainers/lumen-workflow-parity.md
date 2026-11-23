@@ -8042,11 +8042,16 @@ Lumen now resolves each scheduled job's display name through the same localized
 message key as native SeerrNG, using the stable job ID. Raw API names remain a
 fallback for future or unknown job IDs. The existing schedule editing, save
 retry, confirmation, and job actions are unchanged. The catalog generator now
-includes every current server `JobId` message key.
+includes every current server `JobId` message key. The Lumen page also displays
+the native explanation that manually running a job does not alter its schedule.
 
 The existing Scheduled Jobs browser workflow verifies localized job names,
-frequency selection, retained edits after a rejected write, successful retry,
-and unchanged schedule payload in English, French, and Arabic. All 24 browser
+the job guidance, frequency selection, retained edits after a rejected write,
+successful retry, and unchanged schedule payload in English, French, and Arabic. All 24 browser
 cases pass: desktop, iPhone, Android, and tablet in both the standalone app and
 the production SeerrNG `/lumen/` mount. The production Lumen bundle and the
-repository localization check also pass.
+repository localization check also pass. French desktop and iPhone candidate
+screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/jobs-captures/`
+and were inspected. The historical native `/settings/jobs` captures were also
+reviewed; a matched populated native/Lumen visual comparison remains open.

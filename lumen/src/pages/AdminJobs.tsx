@@ -179,6 +179,12 @@ export default function AdminJobs() {
       <header className="ph">
         <h1>{t('lumen.adminJobs.title', 'Scheduled Jobs')}</h1>
       </header>
+      <p className="note">
+        {t(
+          'components.Settings.SettingsJobsCache.jobsDescription',
+          'SeerrNG runs maintenance jobs on a schedule. Running a job manually does not change its schedule.'
+        )}
+      </p>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/admin">
           {t('lumen.admin.title', 'Administration')}

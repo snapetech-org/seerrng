@@ -764,6 +764,8 @@ export const localeData = [
         'فحص المحتوى المضاف مؤخراً في Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'قائمة حلقات الطلبات',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'تقوم Seerr بتنفيذ مهام صيانة معينة كمهام مجدولة بانتظام، ولكن يمكن أيضًا تشغيلها يدويًا أدناه. لن يؤدي تشغيل المهمة يدويًا إلى تغيير جدولها الزمني.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr مسحوق كوميدي',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'مسح Lidarr',
@@ -7270,6 +7272,8 @@ export const localeData = [
         'Пълно сканиране на библиотеката в Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Сканиране на наскоро добавени в Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr изпълнява определени задачи по поддръжката по график, но те могат да бъдат стартирани и ръчно по-долу. Ръчното стартиране на задача няма да промени нейния график.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Пълно сканиране на библиотеката в Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -7939,6 +7943,8 @@ export const localeData = [
         'Exploració completa de la biblioteca Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         "Exploració d'elements de Jellyfin afegits recentment",
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr realitza certes tasques de manteniment com a feines programades regularment, però també es poden activar manualment a continuació. L’execució manual d’un tasca no alterarà la seva programació.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Exploració completa de la biblioteca plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -8458,6 +8464,8 @@ export const localeData = [
         'Úplné prohledání knihovny Jellyfinu',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Prohledání nedávno přidaných do Jellyfinu',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr provádí určité úlohy údržby jako pravidelně naplánované úlohy, ale lze je také spustit ručně níže. Ruční spuštění úlohy nezmění její plán.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Úplné prohledání knihovny Plexu',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -9107,6 +9115,8 @@ export const localeData = [
         'Jellyfin - Fuld biblioteksscanning',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Jellyfin - Senest tilføjet-scanning',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr kører visse vedligeholdelsesopgaver som regelmæssigt planlagte jobs, men de kan også udløses manuelt nedenfor. Manuel kørsel af et job vil ikke ændre dets tidsplan.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Plex - Fuld biblioteksscanning',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -10188,6 +10198,8 @@ export const localeData = [
         'Scan kürzlich hinzugefügter Jellyfin-Medien',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Warteschlange angeforderter Episoden',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr führt bestimmte Wartungsaufgaben als regulär geplante Aufgaben durch. Diese können allerdings auch manuell ausgeführt werden, ohne dabei den regulären Zeitplan abzuändern.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr-Comics-Scan',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr-Scan',
@@ -11932,6 +11944,8 @@ export const localeData = [
         'Jellyfin Recently Added Scan',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Requested Episode Queue',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr performs certain maintenance tasks as regularly-scheduled jobs, but they can also be manually triggered below. Manually running a job will not alter its schedule.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr Comics Scan',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr Scan',
@@ -18393,6 +18407,8 @@ export const localeData = [
         'Σάρωση πλήρους βιβλιοθήκης Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Σάρωση Jellyfin για μέσα που προστέθηκαν πρόσφατα',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Το Seerr εκτελεί ορισμένες εργασίες συντήρησης ως τακτικά προγραμματισμένες εργασίες, αλλά μπορούν επίσης να ενεργοποιηθούν χειροκίνητα παρακάτω. Η χειροκίνητη εκτέλεση μιας εργασίας δεν θα αλλάξει το χρονοδιάγραμμα του.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Σάρωση πλήρους βιβλιοθήκης Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -19347,6 +19363,8 @@ export const localeData = [
         'Escanear Añadidos Recientemente de Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Cola de episodios solicitados',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr realiza ciertas tareas de mantenimiento como empleos programados regularmente, pero también se pueden activar manualmente a continuación. Manejo manual de un trabajo no alterará su horario.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Escaneo de cómics de Kapowarr',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Escaneo Lidarr',
@@ -21105,6 +21123,8 @@ export const localeData = [
         'Jellyfin recientemente Añadido escán',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Cola de episodios solicitados',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr realiza ciertas tareas de mantenimiento como empleos programados regularmente, pero también se pueden activar manualmente a continuación. Manejo manual de un trabajo no alterará su horario.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Escaneo de cómics de Kapowarr',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Escaneo Lidarr',
@@ -22442,6 +22462,8 @@ export const localeData = [
         'Jellyfini täielik meediakogu skannimine',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Jellyfini viimati lisatud sisu skannimine',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr viib regulaarselt läbi hooldustöid, kuid neid saab ka allpool käsitsi käivitada. Töö käsitsi käivitamine ei muuda selle ajakava.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Plexi täielik meediakogu skannimine',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -23758,6 +23780,8 @@ export const localeData = [
         'Analyse des ajouts récents aux bibliothèques Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         "File d'attente des épisodes demandés",
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        "Seerr effectue régulièrement certaines des tâches de maintenance de manière planifiée, mais elles peuvent également être déclenchées manuellement ci-dessous. L'exécution manuelle d'une tâche ne modifiera pas sa planification.",
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Scannage des comics Kapowarr',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Scan Lidarr',
@@ -30746,6 +30770,8 @@ export const localeData = [
         'Brisanje predmemorije slika',
       'components.Settings.SettingsJobsCache.imagecachecount':
         'Slike spremljene u predmemoriju',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr obavlja određene zadatke održavanja kao redovito planirane zadatke, ali oni se također mogu dolje ručno pokrenuti. Ručno pokretanje zadatka neće promijeniti njegov plan.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Pretraživanje cijele Plex biblioteke',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -31910,6 +31936,8 @@ export const localeData = [
         'Jellyfin हाल ही में जोड़ा स्कैन',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'अनुरोधित एपिसोड कतार',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr नियमित रूप से अनुसूचित नौकरियों के रूप में कुछ रखरखाव कार्य करता है, लेकिन उन्हें मैन्युअल रूप से नीचे ट्रिगर किया जा सकता है। मैन्युअल रूप से एक नौकरी चलाने के अपने शेड्यूल में बदलाव नहीं होगा।',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr कॉमिक्स स्कैन',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr स्कैन',
@@ -33217,6 +33245,8 @@ export const localeData = [
         'Jellyfin összes könyvtárának beolvasása',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Jellyfin "nemrégiben hozzáadott" beolvasása',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'A Seerr bizonyos karbantartási feladatokat rendszeresen ütemezett feladatként végez, de ezeket az alábbiakban kézzel is elindíthatja. Egy feladat kézi futtatása nem változtatja meg annak ütemezését.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Plex összes könyvtárának beolvasása',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -34278,6 +34308,8 @@ export const localeData = [
         'Jellyfin Yang Terkini Ditambahkan Pindai',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Antrean Episode yang Diminta',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr melakukan tugas pemeliharaan tertentu sebagai pekerjaan yang dijadwalkan secara teratur, tetapi mereka juga dapat dipicu secara manual di bawah ini. Secara manual menjalankan pekerjaan tidak akan mengubah jadwalnya.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Pemindaian Komik Kapowarr',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Pindai Lidarr',
@@ -35596,6 +35628,8 @@ export const localeData = [
         'Scansione completa della libreria Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Scansione degli elementi aggiunti di recente di Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr esegue alcune attività di manutenzione come lavori programmati regolarmente, ma possono anche essere attivati manualmente qui sotto. Eseguire manualmente un lavoro non altererà la sua programmazione.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Scansione completa della libreria di Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -36655,6 +36689,8 @@ export const localeData = [
         'Jellyfinの最近の追加をスキャン',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'リクエスト済みエピソードキュー',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerrは定期的にスケジュールされたジョブとして特定のメンテナンスタスクを実行しますが、以下で手動でトリガーすることもできます。ジョブを手動で実行してもスケジュールは変更されません。',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarrコミックスキャン',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
@@ -38348,6 +38384,8 @@ export const localeData = [
         'Jellyfin 최근 추가된 스캔',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         '요청된 에피소드 대기열',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr는 특정 유지 관리 작업을 정기적으로 예약된 작업으로 수행하지만 아래에서 수동으로 트리거할 수도 있습니다. 작업을 수동으로 실행해도 일정이 변경되지는 않습니다.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr 만화 검사',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 검사',
@@ -39706,6 +39744,8 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Nullstill nedlastningssynkronisering',
       'components.Settings.SettingsJobsCache.flushcache': 'Tøm mellomlager',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr kjører enkelte vedlikeholdsoppgaver med fast tidsintervall, men de kan også velges å kjøres manuelt under. En oppgave som blir trigget manuelt forstyrrer ikke det faste tidsintervalet.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Full Skanning av Plex-biblioteket',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -40219,6 +40259,8 @@ export const localeData = [
         'Volledige bibliotheekscan Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         "Scan van 'onlangs toegevoegd' in Jellyfin",
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr voert bepaalde onderhoudstaken uit als regelmatig ingeplande taken, maar ze kunnen hieronder ook handmatig worden gestart. Het handmatig uitvoeren van een taak verandert de planning niet.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Plex volledige bibliotheekscan',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -40881,6 +40923,8 @@ export const localeData = [
         'Pełne skanowanie bibliotek Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Ostatnio dodane skanowanie Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr wykonuje pewne zadania konserwacyjne jako cyklicznie zaplanowane zadania, ale mogą być one również ręcznie uruchamiane poniżej. Ręczne uruchomienie zadania nie spowoduje zmiany jego harmonogramu.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Pełne skanowanie biblioteki Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -41965,6 +42009,8 @@ export const localeData = [
         'Escanear adicionados recentemente ao Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Fila de Episódios Solicitados',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr executa tarefas regularares de manutenção de forma automática, mas elas podem também serem iniciadas manualmente abaixo. Tarefas executadas manualmente não irão afetar o agendamento da próxima execução.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr Scan de quadrinhos',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Varredura Lidarr',
@@ -43273,6 +43319,8 @@ export const localeData = [
         'Sincronização Completa da Biblioteca Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Sincronizar Adicionado Recentemente do Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'O Seerr executa certas tarefas de manutenção como tarefas agendadas regularmente, mas também podem ser acionadas manualmente abaixo. Executar uma tarefa manualmente não irá alterar o seu agendamento.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Sincronização Completa da Biblioteca Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -44271,6 +44319,8 @@ export const localeData = [
         'Сканировать всю библиотеку Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Сканировать недавно добавленное в Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr выполняет определенные задачи по обслуживанию в виде регулярно запланированных заданий, но они также могут быть запущены вручную ниже. Выполнение задания вручную не изменит его расписание.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Полное сканирование библиотек Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -44842,6 +44892,8 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Rivendos Sinkronizimin e Shkarkimit',
       'components.Settings.SettingsJobsCache.flushcache': 'Pastro Cache',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Mbikëqyrësi kryen disa detyra mirëmbajtjeje si punë të programuara rregullisht, por ato mund të aktivizohen edhe manualisht më poshtë. Bërja manuale e një pune nuk do të ndryshojë programin e saj.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Skanimi i plotë i Librarisë Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -45516,6 +45568,8 @@ export const localeData = [
         'Full Jellyfin-biblioteksskanning',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Skanning av nyligen tillagda objekt i Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr utför vissa underhållsuppgifter som schemalagda jobb automatiskt, men de kan också köras manuellt nedan. Att köra ett jobb manuellt ändrar inte schemat.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Full biblioteksskanning för Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -46162,6 +46216,8 @@ export const localeData = [
         'Jellyfin Tam Kütüphane Taraması',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Jellyfin Son Eklenenler Taraması',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr belirli bakım görevlerini düzenli aralıklarla gerçekleştirir, ancak bunlar aşağıdan manuel olarak da tetiklenebilir. Bir görevi manuel olarak çalıştırmak zamanlamasını değiştirmez.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Plex Tam Kütüphane Taraması',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -46791,6 +46847,8 @@ export const localeData = [
         'Сканування повної бібліотеки Jellyfin',
       'components.Settings.SettingsJobsCache.jellyfin-recently-added-scan':
         'Нещодавно додане сканування Jellyfin',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr виконує певні завдання обслуговування як регулярно запланованих завдань, але вони також можуть бути запущені вручну нижче. Виконання завдання вручну не змінить його розклад.',
       'components.Settings.SettingsJobsCache.plex-full-scan':
         'Повне сканування бібліотек Plex',
       'components.Settings.SettingsJobsCache.plex-recently-added-scan':
@@ -47775,6 +47833,8 @@ export const localeData = [
         'Jellyfin最近新增扫描',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         '请求剧集队列',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr将某些维护任务作为定期计划的任务执行，但它们也可以在下面手动触发。手动运行任务不会改变它的时间表。',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr 漫画扫描',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
@@ -49378,6 +49438,8 @@ export const localeData = [
         '最近添加的 Jellyfin 掃描',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         '已請求集數佇列',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr 會將部分維護工作設定為定期排程工作，也可在下方手動執行。手動執行工作不會變更排程。',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Kapowarr 漫畫掃描',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Lidarr 扫描',
@@ -51036,6 +51098,8 @@ export const localeData = [
         'Jellyfin Quét bổ sung gần đây',
       'components.Settings.SettingsJobsCache.jellyfin-watch-ahead':
         'Hàng đợi tập đã yêu cầu',
+      'components.Settings.SettingsJobsCache.jobsDescription':
+        'Seerr thực hiện một số nhiệm vụ bảo trì như công việc thường lệ, nhưng chúng cũng có thể được kích hoạt bằng tay bên dưới. Chạy bằng tay sẽ không thay đổi thời gian biểu.',
       'components.Settings.SettingsJobsCache.kapowarr-scan':
         'Quét truyện tranh Kapowarr',
       'components.Settings.SettingsJobsCache.lidarr-scan': 'Quét Lidarr',

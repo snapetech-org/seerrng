@@ -63,6 +63,11 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     fr: 'Analyse des ajouts récents Plex',
     ar: 'Plex أضيف مؤخرا',
   }[baseline ? 'en' : locale];
+  const description = {
+    en: 'Seerr performs certain maintenance tasks as regularly-scheduled jobs, but they can also be manually triggered below. Manually running a job will not alter its schedule.',
+    fr: "Seerr effectue régulièrement certaines des tâches de maintenance de manière planifiée, mais elles peuvent également être déclenchées manuellement ci-dessous. L'exécution manuelle d'une tâche ne modifiera pas sa planification.",
+    ar: 'تقوم Seerr بتنفيذ مهام صيانة معينة كمهام مجدولة بانتظام، ولكن يمكن أيضًا تشغيلها يدويًا أدناه. لن يؤدي تشغيل المهمة يدويًا إلى تغيير جدولها الزمني.',
+  }[baseline ? 'en' : locale];
   const writes: unknown[] = [];
   let rejectFirstSave = true;
   await page.route('https://**/*', (route) => route.abort());
@@ -93,6 +98,7 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
   await expect(
     page.getByRole('heading', { name: labels[0], exact: true })
   ).toBeVisible();
+  await expect(page.getByText(description, { exact: true })).toBeVisible();
   const row = page.getByRole('listitem').filter({ hasText: jobName });
   await expect(row.getByText(jobName, { exact: true })).toBeVisible();
   await expect(

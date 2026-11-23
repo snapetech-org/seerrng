@@ -6,4 +6,4 @@ action: none
 breaking: false
 ---
 
-Lumen Scheduled Jobs now displays SeerrNG's localized job names in supported interface languages instead of the raw internal names returned by the API.
+Lumen Scheduled Jobs now displays SeerrNG's localized job names and explains that manually running a job does not change its schedule. Both use SeerrNG's existing translations in supported interface languages.
