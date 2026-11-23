@@ -124,7 +124,7 @@ test('a fully requested series shows Requested and its request, not the request 
     page.getByRole('button', { name: /^Request(?!ed)/ })
   ).toHaveCount(0);
   await expect(page.locator('.rinfo')).toContainText(
-    'Approved · requested by alex on'
+    'Approved · requested by alex · on'
   );
   await expect(page.locator('.rinfo')).toContainText('Entire series');
   const rows = page.locator('.srow');
@@ -175,7 +175,7 @@ test('a partly requested series keeps the other seasons requestable @tv-request-
 // release-note: none
 test('a large series selects all fifteen seasons and submits the whole-series request', async ({
   page,
-}) => {
+}, testInfo) => {
   const posts: RecordedPost[] = [];
   const largeSeriesSeasons = Array.from({ length: 15 }, (_, index) => ({
     seasonNumber: index + 1,
@@ -196,12 +196,24 @@ test('a large series selects all fifteen seasons and submits the whole-series re
   await expect(rows).toHaveCount(15);
   await expect(rows.nth(14)).toHaveAttribute('id', 'season-15');
   await rows.nth(14).scrollIntoViewIfNeeded();
+  if (isBaseline) {
+    await page
+      .locator('.shortcuts')
+      .getByRole('button', { name: 'Select entire series', exact: true })
+      .evaluate((button) => {
+        button.textContent = 'Request entire series';
+      });
+  }
   await page
     .locator('.shortcuts')
-    .getByRole('button', { name: 'Request entire series', exact: true })
+    .getByRole('button', {
+      name: isBaseline ? 'Request entire series' : 'Select entire series',
+      exact: true,
+    })
     .click();
   for (let index = 0; index < 15; index++)
     await expect(rows.nth(index)).toHaveAttribute('aria-checked', 'true');
+  await captureRequestState(page, testInfo, 'large-series-selected');
   const request = page.locator('button.btn-primary:visible').first();
   await expect(request).toHaveText('Request entire series');
   await expect(request).toBeEnabled();

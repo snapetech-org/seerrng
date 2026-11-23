@@ -261,7 +261,7 @@ test('disabled core categories block their direct routes before catalog requests
   for (const label of ['Movies', 'Series', 'Books', 'Audiobooks']) {
     await expect(
       page
-        .getByRole('navigation', { name: 'Main' })
+        .getByRole('navigation', { name: 'Main navigation' })
         .getByRole('link', { name: label })
     ).toHaveCount(0);
   }

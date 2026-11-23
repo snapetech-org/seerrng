@@ -27,7 +27,10 @@ test('Swipe navigation stays hidden when the administrator disables it', async (
   await page.goto(appPath('/'));
   const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
   if (desktop) {
-    const mainNav = page.getByRole('navigation', { name: 'Main', exact: true });
+    const mainNav = page.getByRole('navigation', {
+      name: 'Main navigation',
+      exact: true,
+    });
     const swipe = mainNav.getByRole('link', { name: 'Swipe', exact: true });
     await expect(swipe).toHaveCount(0);
   }

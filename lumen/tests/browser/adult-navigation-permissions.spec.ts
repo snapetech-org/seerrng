@@ -66,7 +66,7 @@ for (const [permissions, visible] of [
     const adult =
       info.project.name === 'desktop'
         ? page
-            .getByRole('navigation', { name: 'Main' })
+            .getByRole('navigation', { name: 'Main navigation' })
             .getByRole('link', { name: 'Adult', exact: true })
         : page
             .locator('.navchips')
@@ -139,7 +139,7 @@ for (const [name, permissions, ageDefault, contentRestricted, visible] of [
     const adult =
       info.project.name === 'desktop'
         ? page
-            .getByRole('navigation', { name: 'Main' })
+            .getByRole('navigation', { name: 'Main navigation' })
             .getByRole('link', { name: 'Adult', exact: true })
         : page
             .locator('.navchips')

@@ -171,7 +171,10 @@ for (const permissions of [32, 2]) {
     await page.goto('/');
     const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
     if (desktop) {
-      const main = page.getByRole('navigation', { name: 'Main', exact: true });
+      const main = page.getByRole('navigation', {
+        name: 'Main navigation',
+        exact: true,
+      });
       const link = main.getByRole('link', {
         name: 'Share & Identify',
         exact: true,
@@ -230,10 +233,12 @@ test('Share & Identify navigation stays hidden without request access', async ({
   ).toHaveCount(0);
   await page.screenshot({ path: test.info().outputPath('discover.png') });
   await expect(
-    page.getByRole('navigation', { name: 'Main' }).getByRole('link', {
-      name: 'Share & Identify',
-      exact: true,
-    })
+    page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .getByRole('link', {
+        name: 'Share & Identify',
+        exact: true,
+      })
   ).toHaveCount(0);
   await page.goto('/me');
   await expect(

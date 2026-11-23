@@ -812,8 +812,8 @@ export default function TvDetail() {
                   >
                     {missing.length === seasons.length
                       ? translate(
-                          'lumen.tv.requestEntireSeries',
-                          'Request entire series'
+                          'lumen.tv.selectEntireSeries',
+                          'Select entire series'
                         )
                       : translate(
                           'lumen.tv.allMissing',

@@ -17,6 +17,7 @@ const keys = [
   'components.UserProfile.UserSettings.menuClientTokens',
 ];
 const lumenKeys = [
+  'lumen.tv.selectEntireSeries',
   'lumen.account.loading',
   'lumen.account.selectedCount',
   'lumen.admin.back',

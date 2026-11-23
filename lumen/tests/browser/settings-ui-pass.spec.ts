@@ -53,7 +53,7 @@ for (const shareEnabled of [true, false]) {
     if ((page.viewportSize()?.width ?? 0) >= 1040)
       await expect(
         page
-          .getByRole('navigation', { name: 'Main', exact: true })
+          .getByRole('navigation', { name: 'Main navigation', exact: true })
           .getByRole('link', { name: 'Share & Identify' })
       ).toHaveCount(shareEnabled ? 1 : 0);
   });

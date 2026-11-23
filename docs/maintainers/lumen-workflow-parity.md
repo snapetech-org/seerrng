@@ -7960,3 +7960,20 @@ desktop, iPhone, Android, and tablet (8 browser cases). The server's TV route
 suite also passes its 15-season concurrent-provider recovery case (6 tests in
 the file). These provider fixtures and route mocks verify batching and recovery
 contracts, not live metadata-provider availability or latency.
+
+### Series selection labels and navigation test contracts (2026-11-23)
+
+For whole-series selection, the shortcut is labeled “Select entire series” and
+the submit action remains “Request entire series.” This separates selection
+from submission in the control names and prevents duplicate accessible button
+names when every season is available. English, French, and Arabic labels are
+covered; the fifteen-season browser case verifies selection preservation and
+the resulting whole-series request payload. Navigation browser fixtures use
+the shell's current “Main navigation” accessible name; this repairs stale test
+selectors without changing rendered navigation. A stale TV request-summary
+assertion was also corrected to match the current requester/date separator.
+Validation: production build; 76 TV-request browser cases and the focused locale
+catalog tests passed; the affected navigation and administration cases are
+included in the final 560-case run across desktop, iPhone, Android, and tablet.
+Matched visual captures for the selected 15-season desktop and phone states are
+retained in `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/`.

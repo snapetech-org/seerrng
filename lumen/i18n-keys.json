@@ -4421,6 +4421,7 @@
   "lumen.tv.requestAnyway",
   "lumen.tv.requestApproval",
   "lumen.tv.requestEntireSeries",
+  "lumen.tv.selectEntireSeries",
   "lumen.tv.requestMissingSeasons",
   "lumen.tv.requestMoreSeasons",
   "lumen.tv.requestSeason",
