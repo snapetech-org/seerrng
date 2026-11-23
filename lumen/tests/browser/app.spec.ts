@@ -4049,7 +4049,7 @@ test('Music album and artist details localize their controls and metadata', asyn
     : 'en';
   const copy = {
     en: {
-      request: 'Request album',
+      request: 'Request FLAC',
       discography: 'View Discography',
       tracks: 'Tracks',
       plays: '1K plays',
@@ -4068,7 +4068,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       blocklistQuestion: 'Add to the Blocklist?',
     },
     fr: {
-      request: 'Demander l’album',
+      request: 'Demander FLAC',
       discography: 'Voir la discographie',
       tracks: 'Pistes',
       plays: '1K écoutes',
@@ -4087,7 +4087,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       blocklistQuestion: 'Ajouter à la liste de blocage ?',
     },
     ar: {
-      request: 'طلب الألبوم',
+      request: 'طلب FLAC',
       discography: 'عرض تسجيلات الفنان',
       tracks: 'المقاطع',
       plays: '1K استماع',
@@ -4117,6 +4117,13 @@ test('Music album and artist details localize their controls and metadata', asyn
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
       json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  await page.route('**/api/v1/service/lidarr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 12, name: 'Fixture FLAC', musicQuality: 'flac', isDefault: true },
+      ],
     })
   );
   await page.route(`**/api/v1/music/${album}`, (route) =>

@@ -1146,6 +1146,31 @@ a.person:hover {
   .dacts.pc {
     display: none;
   }
+  .actionbar .music-format-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    flex: 1 0 100%;
+  }
+  .actionbar.music-actionbar {
+    flex-wrap: wrap;
+  }
+  .actionbar.music-actionbar .ab-meta {
+    flex: 1 0 100%;
+    max-width: none;
+    min-width: 0;
+  }
+  .actionbar .music-format-choice {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .actionbar .music-format-choice .btn,
+  .actionbar .music-format-choice .cfg-select {
+    width: 100%;
+    min-height: 36px;
+    padding-inline: 6px;
+  }
 }
 /* phones: actions that don't fit in the sticky action bar */
 @media (min-width: 1040px) {
@@ -1188,6 +1213,24 @@ a.person:hover {
   display: block;
   color: var(--ink);
   font-size: 14px;
+}
+.music-format-actions {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 8px;
+  min-width: 0;
+}
+.music-format-choice {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.music-format-choice .btn,
+.music-format-choice .cfg-select {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 /* season list */

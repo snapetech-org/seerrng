@@ -18,7 +18,7 @@ const cases = [
   },
   {
     path: '/music/42',
-    label: 'Request album',
+    label: 'Request MP3',
     allowed: [2, 32, 4294967296],
     configure: () => ({
       '/music/42': {
@@ -135,6 +135,17 @@ for (const item of cases) {
           });
         if (path === '/service/whisparr')
           return route.fulfill({ json: [{ id: 1, isDefault: true }] });
+        if (path === '/service/lidarr')
+          return route.fulfill({
+            json: [
+              {
+                id: 2,
+                name: 'Fixture MP3',
+                musicQuality: 'mp3',
+                isDefault: true,
+              },
+            ],
+          });
         if (path === '/request/software/catalog/popular')
           return route.fulfill({ json: { results: [], nextOffset: null } });
         if (path in detail) return route.fulfill({ json: detail[path] });

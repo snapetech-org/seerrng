@@ -5,20 +5,20 @@ const appPath = (path: string) => `${mount}${path}`;
 
 const locales = {
   en: {
-    music: 'Request album',
+    music: 'Request MP3',
     request: 'Request',
     submitted: 'Request submitted.',
     serverFailure: 'The server had a problem. Try again in a moment.',
   },
   fr: {
-    music: 'Demander l’album',
+    music: 'Demander MP3',
     request: 'Demander',
     submitted: 'Demande envoyée.',
     serverFailure:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
   ar: {
-    music: 'طلب الألبوم',
+    music: 'طلب MP3',
     request: 'طلب',
     submitted: 'تم إرسال الطلب.',
     serverFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
@@ -57,6 +57,17 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             locale,
             enabledMediaCategories: { music: true, adult: true },
           },
+        });
+      if (path === '/service/lidarr')
+        return route.fulfill({
+          json: [
+            {
+              id: 7,
+              name: 'Fixture MP3',
+              musicQuality: 'mp3',
+              isDefault: true,
+            },
+          ],
         });
       if (path === '/music/42')
         return route.fulfill({
@@ -127,8 +138,8 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         path: `${capture}-${locale}-adult-submitted.png`,
       });
     expect(posts).toEqual([
-      { mediaType: 'music', mediaId: '42' },
-      { mediaType: 'music', mediaId: '42' },
+      { mediaType: 'music', mediaId: '42', serverId: 7 },
+      { mediaType: 'music', mediaId: '42', serverId: 7 },
       { mediaType: 'adult', mediaId: '42' },
     ]);
     await expect(page.locator('html')).toHaveAttribute(

@@ -122,10 +122,16 @@ export interface MediaInfo {
   requests?: {
     id: number;
     status: number;
+    serverId?: number;
     bookFormat?: string;
     is4k?: boolean;
     createdAt?: string;
-    requestedBy?: { displayName?: string };
+    requestedBy?: { id?: number; displayName?: string };
+    serviceTargets?: {
+      serviceType?: string;
+      serverId?: number;
+      status?: number;
+    }[];
     seasons?: {
       seasonNumber: number;
       status?: number;

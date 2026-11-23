@@ -330,6 +330,7 @@ export interface AlbumDetails {
   artistThumb?: string;
   artistBackdrop?: string;
   mediaInfo?: MediaInfo;
+  availableServices?: { serverId: number; quality: string }[];
 }
 export interface ArtistDetails {
   artist: { name: string; area?: string; type?: string; beginYear?: number };

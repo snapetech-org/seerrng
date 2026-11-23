@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { MediaStatus } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Section } from '../components/cards';
 import {
+  canChooseRequestOptions,
   canRequestMusic,
   canUseRequestAccess,
   DetailTop,
@@ -16,18 +18,19 @@ import {
   ExtraHeader,
   ExtraSearch,
   extraStat,
-  RequestButton,
   ServiceNote,
   StatPill,
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import ReportIssueButton from '../components/ReportIssueButton';
+import { useToast } from '../components/toast';
 import WatchlistButton from '../components/WatchlistButton';
 import {
   discoveryVisibility,
   showDiscoveryTitle,
 } from '../discoveryVisibility';
+import { friendlyError } from '../errors';
 import {
   artistOf,
   fmtTrack,
@@ -72,6 +75,167 @@ const SORTS = [
     'This year (ascending)',
   ],
 ] as const;
+
+interface MusicService {
+  id: number;
+  name: string;
+  isDefault?: boolean;
+  musicQuality?: 'mp3' | 'flac';
+}
+
+const musicServiceQuality = (
+  service: MusicService
+): 'mp3' | 'flac' | undefined =>
+  service.musicQuality ??
+  (/\b(?:FLAC|LOSSLESS)\b/i.test(service.name)
+    ? 'flac'
+    : /\bMP3\b/i.test(service.name)
+      ? 'mp3'
+      : undefined);
+
+function MusicFormatRequestActions({
+  album,
+  refresh,
+}: {
+  album: AlbumDetails;
+  refresh: () => void;
+}) {
+  const { user } = useAuth();
+  const { t } = useLumenLocale();
+  const toast = useToast();
+  const serviceState = useApi<MusicService[]>('/service/lidarr');
+  const [selected, setSelected] = useState<Record<string, number>>({});
+  const [busy, setBusy] = useState<string>();
+  const canChooseService = canChooseRequestOptions(user?.permissions);
+  const services = Array.isArray(serviceState.data) ? serviceState.data : [];
+
+  if (serviceState.error)
+    return (
+      <ServiceNote
+        error={serviceState.error}
+        what={t('components.Settings.lidarrsettings', 'Lidarr settings')}
+        retry={serviceState.refresh}
+      />
+    );
+
+  return (
+    <div className="music-format-actions">
+      {(['mp3', 'flac'] as const).map((quality) => {
+        const options = services.filter(
+          (service) => musicServiceQuality(service) === quality
+        );
+        const configured =
+          options.find((service) => service.id === selected[quality]) ??
+          options.find((service) => service.isDefault) ??
+          options[0];
+        const available =
+          !!configured &&
+          album.availableServices?.some(
+            (service) =>
+              service.serverId === configured.id &&
+              service.quality.toUpperCase() === quality.toUpperCase()
+          );
+        const pendingRequest =
+          !!configured &&
+          album.mediaInfo?.requests?.some((request) => {
+            if (request.status !== 1 && request.status !== 2) return false;
+            const targets = request.serviceTargets ?? [];
+            return (
+              targets.length === 0 ||
+              targets.some(
+                (target) =>
+                  target.serviceType === 'lidarr' &&
+                  target.serverId === configured.id
+              )
+            );
+          });
+        const blocked = album.mediaInfo?.status === MediaStatus.BLOCKLISTED;
+        const unavailableReason = !configured
+          ? t(
+              `components.MusicDetails.${quality}ServiceUnavailable`,
+              `No ${quality.toUpperCase()} music service is configured.`
+            )
+          : blocked
+            ? t(
+                'components.MusicDetails.blocklisted',
+                'This title is blocklisted.'
+              )
+            : available
+              ? t(
+                  `components.MusicDetails.${quality}Available`,
+                  `The ${quality.toUpperCase()} version is already available.`
+                )
+              : pendingRequest
+                ? t(
+                    `components.MusicDetails.${quality}Pending`,
+                    `An open ${quality.toUpperCase()} request already exists.`
+                  )
+                : undefined;
+        const disabled = !!unavailableReason || busy !== undefined;
+        return (
+          <div className="music-format-choice" key={quality}>
+            {canChooseService && options.length > 1 && (
+              <select
+                className="cfg-select"
+                aria-label={`${quality.toUpperCase()} ${t('components.RequestModal.AdvancedRequester.destinationserver', 'Destination Server')}`}
+                value={configured?.id ?? ''}
+                onChange={(event) =>
+                  setSelected((current) => ({
+                    ...current,
+                    [quality]: Number(event.target.value),
+                  }))
+                }
+              >
+                {options.map((service) => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
+                  </option>
+                ))}
+              </select>
+            )}
+            <button
+              className={`btn ${disabled ? 'btn-tonal' : 'btn-primary'}`}
+              disabled={disabled}
+              title={unavailableReason}
+              aria-label={
+                unavailableReason
+                  ? `${t('components.Common.FormatRequestControl.request', 'Request')} ${quality.toUpperCase()}: ${unavailableReason}`
+                  : `${t('components.Common.FormatRequestControl.request', 'Request')} ${quality.toUpperCase()}`
+              }
+              onClick={async () => {
+                if (!configured || busy) return;
+                setBusy(quality);
+                try {
+                  await requestExtra('music', album.id, configured.id);
+                  await refresh();
+                  toast(
+                    t('lumen.common.requestSubmitted', 'Request submitted.')
+                  );
+                } catch (error) {
+                  toast(
+                    friendlyError(
+                      error,
+                      t(
+                        'lumen.common.requestFailed',
+                        'The request could not be submitted.'
+                      ),
+                      t
+                    )
+                  );
+                } finally {
+                  setBusy(undefined);
+                }
+              }}
+            >
+              {t('components.Common.FormatRequestControl.request', 'Request')}{' '}
+              {quality.toUpperCase()}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 // Keep these MusicBrainz labels aligned with the server's release type filters.
 const RELEASE_TYPES = [
   'Album',
@@ -529,11 +693,7 @@ export function AlbumDetail() {
     .map((t) => t.tag);
   const total = (a.tracks || []).reduce((n, t) => n + (t.length || 0), 0);
   const main = canRequestMusic(user?.permissions) ? (
-    <RequestButton
-      stat={s}
-      label={t('lumen.music.requestAlbum', 'Request album')}
-      request={() => requestExtra('music', a.id)}
-    />
+    <MusicFormatRequestActions album={a} refresh={refresh} />
   ) : null;
   return (
     <ExtraGate k="music">
@@ -642,7 +802,7 @@ export function AlbumDetail() {
             </aside>
           </div>
         </div>
-        <div className="actionbar">
+        <div className="actionbar music-actionbar">
           <span className="ab-meta">
             <b>{a.title}</b>
             {a.artist.name}

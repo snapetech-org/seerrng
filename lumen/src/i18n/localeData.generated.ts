@@ -6,6 +6,19 @@ export const localeData = [
     direction: 'rtl',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'مسلسلات',
+      'components.Common.FormatRequestControl.request': 'طلب',
+      'components.Settings.lidarrsettings': 'Lidarr التركيبات',
+      'components.MusicDetails.blocklisted': 'هذا العنوان مدرج في قائمة الحظر.',
+      'components.MusicDetails.flacAvailable': 'ونسخة FLAC متاحة بالفعل.',
+      'components.MusicDetails.flacPending': 'يوجد بالفعل طلب FLAC مفتوح.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'لم يتم إعداد أي خدمة موسيقى FLAC.',
+      'components.MusicDetails.mp3Available': 'إصدار MP3 متاح بالفعل.',
+      'components.MusicDetails.mp3Pending': 'يوجد بالفعل طلب MP3 مفتوح',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'لم يتم إعداد أي خدمة موسيقى MP3.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'الخادم المستهدف',
       'components.IdentityMappingControls.change': 'تغيير مطابقة العنوان',
       'components.IdentityMappingControls.match': 'طابق العنوان مع الكتالوج',
       'components.IdentityMappingControls.mediaTypeLabel': 'نوع وسائط الإعلام',
@@ -6759,6 +6772,8 @@ export const localeData = [
     nativeName: 'Български',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Целеви сървър',
       'components.IssueDetails.allepisodes': 'Всички епизоди',
       'components.Layout.Sidebar.blocklist': 'Списък с блокирани',
       'components.Layout.Sidebar.browsemovies': 'Филми',
@@ -7386,6 +7401,8 @@ export const localeData = [
     nativeName: 'Català',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Servidor de destí',
       'components.IssueDetails.allepisodes': 'Tots els episodis',
       'components.Layout.Sidebar.blocklist': 'Llista de bloqueig',
       'components.Layout.Sidebar.browsemovies': 'Pel·lícules',
@@ -7899,6 +7916,8 @@ export const localeData = [
     nativeName: 'Čeština',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Cílový server',
       'components.IssueDetails.allepisodes': 'Všechny epizody',
       'components.Layout.Sidebar.blocklist': 'Zablokované',
       'components.Layout.Sidebar.browsemovies': 'Filmy',
@@ -8524,6 +8543,8 @@ export const localeData = [
     nativeName: 'Dansk',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Destinationsserver',
       'components.IssueDetails.allepisodes': 'Alle episoder',
       'components.Layout.Sidebar.blocklist': 'Skjulning',
       'components.Layout.Sidebar.browsemovies': 'Film',
@@ -9148,6 +9169,24 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serien',
+      'components.Common.FormatRequestControl.request': 'Anfordern',
+      'components.Settings.lidarrsettings': 'Lidarr Einstellungen',
+      'components.MusicDetails.blocklisted':
+        'Dieser Titel steht auf der Sperrliste.',
+      'components.MusicDetails.flacAvailable':
+        'Die FLAC-Version ist bereits verfügbar.',
+      'components.MusicDetails.flacPending':
+        'Eine offene FLAC-Anfrage existiert bereits.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'Kein FLAC-Musikdienst ist konfiguriert.',
+      'components.MusicDetails.mp3Available':
+        'Die MP3-Version ist bereits verfügbar.',
+      'components.MusicDetails.mp3Pending':
+        'Eine offene MP3-Anfrage existiert bereits.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'Kein MP3-Musikdienst ist konfiguriert.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Zielserver',
       'components.IdentityMappingControls.change':
         'Titelübereinstimmung ändern',
       'components.IdentityMappingControls.match': 'Katalogtitel zuordnen',
@@ -10822,6 +10861,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Series',
+      'components.Common.FormatRequestControl.request': 'Request',
+      'components.Settings.lidarrsettings': 'Lidarr Settings',
+      'components.MusicDetails.blocklisted': 'This title is blocklisted.',
+      'components.MusicDetails.flacAvailable':
+        'The FLAC version is already available.',
+      'components.MusicDetails.flacPending':
+        'An open FLAC request already exists.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'No FLAC music service is configured.',
+      'components.MusicDetails.mp3Available':
+        'The MP3 version is already available.',
+      'components.MusicDetails.mp3Pending':
+        'An open MP3 request already exists.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'No MP3 music service is configured.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Destination Server',
       'components.IdentityMappingControls.change': 'Change title match',
       'components.IdentityMappingControls.match': 'Match catalog title',
       'components.IdentityMappingControls.mediaTypeLabel': 'Catalog media type',
@@ -17621,6 +17677,8 @@ export const localeData = [
     nativeName: 'Ελληνικά',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Προορισμός Διακομιστή',
       'components.IssueDetails.allepisodes': 'Όλα τα επεισόδια',
       'components.Layout.Sidebar.browsemovies': 'Ταινίες',
       'components.Layout.Sidebar.browsetv': 'Σειρές',
@@ -18046,6 +18104,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Series',
+      'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
+      'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
+      'components.MusicDetails.flacAvailable':
+        'La versión FLAC ya está disponible.',
+      'components.MusicDetails.flacPending':
+        'Ya existe una solicitud abierta de FLAC.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'No se configura ningún servicio de música FLAC.',
+      'components.MusicDetails.mp3Available':
+        'La versión MP3 ya está disponible.',
+      'components.MusicDetails.mp3Pending':
+        'Ya existe una solicitud de MP3 abierta.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'No se configura ningún servicio de música MP3.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Servidor de destino',
       'components.IdentityMappingControls.change':
         'Cambiar coincidencia de título',
       'components.IdentityMappingControls.match':
@@ -19730,6 +19805,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serie',
+      'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.Settings.lidarrsettings': 'Ajustes de Lidarr',
+      'components.MusicDetails.blocklisted': 'Este título está bloqueado.',
+      'components.MusicDetails.flacAvailable':
+        'La versión FLAC ya está disponible.',
+      'components.MusicDetails.flacPending':
+        'Ya existe una solicitud abierta de FLAC.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'No se configura ningún servicio de música FLAC.',
+      'components.MusicDetails.mp3Available':
+        'La versión MP3 ya está disponible.',
+      'components.MusicDetails.mp3Pending':
+        'Ya existe una solicitud de MP3 abierta.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'No se configura ningún servicio de música MP3.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Servidor de destino',
       'components.IdentityMappingControls.change': 'Cambiar el título',
       'components.IdentityMappingControls.match':
         'Título del catálogo de partido',
@@ -21398,6 +21490,8 @@ export const localeData = [
     nativeName: 'Eesti',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Sihtserver',
       'components.IssueDetails.allepisodes': 'Kõik osad',
       'components.Layout.Sidebar.blocklist': 'Blokeerimisloend',
       'components.Layout.Sidebar.browsemovies': 'Filmid',
@@ -22018,6 +22112,8 @@ export const localeData = [
     nativeName: 'Suomi',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Kohdepalvelin',
       'components.IssueDetails.allepisodes': 'Kaikki jaksot',
       'components.Layout.Sidebar.blocklist': 'Estolista',
       'components.Layout.Sidebar.browsemovies': 'Elokuvat',
@@ -22232,6 +22328,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
+      'components.Common.FormatRequestControl.request': 'Demander',
+      'components.Settings.lidarrsettings': 'Paramètres Lidarr',
+      'components.MusicDetails.blocklisted': 'Ce titre est bloqué.',
+      'components.MusicDetails.flacAvailable':
+        'La version FLAC est déjà disponible.',
+      'components.MusicDetails.flacPending':
+        'Une demande de FLAC ouverte existe déjà.',
+      'components.MusicDetails.flacServiceUnavailable':
+        "Aucun service de musique FLAC n'est configuré.",
+      'components.MusicDetails.mp3Available':
+        'La version MP3 est déjà disponible.',
+      'components.MusicDetails.mp3Pending':
+        'Une requête MP3 ouverte existe déjà.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        "Aucun service musical MP3 n'est configuré.",
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Serveur de destination',
       'components.IdentityMappingControls.change':
         'Modifier la correspondance de titre',
       'components.IdentityMappingControls.match':
@@ -29580,6 +29693,8 @@ export const localeData = [
     nativeName: 'Hrvatski',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Odredišni poslužitelj',
       'components.IssueDetails.allepisodes': 'Sve Epizode',
       'components.Layout.Sidebar.browsemovies': 'Filmovi',
       'components.Layout.Sidebar.browsetv': 'Serije',
@@ -30001,6 +30116,7 @@ export const localeData = [
     nativeName: 'עברית',
     direction: 'rtl',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver': 'שרת יעד',
       'components.IssueDetails.allepisodes': 'כל הפרקים',
       'components.Layout.Sidebar.browsemovies': 'סרטים',
       'components.Layout.Sidebar.browsetv': 'סדרות',
@@ -30246,6 +30362,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'श्रृंखला',
+      'components.Common.FormatRequestControl.request': 'अनुरोध करें',
+      'components.Settings.lidarrsettings': 'Lidarr सेटिंग्स',
+      'components.MusicDetails.blocklisted': 'यह शीर्षक ब्लॉकलिस्ट में है।',
+      'components.MusicDetails.flacAvailable':
+        'FLAC संस्करण पहले से ही उपलब्ध है।',
+      'components.MusicDetails.flacPending':
+        'एक खुला FLAC अनुरोध पहले से ही मौजूद है।',
+      'components.MusicDetails.flacServiceUnavailable':
+        'कोई FLAC संगीत सेवा कॉन्फ़िगर नहीं की गई है।',
+      'components.MusicDetails.mp3Available':
+        'MP3 संस्करण पहले से ही उपलब्ध है।',
+      'components.MusicDetails.mp3Pending':
+        'एक खुला MP3 अनुरोध पहले से ही मौजूद है।',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'कोई MP3 संगीत सेवा कॉन्फ़िगर नहीं की गई है।',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'गंतव्य सर्वर',
       'components.IdentityMappingControls.change': 'शीर्षक मिलान बदलें',
       'components.IdentityMappingControls.match':
         'कैटलॉग के शीर्षक से मिलान करें',
@@ -31867,6 +32000,8 @@ export const localeData = [
     nativeName: 'Magyar',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Cél szerver',
       'components.IssueDetails.allepisodes': 'Minden epizód',
       'components.Layout.Sidebar.blocklist': 'Tiltólista',
       'components.Layout.Sidebar.browsemovies': 'Filmek',
@@ -32499,6 +32634,21 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Serial',
+      'components.Common.FormatRequestControl.request': 'Minta',
+      'components.Settings.lidarrsettings': 'Pengaturan Lidarr',
+      'components.MusicDetails.blocklisted': 'Judul ini diblokir.',
+      'components.MusicDetails.flacAvailable': 'Versi FLAC sudah tersedia.',
+      'components.MusicDetails.flacPending':
+        'Sudah ada permintaan FLAC yang terbuka.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'Tak ada layanan musik FLAC yang dikonfigurasi.',
+      'components.MusicDetails.mp3Available': 'Versi MP3 sudah tersedia.',
+      'components.MusicDetails.mp3Pending':
+        'Sudah ada permintaan MP3 yang terbuka.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'Tak ada layanan musik MP3 yang dikonfigurasi.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Server Tujuan',
       'components.IdentityMappingControls.change': 'Ubah kecocokan judul',
       'components.IdentityMappingControls.match':
         'Cocokkan dengan judul di katalog',
@@ -34139,6 +34289,8 @@ export const localeData = [
     nativeName: 'Italiano',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Server di destinazione',
       'components.IssueDetails.allepisodes': 'Tutti gli episodi',
       'components.Layout.Sidebar.blocklist': 'Lista blocchi',
       'components.Layout.Sidebar.browsemovies': 'Film',
@@ -34760,6 +34912,24 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'シリーズ',
+      'components.Common.FormatRequestControl.request': 'リクエスト',
+      'components.Settings.lidarrsettings': 'Lidarr 设置',
+      'components.MusicDetails.blocklisted':
+        'このタイトルはブロックリストに登録されています。',
+      'components.MusicDetails.flacAvailable':
+        'FLACバージョンは既に利用可能です。',
+      'components.MusicDetails.flacPending':
+        'FLACリクエストは既に存在しています。',
+      'components.MusicDetails.flacServiceUnavailable':
+        'FLACの音楽サービスは設定されていません。',
+      'components.MusicDetails.mp3Available':
+        'MP3バージョンは既に利用可能です。',
+      'components.MusicDetails.mp3Pending':
+        'オープンMP3リクエストは既に存在しています。',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'MP3の音楽サービスは構成されていません。',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        '送信先サーバー',
       'components.IdentityMappingControls.change': 'タイトルの対応付けを変更',
       'components.IdentityMappingControls.match': 'カタログのタイトルと照合',
       'components.IdentityMappingControls.mediaTypeLabel':
@@ -36398,6 +36568,24 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '시리즈',
+      'components.Common.FormatRequestControl.request': '요청',
+      'components.Settings.lidarrsettings': 'Lidarr 설정',
+      'components.MusicDetails.blocklisted':
+        '이 제목은 차단 목록에 등록되어 있습니다.',
+      'components.MusicDetails.flacAvailable':
+        'FLAC 버전은 이미 사용할 수 있습니다.',
+      'components.MusicDetails.flacPending':
+        '열린 FLAC 요청은 이미 존재합니다.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'FLAC 음악 서비스가 구성되지 않습니다.',
+      'components.MusicDetails.mp3Available':
+        'MP3 버전은 이미 사용할 수 있습니다.',
+      'components.MusicDetails.mp3Pending':
+        '열려 있는 MP3 요청이 이미 있습니다.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'MP3 음악 서비스가 구성되지 않습니다.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        '대상 서버',
       'components.IdentityMappingControls.change': '제목 일치 항목 변경',
       'components.IdentityMappingControls.match': '카탈로그 제목과 일치시키기',
       'components.IdentityMappingControls.mediaTypeLabel':
@@ -37990,6 +38178,7 @@ export const localeData = [
     nativeName: 'Lietuvių',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver': 'Serveris',
       'components.IssueDetails.allepisodes': 'Visi epizodai',
       'components.Layout.Sidebar.browsemovies': 'Filmai',
       'components.Layout.Sidebar.browsetv': 'Serialai',
@@ -38136,6 +38325,8 @@ export const localeData = [
     nativeName: 'Norsk Bokmål',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Måltjener',
       'components.IssueDetails.allepisodes': 'Alle Episoder',
       'components.Layout.Sidebar.browsemovies': 'Filmer',
       'components.Layout.Sidebar.browsetv': 'Serier',
@@ -38543,6 +38734,8 @@ export const localeData = [
     nativeName: 'Nederlands',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Doelserver',
       'components.IssueDetails.allepisodes': 'Alle afleveringen',
       'components.Layout.Sidebar.blocklist': 'Blokkeerlijst',
       'components.Layout.Sidebar.browsemovies': 'Films',
@@ -39177,6 +39370,8 @@ export const localeData = [
     nativeName: 'Polski',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Serwer docelowy',
       'components.IssueDetails.allepisodes': 'Wszystkie odcinki',
       'components.Layout.Sidebar.blocklist': 'Czarna lista',
       'components.Layout.Sidebar.browsemovies': 'Filmy',
@@ -39811,6 +40006,23 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Séries',
+      'components.Common.FormatRequestControl.request': 'Solicitar',
+      'components.Settings.lidarrsettings': 'Configurações do Lidarr',
+      'components.MusicDetails.blocklisted':
+        'Este título está na lista de bloqueio.',
+      'components.MusicDetails.flacAvailable':
+        'A versão FLAC já está disponível.',
+      'components.MusicDetails.flacPending': 'Um pedido da FLAC já existe.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'Nenhum serviço de música FLAC está configurado.',
+      'components.MusicDetails.mp3Available':
+        'A versão MP3 já está disponível.',
+      'components.MusicDetails.mp3Pending':
+        'Um pedido de MP3 aberto já existe.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'Nenhum serviço de música MP3 está configurado.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Servidor de Destino',
       'components.IdentityMappingControls.change':
         'Alterar correspondência de título',
       'components.IdentityMappingControls.match':
@@ -41477,6 +41689,8 @@ export const localeData = [
     nativeName: 'Português (Portugal)',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Servidor de Destino',
       'components.IssueDetails.allepisodes': 'Todos Episódios',
       'components.Layout.Sidebar.blocklist': 'Lista de bloqueio',
       'components.Layout.Sidebar.browsemovies': 'Filmes',
@@ -42084,6 +42298,8 @@ export const localeData = [
     nativeName: 'Română',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Server de destinație',
       'components.IssueDetails.allepisodes': 'Toate episoadele',
       'components.Layout.Sidebar.blocklist': 'Blocate',
       'components.Layout.Sidebar.browsemovies': 'Filme',
@@ -42413,6 +42629,8 @@ export const localeData = [
     nativeName: 'Русский',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Сервер-получатель',
       'components.IssueDetails.allepisodes': 'Все эпизоды',
       'components.Layout.Sidebar.blocklist': 'Список блокировки',
       'components.Layout.Sidebar.browsemovies': 'Фильмы',
@@ -43052,6 +43270,8 @@ export const localeData = [
     nativeName: 'Shqip',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Serveri i destinacionit',
       'components.IssueDetails.allepisodes': 'Të gjithë Episodet',
       'components.Layout.Sidebar.issues': 'Problemet',
       'components.Layout.Sidebar.requests': 'Kërkesat',
@@ -43454,6 +43674,8 @@ export const localeData = [
     nativeName: 'Српски',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Odredišni server',
       'components.IssueDetails.allepisodes': 'Sve epizode',
       'components.Layout.Sidebar.issues': 'Problemi',
       'components.Layout.Sidebar.requests': 'Zahtevi',
@@ -43614,6 +43836,8 @@ export const localeData = [
     nativeName: 'Svenska',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Destinationsserver',
       'components.IssueDetails.allepisodes': 'Alla avsnitt',
       'components.Layout.Sidebar.blocklist': 'Blocklista',
       'components.Layout.Sidebar.browsemovies': 'Filmer',
@@ -44244,6 +44468,8 @@ export const localeData = [
     nativeName: 'Türkçe',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Hedef Sunucu',
       'components.IssueDetails.allepisodes': 'Tüm Bölümler',
       'components.Layout.Sidebar.blocklist': 'Engelleme Listesi',
       'components.Layout.Sidebar.browsemovies': 'Filmler',
@@ -44863,6 +45089,8 @@ export const localeData = [
     nativeName: 'Українська',
     direction: 'ltr',
     messages: {
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Сервер-одержувач',
       'components.IssueDetails.allepisodes': 'Всі епізоди',
       'components.Layout.Sidebar.browsemovies': 'Фільми',
       'components.Layout.Sidebar.browsetv': 'Серіали',
@@ -45453,6 +45681,19 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '剧集',
+      'components.Common.FormatRequestControl.request': '提交请求',
+      'components.Settings.lidarrsettings': 'Lidarr 设置',
+      'components.MusicDetails.blocklisted': '此标题已加入屏蔽列表。',
+      'components.MusicDetails.flacAvailable': 'FLAC 版本已经提供.',
+      'components.MusicDetails.flacPending': '已存在开放式 FLAC 请求 。',
+      'components.MusicDetails.flacServiceUnavailable':
+        '没有配置 FLAC 音乐服务 。',
+      'components.MusicDetails.mp3Available': 'MP3版本已经可用.',
+      'components.MusicDetails.mp3Pending': '一个开放的 MP3 请求已经存在 。',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        '没有配置 MP3 音乐服务 。',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        '目標服务器',
       'components.IdentityMappingControls.change': '更改匹配的标题',
       'components.IdentityMappingControls.match': '匹配目录中的标题',
       'components.IdentityMappingControls.mediaTypeLabel': '目录内容类型',
@@ -46982,6 +47223,19 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': '影集',
+      'components.Common.FormatRequestControl.request': '提出請求',
+      'components.Settings.lidarrsettings': 'Lidarr 设置',
+      'components.MusicDetails.blocklisted': '此標題已列入封鎖清單。',
+      'components.MusicDetails.flacAvailable': '已提供 FLAC 版本 。',
+      'components.MusicDetails.flacPending': '已存在開啟的 FLAC 要求 。',
+      'components.MusicDetails.flacServiceUnavailable':
+        '沒有配置 FLAC 音樂服務 。',
+      'components.MusicDetails.mp3Available': 'MP3 版本已可用 。',
+      'components.MusicDetails.mp3Pending': '已存在開啟的 MP3 要求 。',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        '沒有配置 MP3 音樂服務 。',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        '目標伺服器',
       'components.IdentityMappingControls.change': '變更配對的標題',
       'components.IdentityMappingControls.match': '比對目錄中的標題',
       'components.IdentityMappingControls.mediaTypeLabel': '目錄內容類型',
@@ -48508,6 +48762,20 @@ export const localeData = [
     direction: 'ltr',
     messages: {
       'components.Discover.DiscoverMediaTabs.series': 'Loạt phim',
+      'components.Common.FormatRequestControl.request': 'Yêu cầu',
+      'components.Settings.lidarrsettings': 'Cài đặt Lidarr',
+      'components.MusicDetails.blocklisted':
+        'Tiêu đề này nằm trong danh sách chặn.',
+      'components.MusicDetails.flacAvailable': 'Phiên bản FLAC đã sẵn sàng.',
+      'components.MusicDetails.flacPending': 'Đã có một yêu cầu FLAC đang mở.',
+      'components.MusicDetails.flacServiceUnavailable':
+        'Không có dịch vụ âm nhạc FLAC nào được cấu hình.',
+      'components.MusicDetails.mp3Available': 'Phiên bản MP3 đã sẵn sàng.',
+      'components.MusicDetails.mp3Pending': 'Đã có một yêu cầu MP3 đang mở.',
+      'components.MusicDetails.mp3ServiceUnavailable':
+        'Chưa cấu hình dịch vụ nhạc MP3 nào.',
+      'components.RequestModal.AdvancedRequester.destinationserver':
+        'Máy chủ đích',
       'components.IdentityMappingControls.change':
         'Thay đổi kết quả khớp tiêu đề',
       'components.IdentityMappingControls.match':
