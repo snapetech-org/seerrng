@@ -40,6 +40,7 @@ for (const permissions of [4194304, 2097152, 32]) {
     page,
   }) => {
     let reads = 0;
+    let season3Reads = 0;
     let status = 1;
     const comments = [
       { id: 1, message: 'Playback freezes', createdAt: '2026-11-12T00:00:00Z' },
@@ -106,6 +107,30 @@ for (const permissions of [4194304, 2097152, 32]) {
         });
       }
       if (path === '/issue/7') return route.fulfill({ json: issue() });
+      if (path === '/tv/123/season/2')
+        return route.fulfill({
+          json: {
+            seasonNumber: 2,
+            episodes: [{ episodeNumber: 1, name: 'Season two premiere' }],
+          },
+        });
+      if (path === '/tv/123/season/3')
+        if (permissions === 4194304 && season3Reads++ === 0)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Temporarily unavailable' },
+          });
+      if (path === '/tv/123/season/3')
+        return route.fulfill({
+          json: {
+            seasonNumber: 3,
+            episodes: [
+              { episodeNumber: 4, name: 'The fourth episode' },
+              { episodeNumber: 5, name: 'The fifth episode' },
+              { episodeNumber: 6, name: 'Not selected' },
+            ],
+          },
+        });
       if (path === '/issue/7/comment') {
         expect(route.request().postDataJSON()).toEqual({
           message: 'Tested again',
@@ -166,7 +191,16 @@ for (const permissions of [4194304, 2097152, 32]) {
       ).toBeVisible();
     } else {
       await expect(page.getByText('Season 2', { exact: true })).toBeVisible();
-      await expect(page.getByText('Season 3 · Episodes 4, 5')).toBeVisible();
+      await expect(page.getByText('Season two premiere')).toBeVisible();
+      if (permissions === 4194304) {
+        await expect(page.getByRole('alert')).toContainText(
+          'Episode details could not be loaded.'
+        );
+        await page.getByRole('button', { name: 'Retry' }).click();
+      }
+      await expect(page.getByText('The fourth episode')).toBeVisible();
+      await expect(page.getByText('The fifth episode')).toBeVisible();
+      await expect(page.getByText('Not selected')).toHaveCount(0);
     }
     if (
       captureDir &&

@@ -203,6 +203,78 @@ interface Issue {
     createdAt: string;
   }[];
 }
+
+interface IssueSeason {
+  seasonNumber: number;
+  episodes: { episodeNumber: number; name: string }[];
+}
+
+function AffectedSeason({
+  tvId,
+  seasonNumber,
+  episodeNumbers,
+}: {
+  tvId: number;
+  seasonNumber: number;
+  episodeNumbers?: number[];
+}) {
+  const { t } = useLumenLocale();
+  const { data, error, reload } = useApi<IssueSeason>(
+    `/tv/${tvId}/season/${seasonNumber}`
+  );
+  const episodes =
+    data?.episodes.filter(
+      (episode) =>
+        episodeNumbers === undefined ||
+        episodeNumbers.includes(episode.episodeNumber)
+    ) ?? [];
+  const seasonLabel = t('lumen.issues.season', 'Season {season}', {
+    season: seasonNumber,
+  });
+
+  return (
+    <section aria-label={seasonLabel}>
+      <b>{seasonLabel}</b>
+      {error ? (
+        <p className="note" role="alert">
+          {t(
+            'lumen.issues.episodesLoadError',
+            'Episode details could not be loaded.'
+          )}{' '}
+          <button className="btn btn-quiet btn-sm" onClick={reload}>
+            {t('lumen.issues.retryEpisodes', 'Retry')}
+          </button>
+        </p>
+      ) : !data ? (
+        <p className="note" role="status">
+          {t('lumen.issues.loadingEpisodes', 'Loading episode details…')}
+        </p>
+      ) : episodes.length ? (
+        <ul className="request-summary">
+          {episodes.map((episode) => (
+            <li key={episode.episodeNumber}>
+              <small>
+                {t('lumen.issues.episode', 'Episode {episode}', {
+                  episode: episode.episodeNumber,
+                })}
+                {' · '}
+                {episode.name ||
+                  t('lumen.issues.untitledEpisode', 'Untitled episode')}
+              </small>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="note">
+          {t(
+            'lumen.issues.noEpisodeDetails',
+            'No matching episodes were found.'
+          )}
+        </p>
+      )}
+    </section>
+  );
+}
 interface IssuePage {
   results: Issue[];
   pageInfo: { page: number; pages: number };
@@ -722,6 +794,8 @@ function Discussion({
     !!data &&
     (manager ||
       (editable && Array.isArray(data.comments) && data.comments.length <= 1));
+  const affectedTvId =
+    data?.media?.mediaType === 'tv' ? data.media.tmdbId : undefined;
 
   async function submit(action: IssueAction) {
     if (!data || submitting.current) return;
@@ -898,20 +972,47 @@ function Discussion({
               </button>
             )}
           </div>
-          {data.problemEpisodeSelections?.length ? (
+          {affectedTvId &&
+          !data.problemEpisodeSelections?.length &&
+          data.problemSeason === 0 &&
+          data.problemEpisode === 0 &&
+          !data.problemEpisodes?.length ? (
+            <p className="note">
+              {t('lumen.issues.allSeasons', 'All Seasons')} ·{' '}
+              {t('lumen.issues.entireSeries', 'Entire Series')}
+            </p>
+          ) : data.problemEpisodeSelections?.length && affectedTvId ? (
             <ul className="setlist">
               {data.problemEpisodeSelections.map(
                 ({ seasonNumber, episodeNumbers }) => (
                   <li className="set" key={seasonNumber}>
-                    {t('lumen.issues.season', 'Season {season}', {
-                      season: seasonNumber,
-                    })}
-                    {episodeNumbers?.length
-                      ? ` · ${t('lumen.issues.episodes', 'Episodes {episodes}', { episodes: episodeNumbers.join(', ') })}`
-                      : ''}
+                    <AffectedSeason
+                      tvId={affectedTvId}
+                      seasonNumber={seasonNumber}
+                      episodeNumbers={episodeNumbers}
+                    />
                   </li>
                 )
               )}
+            </ul>
+          ) : affectedTvId &&
+            (data.problemSeason ||
+              data.problemEpisode ||
+              data.problemEpisodes?.length) ? (
+            <ul className="setlist">
+              <li className="set">
+                <AffectedSeason
+                  tvId={affectedTvId}
+                  seasonNumber={data.problemSeason ?? 0}
+                  episodeNumbers={
+                    data.problemEpisodes?.length
+                      ? data.problemEpisodes
+                      : data.problemEpisode
+                        ? [data.problemEpisode]
+                        : undefined
+                  }
+                />
+              </li>
             </ul>
           ) : (
             !!(

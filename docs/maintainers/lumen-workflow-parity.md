@@ -8015,3 +8015,20 @@ passes. A native/candidate review confirms the affected-season context is now
 available directly in the Lumen list. Other row facts, filter grouping, and
 inline native discussion remain open. Candidate captures are retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/issues-lumen/candidate/`.
+
+### Affected TV episode names in issue discussions (2026-11-23)
+
+Lumen now resolves each selected TV season through SeerrNG's authenticated
+season endpoint and displays the selected episode numbers with their names.
+Legacy reports that represent an entire series retain the native all-seasons
+label. Loading, empty, and retryable provider-error states are visible, and the
+episode rows use compact existing Lumen summary styling. English, French, and
+Arabic labels are included.
+
+The issue-detail browser fixture verifies exact season and episode mapping,
+excludes unselected episode records, and exercises a failed season request and
+successful retry. All 12 focused cases pass across desktop, iPhone, Android,
+and tablet. The Lumen production build passes. Desktop and phone captures were
+inspected at matching issue detail states; live TMDB season responses remain
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/issues-lumen/episode-candidate/`.
