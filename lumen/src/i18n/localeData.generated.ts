@@ -1711,6 +1711,7 @@ export const localeData = [
       'lumen.account.loadTimeout':
         'استغرق الخادم وقتاً طويلاً للرد. حاول مجدداً.',
       'lumen.account.loadUnknownFailure': 'تعذّر تحميل هذه المعلومات.',
+      'lumen.account.loading': 'جارٍ التحميل…',
       'lumen.account.loadingPasswordSettings':
         'جارٍ تحميل إعدادات كلمة المرور…',
       'lumen.account.loadingProfileSettings':
@@ -1737,6 +1738,7 @@ export const localeData = [
       'lumen.account.profileSaveMismatch':
         'حفظ SeerrNG قيماً مختلفة. راجع الملف الشخصي المحدّث.',
       'lumen.account.retry': 'إعادة المحاولة',
+      'lumen.account.selectedCount': 'تم تحديد {count}',
       'lumen.account.saveCardTitles': 'حفظ عناوين البطاقات',
       'lumen.account.savePassword': 'حفظ كلمة المرور',
       'lumen.account.saveStreamingSubscriptions': 'حفظ اشتراكات خدمات البث',
@@ -1808,6 +1810,7 @@ export const localeData = [
       'lumen.actions.searchProwlarr': 'البحث في Prowlarr',
       'lumen.admin.administrationCategories': 'فئات الإدارة',
       'lumen.admin.allSettingsTools': 'كل الإعدادات والأدوات',
+      'lumen.admin.back': 'العودة إلى الإدارة',
       'lumen.admin.dest.4k': 'طلبات 4K',
       'lumen.admin.dest.about': 'حول SeerrNG',
       'lumen.admin.dest.apiKey': 'مفتاح واجهة التطبيق',
@@ -1839,6 +1842,7 @@ export const localeData = [
       'lumen.admin.dest.overrideRules': 'قواعد تجاوز الطلبات',
       'lumen.admin.dest.prowlarr': 'إعدادات Prowlarr',
       'lumen.admin.dest.quotas': 'حصص الطلب الافتراضية',
+      'lumen.admin.dest.requestDefaults': 'إعدادات الطلبات الافتراضية',
       'lumen.admin.dest.radarr': 'خدمات Radarr',
       'lumen.admin.dest.readerDelivery': 'توصيل القارئ',
       'lumen.admin.dest.readmeabook': 'إعدادات ReadMeABook',
@@ -3734,6 +3738,7 @@ export const localeData = [
       'lumen.gameLibrary.playing': 'قيد اللعب',
       'lumen.gameLibrary.previousPage': 'الصفحة السابقة',
       'lumen.gameLibrary.private': 'خاصة',
+      'lumen.gameLibrary.privateGameLibrary': 'مكتبة الألعاب الخاصة',
       'lumen.gameLibrary.privateGameLibraryDescription':
         'أضفها إلى مكتبتك الخاصة، ثم تابع تقدمك واختر ما إذا كنت تريد مشاركتها مع أفراد أسرتك.',
       'lumen.gameLibrary.privateLibrary': 'المكتبة الخاصة',
@@ -12626,6 +12631,7 @@ export const localeData = [
       'lumen.account.loadTimeout':
         'The server took too long to answer. Try again.',
       'lumen.account.loadUnknownFailure': 'Could not load this information.',
+      'lumen.account.loading': 'Loading…',
       'lumen.account.loadingPasswordSettings': 'Loading password settings…',
       'lumen.account.loadingProfileSettings': 'Loading profile settings…',
       'lumen.account.loadingStreamingProviders': 'Loading streaming providers…',
@@ -12652,6 +12658,7 @@ export const localeData = [
       'lumen.account.profileSaveMismatch':
         'SeerrNG saved different values. Review the updated profile.',
       'lumen.account.retry': 'Retry',
+      'lumen.account.selectedCount': '{count} selected',
       'lumen.account.saveCardTitles': 'Save Card Titles',
       'lumen.account.savePassword': 'Save Password',
       'lumen.account.saveStreamingSubscriptions':
@@ -12726,6 +12733,7 @@ export const localeData = [
       'lumen.actions.searchProwlarr': 'Search Prowlarr',
       'lumen.admin.administrationCategories': 'Administration Categories',
       'lumen.admin.allSettingsTools': 'All Settings and Tools',
+      'lumen.admin.back': 'Administration',
       'lumen.admin.dest.4k': '4K Requests',
       'lumen.admin.dest.about': 'About SeerrNG',
       'lumen.admin.dest.apiKey': 'Application API Key',
@@ -12757,6 +12765,7 @@ export const localeData = [
       'lumen.admin.dest.overrideRules': 'Request Override Rules',
       'lumen.admin.dest.prowlarr': 'Prowlarr Settings',
       'lumen.admin.dest.quotas': 'Default Request Quotas',
+      'lumen.admin.dest.requestDefaults': 'Request Defaults',
       'lumen.admin.dest.radarr': 'Radarr Services',
       'lumen.admin.dest.readerDelivery': 'Reader Delivery',
       'lumen.admin.dest.readmeabook': 'ReadMeABook Settings',
@@ -14694,6 +14703,7 @@ export const localeData = [
       'lumen.gameLibrary.playing': 'Playing',
       'lumen.gameLibrary.previousPage': 'Previous Page',
       'lumen.gameLibrary.private': 'Private',
+      'lumen.gameLibrary.privateGameLibrary': 'Private Game Library',
       'lumen.gameLibrary.privateGameLibraryDescription':
         'Add it to your private game library, then track progress and choose whether to share it with your household.',
       'lumen.gameLibrary.privateLibrary': 'Private Library',
@@ -24224,6 +24234,7 @@ export const localeData = [
         'Le serveur a mis trop de temps à répondre. Réessayez.',
       'lumen.account.loadUnknownFailure':
         'Impossible de charger ces informations.',
+      'lumen.account.loading': 'Chargement…',
       'lumen.account.loadingPasswordSettings':
         'Chargement des paramètres du mot de passe…',
       'lumen.account.loadingProfileSettings':
@@ -24254,6 +24265,7 @@ export const localeData = [
       'lumen.account.profileSaveMismatch':
         'SeerrNG a enregistré des valeurs différentes. Vérifiez le profil mis à jour.',
       'lumen.account.retry': 'Réessayer',
+      'lumen.account.selectedCount': '{count} sélectionnés',
       'lumen.account.saveCardTitles': 'Enregistrer les titres des affiches',
       'lumen.account.savePassword': 'Enregistrer le mot de passe',
       'lumen.account.saveStreamingSubscriptions':
@@ -24333,6 +24345,7 @@ export const localeData = [
       'lumen.actions.searchProwlarr': 'Rechercher avec Prowlarr',
       'lumen.admin.administrationCategories': 'Catégories d’administration',
       'lumen.admin.allSettingsTools': 'Tous les paramètres et outils',
+      'lumen.admin.back': 'Retour à l’administration',
       'lumen.admin.dest.4k': 'Demandes 4K',
       'lumen.admin.dest.about': 'À propos de SeerrNG',
       'lumen.admin.dest.apiKey': 'Clé API de l’application',
@@ -24366,6 +24379,7 @@ export const localeData = [
       'lumen.admin.dest.overrideRules': 'Règles de remplacement des demandes',
       'lumen.admin.dest.prowlarr': 'Paramètres Prowlarr',
       'lumen.admin.dest.quotas': 'Quotas de demande par défaut',
+      'lumen.admin.dest.requestDefaults': 'Paramètres par défaut des demandes',
       'lumen.admin.dest.radarr': 'Services Radarr',
       'lumen.admin.dest.readerDelivery': 'Distribution aux lecteurs',
       'lumen.admin.dest.readmeabook': 'Paramètres ReadMeABook',
@@ -26464,6 +26478,7 @@ export const localeData = [
       'lumen.gameLibrary.playing': 'En cours',
       'lumen.gameLibrary.previousPage': 'Page précédente',
       'lumen.gameLibrary.private': 'Privé',
+      'lumen.gameLibrary.privateGameLibrary': 'Bibliothèque de jeux privée',
       'lumen.gameLibrary.privateGameLibraryDescription':
         'Ajoutez-le à votre bibliothèque de jeux privée, puis suivez votre progression et choisissez de le partager ou non avec votre foyer.',
       'lumen.gameLibrary.privateLibrary': 'Bibliothèque privée',

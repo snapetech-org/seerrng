@@ -16,6 +16,13 @@ const keys = [
   'components.UserProfile.UserSettings.UserLinkedAccountsSettings.linkIdentityProvider',
   'components.UserProfile.UserSettings.menuClientTokens',
 ];
+const lumenKeys = [
+  'lumen.account.loading',
+  'lumen.account.selectedCount',
+  'lumen.admin.back',
+  'lumen.admin.dest.requestDefaults',
+  'lumen.gameLibrary.privateGameLibrary',
+];
 
 test('Lumen account, request, and settings labels are translated in French and Arabic', async () => {
   const english = JSON.parse(
@@ -24,11 +31,37 @@ test('Lumen account, request, and settings labels are translated in French and A
   for (const locale of ['fr', 'ar']) {
     assert.ok(locales.locales.some(({ tag }) => tag === locale));
     for (const key of keys) {
-      assert.equal(typeof english[key], 'string', `English source exists: ${key}`);
+      assert.equal(
+        typeof english[key],
+        'string',
+        `English source exists: ${key}`
+      );
       assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
       assert.notEqual(
         overrides[locale][key],
         english[key],
+        `${locale} translation is not an English fallback: ${key}`
+      );
+    }
+  }
+});
+
+test('visible Lumen account, administration, and game-library labels are translated', () => {
+  for (const locale of ['fr', 'ar']) {
+    for (const key of lumenKeys) {
+      assert.equal(
+        typeof overrides.en[key],
+        'string',
+        `English source exists: ${key}`
+      );
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale} translation exists: ${key}`
+      );
+      assert.notEqual(
+        overrides[locale][key],
+        overrides.en[key],
         `${locale} translation is not an English fallback: ${key}`
       );
     }

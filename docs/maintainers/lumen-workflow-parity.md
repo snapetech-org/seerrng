@@ -7863,3 +7863,18 @@ remain readable; the sheet still scrolls to advanced controls. Browser fixtures
 check its bounds and overflow. Live quota/provider behavior and live submission
 remain unverified. This closes the request-dialog workflow gap, not all Music or
 Lumen parity gaps.
+
+### Account and administration locale fallback gaps (2026-11-23)
+
+A static-key audit found five live Lumen labels that relied on English fallback:
+account loading and selected-count feedback, the Metadata page's return label,
+the Request Defaults destination, and the private game library heading. English,
+French, and Arabic overrides are now catalogued and generated for those keys.
+An i18n regression test rejects English fallback for the new French and Arabic
+values. Candidate Account Settings captures were rendered at desktop and phone
+sizes and inspected; their existing layout remains intact and the selected
+count is translated. The browser assertion did not complete reliably because
+the provider fixture did not expose its result in the rendered selection list.
+The Metadata back action and private game-library heading also lack rendered
+browser coverage in this milestone. No workflow behavior changed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/`.
