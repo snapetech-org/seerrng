@@ -52,6 +52,7 @@ import { useOffers4k, useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import TvCollectionLinks from '../components/TvCollectionLinks';
 import TvEpisodeRequestSheet from '../components/TvEpisodeRequestSheet';
+import VideoPlaybackButton from '../components/VideoPlaybackButton';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -677,6 +678,18 @@ export default function TvDetail() {
             mediaType="tv"
             tmdbId={t.id}
           />
+          {t.mediaInfo?.id &&
+            user &&
+            canRequestSeries(user.permissions) &&
+            watchable && (
+              <VideoPlaybackButton
+                mediaId={t.mediaInfo.id}
+                is4k={!!is4k}
+                mediaType="tv"
+                blockedGroupIndexes={[...sharedSeasons]}
+                title={t.name || ''}
+              />
+            )}
           {[1, 2, 3].includes(pub?.mediaServerType ?? 0) && (
             <>
               <MediaServerSavedItemButton

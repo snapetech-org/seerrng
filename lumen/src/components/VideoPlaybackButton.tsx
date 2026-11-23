@@ -14,10 +14,99 @@ interface PlaybackDevice {
   platform?: string;
 }
 
-interface PlaybackCatalog {
-  mediaId: number;
-  is4k: boolean;
-  rootItem?: { id: string; kind: string; available: boolean };
+type PlaybackKind = 'movie' | 'tv';
+
+function catalogGroups(
+  value: unknown,
+  mediaId: number,
+  is4k: boolean,
+  kind: PlaybackKind,
+  blocked: number[]
+) {
+  if (!value || typeof value !== 'object' || Array.isArray(value))
+    return undefined;
+  const catalog = value as Record<string, unknown>;
+  if (
+    catalog.mediaId !== mediaId ||
+    catalog.is4k !== is4k ||
+    !Array.isArray(catalog.groups) ||
+    catalog.groups.length > 500
+  )
+    return undefined;
+  if (kind === 'movie') {
+    const root = catalog.rootItem;
+    if (!root || typeof root !== 'object' || Array.isArray(root))
+      return { groups: [], allIds: [] };
+    const item = root as Record<string, unknown>;
+    if (
+      typeof item.id !== 'string' ||
+      !item.id ||
+      item.id.length > 128 ||
+      item.kind !== 'movie' ||
+      item.available !== true
+    )
+      return { groups: [], allIds: [] };
+    return { groups: [], allIds: [item.id] };
+  }
+  const seen = new Set<string>();
+  let itemCount = 0;
+  const groups: {
+    id: string;
+    title: string;
+    index: number;
+    items: { id: string; title: string }[];
+  }[] = [];
+  for (const raw of catalog.groups) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+    const group = raw as Record<string, unknown>;
+    if (
+      typeof group.id !== 'string' ||
+      !group.id ||
+      group.id.length > 128 ||
+      typeof group.title !== 'string' ||
+      group.title.length > 256 ||
+      !Number.isSafeInteger(group.index) ||
+      (group.index as number) < 0 ||
+      typeof group.available !== 'boolean' ||
+      !Array.isArray(group.items)
+    )
+      return undefined;
+    const items: { id: string; title: string }[] = [];
+    for (const rawItem of group.items) {
+      itemCount += 1;
+      if (itemCount > 1000 || !rawItem || typeof rawItem !== 'object')
+        return undefined;
+      const item = rawItem as Record<string, unknown>;
+      if (
+        typeof item.id !== 'string' ||
+        !item.id ||
+        item.id.length > 128 ||
+        typeof item.title !== 'string' ||
+        item.title.length > 512 ||
+        item.kind !== 'episode' ||
+        item.available !== true ||
+        seen.has(item.id)
+      )
+        return undefined;
+      seen.add(item.id);
+      items.push({ id: item.id, title: item.title });
+    }
+    if (
+      group.available &&
+      items.length > 0 &&
+      !blocked.includes(group.index as number)
+    )
+      groups.push({
+        id: group.id,
+        title: group.title,
+        index: group.index as number,
+        items,
+      });
+  }
+  return {
+    groups,
+    allIds: groups.flatMap((group) => group.items.map((item) => item.id)),
+  };
 }
 
 function deviceList(value: unknown): PlaybackDevice[] {
@@ -49,30 +138,18 @@ function deviceList(value: unknown): PlaybackDevice[] {
   });
 }
 
-function catalogItem(value: unknown, mediaId: number, is4k: boolean) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return '';
-  const catalog = value as Record<string, unknown>;
-  if (catalog.mediaId !== mediaId || catalog.is4k !== is4k) return '';
-  const item = catalog.rootItem;
-  if (!item || typeof item !== 'object' || Array.isArray(item)) return '';
-  const root = item as Record<string, unknown>;
-  return typeof root.id === 'string' &&
-    root.id.length > 0 &&
-    root.id.length <= 128 &&
-    root.kind === 'movie' &&
-    root.available === true
-    ? root.id
-    : '';
-}
-
 function PlaybackSheet({
   mediaId,
   is4k,
+  mediaType,
+  blockedGroupIndexes,
   title,
   close,
 }: {
   mediaId: number;
   is4k: boolean;
+  mediaType: PlaybackKind;
+  blockedGroupIndexes: number[];
   title: string;
   close: () => void;
 }) {
@@ -80,17 +157,36 @@ function PlaybackSheet({
   const dialog = useRef<HTMLDivElement>(null);
   const working = useRef(false);
   const [deviceId, setDeviceId] = useState('');
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
+    () => new Set()
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [playlist, setPlaylist] = useState('');
   const catalogPath = `/playback/media/${mediaId}${is4k ? '?is4k=true' : ''}`;
-  const catalog = useApi<PlaybackCatalog>(catalogPath);
+  const catalog = useApi<unknown>(catalogPath);
   const devices = useApi<unknown>('/playback/devices');
   useDialog(dialog, () => {
     if (!working.current) close();
   });
-  const itemId = catalogItem(catalog.data, mediaId, is4k);
+  const selectionCatalog = catalogGroups(
+    catalog.data,
+    mediaId,
+    is4k,
+    mediaType,
+    blockedGroupIndexes
+  );
+  const [selectedItems, setSelectedItems] = useState<Set<string>>();
+  const selectedIds = selectionCatalog
+    ? selectionCatalog.allIds.filter(
+        (id) => !selectedItems || selectedItems.has(id)
+      )
+    : [];
+  const mediaLabel =
+    mediaType === 'movie'
+      ? t('lumen.videoPlayback.title', 'Play Movie')
+      : t('lumen.videoPlayback.seriesTitle', 'Play Series');
   const activeDevice = (() => {
     try {
       return deviceList(devices.data).find((device) => device.id === deviceId);
@@ -100,7 +196,12 @@ function PlaybackSheet({
   })();
 
   async function start(onDevice: boolean) {
-    if (working.current || !itemId || (onDevice && !activeDevice)) return;
+    if (
+      working.current ||
+      selectedIds.length === 0 ||
+      (onDevice && !activeDevice)
+    )
+      return;
     working.current = true;
     setBusy(true);
     setError('');
@@ -113,7 +214,7 @@ function PlaybackSheet({
           method: 'POST',
           body: JSON.stringify({
             deviceId: activeDevice.id,
-            itemIds: [itemId],
+            itemIds: selectedIds,
             is4k,
           }),
         });
@@ -128,7 +229,7 @@ function PlaybackSheet({
           `/playback/media/${mediaId}/playlist`,
           {
             method: 'POST',
-            body: JSON.stringify({ itemIds: [itemId], is4k }),
+            body: JSON.stringify({ itemIds: selectedIds, is4k }),
           }
         );
         const safe = plexUrl({ mediaUrl: result.url });
@@ -174,12 +275,12 @@ function PlaybackSheet({
         ref={dialog}
         role="dialog"
         aria-modal="true"
-        aria-label={t('lumen.videoPlayback.title', 'Play Movie')}
+        aria-label={mediaLabel}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h2>{t('lumen.videoPlayback.title', 'Play Movie')}</h2>
+            <h2>{mediaLabel}</h2>
             <p className="note">{title}</p>
           </header>
           <p className="note">
@@ -188,8 +289,19 @@ function PlaybackSheet({
               : t('lumen.videoPlayback.qualityHd', 'Playback quality: HD')}
           </p>
           <ServiceNote
-            error={catalog.error}
-            what={t('lumen.videoPlayback.catalog', 'Playable Movie')}
+            error={
+              catalog.error ||
+              (catalog.data !== null && !selectionCatalog
+                ? t(
+                    'lumen.videoPlayback.invalidCatalog',
+                    'Playback items could not be verified.'
+                  )
+                : null)
+            }
+            what={t(
+              'lumen.videoPlayback.catalog',
+              mediaType === 'movie' ? 'Playable Movie' : 'Playable Episodes'
+            )}
             title={t(
               'lumen.videoPlayback.catalogFailure',
               'Couldn’t Load Playback Item'
@@ -197,13 +309,106 @@ function PlaybackSheet({
             retryLabel={t('lumen.videoPlayback.retry', 'Retry')}
             retry={catalog.reload}
           />
-          {catalog.data !== null && !itemId && (
-            <p className="note" role="status">
-              {t(
-                'lumen.videoPlayback.unavailable',
-                'No playable movie is available at this quality.'
+          {catalog.data !== null &&
+            selectionCatalog &&
+            selectedIds.length === 0 && (
+              <p className="note" role="status">
+                {mediaType === 'tv'
+                  ? selectionCatalog.allIds.length === 0
+                    ? t(
+                        'lumen.videoPlayback.episodesUnavailable',
+                        'No playable episodes are available at this quality.'
+                      )
+                    : t(
+                        'lumen.videoPlayback.selectEpisode',
+                        'Select at least one playable episode.'
+                      )
+                  : t(
+                      'lumen.videoPlayback.unavailable',
+                      'No playable movie is available at this quality.'
+                    )}
+              </p>
+            )}
+          {mediaType === 'tv' && selectionCatalog && (
+            <ul
+              className="setlist"
+              aria-label={t(
+                'lumen.videoPlayback.episodes',
+                'Playable Episodes'
               )}
-            </p>
+            >
+              {selectionCatalog.groups.map((group) => {
+                const checked = group.items.every(({ id }) =>
+                  selectedIds.includes(id)
+                );
+                return (
+                  <li className="set" key={group.id}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        aria-label={t(
+                          'lumen.videoPlayback.selectSeason',
+                          'Select all episodes from {season}',
+                          { season: group.title }
+                        )}
+                        checked={checked}
+                        disabled={busy}
+                        onChange={(event) => {
+                          const next = new Set(
+                            selectedItems ?? selectionCatalog.allIds
+                          );
+                          for (const item of group.items) {
+                            if (event.target.checked) next.add(item.id);
+                            else next.delete(item.id);
+                          }
+                          setSelectedItems(next);
+                        }}
+                      />{' '}
+                      {group.title} · {group.items.length}
+                    </label>
+                    <details
+                      open={expandedGroups.has(group.id)}
+                      onToggle={(event) => {
+                        const open = event.currentTarget.open;
+                        setExpandedGroups((current) => {
+                          if (current.has(group.id) === open) return current;
+                          const next = new Set(current);
+                          if (open) next.add(group.id);
+                          else next.delete(group.id);
+                          return next;
+                        });
+                      }}
+                    >
+                      <summary>
+                        {t('lumen.videoPlayback.episodes', 'Playable Episodes')}
+                      </summary>
+                      <ul>
+                        {group.items.map((item) => (
+                          <li key={item.id}>
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={selectedIds.includes(item.id)}
+                                disabled={busy}
+                                onChange={(event) => {
+                                  const next = new Set(
+                                    selectedItems ?? selectionCatalog.allIds
+                                  );
+                                  if (event.target.checked) next.add(item.id);
+                                  else next.delete(item.id);
+                                  setSelectedItems(next);
+                                }}
+                              />{' '}
+                              {item.title}
+                            </label>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  </li>
+                );
+              })}
+            </ul>
           )}
           <ServiceNote
             error={
@@ -256,7 +461,7 @@ function PlaybackSheet({
               </label>
               <button
                 className="btn btn-tonal btn-sm"
-                disabled={busy || !itemId || !activeDevice}
+                disabled={busy || selectedIds.length === 0 || !activeDevice}
                 onClick={() => void start(true)}
               >
                 {busy
@@ -294,7 +499,7 @@ function PlaybackSheet({
           <div className="toolbar">
             <button
               className="btn btn-tonal btn-sm"
-              disabled={busy || !itemId}
+              disabled={busy || selectedIds.length === 0}
               onClick={() => void start(false)}
             >
               {busy
@@ -334,10 +539,14 @@ function PlaybackSheet({
 export default function VideoPlaybackButton({
   mediaId,
   is4k,
+  mediaType = 'movie',
+  blockedGroupIndexes = [],
   title,
 }: {
   mediaId: number;
   is4k: boolean;
+  mediaType?: PlaybackKind;
+  blockedGroupIndexes?: number[];
   title: string;
 }) {
   const { t } = useLumenLocale();
@@ -353,6 +562,8 @@ export default function VideoPlaybackButton({
           key={`${mediaId}:${is4k ? '4k' : 'hd'}`}
           mediaId={mediaId}
           is4k={is4k}
+          mediaType={mediaType}
+          blockedGroupIndexes={blockedGroupIndexes}
           title={title}
           close={() => setOpen(false)}
         />

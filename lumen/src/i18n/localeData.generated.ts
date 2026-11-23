@@ -6981,6 +6981,15 @@ export const localeData = [
       'lumen.videoPlayback.openPlaylist': 'فتح على خادم الوسائط',
       'lumen.videoPlayback.close': 'إغلاق',
       'lumen.videoPlayback.invalidDevices': 'تعذر التحقق من أجهزة التشغيل.',
+      'lumen.videoPlayback.seriesTitle': 'تشغيل المسلسل',
+      'lumen.videoPlayback.catalogSeries': 'حلقات قابلة للتشغيل',
+      'lumen.videoPlayback.invalidCatalog': 'تعذر التحقق من عناصر التشغيل.',
+      'lumen.videoPlayback.episodes': 'الحلقات',
+      'lumen.videoPlayback.episodesUnavailable':
+        'لا تتوفر حلقات قابلة للتشغيل بهذه الجودة.',
+      'lumen.videoPlayback.selectEpisode':
+        'حدد حلقة واحدة قابلة للتشغيل على الأقل.',
+      'lumen.videoPlayback.selectSeason': 'حدد كل الحلقات من {season}',
     },
   },
   {
@@ -18280,6 +18289,16 @@ export const localeData = [
       'lumen.videoPlayback.close': 'Close',
       'lumen.videoPlayback.invalidDevices':
         'Playback devices could not be verified.',
+      'lumen.videoPlayback.seriesTitle': 'Play Series',
+      'lumen.videoPlayback.catalogSeries': 'Playable Episodes',
+      'lumen.videoPlayback.invalidCatalog':
+        'Playback items could not be verified.',
+      'lumen.videoPlayback.episodes': 'Episodes',
+      'lumen.videoPlayback.episodesUnavailable':
+        'No playable episodes are available at this quality.',
+      'lumen.videoPlayback.selectEpisode':
+        'Select at least one playable episode.',
+      'lumen.videoPlayback.selectSeason': 'Select all episodes from {season}',
     },
   },
   {
@@ -30745,6 +30764,17 @@ export const localeData = [
       'lumen.videoPlayback.close': 'Fermer',
       'lumen.videoPlayback.invalidDevices':
         'Impossible de vérifier les appareils de lecture.',
+      'lumen.videoPlayback.seriesTitle': 'Lire la série',
+      'lumen.videoPlayback.catalogSeries': 'Épisodes lisibles',
+      'lumen.videoPlayback.invalidCatalog':
+        'Impossible de vérifier les médias à lire.',
+      'lumen.videoPlayback.episodes': 'Épisodes',
+      'lumen.videoPlayback.episodesUnavailable':
+        'Aucun épisode lisible n’est disponible dans cette qualité.',
+      'lumen.videoPlayback.selectEpisode':
+        'Sélectionnez au moins un épisode lisible.',
+      'lumen.videoPlayback.selectSeason':
+        'Sélectionner tous les épisodes de {season}',
     },
   },
   {

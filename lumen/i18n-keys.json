@@ -5738,5 +5738,12 @@
   "lumen.videoPlayback.createPlaylist",
   "lumen.videoPlayback.openPlaylist",
   "lumen.videoPlayback.close",
-  "lumen.videoPlayback.invalidDevices"
+  "lumen.videoPlayback.invalidDevices",
+  "lumen.videoPlayback.seriesTitle",
+  "lumen.videoPlayback.catalogSeries",
+  "lumen.videoPlayback.invalidCatalog",
+  "lumen.videoPlayback.episodes",
+  "lumen.videoPlayback.episodesUnavailable",
+  "lumen.videoPlayback.selectEpisode",
+  "lumen.videoPlayback.selectSeason"
 ]

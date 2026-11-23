@@ -1,0 +1,1 @@
+Lumen TV details now let authorized viewers choose playable episodes or whole seasons and start playback on a linked device or create a playlist. Shared-only seasons are excluded, and SeerrNG continues to enforce playback permissions server-side.

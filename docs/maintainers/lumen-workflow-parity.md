@@ -8298,3 +8298,20 @@ and phone candidate captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/movie-playback/`.
 No state-matched native capture with playback devices is available, so visual
 comparison and live provider playback remain unverified.
+
+### Episode playback options on TV details (2026-11-23)
+
+Lumen TV details now expose the authenticated playback sheet for signed-in
+viewers with TV request permission when the series has playable media. It lists
+only available seasons the viewer may access, lets viewers select individual
+episodes or whole seasons, and submits only those item IDs to the existing
+device-play or playlist route. Shared-only seasons are omitted using the same
+viewer availability projection as the detail page; SeerrNG still enforces the
+viewer, linked account, provider, and playback permissions server-side.
+
+The four-project browser fixture verifies that a shared-only season is hidden,
+an individual episode can be excluded, and playback sends only the remaining
+episode ID. Desktop, iPhone, Android, and tablet cases pass. A state-matched
+native TV capture with a linked playback device and live provider playback
+remain unverified. Candidate UI evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-playback/`.
