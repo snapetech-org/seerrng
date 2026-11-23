@@ -8412,6 +8412,31 @@ book/music detail panels, TV facts and media-server panels, broader route-level
 visual acceptance, and live provider verification remain open in the overall
 Lumen parity initiative.
 
+### Persistent music Subject Tags disclosure (2026-11-23)
+
+Native album details combine release-group and artist tags, deduplicate them
+case-insensitively, sort by descending count, and expose up to 50 tags in a
+pinnable panel. Lumen now matches that behavior on album pages. Each tag opens
+Music discovery with its genre filter; the existing header preview still shows
+the four highest-ranked tags. The panel uses the shared authenticated
+`detail-disclosures/music` settings route and provides the existing localized
+empty state when no tags are available.
+
+The browser regression covers merging, case-insensitive deduplication, link
+targets, and pin/save/reload/unpin behavior. Desktop, iPhone, Android, and tablet
+projects pass; the phone project also checks for horizontal overflow.
+Production build passes. Baseline `d65572698` and candidate captures use the
+same album fixture at desktop 1440×900 and iPhone 390×844. Closed and expanded
+states were inspected at both sizes. The layout retains the shared disclosure
+surface without horizontal overflow. The fixture's unrelated Lidarr settings
+error appears in both captures and is excluded from this change. Evidence is
+retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/music-subject-tags-visual/`.
+
+Other music detail gaps, book collection and subject-tag pin behavior, TV facts
+and media-server panels, collection disclosures, broader route-level visual
+acceptance, and live provider verification remain open in the overall Lumen
+parity initiative.
+
 ### Persistent movie facts disclosure (2026-11-23)
 
 Native movie details expose a separately collapsible and pinnable Details

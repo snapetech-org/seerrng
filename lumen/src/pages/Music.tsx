@@ -968,12 +968,27 @@ export function AlbumDetail() {
     );
   if (!a) return <div className="detail-loading" aria-busy="true" />;
   const s = extraStat(progressMedia);
-  const tags = (
-    a.tags?.releaseGroup?.length ? a.tags.releaseGroup : a.tags?.artist || []
-  )
-    .sort((x, y) => y.count - x.count)
-    .slice(0, 4)
-    .map((t) => t.tag);
+  const musicTags = (() => {
+    const unique = new Map<string, { tag: string; count: number }>();
+    for (const item of [
+      ...(a.tags?.releaseGroup ?? []),
+      ...(a.tags?.artist ?? []),
+    ]) {
+      const tag = item.tag.trim();
+      if (!tag) continue;
+      const key = tag.toLocaleLowerCase();
+      const existing = unique.get(key);
+      if (!existing || item.count > existing.count)
+        unique.set(key, { tag, count: item.count });
+    }
+    return [...unique.values()]
+      .sort(
+        (left, right) =>
+          right.count - left.count || left.tag.localeCompare(right.tag)
+      )
+      .slice(0, 50);
+  })();
+  const tags = musicTags.slice(0, 4).map(({ tag }) => tag);
   const total = (a.tracks || []).reduce((n, t) => n + (t.length || 0), 0);
   const contributors = new Map<
     string,
@@ -1097,6 +1112,30 @@ export function AlbumDetail() {
               </div>
             </VideoDisclosure>
           )}
+          <VideoDisclosure
+            media="music"
+            panel="subjectTags"
+            label={t('lumen.detail.subjectTags', 'Subject Tags')}
+            testId="music-subject-tags"
+          >
+            {musicTags.length > 0 ? (
+              <div className="toolbar">
+                {musicTags.map(({ tag }) => (
+                  <Link
+                    className="chip"
+                    key={tag.toLocaleLowerCase()}
+                    to={`/music?genre=${encodeURIComponent(tag)}`}
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="note">
+                {t('lumen.detail.noSubjectTags', 'No subject tags.')}
+              </p>
+            )}
+          </VideoDisclosure>
           <div className="dacts pc">{main}</div>
           <div className="dcols">
             <div>

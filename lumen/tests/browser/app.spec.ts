@@ -1479,7 +1479,9 @@ test('music album Details and Artists remember scoped pins', async ({
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
   const settings = {
-    detailDisclosurePins: { music: { details: false, artists: false } },
+    detailDisclosurePins: {
+      music: { details: false, artists: false, subjectTags: false },
+    },
   };
   const writes: unknown[] = [];
   await page.route('**/api/v1/auth/me', (route) =>
@@ -1507,6 +1509,16 @@ test('music album Details and Artists remember scoped pins', async ({
         releaseDate: '2024-02-03',
         recordLabel: 'Fixture Records',
         type: 'Album',
+        tags: {
+          releaseGroup: [
+            { tag: 'Progressive rock', count: 12 },
+            { tag: 'Duplicate', count: 5 },
+          ],
+          artist: [
+            { tag: 'Ambient', count: 8 },
+            { tag: 'DUPLICATE', count: 7 },
+          ],
+        },
         'artist-credit': [{ name: 'Fixture Artist', artist: { id: artist } }],
         tracks: [],
       },
@@ -1573,10 +1585,64 @@ test('music album Details and Artists remember scoped pins', async ({
     'open',
     ''
   );
+  const tags = page.getByTestId('music-subject-tags');
+  await expect(tags).toHaveJSProperty('open', false);
+  const capture = process.env.LUMEN_MUSIC_SUBJECT_TAGS_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await tags.locator('summary').click();
+  await expect(
+    tags.getByRole('link', { name: 'Progressive rock', exact: true })
+  ).toHaveAttribute('href', '/music?genre=Progressive%20rock');
+  await expect(
+    tags.getByRole('link', { name: 'DUPLICATE', exact: true })
+  ).toHaveAttribute('href', '/music?genre=DUPLICATE');
+  await expect(
+    tags.getByRole('link', { name: 'Duplicate', exact: true })
+  ).toHaveCount(0);
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth
+    )
+  ).toBe(true);
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  const tagsPin = tags.getByRole('button', {
+    name: 'Keep Subject Tags Open',
+  });
+  await tagsPin.click();
+  await expect(tagsPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await expect(page.getByTestId('music-subject-tags')).toHaveAttribute(
+    'open',
+    ''
+  );
+  await tagsPin.click();
+  await expect(page.getByTestId('music-subject-tags')).not.toHaveAttribute(
+    'open',
+    ''
+  );
+  await page.reload();
+  await expect(page.getByTestId('music-subject-tags')).not.toHaveAttribute(
+    'open',
+    ''
+  );
   expect(writes).toEqual([
     { details: true },
     { artists: true },
     { artists: false },
+    { subjectTags: true },
+    { subjectTags: false },
   ]);
 });
 

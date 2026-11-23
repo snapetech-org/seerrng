@@ -107,6 +107,16 @@ async function fixture(
           id: '42',
           title: 'Fixture Album',
           artist: { id: 'fixture-artist', name: 'Fixture Artist' },
+          tags: {
+            releaseGroup: [
+              { tag: 'Progressive rock', count: 12 },
+              { tag: 'Duplicate', count: 5 },
+            ],
+            artist: [
+              { tag: 'Ambient', count: 8 },
+              { tag: 'DUPLICATE', count: 7 },
+            ],
+          },
           tracks: [
             {
               position: 1,
