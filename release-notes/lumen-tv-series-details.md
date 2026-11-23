@@ -1,0 +1,1 @@
+Lumen TV detail pages now show series facts in a collapsible Series Details panel. Its open preference saves independently for the signed-in user and survives reloads. The panel is available in English, French, and Arabic.

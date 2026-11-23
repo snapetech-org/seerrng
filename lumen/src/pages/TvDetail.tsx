@@ -41,6 +41,7 @@ import {
   productionCountryLinks,
   SubjectTagsDisclosure,
   TrailerButton,
+  VideoDisclosure,
 } from '../components/detail';
 import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel';
 import { ServiceNote } from '../components/extra';
@@ -1067,98 +1068,104 @@ export default function TvDetail() {
             )}
           </div>
           <aside>
-            <Facts
-              rows={[
-                [
-                  translate(
-                    'lumen.tv.fact.streamingProviders',
-                    'Streaming Providers'
-                  ),
-                  streamingProviders,
-                ],
-                [
-                  translate(
-                    'lumen.tv.fact.originalLanguage',
-                    'Original Language'
-                  ),
-                  originalLanguageLink(t.originalLanguage, '/series'),
-                ],
-                [
-                  translate(
-                    'lumen.tv.fact.productionCountries',
-                    'Production Countries'
-                  ),
-                  productionCountryLinks(t.productionCountries, '/series'),
-                ],
-                [
-                  translate('lumen.tv.fact.network', 'Network'),
-                  t.networks?.length
-                    ? t.networks.map(({ id, name }, index) => (
-                        <span key={`${id ?? name}:${index}`}>
-                          {index > 0 && ', '}
-                          {id &&
-                          Number.isSafeInteger(id) &&
-                          id > 0 &&
-                          id <= 1_000_000_000 ? (
-                            <Link to={`/series?network=${id}`}>{name}</Link>
-                          ) : (
-                            name
-                          )}
-                        </span>
-                      ))
-                    : null,
-                ],
-                [
-                  translate('lumen.tv.fact.status', 'Status'),
-                  t.status === 'Returning Series'
-                    ? translate('lumen.tv.fact.stillAiring', 'Still airing')
-                    : ((
-                        {
-                          Planned: translate(
-                            'lumen.browse.seriesStatusOption.1',
-                            'Planned'
-                          ),
-                          'In Production': translate(
-                            'lumen.browse.seriesStatusOption.2',
-                            'In Production'
-                          ),
-                          Ended: translate(
-                            'lumen.browse.seriesStatusOption.3',
-                            'Ended'
-                          ),
-                          Canceled: translate(
-                            'lumen.browse.seriesStatusOption.4',
-                            'Canceled'
-                          ),
-                          Pilot: translate(
-                            'lumen.browse.seriesStatusOption.5',
-                            'Pilot'
-                          ),
-                        } as Record<string, string>
-                      )[t.status ?? ''] ?? t.status),
-                ],
-                [
-                  translate('lumen.tv.fact.episodeLength', 'Episode length'),
-                  fmtRun(t.episodeRunTime?.[0]),
-                ],
-                [
-                  translate('lumen.tv.fact.createdBy', 'Created by'),
-                  t.createdBy?.map((c) => c.name).join(', '),
-                ],
-                [
-                  translate('lumen.tv.fact.lastAired', 'Last aired'),
-                  t.lastEpisodeToAir
-                    ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate)}`
-                    : '',
-                ],
-                [
-                  translate('lumen.tv.fact.nextEpisode', 'Next episode'),
-                  t.nextEpisodeToAir
-                    ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate)}`
-                    : '',
-                ],
-              ]}
-            />
+            <VideoDisclosure
+              media="tv"
+              panel="details"
+              label={translate('lumen.detail.tvDetails', 'Series Details')}
+            >
+              <Facts
+                rows={[
+                  [
+                    translate(
+                      'lumen.tv.fact.streamingProviders',
+                      'Streaming Providers'
+                    ),
+                    streamingProviders,
+                  ],
+                  [
+                    translate(
+                      'lumen.tv.fact.originalLanguage',
+                      'Original Language'
+                    ),
+                    originalLanguageLink(t.originalLanguage, '/series'),
+                  ],
+                  [
+                    translate(
+                      'lumen.tv.fact.productionCountries',
+                      'Production Countries'
+                    ),
+                    productionCountryLinks(t.productionCountries, '/series'),
+                  ],
+                  [
+                    translate('lumen.tv.fact.network', 'Network'),
+                    t.networks?.length
+                      ? t.networks.map(({ id, name }, index) => (
+                          <span key={`${id ?? name}:${index}`}>
+                            {index > 0 && ', '}
+                            {id &&
+                            Number.isSafeInteger(id) &&
+                            id > 0 &&
+                            id <= 1_000_000_000 ? (
+                              <Link to={`/series?network=${id}`}>{name}</Link>
+                            ) : (
+                              name
+                            )}
+                          </span>
+                        ))
+                      : null,
+                  ],
+                  [
+                    translate('lumen.tv.fact.status', 'Status'),
+                    t.status === 'Returning Series'
+                      ? translate('lumen.tv.fact.stillAiring', 'Still airing')
+                      : ((
+                          {
+                            Planned: translate(
+                              'lumen.browse.seriesStatusOption.1',
+                              'Planned'
+                            ),
+                            'In Production': translate(
+                              'lumen.browse.seriesStatusOption.2',
+                              'In Production'
+                            ),
+                            Ended: translate(
+                              'lumen.browse.seriesStatusOption.3',
+                              'Ended'
+                            ),
+                            Canceled: translate(
+                              'lumen.browse.seriesStatusOption.4',
+                              'Canceled'
+                            ),
+                            Pilot: translate(
+                              'lumen.browse.seriesStatusOption.5',
+                              'Pilot'
+                            ),
+                          } as Record<string, string>
+                        )[t.status ?? ''] ?? t.status),
+                  ],
+                  [
+                    translate('lumen.tv.fact.episodeLength', 'Episode length'),
+                    fmtRun(t.episodeRunTime?.[0]),
+                  ],
+                  [
+                    translate('lumen.tv.fact.createdBy', 'Created by'),
+                    t.createdBy?.map((c) => c.name).join(', '),
+                  ],
+                  [
+                    translate('lumen.tv.fact.lastAired', 'Last aired'),
+                    t.lastEpisodeToAir
+                      ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate)}`
+                      : '',
+                  ],
+                  [
+                    translate('lumen.tv.fact.nextEpisode', 'Next episode'),
+                    t.nextEpisodeToAir
+                      ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate)}`
+                      : '',
+                  ],
+                ]}
+              />
+            </VideoDisclosure>
           </aside>
         </div>
         {t.originalLanguage === 'ja' &&

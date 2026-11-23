@@ -243,6 +243,7 @@ export type DetailDisclosurePins = Partial<
     | 'collection'
     | 'overview'
     | 'details'
+    | 'mediaServer'
     | 'artists'
     | 'taskFilters'
     | 'filters'
@@ -259,6 +260,7 @@ export type VideoDetailPins = Pick<
   | 'collection'
   | 'overview'
   | 'details'
+  | 'mediaServer'
   | 'artists'
 >;
 

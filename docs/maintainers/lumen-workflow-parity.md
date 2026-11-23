@@ -8554,3 +8554,20 @@ available. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/book-detail-visual/`.
 The fixture verifies the application contract but does not establish live
 provider availability or independent translation review.
+
+### TV series facts disclosure
+
+The native TV detail layout exposes its metadata facts as a controllable Details
+panel. Lumen previously rendered those facts continuously and offered no saved
+open/closed state. The TV facts now sit in a persistent Series Details panel,
+using the existing TV-scoped preference endpoint and shared disclosure control.
+The label and preference feedback are localized in English, French, and Arabic;
+TV overview, cast, crew, and subject-tag disclosures retain their separate
+preferences.
+
+The existing browser workflow now verifies the collapsed default, facts on
+open, scoped save and reload, and the unchanged overview/credit preferences. It
+passes on desktop, iPhone, Android, and tablet. Matched baseline/candidate
+captures were inspected at 1440px and 390px, including open state; the fixed
+request action and mobile navigation remain clear. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-detail-visual/`.

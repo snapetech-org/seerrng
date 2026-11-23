@@ -1222,7 +1222,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     detailDisclosureCastPinned: true,
     detailDisclosurePins: {
       movie: { cast: false, details: false },
-      tv: { cast: false },
+      tv: { cast: false, details: false },
       book: { details: false },
     },
   };
@@ -1245,6 +1245,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
         name: 'Fixture Series',
         mediaType: 'tv',
         seasons: [],
+        episodeRunTime: [42],
         overview: 'A persistent series overview.',
         credits: { cast, crew },
       },
@@ -1352,6 +1353,16 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
   ).toBeVisible();
 
   await page.goto('/tv/202');
+  const seriesCapture = process.env.LUMEN_TV_DETAILS_CAPTURE;
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Series' })
+  ).toBeVisible();
+  if (seriesCapture) {
+    await page.screenshot({
+      path: `${seriesCapture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   await expect(page.getByText('Starring', { exact: true })).toBeVisible();
   await expect(actor).toBeHidden();
   const overview = page.locator('details.adv').filter({ hasText: 'Overview' });
@@ -1369,6 +1380,30 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     .filter({ hasText: 'Overview' });
   await expect(restoredOverview).toHaveAttribute('open', '');
   await expect(restoredOverview).toContainText('A persistent series overview.');
+  const seriesDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Series Details' });
+  await expect(seriesDetails).toBeVisible();
+  await expect(seriesDetails).not.toHaveAttribute('open', '');
+  await seriesDetails.locator('summary').click();
+  await expect(seriesDetails).toContainText('Episode length');
+  if (seriesCapture) {
+    await page.screenshot({
+      path: `${seriesCapture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  const seriesDetailsPin = seriesDetails.getByRole('button', {
+    name: 'Keep Series Details Open',
+  });
+  await seriesDetailsPin.click();
+  await expect(seriesDetailsPin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  const restoredSeriesDetails = page
+    .locator('details.adv')
+    .filter({ hasText: 'Series Details' });
+  await expect(restoredSeriesDetails).toHaveAttribute('open', '');
+  await expect(restoredSeriesDetails).toContainText('Episode length');
 
   await page.goto('/book/OL123W');
   const bookDetails = page
@@ -1411,6 +1446,7 @@ test('video credits remember scoped pins and leave failed saves retryable', asyn
     { cast: true },
     { details: true },
     { overview: true },
+    { details: true },
     { details: true },
   ]);
 });
