@@ -7,7 +7,10 @@ for (const name of ['Audiobookshelf', 'Kavita']) {
     const provider = name.toLowerCase();
     const path = `/api/v1/settings/${provider}`;
     const audio = provider === 'audiobookshelf';
-    let saved: Record<string, unknown> | undefined;
+    let saved: Record<string, unknown> | null = null;
+    let staleReadback: Record<string, unknown> | null | undefined;
+    let reject = true;
+    const writes: Record<string, unknown>[] = [];
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -29,10 +32,27 @@ for (const name of ['Audiobookshelf', 'Kavita']) {
           },
         });
       if (url !== path) return route.fulfill({ json: {} });
-      if (request.method() === 'GET')
-        return route.fulfill({ body: 'null', contentType: 'application/json' });
-      saved = request.postDataJSON();
-      return route.fulfill({ json: { ...saved, apiKey: '[REDACTED]' } });
+      if (request.method() === 'GET') {
+        if (staleReadback !== undefined) {
+          const stale = staleReadback;
+          staleReadback = undefined;
+          return route.fulfill({ json: stale });
+        }
+        return route.fulfill({ json: saved });
+      }
+      const body = request.postDataJSON() as Record<string, unknown>;
+      writes.push(body);
+      if (reject) {
+        reject = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: `${name} settings unavailable.` },
+        });
+      }
+      const previous = saved;
+      saved = { ...body, apiKey: '[REDACTED]' };
+      if (writes.length === 2) staleReadback = previous;
+      return route.fulfill({ json: saved });
     });
     await page.goto('/me');
     await page.getByRole('link', { name: `Open ${name} Settings` }).click();
@@ -50,14 +70,49 @@ for (const name of ['Audiobookshelf', 'Kavita']) {
       path: info.outputPath(`${provider}.png`),
       fullPage: true,
     });
-    await page.getByRole('button', { name: 'Save Changes' }).click();
+    const save = page.getByRole('button', { name: 'Save Changes' });
+    await save.click();
+    await expect(page.getByRole('alert')).toHaveText(
+      `${name} settings unavailable.`
+    );
+    await expect(page.getByLabel('Hostname')).toHaveValue('reader.internal');
+    await page.screenshot({
+      path: info.outputPath(`${provider}-write-failure.png`),
+      fullPage: true,
+    });
+    await save.click();
+    await expect(page.getByRole('alert')).toContainText(
+      'Could not complete the'
+    );
+    await expect(page.getByLabel('Hostname')).toHaveValue('reader.internal');
+    await page.screenshot({
+      path: info.outputPath(`${provider}-readback-failure.png`),
+      fullPage: true,
+    });
+    await save.scrollIntoViewIfNeeded();
+    if (page.viewportSize()!.width < 1040) {
+      const saveBox = await save.boundingBox();
+      const tabsBox = await page.locator('.tabbar').boundingBox();
+      expect(saveBox).not.toBeNull();
+      expect(tabsBox).not.toBeNull();
+      expect(saveBox!.y + saveBox!.height + 8).toBeLessThan(tabsBox!.y);
+      await page.screenshot({
+        path: info.outputPath(`${provider}-readback-failure-viewport.png`),
+      });
+    }
+    await save.click();
     await expect(page.getByText(`${name} settings saved.`)).toBeVisible();
-    expect(saved).toMatchObject({
+    await page.screenshot({
+      path: info.outputPath(`${provider}-readback-recovered.png`),
+      fullPage: true,
+    });
+    expect(writes).toHaveLength(3);
+    expect(writes[2]).toMatchObject({
       hostname: 'reader.internal',
       port: audio ? 13378 : 5000,
     });
     if (audio)
-      expect(saved).toMatchObject({
+      expect(writes[2]).toMatchObject({
         libraryId: 'books',
         libraryName: 'Audiobooks',
         syncEnabled: true,

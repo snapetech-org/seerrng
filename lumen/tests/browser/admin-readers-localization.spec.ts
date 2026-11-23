@@ -98,8 +98,9 @@ test('Audiobookshelf settings localize while preserving connection workflows', a
     if (path.endsWith('/settings/audiobookshelf')) {
       if (request.method() === 'GET') return route.fulfill({ json: settings });
       if (request.method() === 'PUT') {
-        writes.push(request.postDataJSON() as Record<string, unknown>);
-        settings = request.postDataJSON() as Record<string, unknown>;
+        const body = request.postDataJSON() as Record<string, unknown>;
+        writes.push(body);
+        settings = { ...body, apiKey: '[REDACTED]' };
         return route.fulfill({ json: settings });
       }
       if (request.method() === 'DELETE') {
@@ -236,7 +237,7 @@ test('Kavita settings localize and preserve their connection lifecycle', async (
       }
       if (request.method() === 'PUT') {
         write = request.postDataJSON() as Record<string, unknown>;
-        settings = write;
+        settings = { ...write, apiKey: '[REDACTED]' };
         return route.fulfill({ json: settings });
       }
       if (request.method() === 'DELETE') {

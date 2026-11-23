@@ -118,9 +118,49 @@ function Connection({
           update({ libraryId: undefined, libraryName: undefined });
       } else {
         let next: Settings | null = null;
-        if (action === 'save')
-          next = await api<Settings>(endpoint, { method: 'PUT', body });
-        else await api(endpoint, { method: 'DELETE' }, 'empty');
+        if (action === 'save') {
+          const written = await api<Settings>(endpoint, {
+            method: 'PUT',
+            body,
+          });
+          const readback = await api<Settings | null>(endpoint);
+          if (
+            !readback ||
+            JSON.stringify(written) !== JSON.stringify(readback) ||
+            Object.entries(JSON.parse(body) as Record<string, unknown>).some(
+              ([key, value]) =>
+                key === 'apiKey'
+                  ? written.apiKey !== '[REDACTED]'
+                  : written[key as keyof Settings] !==
+                    (key === 'hostname' && typeof value === 'string'
+                      ? value.trim()
+                      : value)
+            )
+          ) {
+            setError(
+              t(
+                'lumen.adminReaders.actionFailed',
+                'Could not complete the {service} action.',
+                { service: name }
+              )
+            );
+            return;
+          }
+          next = readback;
+        } else {
+          await api(endpoint, { method: 'DELETE' }, 'empty');
+          const readback = await api<Settings | null>(endpoint);
+          if (readback !== null) {
+            setError(
+              t(
+                'lumen.adminReaders.actionFailed',
+                'Could not complete the {service} action.',
+                { service: name }
+              )
+            );
+            return;
+          }
+        }
         if (generation !== sessionGeneration()) return;
         setSaved(next);
         setDraft({ ...(next ?? empty), apiKey: '' });

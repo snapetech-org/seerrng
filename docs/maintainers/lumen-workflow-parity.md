@@ -235,6 +235,25 @@ The inspected desktop request-policy and phone Discovery states retain the
 existing controls and navigation geometry. Fixtures do not verify a live
 SeerrNG settings store or secret persistence.
 
+### Audiobookshelf and Kavita connection persisted readback
+
+Lumen's Audiobookshelf and Kavita connection forms now confirm a successful
+save through fresh redacted settings readback before clearing the draft. The
+submitted public fields must match the write response, the readback must match
+that response, and the API key must remain redacted. Disconnect also confirms
+the persisted connection is `null` before reporting success. Stale reads retain
+the edited fields and allow a retry.
+
+Eight connection cases pass across desktop, iPhone, Android, and tablet,
+covering rejected writes, stale readback, retry, and secret redaction. Eight
+localization/lifecycle cases pass per locale in English, French, and Arabic
+across the same viewports. The mobile save action was inspected after scrolling
+in the actual viewport and remains clear of the fixed tab bar; full-page and
+scrolled viewport captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-settings-readback-20261122/`.
+Fixtures do not verify live Audiobookshelf or Kavita settings storage or
+provider connections.
+
 ### Per-user external request lists
 
 Lumen Account Settings now exposes SeerrNG's authenticated external request list
