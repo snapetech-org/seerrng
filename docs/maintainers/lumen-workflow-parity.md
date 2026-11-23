@@ -842,14 +842,22 @@ captures from these increments are retained in
 
 ### Navigation entry-point verification
 
-The shared shell navigation check was rerun on desktop, iPhone, Android, and
-tablet. Eleven browser cases passed and five were skipped by the suite's
-explicit viewport guards. The passing cases verified localized navigation
-landmarks and request counts, category and permission filtering, compact
-320 × 568 phone-menu scrolling, and mobile-tab behavior on long forms and the
-ordinary-user library. These fixture-backed checks verify the tested Lumen
-entry points only; matched native screenshots, the complete menu inventory,
-and live account authorization remain open.
+The focused navigation matrix was rerun on desktop, iPhone, Android, and tablet
+across `mobile-navigation`, `discover-menu-destinations`,
+`optional-catalog-navigation`, `game-finder-navigation`,
+`user-management-navigation`, and `admin-navigation`: 140 cases passed and 8
+were skipped by explicit viewport guards. Coverage includes localized
+navigation landmarks and request counts, category and permission filtering,
+compact 320 × 568 phone-menu scrolling, optional catalog and Game Finder links,
+delegated user management, administrator destinations, and mobile-tab behavior
+on long forms and the ordinary-user library.
+
+This fixture run used the installed Node 24.22.1 runtime, below the repository's
+declared Node 24.22.2 minimum, so it is provisional until rerun on the declared
+runtime. The checks cover the listed entry points; they do not establish the
+complete contextual-route inventory, matched native screenshots for every menu
+state, headed verification in the shipped image, or live account
+authorization. Those parity checks remain open.
 
 The account profile now localizes save rejection, permission denial, mismatched
 server readback, and failed confirmation, plus Plex-managed email, profile and
