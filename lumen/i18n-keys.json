@@ -3060,6 +3060,7 @@
   "lumen.login.oidcStartFailure",
   "lumen.login.openFullSeerr",
   "lumen.login.password",
+  "lumen.login.plexLoading",
   "lumen.login.quickGettingCode",
   "lumen.login.quickInstructions",
   "lumen.login.quickWaiting",

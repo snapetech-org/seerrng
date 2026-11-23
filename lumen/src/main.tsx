@@ -48,6 +48,7 @@ import { AlbumDetail, Artist, Music } from './pages/Music';
 import Patches, { PatchDetail } from './pages/Patches';
 import PersonDetail from './pages/People';
 import PlaylistImport from './pages/PlaylistImport';
+import PlexLoading from './pages/PlexLoading';
 import ProviderDiscovery from './pages/ProviderDiscovery';
 import { RelatedVideo } from './pages/RelatedVideo';
 import Requests from './pages/Requests';
@@ -382,6 +383,7 @@ function App() {
   const location = useLocation();
   const settings = usePublicSettings();
   const setup = useMatch('/setup');
+  const plexLoading = useMatch('/login/plex/loading');
   const resetLink = useMatch('/resetpassword/:guid');
   const resetRequest = useMatch('/resetpassword');
   useEffect(() => {
@@ -393,6 +395,13 @@ function App() {
         <Suspense fallback={<div className="boot" aria-busy="true" />}>
           <Setup />
         </Suspense>
+      </LumenLocaleProvider>
+    );
+  }
+  if (plexLoading) {
+    return (
+      <LumenLocaleProvider userId={user?.id}>
+        <PlexLoading />
       </LumenLocaleProvider>
     );
   }

@@ -4073,6 +4073,7 @@ export const localeData = [
         'تعذر بدء تسجيل الدخول عبر OpenID Connect. تحقق من إعداد المزوّد وعنوان SeerrNG.',
       'lumen.login.openFullSeerr': 'فتح SeerrNG الكامل',
       'lumen.login.password': 'كلمة المرور',
+      'lumen.login.plexLoading': 'جارٍ إكمال تسجيل الدخول إلى Plex…',
       'lumen.login.quickGettingCode': 'جارٍ الحصول على رمز…',
       'lumen.login.quickInstructions':
         'في {serverName}، افتح الإعدادات ← Quick Connect وأدخل هذا الرمز.',
@@ -15060,6 +15061,7 @@ export const localeData = [
         'Could not start OpenID Connect sign-in. Check the provider configuration and SeerrNG application URL.',
       'lumen.login.openFullSeerr': 'Open Full SeerrNG',
       'lumen.login.password': 'Password',
+      'lumen.login.plexLoading': 'Completing Plex sign-in…',
       'lumen.login.quickGettingCode': 'Getting a Code…',
       'lumen.login.quickInstructions':
         'On {serverName}, open Settings → Quick Connect and enter this code.',
@@ -26877,6 +26879,7 @@ export const localeData = [
         'Impossible de démarrer la connexion OpenID Connect. Vérifiez la configuration du fournisseur et l’URL de SeerrNG.',
       'lumen.login.openFullSeerr': 'Ouvrir SeerrNG complet',
       'lumen.login.password': 'Mot de passe',
+      'lumen.login.plexLoading': 'Connexion à Plex en cours…',
       'lumen.login.quickGettingCode': 'Obtention d’un code…',
       'lumen.login.quickInstructions':
         'Dans {serverName}, ouvrez Paramètres → Quick Connect et saisissez ce code.',
