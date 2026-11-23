@@ -22,6 +22,7 @@ interface SeasonEpisodes {
 // batches small so one slow upstream season cannot hold a long series behind
 // a single proxy request; failed seasons are retried independently.
 const SEASON_BATCH_SIZE = 5;
+const SEASON_BATCH_ATTEMPTS = 2;
 
 export default function TvEpisodeRequestSheet({
   tvId,
@@ -93,35 +94,45 @@ export default function TvEpisodeRequestSheet({
       );
       const failed: number[] = [];
       for (let index = 0; index < missing.length; index += SEASON_BATCH_SIZE) {
-        const batch = missing.slice(index, index + SEASON_BATCH_SIZE);
-        const query = new URLSearchParams({
-          seasonNumbers: batch.join(','),
-        });
-        try {
-          const values = await api<SeasonEpisodes[]>(
-            `/tv/${tvId}/seasons?${query}`
-          );
-          const returned = new Map(
-            (Array.isArray(values) ? values : []).map((season) => [
-              season.seasonNumber,
-              season.episodes,
-            ])
-          );
-          for (const number of batch) {
-            const episodes = returned.get(number);
-            if (!Array.isArray(episodes)) {
-              failed.push(number);
-              continue;
-            }
-            episodesRef.current = new Map(episodesRef.current).set(
-              number,
-              episodes
+        let pending = missing.slice(index, index + SEASON_BATCH_SIZE);
+        for (
+          let attempt = 0;
+          attempt < SEASON_BATCH_ATTEMPTS && pending.length > 0;
+          attempt += 1
+        ) {
+          try {
+            const query = new URLSearchParams({
+              seasonNumbers: pending.join(','),
+            });
+            const values = await api<SeasonEpisodes[]>(
+              `/tv/${tvId}/seasons?${query}`
             );
+            const returned = new Map(
+              (Array.isArray(values) ? values : []).map((season) => [
+                season.seasonNumber,
+                season.episodes,
+              ])
+            );
+            for (const number of pending) {
+              const episodes = returned.get(number);
+              if (!Array.isArray(episodes)) continue;
+              episodesRef.current = new Map(episodesRef.current).set(
+                number,
+                episodes
+              );
+            }
+            pending = pending.filter(
+              (number) => !episodesRef.current.has(number)
+            );
+            if (active) setEpisodesBySeason(new Map(episodesRef.current));
+          } catch {
+            // Retry this batch once, then continue with later seasons.
           }
-          if (active) setEpisodesBySeason(new Map(episodesRef.current));
-        } catch {
-          failed.push(...batch);
+          if (pending.length > 0 && attempt === 0) {
+            await new Promise((resolve) => setTimeout(resolve, 250));
+          }
         }
+        failed.push(...pending);
       }
       if (active) {
         setLoadError(failed.length > 0);

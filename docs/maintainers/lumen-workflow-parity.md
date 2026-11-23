@@ -8732,3 +8732,20 @@ form fully above the fixed navigation. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/open-issue-discussion-visual/`.
 The fixtures verify client permission and API flows; live account behavior
 remains unverified.
+
+### Large TV request transient season recovery (2026-11-23)
+
+Lumen now retries a failed season metadata batch once after a short delay, then
+continues loading later batches. A retry containing only seasons that remain
+missing avoids re-fetching successful season details; completed batches remain
+available for selection, and an explicit Retry still preserves the request's
+selection. This brings Lumen's recovery behavior in line with the native
+request tree and reduces user-visible errors caused by a transient provider or
+proxy failure.
+
+The browser regression passes for desktop, iPhone, Android, and tablet. It
+injects a one-time failure into the first of three batches and verifies the
+automatic recovery and selectable episode data. A persistent failure remains
+visible with the existing manual retry path. The fixture validates client
+behavior and does not establish the reporter's live provider latency or the
+cause of the original screenshot.
