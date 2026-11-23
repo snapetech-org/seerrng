@@ -2,6 +2,31 @@ import { expect, test } from '@playwright/test';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
+const introByLocale = {
+  en: 'Search releases in your Prowlarr indexers across every SeerrNG media category.',
+  fr: 'Recherchez des sorties dans vos indexeurs Prowlarr, dans toutes les catégories de médias de SeerrNG.',
+  ar: 'ابحث عن إصدارات في مواقع الفهرسة لديك على Prowlarr ضمن جميع فئات الوسائط في SeerrNG.',
+} as const;
+const categoryEmptyByLocale = {
+  en: 'No enabled media categories are available to this account.',
+  fr: 'Aucune catégorie de média activée n’est disponible pour ce compte.',
+  ar: 'لا تتوفر لهذا الحساب فئات وسائط مفعّلة.',
+} as const;
+const indexerMenuByLocale = {
+  en: 'Indexer Search',
+  fr: 'Recherche d’indexeurs',
+  ar: 'البحث عن المفهرسات',
+} as const;
+const openIndexerByLocale = {
+  en: 'Open Indexer Search',
+  fr: 'Ouvrir Recherche d’indexeurs',
+  ar: 'فتح البحث عن المفهرسات',
+} as const;
+const savedLocale = ['en', 'fr', 'ar'].includes(
+  process.env.LUMEN_INDEXER_LOCALE ?? ''
+)
+  ? (process.env.LUMEN_INDEXER_LOCALE as keyof typeof introByLocale)
+  : 'en';
 
 test('Indexer Search is reachable from the permission-aware mobile You menu', async ({
   page,
@@ -15,11 +40,13 @@ test('Indexer Search is reachable from the permission-aware mobile You menu', as
       json:
         path === '/auth/me'
           ? { id: 1, displayName: 'Operator', permissions: 16 }
-          : path === '/settings/public'
-            ? { mediaServerType: 1 }
-            : path === '/indexer-search/configuration'
-              ? { configured: true, categories: [] }
-              : {},
+          : path === '/user/1/settings/main'
+            ? { locale: savedLocale }
+            : path === '/settings/public'
+              ? { mediaServerType: 1 }
+              : path === '/indexer-search/configuration'
+                ? { configured: true, categories: [] }
+                : {},
     });
   });
 
@@ -32,21 +59,35 @@ test('Indexer Search is reachable from the permission-aware mobile You menu', as
       .click();
   }
   const link = desktop
-    ? page
-        .getByRole('navigation', { name: 'Main navigation', exact: true })
-        .getByRole('link', { name: 'Indexer Search', exact: true })
-    : page.getByRole('link', { name: 'Open Indexer Search', exact: true });
+    ? page.getByRole('link', {
+        name: indexerMenuByLocale[savedLocale],
+        exact: true,
+      })
+    : page.getByRole('link', {
+        name: openIndexerByLocale[savedLocale],
+        exact: true,
+      });
   await expect(link).toBeVisible();
   await link.click();
   await expect(page).toHaveURL(/\/indexer-search$/);
   await expect(
-    page.getByText(
-      'No enabled media categories are available to this account.',
-      {
-        exact: true,
-      }
-    )
+    page.getByText(categoryEmptyByLocale[savedLocale], { exact: true })
   ).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_MODE !== 'baseline')
+    await expect(
+      page.getByText(introByLocale[savedLocale], { exact: true })
+    ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/indexer-no-categories-${process.env.LUMEN_CAPTURE_MODE === 'baseline' ? 'baseline' : 'candidate'}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
 });
 
 test('Indexer Search is absent from the You menu without permission', async ({
@@ -106,6 +147,14 @@ test('unconfigured Prowlarr state exposes settings only to administrators', asyn
   await expect(
     page.getByText(connectionLabels[locale], { exact: true })
   ).toBeVisible();
+  await expect(
+    page.getByText(introByLocale[locale], { exact: true })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
   const settingsLink = page.getByRole('link', {
     name: configureLabels[locale],
     exact: true,

@@ -286,52 +286,60 @@ function SearchForm({
     setHandoffs((current) => ({ ...current, [grabId]: state }));
   }
 
+  const intro = t(
+    'components.IndexerSearch.intro',
+    'Search releases in your Prowlarr indexers across every SeerrNG media category.'
+  );
+
   if (!configuration.configured)
     return (
-      <div className="note">
-        <p>
-          {t(
-            'components.IndexerSearch.noConnection',
-            'Prowlarr is not connected.'
-          )}
-        </p>
-        <p>
-          {t(
-            'components.IndexerSearch.noConnectionHelp',
-            'Ask an administrator to connect Prowlarr under Settings > Services.'
-          )}
-        </p>
-        {canConfigure && (
+      <>
+        <p className="note">{intro}</p>
+        <div className="note">
           <p>
-            <Link className="btn btn-tonal btn-sm" to="/admin/prowlarr">
-              {t(
-                'components.IndexerSearch.configure',
-                'Open Prowlarr settings'
-              )}
-            </Link>
+            {t(
+              'components.IndexerSearch.noConnection',
+              'Prowlarr is not connected.'
+            )}
           </p>
-        )}
-      </div>
+          <p>
+            {t(
+              'components.IndexerSearch.noConnectionHelp',
+              'Ask an administrator to connect Prowlarr under Settings > Services.'
+            )}
+          </p>
+          {canConfigure && (
+            <p>
+              <Link className="btn btn-tonal btn-sm" to="/admin/prowlarr">
+                {t(
+                  'components.IndexerSearch.configure',
+                  'Open Prowlarr settings'
+                )}
+              </Link>
+            </p>
+          )}
+        </div>
+      </>
     );
   if (!selected)
     return (
-      <div className="note">
-        <p>
-          {t(
-            'lumen.indexerSearch.noCategories',
-            'No enabled media categories are available to this account.'
-          )}
-        </p>
-      </div>
+      <>
+        <p className="note">{intro}</p>
+        <div className="note">
+          <p>
+            {t(
+              'lumen.indexerSearch.noCategories',
+              'No enabled media categories are available to this account.'
+            )}
+          </p>
+        </div>
+      </>
     );
 
   return (
     <>
       <p className="note">
-        {t(
-          'components.IndexerSearch.intro',
-          'Search releases in your Prowlarr indexers across every SeerrNG media category.'
-        )}{' '}
+        {intro}{' '}
         {t(
           'components.IndexerSearch.manualMode',
           'Search results are separate from SeerrNG requests. You can send a result to a download client configured in Prowlarr.'
