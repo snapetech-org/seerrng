@@ -7890,3 +7890,21 @@ do not change routes, settings payloads, or library behavior. Live metadata
 provider calls and independent language review remain unverified. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/`.
+
+### Standalone image packaging and route ownership (2026-11-23)
+
+The full Lumen proxy suite exposed a release-path defect: the standalone image
+was built with `lumen/` as its context even though the app imports shared
+locale, asset, and utility sources from the SeerrNG repository. The Dockerfile,
+release workflow, Compose build examples, local build instructions, and
+production-image proxy test now use the repository root and copy only the
+required shared sources. The production image builds, runs unprivileged, and
+passes its Nginx proxy and settings-storage checks.
+
+The same suite found that a generic Nginx redirect sent `/discover`, `/users`,
+`/profile`, and `/settings` paths to the companion even where Lumen owns those
+routes. Removing that catchall leaves explicit legacy bookmark mappings in
+place and allows implemented Lumen routes to reach its SPA. All 58 Lumen unit,
+runtime, and production-image proxy tests pass, including the route ownership
+assertion. This does not complete the broader route-by-route native/Lumen
+comparison or establish live companion deployments.
