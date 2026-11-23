@@ -33,7 +33,7 @@ test('Indexer Search is reachable from the permission-aware mobile You menu', as
   }
   const link = desktop
     ? page
-        .getByRole('navigation', { name: 'Main', exact: true })
+        .getByRole('navigation', { name: 'Main navigation', exact: true })
         .getByRole('link', { name: 'Indexer Search', exact: true })
     : page.getByRole('link', { name: 'Open Indexer Search', exact: true });
   await expect(link).toBeVisible();
@@ -369,6 +369,96 @@ test('changing indexer category clears stale results and is disabled while searc
   expect(searches).toEqual([
     { category: 'movie', query: 'Dune', offset: 0 },
     { category: 'tv', query: 'Dune', offset: 0 },
+  ]);
+});
+
+test('updated search links replace prefill and discard an in-flight search', async ({
+  page,
+}) => {
+  const searches: { category: string; query: string }[] = [];
+  let finishFirstSearch!: () => void;
+  const firstSearchGate = new Promise<void>((resolve) => {
+    finishFirstSearch = resolve;
+  });
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Operator', permissions: 16 },
+      });
+    if (path === '/indexer-search/configuration')
+      return route.fulfill({
+        json: {
+          configured: true,
+          categories: [
+            { category: 'movie', categoryIds: [2000], enabled: true },
+            { category: 'tv', categoryIds: [5000], enabled: true },
+          ],
+        },
+      });
+    if (path === '/indexer-search/search') {
+      const body = route.request().postDataJSON() as {
+        category: string;
+        query: string;
+      };
+      searches.push(body);
+      if (body.query === 'Dune') await firstSearchGate;
+      return route.fulfill({
+        json: {
+          limit: 50,
+          hasMore: false,
+          results: [
+            {
+              title: `${body.query} result`,
+              protocol: 'usenet',
+              size: null,
+              seeders: null,
+              leechers: null,
+              grabs: null,
+              publishDate: null,
+              infoUrl: null,
+              grabId: null,
+              categories: [],
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/indexer-search?category=movie&query=Dune'));
+  await page.getByRole('button', { name: 'Search indexers' }).click();
+  await expect(
+    page.getByRole('combobox', { name: 'Media category' })
+  ).toBeDisabled();
+  await page.evaluate(
+    (href) => {
+      window.history.pushState({}, '', href);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    },
+    `${appPath('/indexer-search')}?category=tv&query=Foundation`
+  );
+  await expect(
+    page.getByRole('combobox', { name: 'Media category' })
+  ).toHaveValue('tv');
+  await expect(
+    page.getByRole('searchbox', { name: 'Search terms' })
+  ).toHaveValue('Foundation');
+  await expect(
+    page.getByRole('button', { name: 'Search indexers' })
+  ).toBeEnabled();
+
+  finishFirstSearch();
+  await expect(page.getByText('Dune result')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Search indexers' }).click();
+  await expect(page.getByText('Foundation result')).toBeVisible();
+  expect(searches).toEqual([
+    { category: 'movie', query: 'Dune', offset: 0 },
+    { category: 'tv', query: 'Foundation', offset: 0 },
   ]);
 });
 

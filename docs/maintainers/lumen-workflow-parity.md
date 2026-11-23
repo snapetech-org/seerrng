@@ -1402,6 +1402,17 @@ English, plus eight cases per locale and deployment in French and Arabic. The
 French iPhone baseline/candidate and Arabic iPhone candidate were inspected at
 matching fixture states; translated notices wrap without horizontal overflow.
 
+Indexer Search now follows changed `category` and `query` URL parameters while
+the page remains mounted. A new prefill clears old results and single-use
+handoff state, and invalidates any outstanding search so a delayed response
+cannot replace the newly requested search. The browser regression changes the
+URL during a pending search, verifies the new prefill, and confirms only a
+manual submit starts the second request. All 44 Indexer Search cases pass in
+standalone Lumen and all 44 pass against a production bundle built with the
+`/lumen/` base path, across desktop, iPhone, Android, and tablet. This
+state-transition change has not yet had matched native/Lumen screenshots; live
+Prowlarr handoff and native-matched visual acceptance remain open.
+
 Lumen's administrator Prowlarr settings and diagnostics now also use SeerrNG's
 `components.SettingsProwlarr.*` locale catalog. The connection form, saved API
 key controls, category mappings, per-category indexer assignments, search

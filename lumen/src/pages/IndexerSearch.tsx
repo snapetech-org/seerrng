@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
@@ -168,6 +168,9 @@ function SearchForm({
 }) {
   const { locale, t } = useLumenLocale();
   const [params] = useSearchParams();
+  const linkedCategory = params.get('category');
+  const linkedQuery = params.get('query');
+  const linkedSearchKey = JSON.stringify([linkedCategory, linkedQuery]);
   const categories = configuration.categories.filter(
     ({ category, enabled, categoryIds }) =>
       Object.hasOwn(CATEGORIES, category) &&
@@ -186,12 +189,31 @@ function SearchForm({
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState('');
   const searchingRef = useRef(false);
+  const searchGeneration = useRef(0);
+  const linkedSearchKeyRef = useRef(linkedSearchKey);
   const sentHandles = useRef(new Set<string>());
   const [handoffs, setHandoffs] = useState<Record<string, Handoff>>({});
+
+  useEffect(() => {
+    if (linkedSearchKeyRef.current === linkedSearchKey) return;
+    linkedSearchKeyRef.current = linkedSearchKey;
+    searchGeneration.current += 1;
+    searchingRef.current = false;
+    setSearching(false);
+    if (linkedCategory !== null) setCategory(linkedCategory);
+    if (linkedQuery !== null) setQuery(linkedQuery.slice(0, 256));
+    setResults([]);
+    setSubmitted(undefined);
+    setNextOffset(undefined);
+    setError('');
+    sentHandles.current.clear();
+    setHandoffs({});
+  }, [linkedCategory, linkedQuery, linkedSearchKey]);
 
   async function search(input: SearchInput, offset = 0) {
     if (searchingRef.current || !input.category || input.query.length < 2)
       return;
+    const generation = ++searchGeneration.current;
     searchingRef.current = true;
     setSearching(true);
     setError('');
@@ -205,12 +227,14 @@ function SearchForm({
         method: 'POST',
         body: JSON.stringify({ ...input, offset }),
       });
+      if (generation !== searchGeneration.current) return;
       setSubmitted(input);
       setResults((previous) =>
         offset ? [...previous, ...page.results] : page.results
       );
       setNextOffset(page.hasMore ? offset + page.limit : undefined);
     } catch (err) {
+      if (generation !== searchGeneration.current) return;
       setError(
         err instanceof ApiError && err.status === 429
           ? t(
@@ -228,8 +252,10 @@ function SearchForm({
               )
       );
     } finally {
-      searchingRef.current = false;
-      setSearching(false);
+      if (generation === searchGeneration.current) {
+        searchingRef.current = false;
+        setSearching(false);
+      }
     }
   }
 
