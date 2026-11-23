@@ -147,3 +147,45 @@ test('native Coming Soon bookmark opens Lumen Coming Soon and keeps URL state', 
     '/soon?media=movie#releases'
   );
 });
+
+for (const scenario of [
+  { name: 'a user manager', permissions: 2, expected: '/admin/users' },
+  { name: 'a standard user', permissions: 0, expected: '/me' },
+]) {
+  test(`native user-list bookmark keeps the Lumen permission gate for ${scenario.name}`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen/, '')
+        .replace(/^\/api\/v1/, '');
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: {
+            id: 1,
+            displayName: 'Player',
+            permissions: scenario.permissions,
+            userType: 2,
+          },
+        });
+      if (path === '/settings/public')
+        return route.fulfill({ json: { initialized: true } });
+      if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+      return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
+    });
+
+    await page.goto(`${mount}/users?sort=displayName#user-list`);
+    await page.waitForFunction(
+      (expected) =>
+        window.location.pathname.replace('/lumen', '') +
+          window.location.search +
+          window.location.hash ===
+        expected,
+      `${scenario.expected}${scenario.permissions ? '?sort=displayName#user-list' : ''}`
+    );
+  });
+}

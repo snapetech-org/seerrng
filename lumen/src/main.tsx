@@ -239,6 +239,11 @@ function NativeComingSoonBookmark() {
   return <Navigate to={`/soon${search}${hash}`} replace />;
 }
 
+function NativeUsersBookmark() {
+  const { search, hash } = useLocation();
+  return <Navigate to={`/admin/users${search}${hash}`} replace />;
+}
+
 function ProfileSettingsBookmark() {
   const { pathname, search } = useLocation();
   const suffix = pathname.split('/profile/settings')[1] ?? '';
@@ -379,6 +384,7 @@ function App() {
             path="/coming-soon"
             element={<NativeComingSoonBookmark />}
           />
+          <Route path="/users" element={<NativeUsersBookmark />} />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
