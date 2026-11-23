@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api, type Season, type SeasonRequestSelection } from '../api';
 import { useLumenLocale } from '../i18n';
+import { Icon } from '../icons';
 import { ServiceNote } from './extra';
 import { useBackCloses } from './requestSheet';
 import { useDialog } from './useDialog';
@@ -155,6 +156,55 @@ export default function TvEpisodeRequestSheet({
     !pending.get(seasonNumber)?.has(episode.episodeNumber) &&
     !episode.sonarrAvailability?.[quality] &&
     !episode.availabilitySources?.some((source) => source[quality]);
+  const selectableEpisodeNumbers = (seasonNumber: number) =>
+    (episodesBySeason.get(seasonNumber) ?? [])
+      .filter((episode) => eligible(seasonNumber, episode))
+      .map((episode) => episode.episodeNumber);
+  const allSelectableEpisodes = seasons.flatMap(({ seasonNumber }) =>
+    selectableEpisodeNumbers(seasonNumber).map((episodeNumber) => ({
+      seasonNumber,
+      episodeNumber,
+    }))
+  );
+  const selectedSelectableCount = allSelectableEpisodes.filter(
+    ({ seasonNumber, episodeNumber }) =>
+      picked.get(seasonNumber)?.has(episodeNumber)
+  ).length;
+  const allSelectable =
+    allSelectableEpisodes.length > 0 &&
+    selectedSelectableCount === allSelectableEpisodes.length;
+  const selectAll = () => {
+    if (allSelectable) {
+      setPicked(new Map());
+      return;
+    }
+    setPicked((previous) => {
+      const next = new Map(
+        [...previous].filter(
+          ([seasonNumber]) => !episodesBySeason.has(seasonNumber)
+        )
+      );
+      for (const { seasonNumber } of seasons) {
+        const episodeNumbers = selectableEpisodeNumbers(seasonNumber);
+        if (episodeNumbers.length)
+          next.set(seasonNumber, new Set(episodeNumbers));
+      }
+      return next;
+    });
+  };
+  const toggleSeasonSelection = (seasonNumber: number) => {
+    const episodeNumbers = selectableEpisodeNumbers(seasonNumber);
+    const selected = picked.get(seasonNumber);
+    const allSelected =
+      episodeNumbers.length > 0 &&
+      episodeNumbers.every((episodeNumber) => selected?.has(episodeNumber));
+    setPicked((previous) => {
+      const next = new Map(previous);
+      if (allSelected || !episodeNumbers.length) next.delete(seasonNumber);
+      else next.set(seasonNumber, new Set(episodeNumbers));
+      return next;
+    });
+  };
   const selections = seasons.flatMap(({ seasonNumber }) => {
     const episodeNumbers = (episodesBySeason.get(seasonNumber) ?? [])
       .filter(
@@ -185,6 +235,28 @@ export default function TvEpisodeRequestSheet({
             </h3>
           </header>
           <div className="toolbar">
+            <button
+              className={`btn btn-sm ${allSelectable ? 'btn-primary' : 'btn-tonal'}`}
+              data-testid="select-all-requestable-episodes"
+              type="button"
+              role="checkbox"
+              aria-checked={allSelectable}
+              aria-label={t(
+                allSelectable
+                  ? 'lumen.tvEpisodeRequest.deselectAll'
+                  : 'lumen.tvEpisodeRequest.selectAll',
+                allSelectable
+                  ? 'Deselect all requestable episodes'
+                  : 'Select all requestable episodes'
+              )}
+              disabled={
+                !allSelectableEpisodes.length || busy || !!streamingOverride
+              }
+              onClick={selectAll}
+            >
+              <Icon name={allSelectable ? 'check' : 'plus'} />
+              {t('lumen.tvEpisodeRequest.selectAllShort', 'Select All')}
+            </button>
             <button
               className="btn btn-tonal btn-sm"
               type="button"
@@ -263,7 +335,14 @@ export default function TvEpisodeRequestSheet({
                         number: seasonNumber,
                       }
                     ));
-              const selectedCount = picked.get(seasonNumber)?.size ?? 0;
+              const selectableNumbers = selectableEpisodeNumbers(seasonNumber);
+              const selectedCount = selectableNumbers.filter((number) =>
+                picked.get(seasonNumber)?.has(number)
+              ).length;
+              const allSelected =
+                selectableNumbers.length > 0 &&
+                selectedCount === selectableNumbers.length;
+              const partiallySelected = selectedCount > 0 && !allSelected;
               return (
                 <details
                   key={seasonNumber}
@@ -293,6 +372,40 @@ export default function TvEpisodeRequestSheet({
                             { count: item.episodeCount }
                           )}
                     </small>
+                    <button
+                      className={`btn btn-sm ${allSelected ? 'btn-primary' : 'btn-tonal'}`}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={
+                        allSelected ? true : partiallySelected ? 'mixed' : false
+                      }
+                      aria-label={t(
+                        allSelected
+                          ? 'lumen.tvEpisodeRequest.deselectSeason'
+                          : 'lumen.tvEpisodeRequest.selectSeason',
+                        allSelected
+                          ? 'Deselect all requestable episodes in {season}'
+                          : 'Select all requestable episodes in {season}',
+                        { season: label }
+                      )}
+                      disabled={
+                        !selectableNumbers.length || busy || !!streamingOverride
+                      }
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        toggleSeasonSelection(seasonNumber);
+                      }}
+                    >
+                      <Icon
+                        name={
+                          allSelected
+                            ? 'check'
+                            : partiallySelected
+                              ? 'minus'
+                              : 'plus'
+                        }
+                      />
+                    </button>
                   </summary>
                   {episodes.length ? (
                     <div className="setlist">

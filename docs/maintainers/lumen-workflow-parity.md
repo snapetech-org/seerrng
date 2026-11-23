@@ -8749,3 +8749,19 @@ automatic recovery and selectable episode data. A persistent failure remains
 visible with the existing manual retry path. The fixture validates client
 behavior and does not establish the reporter's live provider latency or the
 cause of the original screenshot.
+
+### Large TV request bulk selection (2026-11-23)
+
+Lumen's episode request sheet now has select-all and per-season select/deselect
+controls for episodes the current requester can request. Ineligible episodes
+remain unselected; the season disclosure stays independent from selection;
+clearing and selecting controls preserve the existing request payload shape.
+Controls and accessible labels are localized in English, French, and Arabic.
+
+The large-series browser fixture verifies availability-based exclusion,
+select-all, per-season deselection, selection clearing, and season selection
+without opening the season, across desktop, iPhone, Android, and tablet. The
+production Lumen build passes. Candidate screenshots were inspected at desktop
+and iPhone sizes; matched baseline visual acceptance and live provider
+submission remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-selection-parity-20261123/tv-bulk-controls/`.

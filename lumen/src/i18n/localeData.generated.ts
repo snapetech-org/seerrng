@@ -5746,6 +5746,10 @@ export const localeData = [
       'lumen.tvEpisodeRequest.clearSelection': 'مسح التحديد',
       'lumen.tvEpisodeRequest.close': 'إغلاق',
       'lumen.tvEpisodeRequest.collapseAll': 'طي الكل',
+      'lumen.tvEpisodeRequest.deselectAll':
+        'إلغاء تحديد كل الحلقات القابلة للطلب',
+      'lumen.tvEpisodeRequest.deselectSeason':
+        'إلغاء تحديد كل الحلقات القابلة للطلب في {season}',
       'lumen.tvEpisodeRequest.empty': 'لم يتم العثور على حلقات.',
       'lumen.tvEpisodeRequest.episodeCount': '{count} حلقة',
       'lumen.tvEpisodeRequest.episodes': 'الحلقات',
@@ -5763,6 +5767,10 @@ export const localeData = [
       'lumen.tvEpisodeRequest.season': 'الموسم',
       'lumen.tvEpisodeRequest.seasonNumber': 'الموسم {number}',
       'lumen.tvEpisodeRequest.seasonSelected': 'تم تحديد {count}',
+      'lumen.tvEpisodeRequest.selectAll': 'تحديد كل الحلقات القابلة للطلب',
+      'lumen.tvEpisodeRequest.selectAllShort': 'تحديد الكل',
+      'lumen.tvEpisodeRequest.selectSeason':
+        'تحديد كل الحلقات القابلة للطلب في {season}',
       'lumen.tvEpisodeRequest.selected': 'المحدد: {count}',
       'lumen.tvEpisodeRequest.specials': 'الحلقات الخاصة',
       'lumen.tvEpisodeRequest.submit': 'طلب الحلقات المحددة',
@@ -17090,6 +17098,9 @@ export const localeData = [
       'lumen.tvEpisodeRequest.clearSelection': 'Clear Selection',
       'lumen.tvEpisodeRequest.close': 'Close',
       'lumen.tvEpisodeRequest.collapseAll': 'Collapse All',
+      'lumen.tvEpisodeRequest.deselectAll': 'Deselect all requestable episodes',
+      'lumen.tvEpisodeRequest.deselectSeason':
+        'Deselect all requestable episodes in {season}',
       'lumen.tvEpisodeRequest.empty': 'No episodes found.',
       'lumen.tvEpisodeRequest.episodeCount': '{count} episodes',
       'lumen.tvEpisodeRequest.episodes': 'episodes',
@@ -17107,6 +17118,10 @@ export const localeData = [
       'lumen.tvEpisodeRequest.season': 'Season',
       'lumen.tvEpisodeRequest.seasonNumber': 'Season {number}',
       'lumen.tvEpisodeRequest.seasonSelected': '{count} selected',
+      'lumen.tvEpisodeRequest.selectAll': 'Select all requestable episodes',
+      'lumen.tvEpisodeRequest.selectAllShort': 'Select All',
+      'lumen.tvEpisodeRequest.selectSeason':
+        'Select all requestable episodes in {season}',
       'lumen.tvEpisodeRequest.selected': 'Selected: {count}',
       'lumen.tvEpisodeRequest.specials': 'Specials',
       'lumen.tvEpisodeRequest.submit': 'Request Selected Episodes',
@@ -29552,6 +29567,10 @@ export const localeData = [
       'lumen.tvEpisodeRequest.clearSelection': 'Effacer la sélection',
       'lumen.tvEpisodeRequest.close': 'Fermer',
       'lumen.tvEpisodeRequest.collapseAll': 'Tout réduire',
+      'lumen.tvEpisodeRequest.deselectAll':
+        'Désélectionner tous les épisodes pouvant être demandés',
+      'lumen.tvEpisodeRequest.deselectSeason':
+        'Désélectionner tous les épisodes pouvant être demandés de {season}',
       'lumen.tvEpisodeRequest.empty': 'Aucun épisode trouvé.',
       'lumen.tvEpisodeRequest.episodeCount': '{count} épisodes',
       'lumen.tvEpisodeRequest.episodes': 'épisodes',
@@ -29570,6 +29589,11 @@ export const localeData = [
       'lumen.tvEpisodeRequest.season': 'Saison',
       'lumen.tvEpisodeRequest.seasonNumber': 'Saison {number}',
       'lumen.tvEpisodeRequest.seasonSelected': '{count} sélectionnés',
+      'lumen.tvEpisodeRequest.selectAll':
+        'Sélectionner tous les épisodes pouvant être demandés',
+      'lumen.tvEpisodeRequest.selectAllShort': 'Tout sélectionner',
+      'lumen.tvEpisodeRequest.selectSeason':
+        'Sélectionner tous les épisodes pouvant être demandés de {season}',
       'lumen.tvEpisodeRequest.selected': 'Sélection : {count}',
       'lumen.tvEpisodeRequest.specials': 'Épisodes spéciaux',
       'lumen.tvEpisodeRequest.submit': 'Demander les épisodes sélectionnés',

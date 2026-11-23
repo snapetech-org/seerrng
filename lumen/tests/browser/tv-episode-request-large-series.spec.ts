@@ -7,7 +7,7 @@ const apiPath = (pathname: string) =>
 
 test('large TV requests retry a transient season batch before showing a load error', async ({
   page,
-}) => {
+}, testInfo) => {
   const batches: string[] = [];
   let failedFirstBatch = false;
   const seasons = Array.from({ length: 15 }, (_, index) => ({
@@ -65,6 +65,9 @@ test('large TV requests retry a transient season batch before showing a load err
               {
                 episodeNumber: 1,
                 name: `Episode from season ${seasonNumber}`,
+                ...(seasonNumber === 1
+                  ? { availabilitySources: [{ hd: true, fourK: false }] }
+                  : {}),
               },
             ],
           })),
@@ -89,12 +92,60 @@ test('large TV requests retry a transient season batch before showing a load err
     '11,12,13,14,15',
   ]);
   await sheet.getByText('Season 1', { exact: true }).click();
+  const firstSeason = sheet.locator('details').first();
+  await expect(firstSeason).toHaveAttribute('open', '');
   await expect(
     sheet.getByRole('checkbox', {
-      name: 'E1 Episode from season 1',
+      name: /E1 Episode from season 1/,
+    })
+  ).toBeDisabled();
+  await sheet.getByText('Season 1', { exact: true }).click();
+  await expect(firstSeason).not.toHaveAttribute('open', '');
+
+  const selectAll = sheet.getByTestId('select-all-requestable-episodes');
+  await selectAll.click();
+  await expect(
+    sheet.getByRole('checkbox', {
+      name: 'Deselect all requestable episodes',
       exact: true,
     })
-  ).toBeEnabled();
+  ).toHaveAttribute('aria-checked', 'true');
+  await expect(sheet.getByText('Selected: 14')).toBeVisible();
+
+  const deselectFirstSeason = sheet.getByRole('checkbox', {
+    name: 'Deselect all requestable episodes in Season 2',
+  });
+  await deselectFirstSeason.click();
+  await expect(firstSeason).not.toHaveAttribute('open', '');
+  await expect(sheet.getByText('Selected: 13')).toBeVisible();
+  await expect(
+    sheet.getByRole('checkbox', {
+      name: 'Select all requestable episodes in Season 2',
+      exact: true,
+    })
+  ).toHaveAttribute('aria-checked', 'false');
+
+  await selectAll.click();
+  await expect(sheet.getByText('Selected: 14')).toBeVisible();
+  const capture = process.env.LUMEN_TV_BULK_CAPTURE;
+  if (capture && ['desktop', 'iphone'].includes(testInfo.project.name)) {
+    const { mkdir } = await import('node:fs/promises');
+    const { dirname } = await import('node:path');
+    await mkdir(dirname(capture), { recursive: true });
+    await page.screenshot({
+      path: `${capture}-${testInfo.project.name}.png`,
+      fullPage: false,
+    });
+  }
+
+  await sheet.getByRole('button', { name: 'Clear Selection' }).click();
+  await expect(sheet.getByText('Selected: 0')).toBeVisible();
+  const selectSecondSeason = sheet.getByRole('checkbox', {
+    name: /episodes in Season 3$/,
+  });
+  await selectSecondSeason.click();
+  await expect(selectSecondSeason).toHaveAttribute('aria-checked', 'true');
+  await expect(sheet.getByText('Selected: 1')).toBeVisible();
 });
 
 test('large TV requests load in bounded batches and recover only the failed seasons', async ({
