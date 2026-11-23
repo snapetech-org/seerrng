@@ -13,6 +13,7 @@ import {
   type TitleResult,
 } from '../api';
 import { isAdministrator, useAuth, useMediaServerName } from '../auth';
+import AvailabilitySubscriptionButton from '../components/AvailabilitySubscriptionButton';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -388,6 +389,11 @@ export default function MovieDetail() {
             allow4k={!!pub?.movie4kEnabled && can4k}
           />
           <WatchlistButton key={m.id} mediaType="movie" detail={m} />
+          <AvailabilitySubscriptionButton
+            key={m.id}
+            mediaType="movie"
+            tmdbId={m.id}
+          />
         </div>
         <div className="dacts pc">
           {main}

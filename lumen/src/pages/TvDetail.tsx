@@ -15,6 +15,7 @@ import {
 } from '../api';
 import { isAdministrator, useAuth, useMediaServerName } from '../auth';
 import AnimeContinuation from '../components/AnimeContinuation';
+import AvailabilitySubscriptionButton from '../components/AvailabilitySubscriptionButton';
 import BlocklistButton from '../components/BlocklistButton';
 import {
   Rail,
@@ -646,6 +647,11 @@ export default function TvDetail() {
             tvId={t.id}
           />
           <WatchlistButton key={t.id} mediaType="tv" detail={t} />
+          <AvailabilitySubscriptionButton
+            key={t.id}
+            mediaType="tv"
+            tmdbId={t.id}
+          />
           {[1, 2, 3].includes(pub?.mediaServerType ?? 0) && (
             <MediaServerSavedItemButton
               key={`media-server-saved:${t.id}:${pub?.mediaServerType}:${is4k}`}

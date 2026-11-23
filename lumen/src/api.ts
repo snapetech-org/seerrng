@@ -239,6 +239,12 @@ export type VideoDetailPins = Partial<
   Record<'cast' | 'crew' | 'subjectTags', boolean>
 >;
 
+export interface UserAvailabilitySubscriptionResponse {
+  subscribed: boolean;
+  canSubscribe: boolean;
+  scope?: { is4k: boolean | null; seasonNumber: number | null };
+}
+
 export interface User {
   plexUsername?: string | null;
   jellyfinUsername?: string | null;

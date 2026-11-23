@@ -8218,3 +8218,25 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-card-parity-20261123/`;
 the native comparison is under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-locale-gaps-20261123/issues-native/captures/`.
+
+### Availability notifications on movie and TV details (2026-11-23)
+
+Movie and TV detail pages now expose the native availability-notification
+action. The control reads the signed-in user's subscription state from
+SeerrNG's existing self-scoped endpoint, appears only when the server says the
+viewer can subscribe or is already subscribed, and uses the existing POST and
+DELETE mutations. A stale request conflict refreshes server state and reports
+that the other user's request ended. The server remains responsible for
+subscription eligibility, scope, ownership, rate limits, and persistence.
+
+The focused browser suite verifies add/remove mutations for movie and TV,
+omission when the server says no other request can be followed, and visibility
+at desktop, iPhone, Android, and tablet sizes (12 cases). The Lumen production
+build passes. English, French, and Arabic action and feedback messages are
+provided. Candidate phone and desktop captures show the control in the existing
+detail action row. The retained native movie reference does not contain an
+eligible other-user request, so matched-state visual comparison and live
+subscription persistence remain unverified.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/`.

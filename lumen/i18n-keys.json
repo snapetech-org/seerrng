@@ -5689,5 +5689,11 @@
   "lumen.issues.field.latestIssue",
   "lumen.issues.field.pages",
   "lumen.issues.field.issues",
-  "lumen.issues.mediaUnavailable"
+  "lumen.issues.mediaUnavailable",
+  "lumen.availabilitySubscription.subscribe",
+  "lumen.availabilitySubscription.unsubscribe",
+  "lumen.availabilitySubscription.subscribed",
+  "lumen.availabilitySubscription.unsubscribed",
+  "lumen.availabilitySubscription.requestEnded",
+  "lumen.availabilitySubscription.updateFailed"
 ]

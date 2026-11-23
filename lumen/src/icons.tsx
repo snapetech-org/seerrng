@@ -39,6 +39,9 @@ const P: Record<string, string> = {
   share:
     '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2M8.7 13.4l6.6 4.2"/>',
   lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
+  bellOff:
+    '<path d="M18 8a6 6 0 0 0-11.5-2M6 8c0 7-3 7-3 9h14"/><path d="M10 21h4M3 3l18 18"/>',
 };
 
 export type IconName = keyof typeof P;

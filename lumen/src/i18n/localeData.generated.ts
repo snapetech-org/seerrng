@@ -6917,6 +6917,15 @@ export const localeData = [
       'lumen.issues.field.pages': 'صفحات',
       'lumen.issues.field.issues': 'أعداد',
       'lumen.issues.mediaUnavailable': 'معلومات الوسائط غير متاحة',
+      'lumen.availabilitySubscription.subscribe': 'أعلمني عند التوفر',
+      'lumen.availabilitySubscription.unsubscribe': 'إيقاف إشعارات التوفر',
+      'lumen.availabilitySubscription.subscribed':
+        'سيتم إشعارك عندما يتوفر هذا العنوان.',
+      'lumen.availabilitySubscription.unsubscribed': 'إشعارات التوفر معطلة.',
+      'lumen.availabilitySubscription.requestEnded':
+        'لم يعد لهذا العنوان طلب نشط من مستخدم آخر.',
+      'lumen.availabilitySubscription.updateFailed':
+        'تعذر تحديث إشعارات التوفر. يرجى المحاولة مرة أخرى.',
     },
   },
   {
@@ -18148,6 +18157,17 @@ export const localeData = [
       'lumen.issues.field.pages': 'Pages',
       'lumen.issues.field.issues': 'Issues',
       'lumen.issues.mediaUnavailable': 'Media information unavailable',
+      'lumen.availabilitySubscription.subscribe': 'Notify Me When Available',
+      'lumen.availabilitySubscription.unsubscribe':
+        'Stop Availability Notifications',
+      'lumen.availabilitySubscription.subscribed':
+        'You will be notified when this title is available.',
+      'lumen.availabilitySubscription.unsubscribed':
+        'Availability notifications are off.',
+      'lumen.availabilitySubscription.requestEnded':
+        'This title no longer has an active request from another user.',
+      'lumen.availabilitySubscription.updateFailed':
+        'Unable to update availability notifications. Please try again.',
     },
   },
   {
@@ -30540,6 +30560,17 @@ export const localeData = [
       'lumen.issues.field.issues': 'Numéros',
       'lumen.issues.mediaUnavailable':
         'Informations sur le média indisponibles',
+      'lumen.availabilitySubscription.subscribe': "M'alerter quand disponible",
+      'lumen.availabilitySubscription.unsubscribe':
+        'Arrêter les notifications de disponibilité',
+      'lumen.availabilitySubscription.subscribed':
+        'Vous serez notifié(e) quand ce titre sera disponible.',
+      'lumen.availabilitySubscription.unsubscribed':
+        'Les notifications de disponibilité sont désactivées.',
+      'lumen.availabilitySubscription.requestEnded':
+        "Ce titre n'a plus de demande active d'un autre utilisateur.",
+      'lumen.availabilitySubscription.updateFailed':
+        'Impossible de mettre à jour les notifications de disponibilité. Veuillez réessayer.',
     },
   },
   {
