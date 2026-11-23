@@ -10784,3 +10784,43 @@ test('Streaming Subscriptions retains edits after stale persisted readback and r
   await expect(save).toBeDisabled();
   expect(writes).toBe(2);
 });
+
+test('Metadata Credentials retains edits after stale persisted readback and retries', async ({
+  page,
+}) => {
+  await fixtures(page);
+  const persisted: Record<string, string> = {
+    comicVineApiKey: '',
+    metronToken: '',
+    googleBooksApiKey: '',
+    youtubeApiKey: '',
+  };
+  let writes = 0;
+  await page.route('**/api/v1/settings/main', async (route) => {
+    if (route.request().method() === 'POST') {
+      writes += 1;
+      if (writes > 1) persisted.comicVineApiKey = '********';
+      return route.fulfill({
+        json: { comicVineApiKey: '********' },
+      });
+    }
+    return route.fulfill({ json: persisted });
+  });
+  await page.goto('/admin/metadata');
+  const key = page.getByLabel('ComicVine API Key', { exact: true });
+  await key.fill('fixture-new-key');
+  const save = page.getByRole('button', {
+    name: 'Save Metadata Credentials',
+  });
+  await save.click();
+  await expect(
+    page.getByText('Could not confirm the saved credentials.')
+  ).toBeVisible();
+  await expect(key).toHaveValue('fixture-new-key');
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(page.getByText('Metadata credentials saved.')).toBeVisible();
+  await expect(key).toHaveValue('');
+  await expect(save).toBeDisabled();
+  expect(writes).toBe(2);
+});

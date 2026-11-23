@@ -7647,3 +7647,14 @@ the saved state advances only after both responses match.
 The focused stale-readback and retry workflow passes on desktop, iPhone,
 Android, and tablet (4 cases). Fixture results do not verify live account
 settings persistence.
+
+### Metadata credential settings persisted readback
+
+Lumen's metadata credential editor now verifies the configured or removed
+credential state in a fresh settings read after saving. Secret values remain
+write-only; if the persisted configured state is stale, the draft and removal
+intent remain available for retry.
+
+The focused stale-readback and retry workflow passes on desktop, iPhone,
+Android, and tablet (4 cases). Fixture results do not verify live metadata
+provider connectivity or persisted settings files.

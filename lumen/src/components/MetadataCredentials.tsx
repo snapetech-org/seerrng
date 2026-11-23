@@ -52,8 +52,14 @@ function CredentialsForm({ initial }: { initial: Settings }) {
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(changes)),
       });
+      const readback = await api<Settings>(endpoint);
       if (
-        changes.some(([key, value]) => Boolean(result[key]) !== Boolean(value))
+        changes.some(
+          ([key, value]) => Boolean(result[key]) !== Boolean(value)
+        ) ||
+        changes.some(
+          ([key, value]) => Boolean(readback[key]) !== Boolean(value)
+        )
       ) {
         throw new Error('Could not confirm the saved credentials.');
       }
