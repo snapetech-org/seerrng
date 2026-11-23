@@ -87,7 +87,9 @@ test('metadata sections save independently and expose failed provider checks', a
   );
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen/, '')
+      .slice(7);
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!path.startsWith(base)) return route.fulfill({ json: {} });
@@ -112,7 +114,7 @@ test('metadata sections save independently and expose failed provider checks', a
     if (persistWrites) Object.assign(settings[path], body);
     return route.fulfill({ json: { ...settings[path], ...body } });
   });
-  await page.goto('/me');
+  await page.goto(`${mount}/me`);
   await page.getByRole('link', { name: 'Open Metadata Providers' }).click();
   const languages = page.getByLabel('Allowed Book Languages');
   const requests = page.getByLabel('Maximum Requests per Second');

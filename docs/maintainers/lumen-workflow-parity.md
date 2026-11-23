@@ -6391,11 +6391,15 @@ existing integration components.
 Browser fixtures verify the saved locale, translated provider fields and
 section headings, RTL direction, and page overflow in English, French, and
 Arabic across desktop, iPhone, Android, and tablet in the standalone production
-build. The existing independent-save/provider-test regression also passes in
-those viewports. The bundled Express `/lumen/` mount did not serve the Vite
-preview fixture and remains unverified. Native-matched visual captures, actual
-provider round trips, credential persistence, and independent linguistic review
-remain unverified; this UI milestone is incomplete until those checks pass.
+build. The independent-save/provider-test fixture now normalizes API paths and
+page URLs for the `/lumen/` base as well as the root base. All 12 browser cases
+pass in each mode across desktop, iPhone, Android, and tablet. The `/lumen/`
+run used a separately built production bundle with the correct base path served
+by Vite preview; it does not establish the real Express mount or live API
+behavior. Native-matched visual captures, actual provider round trips,
+credential persistence, and independent linguistic review remain unverified;
+this UI milestone is incomplete until those checks pass.
+release-note: none
 
 ### Tunerr and Sportarr administration localization
 
