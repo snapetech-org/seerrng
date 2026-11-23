@@ -7514,6 +7514,21 @@ routing edits, existing secret preservation, localization, and page overflow.
 Fixtures exercise client behavior only; live Prowlarr persistence, indexer
 connectivity, and matched native visual comparison remain unverified.
 
+### Navidrome and Jellystat connection save readback
+
+Lumen now verifies the public URL, Navidrome username and scan setting, and
+redacted credential presence in both the PUT response and a fresh GET before
+clearing credentials or drafts. Disconnect now confirms the GET projection is
+empty before clearing the form. A stale response retains the entered values
+and leaves save or disconnect retryable.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet, including
+stale save readback, saved-password reuse, disconnect readback, and the
+English, French, and Arabic connection workflows. Desktop and iPhone
+recoverable error captures were inspected; the settings and retry action remain
+visible. Fixtures do not prove live Navidrome/Jellystat connectivity or
+filesystem persistence.
+
 ### Managed user profile save readback
 
 Lumen's administrator-managed user profile editor now checks the saved

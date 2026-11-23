@@ -87,9 +87,56 @@ function Connection({
         await api(endpoint + '/test', { method: 'POST', body }, 'empty');
       } else {
         let next: Settings | null = null;
-        if (action === 'save')
-          next = await api<Settings>(endpoint, { method: 'PUT', body });
-        else await api(endpoint, { method: 'DELETE' }, 'empty');
+        if (action === 'save') {
+          const updated = await api<Settings>(endpoint, {
+            method: 'PUT',
+            body,
+          });
+          if (generation !== sessionGeneration()) return;
+          const readback = await api<Settings>(endpoint);
+          if (generation !== sessionGeneration()) return;
+          const expected = {
+            url: draft.url.trim().replace(/\/+$/, ''),
+            ...(navidrome
+              ? {
+                  username: draft.username?.trim(),
+                  syncEnabled: draft.syncEnabled,
+                }
+              : {}),
+            [secretField]: '[REDACTED]',
+          };
+          const confirmed = Object.entries(expected).every(
+            ([field, value]) =>
+              updated[field as keyof Settings] === value &&
+              readback[field as keyof Settings] === value
+          );
+          if (!confirmed) {
+            setError(
+              t(
+                'lumen.adminUrlConnection.actionFailure',
+                'Could not complete the {provider} action.',
+                { provider: name }
+              )
+            );
+            return;
+          }
+          next = readback;
+        } else {
+          await api(endpoint, { method: 'DELETE' }, 'empty');
+          if (generation !== sessionGeneration()) return;
+          next = await api<Settings | null>(endpoint);
+          if (generation !== sessionGeneration()) return;
+          if (next !== null) {
+            setError(
+              t(
+                'lumen.adminUrlConnection.actionFailure',
+                'Could not complete the {provider} action.',
+                { provider: name }
+              )
+            );
+            return;
+          }
+        }
         if (generation !== sessionGeneration()) return;
         setSaved(next);
         setDraft({ ...(next ?? empty), [secretField]: '' });

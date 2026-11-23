@@ -90,6 +90,7 @@ for (const provider of ['Navidrome', 'Jellystat'] as const) {
     const secretLabel = navidrome ? text.password : text.apiKey;
     const writes: Record<string, unknown>[] = [];
     const tests: Record<string, unknown>[] = [];
+    let saved: Record<string, unknown> | null = null;
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -109,13 +110,16 @@ for (const provider of ['Navidrome', 'Jellystat'] as const) {
         return route.fulfill({ status: 204 });
       }
       if (path !== endpoint) return route.fulfill({ json: {} });
-      if (request.method() === 'GET')
-        return route.fulfill({ body: 'null', contentType: 'application/json' });
-      if (request.method() === 'DELETE') return route.fulfill({ status: 204 });
+      if (request.method() === 'GET') return route.fulfill({ json: saved });
+      if (request.method() === 'DELETE') {
+        saved = null;
+        return route.fulfill({ status: 204 });
+      }
       const change = request.postDataJSON();
       writes.push(change);
+      saved = { ...change, [secretField]: '[REDACTED]' };
       return route.fulfill({
-        json: { ...change, [secretField]: '[REDACTED]' },
+        json: saved,
       });
     });
 

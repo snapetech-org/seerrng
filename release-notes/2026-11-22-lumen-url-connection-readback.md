@@ -1,0 +1,1 @@
+- Verify Navidrome and Jellystat settings through a fresh persisted readback before clearing credentials, and confirm disconnects are persisted before clearing the form. Failed confirmations keep the current edits available for retry.
