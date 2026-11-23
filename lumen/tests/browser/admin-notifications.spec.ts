@@ -13,6 +13,7 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
       emailFrom: 'sender@example.test',
       smtpHost: '[REDACTED]',
       smtpPort: 587,
+      authUser: '[REDACTED]',
       authPass: '[REDACTED]',
       userEmailRequired: false,
       usePublicLogo: false,
@@ -20,6 +21,27 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     },
   };
   let staleEmailReadback = false;
+  const redactEmail = (body: Record<string, unknown>) => ({
+    ...body,
+    options: Object.fromEntries(
+      Object.entries(body.options as Record<string, unknown>).map(
+        ([key, value]) => [
+          key,
+          [
+            'smtpHost',
+            'authUser',
+            'authPass',
+            'pgpPrivateKey',
+            'pgpPassword',
+          ].includes(key) &&
+          value &&
+          value !== '[REDACTED]'
+            ? '[REDACTED]'
+            : value,
+        ]
+      )
+    ),
+  });
   const persistedChannels = new Map<string, Record<string, unknown>>();
   persistedChannels.set('email', email);
   await page.route('https://**/*', (route) => route.abort());
@@ -63,9 +85,11 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     )
       return route.fulfill({ status: 400, json: { message: 'Rejected.' } });
     if (path.endsWith('/email')) {
-      persistedChannels.set('email', body);
+      const publicEmail = redactEmail(body);
+      persistedChannels.set('email', publicEmail);
       staleEmailReadback =
         writes.filter((entry) => entry.path === 'email').length === 2;
+      return route.fulfill({ json: publicEmail });
     } else {
       persistedChannels.set(path.slice(prefix.length), body);
     }
@@ -87,6 +111,8 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   await page
     .getByLabel('Use public Seerr logo instead of instance logo')
     .check();
+  await page.getByLabel('SMTP Host', { exact: true }).fill('smtp.example.test');
+  await page.getByLabel('SMTP Username', { exact: true }).fill('mailer');
   const save = page.getByRole('button', { name: 'Save Email' });
   await save.click();
   await expect(page.getByRole('alert')).toHaveText(

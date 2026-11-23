@@ -495,6 +495,8 @@ function AgentForm({
           'pgpPassword',
           'pgpPrivateKey',
           'signingSecret',
+          'smtpHost',
+          'authUser',
           'token',
           'userToken',
           'webhookUrl',

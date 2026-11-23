@@ -7628,3 +7628,11 @@ server channels, Discord/Slack actions, and webhook header handling. The email
 retry-state capture was inspected. Mocks do not verify live delivery or
 filesystem persistence. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/notifications/`.
+
+#### Redacted SMTP notification readback
+
+The notification readback check also handles SeerrNG's redacted SMTP host and
+username fields. The email fixture now edits both values and verifies the
+redacted response/readback projection while keeping password values write-only.
+The focused email workflow and all 28 notification browser cases pass across
+desktop, iPhone, Android, and tablet.
