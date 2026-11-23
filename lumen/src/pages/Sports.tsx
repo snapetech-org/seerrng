@@ -797,7 +797,8 @@ function AdultCatalogue() {
 
 export function SceneDetail() {
   const { id = '' } = useParams();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const { t } = useLumenLocale();
   const { user } = useAuth();
   const rawServer = params.get('serverId');
   const serverId =
@@ -806,13 +807,13 @@ export function SceneDetail() {
     Number(rawServer) <= 1_000_000_000
       ? Number(rawServer)
       : undefined;
-  const canChoose = ((user?.permissions ?? 0) & (2 | 16 | 8192)) !== 0;
+  const canChoose = canChooseRequestOptions(user?.permissions);
   const path = `/adult/${encodeURIComponent(id)}`;
   const detail = useApi<Scene>(adultScenePath(id, serverId), {
     currentPathOnly: true,
   });
-  const services = useApi<{ id: number; isDefault?: boolean }[]>(
-    serverId !== undefined && !canChoose ? '/service/whisparr' : null
+  const services = useApi<{ id: number; name: string; isDefault?: boolean }[]>(
+    canChoose || serverId !== undefined ? '/service/whisparr' : null
   );
   const defaultId = services.data?.find(({ isDefault }) => isDefault)?.id;
   const requestDetail = useApi<Scene>(
@@ -852,6 +853,35 @@ export function SceneDetail() {
       }
     />
   );
+  const destinationPicker =
+    canChoose && (services.data?.length ?? 0) > 1 ? (
+      <label className="sel">
+        <span className="lbl">
+          {t(
+            'components.RequestModal.AdvancedRequester.destinationserver',
+            'Destination server'
+          )}
+        </span>
+        <select
+          aria-label={t(
+            'components.RequestModal.AdvancedRequester.destinationserver',
+            'Destination server'
+          )}
+          value={serverId ?? x.serviceId}
+          onChange={(event) => {
+            const next = new URLSearchParams(params);
+            next.set('serverId', event.target.value);
+            setParams(next, { replace: true });
+          }}
+        >
+          {services.data?.map((service) => (
+            <option key={service.id} value={service.id}>
+              {service.name}
+            </option>
+          ))}
+        </select>
+      </label>
+    ) : null;
   return (
     <ExtraGate k="adult">
       <article className="detail">
@@ -865,7 +895,10 @@ export function SceneDetail() {
           <div className="dstatus">
             <StatPill s={s} />
           </div>
-          <div className="dacts pc">{main}</div>
+          <div className="dacts pc">
+            {destinationPicker}
+            {main}
+          </div>
           <div className="dcols">
             <div>{x.overview && <p className="ov">{x.overview}</p>}</div>
             <aside>
@@ -884,6 +917,7 @@ export function SceneDetail() {
             <b>{x.title}</b>
             {x.studio}
           </span>
+          {destinationPicker}
           {main}
         </div>
       </article>

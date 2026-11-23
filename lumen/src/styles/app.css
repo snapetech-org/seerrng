@@ -1146,6 +1146,32 @@ a.person:hover {
   .dacts.pc {
     display: none;
   }
+  .actionbar:has(> .sel) {
+    gap: 6px;
+  }
+  .actionbar:has(> .sel) .ab-meta {
+    flex: 0 1 26%;
+    min-width: 0;
+    max-width: 26%;
+    overflow-wrap: anywhere;
+  }
+  .actionbar > .sel {
+    flex: 0 1 40%;
+    min-width: 0;
+    max-width: 40%;
+    gap: 0;
+    padding-inline: 8px;
+  }
+  .actionbar > .sel .lbl {
+    display: none;
+  }
+  .actionbar > .sel select {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .actionbar .music-format-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

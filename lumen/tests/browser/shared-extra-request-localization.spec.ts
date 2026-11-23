@@ -7,12 +7,14 @@ const locales = {
   en: {
     music: 'Request MP3',
     request: 'Request',
+    destination: 'Destination Server',
     submitted: 'Request submitted.',
     serverFailure: 'The server had a problem. Try again in a moment.',
   },
   fr: {
     music: 'Demander MP3',
     request: 'Demander',
+    destination: 'Serveur de destination',
     submitted: 'Demande envoyée.',
     serverFailure:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
@@ -20,6 +22,7 @@ const locales = {
   ar: {
     music: 'طلب MP3',
     request: 'طلب',
+    destination: 'الخادم المستهدف',
     submitted: 'تم إرسال الطلب.',
     serverFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
@@ -69,6 +72,13 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             },
           ],
         });
+      if (path === '/service/whisparr')
+        return route.fulfill({
+          json: [
+            { id: 1, name: 'Fixture Whisparr Main', isDefault: true },
+            { id: 2, name: 'Fixture Whisparr Archive' },
+          ],
+        });
       if (path === '/music/42')
         return route.fulfill({
           json: {
@@ -85,7 +95,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             id: '42',
             mediaType: 'adult',
             title: 'Fixture Scene',
-            serviceId: 1,
+            serviceId: Number(url.searchParams.get('serverId') ?? 1),
             performers: [],
             mediaInfo: { status: 1 },
           },
@@ -124,6 +134,11 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       });
 
     await page.goto(appPath('/adult/42'));
+    const destination = page.getByRole('combobox', {
+      name: copy.destination,
+    });
+    await expect(destination).toBeVisible();
+    await destination.selectOption('2');
     const adultRequest = page.getByRole('button', {
       name: copy.request,
       exact: true,
@@ -140,7 +155,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     expect(posts).toEqual([
       { mediaType: 'music', mediaId: '42', serverId: 7 },
       { mediaType: 'music', mediaId: '42', serverId: 7 },
-      { mediaType: 'adult', mediaId: '42' },
+      { mediaType: 'adult', mediaId: '42', serverId: 2 },
     ]);
     await expect(page.locator('html')).toHaveAttribute(
       'dir',
