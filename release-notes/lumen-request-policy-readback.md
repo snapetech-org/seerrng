@@ -1,0 +1,1 @@
+Lumen now confirms saved instance request policies and Discovery Integration settings through fresh settings reads. A stale readback keeps the user's edits available for retry, while write-only provider secrets remain private.

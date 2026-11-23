@@ -60,7 +60,47 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
         body: JSON.stringify(changes),
       });
       if (generation !== sessionGeneration()) return;
-      setCurrent(updated);
+      const readback = await api<Configuration>(path);
+      if (generation !== sessionGeneration()) return;
+      const confirmed = providers.every(({ id }) => {
+        const submitted = changes[id];
+        if (!submitted) return true;
+        const writeState = updated[id];
+        const persistedState = readback[id];
+        const clientId = submitted.clientId ?? current[id].clientId ?? '';
+        const expectedConfigured = (() => {
+          if (id === 'anilist') {
+            if (submitted.clientSecret !== undefined)
+              return Boolean(clientId) && Boolean(submitted.clientSecret);
+            if (!clientId) return false;
+            return current[id].clientId ? current[id].configured : undefined;
+          }
+          if (id === 'mdblist')
+            return submitted.apiKey !== undefined
+              ? Boolean(submitted.apiKey)
+              : current[id].configured;
+          return Boolean(clientId);
+        })();
+        return (
+          (expectedConfigured === undefined
+            ? writeState.configured === persistedState.configured
+            : writeState.configured === expectedConfigured &&
+              persistedState.configured === expectedConfigured) &&
+          (submitted.clientId === undefined ||
+            (writeState.clientId === clientId &&
+              persistedState.clientId === clientId))
+        );
+      });
+      if (!confirmed) {
+        setFailure(
+          t(
+            'lumen.adminDiscovery.saveFailure',
+            'Could not save discovery credentials. Try again.'
+          )
+        );
+        return;
+      }
+      setCurrent(readback);
       setChanges({});
       setSaved(true);
     } catch (error) {

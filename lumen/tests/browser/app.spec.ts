@@ -1508,12 +1508,14 @@ test('person bulk requests confirm the exact unique movie list and stop on quota
 
 test('instance request settings save only changed policy flags and retain failed edits', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   let enabled = false;
   let enable4k = true;
   let admin = true;
   let reject = true;
+  let staleReadback = false;
+  let staleReadbackUsed = false;
   const writes: unknown[] = [];
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
@@ -1531,15 +1533,26 @@ test('instance request settings save only changed policy flags and retain failed
   );
   await page.route('**/api/v1/settings/main', (route) => {
     // Request Defaults reads the current settings when it opens
-    if (route.request().method() !== 'POST')
+    if (route.request().method() !== 'POST') {
+      if (staleReadback) {
+        staleReadback = false;
+        return route.fulfill({
+          json: { personMovieBulkRequestsEnabled: false, enable4k },
+        });
+      }
       return route.fulfill({
         json: { personMovieBulkRequestsEnabled: enabled, enable4k },
       });
+    }
     const body = route.request().postDataJSON();
     writes.push(body);
     if (reject) return route.fulfill({ status: 503, json: {} });
     enabled = body.personMovieBulkRequestsEnabled ?? enabled;
     enable4k = body.enable4k ?? enable4k;
+    if (!staleReadbackUsed) {
+      staleReadback = true;
+      staleReadbackUsed = true;
+    }
     return route.fulfill({
       json: { personMovieBulkRequestsEnabled: enabled, enable4k },
     });
@@ -1548,7 +1561,7 @@ test('instance request settings save only changed policy flags and retain failed
   await page.getByRole('link', { name: 'Request Defaults' }).click();
   await expect(page).toHaveURL(/\/admin\/requests$/);
   const flag = page.getByRole('checkbox', {
-    name: 'Bulk Movie Requests From Person Pages',
+    name: 'Allow Requesting All Movies From a Person Page',
   });
   const save = page.getByRole('button', {
     name: 'Save Instance Request Settings',
@@ -1558,14 +1571,31 @@ test('instance request settings save only changed policy flags and retain failed
   await flag.check();
   await save.click();
   await expect(
-    page.getByText('Could not save the instance request setting. Try again.')
+    page.getByText('Could not save the instance request settings. Try again.')
   ).toBeVisible();
   await expect(flag).toBeChecked();
+  await page.screenshot({
+    path: info.outputPath('request-settings-write-failure.png'),
+    fullPage: true,
+  });
   reject = false;
+  await save.click();
+  await expect(
+    page.getByText('Could not confirm the saved request settings.')
+  ).toBeVisible();
+  await expect(flag).toBeChecked();
+  await page.screenshot({
+    path: info.outputPath('request-settings-readback-failure.png'),
+    fullPage: true,
+  });
   await save.click();
   await expect(
     page.getByText('Instance request settings saved.')
   ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('request-settings-recovered.png'),
+    fullPage: true,
+  });
   await expect(save).toBeDisabled();
   await flag.uncheck();
   await page
@@ -1576,6 +1606,7 @@ test('instance request settings save only changed policy flags and retain failed
     page.getByText('Instance request settings saved.')
   ).toBeVisible();
   expect(writes).toEqual([
+    { personMovieBulkRequestsEnabled: true },
     { personMovieBulkRequestsEnabled: true },
     { personMovieBulkRequestsEnabled: true },
     { personMovieBulkRequestsEnabled: false, enable4k: false },

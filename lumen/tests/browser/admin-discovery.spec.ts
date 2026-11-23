@@ -1,15 +1,16 @@
 import { expect, test } from '@playwright/test';
 
-test('discovery credentials remain write-only and a rejected save can be retried', async ({
+test('discovery credentials remain write-only and save retries until persisted state is confirmed', async ({
   page,
 }, info) => {
   const changes: unknown[] = [];
-  const configuration = {
+  let configuration = {
     trakt: { configured: true, clientId: 'trakt-id' },
     anilist: { configured: true, clientId: 'anilist-id' },
     simkl: { configured: false, clientId: '' },
     mdblist: { configured: true },
   };
+  let staleReadback: typeof configuration | undefined;
 
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -24,14 +25,21 @@ test('discovery credentials remain write-only and a rejected save can be retried
       return route.fulfill({ json: { packs: [] } });
     if (path !== '/integrations/discovery/configuration')
       return route.fulfill({ json: {} });
-    if (request.method() === 'GET')
+    if (request.method() === 'GET') {
+      if (staleReadback) {
+        const stale = staleReadback;
+        staleReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
       return route.fulfill({ json: configuration });
+    }
     changes.push(request.postDataJSON());
     if (changes.length === 1)
       return route.fulfill({ status: 400, json: { message: 'Invalid value' } });
-    return route.fulfill({
-      json: { ...configuration, mdblist: { configured: false } },
-    });
+    const updated = { ...configuration, mdblist: { configured: false } };
+    if (changes.length === 2) staleReadback = configuration;
+    configuration = updated;
+    return route.fulfill({ json: updated });
   });
 
   await page.goto('/me');
@@ -52,12 +60,29 @@ test('discovery credentials remain write-only and a rejected save can be retried
     'Could not save discovery credentials. Try again.'
   );
   await expect(secret).toHaveValue('anilist-test-secret');
+  await page.screenshot({
+    path: info.outputPath('discovery-write-failure.png'),
+    fullPage: true,
+  });
+  await save.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Could not save discovery credentials. Try again.'
+  );
+  await expect(secret).toHaveValue('anilist-test-secret');
+  await page.screenshot({
+    path: info.outputPath('discovery-readback-failure.png'),
+    fullPage: true,
+  });
   await save.click();
   await expect(page.getByText('Discovery credentials saved.')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('discovery-readback-recovered.png'),
+    fullPage: true,
+  });
   await expect(secret).toHaveValue('');
   await expect(save).toBeDisabled();
   expect(changes).toEqual(
-    Array.from({ length: 2 }, () => ({
+    Array.from({ length: 3 }, () => ({
       anilist: { clientSecret: 'anilist-test-secret' },
       mdblist: { apiKey: '' },
     }))

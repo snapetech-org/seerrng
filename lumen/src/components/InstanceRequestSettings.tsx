@@ -109,9 +109,14 @@ function RequestSettingsForm({
         body: JSON.stringify(body),
       });
       if (generation !== sessionGeneration()) return;
-      invalidatePublicSettings();
-      forget(publicPath);
-      if (changed.some(({ key }) => result[key] !== draft[key])) {
+      const readback = await api<Partial<Policies>>('/settings/main');
+      if (generation !== sessionGeneration()) return;
+      if (
+        changed.some(
+          ({ key }) =>
+            result[key] !== draft[key] || readback[key] !== draft[key]
+        )
+      ) {
         setFailure(
           t(
             'lumen.adminGeneral.requestSettings.confirmFailure',
@@ -120,7 +125,12 @@ function RequestSettingsForm({
         );
         return;
       }
-      setSaved(draft);
+      invalidatePublicSettings();
+      forget(publicPath);
+      setSaved((current) => ({
+        ...current,
+        ...Object.fromEntries(changed.map(({ key }) => [key, readback[key]])),
+      }));
       setNotice(
         t(
           'lumen.adminGeneral.requestSettings.saved',

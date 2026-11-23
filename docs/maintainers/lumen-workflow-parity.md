@@ -216,6 +216,25 @@ Desktop and phone states were inspected for alert placement, form retention,
 navigation clearance, and overflow. Production build passes; these fixtures do
 not verify live settings persistence or provider connections.
 
+### Request policy and discovery credential persisted readback
+
+Instance Request Settings now verifies changed policy flags in a fresh
+`/settings/main` read after the write response. Discovery Integrations reads
+its public configuration projection back after saving and confirms changed
+client IDs and provider configured state; API keys and secrets stay write-only
+and are never compared or exposed. A stale readback keeps the user's edits and
+save action available for retry. Public settings caches are invalidated only
+after a confirmed policy save.
+
+Eight focused browser cases pass across desktop, iPhone, Android, and tablet
+for write rejection, stale readback, and retry. Discovery's localized recovery
+flow passes in English, French, and Arabic across the same four viewports.
+Matched failure/recovery captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-policy-readback-20261122/`.
+The inspected desktop request-policy and phone Discovery states retain the
+existing controls and navigation geometry. Fixtures do not verify a live
+SeerrNG settings store or secret persistence.
+
 ### Per-user external request lists
 
 Lumen Account Settings now exposes SeerrNG's authenticated external request list

@@ -39,6 +39,12 @@ test('discovery credentials localize and preserve failed changes for retry', asy
   const text = labels[locale as keyof typeof labels] ?? labels.en;
   let failOnce = true;
   const writes: Record<string, unknown>[] = [];
+  let configuration = {
+    trakt: { clientId: 'saved-trakt-id', configured: true },
+    anilist: { clientId: 'saved-anilist-id', configured: true },
+    simkl: { configured: false },
+    mdblist: { configured: false },
+  };
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname
@@ -62,15 +68,25 @@ test('discovery credentials localize and preserve failed changes for retry', asy
           failOnce = false;
           return route.fulfill({ status: 503, json: { message: 'offline' } });
         }
+        const body = request.postDataJSON() as Record<
+          string,
+          Record<string, string>
+        >;
+        if (body.anilist) {
+          const clientId =
+            body.anilist.clientId ?? configuration.anilist.clientId;
+          const configured =
+            !!clientId &&
+            (body.anilist.clientSecret !== undefined
+              ? !!body.anilist.clientSecret
+              : configuration.anilist.configured);
+          configuration = {
+            ...configuration,
+            anilist: { clientId, configured },
+          };
+        }
       }
-      return route.fulfill({
-        json: {
-          trakt: { clientId: 'saved-trakt-id', configured: true },
-          anilist: { clientId: 'saved-anilist-id', configured: true },
-          simkl: { configured: false },
-          mdblist: { configured: false },
-        },
-      });
+      return route.fulfill({ json: configuration });
     }
     return route.fulfill({ json: {} });
   });
