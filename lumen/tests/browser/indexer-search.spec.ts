@@ -227,7 +227,7 @@ test('indexer search honors enabled categories, submitted pagination and one-use
       return route.fulfill({
         json: {
           configured: true,
-          showIndexerDetails: false,
+          showIndexerDetails: true,
           categories: [
             { category: 'ebook', categoryIds: [7020], enabled: true },
             { category: 'adult', categoryIds: [6000], enabled: false },
@@ -244,15 +244,15 @@ test('indexer search honors enabled categories, submitted pagination and one-use
           results: [
             {
               title: body.offset ? 'Second Result' : 'First Result',
-              indexer: 'Hidden Indexer',
+              indexer: 'Example Indexer',
               protocol: 'usenet',
               size: 512,
               infoUrl: 'https://example.test/info',
-              grabs: null,
-              seeders: null,
-              leechers: null,
-              publishDate: null,
-              categories: [],
+              grabs: body.offset ? null : 12,
+              seeders: body.offset ? null : 3,
+              leechers: body.offset ? null : 1,
+              publishDate: body.offset ? null : '2026-11-01T00:00:00.000Z',
+              categories: body.offset ? [] : [{ id: 7000, name: 'Books' }],
               grabId: body.offset
                 ? null
                 : 'df924acb-ad33-490f-a44e-150b0e7d6985',
@@ -261,7 +261,7 @@ test('indexer search honors enabled categories, submitted pagination and one-use
               ? [
                   {
                     title: 'Large Result',
-                    indexer: 'Hidden Indexer',
+                    indexer: 'Example Indexer',
                     protocol: 'usenet',
                     size: 1.5 * 1024 ** 3,
                     infoUrl: null,
@@ -294,10 +294,15 @@ test('indexer search honors enabled categories, submitted pagination and one-use
   await expect(page.getByText('First Result')).toBeVisible();
   await expect(page.getByRole('listitem').nth(0)).toContainText('512 B');
   await expect(page.getByRole('listitem').nth(1)).toContainText('1.5 GB');
-  await expect(page.getByText('Hidden Indexer')).toHaveCount(0);
+  if (['iphone', 'android'].includes(test.info().project.name))
+    expect(
+      (await page.getByRole('listitem').nth(0).locator('b').boundingBox())
+        ?.width ?? 0
+    ).toBeGreaterThan(70);
+  await expect(page.getByText('Example Indexer').first()).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Open indexer details' })
-  ).toHaveCount(0);
+  ).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth

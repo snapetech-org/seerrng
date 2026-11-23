@@ -432,7 +432,7 @@ function SearchForm({
         </p>
       )}
       {!!results.length && (
-        <ul className="setlist">
+        <ul className="setlist indexer-search-results">
           {results.map((release, index) => (
             <ReleaseRow
               key={index}
