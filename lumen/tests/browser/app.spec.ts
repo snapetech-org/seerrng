@@ -4091,7 +4091,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       type: 'Type',
       albums: 'Albums',
       since: 'Since 1990',
-      releaseCount: '1 release',
+      releaseCount: '21 releases',
+      showAll: 'Show All',
       filter: 'Filter Music by Artist',
       search: 'Search Prowlarr',
       associations: 'Explore Associations',
@@ -4110,7 +4111,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       type: 'Type',
       albums: 'Albums',
       since: 'Depuis 1990',
-      releaseCount: '1 sortie',
+      releaseCount: '21 sorties',
+      showAll: 'Tout afficher',
       filter: 'Filtrer la musique par artiste',
       search: 'Rechercher avec Prowlarr',
       associations: 'Explorer les associations',
@@ -4129,7 +4131,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       type: 'النوع',
       albums: 'الألبومات',
       since: 'منذ 1990',
-      releaseCount: '1 إصدار',
+      releaseCount: '21 إصدارات',
+      showAll: 'عرض الكل',
       filter: 'تصفية الموسيقى حسب الفنان',
       search: 'البحث في Prowlarr',
       associations: 'استكشاف الارتباطات',
@@ -4181,7 +4184,7 @@ test('Music album and artist details localize their controls and metadata', asyn
   await page.route(`**/api/v1/blocklist/${album}?mediaType=music`, (route) =>
     route.fulfill({ status: 404, json: { message: 'Not blocklisted' } })
   );
-  await page.route(`**/api/v1/artist/${artist}`, (route) =>
+  await page.route(`**/api/v1/artist/${artist}*`, (route) =>
     route.fulfill({
       json: {
         artist: {
@@ -4200,6 +4203,7 @@ test('Music album and artist details localize their controls and metadata', asyn
             artist: { id: artist, name: 'Fixture Artist' },
           },
         ],
+        typeCounts: { Album: 21 },
       },
     })
   );
@@ -4254,6 +4258,7 @@ test('Music album and artist details localize their controls and metadata', asyn
   await expect(
     page.getByText(copy.releaseCount, { exact: true })
   ).toBeVisible();
+  await expect(page.getByRole('button', { name: copy.showAll })).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
@@ -4263,6 +4268,114 @@ test('Music album and artist details localize their controls and metadata', asyn
       fullPage: true,
     });
   }
+});
+
+test('artist detail groups secondary release types and loads the rest of a release group', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: { musicEnabled: true, enabledMediaCategories: { music: true } },
+    })
+  );
+  const artistId = 'fixture-artist-release-groups';
+  const albumReleases = Array.from({ length: 21 }, (_, index) => ({
+    id: `album-${String(index + 1).padStart(2, '0')}`,
+    title: `Fixture Album ${index + 1}`,
+    'primary-type': 'Album',
+    'first-release-date': `${2025 - index}-01-01`,
+    'artist-credit': [{ name: 'Fixture Artist' }],
+  }));
+  const specialReleases = [
+    {
+      id: 'live-release',
+      title: 'Live Fixture',
+      'primary-type': 'Album',
+      secondary_types: ['Live'],
+      'artist-credit': [{ name: 'Fixture Artist' }],
+    },
+    {
+      id: 'compilation-release',
+      title: 'Compilation Fixture',
+      'primary-type': 'Album',
+      secondary_types: ['Compilation'],
+      'artist-credit': [{ name: 'Fixture Artist' }],
+    },
+  ];
+  const requestedTypes: string[] = [];
+  let expandedRequestAttempts = 0;
+  await page.route(`**/api/v1/artist/${artistId}*`, (route) => {
+    const url = new URL(route.request().url());
+    const type = url.searchParams.get('albumType');
+    if (type) requestedTypes.push(type);
+    const releaseGroups =
+      type === 'Album'
+        ? albumReleases
+        : [...albumReleases.slice(0, 20), ...specialReleases];
+    if (type === 'Album' && expandedRequestAttempts++ === 0) {
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Temporary music metadata failure' },
+      });
+    }
+    return route.fulfill({
+      json: {
+        artist: {
+          id: artistId,
+          name: 'Fixture Artist',
+          type: 'Person',
+          area: 'Fixture City',
+          beginYear: 1990,
+        },
+        releaseGroups,
+        typeCounts: { Album: 21, Live: 1, Compilation: 1 },
+      },
+    });
+  });
+
+  await page.goto(testAppPath(`/artist/${artistId}`));
+  const capture = process.env.LUMEN_MUSIC_ARTIST_GROUP_CAPTURE;
+  await expect(
+    page.getByRole('heading', { name: 'Albums (21)' })
+  ).toBeVisible();
+  await expect(page.getByText('23 releases', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Live (1)' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Compilation (1)' })
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Live Fixture' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Compilation Fixture' })
+  ).toBeVisible();
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-initial-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await page.getByRole('button', { name: 'Show All' }).click();
+  await expect(page.getByRole('button', { name: 'Show All' })).toBeEnabled();
+  await page.getByRole('button', { name: 'Show All' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Album 21' })
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Show Less' })).toBeVisible();
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-expanded-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await page.getByRole('button', { name: 'Show Less' }).click();
+  await expect(
+    page.getByRole('link', { name: 'Fixture Album 21' })
+  ).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Show All' })).toBeVisible();
+  expect(requestedTypes).toEqual(['Album', 'Album']);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
 });
 
 test('configured music shelves preserve genre and yearly chart in Music', async ({

@@ -3501,6 +3501,8 @@
   "lumen.music.loadingMore",
   "lumen.music.noMatchingArtists",
   "lumen.music.noReleases",
+  "lumen.music.showAll",
+  "lumen.music.showLess",
   "lumen.music.nothingHere",
   "lumen.music.plays",
   "lumen.music.releaseCountMany",

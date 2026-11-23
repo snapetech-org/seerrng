@@ -1112,6 +1112,12 @@ export function Artist() {
   const { t } = useLumenLocale();
   const { user } = useAuth();
   const { data: a, error } = useApi<ArtistDetails>(`/artist/${id}`);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, Album[]>>(
+    {}
+  );
+  const [loadingGroups, setLoadingGroups] = useState<Record<string, boolean>>(
+    {}
+  );
   if (error)
     return (
       <ExtraGate k="music">
@@ -1124,11 +1130,62 @@ export function Artist() {
       </ExtraGate>
     );
   if (!a) return <div className="detail-loading" aria-busy="true" />;
+  const releaseCount = Object.values(a.typeCounts ?? {}).reduce(
+    (count, total) => count + total,
+    0
+  );
+  const totalReleases = releaseCount || a.releaseGroups.length;
   const groups = [
-    ['Album', t('lumen.music.albums', 'Albums')],
-    ['EP', t('lumen.music.eps', 'EPs')],
-    ['Single', t('lumen.music.singles', 'Singles')],
-  ] as const;
+    'Album',
+    'EP',
+    'Single',
+    'Live',
+    'Compilation',
+    'Remix',
+    'Soundtrack',
+    'Broadcast',
+    'Demo',
+    'Other',
+  ].map((type) => ({
+    type,
+    title:
+      type === 'Album'
+        ? t('lumen.music.albums', 'Albums')
+        : t(`lumen.music.releaseType.${type.toLowerCase()}`, type),
+  }));
+  const toggleGroup = async (
+    type: string,
+    total: number,
+    releases: Album[]
+  ) => {
+    if (expandedGroups[type]) {
+      setExpandedGroups((current) => {
+        const next = { ...current };
+        delete next[type];
+        return next;
+      });
+      return;
+    }
+    if (releases.length >= total) {
+      setExpandedGroups((current) => ({ ...current, [type]: releases }));
+      return;
+    }
+    setLoadingGroups((current) => ({ ...current, [type]: true }));
+    try {
+      const pageSize = Math.min(total, 1000);
+      const result = await api<ArtistDetails>(
+        `/artist/${encodeURIComponent(id)}?albumType=${encodeURIComponent(type)}&pageSize=${pageSize}`
+      );
+      setExpandedGroups((current) => ({
+        ...current,
+        [type]: result.releaseGroups.filter((release) => release?.id),
+      }));
+    } catch {
+      // Keep the initial release list usable and let the viewer retry.
+    } finally {
+      setLoadingGroups((current) => ({ ...current, [type]: false }));
+    }
+  };
   return (
     <ExtraGate k="music">
       <article className="detail">
@@ -1145,12 +1202,12 @@ export function Artist() {
                   year: a.artist.beginYear,
                 })
               : '',
-            a.releaseGroups.length === 1
+            totalReleases === 1
               ? t('lumen.music.releaseCountOne', '{count} release', {
-                  count: a.releaseGroups.length,
+                  count: totalReleases,
                 })
               : t('lumen.music.releaseCountMany', '{count} releases', {
-                  count: a.releaseGroups.length,
+                  count: totalReleases,
                 }),
           ]}
         />
@@ -1205,15 +1262,39 @@ export function Artist() {
             <AssociationLink mediaType="artist" id={id} />
           </div>
           {a.wikipedia?.extract && <p className="ov">{a.wikipedia.extract}</p>}
-          {groups.map(([k, t]) => {
-            const list = a.releaseGroups.filter(
-              (r) => (r['primary-type'] || 'Album') === k
+          {groups.map(({ type, title }) => {
+            const releases = a.releaseGroups.filter(
+              (release) =>
+                (release.secondary_types?.[0] ??
+                  release['primary-type'] ??
+                  'Other') === type
             );
+            const list = expandedGroups[type] ?? releases;
+            const total = a.typeCounts?.[type] ?? releases.length;
             return list.length ? (
-              <Section key={k} title={t}>
+              <Section
+                key={type}
+                title={`${title} (${total})`}
+                action={
+                  total > 20 ? (
+                    <button
+                      className="btn btn-tonal btn-sm"
+                      type="button"
+                      disabled={loadingGroups[type]}
+                      onClick={() => void toggleGroup(type, total, releases)}
+                    >
+                      {loadingGroups[type]
+                        ? t('lumen.music.loading', 'Loading…')
+                        : expandedGroups[type]
+                          ? t('lumen.music.showLess', 'Show Less')
+                          : t('lumen.music.showAll', 'Show All')}
+                    </button>
+                  ) : null
+                }
+              >
                 <div className="sqg grid">
-                  {list.map((r) => (
-                    <AlbumCard key={r.id} a={r} />
+                  {list.map((release) => (
+                    <AlbumCard key={release.id} a={release} />
                   ))}
                 </div>
               </Section>

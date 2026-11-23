@@ -295,6 +295,7 @@ export interface Album {
   mediaType: 'album';
   title: string;
   'primary-type'?: string;
+  secondary_types?: string[];
   'first-release-date'?: string;
   'artist-credit'?: { name: string; artist?: { id: string; name: string } }[];
   posterPath?: string;
@@ -333,11 +334,18 @@ export interface AlbumDetails {
   availableServices?: { serverId: number; quality: string }[];
 }
 export interface ArtistDetails {
-  artist: { name: string; area?: string; type?: string; beginYear?: number };
+  artist: {
+    id?: string;
+    name: string;
+    area?: string;
+    type?: string;
+    beginYear?: number;
+  };
   wikipedia?: { extract?: string } | null;
   artistThumb?: string;
   artistBackdrop?: string;
   releaseGroups: Album[];
+  typeCounts?: Record<string, number>;
 }
 export const artistOf = (a: Pick<Album, 'artist-credit'>) =>
   a['artist-credit']?.map((c) => c.name).join(', ') || '';
