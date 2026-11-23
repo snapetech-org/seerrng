@@ -242,6 +242,7 @@ export type DetailDisclosurePins = Partial<
     | 'subjectTags'
     | 'overview'
     | 'details'
+    | 'artists'
     | 'taskFilters'
     | 'filters'
     | 'mediaFilters'
@@ -251,7 +252,7 @@ export type DetailDisclosurePins = Partial<
 >;
 export type VideoDetailPins = Pick<
   DetailDisclosurePins,
-  'cast' | 'crew' | 'subjectTags' | 'overview' | 'details'
+  'cast' | 'crew' | 'subjectTags' | 'overview' | 'details' | 'artists'
 >;
 
 export interface UserAvailabilitySubscriptionResponse {

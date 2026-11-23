@@ -201,16 +201,19 @@ test('music album details disclose each unique contributing artist in the saved 
   const copy = {
     en: {
       view: 'View Artists',
+      details: 'Album Details',
       album: 'Album Artist',
       track: 'Track Artist',
     },
     fr: {
       view: 'Voir les artistes',
+      details: 'Détails de l’album',
       album: 'Artiste de l’album',
       track: 'Artiste du morceau',
     },
     ar: {
       view: 'عرض الفنانين',
+      details: 'تفاصيل الألبوم',
       album: 'فنان الألبوم',
       track: 'فنان المسار',
     },
@@ -259,9 +262,11 @@ test('music album details disclose each unique contributing artist in the saved 
       window.scrollTo(0, document.documentElement.scrollHeight)
     );
     const actionbar = await page.locator('.actionbar').boundingBox();
-    const facts = await page.locator('dl.facts2').boundingBox();
+    const albumDetails = await page
+      .getByText(copy.details, { exact: true })
+      .boundingBox();
     expect(actionbar).not.toBeNull();
-    expect(facts).not.toBeNull();
+    expect(albumDetails).not.toBeNull();
     const clearance = await page
       .locator('#view')
       .evaluate((view) =>
@@ -272,7 +277,9 @@ test('music album details disclose each unique contributing artist in the saved 
         )
       );
     expect(clearance).toBeGreaterThanOrEqual(actionbar!.height);
-    expect(facts!.y + facts!.height).toBeLessThanOrEqual(actionbar!.y + 1);
+    expect(albumDetails!.y + albumDetails!.height).toBeLessThanOrEqual(
+      actionbar!.y + 1
+    );
     if (capture) {
       await page.screenshot({
         path: `${capture}-bottom-${test.info().project.name}.png`,

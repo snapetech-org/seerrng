@@ -282,11 +282,13 @@ export function VideoDisclosure({
   media,
   panel,
   label,
+  testId,
   children,
 }: {
   media: 'movie' | 'tv' | 'book' | 'music';
   panel: keyof VideoDetailPins;
   label: string;
+  testId?: string;
   children: ReactNode;
 }) {
   const { t } = useLumenLocale();
@@ -319,13 +321,15 @@ export function VideoDisclosure({
       ? t('lumen.detail.subjectTagPreference', 'subject tag')
       : panel === 'overview'
         ? t('lumen.detail.overviewPreference', 'overview')
-        : panel === 'details'
-          ? media === 'book'
-            ? t('lumen.detail.bookDetailsPreference', 'book details')
-            : media === 'music'
-              ? t('lumen.detail.albumDetailsPreference', 'album details')
-              : t('lumen.detail.movieDetailsPreference', 'movie details')
-          : t('lumen.detail.creditPreference', 'credit');
+        : panel === 'artists'
+          ? t('lumen.detail.artistListPreference', 'artist list')
+          : panel === 'details'
+            ? media === 'book'
+              ? t('lumen.detail.bookDetailsPreference', 'book details')
+              : media === 'music'
+                ? t('lumen.detail.albumDetailsPreference', 'album details')
+                : t('lumen.detail.movieDetailsPreference', 'movie details')
+            : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
     if (!user || pending.current) return;
@@ -365,7 +369,13 @@ export function VideoDisclosure({
   }
 
   return (
-    <details ref={disclosure} id={anchor} className="adv" open={pinned}>
+    <details
+      ref={disclosure}
+      id={anchor}
+      className="adv"
+      data-testid={testId}
+      open={pinned}
+    >
       <summary>
         <Icon name="chev" size="sm" />
         {label}

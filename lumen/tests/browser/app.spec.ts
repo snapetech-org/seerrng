@@ -1472,11 +1472,16 @@ test('subject tags share browser visibility and open filtered video discovery', 
   await expect(page).toHaveURL(/\/series$/);
 });
 
-test('music album details remember scoped pins', async ({ page }) => {
+test('music album Details and Artists remember scoped pins', async ({
+  page,
+}) => {
   await fixtures(page);
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
-  const settings = { detailDisclosurePins: { music: { details: false } } };
+  const settings = {
+    detailDisclosurePins: { music: { details: false, artists: false } },
+  };
+  const writes: unknown[] = [];
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
       json: { id: 1, displayName: 'Viewer', permissions: 2, settings },
@@ -1502,6 +1507,7 @@ test('music album details remember scoped pins', async ({ page }) => {
         releaseDate: '2024-02-03',
         recordLabel: 'Fixture Records',
         type: 'Album',
+        'artist-credit': [{ name: 'Fixture Artist', artist: { id: artist } }],
         tracks: [],
       },
     })
@@ -1510,6 +1516,7 @@ test('music album details remember scoped pins', async ({ page }) => {
     '**/api/v1/user/1/settings/detail-disclosures/music',
     (route) => {
       const body = route.request().postDataJSON();
+      writes.push(body);
       Object.assign(settings.detailDisclosurePins.music, body);
       return route.fulfill({ json: settings.detailDisclosurePins.music });
     }
@@ -1535,6 +1542,42 @@ test('music album details remember scoped pins', async ({ page }) => {
     .filter({ hasText: 'Album Details' });
   await expect(restored).toHaveAttribute('open', '');
   await expect(restored).toContainText('Fixture Records');
+
+  const artists = page.getByTestId('music-artist-list');
+  await expect(artists).toHaveJSProperty('open', false);
+  await artists.locator('summary').click();
+  await expect(
+    artists.getByRole('link', { name: 'Fixture Artist · Album Artist' })
+  ).toHaveAttribute('href', `/artist/${artist}`);
+  const artistsPin = artists.getByRole('button', {
+    name: 'Keep View Artists Open',
+  });
+  await artistsPin.click();
+  await expect(artistsPin).toHaveAttribute('aria-pressed', 'true');
+  await expect(artistsPin).toBeEnabled();
+  await page.reload();
+  await expect(page.getByTestId('music-artist-list')).toHaveAttribute(
+    'open',
+    ''
+  );
+  await expect(artistsPin).toBeEnabled();
+  await artistsPin.click();
+  await expect(page.getByTestId('music-artist-list')).not.toHaveAttribute(
+    'open',
+    ''
+  );
+  await page.getByTestId('music-artist-list').locator('summary').click();
+  await expect(artistsPin).toHaveAttribute('aria-pressed', 'false');
+  await page.reload();
+  await expect(page.getByTestId('music-artist-list')).not.toHaveAttribute(
+    'open',
+    ''
+  );
+  expect(writes).toEqual([
+    { details: true },
+    { artists: true },
+    { artists: false },
+  ]);
 });
 
 test('person filmography keeps complete cast and crew groups and sorts before filtering', async ({

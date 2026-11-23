@@ -1078,11 +1078,12 @@ export function AlbumDetail() {
             <WatchlistButton mediaType="music" detail={a} requestedId={id} />
           </div>
           {artistContributors.length > 0 && (
-            <details className="adv" data-testid="music-artist-list">
-              <summary>
-                <Icon name="chev" size="sm" />
-                {t('lumen.music.viewArtists', 'View Artists')}
-              </summary>
+            <VideoDisclosure
+              media="music"
+              panel="artists"
+              label={t('lumen.music.viewArtists', 'View Artists')}
+              testId="music-artist-list"
+            >
               <div className="toolbar">
                 {artistContributors.map((artist) => (
                   <Link
@@ -1094,7 +1095,7 @@ export function AlbumDetail() {
                   </Link>
                 ))}
               </div>
-            </details>
+            </VideoDisclosure>
           )}
           <div className="dacts pc">{main}</div>
           <div className="dcols">

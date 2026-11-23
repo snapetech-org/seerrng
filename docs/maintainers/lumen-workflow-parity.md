@@ -8483,3 +8483,26 @@ pin roles, other music detail gaps, book collection and subject-tag pin behavior
 TV facts and media-server panels, collection disclosures, broader route-level
 visual acceptance, and live provider verification remain open in the overall
 Lumen parity initiative.
+
+### Persistent music Artists disclosure (2026-11-23)
+
+Native music details let users pin the contributing Artists panel open. Lumen's
+existing View Artists disclosure now uses the shared component and authenticated
+`detail-disclosures/music` settings route. It retains unique album and track
+artist links and their role labels. The saved preference uses localized English,
+French, and Arabic copy; no CSS or contributor-selection behavior changed.
+
+The regression passes in desktop, iPhone, Android, and tablet projects. It
+checks that pinning opens the panel after reload and unpinning closes it, leaves
+the preference false, and restores the closed state after another reload. The
+production build passes. Baseline `a2780a71f` and candidate captures use the
+same album fixture at 1440×900 and 390×844. Closed and expanded states were
+inspected at both sizes; artist links and the pin action remain within the
+existing disclosure surface, with no phone horizontal overflow. Evidence is
+retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/music-artists-visual/`.
+
+This closes only the music Artists pin role. Music subject-tag pin behavior,
+other music detail gaps, book collection and subject-tag pin behavior, TV facts
+and media-server panels, collection disclosures, broader route-level visual
+acceptance, and live provider verification remain open in the overall Lumen
+parity initiative.

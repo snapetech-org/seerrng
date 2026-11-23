@@ -2516,6 +2516,7 @@
   "lumen.detail.bookDetailsPreference",
   "lumen.detail.albumDetails",
   "lumen.detail.albumDetailsPreference",
+  "lumen.detail.artistListPreference",
   "lumen.detail.languageProfile",
   "lumen.detail.loadingServers",
   "lumen.detail.me",
