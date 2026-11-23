@@ -1,0 +1,1 @@
+Lumen Account Settings now lets authorized users choose default request folders for each configured media service. Saved folder choices remain available if a service temporarily stops offering that path, and saving confirms the values returned by SeerrNG.

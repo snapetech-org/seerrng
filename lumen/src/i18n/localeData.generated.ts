@@ -1715,6 +1715,27 @@ export const localeData = [
       'lumen.account.saveStreamingSubscriptions': 'حفظ اشتراكات خدمات البث',
       'lumen.account.saveThemeColors': 'حفظ ألوان المظهر',
       'lumen.account.saving': 'جارٍ الحفظ…',
+      'lumen.account.rootFoldersTitle': 'مجلدات الطلب الافتراضية',
+      'lumen.account.rootFoldersDescription':
+        'اختر مجلد الوجهة الافتراضي للطلبات في كل خدمة. تستخدم المجلدات غير المحددة مجلد الخدمة الافتراضي.',
+      'lumen.account.rootFoldersLoadFailure':
+        'تعذر تحميل إعدادات مجلدات الطلب.',
+      'lumen.account.rootFoldersOptionsFailure':
+        'تعذر تحميل خيارات مجلدات الخدمات.',
+      'lumen.account.rootFoldersMismatch':
+        'القيم المحفوظة غير مطابقة. راجع القيم الحالية.',
+      'lumen.account.rootFoldersSaveFailure': 'تعذر حفظ إعدادات مجلدات الطلب.',
+      'lumen.account.rootFolder.movie': 'الأفلام',
+      'lumen.account.rootFolder.series': 'المسلسلات',
+      'lumen.account.rootFolder.music': 'الموسيقى',
+      'lumen.account.rootFolder.books': 'الكتب',
+      'lumen.account.rootFolder.audiobooks': 'الكتب الصوتية',
+      'lumen.account.rootFolder.comics': 'القصص المصورة',
+      'lumen.account.rootFolderDefault': 'استخدام مجلد الخدمة الافتراضي',
+      'lumen.account.rootFolderUnavailable': 'المجلد المحفوظ (غير متاح حاليًا)',
+      'lumen.account.rootFolderServiceFailure': 'تعذر تحميل مجلدات هذه الخدمة.',
+      'lumen.account.rootFolderNoServices': 'لم يتم إعداد خدمات للطلبات.',
+      'lumen.account.saveRootFolders': 'حفظ مجلدات الطلب',
       'lumen.account.selectShown': 'تحديد الخدمات المعروضة',
       'lumen.account.streamingSubscriptions': 'اشتراكات خدمات البث',
       'lumen.account.streamingSubscriptionsConfirmFailure':
@@ -12460,6 +12481,31 @@ export const localeData = [
         'Save Streaming Subscriptions',
       'lumen.account.saveThemeColors': 'Save Theme Colors',
       'lumen.account.saving': 'Saving…',
+      'lumen.account.rootFoldersTitle': 'Default Request Folders',
+      'lumen.account.rootFoldersDescription':
+        'Choose a default destination folder for requests on each service. Unset folders use the service default.',
+      'lumen.account.rootFoldersLoadFailure':
+        'Could not load request folder settings.',
+      'lumen.account.rootFoldersOptionsFailure':
+        'Could not load service folder options.',
+      'lumen.account.rootFoldersMismatch':
+        'Saved folders did not match. Review the current values.',
+      'lumen.account.rootFoldersSaveFailure':
+        'Could not save request folder settings.',
+      'lumen.account.rootFolder.movie': 'Movies',
+      'lumen.account.rootFolder.series': 'Series',
+      'lumen.account.rootFolder.music': 'Music',
+      'lumen.account.rootFolder.books': 'Books',
+      'lumen.account.rootFolder.audiobooks': 'Audiobooks',
+      'lumen.account.rootFolder.comics': 'Comics',
+      'lumen.account.rootFolderDefault': 'Use service default',
+      'lumen.account.rootFolderUnavailable':
+        'Saved folder (not currently offered)',
+      'lumen.account.rootFolderServiceFailure':
+        'Could not load folders for this service.',
+      'lumen.account.rootFolderNoServices':
+        'No request services are configured.',
+      'lumen.account.saveRootFolders': 'Save Request Folders',
       'lumen.account.selectShown': 'Select Shown',
       'lumen.account.streamingSubscriptions': 'Streaming Subscriptions',
       'lumen.account.streamingSubscriptionsConfirmFailure':
@@ -23845,6 +23891,32 @@ export const localeData = [
         'Enregistrer les abonnements de streaming',
       'lumen.account.saveThemeColors': 'Enregistrer les couleurs du thème',
       'lumen.account.saving': 'Enregistrement…',
+      'lumen.account.rootFoldersTitle': 'Dossiers de destination par défaut',
+      'lumen.account.rootFoldersDescription':
+        'Choisissez un dossier de destination par défaut pour les demandes sur chaque service. Les dossiers non définis utilisent le dossier par défaut du service.',
+      'lumen.account.rootFoldersLoadFailure':
+        'Impossible de charger les paramètres des dossiers de demande.',
+      'lumen.account.rootFoldersOptionsFailure':
+        'Impossible de charger les dossiers proposés par les services.',
+      'lumen.account.rootFoldersMismatch':
+        'Les dossiers enregistrés ne correspondent pas. Vérifiez les valeurs actuelles.',
+      'lumen.account.rootFoldersSaveFailure':
+        'Impossible d’enregistrer les paramètres des dossiers de demande.',
+      'lumen.account.rootFolder.movie': 'Films',
+      'lumen.account.rootFolder.series': 'Séries',
+      'lumen.account.rootFolder.music': 'Musique',
+      'lumen.account.rootFolder.books': 'Livres',
+      'lumen.account.rootFolder.audiobooks': 'Livres audio',
+      'lumen.account.rootFolder.comics': 'Bandes dessinées',
+      'lumen.account.rootFolderDefault':
+        'Utiliser le dossier par défaut du service',
+      'lumen.account.rootFolderUnavailable':
+        'Dossier enregistré (actuellement indisponible)',
+      'lumen.account.rootFolderServiceFailure':
+        'Impossible de charger les dossiers de ce service.',
+      'lumen.account.rootFolderNoServices':
+        'Aucun service de demande n’est configuré.',
+      'lumen.account.saveRootFolders': 'Enregistrer les dossiers de demande',
       'lumen.account.selectShown': 'Sélectionner les services affichés',
       'lumen.account.streamingSubscriptions':
         'Abonnements aux services de streaming',

@@ -48,8 +48,136 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   await page.goto(appPath('./me/account'));
   await expect(page.getByText('Jellyfin User', { exact: true })).toBeVisible();
   await expect(
+    page.getByRole('heading', { name: 'Default Request Folders' })
+  ).toHaveCount(0);
+  await expect(
     page.locator('dd').getByText('User', { exact: true })
   ).toBeVisible();
+});
+
+test('request folders preserve service choices and confirm persisted values', async ({
+  page,
+}) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_ROOT_FOLDER_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_ROOT_FOLDER_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const labels = {
+    en: {
+      title: 'Default Request Folders',
+      movie: 'Movies · radarr one',
+      unavailable: 'Saved folder (not currently offered)',
+      save: 'Save Request Folders',
+    },
+    fr: {
+      title: 'Dossiers de destination par défaut',
+      movie: 'Films · radarr one',
+      unavailable: 'Dossier enregistré (actuellement indisponible)',
+      save: 'Enregistrer les dossiers de demande',
+    },
+    ar: {
+      title: 'مجلدات الطلب الافتراضية',
+      movie: 'الأفلام · radarr one',
+      unavailable: 'المجلد المحفوظ (غير متاح حاليًا)',
+      save: 'حفظ مجلدات الطلب',
+    },
+  } as const;
+  const profile = { username: 'Viewer', locale };
+  let folders: Record<string, string> = { 'radarr:1': '/legacy' };
+  const writes: unknown[] = [];
+  let rejectNextSave = true;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          displayName: 'Viewer',
+          permissions: 8192,
+          userType: 2,
+        },
+      });
+    if (path === '/user/2/settings/main') {
+      if (request.method() === 'POST') {
+        const body = request.postDataJSON();
+        writes.push(body);
+        if (rejectNextSave) {
+          rejectNextSave = false;
+          return route.fulfill({ status: 503, json: {} });
+        }
+        Object.assign(profile, body);
+        folders = body.requestRootFolders;
+      }
+      return route.fulfill({ json: profile });
+    }
+    if (path === '/user/2/settings/request-root-folders')
+      return route.fulfill({ json: folders });
+    if (/^\/service\/(radarr|sonarr|lidarr|readarr)$/.test(path)) {
+      const type = path.split('/')[2];
+      return route.fulfill({
+        json: [{ id: 1, name: `${type} one`, serviceType: 'ebook' }],
+      });
+    }
+    if (/^\/service\/(radarr|sonarr|lidarr|readarr)\/1$/.test(path))
+      return route.fulfill({
+        json: {
+          rootFolders: [{ path: '/media/primary' }, { path: '/media/alt' }],
+        },
+      });
+    if (path === '/service/comic')
+      return route.fulfill({
+        json: [{ id: 3, name: 'Kapowarr', backendType: 'kapowarr' }],
+      });
+    if (path === '/service/comic/3/rootfolders')
+      return route.fulfill({ json: { rootFolders: [{ path: '/comics' }] } });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/languages') return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/me/account'));
+  const title = page.getByRole('heading', { name: labels[locale].title });
+  await expect(title).toBeVisible();
+  const radarr = page.getByLabel(labels[locale].movie);
+  await expect(radarr).toHaveValue('/legacy');
+  await expect(radarr.locator('option[value="/legacy"]')).toHaveText(
+    labels[locale].unavailable
+  );
+  if (process.env.LUMEN_ROOT_FOLDER_CAPTURE_DIR) {
+    const project = await page.evaluate(() =>
+      innerWidth < 600 ? 'iphone' : 'desktop'
+    );
+    await page.screenshot({
+      path: `${process.env.LUMEN_ROOT_FOLDER_CAPTURE_DIR}/account-${project}.png`,
+      fullPage: true,
+      scale: 'css',
+      animations: 'disabled',
+    });
+  }
+  await radarr.selectOption('/media/alt');
+  await page.getByRole('button', { name: labels[locale].save }).click();
+  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(radarr).toHaveValue('/media/alt');
+  await expect(
+    page.getByRole('button', { name: labels[locale].save })
+  ).toBeEnabled();
+  await page.getByRole('button', { name: labels[locale].save }).click();
+  await expect(radarr).toHaveValue('/media/alt');
+  expect(writes).toEqual([
+    { requestRootFolders: { 'radarr:1': '/media/alt' } },
+    { requestRootFolders: { 'radarr:1': '/media/alt' } },
+  ]);
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+    )
+    .toBe(true);
 });
 
 test('account settings preserve failed profile edits and save only changes and password fields', async ({
