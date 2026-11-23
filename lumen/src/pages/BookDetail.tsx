@@ -772,6 +772,7 @@ export default function BookDetail() {
             {b.description && <p className="ov long">{b.description.trim()}</p>}
             <OpenIssueReports
               id="book-open-issues"
+              mediaType="book"
               issues={b.mediaInfo?.issues}
             />
             {showNarr ? (

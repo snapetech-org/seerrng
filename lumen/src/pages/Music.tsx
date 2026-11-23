@@ -1142,6 +1142,7 @@ export function AlbumDetail() {
             <div>
               <OpenIssueReports
                 id="music-open-issues"
+                mediaType="music"
                 issues={a.mediaInfo?.issues}
               />
               {!!a.tracks?.length && (

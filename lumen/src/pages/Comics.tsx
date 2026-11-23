@@ -1139,6 +1139,7 @@ export function ComicDetail() {
               {chosen && <ComicIssues id={chosen.id} manga={manga} />}
               <OpenIssueReports
                 id="comic-open-issues"
+                mediaType="comic"
                 issues={c?.mediaInfo?.issues}
               />
             </div>
@@ -1795,6 +1796,7 @@ export function MagazineDetail() {
               )}
               <OpenIssueReports
                 id="magazine-open-issues"
+                mediaType="magazine"
                 issues={m.mediaInfo?.issues}
               />
             </div>

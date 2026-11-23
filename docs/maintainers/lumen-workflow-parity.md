@@ -8680,8 +8680,10 @@ independent linguistic review.
 
 ### Open issue report metadata (2026-11-23)
 
-Lumen's shared open-issue panels now show the report's localized creation date
-and reporter alongside its existing type, discussion comment, and detail link.
+Lumen's shared open-issue panels now show the media-specific issue reason,
+localized creation date, and reporter alongside the existing issue type,
+discussion comment, and detail link. Reason labels reuse SeerrNG's native
+locale catalogs for books, comics, and magazines.
 Reporter names and profile links follow SeerrNG's `VIEW_ISSUES` / `MANAGE_ISSUES`
 boundary; users who can read an issue without those permissions see the native
 unavailable label instead. Open/resolved filtering, API permissions, and issue

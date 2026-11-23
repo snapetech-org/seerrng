@@ -4489,6 +4489,7 @@ test('comic details show open issues only to issue readers', async ({
               id: 71,
               status: 1,
               issueType: 3,
+              issueSubtype: 'missing_issue',
               createdAt: '2026-11-20T12:00:00.000Z',
               createdBy: { id: 17, displayName: 'Issue Reporter' },
               comments: [{ message: 'Captions are missing.' }],
@@ -4513,6 +4514,7 @@ test('comic details show open issues only to issue readers', async ({
     panel.getByRole('link', { name: 'Subtitles #71' })
   ).toHaveAttribute('href', '/issues/71');
   await expect(panel).toContainText('Captions are missing.');
+  await expect(panel).toContainText('Reason: Missing issue');
   await expect(panel).toContainText('Created Date: Nov 20, 2026');
   await expect(panel).toContainText('Created By: Issue Reporter');
   await expect(
@@ -4573,6 +4575,7 @@ test('magazine details show open issues only to issue readers', async ({
               id: 81,
               status: 1,
               issueType: 4,
+              issueSubtype: 'wrong_issue',
               comments: [{ message: 'The cover is missing.' }],
             },
             { id: 82, status: 2, issueType: 1, comments: [] },
@@ -4593,6 +4596,7 @@ test('magazine details show open issues only to issue readers', async ({
     '/issues/81'
   );
   await expect(panel).toContainText('The cover is missing.');
+  await expect(panel).toContainText('Reason: Wrong issue or date');
   await expect(panel.getByRole('link', { name: /#82/ })).toHaveCount(0);
   const capture = process.env.LUMEN_MAGAZINE_OPEN_ISSUES_CAPTURE;
   if (capture) {
@@ -4641,6 +4645,7 @@ test('book and music details show open issues only to issue readers', async ({
               id: 91,
               status: 1,
               issueType: 1,
+              issueSubtype: 'wrong_edition',
               comments: [{ message: 'The audiobook is incomplete.' }],
             },
           ],
@@ -4685,6 +4690,7 @@ test('book and music details show open issues only to issue readers', async ({
     bookIssues.getByRole('link', { name: 'Video #91' })
   ).toHaveAttribute('href', '/issues/91');
   await expect(bookIssues).toContainText('The audiobook is incomplete.');
+  await expect(bookIssues).toContainText('Reason: Wrong edition or variant');
   const capture = process.env.LUMEN_BOOK_MUSIC_OPEN_ISSUES_CAPTURE;
   if (capture) {
     await bookIssues.scrollIntoViewIfNeeded();

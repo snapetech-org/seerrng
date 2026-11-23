@@ -142,6 +142,7 @@ export interface MediaInfo {
     id: number;
     status: number;
     issueType: number;
+    issueSubtype?: string | null;
     createdAt?: string;
     createdBy?: { id?: number; displayName?: string };
     comments?: { message: string }[];

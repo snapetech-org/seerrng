@@ -1678,6 +1678,18 @@ export const localeData = [
         'تم إرسال الطلب، لكن Lidarr رفضه أثناء المعالجة.',
       'components.RequestModal.Music.requesterror':
         'حدث خطأ ما أثناء إرسال الطلب.',
+      'components.IssueList.IssueItem.issuereason': 'السبب',
+      'components.IssueModal.issueReasonMissingContent': 'محتوى مفقود',
+      'components.IssueModal.issueReasonMissingIssue': 'عدد مفقود',
+      'components.IssueModal.issueReasonWrongEdition':
+        'الطبعة الخاطئة أو البديل',
+      'components.IssueModal.issueReasonWrongIssue':
+        'العدد أو التاريخ غير صحيح',
+      'components.IssueModal.issueReasonDamagedFile':
+        'ملف متضرر أو غير قابل للقراءة',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'العنوان غير الصحيح أو البيانات الوصفية',
+      'components.IssueModal.issueOther': 'أخرى',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -7686,6 +7698,7 @@ export const localeData = [
       'i18n.next': 'Напред',
       'i18n.previous': 'Назад',
       'i18n.usersettings': 'Потребителски настройки',
+      'components.IssueModal.issueOther': 'Друго',
     },
   },
   {
@@ -8227,6 +8240,7 @@ export const localeData = [
       'i18n.next': 'Endavant',
       'i18n.previous': 'Endarrere',
       'i18n.usersettings': "Configuració de l'usuari",
+      'components.IssueModal.issueOther': 'Altre',
     },
   },
   {
@@ -8880,6 +8894,7 @@ export const localeData = [
       'i18n.next': 'Další',
       'i18n.previous': 'Předchozí',
       'i18n.usersettings': 'Uživatelská nastavení',
+      'components.IssueModal.issueOther': 'Jiný',
     },
   },
   {
@@ -9531,6 +9546,7 @@ export const localeData = [
       'i18n.next': 'Næste',
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Brugerindstillinger',
+      'components.IssueModal.issueOther': 'Andet',
     },
   },
   {
@@ -11293,6 +11309,18 @@ export const localeData = [
         'Der Antrag wurde eingereicht, aber Lidarr lehnte ihn während der Bearbeitung ab.',
       'components.RequestModal.Music.requesterror':
         'Beim Senden der Anfrage ist etwas schief gelaufen.',
+      'components.IssueList.IssueItem.issuereason': 'Grund',
+      'components.IssueModal.issueReasonMissingContent': 'Fehlender Inhalt',
+      'components.IssueModal.issueReasonMissingIssue': 'Fehlende Ausgabe',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Falsche Edition oder Variante',
+      'components.IssueModal.issueReasonWrongIssue':
+        'Falsche Ausgabe oder Datum',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Beschädigte oder unlesbare Datei',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Falscher Titel oder falsche Metadaten',
+      'components.IssueModal.issueOther': 'Sonstige',
     },
   },
   {
@@ -13017,6 +13045,17 @@ export const localeData = [
         'The request was submitted, but Lidarr rejected it while processing.',
       'components.RequestModal.Music.requesterror':
         'Something went wrong while submitting the request.',
+      'components.IssueList.IssueItem.issuereason': 'Reason',
+      'components.IssueModal.issueReasonMissingContent': 'Missing content',
+      'components.IssueModal.issueReasonMissingIssue': 'Missing issue',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Wrong edition or variant',
+      'components.IssueModal.issueReasonWrongIssue': 'Wrong issue or date',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Damaged or unreadable file',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Incorrect title or metadata',
+      'components.IssueModal.issueOther': 'Other',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -18826,6 +18865,7 @@ export const localeData = [
       'i18n.next': 'Επόμενο',
       'i18n.previous': 'Προηγούμενο',
       'i18n.usersettings': 'Ρυθμίσεις χρήστη',
+      'components.IssueModal.issueOther': 'Άλλο',
     },
   },
   {
@@ -20600,6 +20640,18 @@ export const localeData = [
         'La solicitud se envió, pero Lidarr la rechazó durante el procesamiento.',
       'components.RequestModal.Music.requesterror':
         'Algo fue mal al realizar la solicitud.',
+      'components.IssueList.IssueItem.issuereason': 'Razón',
+      'components.IssueModal.issueReasonMissingContent': 'Falta de contenido',
+      'components.IssueModal.issueReasonMissingIssue': 'Número faltante',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Edición o variante incorrecta',
+      'components.IssueModal.issueReasonWrongIssue':
+        'Número equivocado o fecha',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Archivo dañado o no legible',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Título incorrecto o metadatos',
+      'components.IssueModal.issueOther': 'Otro',
     },
   },
   {
@@ -22359,6 +22411,18 @@ export const localeData = [
         'La solicitud fue presentada, pero Lidarr lo rechazó durante el procesamiento.',
       'components.RequestModal.Music.requesterror':
         'Algo fue mal al realizar la solicitud.',
+      'components.IssueList.IssueItem.issuereason': 'Razón',
+      'components.IssueModal.issueReasonMissingContent': 'Falta de contenido',
+      'components.IssueModal.issueReasonMissingIssue': 'Falta de problemas',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Edición o variante incorrecta',
+      'components.IssueModal.issueReasonWrongIssue':
+        'Número equivocado o fecha',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Archivo dañado o no legible',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Título incorrecto o metadatos',
+      'components.IssueModal.issueOther': 'Otro',
     },
   },
   {
@@ -23007,6 +23071,7 @@ export const localeData = [
       'i18n.next': 'Järgmine',
       'i18n.previous': 'Eelmine',
       'i18n.usersettings': 'Kasutaja seaded',
+      'components.IssueModal.issueOther': 'Muu',
     },
   },
   {
@@ -23236,6 +23301,7 @@ export const localeData = [
       'i18n.next': 'Seuraava',
       'i18n.previous': 'Edellinen',
       'i18n.usersettings': 'Käyttäjäasetukset',
+      'components.IssueModal.issueOther': 'Muu',
     },
   },
   {
@@ -25014,6 +25080,17 @@ export const localeData = [
         "La demande a été présentée, mais Lidarr l'a rejetée pendant le traitement.",
       'components.RequestModal.Music.requesterror':
         "Une erreur s'est produite lors de la demande.",
+      'components.IssueList.IssueItem.issuereason': 'Motif',
+      'components.IssueModal.issueReasonMissingContent': 'Contenu manquant',
+      'components.IssueModal.issueReasonMissingIssue': 'Numéro manquant',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Mauvaise édition ou variante',
+      'components.IssueModal.issueReasonWrongIssue': 'Mauvais numéro ou date',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Fichier endommagé ou illisible',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Titre ou métadonnées incorrects',
+      'components.IssueModal.issueOther': 'Autre',
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -31340,6 +31417,7 @@ export const localeData = [
       'i18n.next': 'Dalje',
       'i18n.previous': 'Prethodno',
       'i18n.usersettings': 'Korisničke postavke',
+      'components.IssueModal.issueOther': 'Ostalo',
     },
   },
   {
@@ -31585,6 +31663,7 @@ export const localeData = [
       'components.Settings.SettingsNetwork.proxyHostname': 'שם מארח Proxy',
       'i18n.previous': 'קודם',
       'i18n.usersettings': 'הגדרות משתמש',
+      'components.IssueModal.issueOther': 'אחר',
     },
   },
   {
@@ -33291,6 +33370,16 @@ export const localeData = [
         'अनुरोध प्रस्तुत किया गया था, लेकिन Lidarr प्रसंस्करण के दौरान इसे खारिज कर दिया गया।',
       'components.RequestModal.Music.requesterror':
         'अनुरोध प्रस्तुत करते समय कुछ गलत हो गया।',
+      'components.IssueList.IssueItem.issuereason': 'कारण',
+      'components.IssueModal.issueReasonMissingContent': 'लापता सामग्री',
+      'components.IssueModal.issueReasonMissingIssue': 'अंक गायब',
+      'components.IssueModal.issueReasonWrongEdition': 'गलत संस्करण या वैरिएंट',
+      'components.IssueModal.issueReasonWrongIssue': 'गलत अंक या तारीख',
+      'components.IssueModal.issueReasonDamagedFile':
+        'क्षतिग्रस्त या अपठनीय फ़ाइल',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'गलत शीर्षक या मेटाडाटा',
+      'components.IssueModal.issueOther': 'अन्य',
     },
   },
   {
@@ -33950,6 +34039,7 @@ export const localeData = [
       'i18n.next': 'Következő',
       'i18n.previous': 'Előző',
       'i18n.usersettings': 'Felhasználói beállítások',
+      'components.IssueModal.issueOther': 'Egyéb',
     },
   },
   {
@@ -35677,6 +35767,17 @@ export const localeData = [
         'Permintaan itu diajukan, tapi Lidarr menolaknya saat memproses.',
       'components.RequestModal.Music.requesterror':
         'Sesuatu yang salah saat mengirimkan permintaan.',
+      'components.IssueList.IssueItem.issuereason': 'Alasan',
+      'components.IssueModal.issueReasonMissingContent': 'Isi hilang',
+      'components.IssueModal.issueReasonMissingIssue': 'Edisi yang hilang',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Edisi salah atau varian',
+      'components.IssueModal.issueReasonWrongIssue': 'Nomor atau tanggal salah',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Berkas rusak atau tidak dapat dibaca',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Judul atau metadata salah',
+      'components.IssueModal.issueOther': 'Lainnya',
     },
   },
   {
@@ -36325,6 +36426,7 @@ export const localeData = [
       'i18n.next': 'Avanti',
       'i18n.previous': 'Precedente',
       'i18n.usersettings': 'Impostazioni utente',
+      'components.IssueModal.issueOther': 'Altro',
     },
   },
   {
@@ -38052,6 +38154,17 @@ export const localeData = [
         'リクエストは送信されましたが、Lidarr が処理中に拒否しました。',
       'components.RequestModal.Music.requesterror':
         'リクエストの送信中に問題が発生しました。',
+      'components.IssueList.IssueItem.issuereason': '理由',
+      'components.IssueModal.issueReasonMissingContent': 'コンテンツの欠如',
+      'components.IssueModal.issueReasonMissingIssue': '欠号',
+      'components.IssueModal.issueReasonWrongEdition':
+        '誤った版またはバリアント',
+      'components.IssueModal.issueReasonWrongIssue': '号数または日付が違う',
+      'components.IssueModal.issueReasonDamagedFile':
+        '破損または読み取れないファイル',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'タイトルやメタデータの誤り',
+      'components.IssueModal.issueOther': 'その他',
     },
   },
   {
@@ -39724,6 +39837,16 @@ export const localeData = [
         '요청이 제출되었지만 Lidarr은 처리 중에 거부했습니다.',
       'components.RequestModal.Music.requesterror':
         '요청을 제출하는 동안 문제가 발생했습니다.',
+      'components.IssueList.IssueItem.issuereason': '사유',
+      'components.IssueModal.issueReasonMissingContent': '누락된 콘텐츠',
+      'components.IssueModal.issueReasonMissingIssue': '누락된 호',
+      'components.IssueModal.issueReasonWrongEdition': '잘못된 판 또는 변형판',
+      'components.IssueModal.issueReasonWrongIssue': '호수 또는 날짜가 잘못됨',
+      'components.IssueModal.issueReasonDamagedFile':
+        '손상되었거나 읽을 수 없는 파일',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        '잘못된 제목 또는 메타데이터',
+      'components.IssueModal.issueOther': '기타',
     },
   },
   {
@@ -39881,6 +40004,7 @@ export const localeData = [
       'i18n.next': 'Kitas',
       'i18n.previous': 'Ankstesnis',
       'i18n.usersettings': 'Vartotojo nustatymai',
+      'components.IssueModal.issueOther': 'Kita',
     },
   },
   {
@@ -40304,6 +40428,7 @@ export const localeData = [
       'i18n.next': 'Neste',
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Bruker-instillinger',
+      'components.IssueModal.issueOther': 'Annet',
     },
   },
   {
@@ -40966,6 +41091,7 @@ export const localeData = [
       'i18n.next': 'Volgende',
       'i18n.previous': 'Vorige',
       'i18n.usersettings': 'Gebruikersinstellingen',
+      'components.IssueModal.issueOther': 'Anders',
     },
   },
   {
@@ -41627,6 +41753,7 @@ export const localeData = [
       'i18n.next': 'Następny',
       'i18n.previous': 'Poprzedni',
       'i18n.usersettings': 'Ustawienia użytkownika',
+      'components.IssueModal.issueOther': 'Inny',
     },
   },
   {
@@ -43386,6 +43513,18 @@ export const localeData = [
         'O pedido foi apresentado, mas Lidarr rejeitou enquanto processava.',
       'components.RequestModal.Music.requesterror':
         'Algo deu errado ao enviar a solicitação.',
+      'components.IssueList.IssueItem.issuereason': 'Razão',
+      'components.IssueModal.issueReasonMissingContent': 'Falta o conteúdo.',
+      'components.IssueModal.issueReasonMissingIssue': 'Edição ausente',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Edição errada ou variante.',
+      'components.IssueModal.issueReasonWrongIssue':
+        'Número ou data incorretos',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Arquivo danificado ou ilegível',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Título ou metadados incorretos',
+      'components.IssueModal.issueOther': 'Outro',
     },
   },
   {
@@ -44021,6 +44160,7 @@ export const localeData = [
       'i18n.next': 'Próxima',
       'i18n.previous': 'Anterior',
       'i18n.usersettings': 'Utilizadores',
+      'components.IssueModal.issueOther': 'Outros',
     },
   },
   {
@@ -44362,6 +44502,7 @@ export const localeData = [
       'components.UserProfile.UserSettings.menuPermissions': 'Permisiuni',
       'i18n.previous': 'Precedent',
       'i18n.usersettings': 'Setări utilizator',
+      'components.IssueModal.issueOther': 'Altele',
     },
   },
   {
@@ -45031,6 +45172,7 @@ export const localeData = [
       'i18n.next': 'Следующая',
       'i18n.previous': 'Предыдущая',
       'i18n.usersettings': 'Настройки пользователя',
+      'components.IssueModal.issueOther': 'Другое',
     },
   },
   {
@@ -45447,6 +45589,7 @@ export const localeData = [
       'i18n.next': 'Tjetra',
       'i18n.previous': 'Para',
       'i18n.usersettings': 'Cilësimet e përdoruesit',
+      'components.IssueModal.issueOther': 'Të tjera',
     },
   },
   {
@@ -45613,6 +45756,7 @@ export const localeData = [
       'i18n.next': 'Sledeći',
       'i18n.previous': 'Prethodni',
       'i18n.usersettings': 'Korisnička podešavanja',
+      'components.IssueModal.issueOther': 'Ostalo',
     },
   },
   {
@@ -46271,6 +46415,7 @@ export const localeData = [
       'i18n.next': 'Nästa',
       'i18n.previous': 'Föregående',
       'i18n.usersettings': 'Användarinställningar',
+      'components.IssueModal.issueOther': 'Övrigt',
     },
   },
   {
@@ -46918,6 +47063,7 @@ export const localeData = [
       'i18n.next': 'Sonraki',
       'i18n.previous': 'Önceki',
       'i18n.usersettings': 'Kullanıcı Ayarları',
+      'components.IssueModal.issueOther': 'Diğer',
     },
   },
   {
@@ -47533,6 +47679,7 @@ export const localeData = [
       'i18n.next': 'Наступна',
       'i18n.previous': 'Попередня',
       'i18n.usersettings': 'Налаштування користувача',
+      'components.IssueModal.issueOther': 'Інше',
     },
   },
   {
@@ -49137,6 +49284,15 @@ export const localeData = [
       'components.RequestModal.Music.backendRequestFailed':
         '请求已提交，但 Lidarr 在处理过程中拒绝了该请求。',
       'components.RequestModal.Music.requesterror': '提交请求中出了点问题。',
+      'components.IssueList.IssueItem.issuereason': '原因',
+      'components.IssueModal.issueReasonMissingContent': '缺少内容',
+      'components.IssueModal.issueReasonMissingIssue': '缺期',
+      'components.IssueModal.issueReasonWrongEdition': '错误的版本或变体',
+      'components.IssueModal.issueReasonWrongIssue': '期号或日期错误',
+      'components.IssueModal.issueReasonDamagedFile': '损坏或无法读取的文件',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        '标题或元数据不正确',
+      'components.IssueModal.issueOther': '其他',
     },
   },
   {
@@ -50737,6 +50893,15 @@ export const localeData = [
       'components.RequestModal.Music.backendRequestFailed':
         '請求已送出，但 Lidarr 在處理時拒絕了該請求。',
       'components.RequestModal.Music.requesterror': '提出請求時出了點問題。',
+      'components.IssueList.IssueItem.issuereason': '理由',
+      'components.IssueModal.issueReasonMissingContent': '缺少內容',
+      'components.IssueModal.issueReasonMissingIssue': '缺期',
+      'components.IssueModal.issueReasonWrongEdition': '版本或變體錯誤',
+      'components.IssueModal.issueReasonWrongIssue': '錯誤的一期或日期',
+      'components.IssueModal.issueReasonDamagedFile': '損毀或無法讀取的檔案',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        '標題或中繼資料不正確',
+      'components.IssueModal.issueOther': '其他',
     },
   },
   {
@@ -52459,6 +52624,17 @@ export const localeData = [
         'Yêu cầu đã được đệ trình, nhưng Lidarr đã từ chối khi xử lý.',
       'components.RequestModal.Music.requesterror':
         'Có gì đó không ổn trong khi gửi yêu cầu.',
+      'components.IssueList.IssueItem.issuereason': 'Lý do',
+      'components.IssueModal.issueReasonMissingContent': 'Thiếu nội dung',
+      'components.IssueModal.issueReasonMissingIssue': 'Thiếu số phát hành',
+      'components.IssueModal.issueReasonWrongEdition':
+        'Phiên bản hoặc biến thể sai',
+      'components.IssueModal.issueReasonWrongIssue': 'Sai số, ngày tháng',
+      'components.IssueModal.issueReasonDamagedFile':
+        'Tập tin bị hỏng hay không đọc được',
+      'components.IssueModal.issueReasonIncorrectMetadata':
+        'Không đúng tiêu đề hay siêu dữ liệu',
+      'components.IssueModal.issueOther': 'Khác',
     },
   },
 ] as const;
