@@ -248,6 +248,7 @@ const issueMetadata = [
 function IssueList() {
   const { locale, t } = useLumenLocale();
   const [bookmark, setBookmark] = useSearchParams();
+  const [expandedIssue, setExpandedIssue] = useState<number>();
   const submitted = (bookmark.get('search') ?? '').trim().slice(0, 512);
   const parsedPage = Number(bookmark.get('page'));
   const page =
@@ -407,8 +408,11 @@ function IssueList() {
       {!!data?.results.length && (
         <ul className="setlist">
           {data.results.map((issue) => (
-            <li className="set" key={issue.id}>
-              <div>
+            <li
+              className={`set${expandedIssue === issue.id ? 'set-expanded' : ''}`}
+              key={issue.id}
+            >
+              <div className="set-body">
                 <IssueMediaTitle media={issue.media} />
                 <Link
                   to={{
@@ -424,6 +428,21 @@ function IssueList() {
                     #{issue.id}
                   </b>
                 </Link>
+                <button
+                  className="btn btn-quiet btn-sm"
+                  type="button"
+                  aria-expanded={expandedIssue === issue.id}
+                  aria-controls={`issue-inline-${issue.id}`}
+                  onClick={() =>
+                    setExpandedIssue((current) =>
+                      current === issue.id ? undefined : issue.id
+                    )
+                  }
+                >
+                  {expandedIssue === issue.id
+                    ? t('lumen.issues.hideDetails', 'Hide Details')
+                    : t('lumen.issues.viewDetails', 'View Details')}
+                </button>
                 {issue.comments?.[0] && (
                   <small>{issue.comments[0].message.slice(0, 160)}</small>
                 )}
@@ -467,6 +486,16 @@ function IssueList() {
                     t('lumen.issues.reporter', 'Reporter')}{' '}
                   · {timestamp(issue.createdAt, locale)}
                 </small>
+                <section
+                  id={`issue-inline-${issue.id}`}
+                  className="setlist"
+                  aria-label={t('lumen.issues.issueDetails', 'Issue Details')}
+                  hidden={expandedIssue !== issue.id}
+                >
+                  {expandedIssue === issue.id && (
+                    <Discussion id={issue.id} embedded />
+                  )}
+                </section>
               </div>
               <IssueStatus status={issue.status} />
             </li>
@@ -503,7 +532,13 @@ type IssueAction =
   | { kind: 'comment' | 'resolved' | 'open' | 'delete-issue' }
   | { kind: 'edit-comment' | 'delete-comment'; commentId: number };
 
-function Discussion({ id }: { id: number }) {
+function Discussion({
+  id,
+  embedded = false,
+}: {
+  id: number;
+  embedded?: boolean;
+}) {
   const { locale, t } = useLumenLocale();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -609,13 +644,15 @@ function Discussion({ id }: { id: number }) {
 
   return (
     <>
-      <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to={issueList}>
-          {listSearch
-            ? t('lumen.issues.backToIssues', 'Back to Issues')
-            : t('lumen.issues.allIssues', 'All Issues')}
-        </Link>
-      </div>
+      {!embedded && (
+        <div className="toolbar">
+          <Link className="btn btn-quiet btn-sm" to={issueList}>
+            {listSearch
+              ? t('lumen.issues.backToIssues', 'Back to Issues')
+              : t('lumen.issues.allIssues', 'All Issues')}
+          </Link>
+        </div>
+      )}
       <ServiceNote error={error} what="the issue" retry={reload} />
       {!data && !error && (
         <p className="note" role="status">

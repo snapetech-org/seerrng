@@ -1945,6 +1945,13 @@ a.person:hover {
   padding: 12px 14px;
   min-height: 56px;
 }
+.set.set-expanded {
+  align-items: flex-start;
+}
+.set > .set-body {
+  flex: 1 1 0%;
+  min-width: 0;
+}
 .set + .set {
   border-top: 1px solid var(--line);
 }

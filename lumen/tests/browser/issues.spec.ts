@@ -247,6 +247,93 @@ test('issue list resolves affected media titles from visible rows', async ({
   await expect(page.getByRole('link', { name: 'Video #7' })).toBeVisible();
 });
 
+test('issue discussions expand inline and preserve list context', async ({
+  page,
+}) => {
+  const comments = [
+    {
+      id: 1,
+      message: 'Playback freezes after the opening credits.',
+      createdAt: '2026-11-12T00:00:00Z',
+      user: { id: 2, displayName: 'Viewer' },
+    },
+  ];
+  const issue = () => ({
+    id: 12,
+    status: 1,
+    issueType: 1,
+    media: { mediaType: 'movie', tmdbId: 20 },
+    createdBy: { id: 2, displayName: 'Viewer' },
+    createdAt: '2026-11-12T00:00:00Z',
+    comments,
+  });
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = testApiPath(request.url());
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 4194304 } });
+    if (path === '/issue' && request.method() === 'GET')
+      return route.fulfill({
+        json: { results: [issue()], pageInfo: { page: 1, pages: 1 } },
+      });
+    if (path === '/issue/12' && request.method() === 'GET')
+      return route.fulfill({ json: issue() });
+    if (path === '/issue/12/comment' && request.method() === 'POST') {
+      expect(request.postDataJSON()).toEqual({ message: 'Inline follow-up' });
+      comments.push({
+        id: 2,
+        message: 'Inline follow-up',
+        createdAt: '2026-11-12T00:01:00Z',
+        user: { id: 2, displayName: 'Viewer' },
+      });
+      return route.fulfill({ status: 201, json: issue() });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(testAppPath('/issues'));
+
+  const disclosure = page.locator('button[aria-controls="issue-inline-12"]');
+  await disclosure.click();
+  await expect(disclosure).toHaveAttribute('aria-expanded', 'true');
+  await expect(page).toHaveURL(/\/issues(?:\?|$)/);
+  const discussion = page.getByRole('region', { name: 'Issue Details' });
+  await expect(
+    discussion.getByText('Playback freezes after the opening credits.')
+  ).toBeVisible();
+  if (
+    process.env.LUMEN_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_DIR}/issues-inline-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  await discussion
+    .getByRole('textbox', { name: 'Comment' })
+    .fill('Inline follow-up');
+  const addComment = discussion.getByRole('button', { name: 'Add Comment' });
+  await addComment.scrollIntoViewIfNeeded();
+  if (['iphone', 'android'].includes(test.info().project.name)) {
+    const action = await addComment.boundingBox();
+    const tabs = await page.locator('.tabbar').boundingBox();
+    expect(action).not.toBeNull();
+    expect(tabs).not.toBeNull();
+    expect(action!.y + action!.height).toBeLessThanOrEqual(tabs!.y);
+  }
+  await addComment.click();
+  await expect(discussion.getByText('Inline follow-up')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Hide Details' }).click();
+  await expect(discussion).toBeHidden();
+  await expect(page).toHaveURL(/\/issues(?:\?|$)/);
+});
+
 test('reporting uses the internal media row and opens the confirmed report', async ({
   page,
 }) => {

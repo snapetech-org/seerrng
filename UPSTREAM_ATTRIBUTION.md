@@ -66,7 +66,12 @@ upstream's [`IssueList`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa
 [`IssueDescription`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueDescription/index.tsx),
 and [`IssueComment`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/IssueDetails/IssueComment/index.tsx)
 under the upstream MIT license. SeerrNG's own logo and brand assets remain in
-use. The user-profile hierarchy is aligned with upstream's
+use. The inline issue-detail disclosure pattern was introduced in upstream
+issue-management work contributed by [@sct](https://github.com/sct) in
+[commit e402c42](https://github.com/seerr-team/seerr/commit/e402c42aaa7d795cd724856a2e23615bb1a3695d).
+Lumen independently adapts that interaction for its own discussion component
+and permission checks; this does not imply direct contribution to or endorsement
+of SeerrNG. The user-profile hierarchy is aligned with upstream's
 [`UserProfile`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/index.tsx)
 and [`ProfileHeader`](https://github.com/seerr-team/seerr/blob/564bfb08b54caa374bddaf820abfd226e5e69151/src/components/UserProfile/ProfileHeader/index.tsx)
 composition; SeerrNG-only quota and watchlist categories remain in a collapsed
