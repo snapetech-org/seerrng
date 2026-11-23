@@ -342,6 +342,127 @@ test('issue list resolves affected media titles from visible rows', async ({
     });
 });
 
+for (const { locale, label, reason } of [
+  { locale: 'en', label: 'Reason', reason: 'Wrong edition or variant' },
+  { locale: 'fr', label: 'Motif', reason: 'Mauvaise édition ou variante' },
+  { locale: 'ar', label: 'السبب', reason: 'إصدار أو نسخة غير صحيحة' },
+]) {
+  test(`issue rows show media-specific reasons in ${locale}`, async ({
+    page,
+  }, testInfo) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const path = testApiPath(route.request().url());
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 1, permissions: 2097152 } });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/issue/29')
+        return route.fulfill({
+          json: {
+            id: 29,
+            status: 1,
+            issueType: 4,
+            issueSubtype: 'wrong_edition',
+            media: {
+              mediaType: 'book',
+              identifiers: [{ provider: 'openlibrary', value: 'OL123W' }],
+            },
+            createdBy: { id: 1, displayName: 'Reporter' },
+            createdAt: '2026-11-12T00:00:00Z',
+            comments: [{ id: 1, message: 'Incorrect edition' }],
+          },
+        });
+      if (path === '/issue')
+        return route.fulfill({
+          json: {
+            results: [
+              {
+                id: 29,
+                status: 1,
+                issueType: 4,
+                issueSubtype: 'wrong_edition',
+                media: {
+                  mediaType: 'book',
+                  identifiers: [{ provider: 'openlibrary', value: 'OL123W' }],
+                },
+                createdBy: { id: 1, displayName: 'Reporter' },
+                createdAt: '2026-11-12T00:00:00Z',
+                comments: [{ id: 1, message: 'Incorrect edition' }],
+              },
+              {
+                id: 30,
+                status: 1,
+                issueType: 1,
+                issueSubtype: 'wrong_edition',
+                media: { mediaType: 'movie', tmdbId: 20 },
+                createdBy: { id: 1, displayName: 'Reporter' },
+                createdAt: '2026-11-12T00:00:00Z',
+                comments: [{ id: 1, message: 'Incorrect edition' }],
+              },
+            ],
+            pageInfo: { page: 1, pages: 1 },
+          },
+        });
+      if (path === '/book/OL123W')
+        return route.fulfill({
+          json: {
+            title: 'Example Book',
+            firstPublishYear: 2020,
+            numberOfPages: 320,
+          },
+        });
+      if (path === '/movie/20')
+        return route.fulfill({
+          json: {
+            title: 'Example Film',
+            releaseDate: '2020-01-01',
+            runtime: 90,
+          },
+        });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto(testAppPath('/issues'));
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    const bookCard = page
+      .getByRole('listitem')
+      .filter({ hasText: 'Example Book' });
+    await expect(
+      bookCard.getByText(`${label}:`, { exact: true })
+    ).toBeVisible();
+    await expect(bookCard.getByText(reason, { exact: true })).toBeVisible();
+    const movieCard = page
+      .getByRole('listitem')
+      .filter({ hasText: 'Example Film' });
+    await expect(movieCard.getByText(`${label}:`, { exact: true })).toHaveCount(
+      0
+    );
+
+    if (
+      locale === 'en' &&
+      process.env.LUMEN_ISSUE_REASON_CAPTURE &&
+      ['desktop', 'iphone'].includes(testInfo.project.name)
+    ) {
+      const { mkdir } = await import('node:fs/promises');
+      const { join } = await import('node:path');
+      await mkdir(process.env.LUMEN_ISSUE_REASON_CAPTURE, { recursive: true });
+      await page.screenshot({
+        path: join(
+          process.env.LUMEN_ISSUE_REASON_CAPTURE,
+          `issues-reason-${testInfo.project.name}.png`
+        ),
+        fullPage: true,
+        animations: 'disabled',
+      });
+    }
+
+    await page.goto(testAppPath('/issues/29'));
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(page.locator('.toolbar').getByText(reason)).toBeVisible();
+  });
+}
+
 test('issue list preserves legacy affected season and episode fields', async ({
   page,
 }) => {

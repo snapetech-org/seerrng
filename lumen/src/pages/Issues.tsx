@@ -5,6 +5,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
+import { isIssueSubtypeForMediaType } from '../../../server/constants/issue';
 import { api, artUrl, tmdbImg, type DetailDisclosurePins } from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -247,6 +248,14 @@ interface Issue {
     user?: Reporter;
     createdAt: string;
   }[];
+}
+
+function issueReasonTranslationKey(issue?: Issue) {
+  return issue?.media?.mediaType &&
+    issue.issueSubtype &&
+    isIssueSubtypeForMediaType(issue.media.mediaType, issue.issueSubtype)
+    ? `lumen.issueReport.reason.${issue.issueSubtype}`
+    : undefined;
 }
 
 function issueAffectedScope(
@@ -832,6 +841,17 @@ function IssueList() {
                       #{issue.id}
                     </Link>
                   </dd>
+                  {issueReasonTranslationKey(issue) && (
+                    <>
+                      <dt>{t('lumen.issueReport.reason', 'Reason')}:</dt>
+                      <dd>
+                        {t(
+                          issueReasonTranslationKey(issue)!,
+                          issue.issueSubtype!.replaceAll('_', ' ')
+                        )}
+                      </dd>
+                    </>
+                  )}
                   {issueAffectedScope(issue, t) ? (
                     <>
                       <dt>
@@ -1095,8 +1115,12 @@ function Discussion({
                 `lumen.issues.type.${data.issueType}`,
                 TYPES[data.issueType] ?? 'Issue'
               )}
-              {data.issueSubtype
-                ? ' · ' + data.issueSubtype.replaceAll('_', ' ')
+              {issueReasonTranslationKey(data)
+                ? ' · ' +
+                  t(
+                    issueReasonTranslationKey(data)!,
+                    data.issueSubtype!.replaceAll('_', ' ')
+                  )
                 : ''}
               {data.is4k ? ' · 4K' : ''}
             </span>
