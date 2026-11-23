@@ -7773,3 +7773,19 @@ states across desktop, iPhone, Android, and tablet in standalone and isolated
 Express-mounted builds. The shared settings localization suite also passes in
 English, French, and Arabic across all four viewports in both deployments.
 These fixtures do not prove live server persistence.
+
+### Music request dialog parity audit (2026-11-23)
+
+The matched fixture audit confirms Lumen preserves MP3/FLAC destination choice,
+per-quality availability, pending-request feedback, and successful submission
+for the selected service. The focused browser suite passes 16 cases across
+desktop, iPhone, Android, and tablet. Native source comparison found a remaining
+workflow gap: native Music opens its request dialog and exposes quota state and,
+for authorized users, profile, metadata profile, root folder, tags, and
+request-on-behalf-of controls. Lumen currently submits from the detail action
+and provides only a destination selector. Those controls must be adapted into
+Lumen's request-sheet pattern before Music request parity can be called
+complete. No production code changed in this audit. Matched native/Lumen
+captures at 1440 and 390 CSS pixels are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-visual-20261123/`;
+the phone native action group needs a scrolled capture before visual acceptance.
