@@ -112,3 +112,38 @@ test('malformed native Discover identifiers fall back safely', async ({
   await page.goto(`${mount}/discover/movies/studio/not-an-id`);
   await expect(page).toHaveURL(new RegExp(`${mount}/$`));
 });
+
+test('native Coming Soon bookmark opens Lumen Coming Soon and keeps URL state', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2, userType: 2 } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          initialized: true,
+          enabledMediaCategories: { movie: true, tv: true },
+        },
+      });
+    if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+    return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
+  });
+
+  await page.goto(`${mount}/coming-soon?media=movie#releases`);
+  await page.waitForFunction(
+    (expected) =>
+      window.location.pathname.replace('/lumen', '') +
+        window.location.search +
+        window.location.hash ===
+      expected,
+    '/soon?media=movie#releases'
+  );
+});

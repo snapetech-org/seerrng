@@ -73,6 +73,10 @@ query/hash preservation, and malformed identifiers.
 This covers route compatibility and does not substitute for production-mounted
 server acceptance or visual comparison of the destination pages.
 
+The native `/coming-soon` bookmark also redirects to Lumen's `/soon` route while
+preserving query and fragment state. Its browser case is included in the
+four-viewport run (32 cases, 128 runs).
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens

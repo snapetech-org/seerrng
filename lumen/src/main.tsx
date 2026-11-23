@@ -234,6 +234,11 @@ function NativeDiscoverBookmark() {
   );
 }
 
+function NativeComingSoonBookmark() {
+  const { search, hash } = useLocation();
+  return <Navigate to={`/soon${search}${hash}`} replace />;
+}
+
 function ProfileSettingsBookmark() {
   const { pathname, search } = useLocation();
   const suffix = pathname.split('/profile/settings')[1] ?? '';
@@ -370,6 +375,10 @@ function App() {
       <PageBoundary key={location.pathname}>
         <Routes>
           <Route path="/discover/*" element={<NativeDiscoverBookmark />} />
+          <Route
+            path="/coming-soon"
+            element={<NativeComingSoonBookmark />}
+          />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
           <Route path="/providers" element={<ProviderDiscovery />} />
