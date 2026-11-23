@@ -796,101 +796,107 @@ export function Music() {
           onChange={(value) => upd('type', value.join(','))}
         />
       </div>
-      <form
-        className="toolbar"
-        aria-label={t(
-          'lumen.music.discoveryFilters',
-          'Music Discovery Filters'
-        )}
-        key={filters.toString()}
-        onSubmit={(event) => {
-          event.preventDefault();
-          const form = new FormData(event.currentTarget);
-          const next = new URLSearchParams(p);
-          for (const key of [
-            ...MUSIC_FILTERS.map((field) => field.key),
-            'artistId',
-            'availability',
-          ]) {
-            const value = String(form.get(key) ?? '').trim();
-            if (value) next.set(key, value);
-            else next.delete(key);
-          }
-          setP(next, { replace: true });
-        }}
+      <details
+        className="adv more-filters"
+        open={filters.size > 0 || undefined}
       >
-        {MUSIC_FILTERS.map(({ key, label, fallback, type }) =>
-          key === 'artist' ? (
-            <MusicArtistFilter
-              key={key}
-              artist={filters.get(key) ?? ''}
-              artistId={filters.get('artistId') ?? ''}
-            />
-          ) : (
-            <label className="sel" key={key}>
-              <span className="lbl">{t(label, fallback)}</span>
-              <input
-                className="cfg-input"
-                type={type}
-                name={key}
-                defaultValue={filters.get(key) ?? ''}
-                maxLength={type === 'search' ? 256 : undefined}
+        <summary>{t('lumen.browse.moreFilters', 'More Filters')}</summary>
+        <form
+          className="toolbar"
+          aria-label={t(
+            'lumen.music.discoveryFilters',
+            'Music Discovery Filters'
+          )}
+          key={filters.toString()}
+          onSubmit={(event) => {
+            event.preventDefault();
+            const form = new FormData(event.currentTarget);
+            const next = new URLSearchParams(p);
+            for (const key of [
+              ...MUSIC_FILTERS.map((field) => field.key),
+              'artistId',
+              'availability',
+            ]) {
+              const value = String(form.get(key) ?? '').trim();
+              if (value) next.set(key, value);
+              else next.delete(key);
+            }
+            setP(next, { replace: true });
+          }}
+        >
+          {MUSIC_FILTERS.map(({ key, label, fallback, type }) =>
+            key === 'artist' ? (
+              <MusicArtistFilter
+                key={key}
+                artist={filters.get(key) ?? ''}
+                artistId={filters.get('artistId') ?? ''}
               />
-            </label>
-          )
-        )}
-        <label className="sel">
-          <span className="lbl">
-            {t('lumen.music.inLibrary', 'In Library')}
-          </span>
-          <select
-            name="availability"
-            defaultValue={filters.get('availability') ?? ''}
-          >
-            <option value="">
-              {t('lumen.music.anyQuality', 'Any Quality')}
-            </option>
-            <option value="mp3">MP3</option>
-            <option value="flac">FLAC</option>
-          </select>
-        </label>
-        <button className="btn btn-tonal btn-sm" type="submit">
-          {t('lumen.music.applyFilters', 'Apply Music Filters')}
-        </button>
-        {filters.has('genre') && (
-          <button
-            className="chip"
-            type="button"
-            onClick={() => upd('genre', '')}
-          >
-            {t('lumen.music.clearGenre', 'Clear Genre: {genre}', {
-              genre: filters.get('genre') ?? '',
-            })}
+            ) : (
+              <label className="sel" key={key}>
+                <span className="lbl">{t(label, fallback)}</span>
+                <input
+                  className="cfg-input"
+                  type={type}
+                  name={key}
+                  defaultValue={filters.get(key) ?? ''}
+                  maxLength={type === 'search' ? 256 : undefined}
+                />
+              </label>
+            )
+          )}
+          <label className="sel">
+            <span className="lbl">
+              {t('lumen.music.inLibrary', 'In Library')}
+            </span>
+            <select
+              name="availability"
+              defaultValue={filters.get('availability') ?? ''}
+            >
+              <option value="">
+                {t('lumen.music.anyQuality', 'Any Quality')}
+              </option>
+              <option value="mp3">MP3</option>
+              <option value="flac">FLAC</option>
+            </select>
+          </label>
+          <button className="btn btn-tonal btn-sm" type="submit">
+            {t('lumen.music.applyFilters', 'Apply Music Filters')}
           </button>
-        )}
-        {filters.has('artistId') && (
-          <button
-            className="chip"
-            type="button"
-            onClick={() => upd('artistId', '')}
-          >
-            {t('lumen.music.clearExactArtist', 'Clear Exact Artist')}
-          </button>
-        )}
-        {filters.size > 0 && (
-          <button
-            className="chip"
-            type="button"
-            onClick={() => {
-              const next = new URLSearchParams(p);
-              for (const key of filters.keys()) next.delete(key);
-              setP(next, { replace: true });
-            }}
-          >
-            {t('lumen.music.clearFilters', 'Clear Music Filters')}
-          </button>
-        )}
-      </form>
+          {filters.has('genre') && (
+            <button
+              className="chip"
+              type="button"
+              onClick={() => upd('genre', '')}
+            >
+              {t('lumen.music.clearGenre', 'Clear Genre: {genre}', {
+                genre: filters.get('genre') ?? '',
+              })}
+            </button>
+          )}
+          {filters.has('artistId') && (
+            <button
+              className="chip"
+              type="button"
+              onClick={() => upd('artistId', '')}
+            >
+              {t('lumen.music.clearExactArtist', 'Clear Exact Artist')}
+            </button>
+          )}
+          {filters.size > 0 && (
+            <button
+              className="chip"
+              type="button"
+              onClick={() => {
+                const next = new URLSearchParams(p);
+                for (const key of filters.keys()) next.delete(key);
+                setP(next, { replace: true });
+              }}
+            >
+              {t('lumen.music.clearFilters', 'Clear Music Filters')}
+            </button>
+          )}
+        </form>
+      </details>
       <ServiceNote
         error={list.items.length ? null : list.error}
         what="music"
