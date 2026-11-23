@@ -320,6 +320,7 @@ export interface AlbumDetails {
     position: number;
     length?: number;
     totalListenCount?: number;
+    artists?: { name: string; mbid: string }[];
   }[];
   tags?: {
     releaseGroup?: { tag: string; count: number }[];

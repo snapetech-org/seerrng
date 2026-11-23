@@ -41,6 +41,24 @@ The native matched visual comparison remains unverified because the isolated
 Next test server does not provide the API data used during server-side page
 rendering; Lumen-only screenshots do not establish visual parity.
 
+### Music album contributing artists
+
+Lumen album details now expose the primary album artist and unique track
+artists in a closed-by-default disclosure, with each entry linking to that
+artist's Lumen detail page. It uses the existing SeerrNG album response's
+MusicBrainz IDs, preserves the album-artist role when the same person also
+performs on a track, and localizes the disclosure and role labels in English,
+French, and Arabic.
+
+Fixture coverage checks default-collapsed behavior, primary and track artist
+links, duplicate removal, and all three locales. The disclosure reuses the
+existing `adv`, `toolbar`, and `chip` styles; a native matched visual comparison
+for the wider album detail remains unverified. The standalone fixture passes 12
+cases across desktop, iPhone, Android, and tablet in English, French, and
+Arabic. The bundled production mount passes at desktop and phone sizes. Open and
+closed Lumen captures were inspected at desktop and phone sizes and are retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artists-20261123/`.
+
 ### Lumen French and Arabic catalog completion
 
 The Lumen paths for Request History, Admin Notifications loading feedback, linked

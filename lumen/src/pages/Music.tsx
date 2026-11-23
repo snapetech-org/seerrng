@@ -974,6 +974,32 @@ export function AlbumDetail() {
     .slice(0, 4)
     .map((t) => t.tag);
   const total = (a.tracks || []).reduce((n, t) => n + (t.length || 0), 0);
+  const contributors = new Map<
+    string,
+    { id: string; name: string; role: string }
+  >();
+  if (a.artist.id && a.artist.name) {
+    contributors.set(a.artist.id.toLowerCase(), {
+      id: a.artist.id,
+      name: a.artist.name,
+      role: t('lumen.music.albumArtist', 'Album Artist'),
+    });
+  }
+  for (const track of a.tracks ?? []) {
+    for (const artist of track.artists ?? []) {
+      const artistId = artist.mbid?.trim();
+      const name = artist.name?.trim();
+      if (!artistId || !name || contributors.has(artistId.toLowerCase())) {
+        continue;
+      }
+      contributors.set(artistId.toLowerCase(), {
+        id: artistId,
+        name,
+        role: t('lumen.music.trackArtist', 'Track Artist'),
+      });
+    }
+  }
+  const artistContributors = [...contributors.values()];
   const main = canRequestMusic(user?.permissions) ? (
     <MusicFormatRequestActions album={a} refresh={refresh} />
   ) : null;
@@ -1050,6 +1076,25 @@ export function AlbumDetail() {
             />
             <WatchlistButton mediaType="music" detail={a} requestedId={id} />
           </div>
+          {artistContributors.length > 0 && (
+            <details className="adv" data-testid="music-artist-list">
+              <summary>
+                <Icon name="chev" size="sm" />
+                {t('lumen.music.viewArtists', 'View Artists')}
+              </summary>
+              <div className="toolbar">
+                {artistContributors.map((artist) => (
+                  <Link
+                    key={artist.id.toLowerCase()}
+                    className="chip"
+                    to={`/artist/${encodeURIComponent(artist.id)}`}
+                  >
+                    {artist.name} · {artist.role}
+                  </Link>
+                ))}
+              </div>
+            </details>
+          )}
           <div className="dacts pc">{main}</div>
           <div className="dcols">
             <div>

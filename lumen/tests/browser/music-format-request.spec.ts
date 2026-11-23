@@ -18,6 +18,7 @@ async function fixture(
     quotaByUser?: Record<number, unknown>;
     users?: unknown[];
     locale?: string;
+    trackArtists?: { name: string; mbid: string }[];
   } = {},
   route = '/music/42'
 ) {
@@ -107,8 +108,18 @@ async function fixture(
           title: 'Fixture Album',
           artist: { id: 'fixture-artist', name: 'Fixture Artist' },
           tracks: [
-            { position: 1, name: 'Opening Track', length: 182000 },
-            { position: 2, name: 'Closing Track', length: 201000 },
+            {
+              position: 1,
+              name: 'Opening Track',
+              length: 182000,
+              artists: options.trackArtists ?? [],
+            },
+            {
+              position: 2,
+              name: 'Closing Track',
+              length: 201000,
+              artists: options.trackArtists ?? [],
+            },
           ],
           availableServices: options.availableServices ?? [
             { serverId: 1, quality: 'MP3' },
@@ -177,6 +188,72 @@ test('music details link to the request discography workflow with exact identity
     'href',
     '/collections/music/fixture-artist?view=discography'
   );
+});
+
+test('music album details disclose each unique contributing artist in the saved locale', async ({
+  page,
+}) => {
+  const locale = ['fr', 'ar'].includes(
+    process.env.LUMEN_MUSIC_ARTISTS_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_MUSIC_ARTISTS_LOCALE as 'fr' | 'ar')
+    : 'en';
+  const copy = {
+    en: {
+      view: 'View Artists',
+      album: 'Album Artist',
+      track: 'Track Artist',
+    },
+    fr: {
+      view: 'Voir les artistes',
+      album: 'Artiste de l’album',
+      track: 'Artiste du morceau',
+    },
+    ar: {
+      view: 'عرض الفنانين',
+      album: 'فنان الألبوم',
+      track: 'فنان المسار',
+    },
+  }[locale];
+  await fixture(page, {
+    locale,
+    trackArtists: [
+      { mbid: 'fixture-artist', name: 'Fixture Artist' },
+      { mbid: 'fixture-featured-artist', name: 'Featured Artist' },
+      { mbid: 'fixture-featured-artist', name: 'Featured Artist' },
+    ],
+  });
+  const disclosure = page.getByTestId('music-artist-list');
+  await expect(disclosure).toHaveJSProperty('open', false);
+  const capture = process.env.LUMEN_MUSIC_ARTIST_LIST_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-closed-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
+  await disclosure.locator('summary').click();
+  await expect(
+    disclosure.getByRole('link', {
+      name: `Fixture Artist · ${copy.album}`,
+    })
+  ).toHaveAttribute('href', '/artist/fixture-artist');
+  const featuredArtist = disclosure.getByRole('link', {
+    name: `Featured Artist · ${copy.track}`,
+  });
+  await expect(featuredArtist).toHaveAttribute(
+    'href',
+    '/artist/fixture-featured-artist'
+  );
+  await expect(
+    disclosure.locator('a[href="/artist/fixture-featured-artist"]')
+  ).toHaveCount(1);
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
 });
 
 test('artist details follow new album releases with native rule identity', async ({
