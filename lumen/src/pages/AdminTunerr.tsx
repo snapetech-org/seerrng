@@ -146,8 +146,45 @@ function Editor({ initial }: { initial: Settings }) {
         });
       } else {
         const result = await api<Settings>(path, { method: 'PUT', body });
-        setSaved(result);
-        setDraft(toDraft(result));
+        const readback = await api<Settings>(path);
+        const expected = {
+          ...draft,
+          hostname: draft.hostname.trim(),
+          baseUrl: draft.baseUrl.trim()
+            ? `/${draft.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+            : '',
+          guideUrl: draft.guideUrl.trim(),
+          sportarrBaseUrl: draft.sportarrBaseUrl.trim()
+            ? new URL(draft.sportarrBaseUrl.trim())
+                .toString()
+                .replace(/\/+$/u, '')
+            : '',
+          deckPort: Number(draft.deckPort),
+          tunerPort: Number(draft.tunerPort),
+          guideHours: Number(draft.guideHours),
+          passwordConfigured: clear
+            ? false
+            : password
+              ? true
+              : saved.passwordConfigured,
+        };
+        const confirmed = Object.entries(expected).every(
+          ([field, value]) =>
+            result[field as keyof Settings] === value &&
+            readback[field as keyof Settings] === value
+        );
+        if (!confirmed) {
+          setNotice({
+            text: t(
+              'lumen.tunerr.saveFailed',
+              'Could not save Tunerr settings.'
+            ),
+            error: true,
+          });
+          return;
+        }
+        setSaved(readback);
+        setDraft(toDraft(readback));
         setPassword('');
         setClear(false);
         setNotice({ text: t('lumen.tunerr.saved', 'Tunerr settings saved.') });

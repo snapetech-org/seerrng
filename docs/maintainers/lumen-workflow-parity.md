@@ -7585,3 +7585,16 @@ successful retry. French and Arabic page checks retain their expected labels and
 fit within the viewport. Desktop retry-state captures were inspected. Fixtures
 do not verify live provider connectivity or persisted settings files. Evidence:
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/request-service/`.
+
+### Tunerr settings save readback
+
+The Lumen Tunerr editor now verifies normalized connection settings and the
+redacted password-configured state in both the PUT response and a fresh GET.
+When readback is stale, edits and password intent remain available for retry.
+
+The settings and partial-connectivity workflow passes on desktop, iPhone,
+Android, and tablet (12 cases), including stale readback followed by a verified
+retry. The desktop failure capture was inspected; the changed guide window and
+retry action remain visible. Fixtures do not verify live Tunerr/Sportarr
+connectivity or persisted settings files. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/tunerr/`.

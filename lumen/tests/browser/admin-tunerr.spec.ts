@@ -107,6 +107,8 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
     passwordConfigured: true,
     password: '[REDACTED]',
   };
+  const initialSettings = { ...settings };
+  let saveAttempts = 0;
   let linked = false;
   const actions: { path: string; body: Record<string, unknown> }[] = [];
   const path = '/settings/tunerr';
@@ -153,9 +155,15 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
       if (request.method() === 'PUT') {
         const body = request.postDataJSON();
         actions.push({ path: url, body });
+        saveAttempts += 1;
         settings = { ...settings, ...body };
       }
-      return route.fulfill({ json: settings });
+      return route.fulfill({
+        json:
+          request.method() === 'GET' && saveAttempts === 1
+            ? initialSettings
+            : settings,
+      });
     }
     return route.fulfill({ json: {} });
   });
@@ -180,6 +188,17 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
     fullPage: true,
   });
   const save = page.getByRole('button', { name: 'Save Changes' });
+  await save.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Could not save Tunerr settings.'
+  );
+  const captureDir = process.env.LUMEN_TUNERR_CAPTURE_DIR;
+  if (captureDir)
+    await page.screenshot({
+      path: `${captureDir}/readback-failure-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+  await expect(page.getByLabel('Guide Window (Hours)')).toHaveValue('48');
   await save.click();
   await expect(page.getByText('Tunerr settings saved.')).toBeVisible();
   for (const { body } of actions) {
