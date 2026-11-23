@@ -96,8 +96,23 @@ function HostEditor({
         body: JSON.stringify({ hosts }),
       });
       if (generation !== sessionGeneration()) return;
-      setSaved(result);
-      reset(result);
+      const readback = await api<Host[]>(connectionHostsPath);
+      if (generation !== sessionGeneration()) return;
+      if (
+        !Array.isArray(result) ||
+        !Array.isArray(readback) ||
+        JSON.stringify(readback) !== JSON.stringify(result)
+      ) {
+        setError(
+          t(
+            'lumen.adminConnectionHosts.confirmFailure',
+            'Could not confirm the saved connection hosts.'
+          )
+        );
+        return;
+      }
+      setSaved(readback);
+      reset(readback);
       setMessage(
         t('lumen.adminConnectionHosts.saved', 'Connection hosts saved.')
       );

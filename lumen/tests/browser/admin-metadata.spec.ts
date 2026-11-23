@@ -74,6 +74,13 @@ test('metadata sections save independently and expose failed provider checks', a
   const writes: { path: string; body: unknown }[] = [];
   const base = '/settings/metadatas';
   const music = { maxConcurrentRequests: 2, maxRequestsPerSecond: 10 };
+  const settings: Record<string, Record<string, unknown>> = {
+    [base]: { tv: 'tmdb', anime: 'tmdb' },
+    [`${base}/music`]: music,
+    [`${base}/books`]: { allowedLanguages: [] },
+  };
+  let persistWrites = false;
+  let failWriteOnce = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -85,14 +92,7 @@ test('metadata sections save independently and expose failed provider checks', a
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!path.startsWith(base)) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
-      return route.fulfill({
-        json:
-          path === base
-            ? { tv: 'tmdb', anime: 'tmdb' }
-            : path.endsWith('/music')
-              ? music
-              : { allowedLanguages: [] },
-      });
+      return route.fulfill({ json: settings[path] });
     }
     const body = request.postDataJSON();
     writes.push({ path, body });
@@ -102,7 +102,15 @@ test('metadata sections save independently and expose failed provider checks', a
         json: { success: false, tests: { tmdb: 'ok', tvdb: 'failed' } },
       });
     }
-    return route.fulfill({ json: { success: true, ...body } });
+    if (failWriteOnce) {
+      failWriteOnce = false;
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Metadata service unavailable.' },
+      });
+    }
+    if (persistWrites) Object.assign(settings[path], body);
+    return route.fulfill({ json: { ...settings[path], ...body } });
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Metadata Providers' }).click();
@@ -114,6 +122,33 @@ test('metadata sections save independently and expose failed provider checks', a
   ).toBeDisabled();
   await requests.fill('25');
   await page.getByRole('button', { name: 'Save Music Metadata' }).click();
+  await expect(
+    page.getByText('Metadata service unavailable.', { exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('metadata-write-failure.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Save Music Metadata' }).click();
+  await expect(
+    page.getByText('Could not confirm the saved metadata settings.', {
+      exact: true,
+    })
+  ).toBeVisible();
+  await expect(requests).toHaveValue('25');
+  await page.screenshot({
+    path: info.outputPath('metadata-readback-failure.png'),
+    fullPage: true,
+  });
+  persistWrites = true;
+  await page.getByRole('button', { name: 'Save Music Metadata' }).click();
+  await expect(
+    page.getByText('Settings saved.', { exact: true })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('metadata-readback-recovered.png'),
+    fullPage: true,
+  });
   await expect(requests).toHaveValue('25');
   await expect(languages).toHaveValue('english');
   await languages.fill('ENG, fre');
@@ -133,6 +168,8 @@ test('metadata sections save independently and expose failed provider checks', a
     page.getByRole('button', { name: 'Save TV and Anime' })
   ).toBeDisabled();
   expect(writes).toEqual([
+    { path: base + '/music', body: { ...music, maxRequestsPerSecond: 25 } },
+    { path: base + '/music', body: { ...music, maxRequestsPerSecond: 25 } },
     { path: base + '/music', body: { ...music, maxRequestsPerSecond: 25 } },
     { path: base + '/books', body: { allowedLanguages: ['eng', 'fre'] } },
     { path: base + '/test', body: { tmdb: true, tvdb: true } },

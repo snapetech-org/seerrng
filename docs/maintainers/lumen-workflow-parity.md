@@ -195,6 +195,27 @@ does not verify a live SeerrNG database or dependent login behavior. Evidence
 is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-general-settings-readback-20261122/`.
 
+### Administrator settings persisted readback
+
+Lumen now confirms administrator category switches, Age Gate settings,
+metadata provider settings, and saved connection hosts through a fresh read
+after a successful write. Category, Age Gate, and metadata saves compare the
+persisted values with the write response; host saves compare the canonical
+server response with the readback.
+When a readback is stale or disagrees, each form keeps its draft and offers a
+retry. Category cache invalidation happens only after confirmation. New
+confirmation messages for metadata and connection hosts follow English,
+French, and Arabic locales.
+
+Twenty focused browser cases pass across desktop, iPhone, Android, and tablet.
+They cover stale readback and retry plus neighboring category, Age Gate,
+metadata provider-test, host-validation, and write-failure recovery behavior.
+Matched failure/recovery captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-settings-readback-20261122/`.
+Desktop and phone states were inspected for alert placement, form retention,
+navigation clearance, and overflow. Production build passes; these fixtures do
+not verify live settings persistence or provider connections.
+
 ### Per-user external request lists
 
 Lumen Account Settings now exposes SeerrNG's authenticated external request list

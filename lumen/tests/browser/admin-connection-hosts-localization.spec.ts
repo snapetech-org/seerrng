@@ -5,7 +5,7 @@ const appPath = (path: string) => `${mount}${path}`;
 
 test('Connection Hosts follow the saved locale and preserve edits through failures', async ({
   page,
-}) => {
+}, info) => {
   const locale = ['en', 'fr', 'ar'].includes(
     process.env.LUMEN_HOSTS_LOCALE ?? ''
   )
@@ -30,6 +30,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
       discard: 'Discard Changes',
       saved: 'Connection hosts saved.',
       failure: 'The server had a problem. Try again in a moment.',
+      confirmFailure: 'Could not confirm the saved connection hosts.',
       duplicate: 'Saved host names must be unique.',
     },
     fr: {
@@ -49,6 +50,8 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
       discard: 'Annuler',
       saved: 'Hôtes de connexion enregistrés.',
       failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      confirmFailure:
+        'Impossible de confirmer l’enregistrement des hôtes de connexion.',
       duplicate: 'Les noms des hôtes enregistrés doivent être uniques.',
     },
     ar: {
@@ -68,6 +71,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
       discard: 'تراجع',
       saved: 'تم حفظ مضيفات الاتصال.',
       failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+      confirmFailure: 'تعذّر تأكيد حفظ مضيفات الاتصال.',
       duplicate: 'يجب أن تكون أسماء المضيفين المحفوظة فريدة.',
     },
   }[locale];
@@ -92,6 +96,7 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
     : translated;
   let hosts = [{ name: 'Docker network', hostname: 'media-stack' }];
   let failOnce = true;
+  let staleReadbackOnce = true;
   const writes: { hosts: { name: string; hostname: string }[] }[] = [];
 
   await page.route('https://**/*', (route) => route.abort());
@@ -121,6 +126,10 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
             status: 503,
             json: { message: 'Service unavailable.' },
           });
+        }
+        if (staleReadbackOnce) {
+          staleReadbackOnce = false;
+          return route.fulfill({ json: body.hosts });
         }
         if (
           new Set(body.hosts.map(({ name }) => name.toLowerCase())).size !==
@@ -181,8 +190,24 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
   await expect(page.getByRole('alert')).toContainText(labels.failure);
   await expect(name).toHaveValue('Changed network');
   await expect(hostname).toHaveValue('new-media-stack');
+  await page.screenshot({
+    path: info.outputPath('hosts-write-failure.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: labels.save, exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText(labels.confirmFailure);
+  await expect(name).toHaveValue('Changed network');
+  await expect(hostname).toHaveValue('new-media-stack');
+  await page.screenshot({
+    path: info.outputPath('hosts-readback-failure.png'),
+    fullPage: true,
+  });
   await page.getByRole('button', { name: labels.save, exact: true }).click();
   await expect(page.getByText(labels.saved, { exact: true })).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('hosts-readback-recovered.png'),
+    fullPage: true,
+  });
   expect(hosts).toEqual([
     { name: 'Changed network', hostname: 'new-media-stack' },
   ]);
@@ -221,6 +246,9 @@ test('Connection Hosts follow the saved locale and preserve edits through failur
   await page.getByRole('button', { name: labels.save, exact: true }).click();
   await expect(page.getByText(labels.saved, { exact: true })).toBeVisible();
   expect(writes).toEqual([
+    {
+      hosts: [{ name: 'Changed network', hostname: 'new-media-stack' }],
+    },
     {
       hosts: [{ name: 'Changed network', hostname: 'new-media-stack' }],
     },

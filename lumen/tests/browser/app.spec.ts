@@ -6514,10 +6514,12 @@ test('System Logs filters server entries and excludes non-admins', async ({
 
 test('Media Categories saves only changed instance switches and excludes non-admins', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   let permissions = 2;
   let reads = 0;
+  let persistChanges = false;
+  let mismatchWriteOnce = true;
   const writes: unknown[] = [];
   const categories = { movie: true, tv: true, adult: false };
   await page.route('**/api/v1/auth/me', (route) =>
@@ -6527,7 +6529,20 @@ test('Media Categories saves only changed instance switches and excludes non-adm
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
       writes.push(body);
-      Object.assign(categories, body.enabledMediaCategories);
+      if (mismatchWriteOnce) {
+        mismatchWriteOnce = false;
+        return route.fulfill({ json: { enabledMediaCategories: categories } });
+      }
+      if (persistChanges)
+        Object.assign(categories, body.enabledMediaCategories);
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: {
+            ...categories,
+            ...body.enabledMediaCategories,
+          },
+        },
+      });
     } else reads++;
     return route.fulfill({ json: { enabledMediaCategories: categories } });
   });
@@ -6535,8 +6550,40 @@ test('Media Categories saves only changed instance switches and excludes non-adm
   await page.getByRole('link', { name: 'Open Media Categories' }).click();
   await page.getByRole('checkbox', { name: 'Movies', exact: true }).uncheck();
   await page.getByRole('button', { name: 'Save Categories' }).click();
+  await expect(
+    page.getByText('The server did not confirm the saved categories.', {
+      exact: true,
+    })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('categories-write-response-failure.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Save Categories' }).click();
+  await expect(
+    page.getByText('The server did not confirm the saved categories.', {
+      exact: true,
+    })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('checkbox', { name: 'Movies', exact: true })
+  ).not.toBeChecked();
+  await page.screenshot({
+    path: info.outputPath('categories-readback-failure.png'),
+    fullPage: true,
+  });
+  persistChanges = true;
+  await page.getByRole('button', { name: 'Save Categories' }).click();
   await expect(page.getByText('Category settings saved.')).toBeVisible();
-  expect(writes).toEqual([{ enabledMediaCategories: { movie: false } }]);
+  await page.screenshot({
+    path: info.outputPath('categories-readback-recovered.png'),
+    fullPage: true,
+  });
+  expect(writes).toEqual([
+    { enabledMediaCategories: { movie: false } },
+    { enabledMediaCategories: { movie: false } },
+    { enabledMediaCategories: { movie: false } },
+  ]);
   await expect(page.getByRole('checkbox', { name: 'Series' })).toBeChecked();
   await page.reload();
   await expect(
@@ -6600,7 +6647,7 @@ test('Default user categories save independently of instance availability', asyn
 
 test('Instance Age Gate saves changed settings without submitting category drafts', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   const ageGate = {
     defaultRestricted: false,
@@ -6609,6 +6656,7 @@ test('Instance Age Gate saves changed settings without submitting category draft
     certificationCountry: 'US',
   };
   const writes: unknown[] = [];
+  let persistAgeGate = false;
   await page.route('**/api/v1/settings/main', (route) => {
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
@@ -6619,7 +6667,13 @@ test('Instance Age Gate saves changed settings without submitting category draft
           json: { message: 'Could not save settings.' },
         });
       }
-      Object.assign(ageGate, body.ageGate);
+      if (persistAgeGate) Object.assign(ageGate, body.ageGate);
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: { movie: true },
+          ageGate: { ...ageGate, ...body.ageGate },
+        },
+      });
     }
     return route.fulfill({
       json: { enabledMediaCategories: { movie: true }, ageGate },
@@ -6645,8 +6699,28 @@ test('Instance Age Gate saves changed settings without submitting category draft
   );
   await expect(restricted).toBeChecked();
   await expect(country).toHaveValue('ca');
+  await page.screenshot({
+    path: info.outputPath('age-gate-write-failure.png'),
+    fullPage: true,
+  });
+  await save.click();
+  await expect(
+    page.getByText('The server did not confirm the saved Age Gate settings.', {
+      exact: true,
+    })
+  ).toBeVisible();
+  await expect(country).toHaveValue('ca');
+  await page.screenshot({
+    path: info.outputPath('age-gate-readback-failure.png'),
+    fullPage: true,
+  });
+  persistAgeGate = true;
   await save.click();
   await expect(page.getByText('Age Gate settings saved.')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('age-gate-readback-recovered.png'),
+    fullPage: true,
+  });
   await expect(country).toHaveValue('CA');
   await expect(movies).not.toBeChecked();
   await expect(
@@ -6659,7 +6733,7 @@ test('Instance Age Gate saves changed settings without submitting category draft
       certificationCountry: 'CA',
     },
   };
-  expect(writes).toEqual([patch, patch]);
+  expect(writes).toEqual([patch, patch, patch]);
   await page.reload();
   await expect(restricted).toBeChecked();
   await expect(movieLimit).toHaveValue('PG');

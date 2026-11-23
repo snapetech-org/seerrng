@@ -163,8 +163,25 @@ function MetadataForm({
       if (test || video) setStatuses(statusValues(response.tests, providers));
       if (!test) {
         const values = config.read(response);
-        setSaved(values);
-        setDraft(values);
+        const readback = await api<Record<string, unknown>>(config.endpoint);
+        if (generation !== sessionGeneration()) return;
+        const persisted = config.read(readback);
+        if (
+          config.fields.some(
+            ({ key }) =>
+              values[key] === 'undefined' || values[key] !== persisted[key]
+          )
+        ) {
+          setFailure(
+            t(
+              'lumen.metadata.confirmFailed',
+              'Could not confirm the saved metadata settings.'
+            )
+          );
+          return;
+        }
+        setSaved(persisted);
+        setDraft(persisted);
         setNotice(t('lumen.metadata.saved', 'Settings saved.'));
       }
     } catch (error) {

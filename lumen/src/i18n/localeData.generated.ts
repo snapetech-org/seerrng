@@ -1949,6 +1949,8 @@ export const localeData = [
       'lumen.adminConnectionHosts.retry': 'إعادة المحاولة',
       'lumen.adminConnectionHosts.save': 'حفظ',
       'lumen.adminConnectionHosts.saveFailure': 'تعذّر حفظ مضيفات الاتصال.',
+      'lumen.adminConnectionHosts.confirmFailure':
+        'تعذّر تأكيد حفظ مضيفات الاتصال.',
       'lumen.adminConnectionHosts.saved': 'تم حفظ مضيفات الاتصال.',
       'lumen.adminConnectionHosts.sectionTitle': 'المضيفون المحفوظون',
       'lumen.adminConnectionHosts.title': 'مضيفو الاتصال',
@@ -4360,6 +4362,8 @@ export const localeData = [
       'lumen.metadata.save': 'حفظ',
       'lumen.metadata.saveCredentials': 'حفظ بيانات اعتماد البيانات الوصفية',
       'lumen.metadata.saveFailed': 'تعذر حفظ إعدادات البيانات الوصفية.',
+      'lumen.metadata.confirmFailed':
+        'تعذّر تأكيد حفظ إعدادات البيانات الوصفية.',
       'lumen.metadata.saved': 'تم حفظ الإعدادات.',
       'lumen.metadata.savedCredential': 'بيانات اعتماد محفوظة',
       'lumen.metadata.section.books': 'قيود لغة الكتب',
@@ -12843,6 +12847,8 @@ export const localeData = [
       'lumen.adminConnectionHosts.save': 'Save Changes',
       'lumen.adminConnectionHosts.saveFailure':
         'Could not save connection hosts.',
+      'lumen.adminConnectionHosts.confirmFailure':
+        'Could not confirm the saved connection hosts.',
       'lumen.adminConnectionHosts.saved': 'Connection hosts saved.',
       'lumen.adminConnectionHosts.sectionTitle': 'Saved Hosts',
       'lumen.adminConnectionHosts.title': 'Connection Hosts',
@@ -15233,6 +15239,8 @@ export const localeData = [
       'lumen.metadata.save': 'Save',
       'lumen.metadata.saveCredentials': 'Save Metadata Credentials',
       'lumen.metadata.saveFailed': 'Could not save metadata settings.',
+      'lumen.metadata.confirmFailed':
+        'Could not confirm the saved metadata settings.',
       'lumen.metadata.saved': 'Settings saved.',
       'lumen.metadata.savedCredential': 'Saved credential',
       'lumen.metadata.section.books': 'Book Language Restrictions',
@@ -24421,6 +24429,8 @@ export const localeData = [
       'lumen.adminConnectionHosts.save': 'Enregistrer',
       'lumen.adminConnectionHosts.saveFailure':
         'Impossible d’enregistrer les hôtes de connexion.',
+      'lumen.adminConnectionHosts.confirmFailure':
+        'Impossible de confirmer l’enregistrement des hôtes de connexion.',
       'lumen.adminConnectionHosts.saved': 'Hôtes de connexion enregistrés.',
       'lumen.adminConnectionHosts.sectionTitle': 'Hôtes enregistrés',
       'lumen.adminConnectionHosts.title': 'Hôtes de connexion',
@@ -27085,6 +27095,8 @@ export const localeData = [
         'Enregistrer les identifiants de métadonnées',
       'lumen.metadata.saveFailed':
         'Impossible d’enregistrer les paramètres de métadonnées.',
+      'lumen.metadata.confirmFailed':
+        'Impossible de confirmer l’enregistrement des paramètres de métadonnées.',
       'lumen.metadata.saved': 'Paramètres enregistrés.',
       'lumen.metadata.savedCredential': 'Identifiant enregistré',
       'lumen.metadata.section.books': 'Restrictions de langue des livres',

@@ -54,10 +54,17 @@ function CategoryForm({
         body: JSON.stringify({ [field]: draft }),
       });
       if (generation !== sessionGeneration()) return;
-      invalidatePublicSettings();
-      forget('/settings/public');
+      const readback = await api<CategorySettings>(path);
+      if (generation !== sessionGeneration()) return;
       const saved = result[field];
-      if (!saved || changes.some(([key, value]) => saved[key] !== value)) {
+      const persisted = readback[field];
+      if (
+        !saved ||
+        !persisted ||
+        changes.some(
+          ([key, value]) => saved[key] !== value || persisted[key] !== value
+        )
+      ) {
         setFailure(
           t(
             'lumen.adminCategories.confirmFailure',
@@ -66,7 +73,9 @@ function CategoryForm({
         );
         return;
       }
-      setCategories(saved);
+      invalidatePublicSettings();
+      forget('/settings/public');
+      setCategories(persisted);
       setDraft({});
       onSaved?.();
       setNotice(

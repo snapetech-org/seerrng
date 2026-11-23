@@ -70,11 +70,18 @@ export default function InstanceAgeGate({
         }
       );
       if (generation !== sessionGeneration()) return;
-      invalidatePublicSettings();
-      forget('/settings/public');
+      const readback = await api<{ ageGate?: AgeGateSettings }>(
+        '/settings/main'
+      );
+      if (generation !== sessionGeneration()) return;
       if (
         !result.ageGate ||
-        changed.some((key) => result.ageGate?.[key] !== values[key])
+        !readback.ageGate ||
+        changed.some(
+          (key) =>
+            result.ageGate?.[key] !== values[key] ||
+            readback.ageGate?.[key] !== values[key]
+        )
       ) {
         setFailure(
           t(
@@ -84,8 +91,10 @@ export default function InstanceAgeGate({
         );
         return;
       }
-      setSaved(result.ageGate);
-      setDraft(result.ageGate);
+      invalidatePublicSettings();
+      forget('/settings/public');
+      setSaved(readback.ageGate);
+      setDraft(readback.ageGate);
       setNotice(
         t('lumen.adminCategories.ageGateSaved', 'Age Gate settings saved.')
       );
