@@ -5585,5 +5585,7 @@
   "lumen.discover.requesting",
   "lumen.discover.requested",
   "lumen.discover.request",
-  "lumen.discover.bookSectionsFailed"
+  "lumen.discover.bookSectionsFailed",
+  "lumen.tunerr.saveFailed",
+  "lumen.software.saveFailed"
 ]

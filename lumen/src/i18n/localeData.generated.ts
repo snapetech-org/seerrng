@@ -6775,6 +6775,8 @@ export const localeData = [
       'lumen.discover.requested': 'تم الطلب',
       'lumen.discover.request': 'طلب',
       'lumen.discover.bookSectionsFailed': 'تعذر تحميل أرفف الكتب الشخصية.',
+      'lumen.tunerr.saveFailed': 'تعذر حفظ إعدادات Tunerr.',
+      'lumen.software.saveFailed': 'تعذر حفظ إعدادات اقتناء البرامج.',
     },
   },
   {
@@ -17694,6 +17696,9 @@ export const localeData = [
       'lumen.discover.request': 'Request',
       'lumen.discover.bookSectionsFailed':
         'Personal book shelves could not be loaded.',
+      'lumen.tunerr.saveFailed': 'Could not save Tunerr settings.',
+      'lumen.software.saveFailed':
+        'Could not save software acquisition settings.',
     },
   },
   {
@@ -29728,6 +29733,10 @@ export const localeData = [
       'lumen.discover.request': 'Demander',
       'lumen.discover.bookSectionsFailed':
         'Impossible de charger les étagères personnelles de livres.',
+      'lumen.tunerr.saveFailed':
+        'Impossible d’enregistrer les paramètres de Tunerr.',
+      'lumen.software.saveFailed':
+        'Impossible d’enregistrer les paramètres d’acquisition de logiciels.',
     },
   },
   {

@@ -186,23 +186,90 @@ function Editor({ initial }: { initial: Settings }) {
             .join(' '),
         });
       } else {
+        const payload = {
+          romarr: payloadFor(connections.romarr),
+          questarr: payloadFor(connections.questarr),
+          emulationCatalogProvider: catalog,
+          emulationSystemGroups: groups,
+          emulationPlatformMappings: mappings,
+          ...(removeSteam
+            ? { steamApiKey: '' }
+            : steamKey
+              ? { steamApiKey: steamKey }
+              : {}),
+        };
         const result = await api<Settings>(path, {
           method: 'PUT',
-          body: JSON.stringify({
-            romarr: payloadFor(connections.romarr),
-            questarr: payloadFor(connections.questarr),
-            emulationCatalogProvider: catalog,
-            emulationSystemGroups: groups,
-            emulationPlatformMappings: mappings,
-            ...(removeSteam
-              ? { steamApiKey: '' }
-              : steamKey
-                ? { steamApiKey: steamKey }
-                : {}),
-          }),
+          body: JSON.stringify(payload),
         });
-        setSaved(result);
-        reset(result);
+        const readback = await api<Settings>(path);
+        const expected = {
+          romarr: {
+            hostname: connections.romarr.hostname.trim(),
+            port: Number(connections.romarr.port),
+            useSsl: connections.romarr.useSsl,
+            baseUrl: connections.romarr.baseUrl.trim()
+              ? `/${connections.romarr.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+              : '',
+            apiKeyConfigured: connections.romarr.clear
+              ? false
+              : connections.romarr.apiKey
+                ? true
+                : saved.romarr.apiKeyConfigured,
+          },
+          questarr: {
+            hostname: connections.questarr.hostname.trim(),
+            port: Number(connections.questarr.port),
+            useSsl: connections.questarr.useSsl,
+            baseUrl: connections.questarr.baseUrl.trim()
+              ? `/${connections.questarr.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+              : '',
+            apiKeyConfigured: connections.questarr.clear
+              ? false
+              : connections.questarr.apiKey
+                ? true
+                : saved.questarr.apiKeyConfigured,
+          },
+          emulationCatalogProvider: catalog,
+          emulationSystemGroups: groups,
+          emulationPlatformMappings: mappings,
+          steamApiKeyConfigured: removeSteam
+            ? false
+            : steamKey
+              ? true
+              : saved.steamApiKeyConfigured,
+        };
+        const matches = (value: Settings) =>
+          value.romarr.hostname === expected.romarr.hostname &&
+          value.romarr.port === expected.romarr.port &&
+          value.romarr.useSsl === expected.romarr.useSsl &&
+          value.romarr.baseUrl === expected.romarr.baseUrl &&
+          value.romarr.apiKeyConfigured === expected.romarr.apiKeyConfigured &&
+          value.questarr.hostname === expected.questarr.hostname &&
+          value.questarr.port === expected.questarr.port &&
+          value.questarr.useSsl === expected.questarr.useSsl &&
+          value.questarr.baseUrl === expected.questarr.baseUrl &&
+          value.questarr.apiKeyConfigured ===
+            expected.questarr.apiKeyConfigured &&
+          value.emulationCatalogProvider ===
+            expected.emulationCatalogProvider &&
+          JSON.stringify(value.emulationSystemGroups) ===
+            JSON.stringify(expected.emulationSystemGroups) &&
+          JSON.stringify(value.emulationPlatformMappings) ===
+            JSON.stringify(expected.emulationPlatformMappings) &&
+          value.steamApiKeyConfigured === expected.steamApiKeyConfigured;
+        if (!matches(result) || !matches(readback)) {
+          setNotice({
+            text: t(
+              'lumen.software.saveFailed',
+              'Could not save software acquisition settings.'
+            ),
+            error: true,
+          });
+          return;
+        }
+        setSaved(readback);
+        reset(readback);
         systems.reload();
         if (showPreview) preview.reload();
         setNotice({

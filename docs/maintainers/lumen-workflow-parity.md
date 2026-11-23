@@ -7598,3 +7598,18 @@ retry. The desktop failure capture was inspected; the changed guide window and
 retry action remain visible. Fixtures do not verify live Tunerr/Sportarr
 connectivity or persisted settings files. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/tunerr/`.
+
+### Software acquisition settings save readback
+
+The Lumen software acquisition editor now confirms both provider connections,
+API-key configured state, Steam key state, catalog selection, emulator system
+groups, and IGDB platform mappings in the successful PUT response and a fresh
+GET. A mismatch retains the current edits and exposes a localized retryable
+error; secret values remain write-only.
+
+The provider test, rejected-save, stale-readback, retry, and mapping workflow
+passes on desktop, iPhone, Android, and tablet (12 cases). French and Arabic
+labels remain visible and the page has no horizontal overflow. Fixture behavior
+does not establish live ROMarrNG/QuestarrNG connectivity or persistence.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/software-acquisition/`.

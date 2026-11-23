@@ -112,6 +112,8 @@ test('software acquisition tests a saved connection, preserves keys and saves sy
     steamApiKeyConfigured: true,
   };
   let rejected = true;
+  let staleReadback = false;
+  let staleSettings = saved;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -161,12 +163,19 @@ test('software acquisition tests a saved connection, preserves keys and saves sy
             status: 400,
             json: { error: 'Software settings rejected.' },
           });
+        staleSettings = structuredClone(saved);
         saved = {
           ...saved,
           ...change,
           romarr: { ...saved.romarr, ...change.romarr },
           questarr: { ...saved.questarr, ...change.questarr },
         };
+        staleReadback = true;
+        return route.fulfill({ json: saved });
+      }
+      if (request.method() === 'GET' && staleReadback) {
+        staleReadback = false;
+        return route.fulfill({ json: staleSettings });
       }
       return route.fulfill({ json: saved });
     }
@@ -194,6 +203,17 @@ test('software acquisition tests a saved connection, preserves keys and saves sy
   );
   await expect(page.getByLabel('NES Platform')).toHaveValue('2');
   rejected = false;
+  await save.click();
+  await expect(page.getByRole('alert')).toHaveText(
+    'Could not save software acquisition settings.'
+  );
+  const captureDir = process.env.LUMEN_SOFTWARE_CAPTURE_DIR;
+  if (captureDir)
+    await page.screenshot({
+      path: `${captureDir}/readback-failure-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+  await expect(page.getByLabel('NES Platform')).toHaveValue('2');
   await save.click();
   await expect(
     page.getByText('Software acquisition settings saved.')

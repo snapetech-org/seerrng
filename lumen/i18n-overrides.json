@@ -4463,7 +4463,9 @@
     "lumen.discover.requesting": "Requesting…",
     "lumen.discover.requested": "Requested",
     "lumen.discover.request": "Request",
-    "lumen.discover.bookSectionsFailed": "Personal book shelves could not be loaded."
+    "lumen.discover.bookSectionsFailed": "Personal book shelves could not be loaded.",
+    "lumen.tunerr.saveFailed": "Could not save Tunerr settings.",
+    "lumen.software.saveFailed": "Could not save software acquisition settings."
   },
   "fr": {
     "lumen.recordings.loading": "Chargement des enregistrements…",
@@ -9088,7 +9090,9 @@
     "lumen.discover.requesting": "Demande en cours…",
     "lumen.discover.requested": "Demandé",
     "lumen.discover.request": "Demander",
-    "lumen.discover.bookSectionsFailed": "Impossible de charger les étagères personnelles de livres."
+    "lumen.discover.bookSectionsFailed": "Impossible de charger les étagères personnelles de livres.",
+    "lumen.tunerr.saveFailed": "Impossible d’enregistrer les paramètres de Tunerr.",
+    "lumen.software.saveFailed": "Impossible d’enregistrer les paramètres d’acquisition de logiciels."
   },
   "ar": {
     "lumen.recordings.loading": "جارٍ تحميل التسجيلات…",
@@ -13717,6 +13721,8 @@
     "lumen.discover.requesting": "جارٍ الطلب…",
     "lumen.discover.requested": "تم الطلب",
     "lumen.discover.request": "طلب",
-    "lumen.discover.bookSectionsFailed": "تعذر تحميل أرفف الكتب الشخصية."
+    "lumen.discover.bookSectionsFailed": "تعذر تحميل أرفف الكتب الشخصية.",
+    "lumen.tunerr.saveFailed": "تعذر حفظ إعدادات Tunerr.",
+    "lumen.software.saveFailed": "تعذر حفظ إعدادات اقتناء البرامج."
   }
 }
