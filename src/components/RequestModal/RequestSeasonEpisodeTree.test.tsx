@@ -233,6 +233,29 @@ it('does not edit or drop selections with incomplete/loading metadata and report
   expect(ui.ready).toHaveBeenLastCalledWith(false);
 });
 
+it('allows a normal TV request to select loaded seasons while another season retries', async () => {
+  const visibleSeasons = [
+    { ...seasons[1], seasonNumber: 1 },
+    { ...seasons[1], seasonNumber: 2 },
+  ];
+  swr.data = metadata.slice(1);
+  const ui = await setup([], {}, { visibleSeasons });
+  try {
+    expect(ui.ready).toHaveBeenLastCalledWith(false);
+    expect(document.body.textContent).toContain(
+      'Choose episodes from loaded seasons'
+    );
+    await ui.click('Select episode 1: First');
+    expect(ui.changed).toHaveBeenLastCalledWith([
+      { seasonNumber: 1, episodeNumbers: [1] },
+    ]);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
+    expect(ui.button('Deselect episode 1: First').disabled).toBe(false);
+  } finally {
+    await ui.close();
+  }
+});
+
 it('retries metadata GETs only, preserves cached selected rows on failure and recovers editing', async () => {
   swr.data = metadata;
   swr.error = new Error('Fixture metadata failure');

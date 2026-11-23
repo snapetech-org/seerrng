@@ -6759,6 +6759,19 @@ both the recovery and the maturity-cap denial, and the server typecheck passes.
 This establishes recovery for the reproduced lookup failure, but does not
 establish that it caused the reporter's incident or verify their live provider.
 
+The native request modal still preselected every unavailable season and kept
+the submit action blocked after a partial metadata response. It now allows a
+user to clear that default and choose episodes from loaded seasons; changing
+the selection drops unloaded seasons, and the warning explains that retry is
+needed to include them. A full-app fixture forces a 13-season series to retain
+only season 1 metadata, then verifies selection and the exact submitted season
+and episode at 390 and 1440 CSS pixels. Both cases pass, and the rendered
+warning, picker, and request action were inspected at phone and desktop sizes.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-native-partial-20261123/results/`.
+This does not resolve a provider outage where no season metadata is returned;
+the screenshot's live-provider cause remains unverified.
+
 ### Coming Soon to Release Calendar navigation
 
 Lumen Coming Soon now includes the native page's contextual Release Calendar

@@ -259,9 +259,9 @@ for (const width of process.env.SEERR_EPISODE_WIDTHS?.split(',').map(
   });
 }
 
-test.describe('Episode Queue season loading', () => {
+test.describe('TV request season loading', () => {
   for (const width of [390, 1440]) {
-    test(`a 13-season series recovers from a partial season lookup at ${width}px`, async ({
+    test(`a 13-season series can request loaded episodes after partial metadata failure at ${width}px`, async ({
       page,
       baseURL,
     }, info) => {
@@ -287,7 +287,7 @@ test.describe('Episode Queue season loading', () => {
         route.fulfill({ json: series })
       );
       await page.route('**/api/v1/user/1/settings/episode-queue', (route) =>
-        route.fulfill({ json: { status: 'approved', defaultEpisodeCount: 5 } })
+        route.fulfill({ json: { status: 'approved', defaultEpisodeCount: 0 } })
       );
       const sonarr = {
         id: 1,
@@ -318,7 +318,7 @@ test.describe('Episode Queue season loading', () => {
           .split(',')
           .filter(Boolean)
           .map(Number);
-        const loaded = batches.length === 1 ? [1] : requested;
+        const loaded = requested.includes(1) ? [1] : [];
         return route.fulfill({
           json: loaded.map((seasonNumber) => ({
             id: seasonNumber,
@@ -331,6 +331,17 @@ test.describe('Episode Queue season loading', () => {
                 name: seasonNumber === 1 ? 'Pilot' : 'First episode',
                 airDate: '2011-10-05',
               },
+              ...(seasonNumber === 1
+                ? [
+                    {
+                      id: 200 + seasonNumber,
+                      episodeNumber: 2,
+                      seasonNumber,
+                      name: 'Second episode',
+                      airDate: '2011-10-12',
+                    },
+                  ]
+                : []),
             ],
           })),
         });
@@ -341,8 +352,7 @@ test.describe('Episode Queue season loading', () => {
         return route.fulfill({ status: 201, json: { id: 41 } });
       });
 
-      await page.goto('/');
-      await page.evaluate(() => (window as any).next.router.push('/tv/1396'));
+      await page.goto('/tv/1396');
       await expect(
         page.getByRole('heading', {
           name: 'American Horror Story (2011)',
@@ -354,20 +364,37 @@ test.describe('Episode Queue season loading', () => {
       await expect(dialog).toBeVisible();
       await expect
         .poll(() => batches)
-        .toEqual(['1,2,3,4,5', '2,3,4,5', '6,7,8,9,10', '11,12,13']);
+        .toEqual([
+          '1,2,3,4,5',
+          '2,3,4,5',
+          '6,7,8,9,10',
+          '6,7,8,9,10',
+          '11,12,13',
+          '11,12,13',
+        ]);
       await expect(
         dialog.getByText('Episodes Could Not Be Loaded')
-      ).toHaveCount(0);
+      ).toBeVisible();
+      await expect(
+        dialog.getByText('Choose episodes from loaded seasons', {
+          exact: false,
+        })
+      ).toBeVisible();
+      await dialog.getByRole('button', { name: 'Clear Selection' }).click();
       await dialog.getByRole('button', { name: 'Expand Season 01' }).click();
       await dialog
         .getByRole('button', { name: 'Select episode 1: Pilot' })
         .click();
+      await expect(dialog.locator('[data-selection-tree]')).toHaveAttribute(
+        'data-request-ready',
+        'true'
+      );
       await expect(dialog.getByTestId('modal-ok-button')).toBeEnabled();
       await expect(
         dialog.getByRole('button', { name: 'Deselect episode 1: Pilot' })
       ).toBeVisible();
       await page.screenshot({
-        path: info.outputPath('episode-queue.png'),
+        path: info.outputPath('partial-season-request.png'),
         animations: 'disabled',
       });
       await dialog.getByTestId('modal-ok-button').click();

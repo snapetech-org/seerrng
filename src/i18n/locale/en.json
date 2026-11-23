@@ -3323,6 +3323,7 @@
   "components.RequestModal.RequestTree.loading": "Loading Episodes",
   "components.RequestModal.RequestTree.noSeasons": "No Seasons Available",
   "components.RequestModal.RequestTree.partialQueueHint": "Choose a starting episode from a loaded season, or retry the seasons that failed to load.",
+  "components.RequestModal.RequestTree.partialSelectionHint": "Choose episodes from loaded seasons to request those seasons now, or retry to include seasons that failed to load. Changing the selection drops any unloaded seasons.",
   "components.RequestModal.RequestTree.retryTooltip": "Fetch the seasons and episodes again without changing your request selection.",
   "components.RequestModal.RequestTree.seasonNumber": "Season {number}",
   "components.RequestModal.RequestTree.specials": "Specials",

@@ -37,6 +37,8 @@ const messages = defineMessages('components.RequestModal.RequestTree', {
     'Your request selection is preserved. Load all season information before changing it.',
   partialQueueHint:
     'Choose a starting episode from a loaded season, or retry the seasons that failed to load.',
+  partialSelectionHint:
+    'Choose episodes from loaded seasons to request those seasons now, or retry to include seasons that failed to load. Changing the selection drops any unloaded seasons.',
   retryTooltip:
     'Fetch the seasons and episodes again without changing your request selection.',
 });
@@ -167,13 +169,37 @@ const RequestSeasonEpisodeTree = ({
     selectionMode === 'single-episode'
       ? firstSelectableRequestEpisodeId(treeData, selectedIds)
       : undefined;
-  const canChoose = complete || singleEpisodeId !== undefined;
   const hasSelectedStart =
     singleEpisodeId !== undefined &&
     selectedIds.includes(singleEpisodeId) &&
     selections.length === 1 &&
     selections[0].episodeNumbers?.length === 1;
-  const ready = complete || hasSelectedStart;
+  const partialMetadataAvailable =
+    !error && !isValidating && !complete && (data?.length ?? 0) > 0;
+  const hasLoadedSelection =
+    selectionMode === 'multiple' &&
+    partialMetadataAvailable &&
+    selections.length > 0 &&
+    selectedIds.length > 0 &&
+    selections.every((selection) => {
+      const loadedSeason = data?.find(
+        (season) => season.seasonNumber === selection.seasonNumber
+      );
+      return (
+        loadedSeason !== undefined &&
+        (selection.episodeNumbers === undefined ||
+          selection.episodeNumbers.every((number) =>
+            loadedSeason.episodes.some(
+              (episode) => episode.episodeNumber === number
+            )
+          ))
+      );
+    });
+  const canChoose =
+    complete ||
+    singleEpisodeId !== undefined ||
+    (selectionMode === 'multiple' && partialMetadataAvailable);
+  const ready = complete || hasSelectedStart || hasLoadedSelection;
   useEffect(() => {
     onLoadingChange?.(isValidating);
   }, [isValidating, onLoadingChange]);
@@ -197,7 +223,11 @@ const RequestSeasonEpisodeTree = ({
       <PageErrorMessage
         title={intl.formatMessage(messages.loadError)}
         description={intl.formatMessage(
-          canChoose ? messages.partialQueueHint : messages.loadErrorHint
+          canChoose
+            ? selectionMode === 'single-episode'
+              ? messages.partialQueueHint
+              : messages.partialSelectionHint
+            : messages.loadErrorHint
         )}
         retry={{
           onClick: () => mutate(),
@@ -241,6 +271,7 @@ const RequestSeasonEpisodeTree = ({
       className="card-list"
       data-list-width="remaining"
       data-selection-tree
+      data-request-ready={ready}
       aria-busy={isValidating}
     >
       {(persius || upstream) && selectionMode === 'multiple' && (
@@ -290,11 +321,18 @@ const RequestSeasonEpisodeTree = ({
           selectionMode={selectionMode}
           onSelectionChange={(ids) => {
             if (canChoose) {
+              const preservedSelections = partialMetadataAvailable
+                ? selections.filter((selection) =>
+                    data?.some(
+                      (season) => season.seasonNumber === selection.seasonNumber
+                    )
+                  )
+                : selections;
               onSelectionsChange(
                 treeSelectionToRequests(
                   treeData,
                   ids,
-                  selections,
+                  preservedSelections,
                   selectionMode === 'single-episode'
                 )
               );
