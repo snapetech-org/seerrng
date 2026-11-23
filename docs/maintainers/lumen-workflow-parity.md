@@ -8460,3 +8460,26 @@ pin behavior, other book panels, music detail disclosures, TV facts and
 media-server panels, collection disclosures, broader route-level visual
 acceptance, and live provider verification remain open in the overall Lumen
 parity initiative.
+
+### Persistent music album Details disclosure (2026-11-23)
+
+Native music album details expose a per-user Details disclosure. Lumen previously
+rendered the album Facts table continuously. It now uses the shared disclosure
+component and authenticated `detail-disclosures/music` settings route, with
+response confirmation and user-settings refresh. Album Details and its saved
+preference label are localized in English, French, and Arabic. The facts,
+artist link, and request actions are unchanged; no CSS owner changed.
+
+The browser regression verifies the closed default, expansion, saved pin, and
+open state after reload across desktop, iPhone, Android, and tablet (4 passes).
+The production build passes. Baseline `1fa2bf82c` and candidate captures use the
+same fixture at 1440×900 and 390×844. Collapsed and expanded candidate states
+were inspected at both sizes; the facts remain in the existing information
+column, and the phone layout has no horizontal overflow. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/music-details-visual/`.
+
+This closes only the music album Details disclosure. The artist and subject-tag
+pin roles, other music detail gaps, book collection and subject-tag pin behavior,
+TV facts and media-server panels, collection disclosures, broader route-level
+visual acceptance, and live provider verification remain open in the overall
+Lumen parity initiative.

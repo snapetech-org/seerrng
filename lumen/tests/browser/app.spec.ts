@@ -1472,6 +1472,71 @@ test('subject tags share browser visibility and open filtered video discovery', 
   await expect(page).toHaveURL(/\/series$/);
 });
 
+test('music album details remember scoped pins', async ({ page }) => {
+  await fixtures(page);
+  const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
+  const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
+  const settings = { detailDisclosurePins: { music: { details: false } } };
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 1, displayName: 'Viewer', permissions: 2, settings },
+    })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        musicEnabled: true,
+        enabledMediaCategories: { music: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { enabledMediaCategories: { music: true } } })
+  );
+  await page.route(`**/api/v1/music/${album}`, (route) =>
+    route.fulfill({
+      json: {
+        id: album,
+        title: 'Fixture Album',
+        artist: { id: artist, name: 'Fixture Artist', area: 'Fixture City' },
+        releaseDate: '2024-02-03',
+        recordLabel: 'Fixture Records',
+        type: 'Album',
+        tracks: [],
+      },
+    })
+  );
+  await page.route(
+    '**/api/v1/user/1/settings/detail-disclosures/music',
+    (route) => {
+      const body = route.request().postDataJSON();
+      Object.assign(settings.detailDisclosurePins.music, body);
+      return route.fulfill({ json: settings.detailDisclosurePins.music });
+    }
+  );
+
+  await page.goto(`/music/${album}`);
+  const details = page
+    .locator('details.adv')
+    .filter({ hasText: 'Album Details' });
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Album' })
+  ).toBeVisible();
+  await expect(details).toBeVisible();
+  await expect(details).not.toHaveAttribute('open', '');
+  await details.locator('summary').click();
+  await expect(details).toContainText('Fixture Records');
+  const pin = details.getByRole('button', { name: 'Keep Album Details Open' });
+  await pin.click();
+  await expect(pin).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  const restored = page
+    .locator('details.adv')
+    .filter({ hasText: 'Album Details' });
+  await expect(restored).toHaveAttribute('open', '');
+  await expect(restored).toContainText('Fixture Records');
+});
+
 test('person filmography keeps complete cast and crew groups and sorts before filtering', async ({
   page,
 }) => {

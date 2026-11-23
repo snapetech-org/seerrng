@@ -13,6 +13,7 @@ import {
   DetailTop,
   Facts,
   Pill,
+  VideoDisclosure,
 } from '../components/detail';
 import {
   ExtraCard,
@@ -1123,20 +1124,26 @@ export function AlbumDetail() {
               )}
             </div>
             <aside>
-              <Facts
-                rows={[
-                  [
-                    t('lumen.music.fact.artist', 'Artist'),
-                    <Link key="a" to={`/artist/${a.artist.id}`}>
-                      {a.artist.name}
-                    </Link>,
-                  ],
-                  [t('lumen.music.fact.released', 'Released'), a.releaseDate],
-                  [t('lumen.music.fact.label', 'Label'), a.recordLabel],
-                  [t('lumen.music.fact.from', 'From'), a.artist.area],
-                  [t('lumen.music.fact.type', 'Type'), a.type],
-                ]}
-              />
+              <VideoDisclosure
+                media="music"
+                panel="details"
+                label={t('lumen.detail.albumDetails', 'Album Details')}
+              >
+                <Facts
+                  rows={[
+                    [
+                      t('lumen.music.fact.artist', 'Artist'),
+                      <Link key="a" to={`/artist/${a.artist.id}`}>
+                        {a.artist.name}
+                      </Link>,
+                    ],
+                    [t('lumen.music.fact.released', 'Released'), a.releaseDate],
+                    [t('lumen.music.fact.label', 'Label'), a.recordLabel],
+                    [t('lumen.music.fact.from', 'From'), a.artist.area],
+                    [t('lumen.music.fact.type', 'Type'), a.type],
+                  ]}
+                />
+              </VideoDisclosure>
             </aside>
           </div>
         </div>

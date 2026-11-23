@@ -322,7 +322,9 @@ export function VideoDisclosure({
         : panel === 'details'
           ? media === 'book'
             ? t('lumen.detail.bookDetailsPreference', 'book details')
-            : t('lumen.detail.movieDetailsPreference', 'movie details')
+            : media === 'music'
+              ? t('lumen.detail.albumDetailsPreference', 'album details')
+              : t('lumen.detail.movieDetailsPreference', 'movie details')
           : t('lumen.detail.creditPreference', 'credit');
 
   async function togglePin() {
