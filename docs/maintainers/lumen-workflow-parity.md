@@ -7571,3 +7571,17 @@ on desktop, iPhone, Android, and tablet (12 cases). Browser fixtures simulate a
 successful write response with stale persisted data, then a successful retry
 with matching readback. Live account persistence and matched baseline/candidate
 visual comparison remain unverified.
+
+### Soulseek and ReadMeABook settings save readback
+
+Lumen now verifies Soulseek and ReadMeABook connection settings in both the
+successful PUT response and a fresh GET before clearing edits, credential
+removal intent, or reporting success. A stale readback keeps the current draft
+and key-removal choice retryable. API keys remain write-only.
+
+The two existing browser workflows pass across desktop, iPhone, Android, and
+tablet (24 cases), including a successful PUT followed by stale readback and a
+successful retry. French and Arabic page checks retain their expected labels and
+fit within the viewport. Desktop retry-state captures were inspected. Fixtures
+do not verify live provider connectivity or persisted settings files. Evidence:
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-settings-readback-20261122/request-service/`.

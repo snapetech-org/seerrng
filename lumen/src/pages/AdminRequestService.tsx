@@ -291,8 +291,40 @@ function Connection({
       } else {
         const response = await api<Settings>(endpoint, { method: 'PUT', body });
         if (generation !== sessionGeneration()) return;
-        setSaved(response);
-        reset(response);
+        const readback = await api<Settings>(endpoint);
+        if (generation !== sessionGeneration()) return;
+        const expected = {
+          enabled,
+          hostname: hostname.trim(),
+          port,
+          useSsl,
+          baseUrl: baseUrl.trim()
+            ? `/${baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
+            : '',
+          ...(soulseek ? { searchFilter: searchFilter?.trim() ?? '' } : {}),
+          apiKeyConfigured: clearApiKey
+            ? false
+            : apiKey
+              ? true
+              : saved.apiKeyConfigured,
+        };
+        const confirmed = Object.entries(expected).every(
+          ([field, value]) =>
+            response[field as keyof Settings] === value &&
+            readback[field as keyof Settings] === value
+        );
+        if (!confirmed) {
+          setError(
+            t(
+              'lumen.requestService.saveFailed',
+              'Could not save {name} settings.',
+              { name }
+            )
+          );
+          return;
+        }
+        setSaved(readback);
+        reset(readback);
         setNotice(
           t('lumen.requestService.saved', '{name} settings saved.', { name })
         );

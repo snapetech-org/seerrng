@@ -86,6 +86,8 @@ test('Soulseek tests with the stored key and explicitly removes it when disabled
     apiKeyConfigured: true,
   };
   const writes: Record<string, unknown>[] = [];
+  let currentSettings = settings;
+  let saveAttempts = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -105,12 +107,21 @@ test('Soulseek tests with the stored key and explicitly removes it when disabled
       });
     }
     if (pathname !== path) return route.fulfill({ json: {} });
-    if (request.method() === 'GET') return route.fulfill({ json: settings });
+    if (request.method() === 'GET') {
+      if (saveAttempts === 1) {
+        return route.fulfill({ json: settings });
+      }
+      return route.fulfill({ json: currentSettings });
+    }
     const body = request.postDataJSON();
     writes.push(body);
-    return route.fulfill({
-      json: { ...settings, ...body, apiKeyConfigured: !body.clearApiKey },
-    });
+    currentSettings = {
+      ...currentSettings,
+      ...body,
+      apiKeyConfigured: !body.clearApiKey,
+    };
+    saveAttempts += 1;
+    return route.fulfill({ json: currentSettings });
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Soulseek Settings' }).click();
@@ -128,7 +139,22 @@ test('Soulseek tests with the stored key and explicitly removes it when disabled
   ).toBeDisabled();
   await page.getByLabel('Enable Soulseek Requests').uncheck();
   await page.getByRole('button', { name: 'Save Changes' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not save Soulseek settings.'
+  );
+  const captureDir = process.env.LUMEN_REQUEST_SERVICE_CAPTURE_DIR;
+  if (captureDir)
+    await page.screenshot({
+      path: `${captureDir}/soulseek-readback-failure-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+  await expect(
+    page.getByRole('button', { name: 'Save Changes' })
+  ).toBeEnabled();
+  await expect(page.getByLabel('Remove Saved API Key')).toBeChecked();
+  await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect(page.getByText('Soulseek settings saved.')).toBeVisible();
   await expect(page.getByLabel('Remove Saved API Key')).toHaveCount(0);
   expect(writes[1]).toMatchObject({ enabled: false, clearApiKey: true });
+  expect(writes[2]).toMatchObject({ enabled: false, clearApiKey: true });
 });
