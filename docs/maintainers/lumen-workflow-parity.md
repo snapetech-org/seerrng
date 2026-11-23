@@ -3094,7 +3094,12 @@ records in the mixed feed.
 Trending collections now open the collection detail page through the
 same poster card used by Search. The API keeps collection identities
 distinct and follows Search's movie-category and maturity rules.
-Discover's quick-request hero remains scoped to movies and series.
+The featured quick-request hero is scoped to movies and series in both Lumen
+and native SeerrNG: native `HeroShelf` consumes the video-only trending API and
+renders `HeroCard` for movie/TV results, while Lumen applies the same type
+filter and uses `FeatCard`. Books, audiobooks, and other categories use their
+own discovery shelves and card request actions. This scope is verified native
+parity, not an outstanding Lumen gap.
 Twenty standalone Trending and collection checks and two server route
 checks passed. Live provider coverage and matched visual comparisons
 remain open.
