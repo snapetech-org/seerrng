@@ -142,6 +142,8 @@ export interface MediaInfo {
     id: number;
     status: number;
     issueType: number;
+    createdAt?: string;
+    createdBy?: { id?: number; displayName?: string };
     comments?: { message: string }[];
   }[];
   hasPlexAudiobookFile?: boolean;

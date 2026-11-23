@@ -3,7 +3,7 @@ import { IssueStatus } from '../../../server/constants/issue';
 import type { MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { useLumenLocale } from '../i18n';
-import { canReadIssues } from '../issuePermissions';
+import { canReadIssues, canViewIssueReporter } from '../issuePermissions';
 
 const ISSUE_TYPE_FALLBACKS = ['Issue', 'Video', 'Audio', 'Subtitles', 'Other'];
 
@@ -15,7 +15,8 @@ export default function OpenIssueReports({
   id: string;
 }) {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
+  const canViewReporter = canViewIssueReporter(user?.permissions);
   const openIssues = canReadIssues(user?.permissions)
     ? (issues ?? []).filter((issue) => issue.status === IssueStatus.OPEN)
     : [];
@@ -39,6 +40,35 @@ export default function OpenIssueReports({
                 #{issue.id}
               </Link>
             </div>
+            {(issue.createdAt || issue.createdBy?.displayName) && (
+              <p className="det">
+                {issue.createdAt && (
+                  <>
+                    {t('lumen.issues.field.createdDate', 'Created Date')}:{' '}
+                    {new Intl.DateTimeFormat(locale, {
+                      dateStyle: 'medium',
+                    }).format(new Date(issue.createdAt))}
+                  </>
+                )}
+                {issue.createdAt && issue.createdBy?.displayName ? ' · ' : ''}
+                {issue.createdBy?.displayName && (
+                  <>
+                    {t('lumen.issues.field.createdBy', 'Created By')}:{' '}
+                    {canViewReporter ? (
+                      issue.createdBy.id ? (
+                        <Link to={`/users/${issue.createdBy.id}`}>
+                          {issue.createdBy.displayName}
+                        </Link>
+                      ) : (
+                        issue.createdBy.displayName
+                      )
+                    ) : (
+                      t('lumen.issues.unavailable', 'Not available')
+                    )}
+                  </>
+                )}
+              </p>
+            )}
             {issue.comments?.[0]?.message && (
               <p className="det">{issue.comments[0].message}</p>
             )}

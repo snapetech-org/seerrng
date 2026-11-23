@@ -4489,6 +4489,8 @@ test('comic details show open issues only to issue readers', async ({
               id: 71,
               status: 1,
               issueType: 3,
+              createdAt: '2026-11-20T12:00:00.000Z',
+              createdBy: { id: 17, displayName: 'Issue Reporter' },
               comments: [{ message: 'Captions are missing.' }],
             },
             { id: 72, status: 2, issueType: 4, comments: [] },
@@ -4511,12 +4513,33 @@ test('comic details show open issues only to issue readers', async ({
     panel.getByRole('link', { name: 'Subtitles #71' })
   ).toHaveAttribute('href', '/issues/71');
   await expect(panel).toContainText('Captions are missing.');
+  await expect(panel).toContainText('Created Date: Nov 20, 2026');
+  await expect(panel).toContainText('Created By: Issue Reporter');
+  await expect(
+    panel.getByRole('link', { name: 'Issue Reporter' })
+  ).toHaveAttribute('href', '/users/17');
   await expect(panel.getByRole('link', { name: /#72/ })).toHaveCount(0);
+  permissions = 4194304;
+  await page.reload();
+  const restrictedReporterPanel = page.getByRole('region', {
+    name: 'Open Issues',
+  });
+  await expect(restrictedReporterPanel).toContainText(
+    'Created By: Not available'
+  );
+  await expect(
+    restrictedReporterPanel.getByRole('link', { name: 'Issue Reporter' })
+  ).toHaveCount(0);
+  permissions = 7340032;
+  await page.reload();
+  const visibleReporterPanel = page.getByRole('region', {
+    name: 'Open Issues',
+  });
   const capture = process.env.LUMEN_COMIC_OPEN_ISSUES_CAPTURE;
   if (capture) {
+    await visibleReporterPanel.scrollIntoViewIfNeeded();
     await page.screenshot({
       path: `${capture}-${test.info().project.name}.png`,
-      fullPage: true,
     });
   }
 });

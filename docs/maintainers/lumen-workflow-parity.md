@@ -8677,3 +8677,18 @@ also inspected at both sizes with no clipping or overflow. Evidence is retained
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/tv-episode-availability-localization/`.
 The fixture does not verify live provider data, and translations have not had
 independent linguistic review.
+
+### Open issue report metadata (2026-11-23)
+
+Lumen's shared open-issue panels now show the report's localized creation date
+and reporter alongside its existing type, discussion comment, and detail link.
+Reporter names and profile links follow SeerrNG's `VIEW_ISSUES` / `MANAGE_ISSUES`
+boundary; users who can read an issue without those permissions see the native
+unavailable label instead. Open/resolved filtering, API permissions, and issue
+actions are unchanged.
+
+The browser regression verifies the authorized and restricted reporter views,
+open-only filtering, and direct issue links across desktop, iPhone, Android,
+and tablet. The production build and four viewport captures pass; matched prior
+and candidate desktop/phone captures were reviewed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/open-issue-metadata-visual/`.
