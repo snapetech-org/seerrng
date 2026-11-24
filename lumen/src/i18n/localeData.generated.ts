@@ -7146,6 +7146,36 @@ export const localeData = [
       'lumen.continuation.target.start': 'البدء من البداية',
       'lumen.continuation.target.continuation': 'فتح مجلد المتابعة',
       'lumen.continuation.target.series': 'فتح المصدر',
+      'lumen.managedPermissions.adminWarning': 'لدى المسؤولين جميع الأذونات.',
+      'lumen.managedPermissions.ageGate': 'تقييد العمر',
+      'lumen.managedPermissions.ageGate.default': 'إعداد الخادم الافتراضي',
+      'lumen.managedPermissions.ageGate.restricted': 'مقيّد',
+      'lumen.managedPermissions.ageGate.unrestricted': 'بلا تقييد',
+      'lumen.managedPermissions.confirmBody': 'تُطبّق الأذونات الجديدة فورًا.',
+      'lumen.managedPermissions.confirmTitle': 'حفظ أذونات {name}؟',
+      'lumen.managedPermissions.delegationWarning':
+        'يملك هذا الحساب أذونات تتجاوز صلاحياتك المفوضة.',
+      'lumen.managedPermissions.destinationsLabel': 'وجهات الطلبات',
+      'lumen.managedPermissions.goBack': 'رجوع',
+      'lumen.managedPermissions.groupLabel': 'الأذونات الصريحة',
+      'lumen.managedPermissions.loadFailure': 'تعذر تحميل الأذونات',
+      'lumen.managedPermissions.loading': 'جارٍ تحميل الأذونات…',
+      'lumen.managedPermissions.radarrLoadFailure': 'تعذر تحميل وجهات Radarr',
+      'lumen.managedPermissions.retry': 'إعادة المحاولة',
+      'lumen.managedPermissions.save': 'حفظ الأذونات',
+      'lumen.managedPermissions.saveFailure': 'تعذر حفظ الأذونات.',
+      'lumen.managedPermissions.saved': 'تم حفظ الأذونات.',
+      'lumen.managedPermissions.sonarrLoadFailure': 'تعذر تحميل وجهات Sonarr',
+      'lumen.managedPermissions.title': 'الأذونات الصريحة',
+      'lumen.permissions.group.4k': '4K',
+      'lumen.permissions.group.administration': 'الإدارة',
+      'lumen.permissions.group.auto-approve': 'الموافقة التلقائية',
+      'lumen.permissions.group.auto-request-from-watchlists':
+        'الطلب التلقائي من قوائم المتابعة',
+      'lumen.permissions.group.issues-and-visibility':
+        'المشكلات وإمكانية الظهور',
+      'lumen.permissions.group.other': 'أخرى',
+      'lumen.permissions.group.requests': 'الطلبات',
     },
   },
   {
@@ -18668,6 +18698,39 @@ export const localeData = [
       'lumen.continuation.target.start': 'Start From the Beginning',
       'lumen.continuation.target.continuation': 'Open Continuation Volume',
       'lumen.continuation.target.series': 'Open Source',
+      'lumen.managedPermissions.adminWarning':
+        'Administrators have all permissions.',
+      'lumen.managedPermissions.ageGate': 'Age Gate',
+      'lumen.managedPermissions.ageGate.default': 'Use Server Default',
+      'lumen.managedPermissions.ageGate.restricted': 'Restricted',
+      'lumen.managedPermissions.ageGate.unrestricted': 'Unrestricted',
+      'lumen.managedPermissions.confirmBody':
+        'The new permissions take effect immediately.',
+      'lumen.managedPermissions.confirmTitle': 'Save permissions for {name}?',
+      'lumen.managedPermissions.delegationWarning':
+        'This account has permissions outside your delegated access.',
+      'lumen.managedPermissions.destinationsLabel': 'Request Destinations',
+      'lumen.managedPermissions.goBack': 'Go Back',
+      'lumen.managedPermissions.groupLabel': 'Explicit Permissions',
+      'lumen.managedPermissions.loadFailure': 'Couldn’t load permissions',
+      'lumen.managedPermissions.loading': 'Loading permissions…',
+      'lumen.managedPermissions.radarrLoadFailure':
+        'Couldn’t load Radarr destinations',
+      'lumen.managedPermissions.retry': 'Retry',
+      'lumen.managedPermissions.save': 'Save Permissions',
+      'lumen.managedPermissions.saveFailure': 'Could not save permissions.',
+      'lumen.managedPermissions.saved': 'Permissions saved.',
+      'lumen.managedPermissions.sonarrLoadFailure':
+        'Couldn’t load Sonarr destinations',
+      'lumen.managedPermissions.title': 'Explicit Permissions',
+      'lumen.permissions.group.4k': '4K',
+      'lumen.permissions.group.administration': 'Administration',
+      'lumen.permissions.group.auto-approve': 'Auto-Approve',
+      'lumen.permissions.group.auto-request-from-watchlists':
+        'Auto-Request from Watchlists',
+      'lumen.permissions.group.issues-and-visibility': 'Issues and Visibility',
+      'lumen.permissions.group.other': 'Other',
+      'lumen.permissions.group.requests': 'Requests',
     },
   },
   {
@@ -31382,6 +31445,44 @@ export const localeData = [
       'lumen.continuation.target.continuation':
         'Ouvrir le volume de continuation',
       'lumen.continuation.target.series': 'Ouvrir la source',
+      'lumen.managedPermissions.adminWarning':
+        'Les administrateurs disposent de toutes les autorisations.',
+      'lumen.managedPermissions.ageGate': 'Limite d’âge',
+      'lumen.managedPermissions.ageGate.default':
+        'Valeur par défaut du serveur',
+      'lumen.managedPermissions.ageGate.restricted': 'Restreint',
+      'lumen.managedPermissions.ageGate.unrestricted': 'Non restreint',
+      'lumen.managedPermissions.confirmBody':
+        'Les nouvelles autorisations prennent effet immédiatement.',
+      'lumen.managedPermissions.confirmTitle':
+        'Enregistrer les autorisations de {name} ?',
+      'lumen.managedPermissions.delegationWarning':
+        'Ce compte possède des autorisations en dehors de votre accès délégué.',
+      'lumen.managedPermissions.destinationsLabel': 'Destinations des demandes',
+      'lumen.managedPermissions.goBack': 'Retour',
+      'lumen.managedPermissions.groupLabel': 'Autorisations explicites',
+      'lumen.managedPermissions.loadFailure':
+        'Impossible de charger les autorisations',
+      'lumen.managedPermissions.loading': 'Chargement des autorisations…',
+      'lumen.managedPermissions.radarrLoadFailure':
+        'Impossible de charger les destinations Radarr',
+      'lumen.managedPermissions.retry': 'Réessayer',
+      'lumen.managedPermissions.save': 'Enregistrer les autorisations',
+      'lumen.managedPermissions.saveFailure':
+        'Impossible d’enregistrer les autorisations.',
+      'lumen.managedPermissions.saved': 'Autorisations enregistrées.',
+      'lumen.managedPermissions.sonarrLoadFailure':
+        'Impossible de charger les destinations Sonarr',
+      'lumen.managedPermissions.title': 'Autorisations explicites',
+      'lumen.permissions.group.4k': '4K',
+      'lumen.permissions.group.administration': 'Gestion',
+      'lumen.permissions.group.auto-approve': 'Approbation automatique',
+      'lumen.permissions.group.auto-request-from-watchlists':
+        'Demandes automatiques depuis les listes de suivi',
+      'lumen.permissions.group.issues-and-visibility':
+        'Signalements et visibilité',
+      'lumen.permissions.group.other': 'Autres',
+      'lumen.permissions.group.requests': 'Demandes',
     },
   },
   {

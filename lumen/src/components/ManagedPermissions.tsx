@@ -112,11 +112,19 @@ export default function ManagedPermissions({
       setDraft(undefined);
       setServices(undefined);
       setRestriction(undefined);
-      setNotice('Permissions saved.');
+      setNotice(t('lumen.managedPermissions.saved', 'Permissions saved.'));
       reload();
       onSaved();
     } catch (error) {
-      setFailure(friendlyError(error, 'Could not save permissions.'));
+      setFailure(
+        friendlyError(
+          error,
+          t(
+            'lumen.managedPermissions.saveFailure',
+            'Could not save permissions.'
+          )
+        )
+      );
     } finally {
       setBusy(false);
       setConfirm(false);
@@ -126,10 +134,19 @@ export default function ManagedPermissions({
 
   return (
     <div>
-      <ServiceNote error={error} what="permissions" retry={reload} />
+      <ServiceNote
+        error={error}
+        what="permissions"
+        title={t(
+          'lumen.managedPermissions.loadFailure',
+          'Couldn’t load permissions'
+        )}
+        retryLabel={t('lumen.managedPermissions.retry', 'Retry')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Loading permissions…
+          {t('lumen.managedPermissions.loading', 'Loading permissions…')}
         </p>
       )}
       {failure && (
@@ -144,19 +161,32 @@ export default function ManagedPermissions({
       )}
       {data && (
         <details open>
-          <summary>Explicit Permissions</summary>
+          <summary>
+            {t('lumen.managedPermissions.title', 'Explicit Permissions')}
+          </summary>
           {!editable && (
             <p className="note">
-              This account has permissions outside your delegated access.
+              {t(
+                'lumen.managedPermissions.delegationWarning',
+                'This account has permissions outside your delegated access.'
+              )}
             </p>
           )}
           {targetAdmin && (
-            <p className="note">Administrators have all permissions.</p>
+            <p className="note">
+              {t(
+                'lumen.managedPermissions.adminWarning',
+                'Administrators have all permissions.'
+              )}
+            </p>
           )}
           <div
             className="perm-groups"
             role="group"
-            aria-label="Explicit Permissions"
+            aria-label={t(
+              'lumen.managedPermissions.groupLabel',
+              'Explicit Permissions'
+            )}
           >
             {permissionGroups.map(([group, options]) => (
               <div className="perm-group" key={group}>
@@ -197,7 +227,9 @@ export default function ManagedPermissions({
           </div>
           <div className="toolbar">
             <label className="sel">
-              <span className="lbl">Age Gate</span>
+              <span className="lbl">
+                {t('lumen.managedPermissions.ageGate', 'Age Gate')}
+              </span>
               <select
                 value={selectedRestriction}
                 disabled={busy || !editable}
@@ -207,27 +239,55 @@ export default function ManagedPermissions({
                   )
                 }
               >
-                <option value="default">Use Server Default</option>
-                <option value="restricted">Restricted</option>
-                <option value="unrestricted">Unrestricted</option>
+                <option value="default">
+                  {t(
+                    'lumen.managedPermissions.ageGate.default',
+                    'Use Server Default'
+                  )}
+                </option>
+                <option value="restricted">
+                  {t(
+                    'lumen.managedPermissions.ageGate.restricted',
+                    'Restricted'
+                  )}
+                </option>
+                <option value="unrestricted">
+                  {t(
+                    'lumen.managedPermissions.ageGate.unrestricted',
+                    'Unrestricted'
+                  )}
+                </option>
               </select>
             </label>
           </div>
           <ServiceNote
             error={radarr.error}
             what="Radarr destinations"
+            title={t(
+              'lumen.managedPermissions.radarrLoadFailure',
+              'Couldn’t load Radarr destinations'
+            )}
+            retryLabel={t('lumen.managedPermissions.retry', 'Retry')}
             retry={radarr.reload}
           />
           <ServiceNote
             error={sonarr.error}
             what="Sonarr destinations"
+            title={t(
+              'lumen.managedPermissions.sonarrLoadFailure',
+              'Couldn’t load Sonarr destinations'
+            )}
+            retryLabel={t('lumen.managedPermissions.retry', 'Retry')}
             retry={sonarr.reload}
           />
           {!!radarr.data && !!sonarr.data && !!available.length && (
             <div
               className="setlist"
               role="group"
-              aria-label="Request Destinations"
+              aria-label={t(
+                'lumen.managedPermissions.destinationsLabel',
+                'Request Destinations'
+              )}
             >
               {available.map(({ key, label }) => (
                 <label className="set" key={key}>
@@ -254,17 +314,24 @@ export default function ManagedPermissions({
               disabled={busy || !editable || !changed}
               onClick={() => setConfirm(true)}
             >
-              Save Permissions
+              {t('lumen.managedPermissions.save', 'Save Permissions')}
             </button>
           </div>
         </details>
       )}
       {confirm && (
         <ConfirmSheet
-          title={`Save permissions for ${name}?`}
-          body="The new permissions take effect immediately."
-          confirm="Save Permissions"
-          cancel="Go Back"
+          title={t(
+            'lumen.managedPermissions.confirmTitle',
+            'Save permissions for {name}?',
+            { name }
+          )}
+          body={t(
+            'lumen.managedPermissions.confirmBody',
+            'The new permissions take effect immediately.'
+          )}
+          confirm={t('lumen.managedPermissions.save', 'Save Permissions')}
+          cancel={t('lumen.managedPermissions.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void save()}
           onClose={() => {

@@ -9393,8 +9393,10 @@ test('Users delegates only held permissions and preserves high permission bits',
     return route.fulfill({ json: target });
   });
   await page.goto(testAppPath('/admin/users'));
-  await page.getByRole('link', { name: 'Manage Viewer' }).click();
-  await page.getByRole('button', { name: 'Permissions', exact: true }).click();
+  await page.getByRole('link', { name: 'Gérer Viewer' }).click();
+  await page
+    .getByRole('button', { name: 'Autorisations', exact: true })
+    .click();
   const settingsPermission = page.getByRole('checkbox', {
     name: 'Gérer les paramètres',
     exact: true,
@@ -9417,14 +9419,20 @@ test('Users delegates only held permissions and preserves high permission bits',
   });
   await music.check();
   await page
-    .getByRole('button', { name: 'Save Permissions', exact: true })
+    .getByRole('button', { name: 'Enregistrer les autorisations', exact: true })
     .click();
   expect(target.permissions).toBe(32);
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Save Permissions' })
+  const confirmation = page.getByRole('alertdialog');
+  await expect(confirmation).toContainText(
+    'Enregistrer les autorisations de Viewer\u00a0?'
+  );
+  await expect(confirmation).toContainText(
+    'Les nouvelles autorisations prennent effet immédiatement.'
+  );
+  await confirmation
+    .getByRole('button', { name: 'Enregistrer les autorisations' })
     .click();
-  await expect(page.getByText('Permissions saved.')).toBeVisible();
+  await expect(page.getByText('Autorisations enregistrées.')).toBeVisible();
   await expect(music).toBeChecked();
   expect(target.permissions).toBe(32 + requestMusic);
   const west = page.getByRole('checkbox', {
@@ -9432,19 +9440,101 @@ test('Users delegates only held permissions and preserves high permission bits',
     exact: true,
   });
   await west.check();
-  await page.getByLabel('Age Gate').selectOption('restricted');
+  await page.getByLabel('Limite d’âge').selectOption('restricted');
   await page
-    .getByRole('button', { name: 'Save Permissions', exact: true })
+    .getByRole('button', { name: 'Enregistrer les autorisations', exact: true })
     .click();
   expect(target.contentRestricted).toBeNull();
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Save Permissions' })
+  await expect(confirmation).toContainText(
+    'Enregistrer les autorisations de Viewer\u00a0?'
+  );
+  await expect(confirmation).toContainText(
+    'Les nouvelles autorisations prennent effet immédiatement.'
+  );
+  await confirmation
+    .getByRole('button', { name: 'Enregistrer les autorisations' })
     .click();
-  await expect(page.getByText('Permissions saved.')).toBeVisible();
+  await expect(page.getByText('Autorisations enregistrées.')).toBeVisible();
   await expect(west).toBeChecked();
   expect(target.requestServices).toEqual(['radarr:4', 'sonarr:3']);
   expect(target.contentRestricted).toBe(true);
+});
+
+test('Users localizes the managed-permissions editor in Arabic', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/user/8/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'ar' } })
+  );
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 8, displayName: 'Manager', permissions: 8 + 32 },
+    })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  await page.route('**/api/v1/user/19/settings/permissions', (route) =>
+    route.fulfill({ json: { permissions: 32, requestServices: [] } })
+  );
+  await page.route('**/api/v1/service/radarr', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 4,
+          name: 'Movies West',
+          isDefault: false,
+          requestButtonLabel: 'West',
+        },
+      ],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 3,
+          name: 'Series West',
+          isDefault: false,
+          requestButtonLabel: 'West',
+        },
+      ],
+    })
+  );
+  await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'إدارة Viewer' }).click();
+  await page.getByRole('button', { name: 'الأذونات', exact: true }).click();
+  await expect(
+    page.getByText('الأذونات الصريحة', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'الطلبات', exact: true })
+  ).toBeVisible();
+  await expect(page.getByLabel('تقييد العمر')).toBeVisible();
+  await expect(
+    page.getByRole('group', { name: 'وجهات الطلبات' })
+  ).toBeVisible();
+  const setting = page.getByRole('checkbox', {
+    name: 'إدارة الإعدادات',
+    exact: true,
+  });
+  await setting.scrollIntoViewIfNeeded();
+  expect(
+    await page.locator('body').evaluate((body) => {
+      const root = document.documentElement;
+      return Math.max(body.scrollWidth, root.scrollWidth) <= root.clientWidth;
+    })
+  ).toBe(true);
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/managed-permissions-ar-${page.viewportSize()?.width}.png`,
+    });
 });
 
 test('Users protects administrators and confirms deletion of the selected member', async ({

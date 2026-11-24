@@ -8918,3 +8918,21 @@ Fixtures do not verify live AniList or RanobeDB data. The iPhone browser harness
 uses forced pointer events for controls on this long detail page because other
 detail content can intercept its synthetic hit test; real-device touch acceptance
 remains open.
+
+### Managed user permissions
+
+Lumen's per-user permission editor now localizes its own loading, service-load,
+save and retry feedback, delegation and administrator notices, permission group
+headings, Age Gate choices, destination group, and save confirmation in English,
+French, and Arabic. The existing permission-bit handling, delegated-rights gate,
+service destination filtering, `contentRestricted` update, confirmation step, and
+API payloads remain unchanged.
+
+The French desktop/phone regression covers delegated permission bits (including
+the high music-request bit), destination selection, Age Gate save behavior, and
+confirmation copy. The Arabic regression checks translated permission groups,
+Age Gate, destination labeling, and responsive overflow. Matching baseline and
+candidate screenshots were inspected at 1440px and 390px and retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-managed-permissions-localization-20261124/`.
+These fixture-backed checks do not verify live user authorization or service
+configuration against a production SeerrNG instance.
