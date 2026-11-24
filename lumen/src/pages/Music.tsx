@@ -172,7 +172,7 @@ function MusicRequestSheet({
     <ConfirmSheet
       title={t('components.RequestModal.Music.requestmusic', 'Request Music')}
       body={`${album.artist.name} — ${album.title} · ${quality.toUpperCase()}`}
-      confirm={t('components.Common.ButtonHelp.request', 'Request')}
+      confirm={t('lumen.common.request', 'Request')}
       cancel={t('components.Common.ButtonHelp.cancel', 'Cancel')}
       busy={busy}
       confirmDisabled={!canSubmit}
@@ -216,7 +216,8 @@ function MusicRequestSheet({
               t(
                 'components.RequestModal.Music.requesterror',
                 'Something went wrong while submitting the request.'
-              )
+              ),
+              t
             )
           );
           setBusy(false);

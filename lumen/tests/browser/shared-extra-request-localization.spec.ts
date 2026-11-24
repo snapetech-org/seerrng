@@ -31,7 +31,7 @@ const locales = {
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`shared music and adult request actions use ${locale} copy`, async ({
     page,
-  }) => {
+  }, testInfo) => {
     const posts: unknown[] = [];
     const capture = process.env.LUMEN_CAPTURE;
     await page.route('https://**/*', (route) => route.abort());
@@ -60,6 +60,10 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             locale,
             enabledMediaCategories: { music: true, adult: true },
           },
+        });
+      if (path === '/user/1/quota')
+        return route.fulfill({
+          json: { music: { limit: 5, remaining: 4 } },
         });
       if (path === '/service/lidarr')
         return route.fulfill({
@@ -123,10 +127,23 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     if (capture)
       await page.screenshot({ path: `${capture}-${locale}-music-button.png` });
     await musicRequest.click();
+    const requestSheet = page.getByRole('alertdialog');
+    const confirmMusicRequest = requestSheet.getByRole('button', {
+      name: copy.request,
+      exact: true,
+    });
+    await expect(confirmMusicRequest).toBeEnabled();
+    if (capture)
+      await page.screenshot({
+        path: `${capture}-${locale}-${testInfo.project.name}-music-sheet.png`,
+        animations: 'disabled',
+      });
+    await confirmMusicRequest.click();
     if (capture)
       await page.screenshot({ path: `${capture}-${locale}-music-failed.png` });
     await expect(page.getByRole('status')).toContainText(copy.serverFailure);
-    await musicRequest.click();
+    await expect(requestSheet).toBeVisible();
+    await confirmMusicRequest.click();
     await expect(page.getByRole('status')).toContainText(copy.submitted);
     if (capture)
       await page.screenshot({
@@ -153,8 +170,28 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         path: `${capture}-${locale}-adult-submitted.png`,
       });
     expect(posts).toEqual([
-      { mediaType: 'music', mediaId: '42', serverId: 7 },
-      { mediaType: 'music', mediaId: '42', serverId: 7 },
+      {
+        mediaType: 'music',
+        mediaId: '42',
+        serverId: 7,
+        requesterSelectedOptions: {
+          tags: false,
+          profile: false,
+          metadataProfile: false,
+          rootFolder: false,
+        },
+      },
+      {
+        mediaType: 'music',
+        mediaId: '42',
+        serverId: 7,
+        requesterSelectedOptions: {
+          tags: false,
+          profile: false,
+          metadataProfile: false,
+          rootFolder: false,
+        },
+      },
       { mediaType: 'adult', mediaId: '42', serverId: 2 },
     ]);
     await expect(page.locator('html')).toHaveAttribute(

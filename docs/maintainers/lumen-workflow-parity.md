@@ -9269,11 +9269,10 @@ every locale; only the translated error copy changes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-page-boundary-localization-20261124/`.
 Bundled `/lumen/` and production Express mount behavior remain unverified.
 
-The neighboring `shared-extra-request-localization` fixture was also run at its
-pre-change revision and still fails before reaching the Adult detail case: its
-first Music button click opens the current request sheet, while the test expects
-a submission toast without confirming the sheet. The baseline failure is
-retained as a separate workflow-test gap; this change does not alter that test.
+The neighboring `shared-extra-request-localization` fixture exposed a stale
+Music assertion: the first click opens the request sheet and submission needs a
+successful quota read plus explicit confirmation. That workflow and its
+localized failure feedback are corrected in the entry below.
 
 ### Adult detail load-error localization (2026-11-24)
 
@@ -9287,3 +9286,23 @@ desktop and iPhone. Matched standalone baseline and candidate captures at
 region is the translated heading. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-load-error-localization-20261124/`.
 Bundled `/lumen/` and production Express mount checks remain open.
+
+### Music request workflow and feedback localization (2026-11-24)
+
+The shared Music request workflow fixture now follows the current confirmation
+sheet, provides the quota response required to enable submission, and verifies a
+rejected request can be retried successfully before checking the Adult request.
+The Music confirmation action now uses Lumen's translated request label, and
+server failures pass through the active locale translator. This fixes English
+fallbacks in French and Arabic while preserving request payloads, quota checks,
+and retry behavior.
+
+The focused workflow passes all six English, French, and Arabic cases on desktop
+and iPhone, including the 500 response, retry, Adult destination selection,
+payload assertions, and RTL/overflow checks. The Lumen production build passes.
+Matched open-sheet baseline and candidate captures at 1440x900 and iPhone 13
+390x664 CSS pixels show unchanged layout and translated confirmation copy.
+Failure-toast behavior is asserted in all locales. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-request-localization-20261124/`.
+Live quota and provider submission, and the production Express `/lumen/` mount,
+remain unverified.
