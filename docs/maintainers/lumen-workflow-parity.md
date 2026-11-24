@@ -9048,11 +9048,13 @@ coverage; it does not verify live account authorization or provider behavior.
 
 ### Personal notification preference readback (2026-11-24)
 
-Email and Web Push event preferences now use a fresh notifications-settings GET
-after the save POST. Lumen shows its existing localized save-failure state and
-keeps the selected events retryable if the persisted mask differs from the
-requested mask. Fixture-backed stale-readback and retry cases pass in English,
-French, and Arabic across desktop, iPhone, Android, and tablet (12 cases).
+Every personal notification save now uses a fresh notifications-settings GET
+after the save POST, covering email, Web Push, OpenPGP, Telegram, Discord,
+Pushbullet, and Pushover preferences. Lumen shows the existing save-failure
+state and keeps edits retryable if persisted values differ. API credentials are
+checked only for configured state; their values remain redacted. Fixture-backed
+stale-readback and retry cases pass in English, French, and Arabic across
+desktop, iPhone, Android, and tablet (12 cases).
 Matching English baseline and candidate save states were inspected at 1440px
 desktop and 390px phone widths; the error message fits without changing control
 geometry. The API was fixture-backed; no live notification settings were

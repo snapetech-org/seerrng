@@ -16,6 +16,7 @@ const text = {
     account: 'Account Settings',
     email: 'Email',
     emailSaved: 'Email notification settings saved successfully!',
+    emailFailure: 'Email notification settings failed to save.',
     approved: 'Request approved',
     available: 'Media available',
     saveKey: 'Save Public Key',
@@ -39,6 +40,8 @@ const text = {
     email: 'E-mail',
     emailSaved:
       'Les paramètres de notification par e-mail ont été enregistrés !',
+    emailFailure:
+      "Impossible d'enregistrer les paramètres de notification par e-mail.",
     approved: 'Demande validée',
     available: 'Média demandé disponible',
     saveKey: 'Enregistrer la clé publique',
@@ -62,6 +65,7 @@ const text = {
     account: 'إعدادات الحساب',
     email: 'البريد الإلكترونيّ',
     emailSaved: 'تم حفظ إعدادات تنبيه الإيميل بنجاح!',
+    emailFailure: 'فشل حفظ إعدادات تنبيه الإيميل.',
     approved: 'تمت الموافقة على الطلب',
     available: 'المحتوى المطلوب متاح',
     saveKey: 'حفظ المفتاح العام',
@@ -181,7 +185,15 @@ test('personal notification controls follow the account locale and preserve chan
     },
   };
   const writes: Record<string, unknown>[] = [];
-  const staleReadbackChannels = new Set(['email', 'webpush']);
+  const staleReadbacks = new Set([
+    'email',
+    'webpush',
+    'pgpKey',
+    'telegram',
+    'discord',
+    'pushbullet',
+    'pushover',
+  ]);
   const devices = [
     {
       endpoint: 'https://push.example.test/fixture',
@@ -212,16 +224,28 @@ test('personal notification controls follow the account locale and preserve chan
       writes.push(body);
       const types = body.notificationTypes as
         Record<string, number> | undefined;
-      const staleChannel = types
-        ? Object.keys(types).find((channel) =>
-            staleReadbackChannels.has(channel)
-          )
+      const staleKey = types
+        ? Object.keys(types).find((channel) => staleReadbacks.has(channel))
         : undefined;
-      if (staleChannel) {
-        staleReadbackChannels.delete(staleChannel);
+      const stalePreference =
+        staleKey ??
+        (body.pgpKey ? 'pgpKey' : undefined) ??
+        (body.telegramMessageThreadId ? 'telegram' : undefined) ??
+        (body.discordIds ? 'discord' : undefined) ??
+        (body.pushbulletAccessToken || types?.pushbullet !== undefined
+          ? 'pushbullet'
+          : undefined) ??
+        (body.pushoverApplicationToken ||
+        body.pushoverUserKey ||
+        types?.pushover !== undefined
+          ? 'pushover'
+          : undefined);
+      if (stalePreference && staleReadbacks.has(stalePreference)) {
+        staleReadbacks.delete(stalePreference);
         return route.fulfill({
           json: {
             ...notifications,
+            ...body,
             notificationTypes: {
               ...notifications.notificationTypes,
               ...types,
@@ -308,7 +332,7 @@ test('personal notification controls follow the account locale and preserve chan
       });
     return;
   }
-  await expect(email.getByRole('alert')).toBeVisible();
+  await expect(email.getByRole('alert')).toHaveText(localized.emailFailure);
   await expect(
     email.getByLabel(localized.available, { exact: true })
   ).toBeChecked();
@@ -343,6 +367,9 @@ test('personal notification controls follow the account locale and preserve chan
   ].join('\n');
   await email.locator('textarea').fill(publicKey);
   await email.getByRole('button', { name: localized.saveKey }).click();
+  await expect(email.getByRole('alert')).toBeVisible();
+  await expect(email.locator('textarea')).toHaveValue(publicKey);
+  await email.getByRole('button', { name: localized.saveKey }).click();
   await expect(
     page.getByText(localized.keySaved, { exact: true })
   ).toBeVisible();
@@ -355,11 +382,46 @@ test('personal notification controls follow the account locale and preserve chan
   const telegram = page.locator('#notification-telegram');
   await telegram.getByLabel(localized.topicId).fill('42');
   await telegram.getByRole('button', { name: localized.saveTelegram }).click();
+  await expect(telegram.getByRole('alert')).toBeVisible();
+  await expect(telegram.getByLabel(localized.topicId)).toHaveValue('42');
+  await telegram.getByRole('button', { name: localized.saveTelegram }).click();
   await expect(
     page.getByText(localized.telegramSaved, {
       exact: true,
     })
   ).toBeVisible();
+
+  const discord = page.locator('#notification-discord');
+  await discord.locator('textarea').fill('123456789012345');
+  await discord.getByLabel(localized.available, { exact: true }).check();
+  await discord.getByRole('button').click();
+  await expect(discord.getByRole('alert')).toBeVisible();
+  await expect(discord.locator('textarea')).toHaveValue('123456789012345');
+  await expect(
+    discord.getByLabel(localized.available, { exact: true })
+  ).toBeChecked();
+  await discord.getByRole('button').click();
+  await expect(discord.getByRole('status')).toBeVisible();
+
+  const pushbullet = page.locator('#notification-pushbullet');
+  await pushbullet.getByLabel(localized.available, { exact: true }).check();
+  await pushbullet.getByRole('button').click();
+  await expect(pushbullet.getByRole('alert')).toBeVisible();
+  await expect(
+    pushbullet.getByLabel(localized.available, { exact: true })
+  ).toBeChecked();
+  await pushbullet.getByRole('button').click();
+  await expect(pushbullet.getByRole('status')).toBeVisible();
+
+  const pushover = page.locator('#notification-pushover');
+  await pushover.getByLabel(localized.available, { exact: true }).check();
+  await pushover.getByRole('button').click();
+  await expect(pushover.getByRole('alert')).toBeVisible();
+  await expect(
+    pushover.getByLabel(localized.available, { exact: true })
+  ).toBeChecked();
+  await pushover.getByRole('button').click();
+  await expect(pushover.getByRole('status')).toBeVisible();
   await page.getByRole('button', { name: localized.removeDevice }).click();
   const confirmation = page.getByRole('alertdialog');
   await expect(
@@ -378,6 +440,7 @@ test('personal notification controls follow the account locale and preserve chan
     { notificationTypes: { webpush: 10 } },
     { notificationTypes: { webpush: 10 } },
     { pgpKey: publicKey },
+    { pgpKey: publicKey },
     { pgpKey: null },
     {
       telegramChatId: '-100',
@@ -385,5 +448,23 @@ test('personal notification controls follow the account locale and preserve chan
       telegramSendSilently: false,
       notificationTypes: { telegram: 0 },
     },
+    {
+      telegramChatId: '-100',
+      telegramMessageThreadId: '42',
+      telegramSendSilently: false,
+      notificationTypes: { telegram: 0 },
+    },
+    {
+      discordIds: ['123456789012345'],
+      notificationTypes: { discord: 8 },
+    },
+    {
+      discordIds: ['123456789012345'],
+      notificationTypes: { discord: 8 },
+    },
+    { notificationTypes: { pushbullet: 8 } },
+    { notificationTypes: { pushbullet: 8 } },
+    { pushoverSound: null, notificationTypes: { pushover: 8 } },
+    { pushoverSound: null, notificationTypes: { pushover: 8 } },
   ]);
 });

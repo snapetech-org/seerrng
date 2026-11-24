@@ -196,15 +196,17 @@ function OpenPgpForm({
     setBusy(true);
     setError('');
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({ pgpKey: value }),
       });
       if (generation !== sessionGeneration()) return;
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
       if (
         value === null
-          ? result.pgpKey !== null
-          : result.pgpKey !== value && result.pgpKey !== '[REDACTED]'
+          ? readback.pgpKey !== null
+          : readback.pgpKey !== value && readback.pgpKey !== '[REDACTED]'
       ) {
         setError(
           n(
@@ -383,7 +385,7 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
     setBusy(true);
     setError('');
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({
           telegramChatId: chatId || null,
@@ -393,12 +395,14 @@ function TelegramForm({ path, data }: { path: string; data: Preferences }) {
         }),
       });
       if (generation !== sessionGeneration()) return;
-      const confirmed = telegramValues(result);
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
+      const confirmed = telegramValues(readback);
       if (
         confirmed.chatId !== chatId ||
         confirmed.threadId !== threadId ||
         confirmed.silent !== draft.silent ||
-        result.notificationTypes?.telegram !== draft.mask
+        readback.notificationTypes?.telegram !== draft.mask
       ) {
         setError(
           n(
@@ -586,7 +590,7 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
     setBusy(true);
     setError('');
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({
           discordIds: ids,
@@ -594,9 +598,11 @@ function DiscordForm({ path, data }: { path: string; data: Preferences }) {
         }),
       });
       if (generation !== sessionGeneration()) return;
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
       if (
-        result.discordIds?.join('\n') !== normalizedIds ||
-        result.notificationTypes?.discord !== draft.mask
+        readback.discordIds?.join('\n') !== normalizedIds ||
+        readback.notificationTypes?.discord !== draft.mask
       ) {
         setError(
           n(
@@ -714,7 +720,7 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
     setBusy(true);
     setError('');
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({
           notificationTypes: { pushbullet: nextMask },
@@ -726,10 +732,12 @@ function PushbulletForm({ path, data }: { path: string; data: Preferences }) {
         }),
       });
       if (generation !== sessionGeneration()) return;
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
       const expectedConfigured = !remove && (configured || !!replacement);
       if (
-        result.notificationTypes?.pushbullet !== nextMask ||
-        !!result.pushbulletAccessToken !== expectedConfigured
+        readback.notificationTypes?.pushbullet !== nextMask ||
+        !!readback.pushbulletAccessToken !== expectedConfigured
       ) {
         setError(
           n(
@@ -911,7 +919,7 @@ function PushoverForm({
     setBusy(true);
     setError('');
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({
           ...(remove || application
@@ -925,11 +933,13 @@ function PushoverForm({
         }),
       });
       if (generation !== sessionGeneration()) return;
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
       if (
-        !!result.pushoverApplicationToken !== next.application ||
-        !!result.pushoverUserKey !== next.user ||
-        (result.pushoverSound ?? '') !== next.sound ||
-        result.notificationTypes?.pushover !== next.mask
+        !!readback.pushoverApplicationToken !== next.application ||
+        !!readback.pushoverUserKey !== next.user ||
+        (readback.pushoverSound ?? '') !== next.sound ||
+        readback.notificationTypes?.pushover !== next.mask
       ) {
         setError(
           n(
