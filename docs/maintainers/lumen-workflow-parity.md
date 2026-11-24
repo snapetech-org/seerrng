@@ -9010,3 +9010,14 @@ current-client-IP restriction checks remain in the same browser flow. The
 updated workflow passes across desktop, iPhone, Android, and tablet in English,
 French, and Arabic (12 cases). This fixture does not apply real transport or
 network settings.
+
+### Bookshelf library migration failure recovery (2026-11-24)
+
+The migration browser flow now covers failed preview creation and a failed
+move-start request. A failed preview leaves the selected author available for
+retry. A failed start discards the old preview token, retains the selection,
+and requires the administrator to generate and review a fresh preview before
+retrying. The test also retains the existing conflict invalidation, confirmation,
+queued-command completion, and post-move configuration refresh checks. It passes
+across desktop, iPhone, Android, and tablet (4/4); the BookshelfNG API is
+fixture-backed, so no files were moved in a live library.

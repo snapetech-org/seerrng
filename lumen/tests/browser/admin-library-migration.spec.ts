@@ -7,6 +7,8 @@ test('Bookshelf moves require the current preview and track the queued command',
   let statusReads = 0;
   let configurationReads = 0;
   let previews = 0;
+  let failPreviewOnce = true;
+  let failStartOnce = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -60,6 +62,13 @@ test('Bookshelf moves require the current preview and track the queued command',
     });
     if (path.endsWith('/preview')) {
       previews++;
+      if (failPreviewOnce) {
+        failPreviewOnce = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary preview failure.' },
+        });
+      }
       return route.fulfill({
         json: {
           previewToken: 'preview-' + previews,
@@ -69,9 +78,9 @@ test('Bookshelf moves require the current preview and track the queued command',
           missingFileCount: 0,
           requiredCopyBytes: 1024,
           availableSpace: 4096,
-          canMove: previews > 1,
+          canMove: previews > 2,
           warnings: [],
-          conflicts: previews === 1 ? ['Destination exists.'] : [],
+          conflicts: previews === 2 ? ['Destination exists.'] : [],
           authors: [
             {
               authorId: 3,
@@ -94,6 +103,13 @@ test('Bookshelf moves require the current preview and track the queued command',
         },
       });
     }
+    if (failStartOnce) {
+      failStartOnce = false;
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Temporary move failure.' },
+      });
+    }
     return route.fulfill({ json: { command: { id: 91, status: 'queued' } } });
   });
   await page.goto('/me');
@@ -103,6 +119,11 @@ test('Bookshelf moves require the current preview and track the queued command',
   await destination.selectOption('/new');
   await expect(destination.locator('option')).toHaveCount(3);
   await page.getByRole('checkbox', { name: 'Select Example Author' }).check();
+  await page.getByRole('button', { name: 'Preview Move' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Temporary preview failure.'
+  );
+  await expect(page.getByText('1 authors selected.')).toBeVisible();
   await page.getByRole('button', { name: 'Preview Move' }).click();
   await expect(page.getByText('Conflict: Destination exists.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Start Move' })).toHaveCount(0);
@@ -127,9 +148,27 @@ test('Bookshelf moves require the current preview and track the queued command',
     });
   }
   await start.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Temporary move failure.'
+  );
+  await expect(page.getByText('1 authors selected.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Move Preview' })).toHaveCount(
+    0
+  );
+  await page.getByRole('button', { name: 'Preview Move' }).click();
+  await page.getByRole('checkbox', { name: /I reviewed this preview/ }).check();
+  await page.getByRole('button', { name: 'Start Move' }).click();
   await expect(page.getByText('Move 91: completed.')).toBeVisible();
   await expect.poll(() => configurationReads).toBe(2);
   expect(requests).toEqual([
+    {
+      path: 'preview',
+      body: {
+        authorIds: [3],
+        format: 'audiobook',
+        destinationRootPath: '/new',
+      },
+    },
     {
       path: 'preview',
       body: {
@@ -152,7 +191,24 @@ test('Bookshelf moves require the current preview and track the queued command',
         authorIds: [3],
         format: 'audiobook',
         destinationRootPath: '/other',
-        previewToken: 'preview-2',
+        previewToken: 'preview-3',
+      },
+    },
+    {
+      path: 'preview',
+      body: {
+        authorIds: [3],
+        format: 'audiobook',
+        destinationRootPath: '/other',
+      },
+    },
+    {
+      path: 'start',
+      body: {
+        authorIds: [3],
+        format: 'audiobook',
+        destinationRootPath: '/other',
+        previewToken: 'preview-4',
       },
     },
   ]);
