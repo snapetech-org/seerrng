@@ -245,7 +245,7 @@ export function InstanceRequestSettings({
     >
       <ServiceNote
         error={settings.error}
-        what="instance request settings"
+        what={t('lumen.adminGeneral.requestSettings.what', 'request settings')}
         retry={settings.reload}
       />
       {settings.data ? (

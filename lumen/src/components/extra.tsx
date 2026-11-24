@@ -326,6 +326,7 @@ export const StatPill = ({ s }: { s: Stat }) =>
 
 // wraps a category's pages: waits for settings, then shows the page or why it isn't there
 export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
+  const { t } = useLumenLocale();
   const x = useExtras();
   const { seerrPublicUrl } = usePrefs();
   const { user } = useAuth();
@@ -334,7 +335,11 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
     !isAdministrator(user?.permissions);
   if (!x.ready)
     return x.error ? (
-      <ServiceNote error={x.error} what="this page" retry={x.retry} />
+      <ServiceNote
+        error={x.error}
+        what={t('lumen.error.what.thisPage', 'this page')}
+        retry={x.retry}
+      />
     ) : (
       <div className="detail-loading" aria-busy="true" />
     );

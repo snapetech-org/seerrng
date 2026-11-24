@@ -9457,5 +9457,8 @@ French. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-useapi-error-localization-20261124/`.
 This validates the shared hook and one representative consumer; every other
 `useApi` screen and live service response still needs its own parity review.
-Other generic `ServiceNote` consumers that pass hard-coded `what` labels remain
-under review.
+
+The remaining untitled `ServiceNote` callers now provide locale-aware `what`
+labels across settings, Games, setup, and request administration. A TypeScript
+AST scan finds no string-literal `what` props on untitled `ServiceNote` elements.
+Dynamic labels and caller-supplied titles still require route-level review.

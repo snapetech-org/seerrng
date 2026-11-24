@@ -286,7 +286,7 @@ export default function Discover() {
       {extras.error && (
         <ServiceNote
           error={extras.error}
-          what="media category settings"
+          what={t('lumen.adminCategories.categoriesWhat', 'media categories')}
           retry={extras.retry}
         />
       )}

@@ -445,7 +445,7 @@ export default function Setup() {
         <div className="login-card">
           <ServiceNote
             error={settings.error}
-            what="setup settings"
+            what={t('lumen.error.what.setupSettings', 'setup settings')}
             retry={settings.reload}
           />
           {!settings.error && <div className="boot" aria-busy="true" />}
@@ -578,7 +578,10 @@ export default function Setup() {
         {activeStep === 'review' && (
           <SetupReview mediaServerType={settings.data.mediaServerType} />
         )}
-        <ServiceNote error={error || null} what="setup" />
+        <ServiceNote
+          error={error || null}
+          what={t('lumen.error.what.setup', 'setup')}
+        />
         {activeStep && (
           <div className="toolbar">
             {stepIndex > 0 && (

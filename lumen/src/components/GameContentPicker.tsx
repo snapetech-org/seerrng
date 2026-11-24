@@ -25,7 +25,7 @@ export default function GameContentPicker({
     return (
       <ServiceNote
         error={catalog.error}
-        what="game editions and add-ons"
+        what={t('lumen.error.what.gameContent', 'game editions and add-ons')}
         retry={catalog.reload}
       />
     );

@@ -59,7 +59,7 @@ export function MediaCategoryRoute({
     return pub.error ? (
       <ServiceNote
         error={pub.error}
-        what="media category settings"
+        what={t('lumen.adminCategories.categoriesWhat', 'media categories')}
         retry={pub.reload}
       />
     ) : (

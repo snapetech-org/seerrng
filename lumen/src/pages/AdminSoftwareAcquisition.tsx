@@ -532,7 +532,7 @@ function Editor({ initial }: { initial: Settings }) {
           </button>
         </div>
         <ServiceNote
-          what="platform matches"
+          what={t('lumen.error.what.platformMatches', 'platform matches')}
           error={preview.error}
           retry={preview.reload}
         />

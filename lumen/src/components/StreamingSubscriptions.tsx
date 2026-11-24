@@ -144,12 +144,12 @@ export function StreamingSubscriptions({
       </p>
       <ServiceNote
         error={movies.error}
-        what="movie providers"
+        what={t('lumen.error.what.movieProviders', 'movie providers')}
         retry={movies.reload}
       />
       <ServiceNote
         error={series.error}
-        what="series providers"
+        what={t('lumen.error.what.seriesProviders', 'series providers')}
         retry={series.reload}
       />
       {((!movies.data && !movies.error) || (!series.data && !series.error)) && (

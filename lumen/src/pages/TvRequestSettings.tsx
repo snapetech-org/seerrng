@@ -136,7 +136,11 @@ function AccessReview({ viewerId }: { viewerId: number }) {
         'Previous-season watch requests'
       )}
     >
-      <ServiceNote error={error} what="access requests" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.error.what.accessRequests', 'TV access requests')}
+        retry={reload}
+      />
       {failure && (
         <p className="note" role="alert">
           {failure}

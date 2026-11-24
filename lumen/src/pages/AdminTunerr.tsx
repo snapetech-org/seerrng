@@ -372,7 +372,10 @@ function Editor({ initial }: { initial: Settings }) {
       </Section>
       <Section title={t('lumen.tunerr.sportarrFeeds', 'Sportarr Feeds')}>
         <ServiceNote
-          what="Sportarr integration"
+          what={t(
+            'lumen.error.what.sportarrIntegration',
+            'Sportarr integration'
+          )}
           error={integration.error}
           retry={integration.reload}
         />

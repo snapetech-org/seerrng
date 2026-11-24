@@ -154,7 +154,7 @@ export function CardTitlePreferences({ path }: { path: string }) {
     <Section title={t(generalKey + 'cardTextVisibility', 'Card Titles')}>
       <ServiceNote
         error={settings.error}
-        what="card title settings"
+        what={t(generalKey + 'cardTextVisibility', 'Card Titles')}
         retry={settings.reload}
       />
       {settings.data ? (
