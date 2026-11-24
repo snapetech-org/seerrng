@@ -3633,6 +3633,7 @@ export const localeData = [
       'lumen.downloads.previewLoading': 'جارٍ تحميل معاينة الملفات…',
       'lumen.downloads.searchFailed': 'تعذّر البحث في مكتبة هذه الخدمة.',
       'lumen.error.loadFailed': 'تعذّر تحميل هذا المحتوى.',
+      'lumen.error.loadWhat': 'تعذّر تحميل {what}',
       'lumen.error.noPermission': 'ليس لديك إذن لتنفيذ هذا الإجراء.',
       'lumen.error.offline':
         'أنت غير متصل بالإنترنت. تحقق من اتصالك ثم حاول مجددًا.',
@@ -15297,6 +15298,7 @@ export const localeData = [
       'lumen.downloads.previewLoading': 'Loading file preview…',
       'lumen.downloads.searchFailed': 'Could not search this service library.',
       'lumen.error.loadFailed': 'Couldn’t load this content.',
+      'lumen.error.loadWhat': 'Couldn’t load {what}',
       'lumen.error.noPermission': 'You don’t have permission to do that.',
       'lumen.error.offline':
         'You’re offline. Check your connection and try again.',
@@ -27816,6 +27818,7 @@ export const localeData = [
       'lumen.downloads.searchFailed':
         'Impossible de rechercher dans la bibliothèque de ce service.',
       'lumen.error.loadFailed': 'Impossible de charger ce contenu.',
+      'lumen.error.loadWhat': 'Impossible de charger {what}',
       'lumen.error.noPermission':
         'Vous n’êtes pas autorisé à effectuer cette action.',
       'lumen.error.offline':

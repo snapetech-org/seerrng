@@ -9435,6 +9435,11 @@ active Lumen locale. Caller supplied formatters remain in control. The shared
 longer show English server errors and retry controls in French or Arabic. Movie
 and TV detail load failures now localize their headings as well.
 
+The shared `ServiceNote` fallback heading now translates the full “Couldn’t
+load {what}” phrase. Consumers retain supplied titles; callers pass localized
+`what` labels where they have them. The Comics catalogue is the representative
+shared-consumer regression, including its independent load-more alert.
+
 The Movie detail failure and recovery fixture passes in English, French, and
 Arabic across desktop, iPhone, Android, and tablet. It forces a 503, checks the
 localized message and Retry label, retries successfully, and checks for
@@ -9444,4 +9449,5 @@ French. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-useapi-error-localization-20261124/`.
 This validates the shared hook and one representative consumer; every other
 `useApi` screen and live service response still needs its own parity review.
-Other generic `ServiceNote` titles also remain under review.
+Other generic `ServiceNote` consumers that pass hard-coded `what` labels remain
+under review.

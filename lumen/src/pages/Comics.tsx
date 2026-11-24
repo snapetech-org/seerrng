@@ -556,7 +556,11 @@ export function Comics() {
           <h2>{gridTitle}</h2>
         </div>
         {list.error && !items.length && (
-          <ServiceNote error={list.error} what="comics" retry={list.retry} />
+          <ServiceNote
+            error={list.error}
+            what={t('lumen.comics.title', 'Comics/Manga')}
+            retry={list.retry}
+          />
         )}
         {indexing && (
           <div className="empty" role="status">

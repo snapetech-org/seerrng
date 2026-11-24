@@ -2640,6 +2640,7 @@
   "lumen.downloads.previewLoading",
   "lumen.downloads.searchFailed",
   "lumen.error.loadFailed",
+  "lumen.error.loadWhat",
   "lumen.error.noPermission",
   "lumen.error.offline",
   "lumen.error.rateLimited",

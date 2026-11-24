@@ -394,7 +394,9 @@ export function ServiceNote({
   if (!error) return null;
   return (
     <div className="empty" role={retry ? 'alert' : undefined}>
-      <b>{title ?? `Couldn’t load ${what}`}</b>
+      <b>
+        {title ?? t('lumen.error.loadWhat', 'Couldn’t load {what}', { what })}
+      </b>
       {retry ? <p>{error}</p> : error}
       {retry && (
         <button
