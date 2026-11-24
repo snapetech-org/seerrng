@@ -5869,6 +5869,7 @@ export const localeData = [
       'lumen.watchSessions.genresCount': 'الأنواع ({count} من 5)',
       'lumen.watchSessions.genresLoadFailed': 'تعذر تحميل أنواع الأفلام',
       'lumen.watchSessions.genresLoading': 'جارٍ تحميل أنواع الأفلام…',
+      'lumen.watchSessions.unknownGenre': 'النوع {id}',
       'lumen.watchSessions.groupMatches': 'مطابقات المجموعة',
       'lumen.watchSessions.highestRated': 'الأعلى تقييمًا',
       'lumen.watchSessions.host': 'المضيف',
@@ -17495,6 +17496,7 @@ export const localeData = [
       'lumen.watchSessions.genresCount': 'Genres ({count} of 5)',
       'lumen.watchSessions.genresLoadFailed': 'Could not load movie genres',
       'lumen.watchSessions.genresLoading': 'Loading movie genres…',
+      'lumen.watchSessions.unknownGenre': 'Genre {id}',
       'lumen.watchSessions.groupMatches': 'Group Matches',
       'lumen.watchSessions.highestRated': 'Highest Rated',
       'lumen.watchSessions.host': 'Host',
@@ -30264,6 +30266,7 @@ export const localeData = [
       'lumen.watchSessions.genresLoadFailed':
         'Impossible de charger les genres de films',
       'lumen.watchSessions.genresLoading': 'Chargement des genres de films…',
+      'lumen.watchSessions.unknownGenre': 'Genre {id}',
       'lumen.watchSessions.groupMatches': 'Correspondances du groupe',
       'lumen.watchSessions.highestRated': 'Les mieux notés',
       'lumen.watchSessions.host': 'Hôte',

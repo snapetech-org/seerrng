@@ -4635,6 +4635,7 @@
   "lumen.watchSessions.genresCount",
   "lumen.watchSessions.genresLoadFailed",
   "lumen.watchSessions.genresLoading",
+  "lumen.watchSessions.unknownGenre",
   "lumen.watchSessions.groupMatches",
   "lumen.watchSessions.highestRated",
   "lumen.watchSessions.host",

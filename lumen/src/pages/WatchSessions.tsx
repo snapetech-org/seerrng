@@ -209,7 +209,12 @@ function SessionForm({
             ...availableGenres,
             ...genreIds
               .filter((id) => !availableGenres.some((genre) => genre.id === id))
-              .map((id) => ({ id, name: `Genre ${id}` })),
+              .map((id) => ({
+                id,
+                name: t('lumen.watchSessions.unknownGenre', 'Genre {id}', {
+                  id,
+                }),
+              })),
           ].map(({ id, name }) => (
             <label className="set pick" key={id}>
               <span>{name}</span>

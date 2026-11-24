@@ -9462,3 +9462,13 @@ The remaining untitled `ServiceNote` callers now provide locale-aware `what`
 labels across settings, Games, setup, and request administration. A TypeScript
 AST scan finds no string-literal `what` props on untitled `ServiceNote` elements.
 Dynamic labels and caller-supplied titles still require route-level review.
+
+### Watch Session saved-genre recovery
+
+When a saved movie genre is no longer present in SeerrNG's current genre list,
+the Watch Session editor keeps the stored ID selectable so users do not lose
+their filter. Its fallback label now follows the saved Lumen locale (English,
+French, or Arabic) instead of displaying English in French and Arabic sessions.
+The browser regression verifies the retained checkbox on the owner edit screen
+at desktop, iPhone, Android, and tablet sizes. It does not verify live genre
+catalog changes or native-matched visual acceptance.

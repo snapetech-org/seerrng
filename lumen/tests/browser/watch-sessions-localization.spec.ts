@@ -94,3 +94,64 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       .toBe(true);
   });
 }
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`Watch Session preserves an unavailable genre in ${locale}`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname.slice(
+        '/api/v1'.length
+      );
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, displayName: 'Admin Fixture', permissions: 2 },
+        });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/settings/public')
+        return route.fulfill({
+          json: { applicationTitle: 'SeerrNG', mediaServerType: 1 },
+        });
+      if (path === '/watch-sessions/9')
+        return route.fulfill({
+          json: {
+            session: {
+              id: 9,
+              title: 'Friday Movie Night',
+              status: 'draft',
+              ownerId: 1,
+              memberCount: 1,
+              members: [{ id: 1, displayName: 'Admin Fixture', isOwner: true }],
+              filters: { genreIds: [99] },
+              ownPreferences: { includeWatchlistContributions: false },
+            },
+          },
+        });
+      if (path === '/watch-sessions/9/invites')
+        return route.fulfill({ json: { invites: [] } });
+      if (path === '/genres/movie') return route.fulfill({ json: [] });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto('/watch-sessions/9');
+    const fallback = {
+      en: 'Genre 99',
+      fr: 'Genre 99',
+      ar: 'النوع 99',
+    }[locale];
+    const editSettings = {
+      en: 'Edit Session Settings',
+      fr: 'Modifier les paramètres de la session',
+      ar: 'تعديل إعدادات الجلسة',
+    }[locale];
+    await page.getByRole('button', { name: editSettings }).click();
+    await page.locator('summary').click();
+    await expect(page.getByText(fallback, { exact: true })).toBeVisible();
+    await expect(page.getByRole('checkbox', { name: fallback })).toBeChecked();
+  });
+}
