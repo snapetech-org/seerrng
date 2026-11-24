@@ -8999,3 +8999,14 @@ recovery case passed on both the standalone preview and bundled `/lumen/`
 mount at desktop, iPhone, Android, and tablet viewports in all three locales
 (24 cases). These are synthetic API responses and do not verify an external
 notification provider.
+
+### Network administration stale-readback recovery (2026-11-24)
+
+The Network Settings workflow now verifies a successful write response followed
+by stale persisted readback. Lumen reports the unconfirmed save, retains the
+enabled HTTP-auth draft and acknowledgement, and allows the administrator to
+retry until readback matches. Existing validation, rejected-write recovery, and
+current-client-IP restriction checks remain in the same browser flow. The
+updated workflow passes across desktop, iPhone, Android, and tablet in English,
+French, and Arabic (12 cases). This fixture does not apply real transport or
+network settings.

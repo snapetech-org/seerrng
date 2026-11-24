@@ -29,6 +29,7 @@ const translations = {
     ackError:
       'Confirm that HTTP login sessions can be intercepted before enabling sign-in over HTTP.',
     failure: 'The server had a problem. Try again in a moment.',
+    confirmFailure: 'Could not confirm the saved network settings.',
     saved: 'Network settings saved.',
     currentIp:
       'Include your current client IP in the allowed networks before enabling or changing this restriction.',
@@ -59,6 +60,8 @@ const translations = {
     ackError:
       'Confirmez que les sessions de connexion HTTP peuvent être interceptées avant d’activer la connexion en HTTP.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    confirmFailure:
+      'Impossible de confirmer l’enregistrement des paramètres réseau.',
     saved: 'Paramètres réseau enregistrés.',
     currentIp:
       'Ajoutez l’adresse IP actuelle aux réseaux autorisés avant d’activer ou de modifier cette restriction.',
@@ -88,6 +91,7 @@ const translations = {
     ackError:
       'أقرّ بأن جلسات تسجيل الدخول عبر HTTP قد تُعترض قبل تفعيل تسجيل الدخول عبر HTTP.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    confirmFailure: 'تعذّر تأكيد حفظ إعدادات الشبكة.',
     saved: 'تم حفظ إعدادات الشبكة.',
     currentIp:
       'أضف عنوان IP الحالي إلى الشبكات المسموح بها قبل تفعيل هذا التقييد أو تغييره.',
@@ -139,6 +143,7 @@ test('network settings localize controls and enforce native visibility and save 
   };
   const writes: Record<string, any>[] = [];
   let failOnce = true;
+  let staleReadbackOnce = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -163,6 +168,15 @@ test('network settings localize controls and enforce native visibility and save 
         return route.fulfill({
           status: 503,
           json: { message: 'Service unavailable.' },
+        });
+      }
+      if (staleReadbackOnce) {
+        staleReadbackOnce = false;
+        return route.fulfill({
+          json: {
+            ...state,
+            tls: { ...state.tls, ...(patch.tls ?? {}) },
+          },
         });
       }
       if (
@@ -239,8 +253,12 @@ test('network settings localize controls and enforce native visibility and save 
   await expect(page.getByRole('alert')).toContainText(labels.failure);
   await expect(page.getByLabel(labels.auth, { exact: true })).toBeChecked();
   await save.click();
-  await expect(page.getByText(labels.saved, { exact: false })).toBeVisible();
+  await expect(page.getByRole('alert')).toContainText(labels.confirmFailure);
+  await expect(page.getByLabel(labels.auth, { exact: true })).toBeChecked();
   expect(writes).toHaveLength(2);
+  await save.click();
+  await expect(page.getByText(labels.saved, { exact: false })).toBeVisible();
+  expect(writes).toHaveLength(3);
   expect(writes[1]).toEqual({
     tls: { allowHttpAuth: true, httpAuthAcknowledged: true },
   });
@@ -268,7 +286,7 @@ test('network settings localize controls and enforce native visibility and save 
   await allowed.fill('10.0.0.0/8');
   await save.click();
   await expect(page.getByRole('alert')).toContainText(labels.currentIp);
-  expect(writes).toHaveLength(3);
+  expect(writes).toHaveLength(4);
   await allowed.fill('127.0.0.1/32');
   await save.click();
   await expect(page.getByText(labels.saved, { exact: false })).toBeVisible();
