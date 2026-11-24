@@ -30,6 +30,8 @@ const text = {
     removeDevice: 'Delete Subscription',
     removeDeviceTitle: 'Remove this browser device?',
     deviceRemoved: 'Browser device removed.',
+    loadFailure: 'Could not load notification settings.',
+    retry: 'Retry',
   },
   fr: {
     title: 'Paramètres de notification',
@@ -52,6 +54,8 @@ const text = {
     removeDevice: "Supprimer l'abonnement",
     removeDeviceTitle: 'Supprimer cet appareil de navigateur ?',
     deviceRemoved: 'Appareil de navigateur supprimé.',
+    loadFailure: 'Impossible de charger les paramètres de notification.',
+    retry: 'Réessayer',
   },
   ar: {
     title: 'إعدادات التنبيه',
@@ -72,8 +76,78 @@ const text = {
     removeDevice: 'حذف الاشتراك',
     removeDeviceTitle: 'هل تريد إزالة جهاز هذا المتصفح؟',
     deviceRemoved: 'تمت إزالة جهاز المتصفح.',
+    loadFailure: 'تعذر تحميل إعدادات الإشعارات.',
+    retry: 'إعادة المحاولة',
   },
 } as const;
+
+test('personal notification settings recover from an initial load failure', async ({
+  page,
+}) => {
+  const localized = text[locale as keyof typeof text];
+  let reads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Fixture User', permissions: 0 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/user/1/settings/notifications') {
+      reads++;
+      if (reads === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary notification failure.' },
+        });
+      return route.fulfill({
+        json: {
+          emailEnabled: true,
+          webPushEnabled: false,
+          notificationTypes: { email: 2 },
+        },
+      });
+    }
+    if (path === '/settings/public')
+      return route.fulfill({ json: { applicationTitle: 'SeerrNG' } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/me/account/notifications'));
+  const alert = page.getByRole('alert');
+  await expect(alert).toContainText('Temporary notification failure.');
+  await expect(alert).toContainText(localized.loadFailure);
+  await expect(
+    alert.getByRole('button', { name: localized.retry, exact: true })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  if (process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR}/load-failure-${locale}-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
+  await alert
+    .getByRole('button', { name: localized.retry, exact: true })
+    .click();
+  await expect(
+    page.locator('#notification-email').getByRole('heading', {
+      name: localized.email,
+    })
+  ).toBeVisible();
+  expect(reads).toBe(2);
+});
 
 test('personal notification controls follow the account locale and preserve channel writes', async ({
   page,

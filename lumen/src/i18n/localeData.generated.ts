@@ -4812,6 +4812,7 @@ export const localeData = [
         'تم إعداد رمز وصول. اترك حقل الاستبدال فارغًا للاحتفاظ به.',
       'lumen.notifications.keepPushoverCredentials':
         'اترك حقول بيانات الاعتماد فارغة للاحتفاظ بالبيانات الحالية.',
+      'lumen.notifications.loadFailure': 'تعذر تحميل إعدادات الإشعارات.',
       'lumen.notifications.loading': 'جارٍ تحميل إعدادات الإشعارات…',
       'lumen.notifications.loadingBrowserDevices': 'جارٍ تحميل أجهزة المتصفح…',
       'lumen.notifications.openBot': 'فتح @{bot}',
@@ -16316,6 +16317,8 @@ export const localeData = [
         'An access token is configured. Leave the replacement field empty to keep it.',
       'lumen.notifications.keepPushoverCredentials':
         'Leave the credential fields empty to keep configured credentials.',
+      'lumen.notifications.loadFailure':
+        'Could not load notification settings.',
       'lumen.notifications.loading': 'Loading notification settings…',
       'lumen.notifications.loadingBrowserDevices': 'Loading browser devices…',
       'lumen.notifications.openBot': 'Open @{bot}',
@@ -28890,6 +28893,8 @@ export const localeData = [
         'Un jeton d’accès est configuré. Laissez le champ de remplacement vide pour le conserver.',
       'lumen.notifications.keepPushoverCredentials':
         'Laissez les champs d’identifiants vides pour conserver les identifiants configurés.',
+      'lumen.notifications.loadFailure':
+        'Impossible de charger les paramètres de notification.',
       'lumen.notifications.loading':
         'Chargement des paramètres de notification…',
       'lumen.notifications.loadingBrowserDevices':

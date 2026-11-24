@@ -3663,6 +3663,7 @@
   "lumen.notifications.keepKey",
   "lumen.notifications.keepPushbulletToken",
   "lumen.notifications.keepPushoverCredentials",
+  "lumen.notifications.loadFailure",
   "lumen.notifications.loading",
   "lumen.notifications.loadingBrowserDevices",
   "lumen.notifications.openBot",

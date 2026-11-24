@@ -8975,3 +8975,16 @@ recovery remains covered. Desktop and iPhone cases passed in English, French,
 and Arabic (6/6); the French case also scopes duplicate Users navigation labels
 to the settings page content. No server settings or provider connections were
 changed by these fixtures.
+
+### Personal notification load recovery and locale coverage (2026-11-24)
+
+The personal Notifications route now localizes its failed-load title and retry
+control instead of falling back to English. The existing retry still reloads the
+same authenticated user settings endpoint and renders the notification form
+when the read succeeds. Baseline and candidate error-state screenshots were
+compared at 1440px desktop and 390px phone widths; French and Arabic candidates
+were also inspected at those widths, with no horizontal overflow. The focused
+recovery case passed on both the standalone preview and bundled `/lumen/`
+mount at desktop, iPhone, Android, and tablet viewports in all three locales
+(24 cases). These are synthetic API responses and do not verify an external
+notification provider.

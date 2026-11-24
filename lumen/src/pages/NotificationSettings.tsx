@@ -1127,6 +1127,11 @@ export function UserNotifications({
         <ServiceNote
           error={error}
           what={n('notificationsettings', 'notification settings')}
+          title={n(
+            'lumen.notifications.loadFailure',
+            'Could not load notification settings.'
+          )}
+          retryLabel={n('lumen.account.retry', 'Retry')}
           retry={reload}
         />
         {!data && !error && (
