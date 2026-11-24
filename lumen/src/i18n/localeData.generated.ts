@@ -7191,6 +7191,40 @@ export const localeData = [
         'المشكلات وإمكانية الظهور',
       'lumen.permissions.group.other': 'أخرى',
       'lumen.permissions.group.requests': 'الطلبات',
+      'lumen.collectionDetail.added': 'أُضيفت المجموعة إلى قائمة الحظر.',
+      'lumen.collectionDetail.blockedCount':
+        '{blocked} من {total} في قائمة الحظر',
+      'lumen.collectionDetail.blocklist': 'حظر المجموعة',
+      'lumen.collectionDetail.blocklistExplanation':
+        'سيتم حظر الطلبات الجديدة لجميع الأفلام في هذه المجموعة.',
+      'lumen.collectionDetail.changeUnconfirmed':
+        'تعذّر تأكيد التغيير. تحقق من المجموعة قبل المحاولة مرة أخرى.',
+      'lumen.collectionDetail.checkFailure': 'تعذّر التحقق من خادم الوسائط.',
+      'lumen.collectionDetail.checkingLibraries':
+        'جارٍ التحقق من مكتبات خادم الوسائط…',
+      'lumen.collectionDetail.confirmBlocklist': 'هل تريد حظر هذه المجموعة؟',
+      'lumen.collectionDetail.confirmUnblock':
+        'هل تريد إلغاء حظر هذه المجموعة؟',
+      'lumen.collectionDetail.item': 'هذه المجموعة',
+      'lumen.collectionDetail.loadFailure': 'تعذّر تحميل هذه المجموعة',
+      'lumen.collectionDetail.loading': 'جارٍ تحميل المجموعة…',
+      'lumen.collectionDetail.mediaServerCollection': 'مجموعة خادم الوسائط',
+      'lumen.collectionDetail.mediaServerLibraries': 'مكتبات خادم الوسائط',
+      'lumen.collectionDetail.movieCount': '{count} أفلام',
+      'lumen.collectionDetail.movies': 'الأفلام',
+      'lumen.collectionDetail.noMovies': 'لا توجد أفلام مدرجة.',
+      'lumen.collectionDetail.notFound': 'المجموعة غير موجودة.',
+      'lumen.collectionDetail.oneMovie': 'فيلم واحد ({count})',
+      'lumen.collectionDetail.removed': 'أُزيلت المجموعة من قائمة الحظر.',
+      'lumen.collectionDetail.retry': 'إعادة المحاولة',
+      'lumen.collectionDetail.serverUnsupported':
+        'خادم الوسائط هذا لا يدعم تعديل المجموعات.',
+      'lumen.collectionDetail.unblock': 'إلغاء حظر المجموعة',
+      'lumen.collectionDetail.unblockExplanation':
+        'سيؤدي ذلك إلى إزالة إدخالات قائمة الحظر لجميع أفلام هذه المجموعة، بما فيها الأفلام المحظورة بشكل فردي.',
+      'lumen.collectionDetail.verifyFailure':
+        'تعذّر التحقق من هذه المجموعة على خادم الوسائط.',
+      'lumen.collectionDetail.watchTrailer': 'مشاهدة الإعلان الترويجي',
       'lumen.requestFiles.audiobook': 'كتاب صوتي',
       'lumen.requestFiles.availableRequests': 'الطلبات المتاحة',
       'lumen.requestFiles.checking': 'جارٍ التحقق من الملفات القابلة للتنزيل…',
@@ -18782,6 +18816,40 @@ export const localeData = [
       'lumen.permissions.group.issues-and-visibility': 'Issues and Visibility',
       'lumen.permissions.group.other': 'Other',
       'lumen.permissions.group.requests': 'Requests',
+      'lumen.collectionDetail.added': 'Collection added to the Blocklist.',
+      'lumen.collectionDetail.blockedCount': '{blocked} of {total} blocklisted',
+      'lumen.collectionDetail.blocklist': 'Blocklist Collection',
+      'lumen.collectionDetail.blocklistExplanation':
+        'New requests for all movies in this collection will be blocked.',
+      'lumen.collectionDetail.changeUnconfirmed':
+        'Could not confirm the change. Check the collection before trying again.',
+      'lumen.collectionDetail.checkFailure':
+        'Could not check the media server.',
+      'lumen.collectionDetail.checkingLibraries':
+        'Checking media-server libraries…',
+      'lumen.collectionDetail.confirmBlocklist': 'Blocklist this collection?',
+      'lumen.collectionDetail.confirmUnblock': 'Unblock this collection?',
+      'lumen.collectionDetail.item': 'this collection',
+      'lumen.collectionDetail.loadFailure': 'Could not load this collection',
+      'lumen.collectionDetail.loading': 'Loading collection…',
+      'lumen.collectionDetail.mediaServerCollection': 'Media Server Collection',
+      'lumen.collectionDetail.mediaServerLibraries': 'media-server libraries',
+      'lumen.collectionDetail.movieCount': '{count} movies',
+      'lumen.collectionDetail.movies': 'Movies',
+      'lumen.collectionDetail.noMovies': 'No movies listed.',
+      'lumen.collectionDetail.notFound': 'Collection not found.',
+      'lumen.collectionDetail.oneMovie': '{count} movie',
+      'lumen.collectionDetail.removed':
+        'Collection removed from the Blocklist.',
+      'lumen.collectionDetail.retry': 'Retry',
+      'lumen.collectionDetail.serverUnsupported':
+        'This media server does not support collection changes.',
+      'lumen.collectionDetail.unblock': 'Unblock Collection',
+      'lumen.collectionDetail.unblockExplanation':
+        'This removes Blocklist entries for all movies in this collection, including individually blocked movies.',
+      'lumen.collectionDetail.verifyFailure':
+        'Could not verify this collection on the media server.',
+      'lumen.collectionDetail.watchTrailer': 'Watch Trailer',
       'lumen.requestFiles.audiobook': 'Audiobook',
       'lumen.requestFiles.availableRequests': 'available requests',
       'lumen.requestFiles.checking': 'Checking for downloadable files…',
@@ -31571,6 +31639,45 @@ export const localeData = [
         'Signalements et visibilité',
       'lumen.permissions.group.other': 'Autres',
       'lumen.permissions.group.requests': 'Demandes',
+      'lumen.collectionDetail.added':
+        'Collection ajoutée à la liste de blocage.',
+      'lumen.collectionDetail.blockedCount':
+        '{blocked} sur {total} dans la liste de blocage',
+      'lumen.collectionDetail.blocklist': 'Bloquer la collection',
+      'lumen.collectionDetail.blocklistExplanation':
+        'Les nouvelles demandes pour tous les films de cette collection seront bloquées.',
+      'lumen.collectionDetail.changeUnconfirmed':
+        'Impossible de confirmer la modification. Vérifiez la collection avant de réessayer.',
+      'lumen.collectionDetail.checkFailure':
+        'Impossible de vérifier le serveur multimédia.',
+      'lumen.collectionDetail.checkingLibraries':
+        'Vérification des bibliothèques du serveur multimédia…',
+      'lumen.collectionDetail.confirmBlocklist': 'Bloquer cette collection ?',
+      'lumen.collectionDetail.confirmUnblock': 'Débloquer cette collection ?',
+      'lumen.collectionDetail.item': 'cette collection',
+      'lumen.collectionDetail.loadFailure':
+        'Impossible de charger cette collection',
+      'lumen.collectionDetail.loading': 'Chargement de la collection…',
+      'lumen.collectionDetail.mediaServerCollection':
+        'Collection du serveur multimédia',
+      'lumen.collectionDetail.mediaServerLibraries':
+        'bibliothèques du serveur multimédia',
+      'lumen.collectionDetail.movieCount': '{count} films',
+      'lumen.collectionDetail.movies': 'Films',
+      'lumen.collectionDetail.noMovies': 'Aucun film répertorié.',
+      'lumen.collectionDetail.notFound': 'Collection introuvable.',
+      'lumen.collectionDetail.oneMovie': '{count} film',
+      'lumen.collectionDetail.removed':
+        'Collection retirée de la liste de blocage.',
+      'lumen.collectionDetail.retry': 'Réessayer',
+      'lumen.collectionDetail.serverUnsupported':
+        'Ce serveur multimédia ne prend pas en charge les modifications de collection.',
+      'lumen.collectionDetail.unblock': 'Débloquer la collection',
+      'lumen.collectionDetail.unblockExplanation':
+        'Les entrées de la liste de blocage seront supprimées pour tous les films de cette collection, y compris ceux bloqués individuellement.',
+      'lumen.collectionDetail.verifyFailure':
+        'Impossible de vérifier cette collection sur le serveur multimédia.',
+      'lumen.collectionDetail.watchTrailer': 'Regarder la bande-annonce',
       'lumen.requestFiles.audiobook': 'Livre audio',
       'lumen.requestFiles.availableRequests': 'demandes disponibles',
       'lumen.requestFiles.checking':

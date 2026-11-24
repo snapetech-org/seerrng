@@ -87,14 +87,23 @@ function CollectionContent({ id }: { id: number }) {
       if (generation !== sessionGeneration()) return;
       if (result.collection?.id !== id || !result.sync)
         throw new Error(
-          'Could not verify this collection on the media server.'
+          t(
+            'lumen.collectionDetail.verifyFailure',
+            'Could not verify this collection on the media server.'
+          )
         );
       setServerSync(result.sync);
     } catch (error) {
       if (generation === sessionGeneration()) {
         setServerSync(undefined);
         setServerError(
-          friendlyError(error, 'Could not check the media server.')
+          friendlyError(
+            error,
+            t(
+              'lumen.collectionDetail.checkFailure',
+              'Could not check the media server.'
+            )
+          )
         );
       }
     } finally {
@@ -133,13 +142,22 @@ function CollectionContent({ id }: { id: number }) {
       refresh();
       toast(
         action === 'add'
-          ? 'Collection added to the Blocklist.'
-          : 'Collection removed from the Blocklist.'
+          ? t(
+              'lumen.collectionDetail.added',
+              'Collection added to the Blocklist.'
+            )
+          : t(
+              'lumen.collectionDetail.removed',
+              'Collection removed from the Blocklist.'
+            )
       );
     } catch {
       reload();
       toast(
-        'Could not confirm the change. Check the collection before trying again.'
+        t(
+          'lumen.collectionDetail.changeUnconfirmed',
+          'Could not confirm the change. Check the collection before trying again.'
+        )
       );
     } finally {
       notifyBlocklistChanged();
@@ -150,14 +168,30 @@ function CollectionContent({ id }: { id: number }) {
   }
 
   if (error)
-    return <ServiceNote error={error} what="this collection" retry={reload} />;
+    return (
+      <ServiceNote
+        error={error}
+        what={t('lumen.collectionDetail.item', 'this collection')}
+        title={t(
+          'lumen.collectionDetail.loadFailure',
+          'Could not load this collection'
+        )}
+        retryLabel={t('lumen.collectionDetail.retry', 'Retry')}
+        retry={reload}
+      />
+    );
   if (!data)
     return (
       <p className="note" role="status">
-        Loading collection…
+        {t('lumen.collectionDetail.loading', 'Loading collection…')}
       </p>
     );
-  if (data.id !== id) return <p className="note">Collection not found.</p>;
+  if (data.id !== id)
+    return (
+      <p className="note">
+        {t('lumen.collectionDetail.notFound', 'Collection not found.')}
+      </p>
+    );
   const playableQualities = canRequestMovies(user?.permissions)
     ? collectionPlaybackQualities(
         data.parts,
@@ -166,7 +200,9 @@ function CollectionContent({ id }: { id: number }) {
       )
     : [];
   const title =
-    action === 'add' ? 'Blocklist Collection' : 'Unblock Collection';
+    action === 'add'
+      ? t('lumen.collectionDetail.blocklist', 'Blocklist Collection')
+      : t('lumen.collectionDetail.unblock', 'Unblock Collection');
 
   return (
     <article className="detail">
@@ -175,7 +211,13 @@ function CollectionContent({ id }: { id: number }) {
         poster={tmdbImg(data.posterPath, 'w500')}
         backdrop={tmdbImg(data.backdropPath, 'w1280')}
         line={[
-          `${data.parts.length} ${data.parts.length === 1 ? 'movie' : 'movies'}`,
+          t(
+            data.parts.length === 1
+              ? 'lumen.collectionDetail.oneMovie'
+              : 'lumen.collectionDetail.movieCount',
+            data.parts.length === 1 ? '{count} movie' : '{count} movies',
+            { count: data.parts.length }
+          ),
         ]}
       />
       <div className="dbody">
@@ -186,20 +228,39 @@ function CollectionContent({ id }: { id: number }) {
               if (event.currentTarget.open && !serverSync) void checkServer();
             }}
           >
-            <summary>Media Server Collection</summary>
+            <summary>
+              {t(
+                'lumen.collectionDetail.mediaServerCollection',
+                'Media Server Collection'
+              )}
+            </summary>
             {serverBusy && (
               <p className="note" role="status">
-                Checking media-server libraries…
+                {t(
+                  'lumen.collectionDetail.checkingLibraries',
+                  'Checking media-server libraries…'
+                )}
               </p>
             )}
             <ServiceNote
-              what="media-server libraries"
+              what={t(
+                'lumen.collectionDetail.mediaServerLibraries',
+                'media-server libraries'
+              )}
               error={serverError || null}
+              title={t(
+                'lumen.collectionDetail.checkFailure',
+                'Could not check the media server.'
+              )}
+              retryLabel={t('lumen.collectionDetail.retry', 'Retry')}
               retry={() => void checkServer()}
             />
             {serverSync && !serverSync.supported && (
               <p className="note">
-                This media server does not support collection changes.
+                {t(
+                  'lumen.collectionDetail.serverUnsupported',
+                  'This media server does not support collection changes.'
+                )}
               </p>
             )}
             <CollectionServerActions
@@ -224,7 +285,7 @@ function CollectionContent({ id }: { id: number }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Watch Trailer
+                {t('lumen.collectionDetail.watchTrailer', 'Watch Trailer')}
               </a>
             )}
             {playableQualities.length > 0 && (
@@ -251,7 +312,11 @@ function CollectionContent({ id }: { id: number }) {
             </button>
             {blocked > 0 && (
               <span className="dnote">
-                {blocked} of {data.parts.length} blocklisted
+                {t(
+                  'lumen.collectionDetail.blockedCount',
+                  '{blocked} of {total} blocklisted',
+                  { blocked, total: data.parts.length }
+                )}
               </span>
             )}
             {manager && (
@@ -266,7 +331,7 @@ function CollectionContent({ id }: { id: number }) {
           </div>
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
-        <Section title="Movies">
+        <Section title={t('lumen.collectionDetail.movies', 'Movies')}>
           {data.parts.length ? (
             <div className="grid">
               {data.parts.map((part) => (
@@ -274,7 +339,9 @@ function CollectionContent({ id }: { id: number }) {
               ))}
             </div>
           ) : (
-            <p className="note">No movies listed.</p>
+            <p className="note">
+              {t('lumen.collectionDetail.noMovies', 'No movies listed.')}
+            </p>
           )}
         </Section>
       </div>
@@ -312,13 +379,25 @@ function CollectionContent({ id }: { id: number }) {
         <ConfirmSheet
           title={
             confirm === 'add'
-              ? 'Blocklist this collection?'
-              : 'Unblock this collection?'
+              ? t(
+                  'lumen.collectionDetail.confirmBlocklist',
+                  'Blocklist this collection?'
+                )
+              : t(
+                  'lumen.collectionDetail.confirmUnblock',
+                  'Unblock this collection?'
+                )
           }
           body={
             confirm === 'add'
-              ? 'New requests for all movies in this collection will be blocked.'
-              : 'This removes Blocklist entries for all movies in this collection, including individually blocked movies.'
+              ? t(
+                  'lumen.collectionDetail.blocklistExplanation',
+                  'New requests for all movies in this collection will be blocked.'
+                )
+              : t(
+                  'lumen.collectionDetail.unblockExplanation',
+                  'This removes Blocklist entries for all movies in this collection, including individually blocked movies.'
+                )
           }
           confirm={title}
           busy={busy}
@@ -333,6 +412,7 @@ function CollectionContent({ id }: { id: number }) {
 }
 
 export default function CollectionDetail() {
+  const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const number = /^\d+$/.test(id) ? Number(id) : 0;
   return Number.isSafeInteger(number) &&
@@ -340,6 +420,8 @@ export default function CollectionDetail() {
     number <= 1_000_000_000 ? (
     <CollectionContent key={number} id={number} />
   ) : (
-    <p className="note">Collection not found.</p>
+    <p className="note">
+      {t('lumen.collectionDetail.notFound', 'Collection not found.')}
+    </p>
   );
 }
