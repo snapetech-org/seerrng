@@ -747,6 +747,21 @@ for (const locale of ['fr', 'ar']) {
     await page.getByLabel(expected.label).fill('Unreadable Attempt');
     await save.click();
     await expect(page.getByText(expected.confirm)).toBeVisible();
+    await expect(page.getByLabel(expected.label)).toHaveValue(
+      'Unreadable Attempt'
+    );
+    await save.click();
+    await expect(
+      page.getByText(
+        locale === 'fr'
+          ? 'Les paramètres ont été enregistrés !'
+          : 'تم حفظ الإعدادات بنجاح!'
+      )
+    ).toBeVisible();
+    await expect(page.getByLabel(expected.label)).toHaveValue(
+      'Unreadable Attempt'
+    );
+    expect(postCount).toBe(5);
   });
 }
 

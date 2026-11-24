@@ -9036,3 +9036,12 @@ viewport projects. Matching English baseline and candidate error states were
 inspected at 1440px desktop and 390px phone widths; French phone and Arabic
 desktop candidates were also inspected. No live media-server credentials or
 connections were changed.
+
+### Account profile confirmation retry (2026-11-24)
+
+The localized account-profile workflow now explicitly exercises an accepted
+profile POST followed by a failed confirmation GET. It verifies that the user's
+edited display name remains available, a retry persists it, and the saved-state
+notice appears only after the retry can be confirmed. French and Arabic pass on
+desktop, iPhone, Android, and tablet (8 cases). This is fixture-backed API
+coverage; it does not verify live account authorization or provider behavior.
