@@ -57,7 +57,9 @@ async function show(
   permissions = 2,
   quota?: { limit: number; remaining: number; restricted: boolean },
   settings: Record<string, unknown> = {},
-  seriesSeasons: typeof seasons = seasons
+  seriesSeasons: typeof seasons = seasons,
+  locale?: string,
+  failRequest = false
 ) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -70,8 +72,15 @@ async function show(
         json: { id: 1, displayName: 'alex', permissions },
       });
     if (path === '/settings/public') return r.fulfill({ json: settings });
+    if (locale && path === '/user/1/settings/main')
+      return r.fulfill({ json: { locale } });
     if (quota && path === '/user/1/quota')
       return r.fulfill({ json: { tv: quota } });
+    if (path === '/request' && r.request().method() === 'POST' && failRequest)
+      return r.fulfill({
+        status: 500,
+        json: { message: 'Internal Server Error' },
+      });
     if (path === '/request' && r.request().method() === 'POST')
       return r.fulfill({
         json: { id: 44, status: 1, quotaException: !!quota },
@@ -97,6 +106,49 @@ async function show(
     return r.fulfill({ json: { results: [] } });
   });
   await page.goto(appPath('/tv/84773'));
+}
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`TV detail request failures follow ${locale} locale`, async ({
+    page,
+  }, testInfo) => {
+    const serverFailure = {
+      en: 'The server had a problem. Try again in a moment.',
+      fr: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      ar: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    }[locale];
+    await show(
+      page,
+      { id: 2074, status: 2, requests: [], seasons: [] },
+      [],
+      32,
+      undefined,
+      {},
+      seasons,
+      locale,
+      true
+    );
+    await page.locator('.dacts.pc .btn-primary').first().click();
+    const toast = page.getByRole('status');
+    await expect(toast).toHaveClass(/show/);
+    const toastBounds = await toast.boundingBox();
+    const requestBounds = await page
+      .locator('.dacts.pc .btn-primary')
+      .first()
+      .boundingBox();
+    expect(toastBounds).not.toBeNull();
+    expect(requestBounds).not.toBeNull();
+    expect(toastBounds!.y).toBeGreaterThanOrEqual(
+      requestBounds!.y + requestBounds!.height
+    );
+    const capture = process.env.LUMEN_TV_ERROR_CAPTURE;
+    if (capture && testInfo.project.name === 'desktop')
+      await page.screenshot({
+        path: `${capture}-${locale}-desktop.png`,
+        animations: 'disabled',
+      });
+    await expect(toast).toContainText(serverFailure);
+  });
 }
 
 test('a fully requested series shows Requested and its request, not the request button @tv-request-visual', async ({

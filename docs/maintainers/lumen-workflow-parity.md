@@ -9368,3 +9368,20 @@ same Discover layout and localized toast; the pre-fix French baseline shows
 English error text. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-one-click-request-error-localization-20261124/`.
 Live request processing and the production `/lumen/` mount remain unverified.
+
+### Movie and TV detail request error feedback (2026-11-24)
+
+Movie and TV detail request failures now pass generic server, permission,
+session, timeout, and connectivity errors through the active Lumen translator.
+Episode submission and TV season-watch-gate failures use the same translated
+error handling. Streaming-policy override dialogs, request destinations,
+seasons, quality, and payloads are unchanged.
+
+The direct TV request 500 regression passes in English, French, and Arabic on
+desktop. Its assertion verifies the fixed toast no longer covers the primary
+request action. Matched 1440x900 baseline and candidate captures show the toast
+below the action in the candidate; the baseline overlaps the action. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-detail-request-error-localization-20261124/`.
+The direct movie-detail 500 path, live Arr behavior, phone layout, and
+production `/lumen/` mount remain unverified.

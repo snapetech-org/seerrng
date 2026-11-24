@@ -251,7 +251,11 @@ export default function MovieDetail() {
       ) {
         setOverride({ movieId: m.id, options, message: error.message });
       } else {
-        toast(friendlyError(error, 'Request failed'));
+        toast(
+          friendlyError(error, 'Request failed', (id, fallback) =>
+            t(id, fallback)
+          )
+        );
       }
     } finally {
       setBusy(false);

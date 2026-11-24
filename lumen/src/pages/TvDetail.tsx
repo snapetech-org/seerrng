@@ -404,7 +404,11 @@ export default function TvDetail() {
             }),
         });
       } else {
-        setEpisodeError(friendlyError(error, 'Could not request episodes'));
+        setEpisodeError(
+          friendlyError(error, 'Could not request episodes', (id, fallback) =>
+            translate(id, fallback)
+          )
+        );
       }
       if (error instanceof ApiError && error.code === 'REQUEST_NOT_CONFIRMED')
         refresh();
@@ -452,7 +456,8 @@ export default function TvDetail() {
           selection: selectionKey,
           message: friendlyError(
             e,
-            'Could not verify the previous season. Try again.'
+            'Could not verify the previous season. Try again.',
+            (id, fallback) => translate(id, fallback)
           ),
           needsAccount: e.reason === 'account-required',
         });
@@ -460,7 +465,11 @@ export default function TvDetail() {
           .getElementById('seasons')
           ?.scrollIntoView({ behavior: scrollBehavior() });
       } else {
-        toast(friendlyError(e, 'Request failed'));
+        toast(
+          friendlyError(e, 'Request failed', (id, fallback) =>
+            translate(id, fallback)
+          )
+        );
         if (e instanceof ApiError && e.code === 'REQUEST_NOT_CONFIRMED')
           refresh();
       }

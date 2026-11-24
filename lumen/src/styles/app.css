@@ -2497,10 +2497,10 @@ body.is-detail .toast {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .toast {
-    bottom: 28px;
+    bottom: 4px;
   }
   body.is-detail .toast {
-    bottom: 28px;
+    bottom: 4px;
   }
   .sheet .pk {
     padding: 24px var(--s8) var(--s6);
