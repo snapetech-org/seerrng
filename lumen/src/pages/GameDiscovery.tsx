@@ -133,7 +133,9 @@ export default function GameDiscovery() {
       if (generation === sessionGeneration()) done(value);
     } catch (error) {
       if (generation === sessionGeneration()) {
-        setFailure(friendlyError(error, fallback));
+        setFailure(
+          friendlyError(error, fallback, (id, message) => t(id, message))
+        );
         onFailure?.();
       }
     } finally {

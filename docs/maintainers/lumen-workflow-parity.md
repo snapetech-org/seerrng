@@ -9339,3 +9339,17 @@ Failure-toast behavior is asserted in all locales. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-request-localization-20261124/`.
 Live quota and provider submission, and the production Express `/lumen/` mount,
 remain unverified.
+
+### Game Finder API error localization (2026-11-24)
+
+Generic QuestarrNG API failures in Game Finder now pass through Lumen's active
+locale translator. English, French, and Arabic preserve the existing results
+and retry action while displaying the localized server error.
+
+The saved-search workflow regression passes in all three locales on desktop,
+including the 500 response and retry path. Matched 1440x900 baseline and
+candidate captures show unchanged panel geometry and localized error copy. The
+pre-fix baseline reproduces English failure copy in French and Arabic. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-finder-error-localization-20261124/`.
+Live QuestarrNG behavior and production `/lumen/` mounting remain unverified.

@@ -20,6 +20,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
       invalid: 'Invalid saved searches response.',
       empty: 'No saved searches yet.',
       unavailable: 'Game Finder could not reach QuestarrNG.',
+      serverFailure: 'The server had a problem. Try again in a moment.',
       loadMore: 'Load More Matches',
       searchName: 'Search Name',
       notify: 'Notify Me of New Matches',
@@ -39,6 +40,8 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
       invalid: 'Réponse des recherches enregistrées invalide.',
       empty: 'Aucune recherche enregistrée.',
       unavailable: 'Game Finder ne peut pas joindre QuestarrNG.',
+      serverFailure:
+        'Le serveur a rencontré un problème. Réessayez dans un instant.',
       loadMore: 'Charger plus de résultats',
       searchName: 'Nom',
       notify: 'M’avertir des nouveaux résultats',
@@ -58,6 +61,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
       invalid: 'استجابة عمليات البحث المحفوظة غير صالحة.',
       empty: 'لا توجد عمليات بحث محفوظة بعد.',
       unavailable: 'تعذر على مستكشف الألعاب الوصول إلى QuestarrNG.',
+      serverFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
       loadMore: 'تحميل المزيد من التطابقات',
       searchName: 'اسم البحث',
       notify: 'أبلغني بالتطابقات الجديدة',
@@ -88,6 +92,11 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
       discovery.push(body);
       if (discovery.length === 2)
         return route.fulfill({ json: { available: false, results: [] } });
+      if (discovery.length === 4)
+        return route.fulfill({
+          status: 500,
+          json: { message: 'Internal Server Error' },
+        });
       return route.fulfill({
         json: {
           available: true,
@@ -176,6 +185,15 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   await page.getByRole('button', { name: copy.run }).click();
   await expect(page.getByLabel(copy.keywords)).toHaveValue('different draft');
   await expect.poll(() => discovery.length).toBe(4);
+  const serverError = page.getByRole('alert').last();
+  await expect(serverError).toBeVisible();
+  const errorCapture = process.env.LUMEN_GAME_FINDER_ERROR_CAPTURE;
+  if (errorCapture && ['desktop', 'iphone'].includes(testInfo.project.name))
+    await page.screenshot({
+      path: `${errorCapture}/${locale}-${testInfo.project.name}.png`,
+      animations: 'disabled',
+    });
+  await expect(serverError).toContainText(copy.serverFailure);
   await page.getByRole('button', { name: copy.delete }).click();
   await page
     .getByRole('alertdialog')
