@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { useLiveTvStatus } from '../liveTv';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
@@ -32,23 +33,11 @@ interface Title {
   tmdbId: number;
 }
 
-const dateTime = new Intl.DateTimeFormat(undefined, {
-  weekday: 'short',
-  month: 'short',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-});
-const time = new Intl.DateTimeFormat(undefined, {
-  hour: 'numeric',
-  minute: '2-digit',
-});
-
-function airingTime(airing: Airing) {
+function airingTime(airing: Airing, locale: string) {
   const start = new Date(airing.start);
   const end = new Date(airing.stop);
   return Number.isFinite(start.getTime()) && Number.isFinite(end.getTime())
-    ? `${dateTime.format(start)} – ${time.format(end)}`
+    ? `${new Intl.DateTimeFormat(locale, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(start)} – ${new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }).format(end)}`
     : '';
 }
 
@@ -63,6 +52,7 @@ function AiringsSheet({
   canRequest: boolean;
   close: () => void;
 }) {
+  const { locale, t } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const pending = useRef(false);
   const guide = useApi<Guide>(`/live-tv/airings?${query}`, {
@@ -102,12 +92,16 @@ function AiringsSheet({
       setNotice({
         text:
           result.status === 'pending'
-            ? 'Recording requested for approval.'
-            : 'Recording scheduled.',
+            ? t('lumen.liveTv.recordingPending')
+            : t('lumen.liveTv.recordingScheduled'),
       });
     } catch (failure) {
       setNotice({
-        text: friendlyError(failure, 'Could not request the recording.'),
+        text: friendlyError(
+          failure,
+          t('lumen.liveTv.recordingFailed'),
+          (id, fallback) => t(id, fallback)
+        ),
         error: true,
       });
     } finally {
@@ -124,49 +118,47 @@ function AiringsSheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label="Live TV Airings"
+        aria-label={t('lumen.liveTv.airings')}
         ref={dialog}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>Live TV Airings</h3>
+            <h3>{t('lumen.liveTv.airings')}</h3>
             <p className="note">{title.title || title.original}</p>
           </header>
           <ServiceNote
-            what="Live TV airings"
+            what={t('lumen.liveTv.airings')}
             error={guide.error}
             retry={guide.reload}
           />
           {!guide.data && !guide.error && (
             <p className="note" role="status">
-              Checking the guide…
+              {t('lumen.liveTv.checkingGuide')}
             </p>
           )}
           {guide.data?.configured === false && (
-            <p className="note">Live TV is unavailable.</p>
+            <p className="note">{t('lumen.liveTv.unavailable')}</p>
           )}
           {guide.data?.configured && guide.data.guideReady === false && (
             <>
-              <p className="note">The Live TV guide is not ready yet.</p>
+              <p className="note">{t('lumen.liveTv.guideNotReady')}</p>
               <div className="toolbar">
                 <button
                   className="btn btn-tonal btn-sm"
                   type="button"
                   onClick={guide.reload}
                 >
-                  Check Again
+                  {t('lumen.liveTv.checkAgain')}
                 </button>
               </div>
             </>
           )}
           {guide.data?.guideReady && !airings.length && (
-            <p className="note">No upcoming airings match this title.</p>
+            <p className="note">{t('lumen.liveTv.noAirings')}</p>
           )}
           {!!airings.length && !canRequest && (
-            <p className="note">
-              Your account can view airings but cannot request recordings.
-            </p>
+            <p className="note">{t('lumen.liveTv.viewOnly')}</p>
           )}
           {title.mediaType === 'tv' && airings[0] && canRequest && (
             <div className="toolbar">
@@ -177,8 +169,8 @@ function AiringsSheet({
                 onClick={() => void request('series', airings[0], 'series')}
               >
                 {recorded.has('series')
-                  ? 'Series Request Submitted'
-                  : 'Record Series'}
+                  ? t('lumen.liveTv.seriesSubmitted')
+                  : t('lumen.liveTv.recordSeries')}
               </button>
             </div>
           )}
@@ -192,12 +184,15 @@ function AiringsSheet({
                       <b>{airing.subTitle || airing.title}</b>
                       <small>
                         {airing.channelName || airing.channel} ·{' '}
-                        {airingTime(airing)}
+                        {airingTime(airing, locale)}
                       </small>
                       {airing.season !== undefined &&
                         airing.episode !== undefined && (
                           <small>
-                            Season {airing.season}, Episode {airing.episode}
+                            {t('lumen.liveTv.seasonEpisode', undefined, {
+                              season: airing.season,
+                              episode: airing.episode,
+                            })}
                           </small>
                         )}
                     </span>
@@ -209,8 +204,8 @@ function AiringsSheet({
                         onClick={() => void request(key, airing, 'airing')}
                       >
                         {recorded.has(key)
-                          ? 'Request Submitted'
-                          : 'Record Airing'}
+                          ? t('lumen.liveTv.requestSubmitted')
+                          : t('lumen.liveTv.recordAiring')}
                       </button>
                     )}
                   </div>
@@ -230,7 +225,7 @@ function AiringsSheet({
                 to="/recordings"
                 onClick={dismiss}
               >
-                View Recordings
+                {t('lumen.liveTv.viewRecordings')}
               </Link>
             )}
             <button
@@ -239,7 +234,7 @@ function AiringsSheet({
               disabled={busy}
               onClick={dismiss}
             >
-              Close
+              {t('i18n.close')}
             </button>
           </div>
         </div>
@@ -250,6 +245,7 @@ function AiringsSheet({
 }
 
 export default function LiveTvAirings(title: Title) {
+  const { t } = useLumenLocale();
   const status = useLiveTvStatus();
   const [open, setOpen] = useState(false);
   const names = [
@@ -271,7 +267,7 @@ export default function LiveTvAirings(title: Title) {
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        Find Live TV Airings
+        {t('lumen.liveTv.findAirings')}
       </button>
       {open && (
         <AiringsSheet

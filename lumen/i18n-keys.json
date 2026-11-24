@@ -5836,5 +5836,22 @@
   "lumen.requestEdit.approved",
   "lumen.requestEdit.changedAndSent",
   "lumen.requestEdit.changed",
-  "lumen.requestEdit.couldNotChange"
+  "lumen.requestEdit.couldNotChange",
+  "lumen.liveTv.airings",
+  "lumen.liveTv.checkingGuide",
+  "lumen.liveTv.unavailable",
+  "lumen.liveTv.guideNotReady",
+  "lumen.liveTv.checkAgain",
+  "lumen.liveTv.noAirings",
+  "lumen.liveTv.viewOnly",
+  "lumen.liveTv.seriesSubmitted",
+  "lumen.liveTv.recordSeries",
+  "lumen.liveTv.seasonEpisode",
+  "lumen.liveTv.requestSubmitted",
+  "lumen.liveTv.recordAiring",
+  "lumen.liveTv.viewRecordings",
+  "lumen.liveTv.findAirings",
+  "lumen.liveTv.recordingPending",
+  "lumen.liveTv.recordingScheduled",
+  "lumen.liveTv.recordingFailed"
 ]

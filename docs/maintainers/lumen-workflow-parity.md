@@ -8879,3 +8879,21 @@ the production build succeeds. Matched baseline and French candidate sheet
 captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-edit-localization-20261124/`.
 Live request submission and independent translation review remain unverified.
+
+### Live TV airings localization
+
+The movie and TV detail Live TV Airings action and sheet now follow the saved
+English, French, or Arabic locale. This includes guide loading and readiness,
+empty and unavailable states, season/episode and localized airing times,
+recording actions, and recording success/error feedback. Existing permission
+gates, lookup query, selected programme identity, and recording request payload
+are unchanged.
+
+Twelve browser cases pass across movie and TV details, all three locales, and
+desktop/iPhone. They verify both movie recording requests and TV series requests,
+including their request payloads and feedback. The standalone production build
+succeeds. English baseline and French candidate captures were inspected at
+matching desktop and iPhone viewports; the sheet structure and control geometry
+remain the same. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-tv-localization-20261124/`.
+Live tuner/provider data and recording submission remain fixture-only.
