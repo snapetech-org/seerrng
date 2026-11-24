@@ -9169,7 +9169,7 @@ test('Users lets delegated managers search without exposing the directory to mem
 
 test('Users creates a local account with a password setup link', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   let attempts = 0;
   const account = {
@@ -9178,6 +9178,7 @@ test('Users creates a local account with a password setup link', async ({
     email: 'member@example.test',
     permissions: 32,
   };
+  let staleReadback = true;
   await page.route(/\/api\/v1\/user\?/, (route) =>
     route.fulfill({
       json: {
@@ -9199,6 +9200,13 @@ test('Users creates a local account with a password setup link', async ({
       });
     return route.fulfill({ status: 201, json: account });
   });
+  await page.route('**/api/v1/user/9', (route) => {
+    if (staleReadback) {
+      staleReadback = false;
+      return route.fulfill({ json: { ...account, displayName: 'Stale Name' } });
+    }
+    return route.fulfill({ json: account });
+  });
   await page.goto(testAppPath('/admin/users'));
   await page.getByRole('button', { name: 'Create Local User' }).click();
   await page.getByLabel('Username', { exact: true }).fill('New Member');
@@ -9211,9 +9219,25 @@ test('Users creates a local account with a password setup link', async ({
   await expect(page.getByLabel('Email', { exact: true })).toHaveValue(
     'member@example.test'
   );
+  if (process.env.LUMEN_CAPTURE_USER_ADMIN) {
+    await page.screenshot({
+      path: info.outputPath('user-create-write-error.png'),
+    });
+  }
+  await page.getByRole('button', { name: 'Create User', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'The server did not confirm the new account.'
+  );
+  if (process.env.LUMEN_CAPTURE_USER_ADMIN) {
+    await page.screenshot({
+      path: info.outputPath('user-create-readback-error.png'),
+    });
+  }
+  await expect(page.getByLabel('Username', { exact: true })).toBeDisabled();
   await page.getByRole('button', { name: 'Create User', exact: true }).click();
   await expect(page.getByText('Created New Member.')).toBeVisible();
   await expect(page.getByText('New Member', { exact: true })).toBeVisible();
+  expect(attempts).toBe(2);
 });
 
 test('Users sets an Episode Queue default for the selected account', async ({
@@ -9675,7 +9699,7 @@ test('Users keeps permissions read-only outside delegated access', async ({
 
 test('Users protects administrators and confirms deletion of the selected member', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ json: { id: 8, displayName: 'Manager', permissions: 8 } })
@@ -9686,6 +9710,8 @@ test('Users protects administrators and confirms deletion of the selected member
     { id: 19, displayName: 'Viewer', permissions: 32 },
   ];
   let deleted = false;
+  let staleDeleteReadback = true;
+  let deleteAttempts = 0;
   await page.route(/\/api\/v1\/user\?/, (route) =>
     route.fulfill({
       json: {
@@ -9695,7 +9721,15 @@ test('Users protects administrators and confirms deletion of the selected member
     })
   );
   await page.route('**/api/v1/user/19', (route) => {
+    if (route.request().method() === 'GET') {
+      if (staleDeleteReadback) {
+        staleDeleteReadback = false;
+        return route.fulfill({ json: people[2] });
+      }
+      return route.fulfill({ status: 404, json: { message: 'Not found' } });
+    }
     expect(route.request().method()).toBe('DELETE');
+    deleteAttempts++;
     deleted = true;
     return route.fulfill({ status: 200, json: people[2] });
   });
@@ -9712,15 +9746,30 @@ test('Users protects administrators and confirms deletion of the selected member
   await expect(remove).toHaveCount(1);
   await remove.click();
   const dialog = page.getByRole('alertdialog', { name: 'Delete Viewer?' });
+  if (process.env.LUMEN_CAPTURE_USER_ADMIN) {
+    await page.screenshot({
+      path: info.outputPath('user-delete-confirmation.png'),
+    });
+  }
   await dialog.getByRole('button', { name: 'Keep User' }).click();
   expect(deleted).toBe(false);
   await remove.click();
+  await dialog.getByRole('button', { name: 'Delete User' }).click();
+  await expect(page.getByRole('alert')).toContainText(
+    'The server did not confirm removal of this account.'
+  );
+  if (process.env.LUMEN_CAPTURE_USER_ADMIN) {
+    await page.screenshot({
+      path: info.outputPath('user-delete-readback-error.png'),
+    });
+  }
   await dialog.getByRole('button', { name: 'Delete User' }).click();
   await expect(page.getByText('Deleted Viewer.')).toBeVisible();
   await expect(
     page.getByRole('listitem').filter({ hasText: 'Viewer' })
   ).toHaveCount(0);
   expect(deleted).toBe(true);
+  expect(deleteAttempts).toBe(2);
 });
 
 test('Users imports and syncs selected Emby accounts', async ({ page }) => {

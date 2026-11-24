@@ -1,0 +1,1 @@
+Lumen now confirms a newly created local account by its assigned user ID before closing the form. If the profile read is stale, the form preserves the accepted request and retries the read instead of creating a duplicate. User deletion keeps its confirmation open until a fresh profile lookup confirms the account is gone.

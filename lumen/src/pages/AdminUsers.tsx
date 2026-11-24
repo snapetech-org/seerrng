@@ -7,7 +7,7 @@ import {
   type FormEvent,
 } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -68,16 +68,23 @@ function CreateLocalUser({
   const [emailSetup, setEmailSetup] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [createdId, setCreatedId] = useState<number>();
+  const [acceptedIdentity, setAcceptedIdentity] = useState<{
+    username: string;
+    email: string;
+  }>();
   const working = useRef(false);
 
   async function create(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (working.current) return;
     const fields = new FormData(event.currentTarget);
-    const username = String(fields.get('username') ?? '').trim();
-    const email = String(fields.get('email') ?? '').trim();
+    const submittedUsername = String(fields.get('username') ?? '').trim();
+    const submittedEmail = String(fields.get('email') ?? '').trim();
     const password = String(fields.get('password') ?? '');
-    if (!username) {
+    const username = acceptedIdentity?.username ?? submittedUsername;
+    const email = acceptedIdentity?.email ?? submittedEmail;
+    if (createdId === undefined && !username) {
       setError(t('lumen.adminUsers.usernameRequired', 'Enter a username.'));
       return;
     }
@@ -85,14 +92,53 @@ function CreateLocalUser({
     setBusy(true);
     setError('');
     try {
-      await api('/user', {
-        method: 'POST',
-        body: JSON.stringify({
-          username,
-          ...(email ? { email } : {}),
-          ...(emailSetup ? {} : { password }),
-        }),
-      });
+      let id = createdId;
+      if (id === undefined) {
+        const created = await api<DirectoryUser>('/user', {
+          method: 'POST',
+          body: JSON.stringify({
+            username,
+            ...(email ? { email } : {}),
+            ...(emailSetup ? {} : { password }),
+          }),
+        });
+        if (!Number.isSafeInteger(created.id) || created.id < 1) {
+          setError(
+            t(
+              'lumen.adminUsers.createConfirmFailure',
+              'The server did not confirm the new account. Keep this form open and try again.'
+            )
+          );
+          return;
+        }
+        id = created.id;
+        setCreatedId(id);
+        setAcceptedIdentity({ username, email });
+      }
+      let saved: DirectoryUser;
+      try {
+        saved = await api<DirectoryUser>(`/user/${id}`, { cache: 'no-store' });
+      } catch {
+        setError(
+          t(
+            'lumen.adminUsers.createConfirmFailure',
+            'The server did not confirm the new account. Keep this form open and try again.'
+          )
+        );
+        return;
+      }
+      if (
+        saved.displayName !== username ||
+        (email && saved.email?.toLowerCase() !== email.toLowerCase())
+      ) {
+        setError(
+          t(
+            'lumen.adminUsers.createConfirmFailure',
+            'The server did not confirm the new account. Keep this form open and try again.'
+          )
+        );
+        return;
+      }
       onCreated(username);
     } catch (failure) {
       setError(
@@ -119,7 +165,7 @@ function CreateLocalUser({
               name="username"
               maxLength={100}
               required
-              disabled={busy}
+              disabled={busy || createdId !== undefined}
             />
           </label>
           <label className="set">
@@ -130,7 +176,7 @@ function CreateLocalUser({
               type="email"
               maxLength={254}
               required={emailSetup}
-              disabled={busy}
+              disabled={busy || createdId !== undefined}
             />
           </label>
           <label className="set">
@@ -143,7 +189,7 @@ function CreateLocalUser({
             <input
               type="checkbox"
               checked={emailSetup}
-              disabled={busy}
+              disabled={busy || createdId !== undefined}
               onChange={(event) => setEmailSetup(event.target.checked)}
             />
           </label>
@@ -158,7 +204,7 @@ function CreateLocalUser({
                 minLength={8}
                 maxLength={1024}
                 required
-                disabled={busy}
+                disabled={busy || createdId !== undefined}
               />
             </label>
           )}
@@ -185,7 +231,7 @@ function CreateLocalUser({
           <button
             className="btn btn-quiet btn-sm"
             type="button"
-            disabled={busy}
+            disabled={busy || createdId !== undefined}
             onClick={onClose}
           >
             {t('lumen.adminUsers.cancel', 'Cancel')}
@@ -391,6 +437,7 @@ export default function AdminUsers() {
   const [loginLinksUser, setLoginLinksUser] = useState<number>();
   const [remove, setRemove] = useState<DirectoryUser>();
   const [removing, setRemoving] = useState(false);
+  const [deleteAccepted, setDeleteAccepted] = useState(false);
   const [removeError, setRemoveError] = useState('');
   const deleting = useRef(false);
   const [quotaUser, setQuotaUser] = useState<number | undefined>();
@@ -480,8 +527,45 @@ export default function AdminUsers() {
     setRemoving(true);
     setRemoveError('');
     try {
-      await api(`/user/${remove.id}`, { method: 'DELETE' }, 'empty');
+      if (remove.id !== actor?.id && !deleteAccepted) {
+        try {
+          await api(`/user/${remove.id}`, { method: 'DELETE' }, 'empty');
+          setDeleteAccepted(true);
+        } catch (failure) {
+          if (!(failure instanceof ApiError) || failure.status !== 404)
+            throw failure;
+          setDeleteAccepted(true);
+        }
+      } else if (remove.id === actor?.id) {
+        await api(`/user/${remove.id}`, { method: 'DELETE' }, 'empty');
+      }
+      if (remove.id !== actor?.id) {
+        try {
+          await api<DirectoryUser>(`/user/${remove.id}`, {
+            cache: 'no-store',
+          });
+          setDeleteAccepted(false);
+          setRemoveError(
+            t(
+              'lumen.adminUsers.deleteConfirmFailure',
+              'The server did not confirm removal of this account. Keep this dialog open and try again.'
+            )
+          );
+          return;
+        } catch (failure) {
+          if (!(failure instanceof ApiError) || failure.status !== 404) {
+            setRemoveError(
+              t(
+                'lumen.adminUsers.deleteConfirmFailure',
+                'The server did not confirm removal of this account. Keep this dialog open and try again.'
+              )
+            );
+            return;
+          }
+        }
+      }
       setRemove(undefined);
+      setDeleteAccepted(false);
       setNotice(
         t('lumen.adminUsers.deleted', 'Deleted {name}.', {
           name: remove.displayName,
@@ -499,8 +583,6 @@ export default function AdminUsers() {
           t
         )
       );
-      setRemove(undefined);
-      reload();
     } finally {
       deleting.current = false;
       setRemoving(false);
@@ -565,11 +647,6 @@ export default function AdminUsers() {
           }}
           onClose={() => setCreating(false)}
         />
-      )}
-      {removeError && (
-        <p className="note" role="alert">
-          {removeError}
-        </p>
       )}
       {notice && (
         <p className="note" role="status">
@@ -1096,6 +1173,7 @@ export default function AdminUsers() {
                         onClick={() => {
                           setNotice('');
                           setRemoveError('');
+                          setDeleteAccepted(false);
                           setRemove(user);
                         }}
                       >
@@ -1153,9 +1231,19 @@ export default function AdminUsers() {
           busy={removing}
           onConfirm={() => void deleteUser()}
           onClose={() => {
-            if (!deleting.current) setRemove(undefined);
+            if (!deleting.current) {
+              setDeleteAccepted(false);
+              setRemoveError('');
+              setRemove(undefined);
+            }
           }}
-        />
+        >
+          {removeError && (
+            <p className="note" role="alert">
+              {removeError}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

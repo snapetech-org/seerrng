@@ -2729,11 +2729,15 @@ export const localeData = [
       'lumen.adminUsers.backToAccount': 'العودة إلى الحساب',
       'lumen.adminUsers.cancel': 'إلغاء',
       'lumen.adminUsers.createFailure': 'تعذر إنشاء الحساب.',
+      'lumen.adminUsers.createConfirmFailure':
+        'لم يؤكد الخادم إنشاء الحساب. أبقِ هذا النموذج مفتوحًا وحاول مرة أخرى.',
       'lumen.adminUsers.createLocalUser': 'إنشاء مستخدم محلي',
       'lumen.adminUsers.createUser': 'إنشاء مستخدم',
       'lumen.adminUsers.created': 'تم إنشاء {name}.',
       'lumen.adminUsers.creating': 'جارٍ الإنشاء…',
       'lumen.adminUsers.deleteFailure': 'تعذر حذف الحساب.',
+      'lumen.adminUsers.deleteConfirmFailure':
+        'لم يؤكد الخادم إزالة هذا الحساب. أبقِ مربع الحوار مفتوحًا وحاول مرة أخرى.',
       'lumen.adminUsers.deleteTitle': 'حذف {name}؟',
       'lumen.adminUsers.deleteUser': 'حذف المستخدم',
       'lumen.adminUsers.deleteWarning':
@@ -14280,11 +14284,15 @@ export const localeData = [
       'lumen.adminUsers.backToAccount': 'Back to Account',
       'lumen.adminUsers.cancel': 'Cancel',
       'lumen.adminUsers.createFailure': 'Could not create the account.',
+      'lumen.adminUsers.createConfirmFailure':
+        'The server did not confirm the new account. Keep this form open and try again.',
       'lumen.adminUsers.createLocalUser': 'Create Local User',
       'lumen.adminUsers.createUser': 'Create User',
       'lumen.adminUsers.created': 'Created {name}.',
       'lumen.adminUsers.creating': 'Creating…',
       'lumen.adminUsers.deleteFailure': 'Could not delete the account.',
+      'lumen.adminUsers.deleteConfirmFailure':
+        'The server did not confirm removal of this account. Keep this dialog open and try again.',
       'lumen.adminUsers.deleteTitle': 'Delete {name}?',
       'lumen.adminUsers.deleteUser': 'Delete User',
       'lumen.adminUsers.deleteWarning':
@@ -26643,11 +26651,15 @@ export const localeData = [
       'lumen.adminUsers.backToAccount': 'Retour au compte',
       'lumen.adminUsers.cancel': 'Annuler',
       'lumen.adminUsers.createFailure': 'Impossible de créer le compte.',
+      'lumen.adminUsers.createConfirmFailure':
+        'Le serveur n’a pas confirmé la création du compte. Gardez ce formulaire ouvert et réessayez.',
       'lumen.adminUsers.createLocalUser': 'Créer un utilisateur local',
       'lumen.adminUsers.createUser': 'Créer l’utilisateur',
       'lumen.adminUsers.created': '{name} a été créé.',
       'lumen.adminUsers.creating': 'Création…',
       'lumen.adminUsers.deleteFailure': 'Impossible de supprimer le compte.',
+      'lumen.adminUsers.deleteConfirmFailure':
+        'Le serveur n’a pas confirmé la suppression de ce compte. Gardez cette fenêtre ouverte et réessayez.',
       'lumen.adminUsers.deleteTitle': 'Supprimer {name} ?',
       'lumen.adminUsers.deleteUser': 'Supprimer l’utilisateur',
       'lumen.adminUsers.deleteWarning':
