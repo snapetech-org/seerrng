@@ -55,7 +55,7 @@ test('native Discover destinations have direct Lumen menu links', async ({
     ['Collector Picks', '/music/collectors'],
     ['Game Finder', '/games/discovery'],
     ['Software', '/software'],
-    ['Browse Patches', '/patches'],
+    ['Translations & Hacks', '/patches'],
   ] as const;
   for (const [label, href] of destinations) {
     const link = menu.getByRole('link', { name: label, exact: true });
@@ -63,6 +63,13 @@ test('native Discover destinations have direct Lumen menu links', async ({
     await expect(link).toBeInViewport();
     await expect(link).toHaveAttribute('href', `${mount}${href}`);
   }
+  if (
+    process.env.LUMEN_CAPTURE_DISCOVER_MENU &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_CAPTURE_DISCOVER_MENU}/${test.info().project.name}.png`,
+    });
 });
 
 test('request actions stay hidden while software browsing remains available', async ({
@@ -78,7 +85,7 @@ test('request actions stay hidden while software browsing remains available', as
     'Book Recommendations',
     'Collector Picks',
     'Game Finder',
-    'Browse Patches',
+    'Translations & Hacks',
   ])
     await expect(
       menu.getByRole('link', { name: label, exact: true })
@@ -120,7 +127,7 @@ test('Discover menu destinations follow account category restrictions', async ({
     'Collector Picks',
     'Game Finder',
     'Software',
-    'Browse Patches',
+    'Translations & Hacks',
   ])
     await expect(
       menu.getByRole('link', { name: label, exact: true })
@@ -156,7 +163,7 @@ test('all Discover menu links remain reachable without horizontal overflow at 32
     'Collector Picks',
     'Game Finder',
     'Software',
-    'Browse Patches',
+    'Translations & Hacks',
   ];
   for (const label of labels) {
     const link = menu.getByRole('link', { name: label, exact: true });

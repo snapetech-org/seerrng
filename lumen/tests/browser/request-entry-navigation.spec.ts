@@ -3,11 +3,16 @@ import { expect, test } from '@playwright/test';
 const pages = [
   { path: '/books', label: 'Book Recommendations' },
   { path: '/music', label: 'Collector Picks' },
-  { path: '/games', label: 'Translations and Hacks' },
-  { path: '/games', label: 'Game Finder' },
+  {
+    path: '/games',
+    label: 'Translations and Hacks',
+    menuLabel: 'Translations & Hacks',
+  },
+  { path: '/games', label: 'Game Finder', menuLabel: 'Game Finder' },
   {
     path: '/game/retro/123',
     label: 'Translations and Hacks for This Game',
+    menuLabel: 'Translations & Hacks',
   },
 ];
 
@@ -78,7 +83,11 @@ for (const permissions of [0, 32, 2]) {
       });
       await page.goto(entry.path);
       await expect(page.locator('main h1')).toBeVisible();
-      const link = page.getByRole('link', { name: entry.label, exact: true });
+      const link = page.locator('.side').getByRole('link', {
+        name: entry.menuLabel ?? entry.label,
+        exact: true,
+        includeHidden: true,
+      });
       await expect(link).toHaveCount(permissions === 0 ? 0 : 1);
       if (info.project.name === 'desktop')
         await page.screenshot({

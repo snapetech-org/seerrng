@@ -8342,13 +8342,15 @@ remain unverified. Candidate UI evidence is retained under
 ### Direct Discover destinations in Lumen navigation (2026-11-23)
 
 The shared Lumen desktop and mobile menu now exposes Book Recommendations,
-Collector Picks, Software, and Browse Patches as direct destinations, alongside
-Game Finder. Book Recommendations, Collector Picks, Game Finder, and Browse
-Patches follow SeerrNG request permission and enabled media categories; Software
-follows enabled game categories and provider availability so browse-only users
-retain catalog access. Book Recommendations selects Audiobooks when Ebooks are
-turned off. This supplements existing in-page shortcuts and keeps route checks
-authoritative.
+Collector Picks, Software, and Translations & Hacks as direct destinations,
+alongside Game Finder. Book Recommendations, Collector Picks, Game Finder, and
+Translations & Hacks follow SeerrNG request permission and enabled media
+categories; Software follows enabled game categories and provider availability
+so browse-only users retain catalog access. Book Recommendations selects
+Audiobooks when Ebooks are turned off. The Patches menu item reuses SeerrNG's
+localized `components.Layout.Sidebar.patches` message rather than introducing a
+Lumen-only label. This supplements existing in-page shortcuts and keeps route
+checks authoritative.
 
 Browser fixtures cover all five menu destinations, unavailable request
 permission while preserving Software browsing without request permission,
@@ -8362,6 +8364,17 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/software-browse/`
 and
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-subscription-20261123/navigation-discover/`.
+
+Parity review found that Lumen labeled the Patches sidebar destination “Browse
+Patches,” while the native menu calls it “Translations & Hacks.” The Lumen
+sidebar now uses the native localized message key; its separate page-level
+“Browse Patches” action remains unchanged. The request-entry browser test scopes
+queries to the navigation landmark, distinguishing the menu destination from
+in-page shortcuts. Sixty request-entry checks pass across desktop, iPhone,
+Android, and tablet for viewer, requester, and admin permissions; the broader
+navigation suite passes 208 checks with 8 project-specific skips. Baseline and
+candidate desktop and iPhone menu captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-navigation-label-parity-20261123/`.
 
 ### Persisted Issues filter disclosures (2026-11-23)
 

@@ -578,7 +578,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
                 <Icon name="game" />
-                {t('lumen.patches.browse', 'Browse Patches')}
+                {t('components.Layout.Sidebar.patches', 'Translations & Hacks')}
               </NavLink>
             )}
           {shareAvailable && (
