@@ -26,6 +26,7 @@ import {
 } from '../discoveryVisibility';
 import type { Album } from '../extras';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { AlbumCard } from '../pages/Music';
 import { PersonCard } from '../pages/People';
 import {
@@ -175,6 +176,7 @@ function DiscoverShelf({
   title?: string;
   visibility: ReturnType<typeof discoveryVisibility>;
 }) {
+  const { t } = useLumenLocale();
   const [discoverContextId] = useState(createDiscoverNavigationContextId);
   const anchor = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -217,8 +219,12 @@ function DiscoverShelf({
   return (
     <div ref={anchor}>
       <Section
-        title={title || data?.list?.name || 'Discover Titles'}
-        link={['See all', href]}
+        title={
+          title ||
+          data?.list?.name ||
+          t('lumen.discover.discoverTitles', 'Discover Titles')
+        }
+        link={[t('components.Persius.seeAll', 'See All'), href]}
       >
         {items ? (
           <Rail restoreId={`configured-video-${id}`}>
@@ -249,13 +255,15 @@ function DiscoverShelf({
           </Rail>
         ) : error ? (
           <div className="empty">
-            <span>Couldn’t load this shelf</span>
+            <span>
+              {t('lumen.discover.shelfLoadFailed', 'Couldn’t load this shelf')}
+            </span>
             <button
               type="button"
               className="btn btn-tonal btn-sm"
               onClick={reload}
             >
-              Retry
+              {t('lumen.account.retry', 'Retry')}
             </button>
           </div>
         ) : (
@@ -275,6 +283,7 @@ function CompanyShelf({
   companies: readonly DiscoverCompanyData[];
   kind: DiscoverCompanyKind;
 }) {
+  const { t } = useLumenLocale();
   if (companies.length === 0) return null;
   const isStudio = kind === 'studio';
   const basePath = isStudio ? '/movies?studio=' : '/series?network=';
@@ -283,14 +292,28 @@ function CompanyShelf({
     : 'configured-discover-networks';
 
   return (
-    <Section title={title} link={['See all', isStudio ? '/movies' : '/series']}>
+    <Section
+      title={title}
+      link={[
+        t('components.Persius.seeAll', 'See All'),
+        isStudio ? '/movies' : '/series',
+      ]}
+    >
       <Rail restoreId={restoreId}>
         {companies.map((company) => (
           <Link
             key={`${kind}-${company.id}`}
             className={`company-logo-card ${company.logoTone === 'white' ? 'white-logo-card' : ''}`}
             to={`${basePath}${company.id}`}
-            aria-label={`Browse ${isStudio ? 'movies' : 'series'} from ${company.name}`}
+            aria-label={t(
+              isStudio
+                ? 'lumen.accessibility.browseMoviesFromCompany'
+                : 'lumen.accessibility.browseSeriesFromCompany',
+              isStudio
+                ? 'Browse movies from {name}'
+                : 'Browse series from {name}',
+              { name: company.name }
+            )}
           >
             <span className="company-logo-card-art">
               <img
