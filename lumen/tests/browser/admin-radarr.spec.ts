@@ -9,6 +9,7 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     body?: Record<string, unknown>;
   }[] = [];
   let services: Record<string, unknown>[] = [];
+  let staleDeleteReadback: Record<string, unknown>[] | undefined;
   let failNextSave = true;
   let hideNextReadback = true;
   const path = '/api/v1/settings/radarr';
@@ -24,6 +25,11 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     if (!endpoint.startsWith(path)) return route.fulfill({ json: {} });
     const method = request.method();
     if (method === 'GET') {
+      if (staleDeleteReadback) {
+        const stale = staleDeleteReadback;
+        staleDeleteReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
       if (services.length && hideNextReadback) {
         hideNextReadback = false;
         return route.fulfill({ json: [] });
@@ -32,8 +38,9 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     }
     if (method === 'DELETE') {
       writes.push({ method, path: endpoint });
+      staleDeleteReadback = services;
       services = [];
-      return route.fulfill({ status: 204 });
+      return route.fulfill({ json: { id: 0 } });
     }
     const body = request.postDataJSON();
     writes.push({ method, path: endpoint, body });
@@ -98,8 +105,27 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
       path: info.outputPath('radarr.png'),
     });
   }
+  if (process.env.LUMEN_CAPTURE_RADARR) {
+    await page.screenshot({
+      path: info.outputPath('radarr-before-removal.png'),
+    });
+  }
   await page.getByRole('button', { name: 'Remove Service' }).click();
   expect(writes).toHaveLength(5);
+  await page.getByRole('button', { name: 'Confirm Removal' }).click();
+  await expect(
+    page
+      .getByRole('alert')
+      .filter({ hasText: 'The server did not confirm removal of this Radarr.' })
+  ).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_RADARR) {
+    await page.screenshot({
+      path: info.outputPath('radarr-remove-readback-error.png'),
+    });
+  }
+  await expect(
+    page.getByRole('button', { name: 'Edit Home Radarr' })
+  ).toHaveCount(0);
   await page.getByRole('button', { name: 'Confirm Removal' }).click();
   await expect(page.getByText('No Radarr services configured.')).toBeVisible();
   expect(writes).toEqual([
@@ -144,6 +170,7 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
         requestButtonLabel: 'Home Movies',
       }),
     },
+    { method: 'DELETE', path: `${path}/0` },
     { method: 'DELETE', path: `${path}/0` },
   ]);
   expect(

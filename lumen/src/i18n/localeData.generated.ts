@@ -5327,6 +5327,8 @@ export const localeData = [
       'lumen.servarr.removeConfirmation':
         'هل تريد إزالة {service} كوجهة للطلبات؟',
       'lumen.servarr.removeFallback': 'تعذر إزالة خدمة {service}.',
+      'lumen.servarr.removeConfirmFailure':
+        'لم يؤكد الخادم إزالة خدمة {service}. أبقِ هذا النموذج مفتوحًا وحاول مرة أخرى.',
       'lumen.servarr.removeService': 'إزالة الخدمة',
       'lumen.servarr.requestButtonLabel': 'تسمية زر الطلب',
       'lumen.servarr.requestTags': 'وسوم الطلبات',
@@ -16845,6 +16847,8 @@ export const localeData = [
       'lumen.servarr.removeConfirmation':
         'Remove {service} as a request destination?',
       'lumen.servarr.removeFallback': 'Could not remove the {service} service.',
+      'lumen.servarr.removeConfirmFailure':
+        'The server did not confirm removal of this {service}. Keep this form open and try again.',
       'lumen.servarr.removeService': 'Remove Service',
       'lumen.servarr.requestButtonLabel': 'Request Button Label',
       'lumen.servarr.requestTags': 'Request Tags',
@@ -29468,6 +29472,8 @@ export const localeData = [
         'Supprimer {service} comme destination des demandes ?',
       'lumen.servarr.removeFallback':
         'Impossible de supprimer le service {service}.',
+      'lumen.servarr.removeConfirmFailure':
+        'Le serveur n’a pas confirmé la suppression de ce service {service}. Gardez ce formulaire ouvert et réessayez.',
       'lumen.servarr.removeService': 'Supprimer le service',
       'lumen.servarr.requestButtonLabel': 'Libellé du bouton de demande',
       'lumen.servarr.requestTags': 'Étiquettes des demandes',

@@ -4131,6 +4131,7 @@
   "lumen.servarr.released",
   "lumen.servarr.removeConfirmation",
   "lumen.servarr.removeFallback",
+  "lumen.servarr.removeConfirmFailure",
   "lumen.servarr.removeService",
   "lumen.servarr.requestButtonLabel",
   "lumen.servarr.requestTags",

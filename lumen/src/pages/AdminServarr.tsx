@@ -180,6 +180,7 @@ function ServiceForm({
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
   const [createdId, setCreatedId] = useState<number>();
+  const [deleteAccepted, setDeleteAccepted] = useState(false);
   const [options, setOptions] = useState<Options>();
   const [mappingText, setMappingText] = useState(() =>
     JSON.stringify(initial.binderyUserMappings ?? {}, null, 2)
@@ -496,8 +497,27 @@ function ServiceForm({
     const generation = sessionGeneration();
     void run(
       async () => {
-        await api(path, { method: 'DELETE' }, 'empty');
-        if (generation === sessionGeneration()) done();
+        if (!deleteAccepted) {
+          try {
+            await api(path, { method: 'DELETE' }, 'empty');
+            if (generation === sessionGeneration()) setDeleteAccepted(true);
+          } catch (error) {
+            if (!(error instanceof ApiError) || error.status !== 404)
+              throw error;
+            if (generation === sessionGeneration()) setDeleteAccepted(true);
+          }
+        }
+        const readback = await api<Service[]>(endpoint, { cache: 'no-store' });
+        if (generation !== sessionGeneration()) return;
+        if (readback.some(({ id }) => id === editingId)) {
+          setDeleteAccepted(false);
+          return t(
+            'lumen.servarr.removeConfirmFailure',
+            'The server did not confirm removal of this {service}. Keep this form open and try again.',
+            { service: name }
+          );
+        }
+        done();
       },
       t(
         'lumen.servarr.removeFallback',
