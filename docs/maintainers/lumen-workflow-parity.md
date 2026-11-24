@@ -167,6 +167,14 @@ pagination in English, French, and Arabic. The same supported query parameters,
 provider result grouping, and page navigation remain in place. The failed-search
 panel uses localized title and Retry labels.
 
+TMDB collections are included in the unified search response and rendered in a
+localized Collections section linking to the collection detail route. A focused
+browser regression now checks collection visibility, detail links, and hiding
+when the movie category is unavailable in English, French, and Arabic across
+desktop, iPhone, Android, and tablet. This verifies the existing UI contract;
+provider responses and live TMDB behavior remain covered separately by the
+native API checks.
+
 The browser fixture passes 12 cases per deployment across desktop, iPhone,
 Android, and tablet (English, French, and Arabic); standalone production and the
 bundled `/lumen/` mount both pass. English baseline/candidate captures match
