@@ -9204,3 +9204,17 @@ reading, with no layout shift or overflow. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-accessibility-20261124/`.
 This validates the changed shared surfaces represented by those fixtures, not
 every consumer route or the production Express `/lumen/` mount.
+
+### Genre-directory tile accessibility (2026-11-24)
+
+Movie and series genre tiles now localize their accessible browse names while
+preserving the genre name supplied by SeerrNG. English, French, and Arabic use
+the same `Browse {name}` intent; route targets and the visible genre labels are
+unchanged.
+
+The French `/movies/genres` regression verifies the accessible name and link
+target on desktop and iPhone. Matched baseline and candidate captures at
+1440x900 and 390x844 CSS pixels are pixel-identical because only the
+accessibility name changed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-genre-accessibility-20261124/`.
+The standalone client was verified; a production-mounted run remains open.

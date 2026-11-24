@@ -10,7 +10,7 @@ const GENRES = [
   { id: 27, name: 'Horror' },
 ];
 
-async function fixtures(page: Page) {
+async function fixtures(page: Page, locale = 'en') {
   const feed: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
@@ -21,10 +21,17 @@ async function fixtures(page: Page) {
       return r.fulfill({
         json: { id: 1, displayName: 'viewer', permissions: 2 },
       });
+    if (path === '/user/1/settings/main')
+      return r.fulfill({ json: { locale } });
     if (path === '/settings/public')
       return r.fulfill({ json: { mediaServerType: 1 } });
     if (path === '/genres/movie' || path === '/genres/tv')
       return r.fulfill({ json: GENRES });
+    if (
+      path === '/discover/genreslider/movie' ||
+      path === '/discover/genreslider/tv'
+    )
+      return r.fulfill({ json: [] });
     if (path === '/discover/movies' || path === '/discover/tv')
       feed.push(url.search);
     return r.fulfill({
@@ -33,6 +40,28 @@ async function fixtures(page: Page) {
   });
   return feed;
 }
+
+test('genre directory tiles localize their accessible browse names', async ({
+  page,
+}, info) => {
+  await fixtures(page, 'fr');
+  await page.goto('/movies/genres');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
+  const genre = page.getByRole('link', {
+    name: baseline ? 'Browse Action' : 'Parcourir Action',
+  });
+  await expect(genre).toHaveAttribute('href', '/movies?genre=28');
+  if (
+    process.env.LUMEN_A11Y_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  )
+    await page.screenshot({
+      path: `${process.env.LUMEN_A11Y_CAPTURE_DIR}/${info.project.name}.png`,
+      fullPage: true,
+      animations: 'disabled',
+    });
+});
 
 test('Movies: All genres by default; ticking genres updates the address and the list', async ({
   page,

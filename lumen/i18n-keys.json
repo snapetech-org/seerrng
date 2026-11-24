@@ -5924,6 +5924,7 @@
   "lumen.permissions.group.requests",
   "lumen.accessibility.chooseEdition",
   "lumen.accessibility.chooseSeasons",
+  "lumen.accessibility.browseGenre",
   "lumen.accessibility.loading",
   "lumen.accessibility.read",
   "lumen.accessibility.readInKavita",

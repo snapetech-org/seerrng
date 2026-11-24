@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { tmdbImg, type Genre } from '../api';
+import { useLumenLocale } from '../i18n';
 
 export default function GenreTiles({
   genres,
@@ -8,6 +9,7 @@ export default function GenreTiles({
   genres: Genre[];
   browse: '/movies' | '/series';
 }) {
+  const { t } = useLumenLocale();
   const used = new Set<string>();
   return (
     <div className="genres">
@@ -22,7 +24,9 @@ export default function GenreTiles({
             key={id}
             className="genre"
             to={`${browse}?genre=${id}`}
-            aria-label={`Browse ${name}`}
+            aria-label={t('lumen.accessibility.browseGenre', 'Browse {name}', {
+              name,
+            })}
           >
             {artwork && <img src={artwork} alt="" loading="lazy" />}
             <span>{name}</span>
