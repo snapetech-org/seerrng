@@ -372,7 +372,12 @@ export default function MovieDetail() {
         ]}
       />
       <div className="dbody">
-        <ServiceNote error={error} what="this movie" retry={reload} />
+        <ServiceNote
+          error={error}
+          what="this movie"
+          title={t('lumen.detail.loadMovie', 'Couldn’t load this movie')}
+          retry={reload}
+        />
         {selected4k && !fourKPlayback?.href && (
           <p className="note" role="status">
             {t(

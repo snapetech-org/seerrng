@@ -616,7 +616,15 @@ export default function TvDetail() {
         ]}
       />
       <div className="dbody">
-        <ServiceNote error={error} what="this series" retry={reload} />
+        <ServiceNote
+          error={error}
+          what="this series"
+          title={translate(
+            'lumen.detail.loadSeries',
+            'Couldn’t load this series'
+          )}
+          retry={reload}
+        />
         <div className="dstatus">
           {episodeQueue && (
             <Pill
