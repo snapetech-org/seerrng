@@ -80,3 +80,22 @@ test('visible Lumen account, administration, game-library, and metadata labels a
     }
   }
 });
+
+test('Lumen includes the localized native user-list menu label', async () => {
+  const keys = JSON.parse(
+    await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+  );
+  assert.ok(keys.includes('components.Layout.Sidebar.users'));
+  const english = JSON.parse(
+    await readFile(resolve(root, '../src/i18n/locale/en.json'), 'utf8')
+  );
+  for (const locale of ['fr', 'ar']) {
+    const catalog = JSON.parse(
+      await readFile(resolve(root, `../src/i18n/locale/${locale}.json`), 'utf8')
+    );
+    assert.notEqual(
+      catalog['components.Layout.Sidebar.users'],
+      english['components.Layout.Sidebar.users']
+    );
+  }
+});

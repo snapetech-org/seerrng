@@ -40,6 +40,7 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       authors: 'Authors',
       trending: 'Trending this week',
       searching: 'Searching…',
+      userList: 'User List',
     },
     fr: {
       heading: 'Recherche',
@@ -60,6 +61,7 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       authors: 'Auteurs',
       trending: 'Tendances de la semaine',
       searching: 'Recherche en cours…',
+      userList: 'Utilisateurs',
     },
     ar: {
       heading: 'البحث',
@@ -80,6 +82,7 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       authors: 'المؤلفون',
       trending: 'الأكثر شعبية هذا الأسبوع',
       searching: 'جارٍ البحث…',
+      userList: 'المستخدمين',
     },
   } as const;
   const expected = labels[locale];
@@ -171,6 +174,20 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
   await expect(
     page.getByRole('heading', { name: expected.trending, exact: true })
   ).toBeVisible();
+  if (test.info().project.name === 'desktop') {
+    await expect(
+      page.getByRole('link', { name: expected.userList, exact: true })
+    ).toBeVisible();
+  } else {
+    const moreNavigation = page.locator(
+      'button[aria-controls="mobile-primary-navigation"]'
+    );
+    await moreNavigation.click();
+    await expect(
+      page.getByRole('link', { name: expected.userList, exact: true })
+    ).toBeVisible();
+    await moreNavigation.click();
+  }
   await capture(page, test.info(), 'trending');
   await expect(page.locator('#sq')).toHaveAttribute(
     'placeholder',

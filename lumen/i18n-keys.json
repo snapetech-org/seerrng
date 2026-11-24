@@ -110,6 +110,7 @@
   "components.Layout.Sidebar.requests",
   "components.Layout.Sidebar.share",
   "components.Layout.Sidebar.swipe",
+  "components.Layout.Sidebar.users",
   "components.Layout.Sidebar.watchSessions",
   "components.Layout.Sidebar.you",
   "components.Layout.UserDropdown.myprofile",

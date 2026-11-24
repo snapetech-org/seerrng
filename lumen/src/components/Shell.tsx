@@ -605,7 +605,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               </Link>
               <Link to="/admin/users">
                 <Icon name="user" />
-                {t('components.Layout.Sidebar.users', 'Users')}
+                {t('components.Layout.Sidebar.users', 'User List')}
               </Link>
             </>
           )}
@@ -617,7 +617,7 @@ export default function Shell({ children }: { children: ReactNode }) {
                 className={({ isActive }) => (isActive ? 'active' : '')}
               >
                 <Icon name="user" />
-                {t('components.Layout.Sidebar.users', 'Users')}
+                {t('components.Layout.Sidebar.users', 'User List')}
               </NavLink>
             )}
           <NavLink to="/requests">

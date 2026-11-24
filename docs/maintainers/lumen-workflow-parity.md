@@ -8829,6 +8829,9 @@ rejects untranslated values, and the browser fixture verifies the rendered
 trending heading, in-flight search status, empty results, and pagination in
 English, French, and Arabic across desktop, iPhone, Android, and tablet (12
 locale/viewport cases). Matched French and Arabic desktop and iPhone captures
-were inspected; the text changes do not alter layout or navigation. Evidence is
-retained at
+were inspected; the text changes do not alter layout or navigation. The same
+capture review exposed the administrator menu's untranslated User List link.
+Lumen now includes SeerrNG's localized `components.Layout.Sidebar.users` key;
+the browser fixture opens the mobile More menu and checks that link as well.
+Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261124/`.

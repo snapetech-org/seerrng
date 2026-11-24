@@ -148,6 +148,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'الطلبات',
       'components.Layout.Sidebar.share': 'مشاركة وتحديد',
       'components.Layout.Sidebar.swipe': 'اسحب',
+      'components.Layout.Sidebar.users': 'المستخدمين',
       'components.Layout.UserDropdown.myprofile': 'ملف التعريف',
       'components.LiveTv.FollowedTeams.choose': 'اختر الفريق',
       'components.LiveTv.FollowedTeams.description':
@@ -7067,6 +7068,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Сериали',
       'components.Layout.Sidebar.issues': 'Проблеми',
       'components.Layout.Sidebar.requests': 'Заявки',
+      'components.Layout.Sidebar.users': 'Потребители',
       'components.Layout.UserDropdown.myprofile': 'Профил',
       'components.MovieDetails.addtowatchlist':
         'Добавяне към списъка за гледане',
@@ -7725,6 +7727,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Sèries',
       'components.Layout.Sidebar.issues': 'Incidències',
       'components.Layout.Sidebar.requests': 'Sol·licituds',
+      'components.Layout.Sidebar.users': 'Usuaris',
       'components.Layout.UserDropdown.myprofile': 'Perfil',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Cancel·la',
       'components.MovieDetails.addtowatchlist':
@@ -8267,6 +8270,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Seriály',
       'components.Layout.Sidebar.issues': 'Problémy',
       'components.Layout.Sidebar.requests': 'Žádosti',
+      'components.Layout.Sidebar.users': 'Uživatelé',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.MovieDetails.addtowatchlist': 'Přidat na seznam ke zhlédnutí',
       'components.MovieDetails.removefromwatchlist':
@@ -8921,6 +8925,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serier',
       'components.Layout.Sidebar.issues': 'Problemer',
       'components.Layout.Sidebar.requests': 'Anmodninger',
+      'components.Layout.Sidebar.users': 'Brugere',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Annullér',
       'components.MovieDetails.addtowatchlist': 'Føj til Se senere-liste',
@@ -9720,6 +9725,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Anfragen',
       'components.Layout.Sidebar.share': 'Teilen & Identifizieren',
       'components.Layout.Sidebar.swipe': 'Wischen',
+      'components.Layout.Sidebar.users': 'Benutzer',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.LiveTv.FollowedTeams.choose': 'Wählen Sie ein Team',
       'components.LiveTv.FollowedTeams.description':
@@ -11486,6 +11492,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Requests',
       'components.Layout.Sidebar.share': 'Share & Identify',
       'components.Layout.Sidebar.swipe': 'Swipe',
+      'components.Layout.Sidebar.users': 'User List',
       'components.Layout.Sidebar.watchSessions': 'Watch Sessions',
       'components.Layout.Sidebar.you': 'You',
       'components.Layout.UserDropdown.myprofile': 'Profile',
@@ -18452,6 +18459,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Σειρές',
       'components.Layout.Sidebar.issues': 'Προβλήματα',
       'components.Layout.Sidebar.requests': 'Αιτήματα',
+      'components.Layout.Sidebar.users': 'Χρήστες',
       'components.Layout.UserDropdown.myprofile': 'Προφίλ',
       'components.NotificationTypeSelector.adminissuecommentDescription':
         'Ειδοποιηθείτε όταν άλλοι χρήστες σχολιάζουν σε προβλήματα.',
@@ -19051,6 +19059,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Solicitudes',
       'components.Layout.Sidebar.share': 'Compartir e identificar',
       'components.Layout.Sidebar.swipe': 'Deslizar',
+      'components.Layout.Sidebar.users': 'Usuarios',
       'components.Layout.UserDropdown.myprofile': 'Perfil',
       'components.LiveTv.FollowedTeams.choose': 'Elige un equipo',
       'components.LiveTv.FollowedTeams.description':
@@ -20833,6 +20842,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Solicitudes',
       'components.Layout.Sidebar.share': 'Compartir e identificar',
       'components.Layout.Sidebar.swipe': 'Golpe fuerte',
+      'components.Layout.Sidebar.users': 'Usuarios',
       'components.Layout.UserDropdown.myprofile': 'Perfil',
       'components.LiveTv.FollowedTeams.choose': 'Elige un equipo',
       'components.LiveTv.FollowedTeams.description':
@@ -22459,6 +22469,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Sarjad',
       'components.Layout.Sidebar.issues': 'Probleemid',
       'components.Layout.Sidebar.requests': 'Taotlused',
+      'components.Layout.Sidebar.users': 'Kasutajad',
       'components.Layout.UserDropdown.myprofile': 'Profiil',
       'components.MovieDetails.addtowatchlist': 'Lisa vaatamisnimekirja',
       'components.MovieDetails.removefromwatchlist':
@@ -23108,6 +23119,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Sarjat',
       'components.Layout.Sidebar.issues': 'Ongelmat',
       'components.Layout.Sidebar.requests': 'Pyynnöt',
+      'components.Layout.Sidebar.users': 'Käyttäjät',
       'components.Layout.UserDropdown.myprofile': 'Profiili',
       'components.MovieDetails.addtowatchlist': 'Lisää katselulistalle',
       'components.MovieDetails.removefromwatchlist': 'Poista katselulistalta',
@@ -23491,6 +23503,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Demandes',
       'components.Layout.Sidebar.share': 'Partager & Identifier',
       'components.Layout.Sidebar.swipe': 'Balayer',
+      'components.Layout.Sidebar.users': 'Utilisateurs',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.LiveTv.FollowedTeams.choose': 'Choisir une équipe',
       'components.LiveTv.FollowedTeams.description':
@@ -31021,6 +31034,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serije',
       'components.Layout.Sidebar.issues': 'Problemi',
       'components.Layout.Sidebar.requests': 'Zahtjevi',
+      'components.Layout.Sidebar.users': 'Korisnici',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.NotificationTypeSelector.adminissuecommentDescription':
         'Primite obavijest kada drugi korisnici komentiraju probleme.',
@@ -31464,6 +31478,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'סדרות',
       'components.Layout.Sidebar.issues': 'מקרים',
       'components.Layout.Sidebar.requests': 'בקשות',
+      'components.Layout.Sidebar.users': 'משתמשים',
       'components.Layout.UserDropdown.myprofile': 'פרופיל',
       'components.MovieDetails.addtowatchlist': 'הוספה לרשימת הצפייה',
       'components.MovieDetails.removefromwatchlist': 'הסרה מרשימת הצפייה',
@@ -31855,6 +31870,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'अनुरोध',
       'components.Layout.Sidebar.share': 'साझा करें और पहचानें',
       'components.Layout.Sidebar.swipe': 'स्वाइप',
+      'components.Layout.Sidebar.users': 'उपयोगकर्ता सूची',
       'components.Layout.UserDropdown.myprofile': 'प्रोफ़ाइल',
       'components.LiveTv.FollowedTeams.choose': 'एक टीम चुनें',
       'components.LiveTv.FollowedTeams.description':
@@ -33428,6 +33444,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Sorozatok',
       'components.Layout.Sidebar.issues': 'Problémák',
       'components.Layout.Sidebar.requests': 'Kérések',
+      'components.Layout.Sidebar.users': 'Felhasználók',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Mégsem',
       'components.MovieDetails.addtowatchlist': 'Hozzáadás figyelőlistához',
@@ -34228,6 +34245,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Permintaan',
       'components.Layout.Sidebar.share': 'Bagikan & Identifikasi',
       'components.Layout.Sidebar.swipe': 'Geser',
+      'components.Layout.Sidebar.users': 'Daftar Pengguna',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.LiveTv.FollowedTeams.choose': 'Pilih sebuah tim',
       'components.LiveTv.FollowedTeams.description':
@@ -35826,6 +35844,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serie',
       'components.Layout.Sidebar.issues': 'Segnalazioni',
       'components.Layout.Sidebar.requests': 'Richieste',
+      'components.Layout.Sidebar.users': 'Utenti',
       'components.Layout.UserDropdown.myprofile': 'Profilo',
       'components.MovieDetails.addtowatchlist':
         'Aggiungi alla lista di visione',
@@ -36623,6 +36642,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'リクエスト',
       'components.Layout.Sidebar.share': '共有 & 識別',
       'components.Layout.Sidebar.swipe': 'スワイプ',
+      'components.Layout.Sidebar.users': 'ユーザー',
       'components.Layout.UserDropdown.myprofile': 'プロフィール',
       'components.LiveTv.FollowedTeams.choose': 'チームを選ぶ',
       'components.LiveTv.FollowedTeams.description':
@@ -38355,6 +38375,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': '요청',
       'components.Layout.Sidebar.share': '공유 & 식별',
       'components.Layout.Sidebar.swipe': '스와이프',
+      'components.Layout.Sidebar.users': '사용자',
       'components.Layout.UserDropdown.myprofile': '프로필',
       'components.LiveTv.FollowedTeams.choose': '팀 선택',
       'components.LiveTv.FollowedTeams.description':
@@ -39899,6 +39920,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serialai',
       'components.Layout.Sidebar.issues': 'Problemos',
       'components.Layout.Sidebar.requests': 'Rezervacijos',
+      'components.Layout.Sidebar.users': 'Vartotojai',
       'components.Layout.UserDropdown.myprofile': 'Profilis',
       'components.NotificationTypeSelector.adminissuecommentDescription':
         'Gauti pranešimus kai kiti vartotojai komentuoja problemą.',
@@ -40052,6 +40074,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serier',
       'components.Layout.Sidebar.issues': 'Avvik',
       'components.Layout.Sidebar.requests': 'Forespørsler',
+      'components.Layout.Sidebar.users': 'Brukere',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.MovieDetails.addtowatchlist': 'Legg til i Visningsliste',
       'components.MovieDetails.removefromwatchlist': 'Fjern fra Visningsliste',
@@ -40477,6 +40500,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Series',
       'components.Layout.Sidebar.issues': 'Problemen',
       'components.Layout.Sidebar.requests': 'Aanvragen',
+      'components.Layout.Sidebar.users': 'Gebruikers',
       'components.Layout.UserDropdown.myprofile': 'Profiel',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Annuleren',
       'components.MovieDetails.addtowatchlist': 'Toevoegen aan kijklijst',
@@ -41140,6 +41164,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Seriale',
       'components.Layout.Sidebar.issues': 'Problemy',
       'components.Layout.Sidebar.requests': 'Prośby',
+      'components.Layout.Sidebar.users': 'Użytkownicy',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Anuluj',
       'components.MovieDetails.addtowatchlist': 'Dodaj do listy Do obejrzenia',
@@ -41951,6 +41976,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Solicitações',
       'components.Layout.Sidebar.share': 'Compartilhar & Identificar',
       'components.Layout.Sidebar.swipe': 'Deslizar',
+      'components.Layout.Sidebar.users': 'Usuários',
       'components.Layout.UserDropdown.myprofile': 'Perfil',
       'components.LiveTv.FollowedTeams.choose': 'Escolha uma equipe.',
       'components.LiveTv.FollowedTeams.description':
@@ -43573,6 +43599,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Séries',
       'components.Layout.Sidebar.issues': 'Problemas',
       'components.Layout.Sidebar.requests': 'Pedidos',
+      'components.Layout.Sidebar.users': 'Utilizadores',
       'components.Layout.UserDropdown.myprofile': 'Perfil',
       'components.MovieDetails.addtowatchlist': 'Adicionar à lista para ver',
       'components.MovieDetails.removefromwatchlist':
@@ -44209,6 +44236,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Seriale',
       'components.Layout.Sidebar.issues': 'Probleme',
       'components.Layout.Sidebar.requests': 'Solicitări',
+      'components.Layout.Sidebar.users': 'Utilizatori',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.MovieDetails.addtowatchlist': 'Adăugați la lista de favorite',
       'components.MovieDetails.removefromwatchlist':
@@ -44551,6 +44579,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Сериалы',
       'components.Layout.Sidebar.issues': 'Проблемы',
       'components.Layout.Sidebar.requests': 'Запросы',
+      'components.Layout.Sidebar.users': 'Пользователи',
       'components.Layout.UserDropdown.myprofile': 'Профиль',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Отмена',
       'components.MovieDetails.addtowatchlist': 'Добавить в список просмотра',
@@ -45218,6 +45247,7 @@ export const localeData = [
       'components.IssueDetails.allepisodes': 'Të gjithë Episodet',
       'components.Layout.Sidebar.issues': 'Problemet',
       'components.Layout.Sidebar.requests': 'Kërkesat',
+      'components.Layout.Sidebar.users': 'Përdoruesit',
       'components.Layout.UserDropdown.myprofile': 'Profili',
       'components.NotificationTypeSelector.adminissuecommentDescription':
         'Lajmërohu kur përdoruesit e tjerë komentojnë mbi problemet.',
@@ -45635,6 +45665,7 @@ export const localeData = [
       'components.IssueDetails.allepisodes': 'Sve epizode',
       'components.Layout.Sidebar.issues': 'Problemi',
       'components.Layout.Sidebar.requests': 'Zahtevi',
+      'components.Layout.Sidebar.users': 'Korisnici',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.NotificationTypeSelector.mediaapproved': 'Zahtev je odobren',
       'components.NotificationTypeSelector.mediaavailable': 'Zahtev dostupan',
@@ -45805,6 +45836,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Serier',
       'components.Layout.Sidebar.issues': 'Ärenden',
       'components.Layout.Sidebar.requests': 'Förfrågningar',
+      'components.Layout.Sidebar.users': 'Användare',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.Login.JellyfinQuickConnectModal.cancel': 'Avbryt',
       'components.MovieDetails.addtowatchlist': 'Lägg till i bevakningslistan',
@@ -46464,6 +46496,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Diziler',
       'components.Layout.Sidebar.issues': 'Sorunlar',
       'components.Layout.Sidebar.requests': 'Talepler',
+      'components.Layout.Sidebar.users': 'Kullanıcılar',
       'components.Layout.UserDropdown.myprofile': 'Profil',
       'components.MovieDetails.addtowatchlist': 'İzleme Listesine Ekle',
       'components.MovieDetails.removefromwatchlist':
@@ -47111,6 +47144,7 @@ export const localeData = [
       'components.Layout.Sidebar.browsetv': 'Серіали',
       'components.Layout.Sidebar.issues': 'Проблеми',
       'components.Layout.Sidebar.requests': 'Запити',
+      'components.Layout.Sidebar.users': 'Користувачі',
       'components.Layout.UserDropdown.myprofile': 'Профіль',
       'components.MovieDetails.addtowatchlist': 'Додати до списку перегляду',
       'components.MovieDetails.removefromwatchlist':
@@ -47857,6 +47891,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': '请求',
       'components.Layout.Sidebar.share': '分享与识别',
       'components.Layout.Sidebar.swipe': '滑动',
+      'components.Layout.Sidebar.users': '用户',
       'components.Layout.UserDropdown.myprofile': '个人资料',
       'components.LiveTv.FollowedTeams.choose': '选择球队',
       'components.LiveTv.FollowedTeams.description':
@@ -49470,6 +49505,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': '請求',
       'components.Layout.Sidebar.share': '分享與識別',
       'components.Layout.Sidebar.swipe': '滑動',
+      'components.Layout.Sidebar.users': '使用者',
       'components.Layout.UserDropdown.myprofile': '個人資料',
       'components.LiveTv.FollowedTeams.choose': '選擇球隊',
       'components.LiveTv.FollowedTeams.description':
@@ -51096,6 +51132,7 @@ export const localeData = [
       'components.Layout.Sidebar.requests': 'Yêu cầu',
       'components.Layout.Sidebar.share': 'Chia sẻ & Xác định',
       'components.Layout.Sidebar.swipe': 'Vuốt',
+      'components.Layout.Sidebar.users': 'Danh sách người dùng',
       'components.Layout.UserDropdown.myprofile': 'Hồ sơ',
       'components.LiveTv.FollowedTeams.choose': 'Chọn một đội',
       'components.LiveTv.FollowedTeams.description':
