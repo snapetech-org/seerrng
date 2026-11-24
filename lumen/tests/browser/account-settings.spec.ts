@@ -104,7 +104,6 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   for (const [path, id] of [
     ['./me/account#password', 'password'],
     ['./me/account/tv-requests#episode-queue', 'episode-queue'],
-    ['./me/account#advanced-theme', 'advanced-theme'],
   ]) {
     await page.goto(appPath(path));
     await expect(page.locator(`section#${id}`)).toHaveAttribute(
@@ -120,6 +119,46 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   await expect(
     page.locator('dd').getByText('User', { exact: true })
   ).toBeVisible();
+});
+
+test('advanced theme controls are limited to administrator accounts', async ({
+  page,
+}) => {
+  let advancedThemeReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    if (pathname === '/api/v1/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          displayName: 'Viewer',
+          permissions: 32,
+          userType: 2,
+          settings: { advancedThemeOverrides: {} },
+        },
+      });
+    if (pathname === '/api/v1/user/2/settings/advanced-theme')
+      advancedThemeReads++;
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('./me/account#advanced-theme'));
+  await expect(
+    page.getByRole('heading', { name: 'User Settings', exact: true })
+  ).toBeVisible();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/viewer-${page.viewportSize()?.width}.png`,
+    });
+  await expect(page.getByRole('link', { name: 'Advanced Theme' })).toHaveCount(
+    0
+  );
+  await expect(page.locator('#advanced-theme')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Edit All Overrides' })
+  ).toHaveCount(0);
+  expect(advancedThemeReads).toBe(0);
 });
 
 for (const locale of [
@@ -1139,7 +1178,7 @@ test('account applies the shared built-in theme preset and preserves overrides',
       return route.fulfill({
         json: {
           id: 2,
-          permissions: 32,
+          permissions: 2,
           settings: { advancedThemeOverrides: overrides },
         },
       });
@@ -1203,7 +1242,7 @@ test('account resets all saved theme overrides together', async ({ page }) => {
       return route.fulfill({
         json: {
           id: 2,
-          permissions: 32,
+          permissions: 2,
           settings: { advancedThemeOverrides: overrides },
         },
       });
@@ -1246,7 +1285,7 @@ test('account theme colors preserve stored overrides for other controls', async 
       return route.fulfill({
         json: {
           id: 2,
-          permissions: 32,
+          permissions: 2,
           settings: { advancedThemeOverrides: overrides },
         },
       });
@@ -1419,7 +1458,7 @@ test('account theme override controls follow the selected Lumen locale', async (
       '/api/v1/auth/me': {
         id: 2,
         displayName: 'Viewer',
-        permissions: 32,
+        permissions: 2,
         userType: 2,
         settings: { advancedThemeOverrides: {} },
       },

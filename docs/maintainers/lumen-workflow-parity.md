@@ -213,6 +213,18 @@ authenticated save against a production SeerrNG instance remains unverified.
 Matched baseline/candidate screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-theme-presets-20261122/`.
 
+The native Advanced Theme settings route is ADMIN-only. Lumen now applies the
+same gate to the Account toolbar link and editor; regular accounts do not load
+their theme editor endpoint. Theme preset and override persistence remains
+available to administrators. A focused role-gate browser fixture covers the
+regular-account bookmark and no-read behavior; administrator persistence
+fixtures use the ADMIN permission bit. Matched visual acceptance for the
+permission change compared the prior account bookmark capture with the new
+viewer account at the same `/me/account#advanced-theme` route, at 1440-pixel
+desktop and 390-pixel iPhone widths. The viewer now remains at Account Settings
+without the unauthorized section; candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-theme-admin-gate-20261124/`.
+
 ### Account language choices
 
 The account's preferred media-language selectors now display API language

@@ -958,18 +958,21 @@ function Settings({ id, plex }: { id: number; plex: boolean }) {
 export default function AccountSettings() {
   const { user } = useAuth();
   const { t } = useLumenLocale();
+  const canManageTheme = isAdministrator(user?.permissions);
   return (
     <>
       <header className="ph">
         <h1>{t('i18n.usersettings', 'User Settings')}</h1>
       </header>
       <div className="toolbar">
-        <Link className="btn btn-quiet btn-sm" to="#advanced-theme">
-          {t(
-            'components.UserProfile.UserSettings.menuAdvancedTheme',
-            'Advanced Theme'
-          )}
-        </Link>
+        {canManageTheme && (
+          <Link className="btn btn-quiet btn-sm" to="#advanced-theme">
+            {t(
+              'components.UserProfile.UserSettings.menuAdvancedTheme',
+              'Advanced Theme'
+            )}
+          </Link>
+        )}
         <Link className="btn btn-quiet btn-sm" to="#account-permissions">
           {t(
             'components.UserProfile.UserSettings.menuPermissions',
@@ -1004,7 +1007,9 @@ export default function AccountSettings() {
       {user && (
         <Settings id={user.id} key={user.id} plex={user.userType === 1} />
       )}
-      {user && <AccountThemeOverrides key={`theme:${user.id}`} />}
+      {user && canManageTheme && (
+        <AccountThemeOverrides key={`theme:${user.id}`} />
+      )}
     </>
   );
 }
