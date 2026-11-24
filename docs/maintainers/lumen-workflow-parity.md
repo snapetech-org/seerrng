@@ -2537,6 +2537,22 @@ The route regression test verified the exact TMDB region for an override,
 All regions and the streaming fallback. Live TMDB and rendered comparison
 remain unverified.
 
+### Coming Soon quick-request error localization (2026-11-24)
+
+Coming Soon's direct movie quick-request failure now passes server-provided
+error codes and fallback text through Lumen's active locale translator. The
+request payload, permission checks, and existing recovery behavior are
+unchanged.
+
+The focused failure-state browser regression passes in English, French, and
+Arabic on desktop and iPhone. The pre-fix baseline reproduces English fallback
+copy in French and Arabic on both device profiles. Matched desktop captures
+use 1440x900 pixels; iPhone captures use a 390x664 CSS viewport. Only the
+status message changes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-quick-request-error-localization-20261124/`.
+The standalone Lumen client was verified; live request-provider behavior and
+the production Express `/lumen/` mount remain unverified.
+
 ### Personal streaming subscriptions increment
 
 Account Settings lets users search and save streaming subscriptions from the

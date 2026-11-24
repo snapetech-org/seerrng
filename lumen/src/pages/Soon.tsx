@@ -127,7 +127,11 @@ export default function Soon() {
         setChoice((current) => current ?? { title: it, quotaDenied: true });
       else
         toast(
-          friendlyError(e, t('lumen.soon.requestFailed', 'Request failed'))
+          friendlyError(
+            e,
+            t('lumen.soon.requestFailed', 'Request failed'),
+            (id, fallback) => t(id, fallback)
+          )
         );
     }
   };

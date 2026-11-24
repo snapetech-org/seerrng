@@ -100,6 +100,39 @@ for (const locale of ['en', 'fr', 'ar']) {
   });
 }
 
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`quick movie request errors follow ${locale} locale`, async ({
+    page,
+  }) => {
+    const serverFailure = {
+      en: 'The server had a problem. Try again in a moment.',
+      fr: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      ar: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    }[locale];
+    await fixtures(page, 32, locale);
+    await page.route('**/api/v1/request', (route) =>
+      route.request().method() === 'POST'
+        ? route.fulfill({
+            status: 500,
+            json: { message: 'Internal Server Error' },
+          })
+        : route.fallback()
+    );
+    await page.goto(testAppPath('/soon?media=movie'));
+    const title = 'Victorian Psychosis Stories 1';
+    const item = page.locator('.si').filter({ hasText: title });
+    await expect(item).toBeVisible();
+    await item.locator('.act button').click();
+    const capture = process.env.LUMEN_ERROR_CAPTURE;
+    if (capture)
+      await page.screenshot({
+        path: `${capture}-${locale}-${test.info().project.name}.png`,
+        animations: 'disabled',
+      });
+    await expect(page.getByRole('status')).toContainText(serverFailure);
+  });
+}
+
 test('Coming soon titles wrap to two lines instead of cutting to a few letters', async ({
   page,
 }, info) => {
