@@ -3635,6 +3635,7 @@ export const localeData = [
         'أنت غير متصل بالإنترنت. تحقق من اتصالك ثم حاول مجددًا.',
       'lumen.error.rateLimited':
         'عدد الطلبات كبير جدًا. انتظر دقيقة ثم حاول مجددًا.',
+      'lumen.error.requestFailed': 'فشل الطلب. حاول مجددًا.',
       'lumen.error.serverProblem':
         'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
       'lumen.error.serverUnreachable':
@@ -15295,6 +15296,7 @@ export const localeData = [
         'You’re offline. Check your connection and try again.',
       'lumen.error.rateLimited':
         'Too many requests. Wait a minute and try again.',
+      'lumen.error.requestFailed': 'Request failed. Try again.',
       'lumen.error.serverProblem':
         'The server had a problem. Try again in a moment.',
       'lumen.error.serverUnreachable':
@@ -27811,6 +27813,7 @@ export const localeData = [
         'Vous êtes hors ligne. Vérifiez votre connexion, puis réessayez.',
       'lumen.error.rateLimited':
         'Trop de demandes. Attendez une minute, puis réessayez.',
+      'lumen.error.requestFailed': 'La demande a échoué. Réessayez.',
       'lumen.error.serverProblem':
         'Le serveur a rencontré un problème. Réessayez dans un instant.',
       'lumen.error.serverUnreachable':

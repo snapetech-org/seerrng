@@ -116,7 +116,9 @@ export function ComicCard({ w }: { w: ComicWork }) {
       toast(said);
       if (mounted.current) setAsked(edition.id);
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(e, t('lumen.error.requestFailed', 'Request failed'), t)
+      );
     } finally {
       running.current = false;
       if (mounted.current) setBusy(false);

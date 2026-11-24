@@ -2640,6 +2640,7 @@
   "lumen.error.noPermission",
   "lumen.error.offline",
   "lumen.error.rateLimited",
+  "lumen.error.requestFailed",
   "lumen.error.serverProblem",
   "lumen.error.serverUnreachable",
   "lumen.error.sessionEnded",

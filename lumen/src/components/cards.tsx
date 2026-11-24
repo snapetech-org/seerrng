@@ -645,7 +645,9 @@ export function BookCard({ b }: { b: BookResult }) {
       dropBookStates();
       toast(`Requested ${b.title} · ${audio ? 'audiobook' : 'ebook'}`);
     } catch (e) {
-      toast(friendlyError(e, 'Request failed'));
+      toast(
+        friendlyError(e, t('lumen.error.requestFailed', 'Request failed'), t)
+      );
     }
   };
   const [request, busy] = useBusy(go);

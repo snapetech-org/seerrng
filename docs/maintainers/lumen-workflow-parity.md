@@ -9383,5 +9383,15 @@ request action. Matched 1440x900 baseline and candidate captures show the toast
 below the action in the candidate; the baseline overlaps the action. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-detail-request-error-localization-20261124/`.
-The direct movie-detail 500 path, live Arr behavior, phone layout, and
-production `/lumen/` mount remain unverified.
+The direct movie-detail 500 regression also passes in English, French, and
+Arabic on desktop, with no horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-detail-error-localization-20261124/`.
+Live Arr behavior, phone layout, and production `/lumen/` mounting remain
+unverified.
+
+### Book and comic card request errors (2026-11-24)
+
+Quick book-card and recommended comic-edition requests now pass generic errors
+through the active locale translator. The shared request fallback has explicit
+English, French, and Arabic copy. This closes uncovered error-message paths in
+those card actions; focused browser regression coverage is still pending.
