@@ -37,20 +37,6 @@ interface Source {
   }[];
 }
 
-const positionText = (position?: Position) =>
-  [
-    position?.volume != null ? `Volume ${position.volume}` : '',
-    position?.chapter != null ? `Chapter ${position.chapter}` : '',
-  ]
-    .filter(Boolean)
-    .join(', ');
-
-const targetLabels = {
-  start: 'Start From the Beginning',
-  continuation: 'Open Continuation Volume',
-  series: 'Open Source',
-};
-
 interface ContinuationResult {
   available: boolean;
   seasonMapping?: string;
@@ -68,11 +54,26 @@ export default function AnimeContinuation({
   seasons?: { seasonNumber: number; name?: string }[];
 }) {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
+  const positionText = (position?: Position) =>
+    [
+      position?.volume != null
+        ? t('lumen.continuation.volume', undefined, {
+            number: position.volume,
+          })
+        : '',
+      position?.chapter != null
+        ? t('lumen.continuation.chapter', undefined, {
+            number: position.chapter,
+          })
+        : '',
+    ]
+      .filter(Boolean)
+      .join(locale.startsWith('ar') ? '، ' : ', ');
   const [open, setOpen] = useState(false);
   const [season, setSeason] = useState<number>();
   const chosenSeason = season ?? seasons?.at(-1)?.seasonNumber;
-  const language = document.documentElement.lang.slice(0, 2) || 'en';
+  const language = locale;
   const path = `/continuation/${source}/${id}?${new URLSearchParams({ language })}`;
   const latest = useApi<ContinuationResult>(
     open && (source === 'anilist' || chosenSeason === undefined) ? path : null,
@@ -97,7 +98,7 @@ export default function AnimeContinuation({
 
   return (
     <Section
-      title="Manga and Novel Continuations"
+      title={t('lumen.continuation.title')}
       action={
         <button
           className="btn btn-tonal btn-sm"
@@ -105,7 +106,9 @@ export default function AnimeContinuation({
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
-          {open ? 'Hide Sources' : 'Find Sources'}
+          {open
+            ? t('lumen.continuation.hideSources')
+            : t('lumen.continuation.findSources')}
         </button>
       }
     >
@@ -113,9 +116,9 @@ export default function AnimeContinuation({
         <>
           {seasonOptions.length > 0 && (
             <label className="sel">
-              <span className="lbl">Season</span>
+              <span className="lbl">{t('lumen.continuation.season')}</span>
               <select
-                aria-label="Continuation season"
+                aria-label={t('lumen.continuation.seasonLabel')}
                 value={chosenSeason ?? ''}
                 onChange={(event) =>
                   setSeason(
@@ -124,11 +127,14 @@ export default function AnimeContinuation({
                 }
               >
                 {source === 'anilist' && (
-                  <option value="">This Anime Entry</option>
+                  <option value="">{t('lumen.continuation.thisEntry')}</option>
                 )}
                 {seasonOptions.map(({ seasonNumber, name }) => (
                   <option key={seasonNumber} value={seasonNumber}>
-                    {name || `Season ${seasonNumber}`}
+                    {name ||
+                      t('lumen.continuation.seasonNumber', undefined, {
+                        number: seasonNumber,
+                      })}
                   </option>
                 ))}
               </select>
@@ -136,19 +142,19 @@ export default function AnimeContinuation({
           )}
           <ServiceNote
             error={continuation.error}
-            what="source material"
+            what={t('lumen.continuation.sourceMaterial')}
             retry={continuation.reload}
           />
           {!continuation.data && !continuation.error && (
             <p className="note" role="status">
-              Looking for source material…
+              {t('lumen.continuation.searching')}
             </p>
           )}
           {continuation.data && !continuation.data.sources?.length && (
-            <p className="note">No source material found for this season.</p>
+            <p className="note">{t('lumen.continuation.noSource')}</p>
           )}
           {continuation.data?.seasonMapping === 'ordered' && (
-            <p className="note">Season matches are based on release order.</p>
+            <p className="note">{t('lumen.continuation.ordered')}</p>
           )}
           {!!continuation.data?.sources?.length && (
             <ul className="setlist">
@@ -159,7 +165,7 @@ export default function AnimeContinuation({
                 const volume = novel?.continuationVolume;
                 const languageName =
                   novel &&
-                  new Intl.DisplayNames(['en'], {
+                  new Intl.DisplayNames([locale], {
                     type: 'language',
                     fallback: 'code',
                   }).of(novel.language);
@@ -168,44 +174,57 @@ export default function AnimeContinuation({
                     <div>
                       <b>{source.title}</b>
                       <small>
-                        {source.kind === 'novel' ? 'Novel' : 'Manga'} ·{' '}
-                        {source.confidence} confidence
+                        {t(
+                          source.kind === 'novel'
+                            ? 'lumen.continuation.novel'
+                            : 'lumen.continuation.manga'
+                        )}{' '}
+                        ·{' '}
+                        {t('lumen.continuation.confidence', undefined, {
+                          confidence: t(
+                            `lumen.continuation.confidence.${source.confidence}`,
+                            source.confidence
+                          ),
+                        })}
                       </small>
                       <small>
                         {end
-                          ? `Season ends at ${end}.`
-                          : 'Season end position unknown.'}
+                          ? t('lumen.continuation.seasonEndsAt', undefined, {
+                              position: end,
+                            })
+                          : t('lumen.continuation.seasonEndUnknown')}
                       </small>
                       {next && (
                         <small>
                           {source.volumeApproximate ||
                           source.continuationBasis === 'derived'
-                            ? 'Estimated continuation'
-                            : 'Continue at'}{' '}
+                            ? t('lumen.continuation.estimated')
+                            : t('lumen.continuation.continueAt')}{' '}
                           · {next}
                         </small>
                       )}
                       {next && source.continuationBasis === 'derived' && (
-                        <small>
-                          Estimated from where the season ends. The catalog does
-                          not document the next starting point.
-                        </small>
+                        <small>{t('lumen.continuation.estimateHint')}</small>
                       )}
                       {next && source.volumeApproximate && (
-                        <small>The continuation volume is unconfirmed.</small>
+                        <small>
+                          {t('lumen.continuation.volumeUnconfirmed')}
+                        </small>
                       )}
                       {volume && (
                         <small>
                           {volume.title} ·{' '}
                           {novel?.translationPending
-                            ? 'Translation pending'
-                            : 'Available'}{' '}
-                          in {languageName}
+                            ? t('lumen.continuation.translationPending')
+                            : t('lumen.continuation.available')}{' '}
+                          {t('lumen.continuation.inLanguage', undefined, {
+                            language: languageName ?? novel?.language ?? '',
+                          })}
                         </small>
                       )}
                       {!!source.evidence.length && (
                         <details>
-                          <summary>Match evidence</summary>
+                          <summary>{t('lumen.continuation.evidence')}</summary>
                           <ul>
                             {source.evidence.map((line) => (
                               <li key={line}>{line}</li>
@@ -234,8 +253,10 @@ export default function AnimeContinuation({
                               }
                             >
                               {exact
-                                ? targetLabels[target.label]
-                                : `Search for ${target.title}`}
+                                ? t(`lumen.continuation.target.${target.label}`)
+                                : t('lumen.continuation.searchFor', undefined, {
+                                    title: target.title,
+                                  })}
                             </Link>
                           );
                         })}

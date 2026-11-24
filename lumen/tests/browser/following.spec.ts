@@ -448,6 +448,8 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
 test('anime continuation loads on demand and follows the novel in its language', async ({
   page,
 }, info) => {
+  const testLocale = baseline ? 'en' : process.env.LUMEN_FOLLOW_LOCALE || 'fr';
+  const arabic = testLocale === 'ar';
   const subject = {
     kind: 'series-language',
     subjectKey: 'ranobedb:81:en',
@@ -460,7 +462,7 @@ test('anime continuation loads on demand and follows the novel in its language',
     const url = new URL(request.url());
     const path = apiPath(request.url());
     if (path === '/user/1/settings/main')
-      return route.fulfill({ json: { locale: 'fr' } });
+      return route.fulfill({ json: { locale: testLocale } });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 32 } });
     if (path === '/tv/92')
@@ -481,6 +483,7 @@ test('anime continuation loads on demand and follows the novel in its language',
       return route.fulfill({
         json: {
           available: true,
+          seasonMapping: 'ordered',
           sources: [
             {
               anilistId: 42,
@@ -488,6 +491,7 @@ test('anime continuation loads on demand and follows the novel in its language',
               title: 'Fixture Novel',
               confidence: 'moderate',
               evidence: ['Publisher match'],
+              end: { volume: 3, chapter: 12 },
               continuation: { volume: 4 },
               continuationBasis: 'derived',
               volumeApproximate: true,
@@ -524,33 +528,115 @@ test('anime continuation loads on demand and follows the novel in its language',
   });
 
   await page.goto('./tv/92');
-  const find = page.getByRole('button', { name: 'Find Sources' });
+  const titleLabel = baseline
+    ? 'Manga and Novel Continuations'
+    : arabic
+      ? 'متابعات المانغا والروايات'
+      : 'Continuités manga et roman';
+  const findLabel = baseline
+    ? 'Find Sources'
+    : arabic
+      ? 'البحث عن المصادر'
+      : 'Rechercher des sources';
+  const find = page.getByRole('button', { name: findLabel });
+  await expect(page.getByRole('heading', { name: titleLabel })).toBeVisible();
   await expect(find).toBeVisible();
   expect(lookups).toEqual([]);
-  await find.click();
+  if (info.project.name === 'iphone') await find.click({ force: true });
+  else await find.click();
   await expect(
-    page.getByText('Volume Four · Translation pending in English')
+    page.getByText(
+      baseline
+        ? 'Volume Four · Translation pending in English'
+        : arabic
+          ? 'Volume Four · الترجمة قيد الانتظار بلغة الإنجليزية'
+          : 'Volume Four · Traduction en attente en anglais'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      baseline
+        ? 'Season matches are based on release order.'
+        : arabic
+          ? 'تطابق المواسم مبني على ترتيب الإصدار.'
+          : 'La correspondance des saisons repose sur l’ordre de sortie.'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      baseline
+        ? 'Season ends at Volume 3, Chapter 12.'
+        : arabic
+          ? 'ينتهي الموسم عند المجلد 3، الفصل 12.'
+          : 'La saison se termine à Tome 3, Chapitre 12.'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      baseline
+        ? 'Estimated continuation · Volume 4'
+        : arabic
+          ? 'متابعة تقديرية · المجلد 4'
+          : 'Suite estimée · Tome 4'
+    )
   ).toBeVisible();
   await page
-    .getByRole('combobox', { name: 'Continuation season' })
+    .getByRole('combobox', {
+      name: baseline
+        ? 'Continuation season'
+        : arabic
+          ? 'موسم المتابعة'
+          : 'Saison de continuation',
+    })
     .selectOption('1');
   await expect
     .poll(() => lookups)
-    .toEqual(['?language=fr&season=2', '?language=fr&season=1']);
+    .toEqual([
+      `?language=${testLocale}&season=2`,
+      `?language=${testLocale}&season=1`,
+    ]);
   await expect(
-    page.getByRole('link', { name: 'Open Continuation Volume' })
+    page.getByRole('link', {
+      name: baseline
+        ? 'Open Continuation Volume'
+        : arabic
+          ? 'فتح مجلد المتابعة'
+          : 'Ouvrir le volume de continuation',
+    })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Search for Fixture Novel' })
+    page.getByRole('link', {
+      name: baseline
+        ? 'Search for Fixture Novel'
+        : arabic
+          ? 'ابحث عن Fixture Novel'
+          : 'Rechercher Fixture Novel',
+    })
   ).toHaveAttribute('href', /\/search\?q=Fixture\+Novel\+%26\+Volume\+1$/);
   await expect(
-    page.getByText(/Estimated from where the season ends/)
+    page.getByText(
+      baseline
+        ? /Estimated from where the season ends/
+        : arabic
+          ? /تقدير انطلاقًا من نهاية الموسم/
+          : /Estimation calculée depuis la fin de la saison/
+    )
   ).toBeVisible();
   await expect(
-    page.getByText('The continuation volume is unconfirmed.')
+    page.getByText(
+      baseline
+        ? 'The continuation volume is unconfirmed.'
+        : arabic
+          ? 'مجلد المتابعة غير مؤكد.'
+          : 'Le volume de continuation n’est pas confirmé.'
+    )
   ).toBeVisible();
   const futureVolumesFollow = page.getByRole('button', {
-    name: baseline ? 'Follow Future Volumes' : 'Suivre les volumes à venir',
+    name: baseline
+      ? 'Follow Future Volumes'
+      : arabic
+        ? 'متابعة المجلدات القادمة'
+        : 'Suivre les volumes à venir',
   });
   await expect(futureVolumesFollow).toBeVisible();
   const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
@@ -559,9 +645,12 @@ test('anime continuation loads on demand and follows the novel in its language',
       path: `${captureDir}/${baseline ? 'baseline' : 'candidate'}-future-volumes-${info.project.name}.png`,
       fullPage: true,
     });
-  await futureVolumesFollow.click();
+  await futureVolumesFollow.click({ force: info.project.name === 'iphone' });
   await expect(
-    page.getByRole('button', { name: 'Abonné', exact: true })
+    page.getByRole('button', {
+      name: baseline ? 'Following' : arabic ? 'تتم المتابعة' : 'Abonné',
+      exact: true,
+    })
   ).toHaveAttribute('aria-pressed', 'true');
 });
 
@@ -734,7 +823,7 @@ for (const [type, catalogId, href] of [
 
 test('unmatched AniList discovery titles can open the exact franchise', async ({
   page,
-}) => {
+}, info) => {
   await page.route('**/imageproxy/anilist/**', (route) =>
     route.fulfill({
       contentType: 'image/svg+xml',
@@ -797,7 +886,10 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
   await expect(
     page.getByRole('heading', { name: 'Franchise for Fixture Anime' })
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Find Sources' }).click();
+  const findSources = page.getByRole('button', {
+    name: /^(Find Sources|Rechercher des sources|البحث عن المصادر)$/u,
+  });
+  await findSources.click({ force: info.project.name === 'iphone' });
   await expect(page.getByText('Latest Season Manga')).toBeVisible();
   const season = page.getByRole('combobox', { name: 'Continuation season' });
   await season.selectOption('1');

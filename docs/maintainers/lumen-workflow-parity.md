@@ -8897,3 +8897,24 @@ matching desktop and iPhone viewports; the sheet structure and control geometry
 remain the same. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-live-tv-localization-20261124/`.
 Live tuner/provider data and recording submission remain fixture-only.
+
+### Anime continuation localization
+
+The shared Anime Continuation panel now follows the saved Lumen locale for its
+title, source lookup controls, season selector, confidence and match-position
+labels, evidence disclosure, availability notes, catalog links, and language
+names. It sends the selected Lumen locale in the continuation lookup, while
+keeping provider-derived titles, IDs, follow subjects, and request identities
+intact. English, French, and Arabic messages are provided; Arabic position lists
+use RTL punctuation.
+
+Browser fixtures verify the selected lookup language, source result details,
+season changes, catalog destinations, and the future-volume follow action. The
+French candidate and English baseline were captured at matching desktop and
+iPhone viewports; Arabic desktop and iPhone captures were also inspected. The
+franchise title-switch regression passes on both viewports. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-anime-continuation-localization-20261124/`.
+Fixtures do not verify live AniList or RanobeDB data. The iPhone browser harness
+uses forced pointer events for controls on this long detail page because other
+detail content can intercept its synthetic hit test; real-device touch acceptance
+remains open.
