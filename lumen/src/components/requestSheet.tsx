@@ -343,6 +343,7 @@ export function RequestSheet({
 // sheet, everyone else keeps the one-click request. `done` runs after the sheet's request.
 export function useQuickRequest(it: TitleResult, done: RequestDone) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const toast = useToast();
   const choosesOptions = useAsksRequestOptions();
   const offers4k = useOffers4k(it.mediaType === 'tv' ? 'tv' : 'movie');
@@ -375,7 +376,12 @@ export function useQuickRequest(it: TitleResult, done: RequestDone) {
           isQuotaDenial(error)
         )
           setSheet('approval');
-        else toast(friendlyError(error, 'Request failed'));
+        else
+          toast(
+            friendlyError(error, 'Request failed', (id, fallback) =>
+              t(id, fallback)
+            )
+          );
       }
     },
     allowed,

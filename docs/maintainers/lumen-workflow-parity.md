@@ -9353,3 +9353,18 @@ pre-fix baseline reproduces English failure copy in French and Arabic. Evidence
 is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-finder-error-localization-20261124/`.
 Live QuestarrNG behavior and production `/lumen/` mounting remain unverified.
+
+### One-click movie and TV request error localization (2026-11-24)
+
+The shared poster quick-request hook now translates generic server, session,
+permission, and connectivity failures through the active Lumen locale. It
+preserves the existing one-click authorization, request destination, quality,
+payload, and success behavior. The card overlay is desktop-only, so the focused
+interaction is exercised on desktop.
+
+The movie 500 regression passes in English, French, and Arabic, and the existing
+Escape/Cancel focus-return cases still pass. Matched 1440x900 captures show the
+same Discover layout and localized toast; the pre-fix French baseline shows
+English error text. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-one-click-request-error-localization-20261124/`.
+Live request processing and the production `/lumen/` mount remain unverified.

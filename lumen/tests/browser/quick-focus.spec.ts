@@ -17,7 +17,7 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
-async function fixture(page: Page) {
+async function fixture(page: Page, permissions = 32 | 1024, locale?: string) {
   await page.route('https://**/*', (r) => r.abort());
   await page.route(/\/(imageproxy|branding)\//, (r) =>
     r.fulfill({
@@ -30,17 +30,59 @@ async function fixture(page: Page) {
     const path = new URL(route.request().url()).pathname.slice(7);
     let json: unknown = {};
     if (path === '/settings/public')
-      json = { mediaServerType: 2, movie4kEnabled: true };
+      json = { mediaServerType: 2, movie4kEnabled: permissions !== 2 };
     else if (path === '/auth/me')
-      json = { id: 1, displayName: 'fam', permissions: 32 | 1024 };
+      json = { id: 1, displayName: 'fam', permissions };
+    else if (path === '/user/1/settings/main' && locale) json = { locale };
     else if (path === '/discover/movies' || path === '/discover/trending')
       json = paged([movie(302, 'Fresh Pick')]);
     else if (path === '/discover/genreslider/movie') json = [];
     else if (/^\/discover\//.test(path) || path === '/media') json = paged([]);
-    else if (path === '/request')
+    else if (path === '/request') {
+      if (route.request().method() === 'POST')
+        return route.fulfill({
+          status: 500,
+          json: { message: 'Internal Server Error' },
+        });
       json = { pageInfo: { pages: 1, results: 0 }, results: [] };
-    else if (/^\/user\/\d+\/quota$/.test(path)) json = {};
+    } else if (/^\/user\/\d+\/quota$/.test(path)) json = {};
     return route.fulfill({ json });
+  });
+}
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`one-click movie request errors follow ${locale} locale`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name !== 'desktop',
+      'the quick-request card overlay is desktop only'
+    );
+    const errorCopy = {
+      en: 'The server had a problem. Try again in a moment.',
+      fr: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+      ar: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    }[locale];
+    await fixture(page, 32, locale);
+    await page.goto('/');
+    const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
+    await poster.scrollIntoViewIfNeeded();
+    await poster.hover();
+    await poster.locator('.qbtn.go').click();
+    const error = page.getByRole('status');
+    await expect(error).toHaveClass(/show/);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    const capture = process.env.LUMEN_QUICK_ERROR_CAPTURE;
+    if (capture && ['desktop', 'iphone'].includes(test.info().project.name))
+      await page.screenshot({
+        path: `${capture}-${locale}-${test.info().project.name}.png`,
+        animations: 'disabled',
+      });
+    await expect(error).toContainText(errorCopy);
   });
 }
 
