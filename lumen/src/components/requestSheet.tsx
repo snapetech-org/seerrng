@@ -12,6 +12,7 @@ import {
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { usePrefs } from '../settings';
 import {
   AdvancedOptions,
@@ -144,6 +145,7 @@ export function RequestSheet({
   streamingDenial?: string;
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const canAskApproval = !!user && !canManageRequests(user.permissions);
   const [denied, setDenied] = useState(quotaDenied);
   const approval = canAskApproval && denied;
@@ -206,7 +208,14 @@ export function RequestSheet({
         setOverride({ message, options: body });
       else if (!denied && canAskApproval && !body.userId && isQuotaDenial(e))
         setDenied(true);
-      else setErr(friendlyError(e, 'Request failed'));
+      else
+        setErr(
+          friendlyError(
+            e,
+            t('components.RequestModal.requesterror'),
+            (id, fallback) => t(id, fallback)
+          )
+        );
       setBusy(false);
     }
   };
@@ -218,7 +227,9 @@ export function RequestSheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label={`Request ${titleOf(it)}`}
+        aria-label={t('lumen.quickRequest.title', undefined, {
+          title: titleOf(it),
+        })}
       >
         <div className="grab" />
         <div className="pk">
@@ -227,23 +238,31 @@ export function RequestSheet({
               {it.posterPath && <img src={tmdbImg(it.posterPath)} alt="" />}
             </div>
             <div>
-              <h3>Request {titleOf(it)}</h3>
+              <h3>
+                {t('lumen.quickRequest.title', undefined, {
+                  title: titleOf(it),
+                })}
+              </h3>
               <span className="sub">
                 {tv && (asks || offers4k)
-                  ? 'Entire series · '
+                  ? `${t('lumen.quickRequest.entireSeries')} · `
                   : tv
-                    ? 'Entire series'
+                    ? t('lumen.quickRequest.entireSeries')
                     : null}
                 {asks
-                  ? 'Choose where it goes'
+                  ? t('lumen.quickRequest.chooseDestination')
                   : offers4k
-                    ? 'Choose the quality'
+                    ? t('lumen.quickRequest.chooseQuality')
                     : null}
               </span>
             </div>
           </div>
           {!override && offers4k && (
-            <div className="seg" role="group" aria-label="Quality">
+            <div
+              className="seg"
+              role="group"
+              aria-label={t('components.RequestModal.quality')}
+            >
               {(
                 [
                   [false, '1080p'],
@@ -284,10 +303,7 @@ export function RequestSheet({
             </p>
           )}
           {approval && (
-            <p className="note">
-              This request exceeds your quota. You can ask a request manager to
-              approve it.
-            </p>
+            <p className="note">{t('lumen.quickRequest.quotaApproval')}</p>
           )}
           {err && (
             <p className="note" role="alert">
@@ -301,19 +317,19 @@ export function RequestSheet({
               onClick={send}
             >
               {busy
-                ? 'Requesting…'
+                ? t('i18n.requesting')
                 : override
                   ? approval
-                    ? 'Request Approval Anyway'
-                    : 'Request Anyway'
+                    ? t('lumen.quickRequest.requestApprovalAnyway')
+                    : t('lumen.quickRequest.requestAnyway')
                   : approval
-                    ? 'Request Approval'
+                    ? t('components.RequestModal.requestQuotaApproval')
                     : offers4k && fourK
-                      ? 'Request in 4K'
-                      : 'Request'}
+                      ? t('i18n.request4k')
+                      : t('i18n.request')}
             </button>
             <button ref={cancel} className="btn btn-tonal" onClick={onClose}>
-              Cancel
+              {t('i18n.cancel')}
             </button>
           </div>
         </div>

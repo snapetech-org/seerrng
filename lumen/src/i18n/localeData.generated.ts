@@ -1691,6 +1691,13 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'العنوان غير الصحيح أو البيانات الوصفية',
       'components.IssueModal.issueOther': 'أخرى',
+      'components.RequestModal.quality': 'الجودة',
+      'components.RequestModal.requestQuotaApproval': 'طلب الموافقة',
+      'components.RequestModal.requesterror': 'حدث خطأ ما أثناء إرسال الطلب.',
+      'i18n.cancel': 'إلغاء',
+      'i18n.request': 'طلب',
+      'i18n.request4k': 'طلب بجودة 4K',
+      'i18n.requesting': 'جاري الطلب…',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -7053,6 +7060,14 @@ export const localeData = [
       'lumen.tvAvailability.source4k': '{source} 4K',
       'lumen.tvAvailability.sharedHd': 'HD مشترك',
       'lumen.tvAvailability.shared4k': '4K مشترك',
+      'lumen.quickRequest.chooseDestination': 'اختر وجهته',
+      'lumen.quickRequest.chooseQuality': 'اختر الجودة',
+      'lumen.quickRequest.entireSeries': 'المسلسل بالكامل',
+      'lumen.quickRequest.quotaApproval':
+        'يتجاوز هذا الطلب حصتك. يمكنك طلب موافقة أحد مديري الطلبات عليه.',
+      'lumen.quickRequest.requestAnyway': 'طلب على أي حال',
+      'lumen.quickRequest.requestApprovalAnyway': 'طلب الموافقة على أي حال',
+      'lumen.quickRequest.title': 'طلب ⁨{title}⁩',
     },
   },
   {
@@ -7712,6 +7727,12 @@ export const localeData = [
       'i18n.previous': 'Назад',
       'i18n.usersettings': 'Потребителски настройки',
       'components.IssueModal.issueOther': 'Друго',
+      'components.RequestModal.requesterror':
+        'Нещо се обърка при изпращането на заявката.',
+      'i18n.cancel': 'Отказ',
+      'i18n.request': 'Заявка',
+      'i18n.request4k': 'Заявка в 4K',
+      'i18n.requesting': 'Заявяване…',
     },
   },
   {
@@ -8255,6 +8276,12 @@ export const localeData = [
       'i18n.previous': 'Endarrere',
       'i18n.usersettings': "Configuració de l'usuari",
       'components.IssueModal.issueOther': 'Altre',
+      'components.RequestModal.requesterror':
+        "S'ha produït un error en enviar la sol·licitud.",
+      'i18n.cancel': 'Canceŀla',
+      'i18n.request': 'Sol·licita',
+      'i18n.request4k': 'Sol·licita en 4K',
+      'i18n.requesting': "S'està sol·licitant …",
     },
   },
   {
@@ -8910,6 +8937,12 @@ export const localeData = [
       'i18n.previous': 'Předchozí',
       'i18n.usersettings': 'Uživatelská nastavení',
       'components.IssueModal.issueOther': 'Jiný',
+      'components.RequestModal.requesterror':
+        'Při odesílání žádosti se něco pokazilo.',
+      'i18n.cancel': 'Zrušit',
+      'i18n.request': 'Zažádat',
+      'i18n.request4k': 'Zažádat ve 4K',
+      'i18n.requesting': 'Vyžadování…',
     },
   },
   {
@@ -9563,6 +9596,12 @@ export const localeData = [
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Brugerindstillinger',
       'components.IssueModal.issueOther': 'Andet',
+      'components.RequestModal.requesterror':
+        'Noget gik galt under indsendelsen af anmodningen.',
+      'i18n.cancel': 'Annullér',
+      'i18n.request': 'Anmod',
+      'i18n.request4k': 'Anmod i 4K',
+      'i18n.requesting': 'Anmoder…',
     },
   },
   {
@@ -11338,6 +11377,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Falscher Titel oder falsche Metadaten',
       'components.IssueModal.issueOther': 'Sonstige',
+      'components.RequestModal.quality': 'Qualität',
+      'components.RequestModal.requestQuotaApproval': 'Genehmigung anfordern',
+      'components.RequestModal.requesterror':
+        'Beim Senden der Anfrage ist etwas schief gelaufen.',
+      'i18n.cancel': 'Abbrechen',
+      'i18n.request': 'Anfrage senden',
+      'i18n.request4k': 'In 4K anfragen',
+      'i18n.requesting': 'Anfragen…',
     },
   },
   {
@@ -13074,6 +13121,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Incorrect title or metadata',
       'components.IssueModal.issueOther': 'Other',
+      'components.RequestModal.quality': 'Quality',
+      'components.RequestModal.requestQuotaApproval': 'Request approval',
+      'components.RequestModal.requesterror':
+        'Something went wrong while submitting the request.',
+      'i18n.cancel': 'Cancel',
+      'i18n.request': 'Request',
+      'i18n.request4k': 'Request in 4K',
+      'i18n.requesting': 'Requesting…',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -18445,6 +18500,14 @@ export const localeData = [
       'lumen.tvAvailability.source4k': '{source} 4K',
       'lumen.tvAvailability.sharedHd': 'Shared HD',
       'lumen.tvAvailability.shared4k': 'Shared 4K',
+      'lumen.quickRequest.chooseDestination': 'Choose where it goes',
+      'lumen.quickRequest.chooseQuality': 'Choose the quality',
+      'lumen.quickRequest.entireSeries': 'Entire series',
+      'lumen.quickRequest.quotaApproval':
+        'This request exceeds your quota. You can ask a request manager to approve it.',
+      'lumen.quickRequest.requestAnyway': 'Request Anyway',
+      'lumen.quickRequest.requestApprovalAnyway': 'Request Approval Anyway',
+      'lumen.quickRequest.title': 'Request {title}',
     },
   },
   {
@@ -18895,6 +18958,12 @@ export const localeData = [
       'i18n.previous': 'Προηγούμενο',
       'i18n.usersettings': 'Ρυθμίσεις χρήστη',
       'components.IssueModal.issueOther': 'Άλλο',
+      'components.RequestModal.requesterror':
+        'Κάτι πήγε στραβά κατά την υποβολή του αιτήματος.',
+      'i18n.cancel': 'Ακύρωση',
+      'i18n.request': 'Ζήτα το',
+      'i18n.request4k': 'Ζήτα το σε 4K',
+      'i18n.requesting': 'Γίνεται το αίτημα…',
     },
   },
   {
@@ -20682,6 +20751,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Título incorrecto o metadatos',
       'components.IssueModal.issueOther': 'Otro',
+      'components.RequestModal.quality': 'Calidad',
+      'components.RequestModal.requestQuotaApproval': 'Solicitar aprobación',
+      'components.RequestModal.requesterror':
+        'Se produjo un error al enviar la solicitud.',
+      'i18n.cancel': 'Cancelar',
+      'i18n.request': 'Solicitar',
+      'i18n.request4k': 'Pedir en 4K',
+      'i18n.requesting': 'Pidiendo…',
     },
   },
   {
@@ -22454,6 +22531,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Título incorrecto o metadatos',
       'components.IssueModal.issueOther': 'Otro',
+      'components.RequestModal.quality': 'Calidad',
+      'components.RequestModal.requestQuotaApproval': 'Solicitar aprobación',
+      'components.RequestModal.requesterror':
+        'Algo fue mal al realizar la solicitud.',
+      'i18n.cancel': 'Cancelar',
+      'i18n.request': 'Solicitar',
+      'i18n.request4k': 'Pedir en 4K',
+      'i18n.requesting': 'Pidiendo…',
     },
   },
   {
@@ -23104,6 +23189,12 @@ export const localeData = [
       'i18n.previous': 'Eelmine',
       'i18n.usersettings': 'Kasutaja seaded',
       'components.IssueModal.issueOther': 'Muu',
+      'components.RequestModal.requesterror':
+        'Taotluse esitamisel tekkis viga.',
+      'i18n.cancel': 'Tühista',
+      'i18n.request': 'Taotle',
+      'i18n.request4k': 'Taotle 4K-s',
+      'i18n.requesting': 'Taotlemine…',
     },
   },
   {
@@ -23335,6 +23426,12 @@ export const localeData = [
       'i18n.previous': 'Edellinen',
       'i18n.usersettings': 'Käyttäjäasetukset',
       'components.IssueModal.issueOther': 'Muu',
+      'components.RequestModal.requesterror':
+        'Jotain meni vikaan pyynnön jättämisessä.',
+      'i18n.cancel': 'Peruuta',
+      'i18n.request': 'Pyydä',
+      'i18n.request4k': 'Pyydä 4K:na',
+      'i18n.requesting': 'Pyydetään…',
     },
   },
   {
@@ -25125,6 +25222,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Titre ou métadonnées incorrects',
       'components.IssueModal.issueOther': 'Autre',
+      'components.RequestModal.quality': 'Qualité',
+      'components.RequestModal.requestQuotaApproval': 'Demander l’approbation',
+      'components.RequestModal.requesterror':
+        'Une erreur s’est produite lors de l’envoi de la demande.',
+      'i18n.cancel': 'Annuler',
+      'i18n.request': 'Demander',
+      'i18n.request4k': 'Demander en 4K',
+      'i18n.requesting': 'Demande…',
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -31020,6 +31125,15 @@ export const localeData = [
       'lumen.tvAvailability.source4k': '{source} 4K',
       'lumen.tvAvailability.sharedHd': 'HD partagé',
       'lumen.tvAvailability.shared4k': '4K partagé',
+      'lumen.quickRequest.chooseDestination': 'Choisissez sa destination',
+      'lumen.quickRequest.chooseQuality': 'Choisissez la qualité',
+      'lumen.quickRequest.entireSeries': 'Série complète',
+      'lumen.quickRequest.quotaApproval':
+        'Cette demande dépasse votre quota. Vous pouvez demander à un gestionnaire des demandes de l’approuver.',
+      'lumen.quickRequest.requestAnyway': 'Demander quand même',
+      'lumen.quickRequest.requestApprovalAnyway':
+        'Demander quand même l’approbation',
+      'lumen.quickRequest.title': 'Demander {title}',
     },
   },
   {
@@ -31465,6 +31579,12 @@ export const localeData = [
       'i18n.previous': 'Prethodno',
       'i18n.usersettings': 'Korisničke postavke',
       'components.IssueModal.issueOther': 'Ostalo',
+      'components.RequestModal.requesterror':
+        'Dogodila se greška prilikom slanja zahtjeva.',
+      'i18n.cancel': 'Odustani',
+      'i18n.request': 'Zahtjev',
+      'i18n.request4k': 'Zatraži u 4K',
+      'i18n.requesting': 'Zahtijevanje …',
     },
   },
   {
@@ -31712,6 +31832,10 @@ export const localeData = [
       'i18n.previous': 'קודם',
       'i18n.usersettings': 'הגדרות משתמש',
       'components.IssueModal.issueOther': 'אחר',
+      'components.RequestModal.requesterror': 'משהו השתבש בזמן שליחת הבקשה.',
+      'i18n.request': 'בקשה',
+      'i18n.request4k': 'בקשה ב-4K',
+      'i18n.requesting': 'מבקש…',
     },
   },
   {
@@ -33429,6 +33553,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'गलत शीर्षक या मेटाडाटा',
       'components.IssueModal.issueOther': 'अन्य',
+      'components.RequestModal.quality': 'गुणवत्ता',
+      'components.RequestModal.requestQuotaApproval': 'अनुमोदन का अनुरोध करें',
+      'components.RequestModal.requesterror':
+        'अनुरोध प्रस्तुत करते समय कुछ गलत हो गया।',
+      'i18n.cancel': 'रद्द करें',
+      'i18n.request': 'अनुरोध करें',
+      'i18n.request4k': '4K में अनुरोध करें',
+      'i18n.requesting': 'अनुरोध किया जा रहा है…',
     },
   },
   {
@@ -34090,6 +34222,12 @@ export const localeData = [
       'i18n.previous': 'Előző',
       'i18n.usersettings': 'Felhasználói beállítások',
       'components.IssueModal.issueOther': 'Egyéb',
+      'components.RequestModal.requesterror':
+        'Hiba történt a kérés beküldése közben.',
+      'i18n.cancel': 'Mégse',
+      'i18n.request': 'Kérés',
+      'i18n.request4k': 'Kérés 4K-ban',
+      'i18n.requesting': 'Kérés folyamatban…',
     },
   },
   {
@@ -35829,6 +35967,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Judul atau metadata salah',
       'components.IssueModal.issueOther': 'Lainnya',
+      'components.RequestModal.quality': 'Kualitas',
+      'components.RequestModal.requestQuotaApproval': 'Minta persetujuan',
+      'components.RequestModal.requesterror':
+        'Terjadi kesalahan saat mengirim permintaan.',
+      'i18n.cancel': 'Batal',
+      'i18n.request': 'Minta',
+      'i18n.request4k': 'Minta dalam 4K',
+      'i18n.requesting': 'Meminta…',
     },
   },
   {
@@ -36479,6 +36625,12 @@ export const localeData = [
       'i18n.previous': 'Precedente',
       'i18n.usersettings': 'Impostazioni utente',
       'components.IssueModal.issueOther': 'Altro',
+      'components.RequestModal.requesterror':
+        "Qualcosa è andato storto durante l'invio della richiesta.",
+      'i18n.cancel': 'Annulla',
+      'i18n.request': 'Richiedi',
+      'i18n.request4k': 'Richiedi in 4K',
+      'i18n.requesting': 'Richiesta in corso…',
     },
   },
   {
@@ -38218,6 +38370,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'タイトルやメタデータの誤り',
       'components.IssueModal.issueOther': 'その他',
+      'components.RequestModal.quality': '品質',
+      'components.RequestModal.requestQuotaApproval': '承認を申請',
+      'components.RequestModal.requesterror':
+        'リクエストの送信中に問題が発生しました。',
+      'i18n.cancel': 'キャンセル',
+      'i18n.request': 'リクエスト',
+      'i18n.request4k': '4K をリクエスト',
+      'i18n.requesting': 'リクエスト中…',
     },
   },
   {
@@ -39901,6 +40061,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         '잘못된 제목 또는 메타데이터',
       'components.IssueModal.issueOther': '기타',
+      'components.RequestModal.quality': '품질',
+      'components.RequestModal.requestQuotaApproval': '승인 요청',
+      'components.RequestModal.requesterror':
+        '요청을 제출하는 동안 문제가 발생했습니다.',
+      'i18n.cancel': '취소',
+      'i18n.request': '요청',
+      'i18n.request4k': '4K로 요청',
+      'i18n.requesting': '요청 중…',
     },
   },
   {
@@ -40060,6 +40228,12 @@ export const localeData = [
       'i18n.previous': 'Ankstesnis',
       'i18n.usersettings': 'Vartotojo nustatymai',
       'components.IssueModal.issueOther': 'Kita',
+      'components.RequestModal.requesterror':
+        'Kažkas nepavyko teikiant rezervaciją.',
+      'i18n.cancel': 'Atšaukti',
+      'i18n.request': 'Rezervuoti',
+      'i18n.request4k': 'Rezervuoti 4K raiška',
+      'i18n.requesting': 'Rezervuojama…',
     },
   },
   {
@@ -40485,6 +40659,12 @@ export const localeData = [
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Bruker-instillinger',
       'components.IssueModal.issueOther': 'Annet',
+      'components.RequestModal.requesterror':
+        'Noe gikk galt ved sending av forespørsel.',
+      'i18n.cancel': 'Avbryt',
+      'i18n.request': 'Forespør',
+      'i18n.request4k': 'Forespør i 4K',
+      'i18n.requesting': 'Forespør…',
     },
   },
   {
@@ -41149,6 +41329,12 @@ export const localeData = [
       'i18n.previous': 'Vorige',
       'i18n.usersettings': 'Gebruikersinstellingen',
       'components.IssueModal.issueOther': 'Anders',
+      'components.RequestModal.requesterror':
+        'Er ging iets mis bij het aanvragen.',
+      'i18n.cancel': 'Annuleren',
+      'i18n.request': 'Aanvragen',
+      'i18n.request4k': 'Aanvragen in 4K',
+      'i18n.requesting': 'Aanvragen…',
     },
   },
   {
@@ -41812,6 +41998,12 @@ export const localeData = [
       'i18n.previous': 'Poprzedni',
       'i18n.usersettings': 'Ustawienia użytkownika',
       'components.IssueModal.issueOther': 'Inny',
+      'components.RequestModal.requesterror':
+        'Coś poszło nie tak podczas przesyłania prośby.',
+      'i18n.cancel': 'Anuluj',
+      'i18n.request': 'Poproś',
+      'i18n.request4k': 'Poproś o 4K',
+      'i18n.requesting': 'Prośba…',
     },
   },
   {
@@ -43584,6 +43776,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Título ou metadados incorretos',
       'components.IssueModal.issueOther': 'Outro',
+      'components.RequestModal.quality': 'Qualidade',
+      'components.RequestModal.requestQuotaApproval': 'Solicitar aprovação',
+      'components.RequestModal.requesterror':
+        'Algo deu errado ao enviar a solicitação.',
+      'i18n.cancel': 'Cancelar',
+      'i18n.request': 'Solicitar',
+      'i18n.request4k': 'Solicitar em 4K',
+      'i18n.requesting': 'Solicitando…',
     },
   },
   {
@@ -44221,6 +44421,12 @@ export const localeData = [
       'i18n.previous': 'Anterior',
       'i18n.usersettings': 'Utilizadores',
       'components.IssueModal.issueOther': 'Outros',
+      'components.RequestModal.requesterror':
+        'Ocorreu um erro ao submeter o pedido.',
+      'i18n.cancel': 'Cancelar',
+      'i18n.request': 'Pedir',
+      'i18n.request4k': 'Pedir em 4K',
+      'i18n.requesting': 'A Pedir…',
     },
   },
   {
@@ -44564,6 +44770,11 @@ export const localeData = [
       'i18n.previous': 'Precedent',
       'i18n.usersettings': 'Setări utilizator',
       'components.IssueModal.issueOther': 'Altele',
+      'components.RequestModal.requesterror':
+        'Ceva nu a funcționat în cursul trimiterii solicitării.',
+      'i18n.request': 'Cere',
+      'i18n.request4k': 'Cere în 4K',
+      'i18n.requesting': 'Se trimite cererea…',
     },
   },
   {
@@ -45235,6 +45446,12 @@ export const localeData = [
       'i18n.previous': 'Предыдущая',
       'i18n.usersettings': 'Настройки пользователя',
       'components.IssueModal.issueOther': 'Другое',
+      'components.RequestModal.requesterror':
+        'Что-то пошло не так при отправке запроса.',
+      'i18n.cancel': 'Отмена',
+      'i18n.request': 'Запросить',
+      'i18n.request4k': 'Запросить в 4К',
+      'i18n.requesting': 'Запрос…',
     },
   },
   {
@@ -45653,6 +45870,12 @@ export const localeData = [
       'i18n.previous': 'Para',
       'i18n.usersettings': 'Cilësimet e përdoruesit',
       'components.IssueModal.issueOther': 'Të tjera',
+      'components.RequestModal.requesterror':
+        'Diçka shkoi keq duke paraqitur kërkesën.',
+      'i18n.cancel': 'Anulo',
+      'i18n.request': 'Kërkesë',
+      'i18n.request4k': 'Kërkesë në 4K',
+      'i18n.requesting': 'Duke kërkuar…',
     },
   },
   {
@@ -45821,6 +46044,10 @@ export const localeData = [
       'i18n.previous': 'Prethodni',
       'i18n.usersettings': 'Korisnička podešavanja',
       'components.IssueModal.issueOther': 'Ostalo',
+      'i18n.cancel': 'Poništi',
+      'i18n.request': 'Zahtev',
+      'i18n.request4k': 'Zahtevaj u 4K',
+      'i18n.requesting': 'Zahteva se…',
     },
   },
   {
@@ -46481,6 +46708,12 @@ export const localeData = [
       'i18n.previous': 'Föregående',
       'i18n.usersettings': 'Användarinställningar',
       'components.IssueModal.issueOther': 'Övrigt',
+      'components.RequestModal.requesterror':
+        'Något gick fel när förfrågan skickades.',
+      'i18n.cancel': 'Avbryt',
+      'i18n.request': 'Begär',
+      'i18n.request4k': 'Begär i 4K',
+      'i18n.requesting': 'Begär…',
     },
   },
   {
@@ -47130,6 +47363,12 @@ export const localeData = [
       'i18n.previous': 'Önceki',
       'i18n.usersettings': 'Kullanıcı Ayarları',
       'components.IssueModal.issueOther': 'Diğer',
+      'components.RequestModal.requesterror':
+        'Talep gönderilirken bir sorun oluştu.',
+      'i18n.cancel': 'İptal',
+      'i18n.request': 'Talep Et',
+      'i18n.request4k': '4K Olarak Talep Et',
+      'i18n.requesting': 'Talep ediliyor…',
     },
   },
   {
@@ -47747,6 +47986,12 @@ export const localeData = [
       'i18n.previous': 'Попередня',
       'i18n.usersettings': 'Налаштування користувача',
       'components.IssueModal.issueOther': 'Інше',
+      'components.RequestModal.requesterror':
+        'Щось пішло не так під час надсилання запиту.',
+      'i18n.cancel': 'Скасувати',
+      'i18n.request': 'Запит',
+      'i18n.request4k': 'Запит у 4K',
+      'i18n.requesting': 'Запит…',
     },
   },
   {
@@ -49361,6 +49606,13 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         '标题或元数据不正确',
       'components.IssueModal.issueOther': '其他',
+      'components.RequestModal.quality': '质量',
+      'components.RequestModal.requestQuotaApproval': '请求批准',
+      'components.RequestModal.requesterror': '提交请求中出了点问题。',
+      'i18n.cancel': '取消',
+      'i18n.request': '提交请求',
+      'i18n.request4k': '提交 4K 请求',
+      'i18n.requesting': '提交请求中…',
     },
   },
   {
@@ -50971,6 +51223,13 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         '標題或中繼資料不正確',
       'components.IssueModal.issueOther': '其他',
+      'components.RequestModal.quality': '品質',
+      'components.RequestModal.requestQuotaApproval': '要求核准',
+      'components.RequestModal.requesterror': '提出請求時出了點問題。',
+      'i18n.cancel': '取消',
+      'i18n.request': '提出請求',
+      'i18n.request4k': '提出 4K 請求',
+      'i18n.requesting': '提出請求中…',
     },
   },
   {
@@ -52705,6 +52964,14 @@ export const localeData = [
       'components.IssueModal.issueReasonIncorrectMetadata':
         'Không đúng tiêu đề hay siêu dữ liệu',
       'components.IssueModal.issueOther': 'Khác',
+      'components.RequestModal.quality': 'Chất lượng',
+      'components.RequestModal.requestQuotaApproval': 'Yêu cầu phê duyệt',
+      'components.RequestModal.requesterror':
+        'Có gì đó không ổn trong khi gửi yêu cầu.',
+      'i18n.cancel': 'Hủy',
+      'i18n.request': 'Yêu cầu',
+      'i18n.request4k': 'Yêu cầu bản 4K',
+      'i18n.requesting': 'Đang gửi yêu cầu…',
     },
   },
 ] as const;

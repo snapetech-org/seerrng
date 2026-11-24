@@ -5798,5 +5798,19 @@
   "lumen.tvAvailability.sourceHd",
   "lumen.tvAvailability.source4k",
   "lumen.tvAvailability.sharedHd",
-  "lumen.tvAvailability.shared4k"
+  "lumen.tvAvailability.shared4k",
+  "components.RequestModal.quality",
+  "components.RequestModal.requestQuotaApproval",
+  "components.RequestModal.requesterror",
+  "i18n.cancel",
+  "i18n.request",
+  "i18n.request4k",
+  "i18n.requesting",
+  "lumen.quickRequest.chooseDestination",
+  "lumen.quickRequest.chooseQuality",
+  "lumen.quickRequest.entireSeries",
+  "lumen.quickRequest.quotaApproval",
+  "lumen.quickRequest.requestAnyway",
+  "lumen.quickRequest.requestApprovalAnyway",
+  "lumen.quickRequest.title"
 ]

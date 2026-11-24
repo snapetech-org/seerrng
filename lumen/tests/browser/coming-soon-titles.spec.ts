@@ -12,7 +12,7 @@ const paged = (results: unknown[]) => ({
   results,
 });
 
-async function fixtures(page: Page, permissions = 2) {
+async function fixtures(page: Page, permissions = 2, locale?: string) {
   const upcoming = Array.from({ length: 6 }, (_, i) => ({
     id: 900 + i,
     title: `Victorian Psychosis Stories ${i + 1}`,
@@ -32,9 +32,71 @@ async function fixtures(page: Page, permissions = 2) {
       return route.fulfill({
         json: { applicationTitle: 'SeerrNG', movie4kEnabled: false },
       });
+    if (path === '/user/1/settings/main' && locale)
+      return route.fulfill({ json: { locale } });
     return route.fulfill({
       json: paged(path === '/discover/movies/upcoming' ? upcoming : []),
     });
+  });
+}
+
+for (const locale of ['en', 'fr', 'ar']) {
+  test(`quick request sheet labels follow ${locale} baseline`, async ({
+    page,
+  }) => {
+    const captureDir = process.env.LUMEN_VISUAL_CAPTURE_DIR;
+    await fixtures(page, 32, locale);
+    await page.route('**/api/v1/request', (route) =>
+      route.request().method() === 'POST'
+        ? route.fulfill({
+            status: 403,
+            json: {
+              code: 'STREAMING_REQUEST_POLICY_REJECTED',
+              allowOverride: true,
+              message: 'Available on your streaming service.',
+            },
+          })
+        : route.fallback()
+    );
+    await page.goto(testAppPath('/soon?media=movie'));
+    const title = 'Victorian Psychosis Stories 1';
+    const item = page.locator('.si').filter({ hasText: title });
+    await item.locator('.act button').click();
+    const localized = {
+      en: {
+        title: `Request ${title}`,
+        anyway: 'Request Anyway',
+        cancel: 'Cancel',
+      },
+      fr: {
+        title: `Demander ${title}`,
+        anyway: 'Demander quand même',
+        cancel: 'Annuler',
+      },
+      ar: { title: `طلب ${title}`, anyway: 'طلب على أي حال', cancel: 'إلغاء' },
+    }[locale]!;
+    const sheet = page.getByRole('dialog');
+    await expect(sheet).toBeVisible();
+    const heading = sheet.getByRole('heading');
+    await expect(heading).toContainText(title);
+    await expect(heading).toContainText(
+      locale === 'ar' ? 'طلب' : locale === 'fr' ? 'Demander' : 'Request'
+    );
+    await expect(
+      sheet.getByRole('button', { name: localized.anyway })
+    ).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: localized.cancel })
+    ).toBeVisible();
+    if (
+      captureDir &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    ) {
+      await sheet.screenshot({
+        path: `${captureDir}/${locale}/request-sheet-${test.info().project.name}.png`,
+        animations: 'disabled',
+      });
+    }
   });
 }
 

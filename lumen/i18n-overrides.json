@@ -4630,7 +4630,14 @@
     "lumen.tvAvailability.sourceHd": "{source} HD",
     "lumen.tvAvailability.source4k": "{source} 4K",
     "lumen.tvAvailability.sharedHd": "Shared HD",
-    "lumen.tvAvailability.shared4k": "Shared 4K"
+    "lumen.tvAvailability.shared4k": "Shared 4K",
+    "lumen.quickRequest.title": "Request {title}",
+    "lumen.quickRequest.entireSeries": "Entire series",
+    "lumen.quickRequest.chooseDestination": "Choose where it goes",
+    "lumen.quickRequest.chooseQuality": "Choose the quality",
+    "lumen.quickRequest.quotaApproval": "This request exceeds your quota. You can ask a request manager to approve it.",
+    "lumen.quickRequest.requestApprovalAnyway": "Request Approval Anyway",
+    "lumen.quickRequest.requestAnyway": "Request Anyway"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9426,7 +9433,14 @@
     "lumen.tvAvailability.sourceHd": "{source} HD",
     "lumen.tvAvailability.source4k": "{source} 4K",
     "lumen.tvAvailability.sharedHd": "HD partagé",
-    "lumen.tvAvailability.shared4k": "4K partagé"
+    "lumen.tvAvailability.shared4k": "4K partagé",
+    "lumen.quickRequest.title": "Demander {title}",
+    "lumen.quickRequest.entireSeries": "Série complète",
+    "lumen.quickRequest.chooseDestination": "Choisissez sa destination",
+    "lumen.quickRequest.chooseQuality": "Choisissez la qualité",
+    "lumen.quickRequest.quotaApproval": "Cette demande dépasse votre quota. Vous pouvez demander à un gestionnaire des demandes de l’approuver.",
+    "lumen.quickRequest.requestApprovalAnyway": "Demander quand même l’approbation",
+    "lumen.quickRequest.requestAnyway": "Demander quand même"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -14226,6 +14240,13 @@
     "lumen.tvAvailability.sourceHd": "{source} HD",
     "lumen.tvAvailability.source4k": "{source} 4K",
     "lumen.tvAvailability.sharedHd": "HD مشترك",
-    "lumen.tvAvailability.shared4k": "4K مشترك"
+    "lumen.tvAvailability.shared4k": "4K مشترك",
+    "lumen.quickRequest.title": "طلب ⁨{title}⁩",
+    "lumen.quickRequest.entireSeries": "المسلسل بالكامل",
+    "lumen.quickRequest.chooseDestination": "اختر وجهته",
+    "lumen.quickRequest.chooseQuality": "اختر الجودة",
+    "lumen.quickRequest.quotaApproval": "يتجاوز هذا الطلب حصتك. يمكنك طلب موافقة أحد مديري الطلبات عليه.",
+    "lumen.quickRequest.requestApprovalAnyway": "طلب الموافقة على أي حال",
+    "lumen.quickRequest.requestAnyway": "طلب على أي حال"
   }
 }

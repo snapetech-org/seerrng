@@ -8835,3 +8835,21 @@ Lumen now includes SeerrNG's localized `components.Layout.Sidebar.users` key;
 the browser fixture opens the mobile More menu and checks that link as well.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261124/`.
+
+### Quick request sheet localization
+
+The shared movie and TV quick request sheet now localizes its accessible title,
+heading, series and destination/quality hints, quota-approval explanation, and
+request/cancel actions in English, French, and Arabic. It reuses SeerrNG's
+existing localized message catalog for standard quality, progress, request,
+error, and cancel labels, with Lumen translations for the quick-sheet wording
+that has no matching native message. Arabic isolates the interpolated media
+title so Latin titles retain their reading order. Request permissions, options,
+quota handling, streaming-policy override, and submitted payloads are unchanged.
+
+The focused browser cases pass for English, French, and Arabic at desktop and
+iPhone sizes, exercising the streaming-policy override action and preserving
+matching captures. English, French, and Arabic candidate captures were inspected;
+the Arabic title remains ordered correctly. Fixtures do not verify live request
+providers or server-side authorization. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-dialog-localization-20261124/`.

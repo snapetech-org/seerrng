@@ -35,6 +35,13 @@ const lumenKeys = [
   'lumen.metadata.loadingSettings',
   'lumen.metadata.loadFailedTitle',
   'lumen.metadata.credentialsLoadFailedTitle',
+  'lumen.quickRequest.title',
+  'lumen.quickRequest.entireSeries',
+  'lumen.quickRequest.chooseDestination',
+  'lumen.quickRequest.chooseQuality',
+  'lumen.quickRequest.quotaApproval',
+  'lumen.quickRequest.requestApprovalAnyway',
+  'lumen.quickRequest.requestAnyway',
 ];
 
 test('Lumen account, request, and settings labels are translated in French and Arabic', async () => {
