@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../auth';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { ServiceNote } from './extra';
 import { useDialog } from './useDialog';
 
@@ -20,6 +21,7 @@ export function RequestFiles({
   id: number;
   format?: BookFormat;
 }) {
+  const { t } = useLumenLocale();
   const path = `/request/status/${id}/downloads`;
   const { data, error, reload } = useApi<DownloadList>(path);
   const files = data?.results.filter(
@@ -28,18 +30,36 @@ export function RequestFiles({
   );
   return (
     <section aria-labelledby="request-files-heading">
-      <h3 id="request-files-heading">Download Files</h3>
-      <ServiceNote error={error} what="request files" retry={reload} />
+      <h3 id="request-files-heading">
+        {t('lumen.requestFiles.title', 'Download Files')}
+      </h3>
+      <ServiceNote
+        error={error}
+        what={t('lumen.requestFiles.item', 'request files')}
+        title={t(
+          'lumen.requestFiles.loadFailure',
+          'Could not load request files'
+        )}
+        retryLabel={t('lumen.requestFiles.retry', 'Check again')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
-          Checking for downloadable files…
+          {t('lumen.requestFiles.checking', 'Checking for downloadable files…')}
         </p>
       )}
       {data?.hadErrors && (
         <p className="note" role="status">
-          Some sources couldn’t be checked.{' '}
-          <button className="btn btn-quiet btn-sm" onClick={reload}>
-            Check again
+          {t(
+            'lumen.requestFiles.sourcesFailed',
+            'Some sources couldn’t be checked.'
+          )}{' '}
+          <button
+            className="btn btn-quiet btn-sm"
+            onClick={reload}
+            aria-label={t('lumen.requestFiles.retry', 'Check again')}
+          >
+            {t('lumen.requestFiles.retry', 'Check again')}
           </button>
         </p>
       )}
@@ -53,7 +73,9 @@ export function RequestFiles({
                 </a>
                 {file.format && (
                   <div className="note">
-                    {file.format === 'ebook' ? 'Ebook' : 'Audiobook'}
+                    {file.format === 'ebook'
+                      ? t('lumen.requestFiles.ebook', 'Ebook')
+                      : t('lumen.requestFiles.audiobook', 'Audiobook')}
                   </div>
                 )}
               </div>
@@ -61,7 +83,9 @@ export function RequestFiles({
           ))}
         </ul>
       ) : data && !data.hadErrors ? (
-        <p className="note">No downloadable files were found.</p>
+        <p className="note">
+          {t('lumen.requestFiles.none', 'No downloadable files were found.')}
+        </p>
       ) : null}
     </section>
   );
@@ -93,6 +117,7 @@ function ReaderFilesSheet({
   userId: number;
   close: () => void;
 }) {
+  const { t } = useLumenLocale();
   const ref = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<number | null>(null);
   useDialog(ref, close);
@@ -135,31 +160,56 @@ function ReaderFilesSheet({
         ref={ref}
         role="dialog"
         aria-modal="true"
-        aria-label="Download request files"
+        aria-label={t(
+          'lumen.requestFiles.dialogLabel',
+          'Download request files'
+        )}
       >
         <div className="grab" />
         <div className="pk">
-          <ServiceNote error={error} what="available requests" retry={reload} />
+          <ServiceNote
+            error={error}
+            what={t(
+              'lumen.requestFiles.availableRequests',
+              'available requests'
+            )}
+            title={t(
+              'lumen.requestFiles.requestsLoadFailure',
+              'Could not load available requests'
+            )}
+            retryLabel={t('lumen.requestFiles.retry', 'Check again')}
+            retry={reload}
+          />
           {!data && !error && (
             <p className="note" role="status">
-              Checking your requests…
+              {t(
+                'lumen.requestFiles.checkingRequests',
+                'Checking your requests…'
+              )}
             </p>
           )}
           {matches?.length === 0 && (
             <p className="note">
-              You have no available requests for this selection.
+              {t(
+                'lumen.requestFiles.noAvailableRequests',
+                'You have no available requests for this selection.'
+              )}
             </p>
           )}
           {!!matches && matches.length > 1 && (
             <label className="sel">
-              <span className="lbl">Request</span>
+              <span className="lbl">
+                {t('lumen.requestFiles.request', 'Request')}
+              </span>
               <select
                 value={requestId}
                 onChange={(event) => setSelected(Number(event.target.value))}
               >
                 {matches.map(({ request }) => (
                   <option key={request.id} value={request.id}>
-                    Request #{request.id}
+                    {t('lumen.requestFiles.requestNumber', 'Request #{id}', {
+                      id: request.id,
+                    })}
                   </option>
                 ))}
               </select>
@@ -170,7 +220,7 @@ function ReaderFilesSheet({
           )}
           <div className="pk-foot">
             <button className="btn btn-quiet" onClick={close}>
-              Close
+              {t('lumen.requestFiles.close', 'Close')}
             </button>
           </div>
         </div>
@@ -190,6 +240,7 @@ export function ReaderDownloads({
   format?: BookFormat;
 }) {
   const { user } = useAuth();
+  const { t } = useLumenLocale();
   const [selection, setSelection] = useState<string | null>(null);
   if (!user || !mediaId || !Number.isSafeInteger(mediaId) || mediaId < 1)
     return null;
@@ -201,10 +252,10 @@ export function ReaderDownloads({
         onClick={() => setSelection(key)}
       >
         {format === 'ebook'
-          ? 'Download Ebook'
+          ? t('lumen.requestFiles.downloadEbook', 'Download Ebook')
           : format === 'audiobook'
-            ? 'Download Audiobook'
-            : 'Download Files'}
+            ? t('lumen.requestFiles.downloadAudiobook', 'Download Audiobook')
+            : t('lumen.requestFiles.title', 'Download Files')}
       </button>
       {selection === key && (
         <ReaderFilesSheet
