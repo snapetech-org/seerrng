@@ -84,12 +84,14 @@ function EventForm({
     setError('');
     const generation = sessionGeneration();
     try {
-      const result = await api<Preferences>(path, {
+      await api<Preferences>(path, {
         method: 'POST',
         body: JSON.stringify({ notificationTypes: { [channel]: draft } }),
       });
       if (generation !== sessionGeneration()) return;
-      if (result.notificationTypes?.[channel] !== draft) {
+      const readback = await api<Preferences>(path, { cache: 'no-store' });
+      if (generation !== sessionGeneration()) return;
+      if (readback.notificationTypes?.[channel] !== draft) {
         setError(
           n(
             `${channel}settingsfailed`,

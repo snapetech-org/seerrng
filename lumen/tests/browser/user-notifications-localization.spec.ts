@@ -181,6 +181,7 @@ test('personal notification controls follow the account locale and preserve chan
     },
   };
   const writes: Record<string, unknown>[] = [];
+  const staleReadbackChannels = new Set(['email', 'webpush']);
   const devices = [
     {
       endpoint: 'https://push.example.test/fixture',
@@ -209,9 +210,26 @@ test('personal notification controls follow the account locale and preserve chan
         return route.fulfill({ json: notifications });
       const body = request.postDataJSON() as Record<string, unknown>;
       writes.push(body);
-      Object.assign(notifications, body);
       const types = body.notificationTypes as
         Record<string, number> | undefined;
+      const staleChannel = types
+        ? Object.keys(types).find((channel) =>
+            staleReadbackChannels.has(channel)
+          )
+        : undefined;
+      if (staleChannel) {
+        staleReadbackChannels.delete(staleChannel);
+        return route.fulfill({
+          json: {
+            ...notifications,
+            notificationTypes: {
+              ...notifications.notificationTypes,
+              ...types,
+            },
+          },
+        });
+      }
+      Object.assign(notifications, body);
       if (types) {
         notifications.notificationTypes = {
           ...notifications.notificationTypes,
@@ -276,15 +294,47 @@ test('personal notification controls follow the account locale and preserve chan
       fullPage: true,
     });
 
-  if (baseline) return;
-
   const email = page.locator('#notification-email');
   await email.getByLabel(localized.available, { exact: true }).check();
+  await email.getByRole('button').first().click();
+  if (baseline) {
+    await expect(
+      page.getByText(localized.emailSaved, { exact: true })
+    ).toBeVisible();
+    if (process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR)
+      await page.screenshot({
+        path: `${process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR}/baseline-save-${locale}-${page.viewportSize()?.width}.png`,
+        fullPage: true,
+      });
+    return;
+  }
+  await expect(email.getByRole('alert')).toBeVisible();
+  await expect(
+    email.getByLabel(localized.available, { exact: true })
+  ).toBeChecked();
+  if (process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR}/candidate-save-${locale}-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
   await email.getByRole('button').first().click();
   await expect(
     page.getByText(localized.emailSaved, { exact: true })
   ).toBeVisible();
-  expect(writes).toEqual([{ notificationTypes: { email: 10 } }]);
+  expect(writes).toEqual([
+    { notificationTypes: { email: 10 } },
+    { notificationTypes: { email: 10 } },
+  ]);
+
+  const webPush = page.locator('#notification-webpush');
+  await webPush.getByLabel(localized.available, { exact: true }).check();
+  await webPush.getByRole('button').first().click();
+  await expect(webPush.getByRole('alert')).toBeVisible();
+  await expect(
+    webPush.getByLabel(localized.available, { exact: true })
+  ).toBeChecked();
+  await webPush.getByRole('button').first().click();
+  await expect(webPush.getByRole('status')).toBeVisible();
 
   const publicKey = [
     '-----BEGIN PGP PUBLIC KEY BLOCK-----',
@@ -324,6 +374,9 @@ test('personal notification controls follow the account locale and preserve chan
   expect(devices).toHaveLength(0);
   expect(writes).toEqual([
     { notificationTypes: { email: 10 } },
+    { notificationTypes: { email: 10 } },
+    { notificationTypes: { webpush: 10 } },
+    { notificationTypes: { webpush: 10 } },
     { pgpKey: publicKey },
     { pgpKey: null },
     {

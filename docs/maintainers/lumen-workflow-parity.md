@@ -9045,3 +9045,15 @@ edited display name remains available, a retry persists it, and the saved-state
 notice appears only after the retry can be confirmed. French and Arabic pass on
 desktop, iPhone, Android, and tablet (8 cases). This is fixture-backed API
 coverage; it does not verify live account authorization or provider behavior.
+
+### Personal notification preference readback (2026-11-24)
+
+Email and Web Push event preferences now use a fresh notifications-settings GET
+after the save POST. Lumen shows its existing localized save-failure state and
+keeps the selected events retryable if the persisted mask differs from the
+requested mask. Fixture-backed stale-readback and retry cases pass in English,
+French, and Arabic across desktop, iPhone, Android, and tablet (12 cases).
+Matching English baseline and candidate save states were inspected at 1440px
+desktop and 390px phone widths; the error message fits without changing control
+geometry. The API was fixture-backed; no live notification settings were
+changed.
