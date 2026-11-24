@@ -9426,3 +9426,20 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-paged-error-localization-20261124/`.
 Other list consumers, live provider responses, and production `/lumen/` mounting
 remain unverified.
+
+### Shared API detail error localization (2026-11-24)
+
+`useApi` now retains a failed request and formats its default error with the
+active Lumen locale. Caller supplied formatters remain in control. The shared
+`ServiceNote` also localizes its default Retry button, so detail screens no
+longer show English server errors and retry controls in French or Arabic.
+
+The Movie detail failure and recovery fixture passes in English, French, and
+Arabic across desktop, iPhone, Android, and tablet. It forces a 503, checks the
+localized message and Retry label, retries successfully, and checks for
+horizontal overflow. Matched desktop and iPhone baseline/candidate captures
+show the French server message and Retry button switching from English to
+French. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-useapi-error-localization-20261124/`.
+This validates the shared hook and one representative consumer; every other
+`useApi` screen and live service response still needs its own parity review.

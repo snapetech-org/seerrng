@@ -48,7 +48,19 @@ export function useApi<T>(
   const [data, setData] = useState<T | null>(
     path ? (cached<T>(path) ?? null) : null
   );
-  const [error, setError] = useState<string | null>(null);
+  const { t } = useLumenLocale();
+  const [errorCause, setErrorCause] = useState<unknown | null>(null);
+  const [customError, setCustomError] = useState<string | null>(null);
+  const error =
+    errorCause == null
+      ? null
+      : formatError === friendlyError
+        ? friendlyError(
+            errorCause,
+            t('lumen.error.loadFailed', 'Couldn’t load this content.'),
+            t
+          )
+        : customError;
   const [apiError, setApiError] = useState<ApiError>();
   const [trigger, setTrigger] = useState<{ forcePath?: string }>({});
   useEffect(() => {
@@ -60,7 +72,8 @@ export function useApi<T>(
     const force = samePath && trigger.forcePath === path;
     lastRequestedPath.current = path;
     setResponsePath(path);
-    setError(null);
+    setErrorCause(null);
+    setCustomError(null);
     setApiError(undefined);
     const saved = cached<T>(path);
     if (!keep || saved !== undefined) setData(saved ?? null);
@@ -83,7 +96,9 @@ export function useApi<T>(
             if (force) forget(path);
             setData(null);
           }
-          setError(formatError(e, 'Failed to load'));
+          setErrorCause(e);
+          if (formatError !== friendlyError)
+            setCustomError(formatError(e, 'Failed to load'));
           setApiError(e instanceof ApiError ? e : undefined);
         }
       });

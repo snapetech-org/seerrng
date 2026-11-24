@@ -390,6 +390,7 @@ export function ServiceNote({
   retry?: () => void;
   retryDisabled?: boolean;
 }) {
+  const { t } = useLumenLocale();
   if (!error) return null;
   return (
     <div className="empty" role={retry ? 'alert' : undefined}>
@@ -401,7 +402,7 @@ export function ServiceNote({
           onClick={retry}
           disabled={retryDisabled}
         >
-          {retryLabel ?? 'Retry'}
+          {retryLabel ?? t('lumen.common.retry', 'Retry')}
         </button>
       )}
     </div>
