@@ -40,6 +40,7 @@ const labels = {
     permissionGroup: 'Default Permissions',
     saved: 'Application settings saved.',
     failure: 'The server had a problem. Try again in a moment.',
+    confirmFailure: 'Could not confirm the saved application settings.',
   },
   fr: {
     title: 'Paramètres généraux',
@@ -78,6 +79,8 @@ const labels = {
     permissionGroup: 'Autorisations par défaut',
     saved: 'Paramètres de l’application enregistrés.',
     failure: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    confirmFailure:
+      'Impossible de confirmer l’enregistrement des paramètres de l’application.',
   },
   ar: {
     title: 'الإعدادات العامة',
@@ -115,6 +118,7 @@ const labels = {
     permissionGroup: 'الأذونات الافتراضية',
     saved: 'تم حفظ إعدادات التطبيق.',
     failure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    confirmFailure: 'تعذر تأكيد حفظ إعدادات التطبيق.',
   },
 } as const;
 
@@ -123,6 +127,7 @@ test('general application settings localize and recover failed saves', async ({
 }) => {
   const text = labels[locale as keyof typeof labels] ?? labels.en;
   let failOnce = true;
+  let staleReadbackOnce = false;
   let title = 'SeerrNG';
   let spotifyClientId = '';
   let spotifyClientSecret = '';
@@ -192,10 +197,15 @@ test('general application settings localize and recover failed saves', async ({
         if (typeof body.defaultPermissions === 'number')
           defaultPermissions = body.defaultPermissions;
       }
+      let responseTitle = title;
+      if (request.method() === 'GET' && staleReadbackOnce) {
+        staleReadbackOnce = false;
+        responseTitle = 'SeerrNG';
+      }
       return route.fulfill({
         json: {
           ...publicSettings,
-          applicationTitle: title,
+          applicationTitle: responseTitle,
           spotifyClientId,
           spotifyClientSecret,
           downloadPathMappings,
@@ -262,10 +272,14 @@ test('general application settings localize and recover failed saves', async ({
     page.getByRole('link', { name: adminLinkLabel, exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: usersLinkLabel, exact: true })
+    page
+      .locator('#view')
+      .getByRole('link', { name: usersLinkLabel, exact: true })
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: categoriesLinkLabel, exact: true })
+    page
+      .locator('#view')
+      .getByRole('link', { name: categoriesLinkLabel, exact: true })
   ).toBeVisible();
   if (process.env.LUMEN_ADMIN_REQUEST_DEFAULTS_CAPTURE) {
     await page.screenshot({
@@ -283,10 +297,21 @@ test('general application settings localize and recover failed saves', async ({
   await expect(field).toHaveValue('Household SeerrNG');
   await save.click();
   await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
-  expect(writes).toHaveLength(2);
-  expect(writes).toEqual([
+  expect(writes.slice(0, 2)).toEqual([
     { applicationTitle: 'Household SeerrNG' },
     { applicationTitle: 'Household SeerrNG' },
+  ]);
+  staleReadbackOnce = true;
+  await field.fill('Readback verified title');
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(text.confirmFailure);
+  await expect(field).toHaveValue('Readback verified title');
+  await expect(save).toBeEnabled();
+  await save.click();
+  await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
+  expect(writes.slice(2, 4)).toEqual([
+    { applicationTitle: 'Readback verified title' },
+    { applicationTitle: 'Readback verified title' },
   ]);
   await page
     .getByRole('textbox', { name: text.spotifyId })
@@ -307,7 +332,7 @@ test('general application settings localize and recover failed saves', async ({
       { exact: true }
     )
   ).toBeVisible();
-  expect(writes[2]).toMatchObject({
+  expect(writes[4]).toMatchObject({
     spotifyClientId: 'spotify-client',
     spotifyClientSecret: 'spotify-secret',
   });
@@ -322,7 +347,7 @@ test('general application settings localize and recover failed saves', async ({
   await expect(
     page.getByText(text.mappingsSaved, { exact: true })
   ).toBeVisible();
-  expect(writes[3]).toMatchObject({
+  expect(writes[5]).toMatchObject({
     downloadPathMappings: [
       {
         serviceType: 'radarr',
@@ -338,7 +363,7 @@ test('general application settings localize and recover failed saves', async ({
     .getByRole('button', { name: text.mappingsSave, exact: true })
     .click();
   await expect(page.getByRole('alert')).toContainText(text.mappingsError);
-  expect(writes).toHaveLength(4);
+  expect(writes).toHaveLength(6);
   await page
     .getByRole('link', { name: requestDefaultsLabel, exact: true })
     .click();
@@ -349,11 +374,11 @@ test('general application settings localize and recover failed saves', async ({
   await expect(
     page.getByText(text.requestSettingsSaved, { exact: true })
   ).toBeVisible();
-  expect(writes[4]).toEqual({ enable4k: false });
+  expect(writes[6]).toEqual({ enable4k: false });
   await page.getByLabel(text.requestLimit, { exact: true }).fill('3');
   await page.getByRole('button', { name: text.saveQuota, exact: true }).click();
   await expect(page.getByText(text.quotaSaved, { exact: true })).toBeVisible();
-  expect(writes[5]).toEqual({
+  expect(writes[7]).toEqual({
     defaultQuotas: { movie: { quotaLimit: 3 } },
   });
   const permissions = page.locator('#default-user-permissions');
@@ -382,7 +407,7 @@ test('general application settings localize and recover failed saves', async ({
       { exact: true }
     )
   ).toBeVisible();
-  expect(writes[6]).toEqual({ defaultPermissions: 0 });
+  expect(writes[8]).toEqual({ defaultPermissions: 0 });
   await page.goto(`${mount}/admin/general`);
   const apiKeyPanel = page.locator('#apiKey');
   await expect(

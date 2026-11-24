@@ -8964,3 +8964,14 @@ reference captures and Lumen candidates, including the scrolled phone panel,
 are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-login-links-visual-20261124/`.
 This check does not exercise production PostgreSQL or a TLS terminator.
+
+### General settings readback failure recovery (2026-11-24)
+
+The General Settings browser regression now covers a successful update response
+followed by stale persisted readback. Lumen reports that it could not confirm
+the save, retains the edited application title and enabled retry action, then
+accepts the same draft after the readback matches. Existing transport rejection
+recovery remains covered. Desktop and iPhone cases passed in English, French,
+and Arabic (6/6); the French case also scopes duplicate Users navigation labels
+to the settings page content. No server settings or provider connections were
+changed by these fixtures.
