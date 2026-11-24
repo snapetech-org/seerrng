@@ -9440,6 +9440,14 @@ load {what}” phrase. Consumers retain supplied titles; callers pass localized
 `what` labels where they have them. The Comics catalogue is the representative
 shared-consumer regression, including its independent load-more alert.
 
+Issue-list failure headings use the page's full localized name in English,
+French, and Arabic, and retry successfully. The Games list now passes its
+existing localized catalogue label into the same heading. Issue browser cases
+pass across desktop, iPhone, Android, and tablet; the French desktop baseline
+and candidate show the heading corrected from “Impossible de charger issues”
+to “Impossible de charger les signalements”. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-error-localization-20261124/`.
+
 The Movie detail failure and recovery fixture passes in English, French, and
 Arabic across desktop, iPhone, Android, and tablet. It forces a 503, checks the
 localized message and Retry label, retries successfully, and checks for

@@ -787,7 +787,12 @@ function IssueList() {
             ))}
         </IssueFilterDisclosure>
       </form>
-      <ServiceNote error={error} what="issues" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.issues.issues', 'Issues')}
+        title={t('lumen.issues.loadFailed', 'Couldn’t load issues')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
           {t('lumen.issues.loading', 'Loading issues…')}
@@ -1065,7 +1070,12 @@ function Discussion({
           </Link>
         </div>
       )}
-      <ServiceNote error={error} what="the issue" retry={reload} />
+      <ServiceNote
+        error={error}
+        what={t('lumen.issues.issue', 'Issue')}
+        title={t('lumen.issues.detailLoadFailed', 'Couldn’t load this issue')}
+        retry={reload}
+      />
       {!data && !error && (
         <p className="note" role="status">
           {t('lumen.issues.loadingIssue', 'Loading issue…')}

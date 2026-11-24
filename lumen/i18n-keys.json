@@ -3049,6 +3049,8 @@
   "lumen.issues.group.task",
   "lumen.issues.issue",
   "lumen.issues.issues",
+  "lumen.issues.loadFailed",
+  "lumen.issues.detailLoadFailed",
   "lumen.issues.loading",
   "lumen.issues.loadingIssue",
   "lumen.issues.loadingTitle",

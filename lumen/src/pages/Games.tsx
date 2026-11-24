@@ -495,7 +495,7 @@ export function Games() {
         <>
           <ServiceNote
             error={list.items.length ? null : list.error}
-            what="games"
+            what={t('lumen.games.catalogueWhat', 'games')}
             retry={list.retry}
           />
           {!list.error && !list.items.length && !list.loading && (
