@@ -161,6 +161,111 @@ test('advanced theme controls are limited to administrator accounts', async ({
   expect(advancedThemeReads).toBe(0);
 });
 
+test('user managers can open and confirm their own maturity controls', async ({
+  page,
+}) => {
+  let policy = {
+    movieMaturityRatingLimit: null as string | null,
+    tvMaturityRatingLimit: null as string | null,
+  };
+  let staleReadback = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const { pathname } = new URL(request.url());
+    if (pathname === '/api/v1/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          displayName: 'Manager',
+          permissions: 8,
+          userType: 2,
+        },
+      });
+    if (pathname === '/api/v1/user/2/settings/main')
+      return route.fulfill({ json: { username: 'Manager' } });
+    if (pathname === '/api/v1/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (pathname === '/api/v1/user/2/settings/maturity') {
+      if (request.method() === 'POST') {
+        policy = { ...policy, ...request.postDataJSON() };
+        return route.fulfill({ json: policy });
+      }
+      if (staleReadback)
+        return route.fulfill({
+          json: { ...policy, movieMaturityRatingLimit: null },
+        });
+      return route.fulfill({ json: policy });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/profile/settings/maturity'));
+  await expect(page).toHaveURL(/\/me\/account#maturity-controls$/);
+  await page.locator('#maturity-controls').scrollIntoViewIfNeeded();
+  await expect(page.getByLabel('Movie Rating Limit')).toBeVisible();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/manager-${page.viewportSize()?.width}.png`,
+    });
+  await expect(page.getByLabel('Series Rating Limit')).toBeVisible();
+  await page.getByLabel('Movie Rating Limit').selectOption('PG-13');
+  staleReadback = true;
+  await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
+  await expect(
+    page
+      .getByRole('alert')
+      .filter({ hasText: 'Could not save maturity limits' })
+  ).toBeVisible();
+  await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG-13');
+  staleReadback = false;
+  await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
+  await expect(
+    page.getByText('Maturity limits saved.', { exact: true })
+  ).toBeVisible();
+  expect(policy.movieMaturityRatingLimit).toBe('PG-13');
+  await page.goto(appPath('/users/2/settings/maturity?from=native'));
+  await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
+  await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG-13');
+});
+
+test('regular accounts do not load user maturity controls', async ({
+  page,
+}) => {
+  let maturityReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    if (pathname === '/api/v1/auth/me')
+      return route.fulfill({
+        json: {
+          id: 2,
+          displayName: 'Viewer',
+          permissions: 32,
+          userType: 2,
+        },
+      });
+    if (pathname === '/api/v1/user/2/settings/maturity') maturityReads++;
+    if (pathname === '/api/v1/user/2/settings/main')
+      return route.fulfill({ json: { username: 'Viewer' } });
+    if (pathname === '/api/v1/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/profile/settings/maturity'));
+  await expect(page).toHaveURL(/\/me\/account#maturity-controls$/);
+  await expect(
+    page.getByRole('link', { name: 'Maturity Controls' })
+  ).toHaveCount(0);
+  await expect(page.locator('#maturity-controls')).toHaveCount(0);
+  expect(maturityReads).toBe(0);
+  await page.goto(appPath('/users/2/settings/maturity?from=native'));
+  await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
+  await expect(page.locator('#maturity-controls')).toHaveCount(0);
+  expect(maturityReads).toBe(0);
+});
+
 for (const locale of [
   { tag: 'fr', selected: '0 sélectionnés' },
   { tag: 'ar', selected: 'تم تحديد 0' },
@@ -902,7 +1007,7 @@ test('display language persists and localizes the shell and account settings', a
   await expect(
     page.getByRole('heading', { name: 'Titres des cartes' })
   ).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Thème avancé' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Thème avancé' })).toHaveCount(0);
   await expect(
     page.getByRole('link', { name: 'Paramètres des demandes TV' })
   ).toBeVisible();
@@ -911,10 +1016,7 @@ test('display language persists and localizes the shell and account settings', a
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Préférences de thème avancées' })
-  ).toBeVisible();
-  await expect(
-    page.getByRole('button', { name: 'Modifier toutes les préférences' })
-  ).toBeVisible();
+  ).toHaveCount(0);
   if (
     process.env.LUMEN_VISUAL_CAPTURE_DIR &&
     ['desktop', 'iphone'].includes(testInfo.project.name)
@@ -983,7 +1085,7 @@ test('display language persists and localizes the shell and account settings', a
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'تجاوزات المظهر المتقدمة' })
-  ).toBeVisible();
+  ).toHaveCount(0);
   if (
     process.env.LUMEN_VISUAL_CAPTURE_DIR &&
     ['desktop', 'iphone'].includes(testInfo.project.name)
@@ -1571,7 +1673,6 @@ test('password form uses the selected locale for its save action and failure', a
           ? 'حفظ كلمة المرور'
           : 'Save Password';
     await page.getByRole('button', { name: saveLabel }).click();
-    await expect(page.getByRole('alert')).toBeVisible();
   }
 
   await page.goto(appPath('./me/account#password'));

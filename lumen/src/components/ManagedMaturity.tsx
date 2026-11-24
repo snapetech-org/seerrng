@@ -30,10 +30,28 @@ export default function ManagedMaturity({ id }: { id: number }) {
     setFailure('');
     setNotice('');
     try {
-      await api(path, { method: 'POST', body: JSON.stringify(draft) });
+      const changes = Object.keys(draft) as (keyof Policy)[];
+      const saved = await api<Policy>(path, {
+        method: 'POST',
+        body: JSON.stringify(draft),
+      });
+      const readback = await api<Policy>(path);
+      if (
+        changes.some(
+          (key) => saved[key] !== draft[key] || readback[key] !== draft[key]
+        )
+      ) {
+        setFailure(
+          t(
+            'lumen.managedMaturity.saveFailure',
+            'Could not save maturity limits.'
+          )
+        );
+        return;
+      }
       setDraft({});
       setNotice(t('lumen.managedMaturity.saved', 'Maturity limits saved.'));
-      reload();
+      await reload();
     } catch (error) {
       setFailure(
         friendlyError(

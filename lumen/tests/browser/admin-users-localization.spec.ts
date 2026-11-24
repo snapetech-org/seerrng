@@ -296,6 +296,10 @@ test('user directory and local-account creation use the saved locale and retain 
     status: 'active' | 'revoked';
   }[] = [];
   const creates: Record<string, unknown>[] = [];
+  let maturityPolicy = {
+    movieMaturityRatingLimit: null as string | null,
+    tvMaturityRatingLimit: null as string | null,
+  };
 
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
@@ -400,11 +404,10 @@ test('user directory and local-account creation use the saved locale and retain 
       });
     }
     if (path === '/user/2/settings/maturity') {
-      if (request.method() === 'POST')
-        return route.fulfill({ status: 204, body: '' });
-      return route.fulfill({
-        json: { movieMaturityRatingLimit: null, tvMaturityRatingLimit: null },
-      });
+      if (request.method() === 'POST') {
+        maturityPolicy = { ...maturityPolicy, ...request.postDataJSON() };
+      }
+      return route.fulfill({ json: maturityPolicy });
     }
     if (path === '/user/2/settings/password' && request.method() === 'POST') {
       if (passwordFailOnce) {
@@ -556,6 +559,7 @@ test('user directory and local-account creation use the saved locale and retain 
     .click();
   await expectTabbarDoesNotCoverActions(page);
   await expect(page.getByLabel(copy.movieRatingLimit)).toBeVisible();
+  await page.getByLabel(copy.movieRatingLimit).scrollIntoViewIfNeeded();
   if (process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE) {
     await page.screenshot({
       path: `${process.env.LUMEN_ADMIN_USERS_PANEL_CAPTURE}-maturity-${page.viewportSize()!.width}.png`,
