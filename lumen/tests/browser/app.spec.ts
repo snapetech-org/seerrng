@@ -9537,6 +9537,55 @@ test('Users localizes the managed-permissions editor in Arabic', async ({
     });
 });
 
+test('Users keeps permissions read-only outside delegated access', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/user/8/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.route('**/api/v1/auth/me', (route) =>
+    route.fulfill({
+      json: { id: 8, displayName: 'Manager', permissions: 8 },
+    })
+  );
+  await page.route(/\/api\/v1\/user\?/, (route) =>
+    route.fulfill({
+      json: {
+        pageInfo: { pages: 1 },
+        results: [{ id: 19, displayName: 'Viewer', permissions: 32 }],
+      },
+    })
+  );
+  let saves = 0;
+  await page.route('**/api/v1/user/19/settings/permissions', (route) => {
+    if (route.request().method() === 'POST') saves += 1;
+    return route.fulfill({
+      json: { id: 19, displayName: 'Viewer', permissions: 32 },
+    });
+  });
+  await page.goto(testAppPath('/admin/users'));
+  await page.getByRole('link', { name: 'Gérer Viewer' }).click();
+  await page
+    .getByRole('button', { name: 'Autorisations', exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      'Ce compte possède des autorisations en dehors de votre accès délégué.'
+    )
+  ).toBeVisible();
+  await expect(
+    page.getByRole('checkbox', { name: 'Administrateur', exact: true })
+  ).toBeDisabled();
+  await expect(
+    page.getByRole('button', {
+      name: 'Enregistrer les autorisations',
+      exact: true,
+    })
+  ).toBeDisabled();
+  expect(saves).toBe(0);
+});
+
 test('Users protects administrators and confirms deletion of the selected member', async ({
   page,
 }) => {
@@ -9568,6 +9617,9 @@ test('Users protects administrators and confirms deletion of the selected member
   const remove = page.getByRole('button', { name: 'Delete User', exact: true });
   await page.getByRole('link', { name: 'Manage Second Admin' }).click();
   await expect(remove).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Permissions', exact: true })
+  ).toHaveCount(0);
   await page.getByRole('link', { name: 'All Users' }).click();
   await page.getByRole('link', { name: 'Manage Viewer' }).click();
   await expect(remove).toHaveCount(1);

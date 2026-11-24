@@ -8940,4 +8940,8 @@ Age Gate, destination labeling, and responsive overflow. Matching baseline and
 candidate screenshots were inspected at 1440px and 390px and retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-managed-permissions-localization-20261124/`.
 These fixture-backed checks do not verify live user authorization or service
-configuration against a production SeerrNG instance.
+configuration against a production SeerrNG instance. A role regression also
+checks that a delegated manager cannot open an administrator's permission panel,
+and cannot save permissions outside their held grant; the latter shows the
+localized delegation warning, keeps every control disabled, and sends no POST.
+These role cases pass across desktop, iPhone, Android, and tablet fixtures.
