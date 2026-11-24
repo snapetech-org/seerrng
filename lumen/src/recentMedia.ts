@@ -35,8 +35,9 @@ export function recentMediaTitles(rows: MediaRow[]): RecentMediaTitle[] {
     }));
 }
 // Some recent-view-only accounts receive a deliberately limited /media projection
-// without catalog titles. Reuse the existing authorized detail endpoint only
-// for those rows; a failed lookup must never erase the entire recent card.
+// without catalog titles, and a title saved before TMDB had a poster keeps no
+// poster in the list. Reuse the existing authorized detail endpoint only for
+// those rows; a failed lookup must never erase the entire recent card.
 export async function enrichRecentMediaTitles(
   cards: RecentMediaTitle[],
   lookup: (card: RecentMediaTitle) => Promise<TitleResult>
@@ -47,7 +48,7 @@ export async function enrichRecentMediaTitles(
         card.mediaType === 'movie'
           ? card.title === 'Untitled movie'
           : card.name === 'Untitled series';
-      if (!missingName) return card;
+      if (!missingName && card.posterPath) return card;
       try {
         const detail = await lookup(card);
         const resolvedTitle = detail.title || detail.name;
@@ -55,10 +56,12 @@ export async function enrichRecentMediaTitles(
           ...card,
           title:
             card.mediaType === 'movie'
-              ? resolvedTitle || card.title
+              ? (missingName && resolvedTitle) || card.title
               : undefined,
           name:
-            card.mediaType === 'tv' ? resolvedTitle || card.name : undefined,
+            card.mediaType === 'tv'
+              ? (missingName && resolvedTitle) || card.name
+              : undefined,
           posterPath: card.posterPath || detail.posterPath,
           releaseDate: card.releaseDate || detail.releaseDate,
           firstAirDate: card.firstAirDate || detail.firstAirDate,

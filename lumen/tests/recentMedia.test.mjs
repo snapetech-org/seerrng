@@ -69,6 +69,7 @@ test('complete catalog rows need no extra detail requests', async () => {
     mediaType: i % 2 ? 'tv' : 'movie',
     status: 5,
     title: `Title ${i}`,
+    posterPath: `/poster/${i}.jpg`,
   }));
   let lookups = 0;
   const titles = await enrichRecentMediaTitles(
@@ -86,7 +87,13 @@ test('missing restricted-view titles are enriched where permitted, not discarded
   const cards = recentMediaTitles([
     { tmdbId: 51, mediaType: 'movie', status: 5 },
     { tmdbId: 52, mediaType: 'tv', status: 5 },
-    { tmdbId: 53, mediaType: 'movie', status: 5, title: 'Already provided' },
+    {
+      tmdbId: 53,
+      mediaType: 'movie',
+      status: 5,
+      title: 'Already provided',
+      posterPath: '/b.jpg',
+    },
   ]);
   const calls = [];
   const result = await enrichRecentMediaTitles(cards, async (item) => {
@@ -106,4 +113,33 @@ test('missing restricted-view titles are enriched where permitted, not discarded
   assert.equal(result[1].name, 'Untitled series');
   assert.equal(result[2].title, 'Already provided');
   assert.equal(result.length, 3);
+});
+
+test('a titled card without a poster takes the poster from the title, and keeps its own title', async () => {
+  const cards = recentMediaTitles([
+    { tmdbId: 61, mediaType: 'movie', status: 5, title: 'Fjord' },
+    { tmdbId: 62, mediaType: 'tv', status: 5, title: 'Show' },
+    { tmdbId: 63, mediaType: 'movie', status: 5, title: 'Lookup fails' },
+  ]);
+  const calls = [];
+  const result = await enrichRecentMediaTitles(cards, async (item) => {
+    calls.push(item.id);
+    if (item.id === 63) throw Error('Detail endpoint unavailable');
+    return {
+      id: item.id,
+      mediaType: item.mediaType,
+      title: 'Other title',
+      name: 'Other name',
+      posterPath: `/${item.id}.jpg`,
+    };
+  });
+  assert.deepEqual(calls, [61, 62, 63]);
+  assert.deepEqual(
+    result.map((r) => [r.title ?? r.name, r.posterPath]),
+    [
+      ['Fjord', '/61.jpg'],
+      ['Show', '/62.jpg'],
+      ['Lookup fails', undefined],
+    ]
+  );
 });
