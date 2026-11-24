@@ -75,6 +75,63 @@ const locales = [
 ];
 
 for (const locale of locales) {
+  test(`movie detail request failures follow ${locale.tag} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname.split('/api/v1')[1];
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, displayName: 'Viewer', permissions: 32 },
+        });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale: locale.tag } });
+      if (path === '/settings/public') return route.fulfill({ json: {} });
+      if (path === '/movie/550')
+        return route.fulfill({
+          json: {
+            id: 550,
+            title: 'Fixture Film',
+            overview: 'A fixture.',
+            genres: [],
+            runtime: 100,
+            originalLanguage: 'en',
+            mediaInfo: {},
+            credits: { cast: [], crew: [] },
+          },
+        });
+      if (path === '/request' && request.method() === 'POST')
+        return route.fulfill({
+          status: 500,
+          json: { message: 'Internal Server Error' },
+        });
+      return route.fulfill({ json: { results: [] } });
+    });
+    await page.goto(`${mount}/movie/550`);
+    await page.locator('.dacts.pc .btn-primary').first().click();
+    const toast = page.getByRole('status');
+    await expect(toast).toHaveClass(/show/);
+    await expect(toast).toContainText(locale.serverFailure);
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth >
+          document.documentElement.clientWidth
+      )
+    ).toBe(false);
+    const capture = process.env.LUMEN_MOVIE_ERROR_CAPTURE;
+    if (capture)
+      await page.screenshot({
+        path: `${capture}-${locale.tag}-${test.info().project.name}.png`,
+        animations: 'disabled',
+      });
+  });
+
   test(`request option server failures follow ${locale.tag} locale`, async ({
     page,
   }) => {
