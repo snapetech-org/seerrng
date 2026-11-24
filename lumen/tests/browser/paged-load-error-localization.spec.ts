@@ -26,7 +26,6 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`paged catalog errors follow ${locale} locale`, async ({
     page,
   }, info) => {
-    test.skip(info.project.name !== 'desktop', 'desktop visual comparison');
     let catalogCalls = 0;
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
@@ -61,22 +60,28 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         });
       return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
     });
-    await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${mount}/books?sort=trending`);
     const error = page.locator('.empty').filter({
       hasText: messages[locale].title,
     });
     await expect(error).toBeVisible();
+    const moreAlert = page.getByRole('alert');
+    await moreAlert.scrollIntoViewIfNeeded();
     const capture = process.env.LUMEN_PAGED_ERROR_CAPTURE;
     if (capture)
       await page.screenshot({
         path: `${capture}-${locale}-${info.project.name}.png`,
         animations: 'disabled',
       });
-    await expect(error).toContainText(messages[locale].failure);
-    await expect(page.getByRole('alert')).toContainText(messages[locale].more);
     const retry = page.getByRole('button', { name: messages[locale].retry });
     await expect(retry).toBeVisible();
+    await expect(error).toContainText(messages[locale].failure);
+    await expect(moreAlert).toContainText(messages[locale].more);
+    const tabbar = page.locator('.tabbar');
+    if (info.project.name !== 'desktop') {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await expect(tabbar).not.toHaveAttribute('data-hidden');
+    }
     await retry.click();
     await expect(error).toBeHidden();
     expect(catalogCalls).toBe(2);
