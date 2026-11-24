@@ -42,6 +42,17 @@ const lumenKeys = [
   'lumen.quickRequest.quotaApproval',
   'lumen.quickRequest.requestApprovalAnyway',
   'lumen.quickRequest.requestAnyway',
+  'lumen.gameContent.title',
+  'lumen.gameContent.contentToRequest',
+  'lumen.gameContent.baseGame',
+  'lumen.gameContent.selectedAddons',
+  'lumen.gameContent.completeEdition',
+  'lumen.gameContent.inLibrary',
+  'lumen.gameContent.storyContent',
+  'lumen.gameContent.nonStoryContent',
+  'lumen.gameContent.contentTypeUnknown',
+  'lumen.gameContent.itemsMissing',
+  'lumen.gameContent.editionContentsUnknown',
 ];
 
 test('Lumen account, request, and settings labels are translated in French and Arabic', async () => {

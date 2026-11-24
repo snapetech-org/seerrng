@@ -5812,5 +5812,16 @@
   "lumen.quickRequest.quotaApproval",
   "lumen.quickRequest.requestAnyway",
   "lumen.quickRequest.requestApprovalAnyway",
-  "lumen.quickRequest.title"
+  "lumen.quickRequest.title",
+  "lumen.gameContent.title",
+  "lumen.gameContent.contentToRequest",
+  "lumen.gameContent.baseGame",
+  "lumen.gameContent.selectedAddons",
+  "lumen.gameContent.completeEdition",
+  "lumen.gameContent.inLibrary",
+  "lumen.gameContent.storyContent",
+  "lumen.gameContent.nonStoryContent",
+  "lumen.gameContent.contentTypeUnknown",
+  "lumen.gameContent.itemsMissing",
+  "lumen.gameContent.editionContentsUnknown"
 ]

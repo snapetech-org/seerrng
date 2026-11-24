@@ -7068,6 +7068,18 @@ export const localeData = [
       'lumen.quickRequest.requestAnyway': 'طلب على أي حال',
       'lumen.quickRequest.requestApprovalAnyway': 'طلب الموافقة على أي حال',
       'lumen.quickRequest.title': 'طلب ⁨{title}⁩',
+      'lumen.gameContent.title': 'محتوى اللعبة',
+      'lumen.gameContent.contentToRequest': 'المحتوى المطلوب',
+      'lumen.gameContent.baseGame': 'اللعبة الأساسية',
+      'lumen.gameContent.selectedAddons': 'الإضافات المحددة',
+      'lumen.gameContent.completeEdition': 'الإصدار الكامل',
+      'lumen.gameContent.inLibrary': 'في المكتبة',
+      'lumen.gameContent.storyContent': 'محتوى قصصي',
+      'lumen.gameContent.nonStoryContent': 'محتوى غير قصصي',
+      'lumen.gameContent.contentTypeUnknown': 'نوع المحتوى غير معروف',
+      'lumen.gameContent.itemsMissing': 'ينقص مكتبتك {count} من العناصر',
+      'lumen.gameContent.editionContentsUnknown':
+        'محتوى هذا الإصدار غير معروف.',
     },
   },
   {
@@ -18508,6 +18520,19 @@ export const localeData = [
       'lumen.quickRequest.requestAnyway': 'Request Anyway',
       'lumen.quickRequest.requestApprovalAnyway': 'Request Approval Anyway',
       'lumen.quickRequest.title': 'Request {title}',
+      'lumen.gameContent.title': 'Game Content',
+      'lumen.gameContent.contentToRequest': 'Content to Request',
+      'lumen.gameContent.baseGame': 'Base Game',
+      'lumen.gameContent.selectedAddons': 'Selected Add-ons',
+      'lumen.gameContent.completeEdition': 'Complete Edition',
+      'lumen.gameContent.inLibrary': 'In Library',
+      'lumen.gameContent.storyContent': 'Story content',
+      'lumen.gameContent.nonStoryContent': 'Non-story content',
+      'lumen.gameContent.contentTypeUnknown': 'Content type unknown',
+      'lumen.gameContent.itemsMissing':
+        '{count} items missing from your library',
+      'lumen.gameContent.editionContentsUnknown':
+        'Edition contents are unknown.',
     },
   },
   {
@@ -31134,6 +31159,19 @@ export const localeData = [
       'lumen.quickRequest.requestApprovalAnyway':
         'Demander quand même l’approbation',
       'lumen.quickRequest.title': 'Demander {title}',
+      'lumen.gameContent.title': 'Contenu du jeu',
+      'lumen.gameContent.contentToRequest': 'Contenu à demander',
+      'lumen.gameContent.baseGame': 'Jeu de base',
+      'lumen.gameContent.selectedAddons': 'Extensions sélectionnées',
+      'lumen.gameContent.completeEdition': 'Édition complète',
+      'lumen.gameContent.inLibrary': 'Dans la bibliothèque',
+      'lumen.gameContent.storyContent': 'Contenu scénaristique',
+      'lumen.gameContent.nonStoryContent': 'Contenu sans histoire',
+      'lumen.gameContent.contentTypeUnknown': 'Type de contenu inconnu',
+      'lumen.gameContent.itemsMissing':
+        '{count} éléments manquent dans votre bibliothèque',
+      'lumen.gameContent.editionContentsUnknown':
+        'Le contenu de cette édition est inconnu.',
     },
   },
   {

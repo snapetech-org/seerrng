@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { type GameContentSelection, useGameContentCatalog } from '../extras';
+import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
 import { Pill } from './detail';
 import { ServiceNote } from './extra';
@@ -15,6 +16,7 @@ export default function GameContentPicker({
   disabled: boolean;
   onChange: (value: GameContentSelection | null | undefined) => void;
 }) {
+  const { t } = useLumenLocale();
   const catalog = useGameContentCatalog(id);
   const [mode, setMode] = useState<Mode>('base');
   const [addonIds, setAddonIds] = useState<number[]>([]);
@@ -40,21 +42,25 @@ export default function GameContentPicker({
     onChange(next === 'base' ? null : undefined);
   }
   return (
-    <Section title="Game Content">
+    <Section title={t('lumen.gameContent.title')}>
       <div className="toolbar">
         <label className="sel">
-          <span className="lbl">Content to Request</span>
+          <span className="lbl">{t('lumen.gameContent.contentToRequest')}</span>
           <select
             value={mode}
             disabled={disabled}
             onChange={(event) => changeMode(event.target.value as Mode)}
           >
-            <option value="base">Base Game</option>
+            <option value="base">{t('lumen.gameContent.baseGame')}</option>
             {!!addons.length && (
-              <option value="missing-selected">Selected Add-ons</option>
+              <option value="missing-selected">
+                {t('lumen.gameContent.selectedAddons')}
+              </option>
             )}
             {!!editions.length && (
-              <option value="edition">Complete Edition</option>
+              <option value="edition">
+                {t('lumen.gameContent.completeEdition')}
+              </option>
             )}
           </select>
         </label>
@@ -90,13 +96,15 @@ export default function GameContentPicker({
                 />
                 {addon.title}
               </label>
-              {addon.owned && <Pill k="ok">In Library</Pill>}
+              {addon.owned && (
+                <Pill k="ok">{t('lumen.gameContent.inLibrary')}</Pill>
+              )}
               <small>
                 {addon.storyContent === true
-                  ? 'Story content'
+                  ? t('lumen.gameContent.storyContent')
                   : addon.storyContent === false
-                    ? 'Non-story content'
-                    : 'Content type unknown'}
+                    ? t('lumen.gameContent.nonStoryContent')
+                    : t('lumen.gameContent.contentTypeUnknown')}
               </small>
             </li>
           ))}
@@ -124,22 +132,28 @@ export default function GameContentPicker({
                 />
                 {edition.title}
               </label>
-              {edition.owned && <Pill k="ok">In Library</Pill>}
+              {edition.owned && (
+                <Pill k="ok">{t('lumen.gameContent.inLibrary')}</Pill>
+              )}
               {edition.contentKnown ? (
                 <div>
                   <small>
-                    {edition.includes.filter((item) => !item.owned).length}{' '}
-                    items missing from your library
+                    {t('lumen.gameContent.itemsMissing', undefined, {
+                      count: edition.includes.filter((item) => !item.owned)
+                        .length,
+                    })}
                   </small>
                   {edition.includes.map((item) => (
                     <small key={item.igdbId}>
                       {item.title}
-                      {item.owned ? ' · In Library' : ''}
+                      {item.owned
+                        ? ` · ${t('lumen.gameContent.inLibrary')}`
+                        : ''}
                     </small>
                   ))}
                 </div>
               ) : (
-                <small>Edition contents are unknown.</small>
+                <small>{t('lumen.gameContent.editionContentsUnknown')}</small>
               )}
             </li>
           ))}
