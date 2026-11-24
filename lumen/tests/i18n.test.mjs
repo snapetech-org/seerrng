@@ -22,6 +22,8 @@ const lumenKeys = [
   'lumen.account.selectedCount',
   'lumen.admin.back',
   'lumen.admin.dest.requestDefaults',
+  'lumen.search.trending',
+  'lumen.search.searching',
   'lumen.gameLibrary.privateGameLibrary',
   'lumen.metadata.help.video',
   'lumen.metadata.help.music',

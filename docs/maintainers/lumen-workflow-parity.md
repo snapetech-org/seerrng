@@ -8820,3 +8820,15 @@ padding that allows scrolling below the tabs. The native comparison capture does
 not expose the reason row, so native-matched reason-row visuals remain
 unverified. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-reason-parity-20261123/`.
+
+### Search trending and loading localization (2026-11-24)
+
+Search's “Trending this week” section title and “Searching…” status now have
+French and Arabic translations instead of English fallback text. Unit coverage
+rejects untranslated values, and the browser fixture verifies the rendered
+trending heading, in-flight search status, empty results, and pagination in
+English, French, and Arabic across desktop, iPhone, Android, and tablet (12
+locale/viewport cases). Matched French and Arabic desktop and iPhone captures
+were inspected; the text changes do not alter layout or navigation. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261124/`.

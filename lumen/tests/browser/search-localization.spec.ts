@@ -3,11 +3,11 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test';
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
 
-async function capture(page: Page, info: TestInfo) {
+async function capture(page: Page, info: TestInfo, state: string) {
   const directory = process.env.LUMEN_VISUAL_CAPTURE_DIR;
   if (!directory || !['desktop', 'iphone'].includes(info.project.name)) return;
   await page.screenshot({
-    path: `${directory}/search-empty-${info.project.name}.png`,
+    path: `${directory}/search-${state}-${info.project.name}.png`,
     animations: 'disabled',
   });
 }
@@ -38,6 +38,7 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       next: 'Next Page',
       resultPages: 'Search Result Pages',
       authors: 'Authors',
+      trending: 'Trending this week',
       searching: 'Searching…',
     },
     fr: {
@@ -57,6 +58,7 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       next: 'Page suivante',
       resultPages: 'Pages de résultats de recherche',
       authors: 'Auteurs',
+      trending: 'Tendances de la semaine',
       searching: 'Recherche en cours…',
     },
     ar: {
@@ -76,12 +78,14 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       next: 'الصفحة التالية',
       resultPages: 'صفحات نتائج البحث',
       authors: 'المؤلفون',
+      trending: 'الأكثر شعبية هذا الأسبوع',
       searching: 'جارٍ البحث…',
     },
   } as const;
   const expected = labels[locale];
+  let releaseSearch: (() => void) | undefined;
   await page.route('https://**/*', (route) => route.abort());
-  await page.route('**/api/v1/**', (route) => {
+  await page.route('**/api/v1/**', async (route) => {
     const path = new URL(route.request().url()).pathname
       .replace(/^\/lumen(?=\/)/, '')
       .replace(/^\/api\/v1/, '');
@@ -115,6 +119,10 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
     if (path === '/search') {
       const requestUrl = new URL(route.request().url());
       const pageNumber = Number(requestUrl.searchParams.get('page') ?? 1);
+      if (requestUrl.searchParams.get('query') === 'Dune' && pageNumber === 2)
+        await new Promise<void>((resolve) => {
+          releaseSearch = resolve;
+        });
       return route.fulfill({
         json: {
           page: pageNumber,
@@ -129,7 +137,14 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
     }
     if (path === '/discover/trending')
       return route.fulfill({
-        json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+        json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
+          results: [
+            { id: 41, mediaType: 'movie', title: 'Fixture trending title' },
+          ],
+        },
       });
     if (path.startsWith('/discover/books'))
       return route.fulfill({
@@ -153,6 +168,10 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
     await expect(
       scopes.getByRole('button', { name, exact: true })
     ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: expected.trending, exact: true })
+  ).toBeVisible();
+  await capture(page, test.info(), 'trending');
   await expect(page.locator('#sq')).toHaveAttribute(
     'placeholder',
     locale === 'en'
@@ -163,6 +182,12 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
   );
 
   await page.goto(appPath('/search?f=movie&q=Dune&page=2'));
+  const searching = page.locator('.note.searching[role="status"]');
+  await expect(searching).toHaveText(expected.searching);
+  await expect.poll(() => releaseSearch !== undefined).toBe(true);
+  await capture(page, test.info(), 'loading');
+  releaseSearch?.();
+  releaseSearch = undefined;
   await expect(
     page.getByRole('heading', { level: 1, name: expected.heading })
   ).toBeVisible();
@@ -201,8 +226,22 @@ test('Search scopes, results, sorting, and pagination follow the saved locale', 
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
     )
     .toBe(true);
-  await capture(page, test.info());
-  await pages.getByRole('button', { name: expected.next, exact: true }).click();
+  await capture(page, test.info(), 'empty');
+  const nextPage = pages.getByRole('button', {
+    name: expected.next,
+    exact: true,
+  });
+  await page.locator('#sq').press('Enter');
+  await page.evaluate(() => window.scrollTo(0, 0));
+  if (test.info().project.name === 'desktop') await nextPage.click();
+  else {
+    const bounds = await nextPage.boundingBox();
+    if (!bounds) throw new Error('Next Page is not rendered');
+    await page.touchscreen.tap(
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2
+    );
+  }
   await expect(page).toHaveURL(/page=3/);
   await expect(
     pages.getByRole('button', { name: expected.next, exact: true })
