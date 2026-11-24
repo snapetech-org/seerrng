@@ -837,7 +837,7 @@ export function SceneDetail() {
     return (
       <ExtraGate k="adult">
         <div className="empty">
-          <b>Couldn’t load this</b>
+          <b>{t('lumen.adult.sceneLoadFailed', 'Couldn’t load this scene')}</b>
           {error}
         </div>
       </ExtraGate>

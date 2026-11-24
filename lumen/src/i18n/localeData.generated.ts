@@ -6374,6 +6374,7 @@ export const localeData = [
       'lumen.adult.bookmarkedService': 'الخادم المحفوظ',
       'lumen.adult.serverFilter': 'الخادم',
       'lumen.adult.allServices': 'الكل',
+      'lumen.adult.sceneLoadFailed': 'تعذّر تحميل هذا المشهد',
       'lumen.comics.title': 'القصص المصورة والمانغا',
       'lumen.comics.guidance':
         'اطلب سلاسل المانغا أو القصص المصورة. تصدر المجلدات والأعداد الجديدة عند نشرها؛ وتُستخدم النسخة الإنجليزية من المانغا ما لم تختر نسخة أخرى.',
@@ -17986,6 +17987,7 @@ export const localeData = [
       'lumen.adult.bookmarkedService': 'Bookmarked service',
       'lumen.adult.serverFilter': 'Service',
       'lumen.adult.allServices': 'All',
+      'lumen.adult.sceneLoadFailed': 'Couldn’t load this scene',
       'lumen.comics.title': 'Comics/Manga',
       'lumen.comics.guidance':
         'Request a manga or comic series. New volumes and issues arrive as they come out; manga comes in its English edition unless you pick another.',
@@ -30775,6 +30777,7 @@ export const localeData = [
       'lumen.adult.bookmarkedService': 'Serveur enregistré',
       'lumen.adult.serverFilter': 'Serveur',
       'lumen.adult.allServices': 'Tous',
+      'lumen.adult.sceneLoadFailed': 'Impossible de charger cette scène',
       'lumen.comics.title': 'BD et mangas',
       'lumen.comics.guidance':
         'Demandez une série de mangas ou de bandes dessinées. Les nouveaux volumes et numéros arrivent à leur sortie; le manga utilise son édition anglaise sauf si vous en choisissez une autre.',

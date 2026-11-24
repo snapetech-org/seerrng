@@ -9263,9 +9263,27 @@ existing full-page recovery behavior.
 
 The malformed Discover response regression runs all three locales and confirms
 that `/me` remains reachable after the page crashes. It passes on desktop and
-iPhone in standalone and bundled `/lumen/` test deployments. Matched baseline
-and candidate captures at 1440x900 and iPhone 13 390x844 CSS pixels have equal
-dimensions in every locale; only the translated error copy changes. Evidence
-is retained at
+iPhone in the standalone test deployment. Matched baseline and candidate
+captures at 1440x900 and iPhone 13 390x844 CSS pixels have equal dimensions in
+every locale; only the translated error copy changes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-page-boundary-localization-20261124/`.
-The fixture does not verify error recovery through the production Express mount.
+Bundled `/lumen/` and production Express mount behavior remain unverified.
+
+The neighboring `shared-extra-request-localization` fixture was also run at its
+pre-change revision and still fails before reaching the Adult detail case: its
+first Music button click opens the current request sheet, while the test expects
+a submission toast without confirming the sheet. The baseline failure is
+retained as a separate workflow-test gap; this change does not alter that test.
+
+### Adult detail load-error localization (2026-11-24)
+
+Adult scene detail failures now use a localized “could not load this scene”
+heading in English, French, and Arabic. The provider error, page layout, and
+request actions are unchanged.
+
+The focused failure-state browser fixture passes for all three locales on
+desktop and iPhone. Matched standalone baseline and candidate captures at
+1440x900 and iPhone 13 390x844 CSS pixels have the same dimensions; the changed
+region is the translated heading. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-load-error-localization-20261124/`.
+Bundled `/lumen/` and production Express mount checks remain open.
