@@ -9091,3 +9091,10 @@ Lumen build pass. Candidate desktop and phone captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-maturity-controls-20261124/`.
 The route uses the existing maturity editor and section styles; a direct native
 render comparison and live authorization/persistence remain unverified.
+
+Native self-user notification bookmarks now preserve supported channel
+fragments (`discord`, `email`, `pushbullet`, `pushover`, `telegram`, and
+`webpush`) while retaining query parameters. Unknown channel names safely open
+the Lumen notification page without an anchor. A manager opening another
+user's notification bookmark is redirected to the managed notification panel;
+the route mapper does not load that user's settings before authorization.

@@ -102,6 +102,53 @@ test('native self settings bookmark opens the matching Lumen account section', a
   );
 });
 
+test('native self notification bookmarks preserve supported channel anchors and query', async ({
+  page,
+}) => {
+  await authenticate(page, 32);
+  for (const channel of [
+    'discord',
+    'email',
+    'pushbullet',
+    'pushover',
+    'telegram',
+    'webpush',
+  ]) {
+    await page.goto(
+      appPath(`/users/2/settings/notifications/${channel}?from=native`)
+    );
+    await expect(page).toHaveURL(
+      new RegExp(
+        `${mount}/me/account/notifications\\?from=native#notification-${channel}$`
+      )
+    );
+  }
+
+  await page.goto(
+    appPath('/users/2/settings/notifications/unknown?from=native')
+  );
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/me/account/notifications\\?from=native$`)
+  );
+});
+
+test('unauthorized notification bookmark does not read settings for another user', async ({
+  page,
+}) => {
+  await authenticate(page, 32);
+  const targetReads: string[] = [];
+  page.on('request', (request) => {
+    const path = new URL(request.url()).pathname.replace(/^\/lumen(?=\/)/, '');
+    if (path.startsWith('/api/v1/user/19/')) targetReads.push(path);
+  });
+
+  await page.goto(
+    appPath('/users/19/settings/notifications/telegram?from=native')
+  );
+  await expect(page).toHaveURL(new RegExp(`${mount}/me$`));
+  expect(targetReads).toEqual([]);
+});
+
 test('native managed settings bookmark requires user-management authority', async ({
   page,
 }) => {

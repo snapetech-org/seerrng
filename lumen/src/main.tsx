@@ -192,6 +192,22 @@ function UserSettingsBookmark() {
     'client-tokens': '/me/account/client-tokens',
   };
   if (targetIsSelf) {
+    if (page === 'notifications') {
+      const channel = parts[1];
+      const anchor = [
+        'discord',
+        'email',
+        'pushbullet',
+        'pushover',
+        'telegram',
+        'webpush',
+      ].includes(channel ?? '')
+        ? `#notification-${channel}`
+        : '';
+      return (
+        <Navigate to={`/me/account/notifications${search}${anchor}`} replace />
+      );
+    }
     const destination = ownDestination[page] ?? '/me/account';
     const [path, anchor] = destination.split('#');
     return (
