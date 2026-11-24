@@ -8976,6 +8976,17 @@ and Arabic (6/6); the French case also scopes duplicate Users navigation labels
 to the settings page content. No server settings or provider connections were
 changed by these fixtures.
 
+### Account profile and password load recovery (2026-11-24)
+
+Account Settings now has focused fixture coverage for independent initial load
+failures in the profile and password sections. Each section displays its own
+retry action; recovering one leaves the other failure visible, and retrying the
+second loads its settings without leaving the route. The test passes on desktop,
+iPhone, Android, and tablet (4/4). The fixture holds profile reads failed until
+the profile retry is activated because account locale/bootstrap consumers also
+read that endpoint before the page mounts. This covers initial load recovery,
+not managed-user authorization, live persistence, or all account subsections.
+
 ### Personal notification load recovery and locale coverage (2026-11-24)
 
 The personal Notifications route now localizes its failed-load title and retry

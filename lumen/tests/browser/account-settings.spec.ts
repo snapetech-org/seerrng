@@ -4,6 +4,73 @@ const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) =>
   `${mount}${path.startsWith('./') ? path.slice(1) : path}`;
 
+test('profile and password settings recover independently after load failures', async ({
+  page,
+}) => {
+  const reads = { profile: 0, password: 0 };
+  let recoverProfile = false;
+  let recoverPassword = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname;
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({
+        json: { id: 2, displayName: 'Viewer', permissions: 32, userType: 2 },
+      });
+    if (path.endsWith('/settings/public'))
+      return route.fulfill({ json: { applicationTitle: 'SeerrNG' } });
+    if (path.endsWith('/user/2/settings/main')) {
+      reads.profile++;
+      return !recoverProfile
+        ? route.fulfill({
+            status: 503,
+            json: { message: 'Temporary failure.' },
+          })
+        : route.fulfill({ json: { username: 'Viewer' } });
+    }
+    if (path.endsWith('/user/2/settings/password')) {
+      reads.password++;
+      return !recoverPassword
+        ? route.fulfill({
+            status: 503,
+            json: { message: 'Temporary failure.' },
+          })
+        : route.fulfill({ json: { hasPassword: true } });
+    }
+    return route.fulfill({ json: [] });
+  });
+
+  await page.goto(appPath('/me/account'));
+  const profileAlert = page.getByRole('alert').filter({
+    hasText: 'Could not load profile settings',
+  });
+  const passwordAlert = page.getByRole('alert').filter({
+    hasText: 'Could not load password settings',
+  });
+  await expect(profileAlert).toBeVisible();
+  await expect(passwordAlert).toBeVisible();
+  await expect(
+    profileAlert.getByRole('button', { name: 'Retry' })
+  ).toBeVisible();
+  await expect(
+    passwordAlert.getByRole('button', { name: 'Retry' })
+  ).toBeVisible();
+
+  recoverProfile = true;
+  await profileAlert.getByRole('button', { name: 'Retry' }).click();
+  await expect(page.getByLabel('Display Name')).toHaveValue('Viewer');
+  await expect(passwordAlert).toBeVisible();
+  expect(reads.profile).toBeGreaterThan(0);
+
+  recoverPassword = true;
+  await passwordAlert.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Password', exact: true })
+  ).toBeVisible();
+  await expect(passwordAlert).toHaveCount(0);
+  expect(reads.password).toBeGreaterThan(0);
+});
+
 test('password and Episode Queue bookmarks scroll to the selected section after loading', async ({
   page,
 }) => {
