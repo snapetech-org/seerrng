@@ -9432,7 +9432,8 @@ remain unverified.
 `useApi` now retains a failed request and formats its default error with the
 active Lumen locale. Caller supplied formatters remain in control. The shared
 `ServiceNote` also localizes its default Retry button, so detail screens no
-longer show English server errors and retry controls in French or Arabic.
+longer show English server errors and retry controls in French or Arabic. Movie
+and TV detail load failures now localize their headings as well.
 
 The Movie detail failure and recovery fixture passes in English, French, and
 Arabic across desktop, iPhone, Android, and tablet. It forces a 503, checks the
@@ -9443,3 +9444,4 @@ French. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-useapi-error-localization-20261124/`.
 This validates the shared hook and one representative consumer; every other
 `useApi` screen and live service response still needs its own parity review.
+Other generic `ServiceNote` titles also remain under review.

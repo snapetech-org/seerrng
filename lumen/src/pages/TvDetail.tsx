@@ -273,7 +273,17 @@ export default function TvDetail() {
   }, [loaded, id, anchor]);
 
   if (error && !t)
-    return <ServiceNote error={error} what="this series" retry={reload} />;
+    return (
+      <ServiceNote
+        error={error}
+        what="this series"
+        title={translate(
+          'lumen.detail.loadSeries',
+          'Couldn’t load this series'
+        )}
+        retry={reload}
+      />
+    );
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
   const n = sel.size;

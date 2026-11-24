@@ -167,7 +167,14 @@ export default function MovieDetail() {
   const onOpts = useCallback((o: RequestOptions) => setOpts(o), []);
 
   if (error && !m)
-    return <ServiceNote error={error} what="this movie" retry={reload} />;
+    return (
+      <ServiceNote
+        error={error}
+        what="this movie"
+        title={t('lumen.detail.loadMovie', 'Couldn’t load this movie')}
+        retry={reload}
+      />
+    );
   if (!m) return <div className="detail-loading" aria-busy="true" />;
 
   const regionReleases =

@@ -4,14 +4,17 @@ const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const baseline = process.env.LUMEN_USE_API_ERROR_BASELINE === '1';
 const copy = {
   en: {
+    title: 'Couldn’t load this movie',
     error: 'The server had a problem. Try again in a moment.',
     retry: 'Retry',
   },
   fr: {
+    title: 'Impossible de charger ce film',
     error: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
     retry: 'Réessayer',
   },
   ar: {
+    title: 'تعذّر تحميل هذا الفيلم',
     error: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
     retry: 'إعادة المحاولة',
   },
@@ -62,6 +65,11 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       baseline ? copy.en.error : copy[locale].error,
       { exact: true }
     );
+    await expect(
+      page.getByText(baseline ? copy.en.title : copy[locale].title, {
+        exact: true,
+      })
+    ).toBeVisible();
     await expect(message).toBeVisible();
     const capture = process.env.LUMEN_USE_API_ERROR_CAPTURE;
     if (capture && ['desktop', 'iphone'].includes(info.project.name))
@@ -79,6 +87,70 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       page.getByRole('heading', { name: 'Fixture Film' })
     ).toBeVisible();
     expect(movieCalls).toBe(2);
+    await expect
+      .poll(() =>
+        page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
+      )
+      .toBe(true);
+  });
+
+  test(`shared series detail errors follow ${locale} locale and retry`, async ({
+    page,
+  }) => {
+    let seriesCalls = 0;
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen(?=\/)/, '')
+        .slice('/api/v1'.length);
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, displayName: 'Viewer', permissions: 32 },
+        });
+      if (path === '/settings/public') return route.fulfill({ json: {} });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/tv/84773') {
+        seriesCalls += 1;
+        if (seriesCalls === 1)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Service Unavailable' },
+          });
+        return route.fulfill({
+          json: {
+            id: 84773,
+            name: 'The Rings of Power',
+            externalIds: { tvdbId: 80 },
+            overview: 'Rings.',
+            genres: [],
+            seasons: [],
+            numberOfSeasons: 0,
+            firstAirDate: '2022-09-01',
+            mediaInfo: { requests: [], seasons: [] },
+          },
+        });
+      }
+      return route.fulfill({ json: { results: [] } });
+    });
+    await page.goto(`${mount}/tv/84773`);
+    const title = {
+      en: 'Couldn’t load this series',
+      fr: 'Impossible de charger cette série',
+      ar: 'تعذّر تحميل هذا المسلسل',
+    }[locale];
+    await expect(page.getByText(title, { exact: true })).toBeVisible();
+    await expect(
+      page.getByText(copy[locale].error, { exact: true })
+    ).toBeVisible();
+    await page.getByRole('button', { name: copy[locale].retry }).click();
+    await expect(
+      page.getByRole('heading', { name: 'The Rings of Power' })
+    ).toBeVisible();
+    expect(seriesCalls).toBe(2);
     await expect
       .poll(() =>
         page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)

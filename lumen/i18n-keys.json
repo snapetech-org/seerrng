@@ -2517,6 +2517,8 @@
   "lumen.detail.folder",
   "lumen.detail.ignoreQuota",
   "lumen.detail.keepOpen",
+  "lumen.detail.loadMovie",
+  "lumen.detail.loadSeries",
   "lumen.detail.movieDetails",
   "lumen.detail.movieDetailsPreference",
   "lumen.movie.collection",
