@@ -9394,4 +9394,13 @@ unverified.
 Quick book-card and recommended comic-edition requests now pass generic errors
 through the active locale translator. The shared request fallback has explicit
 English, French, and Arabic copy. This closes uncovered error-message paths in
-those card actions; focused browser regression coverage is still pending.
+those card actions.
+
+Six desktop browser cases pass for both actions in English, French, and Arabic.
+At 1440x900, before/after captures compare the same hovered poster and resulting
+toast. The baseline at `bdde62ae9` reproduced English server-error copy in
+French and Arabic for both cards; the candidate displays localized copy without
+changing poster or page geometry. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-error-localization-20261124/`.
+Phone layout, live provider behavior, and production `/lumen/` mounting remain
+unverified.
