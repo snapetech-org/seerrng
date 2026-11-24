@@ -9,6 +9,8 @@ import { SavedConnectionHost } from './SavedConnectionHost';
 
 const redacted = '[REDACTED]';
 
+class ConnectionReadbackError extends Error {}
+
 export interface ConnectionSettings {
   ip?: string;
   hostname?: string;
@@ -120,8 +122,11 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
     setNotice('');
     try {
       await action();
-    } catch {
-      if (generation === sessionGeneration()) setFailure(fallback);
+    } catch (error) {
+      if (generation === sessionGeneration())
+        setFailure(
+          error instanceof ConnectionReadbackError ? error.message : fallback
+        );
     } finally {
       pending.current = false;
       setBusy(false);
@@ -153,16 +158,34 @@ export default function MediaServerConnection<T extends ConnectionSettings>({
             jellyfinForgotPasswordUrl: draft.jellyfinForgotPasswordUrl.trim(),
             apiKey: draft.apiKey || redacted,
           };
+    const submitted = { ...connection, ...options };
     await perform(
       async () => {
-        const result = await api<T>(path, {
+        await api<T>(path, {
           method: 'POST',
-          body: JSON.stringify({ ...connection, ...options }),
+          body: JSON.stringify(submitted),
         });
         if (generation !== sessionGeneration()) return;
-        setSaved(result);
-        setDraft(toDraft(result, provider));
-        onSaved?.(result);
+        const readback = await api<T>(path);
+        if (generation !== sessionGeneration()) return;
+        const mismatch = Object.entries(submitted).some(([key, value]) => {
+          if (key === 'apiKey') return Boolean(value) && !readback.apiKey;
+          if (value === null) {
+            const persisted = readback[key as keyof T];
+            return persisted !== null && persisted !== undefined;
+          }
+          return (readback as Record<string, unknown>)[key] !== value;
+        });
+        if (mismatch)
+          throw new ConnectionReadbackError(
+            t(
+              'lumen.mediaServerConnection.confirmFailure',
+              'Could not confirm the saved connection settings.'
+            )
+          );
+        setSaved(readback);
+        setDraft(toDraft(readback, provider));
+        onSaved?.(readback);
         if (!tautulli) {
           invalidatePublicSettings();
           forget('/settings/public');

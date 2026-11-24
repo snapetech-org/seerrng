@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 for (const permissions of [32, 16, 4]) {
   test(`non-admin permission ${permissions} cannot load media server settings`, async ({
     page,
@@ -18,7 +21,7 @@ for (const permissions of [32, 16, 4]) {
       });
     });
 
-    await page.goto('/admin/media-libraries');
+    await page.goto(appPath('/admin/media-libraries'));
     await expect(page).toHaveURL(/\/me$/);
     expect(protectedReads).toEqual([]);
     await expect(
@@ -90,7 +93,7 @@ for (const [type, name, provider] of [
       return route.fulfill({ json: libraries });
     });
 
-    await page.goto('/me');
+    await page.goto(appPath('/me'));
     await page
       .getByRole('link', { name: 'Open Media Server Libraries' })
       .click();
@@ -142,8 +145,50 @@ for (const [type, name, provider] of [
 test('Jellyfin connection and bridge saves preserve credentials and update the library list', async ({
   page,
 }, info) => {
+  const locale = ['en', 'fr', 'ar'].includes(
+    process.env.LUMEN_MEDIA_SERVER_LOCALE ?? ''
+  )
+    ? (process.env.LUMEN_MEDIA_SERVER_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const confirmFailure = {
+    en: 'Could not confirm the saved connection settings.',
+    fr: 'Impossible de confirmer les paramètres de connexion enregistrés.',
+    ar: 'تعذّر تأكيد حفظ إعدادات الاتصال.',
+  }[locale];
+  const labels = {
+    en: {
+      apiKey: 'Server API Key',
+      port: 'Server Port',
+      https: 'Use HTTPS',
+      save: 'Save Jellyfin Connection',
+      saveFailure:
+        'Could not save the Jellyfin connection. Check the address and credentials, then try again.',
+      saved: 'Connection settings saved.',
+      bridge: 'Enable Jellyfin Bridge Sign-In',
+    },
+    fr: {
+      apiKey: 'Clé API du serveur',
+      port: 'Port du serveur',
+      https: 'Utiliser HTTPS',
+      save: 'Enregistrer la connexion Jellyfin',
+      saveFailure:
+        'Impossible d’enregistrer la connexion Jellyfin. Vérifiez l’adresse et les identifiants, puis réessayez.',
+      saved: 'Paramètres de connexion enregistrés.',
+      bridge: 'Activer la connexion Jellyfin',
+    },
+    ar: {
+      apiKey: 'مفتاح API للخادم',
+      port: 'منفذ الخادم',
+      https: 'استخدام HTTPS',
+      save: 'حفظ اتصال Jellyfin',
+      saveFailure:
+        'تعذر حفظ اتصال Jellyfin. تحقق من العنوان وبيانات الاعتماد ثم أعد المحاولة.',
+      saved: 'تم حفظ إعدادات الاتصال.',
+      bridge: 'تفعيل تسجيل الدخول عبر Jellyfin',
+    },
+  }[locale];
   const path = '/api/v1/settings/jellyfin';
-  const settings = {
+  let settings = {
     ip: 'jellyfin.internal',
     port: 8096,
     apiKey: '[REDACTED]',
@@ -154,6 +199,7 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
   };
   const writes: { path: string; body: Record<string, unknown> }[] = [];
   let rejectConnectionSave = true;
+  let staleConnectionReadback = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -165,6 +211,8 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (endpoint.endsWith('/settings/public'))
       return route.fulfill({ json: { mediaServerType: 2 } });
+    if (endpoint.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale } });
     if (endpoint === path + '/sync')
       return route.fulfill({ json: { running: false } });
     if (!endpoint.startsWith(path)) return route.fulfill({ json: {} });
@@ -180,27 +228,54 @@ test('Jellyfin connection and bridge saves preserve credentials and update the l
         json: { message: 'Media server is temporarily unavailable.' },
       });
     }
-    return route.fulfill({ json: { ...settings, ...body, libraries: [] } });
+    if (endpoint === path && staleConnectionReadback) {
+      staleConnectionReadback = false;
+      return route.fulfill({ json: { ...settings, ...body, libraries: [] } });
+    }
+    settings = { ...settings, ...body, libraries: [] };
+    return route.fulfill({ json: settings });
   });
-  await page.goto('/admin/media-libraries');
-  await expect(page.getByLabel('Server API Key')).toHaveValue('');
-  await page.getByLabel('Server Port').fill('8920');
-  await page.getByLabel('Use HTTPS', { exact: true }).check();
-  await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
-  await expect(
-    page.getByText(
-      'Could not save the Jellyfin connection. Check the address and credentials, then try again.'
-    )
-  ).toBeVisible();
-  await expect(page.getByLabel('Server Port')).toHaveValue('8920');
-  await expect(page.getByLabel('Use HTTPS', { exact: true })).toBeChecked();
-  await page.getByRole('button', { name: 'Save Jellyfin Connection' }).click();
-  await expect(page.getByText('Connection settings saved.')).toBeVisible();
+  await page.goto(appPath('/admin/media-libraries'));
+  await expect(page.getByLabel(labels.apiKey)).toHaveValue('');
+  await page.getByLabel(labels.port).fill('8920');
+  await page.getByLabel(labels.https, { exact: true }).check();
+  await page.getByRole('button', { name: labels.save }).click();
+  await expect(page.getByText(labels.saveFailure)).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('connection-save-failure.png'),
+      fullPage: true,
+    });
+  await expect(page.getByLabel(labels.port)).toHaveValue('8920');
+  await expect(page.getByLabel(labels.https, { exact: true })).toBeChecked();
+  await page.getByRole('button', { name: labels.save }).click();
+  await expect(page.getByText(confirmFailure)).toBeVisible();
+  await expect(page.getByLabel(labels.port)).toHaveValue('8920');
+  await expect(page.getByLabel(labels.https, { exact: true })).toBeChecked();
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('connection-stale-readback.png'),
+      fullPage: true,
+    });
+  await page.getByRole('button', { name: labels.save }).click();
+  await expect(page.getByText(labels.saved)).toBeVisible();
   await expect(page.getByText('Old Library', { exact: true })).toHaveCount(0);
-  const bridge = page.getByLabel('Enable Jellyfin Bridge Sign-In');
+  const bridge = page.getByLabel(labels.bridge);
   await bridge.click();
   await expect(bridge).toBeChecked();
   expect(writes).toEqual([
+    {
+      path: '',
+      body: {
+        ip: 'jellyfin.internal',
+        port: 8920,
+        useSsl: true,
+        urlBase: '',
+        externalHostname: '',
+        jellyfinForgotPasswordUrl: '',
+        apiKey: '[REDACTED]',
+      },
+    },
     {
       path: '',
       body: {
@@ -249,6 +324,7 @@ test('Plex discovery selects reachable addresses without saving automatically', 
     useSsl: false,
     libraries: [],
   };
+  let saved: Record<string, unknown> = initial;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -290,12 +366,13 @@ test('Plex discovery selects reachable addresses without saving automatically', 
       });
     }
     if (endpoint !== path) return route.fulfill({ json: {} });
-    if (request.method() === 'GET') return route.fulfill({ json: initial });
+    if (request.method() === 'GET') return route.fulfill({ json: saved });
     const body = request.postDataJSON();
     writes.push(body);
-    return route.fulfill({ json: { ...initial, ...body } });
+    saved = { ...saved, ...body };
+    return route.fulfill({ json: saved });
   });
-  await page.goto('/admin/media-libraries');
+  await page.goto(appPath('/admin/media-libraries'));
   const hostname = page.getByLabel('Server Hostname');
   await expect(hostname).toHaveValue('manual.internal');
   expect(discoveryCalls).toBe(0);
@@ -344,6 +421,7 @@ test('Tautulli settings preserve saved keys and support disconnecting the servic
     externalUrl: '',
     apiKey: '[REDACTED]',
   };
+  let saved: Record<string, unknown> = initial;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -361,12 +439,14 @@ test('Tautulli settings preserve saved keys and support disconnecting the servic
       return route.fulfill({ json: { running: false } });
     if (!endpoint.endsWith('/settings/tautulli'))
       return route.fulfill({ json: {} });
-    if (request.method() === 'GET') return route.fulfill({ json: initial });
+    if (request.method() === 'GET') return route.fulfill({ json: saved });
     const body = request.postDataJSON();
     writes.push(body);
-    return route.fulfill({ json: { ...initial, ...body } });
+    saved = { ...saved, ...body };
+    if (body.port === null) delete saved.port;
+    return route.fulfill({ json: saved });
   });
-  await page.goto('/admin/media-libraries');
+  await page.goto(appPath('/admin/media-libraries'));
   await expect(page.getByLabel('Tautulli API Key')).toHaveValue('');
   await page
     .getByLabel('Tautulli External URL')
@@ -384,11 +464,13 @@ test('Tautulli settings preserve saved keys and support disconnecting the servic
       fullPage: true,
     });
   await page.getByLabel('Tautulli Hostname').fill('');
+  await page.getByLabel('Tautulli Port').fill('');
   await save.click();
   await expect(page.getByText('Connection settings saved.')).toBeVisible();
   expect(writes[1]).toEqual({
     ...initial,
     hostname: '',
+    port: null,
     externalUrl: 'https://tautulli.example.test',
   });
   expect(

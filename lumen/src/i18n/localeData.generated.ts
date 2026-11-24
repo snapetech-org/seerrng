@@ -4434,6 +4434,8 @@ export const localeData = [
         'تم حفظ إعدادات تسجيل الدخول عبر الجسر.',
       'lumen.mediaServerConnection.chooseConnection': 'اختر اتصالاً',
       'lumen.mediaServerConnection.connection': 'اتصال {provider}',
+      'lumen.mediaServerConnection.confirmFailure':
+        'تعذّر تأكيد حفظ إعدادات الاتصال.',
       'lumen.mediaServerConnection.discover': 'اكتشاف خوادم Plex',
       'lumen.mediaServerConnection.discoverFailed':
         'تعذر اكتشاف خوادم Plex. أعد المحاولة أو أدخل العنوان يدوياً.',
@@ -15940,6 +15942,8 @@ export const localeData = [
         'Bridge sign-in settings saved.',
       'lumen.mediaServerConnection.chooseConnection': 'Choose a Connection',
       'lumen.mediaServerConnection.connection': '{provider} Connection',
+      'lumen.mediaServerConnection.confirmFailure':
+        'Could not confirm the saved connection settings.',
       'lumen.mediaServerConnection.discover': 'Discover Plex Servers',
       'lumen.mediaServerConnection.discoverFailed':
         'Could not discover Plex servers. Retry or enter the address manually.',
@@ -28486,6 +28490,8 @@ export const localeData = [
         'Paramètres de connexion enregistrés.',
       'lumen.mediaServerConnection.chooseConnection': 'Choisir une connexion',
       'lumen.mediaServerConnection.connection': 'Connexion à {provider}',
+      'lumen.mediaServerConnection.confirmFailure':
+        'Impossible de confirmer les paramètres de connexion enregistrés.',
       'lumen.mediaServerConnection.discover': 'Rechercher les serveurs Plex',
       'lumen.mediaServerConnection.discoverFailed':
         'Impossible de rechercher les serveurs Plex. Réessayez ou saisissez l’adresse manuellement.',

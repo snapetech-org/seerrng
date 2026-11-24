@@ -3344,6 +3344,7 @@
   "lumen.mediaServerConnection.bridgeSaved",
   "lumen.mediaServerConnection.chooseConnection",
   "lumen.mediaServerConnection.connection",
+  "lumen.mediaServerConnection.confirmFailure",
   "lumen.mediaServerConnection.discover",
   "lumen.mediaServerConnection.discoverFailed",
   "lumen.mediaServerConnection.discoveredConnection",

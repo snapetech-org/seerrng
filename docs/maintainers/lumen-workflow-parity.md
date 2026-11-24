@@ -9021,3 +9021,18 @@ retrying. The test also retains the existing conflict invalidation, confirmation
 queued-command completion, and post-move configuration refresh checks. It passes
 across desktop, iPhone, Android, and tablet (4/4); the BookshelfNG API is
 fixture-backed, so no files were moved in a live library.
+
+### Media server connection persisted readback (2026-11-24)
+
+The shared Plex, Jellyfin/Emby, and Tautulli connection editor now performs a
+fresh authenticated GET after saving and confirms the persisted non-secret
+fields before showing success or replacing its saved form state. Redacted API
+keys remain write-only: the editor checks that a key remains configured without
+comparing or displaying its value. A stale readback keeps the host, port, and
+HTTPS draft available for retry and displays localized feedback. English,
+French, and Arabic stale-readback cases pass on desktop, iPhone, Android, and
+tablet (12 cases); the full media-library suite passes 36/36 across those four
+viewport projects. Matching English baseline and candidate error states were
+inspected at 1440px desktop and 390px phone widths; French phone and Arabic
+desktop candidates were also inspected. No live media-server credentials or
+connections were changed.
