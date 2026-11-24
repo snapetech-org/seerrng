@@ -9253,3 +9253,19 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-policy-localization-20261124/`.
 Live administrator settings persistence and the production Express `/lumen/`
 mount remain open.
+
+### Global page-crash recovery localization (2026-11-24)
+
+Lumen's shared page error boundary now localizes its title, recovery guidance,
+and Reload action in English, French, and Arabic. The fallback still preserves
+the application shell and its navigation, and the Reload button retains its
+existing full-page recovery behavior.
+
+The malformed Discover response regression runs all three locales and confirms
+that `/me` remains reachable after the page crashes. It passes on desktop and
+iPhone in standalone and bundled `/lumen/` test deployments. Matched baseline
+and candidate captures at 1440x900 and iPhone 13 390x844 CSS pixels have equal
+dimensions in every locale; only the translated error copy changes. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-page-boundary-localization-20261124/`.
+The fixture does not verify error recovery through the production Express mount.

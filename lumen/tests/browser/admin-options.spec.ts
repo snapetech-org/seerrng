@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page, type TestInfo } from '@playwright/test';
 
 // Family-install feedback: plain sign-in form, 4K-only library glyphs, server and
 // folder choice on poster quick requests, custom logo/tab icon, and the admin page
@@ -1432,22 +1432,61 @@ test('category checks are not repeated on every page load', async ({
 
 test('a page that crashes keeps the menus and offers a reload', async ({
   page,
-}) => {
+}, info: TestInfo) => {
   await fixtures(page);
+  let locale = 'en';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
   // a malformed answer that makes the Discover genre row throw
   await page.route('**/api/v1/discover/genreslider/movie', (route) =>
     route.fulfill({ json: { not: 'a list' } })
   );
-  await page.goto('/');
-  await expect(
-    page.getByText('Something went wrong on this page')
-  ).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Reload' })).toBeVisible();
-  // navigation still works
-  await page.locator('a[href="/me"]').filter({ visible: true }).first().click();
-  await expect(
-    page.getByRole('heading', { name: 'You', exact: true })
-  ).toBeVisible();
+  const labels = {
+    en: {
+      title: 'Something went wrong on this page',
+      body: 'The rest of Lumen still works. Try again, or pick another page.',
+      reload: 'Reload',
+    },
+    fr: {
+      title: 'Une erreur s’est produite sur cette page',
+      body: 'Le reste de Lumen fonctionne toujours. Réessayez ou choisissez une autre page.',
+      reload: 'Recharger',
+    },
+    ar: {
+      title: 'حدث خطأ في هذه الصفحة',
+      body: 'لا يزال باقي Lumen يعمل. حاول مجددًا أو اختر صفحة أخرى.',
+      reload: 'إعادة التحميل',
+    },
+  } as const;
+  const captureDir = process.env.LUMEN_PAGE_BOUNDARY_CAPTURE_DIR;
+  const baseline = process.env.LUMEN_PAGE_BOUNDARY_BASELINE === '1';
+  for (const selected of ['en', 'fr', 'ar'] as const) {
+    locale = selected;
+    await page.goto('/');
+    const expected = baseline ? labels.en : labels[selected];
+    const alert = page.getByRole('alert');
+    await expect(
+      alert.getByText(expected.title, { exact: true })
+    ).toBeVisible();
+    await expect(alert).toContainText(expected.body);
+    await expect(
+      alert.getByRole('button', { name: expected.reload, exact: true })
+    ).toBeVisible();
+    if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: `${captureDir}/page-boundary-${selected}-${info.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+    // The global shell remains available after the route crashes.
+    await page
+      .locator('a[href="/me"]')
+      .filter({ visible: true })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/me$/);
+  }
 });
 
 test('categories without a connected service stay out of the menus', async ({

@@ -3641,6 +3641,10 @@ export const localeData = [
         'تعذر الوصول إلى الخادم. تحقق من اتصالك ثم حاول مجددًا.',
       'lumen.error.sessionEnded': 'انتهت جلستك. سجّل الدخول مجددًا.',
       'lumen.error.timeout': 'استغرق الخادم وقتًا طويلًا في الرد. حاول مجددًا.',
+      'lumen.pageBoundary.body':
+        'لا يزال باقي Lumen يعمل. حاول مجددًا أو اختر صفحة أخرى.',
+      'lumen.pageBoundary.reload': 'إعادة التحميل',
+      'lumen.pageBoundary.title': 'حدث خطأ في هذه الصفحة',
       'lumen.followButton.follow': 'متابعة',
       'lumen.followButton.followFutureVolumes': 'متابعة المجلدات القادمة',
       'lumen.followButton.followNarrator': 'متابعة {name}',
@@ -15293,6 +15297,10 @@ export const localeData = [
         'Couldn’t reach the server. Check your connection and try again.',
       'lumen.error.sessionEnded': 'Your session ended. Sign in again.',
       'lumen.error.timeout': 'The server took too long to answer. Try again.',
+      'lumen.pageBoundary.body':
+        'The rest of Lumen still works. Try again, or pick another page.',
+      'lumen.pageBoundary.reload': 'Reload',
+      'lumen.pageBoundary.title': 'Something went wrong on this page',
       'lumen.followButton.follow': 'Follow',
       'lumen.followButton.followFutureVolumes': 'Follow Future Volumes',
       'lumen.followButton.followNarrator': 'Follow {name}',
@@ -27802,6 +27810,10 @@ export const localeData = [
       'lumen.error.sessionEnded': 'Votre session a expiré. Reconnectez-vous.',
       'lumen.error.timeout':
         'Le serveur a mis trop de temps à répondre. Réessayez.',
+      'lumen.pageBoundary.body':
+        'Le reste de Lumen fonctionne toujours. Réessayez ou choisissez une autre page.',
+      'lumen.pageBoundary.reload': 'Recharger',
+      'lumen.pageBoundary.title': 'Une erreur s’est produite sur cette page',
       'lumen.followButton.follow': 'Suivre',
       'lumen.followButton.followFutureVolumes': 'Suivre les volumes à venir',
       'lumen.followButton.followNarrator': 'Suivre {name}',
