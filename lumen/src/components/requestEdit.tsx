@@ -8,6 +8,7 @@ import {
 } from '../api';
 import { friendlyError } from '../errors';
 import { usePublicSettings } from '../hooks';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { AdvancedOptions } from './detail';
 import { useBackCloses } from './requestSheet';
@@ -36,6 +37,7 @@ export function RequestEditSheet({
   onClose: () => void;
   onDone: (message: string) => void;
 }) {
+  const { t } = useLumenLocale();
   useBackCloses(onClose);
   const box = useRef<HTMLDivElement>(null);
   useDialog(box, onClose);
@@ -130,13 +132,19 @@ export function RequestEditSheet({
         });
       onDone(
         then === 'approve'
-          ? 'Request approved'
+          ? t('lumen.requestEdit.approved')
           : then === 'retry'
-            ? 'Request changed and sent again'
-            : 'Request changed'
+            ? t('lumen.requestEdit.changedAndSent')
+            : t('lumen.requestEdit.changed')
       );
     } catch (e) {
-      setErr(friendlyError(e, 'Couldn’t change the request'));
+      setErr(
+        friendlyError(
+          e,
+          t('lumen.requestEdit.couldNotChange'),
+          (id, fallback) => t(id, fallback)
+        )
+      );
       setBusy(false);
     }
   };
@@ -149,17 +157,19 @@ export function RequestEditSheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label={`Change request for ${title}`}
+        aria-label={t('lumen.requestEdit.title', undefined, { title })}
       >
         <div className="grab" />
         <div className="pk">
           <div className="pk-head">
             <div className="p">{art && <img src={art} alt="" />}</div>
             <div>
-              <h3>Change request for {title}</h3>
+              <h3>{t('lumen.requestEdit.title', undefined, { title })}</h3>
               <span className="sub">
                 {r.requestedBy?.displayName
-                  ? `Asked by ${r.requestedBy.displayName}`
+                  ? t('lumen.requestEdit.askedBy', undefined, {
+                      name: r.requestedBy.displayName,
+                    })
                   : ''}
                 {r.is4k ? ' · 4K' : ''}
               </span>
@@ -175,8 +185,16 @@ export function RequestEditSheet({
             initial={initial}
           />
           {tv && (
-            <div className="slist" role="group" aria-label="Seasons">
-              {!seasons && <p className="note">Loading seasons…</p>}
+            <div
+              className="slist"
+              role="group"
+              aria-label={t('lumen.requestEdit.seasons')}
+            >
+              {!seasons && (
+                <p className="note">
+                  {t('components.TrackingControls.loadingSeasons')}
+                </p>
+              )}
               {seasons
                 ?.filter(
                   ({ seasonNumber }) =>
@@ -207,17 +225,32 @@ export function RequestEditSheet({
                         <Icon name="check" />
                       </span>
                       <span>
-                        <b>{s.name || `Season ${s.seasonNumber}`}</b>
+                        <b>
+                          {s.name ||
+                            t(
+                              'components.RequestModal.RequestTree.seasonNumber',
+                              undefined,
+                              {
+                                number: s.seasonNumber,
+                              }
+                            )}
+                        </b>
                         {on && requestedEpisodes ? (
                           <small>
-                            {requestedEpisodes} requested{' '}
-                            {requestedEpisodes === 1 ? 'episode' : 'episodes'}
+                            {t(
+                              'lumen.requestEdit.requestedEpisodes',
+                              undefined,
+                              {
+                                count: requestedEpisodes,
+                              }
+                            )}
                           </small>
                         ) : (
                           !!s.episodeCount && (
                             <small>
-                              {s.episodeCount} episode
-                              {s.episodeCount === 1 ? '' : 's'}
+                              {t('lumen.requestEdit.episodeCount', undefined, {
+                                count: s.episodeCount,
+                              })}
                             </small>
                           )
                         )}
@@ -240,14 +273,14 @@ export function RequestEditSheet({
                   disabled={busy || !ready || (tv && !picked.size)}
                   onClick={() => go('approve')}
                 >
-                  {busy ? 'Saving…' : 'Approve'}
+                  {busy ? t('i18n.saving') : t('lumen.requestEdit.approve')}
                 </button>
                 <button
                   className="btn btn-tonal"
                   disabled={busy || !ready || (tv && !picked.size)}
                   onClick={() => go()}
                 >
-                  Save
+                  {t('lumen.requestEdit.save')}
                 </button>
               </>
             ) : (
@@ -256,11 +289,11 @@ export function RequestEditSheet({
                 disabled={busy || !ready || (tv && !picked.size)}
                 onClick={() => go('retry')}
               >
-                {busy ? 'Saving…' : 'Save and try again'}
+                {busy ? t('i18n.saving') : t('lumen.requestEdit.saveAndRetry')}
               </button>
             )}
             <button className="btn btn-quiet" onClick={onClose}>
-              Cancel
+              {t('i18n.cancel')}
             </button>
           </div>
         </div>

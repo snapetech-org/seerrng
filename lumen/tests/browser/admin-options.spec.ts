@@ -22,6 +22,7 @@ const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const testAppPath = (path: string) => `${testMount}${path}`;
 const testApiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+const requestEditBaseline = process.env.LUMEN_REQUEST_EDIT_BASELINE === '1';
 
 async function fixtures(
   page: Page,
@@ -2650,6 +2651,83 @@ test('changing a series request picks its seasons', async ({ page }, info) => {
       { seasonNumber: 2 },
     ],
   });
+});
+
+test('series request editor labels follow the saved locale', async ({
+  page,
+}, info) => {
+  await fixtures(page, { permissions: 2 });
+  await requestRoutes(page);
+  const series = {
+    ...waitingRequest,
+    id: 79,
+    type: 'tv',
+    seasons: [{ seasonNumber: 1, episodeNumbers: [2, 5] }],
+    media: { mediaType: 'tv', tmdbId: 400, status: 2 },
+  };
+  await adminActionRoutes(page, [series]);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.route('**/api/v1/tv/400', (route) =>
+    route.fulfill({
+      json: {
+        id: 400,
+        name: 'Long Show',
+        seasons: [{ seasonNumber: 1, name: 'Season 1', episodeCount: 8 }],
+      },
+    })
+  );
+  await page.route('**/api/v1/service/sonarr', (route) =>
+    route.fulfill({
+      json: [{ id: 0, name: 'Sonarr', is4k: false, isDefault: true }],
+    })
+  );
+  await page.route('**/api/v1/service/sonarr/0', (route) =>
+    route.fulfill({
+      json: {
+        profiles: [{ id: 1, name: 'HD' }],
+        rootFolders: [{ id: 1, path: '/tv' }],
+        server: { activeProfileId: 1, activeDirectory: '/tv' },
+      },
+    })
+  );
+  await page.goto('/requests?tab=everyone');
+  await page
+    .locator('.rq', { hasText: 'Long Show' })
+    .getByRole('button', { name: 'Modifier' })
+    .click();
+  const copy = requestEditBaseline
+    ? {
+        title: 'Change request for Long Show',
+        group: 'Seasons',
+        requested: '2 requested episodes',
+        approve: 'Approve',
+        save: 'Save',
+        cancel: 'Cancel',
+      }
+    : {
+        title: 'Modifier la demande pour Long Show',
+        group: 'Saisons',
+        requested: '2 épisodes demandés',
+        approve: 'Approuver',
+        save: 'Enregistrer',
+        cancel: 'Annuler',
+      };
+  const sheet = page.getByRole('dialog', { name: copy.title });
+  const seasons = sheet.getByRole('group', { name: copy.group });
+  await expect(seasons.getByRole('checkbox')).toHaveCount(1);
+  await expect(seasons.getByRole('checkbox')).toContainText(copy.requested);
+  await expect(sheet.getByRole('button', { name: copy.approve })).toBeVisible();
+  await expect(sheet.getByRole('button', { name: copy.save })).toBeVisible();
+  await expect(sheet.getByRole('button', { name: copy.cancel })).toBeVisible();
+  await settleVisuals(page);
+  const captureDir = process.env.LUMEN_REQUEST_EDIT_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await sheet.screenshot({
+      path: `${captureDir}/${requestEditBaseline ? 'baseline' : 'candidate'}-${info.project.name}.png`,
+      animations: 'disabled',
+    });
 });
 
 test('failed requests can be retried, and Remove asks in a dialog', async ({

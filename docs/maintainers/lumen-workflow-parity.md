@@ -8863,3 +8863,19 @@ French and Arabic desktop/phone states. The previous English fallback and
 localized candidates were inspected at the same routes and viewports; the text
 fits the existing control without layout changes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-title-toggle-localization-20261124/`.
+
+### TV request editor localization
+
+The administrator TV request editor now follows the saved English, French, or
+Arabic locale for its title, requester, season labels, requested-episode counts,
+loading state, and approve/save/cancel actions and completion errors. Native
+SeerrNG translations are reused for common season, loading, cancel, and saving
+labels. Request selection, destination controls, and update/approve/retry API
+payloads are unchanged.
+
+The new browser case verifies the French editor on desktop and iPhone; existing
+English movie and TV edit/approval cases pass. The unit suite passes 59 cases and
+the production build succeeds. Matched baseline and French candidate sheet
+captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-edit-localization-20261124/`.
+Live request submission and independent translation review remain unverified.
