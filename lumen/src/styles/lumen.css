@@ -559,6 +559,26 @@ h3 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.company-banner {
+  display: flex;
+  min-height: 80px;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 24px;
+}
+.company-banner img {
+  max-width: min(100%, 32rem);
+  max-height: 80px;
+  object-fit: contain;
+}
+@media (min-width: 640px) {
+  .company-banner {
+    min-height: 96px;
+  }
+  .company-banner img {
+    max-height: 96px;
+  }
+}
 .sec-head {
   display: flex;
   align-items: baseline;

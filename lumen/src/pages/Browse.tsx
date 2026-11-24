@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { MediaStatus, type Genre, type TitleResult } from '../api';
+import { MediaStatus, tmdbImg, type Genre, type TitleResult } from '../api';
 import { useAuth } from '../auth';
 import { GridSkeleton, MoreOnScroll, TitleCard } from '../components/cards';
 import { ServiceNote } from '../components/extra';
@@ -16,7 +16,8 @@ import {
   createDiscoverNavigationContextId,
   type DiscoverNavigationItem,
 } from '../discoverNavigation';
-import { tvNetworks } from '../discoverNetworks';
+import { defaultDiscoverNetworks, tvNetworks } from '../discoverNetworks';
+import { defaultDiscoverStudios } from '../discoverStudios';
 import {
   discoveryVisibility,
   showDiscoveryTitle,
@@ -484,9 +485,16 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       ? studioParam
       : '';
   const excludeStudio = p.get('excludeStudio') === 'true';
-  const studioInfo = useApi<{ id: number; name: string }>(
+  const studioInfo = useApi<{ id: number; name: string; logoPath?: string }>(
     studio ? `/studio/${studio}` : null
   );
+  const defaultStudio = defaultDiscoverStudios.find(
+    ({ id }) => id === Number(studio)
+  );
+  const studioLogo =
+    studioInfo.data?.id === Number(studio)
+      ? studioInfo.data.logoPath
+      : defaultStudio?.logoPath;
   const studioLabel =
     studioInfo.data?.id === Number(studio)
       ? studioInfo.data?.name
@@ -499,7 +507,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       ? networkParam
       : '';
   const knownNetwork = NETWORK_OPTIONS.find(({ id }) => id === network);
-  const networkInfo = useApi<{ id: number; name: string }>(
+  const networkInfo = useApi<{ id: number; name: string; logoPath?: string }>(
     network && !knownNetwork ? `/network/${network}` : null
   );
   const networkLabel =
@@ -507,6 +515,13 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     (networkInfo.data?.id === Number(network)
       ? networkInfo.data?.name
       : `#${network}`);
+  const defaultNetwork = defaultDiscoverNetworks.find(
+    ({ id }) => id === Number(network)
+  );
+  const networkLogo =
+    networkInfo.data?.id === Number(network)
+      ? networkInfo.data.logoPath
+      : defaultNetwork?.logoPath;
   const countryParam = (p.get('country') ?? '').toUpperCase();
   const country = /^[A-Z]{2}$/.test(countryParam) ? countryParam : '';
   const countries = useApi<{ iso_3166_1: string; english_name: string }[]>(
@@ -756,7 +771,6 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
       'keywords',
       'excludeKeywords',
       'watchProviders',
-      'studio',
     ].some((param) => p.has(param)) || !!(start || end);
   const word =
     kind === 'movie'
@@ -815,6 +829,13 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
     network && networkLabel && networkLabel !== `#${network}`
       ? { id: Number(network), name: networkLabel }
       : undefined;
+  const companyLogo = studioLogo ?? networkLogo;
+  const companyLogoSrc = companyLogo?.startsWith('/images/')
+    ? companyLogo
+    : tmdbImg(companyLogo, 'w780');
+  const companyLogoAlt = studio
+    ? (studioInfo.data?.name ?? defaultStudio?.name ?? studioLabel)
+    : (networkInfo.data?.name ?? defaultNetwork?.name ?? networkLabel);
 
   return (
     <>
@@ -831,6 +852,11 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <span className="ph-text">{searchHint}</span>
         </Link>
       </header>
+      {companyLogo && (
+        <div className="company-banner">
+          <img src={companyLogoSrc} alt={companyLogoAlt} />
+        </div>
+      )}
       <div className="toolbar">
         {canViewFollowing(user?.permissions) && (
           <>

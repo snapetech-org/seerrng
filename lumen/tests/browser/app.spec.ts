@@ -3580,6 +3580,70 @@ test('movie studio details open the matching discovery query', async ({
   await expect(page).toHaveURL(/\/movies$/);
 });
 
+test('native studio and network bookmarks show company artwork in Browse', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route('**/api/v1/studio/42', (route) =>
+    route.fulfill({
+      json: {
+        id: 42,
+        name: 'Fixture Studio',
+        logoPath: '/fixture-studio.png',
+      },
+    })
+  );
+  await page.route('**/imageproxy/tmdb/t/p/w780/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="780" height="440" viewBox="0 0 780 440"><text x="390" y="240" fill="#f1f3f7" font-family="Arial" font-size="72" font-weight="700" text-anchor="middle">COMPANY</text></svg>',
+    })
+  );
+  await page.route('**/api/v1/languages', (route) =>
+    route.fulfill({ json: [] })
+  );
+  await page.route('**/api/v1/watchproviders/regions', (route) =>
+    route.fulfill({
+      json: [{ iso_3166_1: 'US', english_name: 'United States' }],
+    })
+  );
+  await page.goto('/movies?studio=42');
+  const studioImage = page.getByRole('img', { name: 'Fixture Studio' });
+  await expect(studioImage).toBeVisible();
+  await expect(studioImage).toHaveAttribute(
+    'src',
+    '/imageproxy/tmdb/t/p/w780/fixture-studio.png'
+  );
+  await expect(
+    page.getByRole('button', { name: 'Clear Studio Fixture Studio' })
+  ).toBeVisible();
+  const moreFilters = page.locator('details.more-filters');
+  await expect(moreFilters).not.toHaveAttribute('open', '');
+  await page.screenshot({
+    path: info.outputPath('studio-company-banner.png'),
+    fullPage: true,
+  });
+  await moreFilters.locator('summary').click();
+  await expect(
+    page.getByRole('button', { name: 'Production Studios' })
+  ).toBeVisible();
+
+  await page.goto('/series?network=213');
+  const networkImage = page.getByRole('img', { name: 'Netflix' });
+  await expect(networkImage).toBeVisible();
+  await expect(networkImage).toHaveAttribute(
+    'src',
+    '/imageproxy/tmdb/t/p/w780/wwemzKWzjKYJFfCeiB57q3r4Bcm.png'
+  );
+  await expect(
+    page.getByRole('button', { name: 'Clear Network Netflix' })
+  ).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('network-company-banner.png'),
+    fullPage: true,
+  });
+});
+
 test('movie studio search can select and exclude a studio', async ({
   page,
 }) => {

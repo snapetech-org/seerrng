@@ -9472,3 +9472,24 @@ French, or Arabic) instead of displaying English in French and Arabic sessions.
 The browser regression verifies the retained checkbox on the owner edit screen
 at desktop, iPhone, Android, and tablet sizes. It does not verify live genre
 catalog changes or native-matched visual acceptance.
+
+### Studio and Network Discover bookmark artwork
+
+Lumen's native `/discover/movies/studio/:id` and
+`/discover/tv/network/:id` bookmarks now retain the selected company artwork on
+their filtered Browse destinations. Studio artwork uses the authenticated
+SeerrNG studio response, with the existing curated logo list as fallback;
+known TV networks use the existing curated logo data, and other networks use
+the authenticated network response. The image remains on SeerrNG's TMDB image
+proxy, and local studio logos keep their local asset path. Studio bookmarks no
+longer expand the entire unrelated More Filters panel on arrival; the existing
+Studio filter editor is still reachable by opening that panel.
+
+Fixture browser cases cover `/movies?studio=42` and `/series?network=213` on
+desktop, iPhone, Android, and tablet, including the logo source, selected
+filter chip, closed initial disclosure for the studio route, and access to the
+Studio editor. Candidate captures were inspected at 1440x900 and iPhone 13
+390x844; the same-state Lumen baseline captures are retained beside them at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-company-banners-20261124/`.
+The native reference screen has not yet been rendered for matched comparison,
+and live TMDB logo responses remain unverified.
