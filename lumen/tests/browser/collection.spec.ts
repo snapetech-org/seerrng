@@ -442,6 +442,9 @@ test('collection request sheet localizes eligibility and submission feedback', a
     animations: 'disabled',
   });
   await expect(sheet).toHaveAttribute('aria-label', 'Demander la collection');
+  await expect(sheet.getByRole('combobox', { name: 'Qualité' })).toHaveValue(
+    'hd'
+  );
   const filters = sheet.getByRole('group', { name: 'Filtres de collection' });
   await expect(
     filters.getByRole('combobox', { name: 'Année de sortie' })

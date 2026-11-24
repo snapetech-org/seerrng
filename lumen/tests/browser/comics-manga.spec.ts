@@ -633,6 +633,43 @@ test('hovering a card offers Request and Choose edition', async ({
   await expect(card.locator('.glyph')).toHaveAttribute('title', 'Requested');
 });
 
+test('comic shelves localize their scroll and edition controls', async ({
+  page,
+}, info) => {
+  await fixtures(page, {
+    locale: 'fr',
+    trending: [{ ...chainsaw(), editions: [], editionsResolved: true }],
+  });
+  await page.goto('/comics');
+  const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
+  await expect(page.locator('.rail-btn.next').first()).toHaveAttribute(
+    'aria-label',
+    baseline ? 'Scroll forward' : 'Faire défiler vers l’avant'
+  );
+  const captureDirectory = process.env.LUMEN_A11Y_CAPTURE_DIR;
+  if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDirectory}/${info.project.name}.png`,
+      fullPage: true,
+      animations: 'disabled',
+    });
+  if (!hoverable(info.project.name)) return;
+  const card = page.locator('.rail .comic-card').first();
+  await expect(card).toBeVisible();
+  await card.hover();
+  if (captureDirectory && info.project.name === 'desktop')
+    await page.screenshot({
+      path: `${captureDirectory}/desktop-hover.png`,
+      fullPage: true,
+      animations: 'disabled',
+    });
+  await expect(
+    card.getByRole('link', {
+      name: baseline ? 'Choose edition' : 'Choisir une édition',
+    })
+  ).toHaveAttribute('href', /#editions$/);
+});
+
 test('a manga whose editions are not looked up yet is requested in one click', async ({
   page,
 }, info) => {
@@ -1057,6 +1094,38 @@ test('hovering a complete card reads it in Kavita, a part-owned one offers it to
   await expect(
     cards.nth(2).getByRole('link', { name: /in Kavita/ })
   ).toHaveCount(0);
+});
+
+test('comic cards localize their Kavita reading action', async ({
+  page,
+}, info) => {
+  test.skip(!hoverable(info.project.name), 'needs a mouse');
+  await fixtures(page, {
+    locale: 'fr',
+    browse: [oshi(reading(complete))],
+  });
+  const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
+  await page.goto('/comics?type=manga');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+  await expect(
+    page.locator('nav.side').getByRole('link', { name: 'Découvrir' })
+  ).toBeVisible();
+  const card = page.locator('.comic-grid .poster').first();
+  await card.hover();
+  const captureDirectory = process.env.LUMEN_A11Y_CAPTURE_DIR;
+  if (captureDirectory && info.project.name === 'desktop')
+    await page.screenshot({
+      path: `${captureDirectory}/kavita-hover-desktop.png`,
+      fullPage: true,
+      animations: 'disabled',
+    });
+  await expect(
+    card.getByRole('link', {
+      name: baseline
+        ? 'Read [Oshi no Ko] in Kavita'
+        : 'Lire [Oshi no Ko] dans Kavita',
+    })
+  ).toHaveAttribute('href', KAVITA);
 });
 
 for (const width of [360, 768]) {

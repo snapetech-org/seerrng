@@ -489,7 +489,7 @@ export function TitleCard({
         onClick={saveDiscoverContext}
       >
         <Icon name="list" size="sm" />
-        Choose seasons
+        {t('lumen.accessibility.chooseSeasons', 'Choose seasons')}
       </Link>
     );
   else
@@ -509,8 +509,11 @@ export function TitleCard({
             className="qbtn ghost"
             to={detailHref + '#seasons'}
             onClick={saveDiscoverContext}
-            aria-label="Choose seasons"
-            title="Choose seasons"
+            aria-label={t(
+              'lumen.accessibility.chooseSeasons',
+              'Choose seasons'
+            )}
+            title={t('lumen.accessibility.chooseSeasons', 'Choose seasons')}
           >
             <Icon name="list" size="sm" />
           </Link>
@@ -585,6 +588,7 @@ export function TitleCard({
 }
 
 export function BookCard({ b }: { b: BookResult }) {
+  const { t } = useLumenLocale();
   const titleMode = useCardTitleMode('book');
   const audio = b.bookFormat === 'audiobook';
   const { prefs } = usePrefs();
@@ -712,8 +716,14 @@ export function BookCard({ b }: { b: BookResult }) {
                       <Link
                         className="qbtn ghost"
                         to={href + '#narr'}
-                        aria-label="Request another narrator"
-                        title="Request another narrator"
+                        aria-label={t(
+                          'lumen.accessibility.requestAnotherNarrator',
+                          'Request another narrator'
+                        )}
+                        title={t(
+                          'lumen.accessibility.requestAnotherNarrator',
+                          'Request another narrator'
+                        )}
                       >
                         <Icon name="plus" size="sm" />
                       </Link>
@@ -776,6 +786,7 @@ export function FeatCard({
   eyebrow: string;
   lazy?: boolean;
 }) {
+  const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const tv = it.mediaType === 'tv';
   const availability = useVideoAvailability();
@@ -848,7 +859,7 @@ export function FeatCard({
           ) : quick.allowed && tv && !prefs.wholeSeriesDefault ? (
             <Link className="btn go" to={`/tv/${it.id}#seasons`}>
               <Icon name="list" size="sm" />
-              Choose seasons
+              {t('lumen.accessibility.chooseSeasons', 'Choose seasons')}
             </Link>
           ) : quick.allowed ? (
             <button className="btn go" disabled={busy} onClick={request}>
@@ -875,6 +886,7 @@ export function Rail({
   className?: string;
   restoreId?: string;
 }) {
+  const { t } = useLumenLocale();
   const location = useLocation();
   const storageKey = restoreId
     ? JSON.stringify([location.key, restoreId])
@@ -926,7 +938,7 @@ export function Rail({
       </div>
       <button
         className="rail-btn prev"
-        aria-label="Scroll back"
+        aria-label={t('lumen.accessibility.scrollBack', 'Scroll back')}
         disabled={edge.start}
         onClick={() => by(-1)}
       >
@@ -934,7 +946,7 @@ export function Rail({
       </button>
       <button
         className="rail-btn next"
-        aria-label="Scroll forward"
+        aria-label={t('lumen.accessibility.scrollForward', 'Scroll forward')}
         disabled={edge.end}
         onClick={() => by(1)}
       >
@@ -970,16 +982,23 @@ export function Section({
 }
 
 // placeholder row while a section loads, so the page doesn't jump
-export const RailSkeleton = ({ n = 8, sq }: { n?: number; sq?: boolean }) => (
-  <div className="rail">
-    {Array.from({ length: n }, (_, i) => (
-      <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
-        <div className="art skel" />
-        <div className="t skel-line" />
-      </div>
-    ))}
-  </div>
-);
+export const RailSkeleton = ({ n = 8, sq }: { n?: number; sq?: boolean }) => {
+  const { t } = useLumenLocale();
+  return (
+    <div
+      className="rail"
+      aria-busy="true"
+      aria-label={t('lumen.accessibility.loading', 'Loading')}
+    >
+      {Array.from({ length: n }, (_, i) => (
+        <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
+          <div className="art skel" />
+          <div className="t skel-line" />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // placeholder grid while a list's first page loads, so a slow answer doesn't look empty
 export const GridSkeleton = ({
@@ -990,16 +1009,23 @@ export const GridSkeleton = ({
   n?: number;
   sq?: boolean;
   className?: string;
-}) => (
-  <div className={className} aria-busy="true" aria-label="Loading">
-    {Array.from({ length: n }, (_, i) => (
-      <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
-        <div className="art skel" />
-        <div className="t skel-line" />
-      </div>
-    ))}
-  </div>
-);
+}) => {
+  const { t } = useLumenLocale();
+  return (
+    <div
+      className={className}
+      aria-busy="true"
+      aria-label={t('lumen.accessibility.loading', 'Loading')}
+    >
+      {Array.from({ length: n }, (_, i) => (
+        <div key={i} className={`poster ${sq ? 'sq' : ''}`}>
+          <div className="art skel" />
+          <div className="t skel-line" />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // endless scrolling: loads the next page when this marker comes within a screen of view
 export function MoreOnScroll({

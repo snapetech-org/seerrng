@@ -22,10 +22,12 @@ async function fixtures(
     handle = () => undefined,
     permissions = 2,
     pub = {},
+    locale = 'en',
   }: {
     handle?: Handler;
     permissions?: number;
     pub?: Record<string, unknown>;
+    locale?: string;
   } = {}
 ) {
   const posts: { path: string; body: unknown }[] = [];
@@ -45,7 +47,8 @@ async function fixtures(
       });
     if (path === '/settings/public')
       return route.fulfill({ json: { mediaServerType: 1, ...pub } });
-    if (path === '/user/1/settings/main') return route.fulfill({ json: {} });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
     if (path.startsWith('/service/') || path.startsWith('/genres/'))
       return route.fulfill({ json: [] });
     return route.fulfill({ json: paged([]) });
@@ -330,6 +333,29 @@ test('Games shows placeholders while the catalogues are checked, then an error w
   await page.getByRole('button', { name: 'Retry' }).click();
   await expect(
     page.getByRole('link', { name: 'Found Game', exact: true })
+  ).toBeVisible();
+});
+
+test('Games gives its loading placeholder a localized accessible name', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    pub: { enabledMediaCategories: { game: true }, softwareEnabled: true },
+    locale: 'fr',
+    handle: async (path, url) => {
+      if (
+        path.startsWith('/request/software/catalog/') &&
+        url.searchParams.get('limit') === '1'
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return { status: 404, json: {} };
+      }
+      return undefined;
+    },
+  });
+  await page.goto('/games');
+  await expect(
+    page.locator('[aria-busy="true"][aria-label="Chargement"]')
   ).toBeVisible();
 });
 

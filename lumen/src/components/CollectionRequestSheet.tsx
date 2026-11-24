@@ -266,7 +266,6 @@ export default function CollectionRequestSheet({
                 {t('lumen.collectionRequest.quality', 'Quality')}
               </span>
               <select
-                aria-label="Collection Request Quality"
                 value={quality}
                 disabled={busy || !!outcomes}
                 onChange={(event) => {

@@ -1,0 +1,1 @@
+Shared Lumen media-card controls and loading placeholders now localize their accessible names, including the separate complete-series Kavita action. Collection request quality uses its visible localized label.

@@ -10,6 +10,7 @@ import {
   type ComicEdition,
   type ComicWork,
 } from '../extras';
+import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { usePrefs } from '../settings';
 import { Cover, Glyph, StatLabel, TouchQuick, type Stat } from './cards';
@@ -56,6 +57,7 @@ export async function requestComicEdition(
 }
 
 export function ComicCard({ w }: { w: ComicWork }) {
+  const { t } = useLumenLocale();
   const { prefs, kavitaUrl } = usePrefs();
   const { user } = useAuth();
   const mayRequest = canRequestComic(user?.permissions);
@@ -133,8 +135,16 @@ export function ComicCard({ w }: { w: ComicWork }) {
       href={readHref}
       target="_blank"
       rel="noopener"
-      aria-label={`Read ${w.title} in Kavita`}
-      title="Read in Kavita"
+      aria-label={t(
+        'lumen.accessibility.readInKavita',
+        'Read {title} in Kavita',
+        {
+          title: w.title,
+        }
+      )}
+      title={t('lumen.accessibility.readInKavita', 'Read {title} in Kavita', {
+        title: w.title,
+      })}
     >
       <Icon name="book" size="sm" />
     </a>
@@ -143,8 +153,8 @@ export function ComicCard({ w }: { w: ComicWork }) {
     <Link
       className="qbtn ghost"
       to={href + '#editions'}
-      aria-label="Choose edition"
-      title="Choose edition"
+      aria-label={t('lumen.accessibility.chooseEdition', 'Choose edition')}
+      title={t('lumen.accessibility.chooseEdition', 'Choose edition')}
     >
       <Icon name="list" size="sm" />
     </Link>
@@ -196,10 +206,14 @@ export function ComicCard({ w }: { w: ComicWork }) {
                           href={readHref}
                           target="_blank"
                           rel="noopener"
-                          aria-label={`Read ${w.title} in Kavita`}
+                          aria-label={t(
+                            'lumen.accessibility.readInKavita',
+                            'Read {title} in Kavita',
+                            { title: w.title }
+                          )}
                         >
                           <Icon name="book" size="sm" />
-                          Read
+                          {t('lumen.accessibility.read', 'Read')}
                         </a>
                       ) : (
                         // the same page as the poster's own link: kept out of Tab order
@@ -243,7 +257,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
                   ) : (
                     <Link className="qbtn go" to={href + '#editions'}>
                       <Icon name="list" size="sm" />
-                      Choose edition
+                      {t('lumen.accessibility.chooseEdition', 'Choose edition')}
                     </Link>
                   )}
                 </div>

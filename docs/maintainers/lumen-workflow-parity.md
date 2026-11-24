@@ -9180,3 +9180,27 @@ overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-detail-20261124/`.
 The production Express `/lumen/` mount and live provider-backed media-server
 verification remain open.
+
+### Shared control accessibility and localization (2026-11-24)
+
+The shared Lumen media cards and loading placeholders now localize season
+selection, comic edition selection, Kavita reading links, audiobook narrator
+actions, carousel scroll controls, and loading accessible names in English,
+French, and Arabic. The collection-request quality select now takes its
+accessible name from its existing visible localized label instead of an
+overriding English-only `aria-label`. The complete-series Kavita action had a
+separate hard-coded branch; it now uses the same localized accessible name and
+visible action label as other comic-card reading links.
+
+Browser coverage checks French comic carousel and edition controls at desktop
+and iPhone sizes, a French loading placeholder, and the collection quality
+select's accessible name. The focused game loading recovery tests and collection
+request localization case also pass. Matched `/comics` baseline and candidate
+screenshots were captured at a 1440x900 desktop viewport and an iPhone 13
+390x844 CSS-pixel viewport (rendered as a 1170x7080 full-page image). The page
+geometry is pixel-identical in the resting state; the desktop hover state
+differs only in translated action text for edition selection and Kavita
+reading, with no layout shift or overflow. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-shared-accessibility-20261124/`.
+This validates the changed shared surfaces represented by those fixtures, not
+every consumer route or the production Express `/lumen/` mount.
