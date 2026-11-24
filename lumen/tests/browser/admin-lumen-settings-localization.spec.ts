@@ -33,6 +33,10 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'Theme',
       logoShape: 'Logo shape',
       quickRequest: 'Quick request on posters',
+      requestSettingsTitle: 'Instance Request Settings',
+      requestSettingsSummary: '4K, partial series and episode rules',
+      requestSettingsHelp: 'These are SeerrNG server settings for everyone.',
+      requestDefaultsLink: 'Request Defaults',
       allowChange: 'Let people change it',
       saveSuccess: 'Saved. Everyone gets it the next time they open Lumen.',
     },
@@ -47,6 +51,10 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'Thème',
       logoShape: 'Forme du logo',
       quickRequest: 'Demande rapide sur les affiches',
+      requestSettingsTitle: 'Paramètres de demande de l’instance',
+      requestSettingsSummary: 'Règles 4K, saisons partielles et épisodes',
+      requestSettingsHelp: 'Ces réglages SeerrNG s’appliquent à tout le monde.',
+      requestDefaultsLink: 'Paramètres par défaut des demandes',
       allowChange: 'Autoriser les utilisateurs à le modifier',
       saveSuccess:
         'Enregistré. Le changement s’appliquera à la prochaine ouverture de Lumen.',
@@ -62,6 +70,10 @@ test('Lumen administration settings follow locale and retain config behavior', a
       theme: 'السمة',
       logoShape: 'شكل الشعار',
       quickRequest: 'طلب سريع على الملصقات',
+      requestSettingsTitle: 'إعدادات طلب المثيل',
+      requestSettingsSummary: 'قواعد 4K والمواسم الجزئية والحلقات',
+      requestSettingsHelp: 'تنطبق إعدادات SeerrNG هذه على الجميع.',
+      requestDefaultsLink: 'إعدادات الطلبات الافتراضية',
       allowChange: 'السماح للمستخدمين بتغييره',
       saveSuccess:
         'تم الحفظ. ستظهر الإعدادات للجميع عند فتح Lumen في المرة التالية.',
@@ -124,6 +136,18 @@ test('Lumen administration settings follow locale and retain config behavior', a
   await expect(
     page.getByRole('heading', { name: expected.defaults })
   ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: expected.requestSettingsTitle })
+  ).toBeVisible();
+  await expect(
+    page.getByText(expected.requestSettingsSummary, { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText(expected.requestSettingsHelp, { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: expected.requestDefaultsLink })
+  ).toHaveAttribute('href', '/admin/requests');
   await expect(page.locator('.cfg-select').first()).toHaveAttribute(
     'aria-label',
     expected.mediaServer

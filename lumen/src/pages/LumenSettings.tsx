@@ -541,15 +541,28 @@ export default function LumenSettings() {
         )
       )}
 
-      <Section title="Instance Request Settings">
+      <Section
+        title={admin('requestSettingsTitle', 'Instance Request Settings')}
+      >
         <div className="setlist">
           <div className="set">
             <span>
-              <b>4K, partial series and episode rules</b>
-              <small>These are SeerrNG server settings for everyone.</small>
+              <b>
+                {admin(
+                  'requestSettingsSummary',
+                  '4K, partial series and episode rules'
+                )}
+              </b>
+              <small>
+                {admin(
+                  'requestSettingsHelp',
+                  'These are SeerrNG server settings for everyone.'
+                )}
+              </small>
             </span>
             <Link className="go" to="/admin/requests">
-              Request Defaults <Icon name="chev" size="sm" />
+              {admin('requestDefaultsLink', 'Request Defaults')}{' '}
+              <Icon name="chev" size="sm" />
             </Link>
           </div>
         </div>

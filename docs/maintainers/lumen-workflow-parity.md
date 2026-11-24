@@ -9235,3 +9235,21 @@ overflow or clipped controls. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-configured-shelf-localization-20261124/`.
 The standalone client was verified; the production Express `/lumen/` mount
 remains open.
+
+### Lumen instance request summary localization (2026-11-24)
+
+The instance request policy summary on Lumen's administrator settings page now
+localizes its heading, explanatory text, and Request Defaults link in English,
+French, and Arabic. The link still opens `/admin/requests`; request policy
+values and settings save behavior are unchanged.
+
+The existing administrator settings browser fixture passes on desktop and
+iPhone in all three locales, including its settings save/readback interaction.
+Matched baseline and candidate screenshots were captured from the same route
+and viewport. English is pixel-identical. French desktop and Arabic desktop
+retain the same page height; French iPhone grows by 87 rendered pixels (29 CSS
+pixels) as the translated label wraps, with no horizontal overflow. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-policy-localization-20261124/`.
+Live administrator settings persistence and the production Express `/lumen/`
+mount remain open.

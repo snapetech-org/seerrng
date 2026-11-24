@@ -2651,6 +2651,12 @@ export const localeData = [
       'lumen.adminSettings.offCanChange': 'إيقاف (يمكن للمستخدمين تشغيله)',
       'lumen.adminSettings.onCanChange': 'تشغيل (يمكن للمستخدمين إيقافه)',
       'lumen.adminSettings.preview': 'معاينة',
+      'lumen.adminSettings.requestDefaultsLink': 'إعدادات الطلبات الافتراضية',
+      'lumen.adminSettings.requestSettingsHelp':
+        'تنطبق إعدادات SeerrNG هذه على الجميع.',
+      'lumen.adminSettings.requestSettingsSummary':
+        'قواعد 4K والمواسم الجزئية والحلقات',
+      'lumen.adminSettings.requestSettingsTitle': 'إعدادات طلب المثيل',
       'lumen.adminSettings.reading': 'جارٍ القراءة…',
       'lumen.adminSettings.saveFailed': 'تعذّر الحفظ',
       'lumen.adminSettings.saveForEveryone': 'حفظ للجميع',
@@ -14271,6 +14277,12 @@ export const localeData = [
       'lumen.adminSettings.offCanChange': 'Off (people can turn it on)',
       'lumen.adminSettings.onCanChange': 'On (people can turn it off)',
       'lumen.adminSettings.preview': 'Preview',
+      'lumen.adminSettings.requestDefaultsLink': 'Request Defaults',
+      'lumen.adminSettings.requestSettingsHelp':
+        'These are SeerrNG server settings for everyone.',
+      'lumen.adminSettings.requestSettingsSummary':
+        '4K, partial series and episode rules',
+      'lumen.adminSettings.requestSettingsTitle': 'Instance Request Settings',
       'lumen.adminSettings.reading': 'Reading…',
       'lumen.adminSettings.saveFailed': 'Couldn’t save',
       'lumen.adminSettings.saveForEveryone': 'Save for everyone',
@@ -26702,6 +26714,14 @@ export const localeData = [
       'lumen.adminSettings.onCanChange':
         'Activé (les utilisateurs peuvent le désactiver)',
       'lumen.adminSettings.preview': 'Aperçu',
+      'lumen.adminSettings.requestDefaultsLink':
+        'Paramètres par défaut des demandes',
+      'lumen.adminSettings.requestSettingsHelp':
+        'Ces réglages SeerrNG s’appliquent à tout le monde.',
+      'lumen.adminSettings.requestSettingsSummary':
+        'Règles 4K, saisons partielles et épisodes',
+      'lumen.adminSettings.requestSettingsTitle':
+        'Paramètres de demande de l’instance',
       'lumen.adminSettings.reading': 'Lecture…',
       'lumen.adminSettings.saveFailed': 'Enregistrement impossible',
       'lumen.adminSettings.saveForEveryone': 'Enregistrer pour tout le monde',
