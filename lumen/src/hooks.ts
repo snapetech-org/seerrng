@@ -22,6 +22,7 @@ import {
   shared,
 } from './apiCache';
 import { friendlyError } from './errors';
+import { useLumenLocale } from './i18n';
 import { recentPublicSettings } from './mediaServer';
 import { onSessionReset, sessionGeneration } from './sessionState';
 
@@ -212,6 +213,7 @@ export function usePaged<T, Metadata extends object = object>(
   base: string | null,
   idOf: (item: T) => string = pageItemId
 ) {
+  const { t } = useLumenLocale();
   const entry = useLocation().key;
   const snapKey = `${entry}|${base}`;
   const snap = pagedSnap.get(snapKey);
@@ -223,7 +225,15 @@ export function usePaged<T, Metadata extends object = object>(
   const [total, setTotal] = useState(snap?.total || 1);
   const [loading, setLoading] = useState(false);
   const [loadedBase, setLoadedBase] = useState(base);
-  const [error, setError] = useState<string | null>(null);
+  const [errorCause, setErrorCause] = useState<unknown | null>(null);
+  const error =
+    errorCause == null
+      ? null
+      : friendlyError(
+          errorCause,
+          t('lumen.error.loadFailed', 'Couldn’t load this content.'),
+          t
+        );
   // the cache generation these rows were fetched under: a request made since then means the
   // restored rows may show a title as not requested
   const rowsGen = useRef(snap?.gen ?? cacheGeneration());
@@ -242,7 +252,7 @@ export function usePaged<T, Metadata extends object = object>(
     setPage(s?.page || 0);
     setFirstPage(s?.firstPage as Metadata | undefined);
     setTotal(s?.total || 1);
-    setError(null);
+    setErrorCause(null);
     rowsGen.current = s?.gen ?? cacheGeneration();
     inFlight.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -330,7 +340,7 @@ export function usePaged<T, Metadata extends object = object>(
       const requestGeneration = generation.current;
       const ownsRequest = () =>
         generation.current === requestGeneration && inFlight.current === key;
-      setError(null);
+      setErrorCause(null);
       setLoading(true);
       try {
         const d = await readCatalogPage<Paged<T> & Metadata>(base, page + 1);
@@ -344,7 +354,7 @@ export function usePaged<T, Metadata extends object = object>(
         setPage(d.page);
         setTotal(d.totalPages || 1);
       } catch (e) {
-        if (ownsRequest()) setError(friendlyError(e, 'Failed to load'));
+        if (ownsRequest()) setErrorCause(e ?? new Error('Failed to load'));
       } finally {
         if (ownsRequest()) {
           inFlight.current = null;
@@ -352,7 +362,7 @@ export function usePaged<T, Metadata extends object = object>(
         }
       }
     },
-    [base, loadedBase, page, total, loading, error, idOf]
+    [base, loadedBase, page, total, loading, error, idOf, t]
   );
   const recheckEmptyFirstPage = useCallback(() => {
     if (!base || loadedBase !== base || page !== 1 || items.length || loading)
@@ -360,7 +370,7 @@ export function usePaged<T, Metadata extends object = object>(
     const separator = base.includes('?') ? '&' : '?';
     forget(`${base}${separator}page=1`);
     setPage(0);
-    setError(null);
+    setErrorCause(null);
   }, [base, loadedBase, page, items.length, loading]);
   const more = useCallback(() => loadNext(false), [loadNext]);
   const retry = useCallback(() => loadNext(true), [loadNext]);

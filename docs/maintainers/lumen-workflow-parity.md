@@ -9404,3 +9404,22 @@ changing poster or page geometry. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-error-localization-20261124/`.
 Phone layout, live provider behavior, and production `/lumen/` mounting remain
 unverified.
+
+### Shared paged catalog failure and retry localization (2026-11-24)
+
+`usePaged` now retains the failure cause and formats it with the active locale
+when rendered, so changing locale does not leave a stale English message.
+`MoreOnScroll` uses the existing localized catalog error, Retry, and loading
+messages unless a page supplies its own copy. This covers shared paged lists
+across Books, Discover, Comics, Music, Games, Sports, and related content.
+
+Three desktop Books catalog cases pass in English, French, and Arabic. Each
+forces a 500 on the first catalog request, verifies both the detail message and
+the retry control, then succeeds on retry. The pre-change baseline at
+`4bf115cf0` rendered English server, load-more, and retry copy in French and
+Arabic. Matched 1440x900 screenshots were inspected; the error and retry state
+keeps the same page and control geometry while the messages follow the locale.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-paged-error-localization-20261124/`.
+Other list consumers, phone layouts, live provider responses, and production
+`/lumen/` mounting remain unverified.
