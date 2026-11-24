@@ -3,8 +3,14 @@ import { expect, test } from '@playwright/test';
 test('Radarr creation tests credentials and assigns a request destination', async ({
   page,
 }, info) => {
-  const writes: { method: string; body?: Record<string, unknown> }[] = [];
+  const writes: {
+    method: string;
+    path?: string;
+    body?: Record<string, unknown>;
+  }[] = [];
   let services: Record<string, unknown>[] = [];
+  let failNextSave = true;
+  let hideNextReadback = true;
   const path = '/api/v1/settings/radarr';
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -17,14 +23,20 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!endpoint.startsWith(path)) return route.fulfill({ json: {} });
     const method = request.method();
-    if (method === 'GET') return route.fulfill({ json: services });
+    if (method === 'GET') {
+      if (services.length && hideNextReadback) {
+        hideNextReadback = false;
+        return route.fulfill({ json: [] });
+      }
+      return route.fulfill({ json: services });
+    }
     if (method === 'DELETE') {
-      writes.push({ method });
+      writes.push({ method, path: endpoint });
       services = [];
       return route.fulfill({ status: 204 });
     }
     const body = request.postDataJSON();
-    writes.push({ method, body });
+    writes.push({ method, path: endpoint, body });
     if (endpoint.endsWith('/test'))
       return route.fulfill({
         json: {
@@ -33,6 +45,10 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
           tags: [{ id: 3, label: 'requested' }],
         },
       });
+    if (method === 'POST' && failNextSave) {
+      failNextSave = false;
+      return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
+    }
     const result = { ...body, id: 0, apiKey: '[REDACTED]' };
     services = [result];
     return route.fulfill({ json: result });
@@ -49,6 +65,28 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
   await page.getByLabel('Quality Profile').selectOption('2');
   await page.getByLabel('Root Folder').selectOption('/movies');
   await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Could not save the Radarr service.'
+  );
+  if (process.env.LUMEN_CAPTURE_RADARR) {
+    await page.screenshot({
+      path: info.outputPath('radarr-save-write-error.png'),
+    });
+  }
+  await save.click();
+  await expect(page.getByRole('alert')).toContainText(
+    'The server did not confirm the saved Radarr settings.'
+  );
+  await expect(page.getByLabel('Service Name')).toHaveValue('Home Radarr');
+  await expect(
+    page.getByRole('button', { name: 'Edit Home Radarr' })
+  ).toHaveCount(0);
+  if (process.env.LUMEN_CAPTURE_RADARR) {
+    await page.screenshot({
+      path: info.outputPath('radarr-save-readback-error.png'),
+    });
+  }
+  await save.click();
   await page.getByRole('button', { name: 'Edit Home Radarr' }).click();
   await expect(page.getByLabel('API Key')).toHaveValue('');
   await page.getByLabel('Request Button Label').fill('Home Movies');
@@ -58,16 +96,16 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({
       path: info.outputPath('radarr.png'),
-      fullPage: true,
     });
   }
   await page.getByRole('button', { name: 'Remove Service' }).click();
-  expect(writes).toHaveLength(3);
+  expect(writes).toHaveLength(5);
   await page.getByRole('button', { name: 'Confirm Removal' }).click();
   await expect(page.getByText('No Radarr services configured.')).toBeVisible();
   expect(writes).toEqual([
     {
       method: 'POST',
+      path: `${path}/test`,
       body: expect.objectContaining({
         apiKey: 'fixture-key',
         hostname: 'radarr.internal',
@@ -75,6 +113,23 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     },
     {
       method: 'POST',
+      path,
+      body: expect.objectContaining({
+        apiKey: 'fixture-key',
+        hostname: 'radarr.internal',
+      }),
+    },
+    {
+      method: 'POST',
+      path,
+      body: expect.objectContaining({
+        apiKey: 'fixture-key',
+        hostname: 'radarr.internal',
+      }),
+    },
+    {
+      method: 'PUT',
+      path: `${path}/0`,
       body: expect.objectContaining({
         activeProfileId: 2,
         activeProfileName: 'HD',
@@ -83,12 +138,13 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     },
     {
       method: 'PUT',
+      path: `${path}/0`,
       body: expect.objectContaining({
         apiKey: '[REDACTED]',
         requestButtonLabel: 'Home Movies',
       }),
     },
-    { method: 'DELETE' },
+    { method: 'DELETE', path: `${path}/0` },
   ]);
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)

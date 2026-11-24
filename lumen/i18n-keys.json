@@ -4137,6 +4137,7 @@
   "lumen.servarr.retry",
   "lumen.servarr.rootFolder",
   "lumen.servarr.runMetadataDiagnostic",
+  "lumen.servarr.saveConfirmFailure",
   "lumen.servarr.saveFallback",
   "lumen.servarr.saveService",
   "lumen.servarr.savedKey",

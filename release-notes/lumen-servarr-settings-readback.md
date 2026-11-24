@@ -1,0 +1,1 @@
+Lumen now confirms that Servarr service settings persisted before closing the form. If the readback is stale or unavailable, the form keeps its draft and retries an already-created service by ID instead of creating a duplicate. Redacted API keys remain write-only; only their configured state is checked.

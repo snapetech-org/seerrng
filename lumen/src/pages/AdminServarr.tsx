@@ -105,6 +105,31 @@ interface BookDiagnostic {
   legacyWarning?: string;
 }
 
+function comparableService(service: Service) {
+  const { apiKey, ...safe } = service;
+  const normalize = (value: unknown): unknown => {
+    if (Array.isArray(value)) return value.map(normalize);
+    if (!value || typeof value !== 'object') return value;
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, entry]) => [key, normalize(entry)])
+    );
+  };
+  return {
+    configuredApiKey: Boolean(apiKey),
+    values: normalize(safe),
+  };
+}
+
+function sameService(left: Service, right: Service) {
+  return (
+    left.id === right.id &&
+    JSON.stringify(comparableService(left)) ===
+      JSON.stringify(comparableService(right))
+  );
+}
+
 const empty: Service = {
   name: '',
   hostname: '',
@@ -154,6 +179,7 @@ function ServiceForm({
   const hasMetadata = provider === 'lidarr' || isBook;
   const endpoint = `/settings/${provider}`;
   const [draft, setDraft] = useState({ ...initial, apiKey: '' });
+  const [createdId, setCreatedId] = useState<number>();
   const [options, setOptions] = useState<Options>();
   const [mappingText, setMappingText] = useState(() =>
     JSON.stringify(initial.binderyUserMappings ?? {}, null, 2)
@@ -191,11 +217,11 @@ function ServiceForm({
   const [failure, setFailure] = useState('');
   const [diagnostic, setDiagnostic] = useState<BookDiagnostic>();
   const pending = useRef(false);
-  const path =
-    initial.id === undefined ? endpoint : `${endpoint}/${initial.id}`;
+  const editingId = initial.id ?? createdId;
+  const path = editingId === undefined ? endpoint : `${endpoint}/${editingId}`;
   const key = draft.apiKey || (initial.apiKey ? '[REDACTED]' : '');
   const connection = {
-    id: initial.id,
+    id: editingId,
     hostname: draft.hostname,
     port: draft.port,
     apiKey: key,
@@ -271,14 +297,16 @@ function ServiceForm({
       setOptions(undefined);
   }
 
-  async function run(action: () => Promise<void>, error: string) {
+  async function run(action: () => Promise<void | string>, error: string) {
     if (pending.current) return;
     pending.current = true;
     setBusy(true);
     setFailure('');
     const generation = sessionGeneration();
     try {
-      await action();
+      const actionFailure = await action();
+      if (generation === sessionGeneration() && actionFailure)
+        setFailure(actionFailure);
     } catch {
       if (generation === sessionGeneration()) setFailure(error);
     } finally {
@@ -343,8 +371,8 @@ function ServiceForm({
     const generation = sessionGeneration();
     void run(
       async () => {
-        await api(path, {
-          method: initial.id === undefined ? 'POST' : 'PUT',
+        const updated = await api<Service>(path, {
+          method: editingId === undefined ? 'POST' : 'PUT',
           body: JSON.stringify(
             collector
               ? {
@@ -424,7 +452,38 @@ function ServiceForm({
                 }
           ),
         });
-        if (generation === sessionGeneration()) done();
+        if (generation !== sessionGeneration()) return;
+        if (
+          updated.id === undefined ||
+          !Number.isSafeInteger(updated.id) ||
+          updated.id < 0
+        )
+          return t(
+            'lumen.servarr.saveConfirmFailure',
+            'Could not confirm the saved {service} settings. Keep this form open and try again.',
+            { service: name }
+          );
+        if (initial.id === undefined) setCreatedId(updated.id);
+        let readback: Service[];
+        try {
+          readback = await api<Service[]>(endpoint, { cache: 'no-store' });
+        } catch {
+          if (generation !== sessionGeneration()) return;
+          return t(
+            'lumen.servarr.saveConfirmFailure',
+            'Could not confirm the saved {service} settings. Keep this form open and try again.',
+            { service: name }
+          );
+        }
+        if (generation !== sessionGeneration()) return;
+        const persisted = readback.find(({ id }) => id === updated.id);
+        if (!persisted || !sameService(updated, persisted))
+          return t(
+            'lumen.servarr.saveConfirmFailure',
+            'Could not confirm the saved {service} settings. Keep this form open and try again.',
+            { service: name }
+          );
+        done();
       },
       t('lumen.servarr.saveFallback', 'Could not save the {service} service.', {
         service: name,
@@ -433,7 +492,7 @@ function ServiceForm({
   }
 
   function remove() {
-    if (!confirmation || initial.id === undefined) return;
+    if (!confirmation || editingId === undefined) return;
     const generation = sessionGeneration();
     void run(
       async () => {
@@ -451,12 +510,12 @@ function ServiceForm({
   return (
     <Section
       title={
-        initial.id === undefined
+        editingId === undefined
           ? t('lumen.servarr.addTitle', 'Add {service} Service', {
               service: name,
             })
           : t('lumen.servarr.editTitle', 'Edit {service}', {
-              service: initial.name,
+              service: initial.name || draft.name,
             })
       }
     >
@@ -473,7 +532,7 @@ function ServiceForm({
                 <span>{t('lumen.servarr.backend', 'Backend')}</span>
                 <select
                   className="cfg-select"
-                  disabled={busy || initial.id !== undefined}
+                  disabled={busy || editingId !== undefined}
                   value={backend}
                   onChange={(event) => {
                     const selected = event.target.value as Service['backend'];
@@ -1133,7 +1192,7 @@ function ServiceForm({
           >
             {t('lumen.servarr.cancel', 'Cancel')}
           </button>
-          {initial.id !== undefined && (
+          {editingId !== undefined && (
             <button
               type="button"
               className="btn btn-quiet btn-sm"
@@ -1150,7 +1209,7 @@ function ServiceForm({
               {t(
                 'lumen.servarr.removeConfirmation',
                 'Remove {service} as a request destination?',
-                { service: initial.name }
+                { service: initial.name ?? draft.name }
               )}
             </p>
             <div className="toolbar">

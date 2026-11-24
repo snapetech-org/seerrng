@@ -5333,6 +5333,8 @@ export const localeData = [
       'lumen.servarr.retry': 'إعادة المحاولة',
       'lumen.servarr.rootFolder': 'المجلد الجذر',
       'lumen.servarr.runMetadataDiagnostic': 'تشغيل تشخيص البيانات الوصفية',
+      'lumen.servarr.saveConfirmFailure':
+        'لم يؤكد الخادم حفظ إعدادات {service}. أبقِ هذا النموذج مفتوحًا وحاول مرة أخرى.',
       'lumen.servarr.saveFallback': 'تعذر حفظ خدمة {service}.',
       'lumen.servarr.saveService': 'حفظ {service}',
       'lumen.servarr.savedKey': 'المفتاح المحفوظ',
@@ -16849,6 +16851,8 @@ export const localeData = [
       'lumen.servarr.retry': 'Retry',
       'lumen.servarr.rootFolder': 'Root Folder',
       'lumen.servarr.runMetadataDiagnostic': 'Run Metadata Diagnostic',
+      'lumen.servarr.saveConfirmFailure':
+        'The server did not confirm the saved {service} settings. Keep this form open and try again.',
       'lumen.servarr.saveFallback': 'Could not save the {service} service.',
       'lumen.servarr.saveService': 'Save {service}',
       'lumen.servarr.savedKey': 'Saved key',
@@ -29471,6 +29475,8 @@ export const localeData = [
       'lumen.servarr.rootFolder': 'Dossier racine',
       'lumen.servarr.runMetadataDiagnostic':
         'Lancer le diagnostic des métadonnées',
+      'lumen.servarr.saveConfirmFailure':
+        'Le serveur n’a pas confirmé l’enregistrement des paramètres {service}. Gardez ce formulaire ouvert et réessayez.',
       'lumen.servarr.saveFallback':
         'Impossible d’enregistrer le service {service}.',
       'lumen.servarr.saveService': 'Enregistrer {service}',
