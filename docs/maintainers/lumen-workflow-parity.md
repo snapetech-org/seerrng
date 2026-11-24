@@ -8955,10 +8955,12 @@ row above. The sign-in confirmation was captured at 1440×900 and 390×664 CSS
 pixels. Both interfaces preserve an explicit Continue with sign-in link action
 and the ordinary sign-in options. The native screen includes an expected-link
 warning; Lumen uses the companion sign-in card and Jellyfin account guidance.
-No layout or interaction regression was found.
+At the 390×664 phone viewport, scrolling the expanded Lumen panel to Revoke
+Link places its complete row above the fixed tab bar.
 
 The focused Lumen browser cases passed 4/4 across desktop and iPhone, covering
 administrator creation/revocation and confirmation before redemption. Native
-reference captures and Lumen candidates are retained at
+reference captures and Lumen candidates, including the scrolled phone panel,
+are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-login-links-visual-20261124/`.
 This check does not exercise production PostgreSQL or a TLS terminator.
