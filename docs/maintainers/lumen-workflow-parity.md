@@ -2096,6 +2096,11 @@ embedded asset at an isolated Express static `/lumen/` mount. API responses are
 fixtures, so live TV metadata, authenticated middleware, and matched native
 visual acceptance remain open. Results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-general-localization-20261121/tv-request-state-bundled-results/`.
+The two dedicated large-series cases were rerun on main commit `07436f3c3`
+against the current standalone production build on 2026-11-24: bounded 15-season
+loading, transient batch retry, and selection recovery passed 8/8 across desktop,
+iPhone, Android, and tablet. This confirms the fixture-backed recovery in the
+current build, not live provider availability.
 
 ### Request history increment
 
