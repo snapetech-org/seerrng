@@ -448,6 +448,117 @@ describe('Bookshelf catalog identities', () => {
     });
   });
 
+  describe('a book another catalog describes better', () => {
+    const audiobooks = {
+      id: 130,
+      hostname: 'audiobooks.test',
+      port: 8787,
+      apiKey: 'test-key',
+      useSsl: false,
+      baseUrl: '',
+      serviceType: 'audiobook',
+    } as ReadarrSettings;
+    const ebooks = {
+      ...audiobooks,
+      id: 131,
+      hostname: 'ebooks.test',
+      serviceType: 'ebook',
+    } as ReadarrSettings;
+    const cover = 'https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg';
+    const bare = (foreignBookId: string): ReadarrBookLookupResult => ({
+      title: 'Full Measures',
+      foreignBookId,
+      images: [],
+      editions: [],
+    });
+    const described = (foreignBookId: string): ReadarrBookLookupResult => ({
+      title: 'Full Measures',
+      foreignBookId,
+      images: [{ coverType: 'cover', remoteUrl: cover }],
+      editions: [
+        { title: 'Full Measures', overview: 'A family drama.' },
+      ] as ReadarrBookLookupResult['editions'],
+    });
+
+    it('takes the cover and blurb from the other catalog for the same work', async () => {
+      mapBookshelfBook(bare('hc:548728'), audiobooks.id, audiobooks);
+      const lookup = vi
+        .spyOn(ReadarrAPI.prototype, 'lookupBookByProviderIdentity')
+        .mockResolvedValue(described('hc:548728'));
+
+      const details = await getBookshelfBookDetails(
+        [audiobooks, ebooks],
+        makeBookshelfBookId(audiobooks.id, 'hc:548728')
+      );
+
+      expect(lookup).toHaveBeenCalledWith('hc:548728');
+      expect(details).toMatchObject({
+        id: makeBookshelfBookId(audiobooks.id, 'hc:548728'),
+        posterPath: cover,
+        description: 'A family drama.',
+      });
+    });
+
+    it('keeps its own cover and does not look elsewhere when it has both', async () => {
+      mapBookshelfBook(described('hc:548729'), audiobooks.id, audiobooks);
+      const lookup = vi.spyOn(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity'
+      );
+
+      const details = await getBookshelfBookDetails(
+        [audiobooks, ebooks],
+        makeBookshelfBookId(audiobooks.id, 'hc:548729')
+      );
+
+      expect(lookup).not.toHaveBeenCalled();
+      expect(details?.posterPath).toBe(cover);
+    });
+
+    it('still opens the book when the other catalog is down', async () => {
+      mapBookshelfBook(bare('hc:548730'), audiobooks.id, audiobooks);
+      vi.spyOn(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity'
+      ).mockRejectedValue(new Error('ebooks down'));
+
+      const details = await getBookshelfBookDetails(
+        [audiobooks, ebooks],
+        makeBookshelfBookId(audiobooks.id, 'hc:548730'),
+        undefined,
+        { failOnUnavailable: true }
+      );
+
+      expect(details).toMatchObject({ title: 'Full Measures' });
+      expect(details?.posterPath).toBeUndefined();
+    });
+
+    it('never matches a bare numeric id across catalogs', async () => {
+      mapBookshelfBook(
+        {
+          ...bare('548731'),
+          editions: [
+            { title: 'x', overview: 'Own.' },
+          ] as ReadarrBookLookupResult['editions'],
+        },
+        audiobooks.id,
+        audiobooks
+      );
+      const lookup = vi.spyOn(
+        ReadarrAPI.prototype,
+        'lookupBookByProviderIdentity'
+      );
+
+      const details = await getBookshelfBookDetails(
+        [audiobooks, ebooks],
+        makeBookshelfBookId(audiobooks.id, '548731')
+      );
+
+      expect(lookup).not.toHaveBeenCalled();
+      expect(details?.posterPath).toBeUndefined();
+    });
+  });
+
   it('does not reuse catalog results after Bookshelf settings change', async () => {
     const server = {
       id: 114,

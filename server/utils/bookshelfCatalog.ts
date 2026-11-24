@@ -894,6 +894,66 @@ const hasEditionOverview = (result: ReadarrBookLookupResult): boolean =>
     (edition) => !!edition.overview
   );
 
+const describeEditions = (result: ReadarrBookLookupResult) => {
+  const editions = (result.editions ?? []) as {
+    overview?: string;
+    publisher?: string;
+    pageCount?: number;
+  }[];
+  return {
+    description: editions.map((edition) => edition.overview).find(Boolean),
+    publisher: editions.map((edition) => edition.publisher).find(Boolean),
+    numberOfPages: editions
+      .map((edition) => edition.pageCount)
+      .find(
+        (value) => value !== undefined && Number.isFinite(value) && value > 0
+      ),
+  };
+};
+
+// An ebook and an audiobook catalog often hold the same provider work, and one
+// of them can return it without a cover or blurb (an audiobook catalog's record
+// of a book it has no audio edition art for, say). Borrow the missing art and
+// blurb from another catalog's record of that exact work. Bare numeric ids are
+// local to one server, so they are never matched across catalogs.
+const getSiblingCatalogDetails = async (
+  servers: ReadarrSettings[],
+  server: ReadarrSettings,
+  foreignBookId: string
+) => {
+  if (!foreignBookId.includes(':')) return undefined;
+  const siblings = servers.filter(
+    (candidate) =>
+      candidate.id !== server.id &&
+      candidate.backend !== 'bindery' &&
+      candidate.backend !== 'bookorbit'
+  );
+  for (const sibling of siblings) {
+    let result = getCachedBookEntry(
+      makeBookshelfBookId(sibling.id, foreignBookId),
+      sibling
+    )?.book;
+    if (!result || !hasEditionOverview(result)) {
+      try {
+        result =
+          (await getApi(sibling).lookupBookByProviderIdentity(foreignBookId)) ??
+          result;
+      } catch {
+        // Another catalog being down must not fail this book's page.
+      }
+    }
+    // Cache entries are keyed by this exact id, and the identity lookup only
+    // returns a record matching it, so either one is the same work.
+    if (!result) continue;
+    const found = {
+      posterPath: mapBookshelfBook(result, sibling.id).posterPath,
+      ...describeEditions(result),
+    };
+    if (found.posterPath || found.description) return found;
+  }
+  return undefined;
+};
+
 const getBookshelfBookDetailsUnbounded = async (
   servers: ReadarrSettings[],
   requestedId: string,
@@ -948,31 +1008,19 @@ const getBookshelfBookDetailsUnbounded = async (
       result = { ...result, foreignBookId: parsed.foreignBookId };
     }
     const base = mapBookshelfBook(result, server.id, server);
-    const editions = result.editions ?? [];
-    const description = (
-      editions as ((typeof editions)[number] & { overview?: string })[]
-    )
-      .map((edition) => edition.overview)
-      .find(Boolean);
-    const publisher = (
-      editions as ((typeof editions)[number] & { publisher?: string })[]
-    )
-      .map((edition) => edition.publisher)
-      .find(Boolean);
-    const pageCount = (
-      editions as ((typeof editions)[number] & { pageCount?: number })[]
-    )
-      .map((edition) => edition.pageCount)
-      .find(
-        (value) => value !== undefined && Number.isFinite(value) && value > 0
+    const details = { ...base, ...describeEditions(result) };
+    if (!details.posterPath || !details.description) {
+      const sibling = await getSiblingCatalogDetails(
+        servers,
+        server,
+        parsed.foreignBookId
       );
-    return {
-      ...base,
-      description,
-      publisher,
-      numberOfPages: pageCount,
-      onUserWatchlist: false,
-    };
+      details.posterPath ||= sibling?.posterPath;
+      details.description ||= sibling?.description;
+      details.publisher ||= sibling?.publisher;
+      details.numberOfPages ||= sibling?.numberOfPages;
+    }
+    return { ...details, onUserWatchlist: false };
   } catch (error) {
     if (options.failOnUnavailable) throw error;
     logger.warn('Bookshelf book details lookup failed.', {
