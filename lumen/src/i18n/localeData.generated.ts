@@ -7269,6 +7269,9 @@ export const localeData = [
       'lumen.requestFiles.retry': 'تحقق مرة أخرى',
       'lumen.requestFiles.sourcesFailed': 'تعذّر التحقق من بعض المصادر.',
       'lumen.requestFiles.title': 'تنزيل الملفات',
+      'lumen.detail.serverLoadFailed': 'تعذر تحميل خوادم الطلب.',
+      'lumen.detail.serverSettingsFailed':
+        'تعذر تحميل خيارات الطلب من {service}. تحقق من الخدمة وحاول مرة أخرى.',
     },
   },
   {
@@ -18921,6 +18924,9 @@ export const localeData = [
       'lumen.requestFiles.retry': 'Check again',
       'lumen.requestFiles.sourcesFailed': 'Some sources couldn’t be checked.',
       'lumen.requestFiles.title': 'Download Files',
+      'lumen.detail.serverLoadFailed': 'Could not load request servers.',
+      'lumen.detail.serverSettingsFailed':
+        'Could not load {service} request options. Check the service and try again.',
     },
   },
   {
@@ -31782,6 +31788,10 @@ export const localeData = [
       'lumen.requestFiles.sourcesFailed':
         'Certaines sources n’ont pas pu être vérifiées.',
       'lumen.requestFiles.title': 'Télécharger les fichiers',
+      'lumen.detail.serverLoadFailed':
+        'Impossible de charger les serveurs de demande.',
+      'lumen.detail.serverSettingsFailed':
+        'Impossible de charger les options de demande de {service}. Vérifiez le service et réessayez.',
     },
   },
   {

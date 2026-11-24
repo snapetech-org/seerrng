@@ -4812,7 +4812,9 @@
     "lumen.permissions.group.auto-approve": "Auto-Approve",
     "lumen.permissions.group.auto-request-from-watchlists": "Auto-Request from Watchlists",
     "lumen.permissions.group.issues-and-visibility": "Issues and Visibility",
-    "lumen.permissions.group.other": "Other"
+    "lumen.permissions.group.other": "Other",
+    "lumen.detail.serverLoadFailed": "Could not load request servers.",
+    "lumen.detail.serverSettingsFailed": "Could not load {service} request options. Check the service and try again."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9790,7 +9792,9 @@
     "lumen.permissions.group.auto-approve": "Approbation automatique",
     "lumen.permissions.group.auto-request-from-watchlists": "Demandes automatiques depuis les listes de suivi",
     "lumen.permissions.group.issues-and-visibility": "Signalements et visibilité",
-    "lumen.permissions.group.other": "Autres"
+    "lumen.permissions.group.other": "Autres",
+    "lumen.detail.serverLoadFailed": "Impossible de charger les serveurs de demande.",
+    "lumen.detail.serverSettingsFailed": "Impossible de charger les options de demande de {service}. Vérifiez le service et réessayez."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -14772,6 +14776,8 @@
     "lumen.permissions.group.auto-approve": "الموافقة التلقائية",
     "lumen.permissions.group.auto-request-from-watchlists": "الطلب التلقائي من قوائم المتابعة",
     "lumen.permissions.group.issues-and-visibility": "المشكلات وإمكانية الظهور",
-    "lumen.permissions.group.other": "أخرى"
+    "lumen.permissions.group.other": "أخرى",
+    "lumen.detail.serverLoadFailed": "تعذر تحميل خوادم الطلب.",
+    "lumen.detail.serverSettingsFailed": "تعذر تحميل خيارات الطلب من {service}. تحقق من الخدمة وحاول مرة أخرى."
   }
 }

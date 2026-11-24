@@ -23,6 +23,7 @@ const locales = [
     endedStatus: 'Ended',
     collections: 'Series Collections',
     noCollections: 'This series has no catalog collections.',
+    serverFailure: 'The server had a problem. Try again in a moment.',
   },
   {
     tag: 'fr',
@@ -45,6 +46,8 @@ const locales = [
     endedStatus: 'Terminée',
     collections: 'Collections de séries',
     noCollections: 'Cette série n’appartient à aucune collection du catalogue.',
+    serverFailure:
+      'Le serveur a rencontré un problème. Réessayez dans un instant.',
   },
   {
     tag: 'ar',
@@ -67,10 +70,71 @@ const locales = [
     endedStatus: 'منتهٍ',
     collections: 'مجموعات المسلسلات',
     noCollections: 'لا ينتمي هذا المسلسل إلى أي مجموعة في الفهرس.',
+    serverFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
   },
 ];
 
 for (const locale of locales) {
+  test(`request option server failures follow ${locale.tag} locale`, async ({
+    page,
+  }) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/lumen-config.json', (route) =>
+      route.fulfill({ json: {} })
+    );
+    await page.route('**/api/v1/**', (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname.split('/api/v1')[1];
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 1, displayName: 'Viewer', permissions: 2 },
+        });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { locale: locale.tag } });
+      if (path === '/settings/public') return route.fulfill({ json: {} });
+      if (path === '/movie/550')
+        return route.fulfill({
+          json: {
+            id: 550,
+            title: 'Fixture Film',
+            overview: 'A fixture.',
+            genres: [],
+            runtime: 100,
+            originalLanguage: 'en',
+            mediaInfo: {},
+            credits: { cast: [], crew: [] },
+          },
+        });
+      if (path === '/service/radarr')
+        return route.fulfill({
+          json: [{ id: 3, name: 'Movies', is4k: false, isDefault: true }],
+        });
+      if (path === '/service/radarr/3')
+        return route.fulfill({
+          status: 500,
+          json: { message: 'Internal Server Error' },
+        });
+      return route.fulfill({ json: { results: [] } });
+    });
+    await page.goto(`${mount}/movie/550`);
+    await page.getByText(locale.title, { exact: true }).click();
+    const failure = page.getByText(locale.serverFailure);
+    await expect(failure).toBeVisible();
+    const capture = process.env.LUMEN_ERROR_CAPTURE;
+    if (capture)
+      await page.screenshot({
+        path: `${capture}-${locale.tag}-${test.info().project.name}.png`,
+        animations: 'disabled',
+      });
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth >
+          document.documentElement.clientWidth
+      )
+    ).toBe(false);
+  });
+
   test(`movie request options follow ${locale.tag} locale`, async ({
     page,
   }) => {

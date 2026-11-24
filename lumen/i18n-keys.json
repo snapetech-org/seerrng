@@ -5987,5 +5987,7 @@
   "lumen.requestFiles.requestsLoadFailure",
   "lumen.requestFiles.retry",
   "lumen.requestFiles.sourcesFailed",
-  "lumen.requestFiles.title"
+  "lumen.requestFiles.title",
+  "lumen.detail.serverLoadFailed",
+  "lumen.detail.serverSettingsFailed"
 ]

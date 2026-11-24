@@ -760,7 +760,18 @@ export function AdvancedOptions({
           mine[0];
         if (d) setO((x) => ({ ...x, serverId: d.id }));
       })
-      .catch((e) => setErr(friendlyError(e)));
+      .catch((e) =>
+        setErr(
+          friendlyError(
+            e,
+            t(
+              'lumen.detail.serverLoadFailed',
+              'Could not load request servers.'
+            ),
+            (id, fallback) => t(id, fallback)
+          )
+        )
+      );
   }, [allowed, open, servers, svc, is4k, allow4k, serverIds]);
   useEffect(() => {
     if (o.serverId == null) return;
@@ -831,13 +842,28 @@ export function AdvancedOptions({
         (e) =>
           live &&
           setErr(
-            `${friendlyError(e)} (the ${svc === 'radarr' ? 'Radarr' : svc === 'sonarr' ? 'Sonarr' : 'Lidarr'} server didn't answer)`
+            friendlyError(
+              e,
+              t(
+                'lumen.detail.serverSettingsFailed',
+                'Could not load {service} request options. Check the service and try again.',
+                {
+                  service:
+                    svc === 'radarr'
+                      ? 'Radarr'
+                      : svc === 'sonarr'
+                        ? 'Sonarr'
+                        : 'Lidarr',
+                }
+              ),
+              (id, fallback) => t(id, fallback)
+            )
           )
       );
     return () => {
       live = false;
     };
-  }, [o.serverId, svc]);
+  }, [o.serverId, svc, t]);
   // with 4K servers listed, the chosen server decides whether this is a 4K request
   const picked4k = allow4k
     ? servers?.find((x) => x.id === o.serverId)?.is4k

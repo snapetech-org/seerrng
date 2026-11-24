@@ -5482,6 +5482,23 @@ movie collection cases passed, including a failed post-write check,
 retrying the read, and issuing only one write. Matched visual acceptance
 remains unverified.
 
+### Shared request-options failure localization (2026-11-24)
+
+The shared movie, TV, and music request-options panel now localizes server-list
+and selected-server detail failures. Its selected-server fallback names the
+affected Servarr service; permission checks, server selection, and request
+options are unchanged.
+
+The selected-server 500 regression passes in English, French, and Arabic on
+desktop, with no horizontal overflow. The pre-fix baseline displayed English
+failure text in French and Arabic. Matched captures use 1440x900 pixels and
+show the same panel geometry with translated error copy. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-options-error-localization-20261124/`.
+Live Servarr connectivity and the production Express `/lumen/` mount remain
+unverified. The broader existing detail-options localization suite still has
+six facts-visibility failures on desktop; those same assertions fail on the
+pre-change baseline and are not covered by this fix.
+
 Movie collections now offer Watch Trailer for the first visible member in
 release order, using the same YouTube validation as title details.
 Twenty standalone and four bundled collection checks passed. The fixture
