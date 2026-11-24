@@ -4648,7 +4648,8 @@
     "lumen.gameContent.nonStoryContent": "Non-story content",
     "lumen.gameContent.contentTypeUnknown": "Content type unknown",
     "lumen.gameContent.itemsMissing": "{count} items missing from your library",
-    "lumen.gameContent.editionContentsUnknown": "Edition contents are unknown."
+    "lumen.gameContent.editionContentsUnknown": "Edition contents are unknown.",
+    "lumen.cards.preferenceDescription": "Show titles under posters for movies, series, music and books. Account Settings has a choice per type."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -9462,7 +9463,8 @@
     "lumen.gameContent.nonStoryContent": "Contenu sans histoire",
     "lumen.gameContent.contentTypeUnknown": "Type de contenu inconnu",
     "lumen.gameContent.itemsMissing": "{count} éléments manquent dans votre bibliothèque",
-    "lumen.gameContent.editionContentsUnknown": "Le contenu de cette édition est inconnu."
+    "lumen.gameContent.editionContentsUnknown": "Le contenu de cette édition est inconnu.",
+    "lumen.cards.preferenceDescription": "Afficher les titres sous les affiches de films, séries, musique et livres. Les paramètres du compte permettent de choisir pour chaque type."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -14280,6 +14282,7 @@
     "lumen.gameContent.nonStoryContent": "محتوى غير قصصي",
     "lumen.gameContent.contentTypeUnknown": "نوع المحتوى غير معروف",
     "lumen.gameContent.itemsMissing": "ينقص مكتبتك {count} من العناصر",
-    "lumen.gameContent.editionContentsUnknown": "محتوى هذا الإصدار غير معروف."
+    "lumen.gameContent.editionContentsUnknown": "محتوى هذا الإصدار غير معروف.",
+    "lumen.cards.preferenceDescription": "اعرض العناوين أسفل ملصقات الأفلام والمسلسلات والموسيقى والكتب. يمكنك اختيار إعداد مستقل لكل نوع من إعدادات الحساب."
   }
 }

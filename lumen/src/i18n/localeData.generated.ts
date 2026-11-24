@@ -7080,6 +7080,8 @@ export const localeData = [
       'lumen.gameContent.itemsMissing': 'ينقص مكتبتك {count} من العناصر',
       'lumen.gameContent.editionContentsUnknown':
         'محتوى هذا الإصدار غير معروف.',
+      'lumen.cards.preferenceDescription':
+        'اعرض العناوين أسفل ملصقات الأفلام والمسلسلات والموسيقى والكتب. يمكنك اختيار إعداد مستقل لكل نوع من إعدادات الحساب.',
     },
   },
   {
@@ -18533,6 +18535,8 @@ export const localeData = [
         '{count} items missing from your library',
       'lumen.gameContent.editionContentsUnknown':
         'Edition contents are unknown.',
+      'lumen.cards.preferenceDescription':
+        'Show titles under posters for movies, series, music and books. Account Settings has a choice per type.',
     },
   },
   {
@@ -31172,6 +31176,8 @@ export const localeData = [
         '{count} éléments manquent dans votre bibliothèque',
       'lumen.gameContent.editionContentsUnknown':
         'Le contenu de cette édition est inconnu.',
+      'lumen.cards.preferenceDescription':
+        'Afficher les titres sous les affiches de films, séries, musique et livres. Les paramètres du compte permettent de choisir pour chaque type.',
     },
   },
   {

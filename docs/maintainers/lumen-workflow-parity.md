@@ -8850,3 +8850,16 @@ baseline/candidate desktop captures show the prior English fallback replaced by
 French without changing picker geometry; the Arabic desktop and phone candidate
 renders were inspected for direction and overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-localization-20261124/`.
+
+### Account card-title preference localization
+
+The shared Appearance switch now uses the localized Title View label and a
+French/Arabic explanation of its cross-media behavior. Save and confirmation
+errors reuse the existing localized Account Settings messages. The preference
+API, enabled media types, and saved values are unchanged.
+
+The browser fixture verifies the saved-locale switch and captures matching
+French and Arabic desktop/phone states. The previous English fallback and
+localized candidates were inspected at the same routes and viewports; the text
+fits the existing control without layout changes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-title-toggle-localization-20261124/`.

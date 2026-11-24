@@ -48,10 +48,10 @@ export function CardTitleToggle({
         generation === sessionGeneration() &&
         changed.some((kind) => confirmed[kind] !== mode)
       )
-        toast('Could not confirm the saved card title settings.');
+        toast(t('lumen.account.cardTitleSettingsConfirmFailure'));
     } catch {
       if (generation === sessionGeneration())
-        toast('Could not save card title settings. Try again.');
+        toast(t('lumen.account.cardTitleSettingsSaveFailure'));
     } finally {
       pending.current = false;
       setBusy(false);
@@ -75,11 +75,8 @@ export function CardTitleToggle({
         }}
       >
         <span>
-          <b>Title View</b>
-          <small>
-            Show titles under posters for movies, series, music and books.
-            Account Settings has a choice per type.
-          </small>
+          <b>{titleView}</b>
+          <small>{t('lumen.cards.preferenceDescription')}</small>
         </span>
         <span className="sw" />
       </div>

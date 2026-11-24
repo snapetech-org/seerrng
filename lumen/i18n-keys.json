@@ -5823,5 +5823,6 @@
   "lumen.gameContent.nonStoryContent",
   "lumen.gameContent.contentTypeUnknown",
   "lumen.gameContent.itemsMissing",
-  "lumen.gameContent.editionContentsUnknown"
+  "lumen.gameContent.editionContentsUnknown",
+  "lumen.cards.preferenceDescription"
 ]

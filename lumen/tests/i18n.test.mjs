@@ -42,6 +42,7 @@ const lumenKeys = [
   'lumen.quickRequest.quotaApproval',
   'lumen.quickRequest.requestApprovalAnyway',
   'lumen.quickRequest.requestAnyway',
+  'lumen.cards.preferenceDescription',
   'lumen.gameContent.title',
   'lumen.gameContent.contentToRequest',
   'lumen.gameContent.baseGame',
