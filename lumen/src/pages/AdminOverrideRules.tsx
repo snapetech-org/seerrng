@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
@@ -38,6 +38,15 @@ type DestinationOptions = {
   rootFolders: { path?: string }[];
   tags: { id: number; label: string }[];
 };
+
+function sameRule(left: Rule, right: Rule) {
+  return (
+    left.id === right.id &&
+    [...serviceTypes.map(([key]) => key), ...fields.map(([key]) => key)].every(
+      (key) => left[key] === right[key]
+    )
+  );
+}
 
 function RulesForService({
   rules,
@@ -350,6 +359,7 @@ function RuleEditor({
   );
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
+  const [createdRuleId, setCreatedRuleId] = useState<number>();
   const pending = useRef(false);
   const serviceSelect = useRef<HTMLSelectElement>(null);
   useEffect(() => {
@@ -432,10 +442,45 @@ function RuleEditor({
             : null,
         ];
       });
-      await api(rule ? `/overrideRule/${rule.id}` : '/overrideRule', {
-        method: rule ? 'PUT' : 'POST',
-        body: JSON.stringify(Object.fromEntries([...service, ...settings])),
-      });
+      const recordId = rule?.id ?? createdRuleId;
+      const saved = await api<Rule>(
+        recordId === undefined ? '/overrideRule' : `/overrideRule/${recordId}`,
+        {
+          method: recordId === undefined ? 'POST' : 'PUT',
+          body: JSON.stringify(Object.fromEntries([...service, ...settings])),
+        }
+      );
+      if (!Number.isSafeInteger(saved.id) || saved.id < 1) {
+        setFailure(
+          t(
+            'lumen.override.saveConfirmFailure',
+            'The server did not confirm the saved rule. Keep this form open and try again.'
+          )
+        );
+        return;
+      }
+      if (!rule) setCreatedRuleId(saved.id);
+      let readback: Rule[];
+      try {
+        readback = await api<Rule[]>('/overrideRule', { cache: 'no-store' });
+      } catch {
+        setFailure(
+          t(
+            'lumen.override.saveConfirmFailure',
+            'The server did not confirm the saved rule. Keep this form open and try again.'
+          )
+        );
+        return;
+      }
+      if (!readback.some((persisted) => sameRule(saved, persisted))) {
+        setFailure(
+          t(
+            'lumen.override.saveConfirmFailure',
+            'The server did not confirm the saved rule. Keep this form open and try again.'
+          )
+        );
+        return;
+      }
       onSaved();
     } catch (error) {
       setFailure(
@@ -715,6 +760,7 @@ export default function AdminOverrideRules() {
   const [deleting, setDeleting] = useState<Rule>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
+  const [deleteAccepted, setDeleteAccepted] = useState(false);
   const pending = useRef(false);
 
   async function deleteRule() {
@@ -723,8 +769,39 @@ export default function AdminOverrideRules() {
     setBusy(true);
     setFailure('');
     try {
-      await api(`/overrideRule/${deleting.id}`, { method: 'DELETE' });
+      if (!deleteAccepted) {
+        try {
+          await api(`/overrideRule/${deleting.id}`, { method: 'DELETE' });
+          setDeleteAccepted(true);
+        } catch (error) {
+          if (!(error instanceof ApiError) || error.status !== 404) throw error;
+          setDeleteAccepted(true);
+        }
+      }
+      let readback: Rule[];
+      try {
+        readback = await api<Rule[]>('/overrideRule', { cache: 'no-store' });
+      } catch {
+        setFailure(
+          t(
+            'lumen.override.deleteConfirmFailure',
+            'The server did not confirm rule removal. Keep this dialog open and try again.'
+          )
+        );
+        return;
+      }
+      if (readback.some(({ id }) => id === deleting.id)) {
+        setDeleteAccepted(false);
+        setFailure(
+          t(
+            'lumen.override.deleteConfirmFailure',
+            'The server did not confirm rule removal. Keep this dialog open and try again.'
+          )
+        );
+        return;
+      }
       setDeleting(undefined);
+      setDeleteAccepted(false);
       rules.reload();
     } catch (error) {
       setFailure(
@@ -802,6 +879,7 @@ export default function AdminOverrideRules() {
           onClose={() => {
             if (!busy) {
               setDeleting(undefined);
+              setDeleteAccepted(false);
               setFailure('');
             }
           }}
@@ -822,7 +900,10 @@ export default function AdminOverrideRules() {
             service={service}
             editing={editing !== undefined}
             onEdit={setEditing}
-            onDelete={setDeleting}
+            onDelete={(rule) => {
+              setDeleteAccepted(false);
+              setDeleting(rule);
+            }}
           />
         ) : null;
       })}

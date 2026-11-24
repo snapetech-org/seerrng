@@ -8591,11 +8591,19 @@ test('Administration search brings the Steam key field into view', async ({
 
 test('override rules save multiple language and country selections', async ({
   page,
-}) => {
-  await fixtures(page);
+}, info) => {
+  const fixture = await fixtures(page);
   await page.route('**/api/v1/settings/radarr', (route) =>
     route.fulfill({ json: [{ id: 1, name: 'Test Radarr' }] })
   );
+  await page.route('**/api/v1/user?**', (route) =>
+    route.fulfill({ json: { results: [] } })
+  );
+  for (const provider of ['sonarr', 'lidarr', 'readarr']) {
+    await page.route(`**/api/v1/settings/${provider}`, (route) =>
+      route.fulfill({ json: [] })
+    );
+  }
   for (const [path, json] of [
     [
       'service/radarr/1',
@@ -8619,9 +8627,37 @@ test('override rules save multiple language and country selections', async ({
   ] as const) {
     await page.route(`**/api/v1/${path}`, (route) => route.fulfill({ json }));
   }
-  await page.route('**/api/v1/overrideRule', (route) =>
-    route.fulfill({ json: route.request().method() === 'GET' ? [] : { id: 1 } })
-  );
+  let rules: Record<string, unknown>[] = [];
+  let hideNextReadback = false;
+  let staleDeleteReadback: Record<string, unknown>[] | undefined;
+  const writes: string[] = [];
+  await page.route('**/api/v1/overrideRule**', (route) => {
+    const request = route.request();
+    const endpoint = new URL(request.url()).pathname;
+    const method = request.method();
+    if (method === 'GET') {
+      if (staleDeleteReadback) {
+        const stale = staleDeleteReadback;
+        staleDeleteReadback = undefined;
+        return route.fulfill({ json: stale });
+      }
+      if (hideNextReadback) {
+        hideNextReadback = false;
+        return route.fulfill({ json: [] });
+      }
+      return route.fulfill({ json: rules });
+    }
+    writes.push(`${method} ${endpoint}`);
+    if (method === 'DELETE') {
+      staleDeleteReadback = rules;
+      rules = [];
+      return route.fulfill({ json: { id: 1 } });
+    }
+    const saved = { ...request.postDataJSON(), id: 1 };
+    rules = [saved];
+    if (method === 'POST') hideNextReadback = true;
+    return route.fulfill({ json: saved });
+  });
   await page.goto(testAppPath('/admin/override-rules'));
   await page.getByRole('button', { name: 'New Override Rule' }).click();
   const choice = (name: string) =>
@@ -8632,6 +8668,12 @@ test('override rules save multiple language and country selections', async ({
   await choice('Production Country').selectOption({ label: 'Canada' });
   await choice('Production Country').selectOption({ label: 'United States' });
   await choice('Quality Profile').selectOption({ label: 'HD' });
+  if (process.env.LUMEN_CAPTURE_OVERRIDE) {
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.screenshot({
+      path: info.outputPath('override-before-save.png'),
+    });
+  }
   const write = page.waitForRequest(
     (request) =>
       request.method() === 'POST' &&
@@ -8644,6 +8686,51 @@ test('override rules save multiple language and country selections', async ({
     productionCountries: 'CA|US',
     profileId: 4,
   });
+  await expect(page.getByRole('alert')).toContainText(
+    'The server did not confirm the saved rule.'
+  );
+  if (process.env.LUMEN_CAPTURE_OVERRIDE) {
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.screenshot({ path: info.outputPath('override-save-error.png') });
+  }
+  const retry = page.waitForRequest(
+    (request) =>
+      request.method() === 'PUT' &&
+      new URL(request.url()).pathname === '/api/v1/overrideRule/1'
+  );
+  await page.getByRole('button', { name: 'Save Rule', exact: true }).click();
+  await retry;
+  await expect(
+    page.getByRole('heading', { name: 'Request Override Rules' })
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Delete Rule', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Delete Rule', exact: true })
+    .last()
+    .click();
+  await expect(page.getByRole('alert')).toContainText(
+    'The server did not confirm rule removal.'
+  );
+  await page
+    .getByRole('button', { name: 'Delete Rule', exact: true })
+    .last()
+    .click();
+  await expect(
+    page.getByText('No request override rules configured.')
+  ).toBeVisible();
+  expect(writes).toEqual([
+    'POST /api/v1/overrideRule',
+    'PUT /api/v1/overrideRule/1',
+    'DELETE /api/v1/overrideRule/1',
+    'DELETE /api/v1/overrideRule/1',
+  ]);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  expect(fixture.errors).toEqual([]);
+  expect(fixture.unknown).toEqual([]);
 });
 
 test('Administration search opens the download client polling interval', async ({

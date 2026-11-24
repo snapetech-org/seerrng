@@ -1,0 +1,1 @@
+Lumen now verifies Request Override Rule creates and edits against a fresh list read before closing the editor. If a create was accepted but the readback is stale, the form keeps its draft and retries by the assigned rule ID. Delete confirmation remains open until a fresh read confirms the rule is gone.

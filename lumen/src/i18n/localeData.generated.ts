@@ -4866,6 +4866,8 @@ export const localeData = [
       'lumen.override.delete': 'حذف القاعدة',
       'lumen.override.deleteBody': 'لن تستخدم الطلبات المستقبلية هذه القاعدة.',
       'lumen.override.deleteFailed': 'تعذر حذف قاعدة تجاوز الطلبات.',
+      'lumen.override.deleteConfirmFailure':
+        'لم يؤكد الخادم إزالة القاعدة. أبقِ مربع الحوار مفتوحًا وحاول مرة أخرى.',
       'lumen.override.deleteTitle': 'حذف قاعدة التجاوز',
       'lumen.override.destinationChoices': 'خيارات الوجهة',
       'lumen.override.destinationLoadError': 'تعذر تحميل خيارات الوجهة',
@@ -4901,6 +4903,8 @@ export const localeData = [
       'lumen.override.rules': 'قواعد تجاوز الطلبات',
       'lumen.override.rulesLoadError': 'تعذر تحميل قواعد تجاوز الطلبات',
       'lumen.override.saveFailed': 'تعذر حفظ قاعدة تجاوز الطلبات.',
+      'lumen.override.saveConfirmFailure':
+        'لم يؤكد الخادم حفظ القاعدة. أبقِ هذا النموذج مفتوحًا وحاول مرة أخرى.',
       'lumen.override.saveRule': 'حفظ القاعدة',
       'lumen.override.savedValue': 'القيمة المحفوظة ({value})',
       'lumen.override.searchKeywords': 'البحث عن الكلمات المفتاحية',
@@ -16380,6 +16384,8 @@ export const localeData = [
       'lumen.override.deleteBody': 'Future requests will stop using this rule.',
       'lumen.override.deleteFailed':
         'Could not delete the request override rule.',
+      'lumen.override.deleteConfirmFailure':
+        'The server did not confirm rule removal. Keep this dialog open and try again.',
       'lumen.override.deleteTitle': 'Delete Override Rule',
       'lumen.override.destinationChoices': 'destination choices',
       'lumen.override.destinationLoadError':
@@ -16416,6 +16422,8 @@ export const localeData = [
       'lumen.override.rules': 'request override rules',
       'lumen.override.rulesLoadError': 'Could not load request override rules',
       'lumen.override.saveFailed': 'Could not save the request override rule.',
+      'lumen.override.saveConfirmFailure':
+        'The server did not confirm the saved rule. Keep this form open and try again.',
       'lumen.override.saveRule': 'Save Rule',
       'lumen.override.savedValue': 'Saved value ({value})',
       'lumen.override.searchKeywords': 'Search Keywords',
@@ -28971,6 +28979,8 @@ export const localeData = [
         'Les demandes futures ne suivront plus cette règle.',
       'lumen.override.deleteFailed':
         'Impossible de supprimer la règle de remplacement des demandes.',
+      'lumen.override.deleteConfirmFailure':
+        'Le serveur n’a pas confirmé la suppression de la règle. Gardez cette fenêtre ouverte et réessayez.',
       'lumen.override.deleteTitle': 'Supprimer la règle de remplacement',
       'lumen.override.destinationChoices': 'choix de destination',
       'lumen.override.destinationLoadError':
@@ -29009,6 +29019,8 @@ export const localeData = [
         'Impossible de charger les règles de remplacement des demandes',
       'lumen.override.saveFailed':
         'Impossible d’enregistrer la règle de remplacement des demandes.',
+      'lumen.override.saveConfirmFailure':
+        'Le serveur n’a pas confirmé l’enregistrement de la règle. Gardez ce formulaire ouvert et réessayez.',
       'lumen.override.saveRule': 'Enregistrer la règle',
       'lumen.override.savedValue': 'Valeur enregistrée ({value})',
       'lumen.override.searchKeywords': 'Rechercher des mots-clés',
