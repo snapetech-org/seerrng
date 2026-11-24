@@ -304,7 +304,7 @@ test('personal notification controls follow the account locale and preserve chan
     if (process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR)
       await page.screenshot({
         path: `${process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR}/baseline-save-${locale}-${page.viewportSize()?.width}.png`,
-        fullPage: true,
+        fullPage: false,
       });
     return;
   }
@@ -315,7 +315,7 @@ test('personal notification controls follow the account locale and preserve chan
   if (process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR)
     await page.screenshot({
       path: `${process.env.LUMEN_USER_NOTIFICATIONS_CAPTURE_DIR}/candidate-save-${locale}-${page.viewportSize()?.width}.png`,
-      fullPage: true,
+      fullPage: false,
     });
   await email.getByRole('button').first().click();
   await expect(
