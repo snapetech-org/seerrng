@@ -10323,7 +10323,21 @@ Android, and tablet. Before/after captures at 1440×900 and iPhone 390×844 were
 inspected; the sheet retains its layout when the unauthorized section is
 removed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-service-permissions-20261125/`.
-Live role authorization and bundled `/lumen/` behavior remain open.
+Bundled `/lumen/` behavior is now covered by the 44-case acceptance below; live
+role authorization remains open.
+
+### Manage sheet acceptance in the production Lumen mount (2026-11-25)
+
+The current Lumen embedded production build was mounted at `/app/public/lumen`
+on the published SeerrNG v3.72.40 Express image. The app ran on an internal-only
+Docker network and the browser fixture intercepted API responses. All 44
+management-sheet cases passed across desktop, iPhone, Android, and tablet. This
+includes movie and TV request review, requester links, admin-only service and
+verified-library actions, deletion and recovery confirmations, playback links,
+and permission-scoped issue/blocklist controls. This verifies bundled rendering
+and client workflow only; live server authorization and provider mutations
+remain unverified. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/manage-sheet-embedded-results-final/`.
 
 ### Large-series episode request recovery recheck (2026-11-25)
 
@@ -10335,7 +10349,8 @@ selection preservation, retry limited to failed seasons, deep-linked episode
 selection, continued selection while a later batch loads, and cancellation of
 remaining metadata requests when the picker closes. The selected payload
 contains only chosen episode identities. These fixtures verify client behavior;
-live provider latency and bundled `/lumen/` execution remain open.
+production-mounted execution passes 12 cases as recorded below. Live provider
+latency remains open.
 
 ### Large-series request recovery in the production Lumen mount (2026-11-25)
 

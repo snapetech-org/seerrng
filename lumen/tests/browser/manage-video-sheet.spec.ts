@@ -305,7 +305,7 @@ for (const kind of ['movie', 'tv'] as const) {
     ).toHaveCount(0);
     await expect(
       dialog.getByRole('link', { name: 'Plex Viewer' })
-    ).toHaveAttribute('href', '/users/8');
+    ).toHaveAttribute('href', `${mount}/users/8`);
     await expect(dialog.getByText('Jellystat watch activity')).toBeVisible();
     await expect(
       dialog.getByText('12 plays · 1.5 hours of playback')
