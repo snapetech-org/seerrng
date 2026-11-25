@@ -29,19 +29,21 @@ async function openMenu(page: Page, permissions: number) {
   return page.locator('.side');
 }
 
-test('administrators have a direct Users menu link', async ({ page }) => {
+test('administrators have a direct user management menu link', async ({
+  page,
+}) => {
   const menu = await openMenu(page, 2);
-  const users = menu.getByRole('link', { name: 'Users', exact: true });
+  const users = menu.getByRole('link', { name: 'User List', exact: true });
   await users.scrollIntoViewIfNeeded();
   await expect(users).toBeInViewport();
   await expect(users).toHaveAttribute('href', '/admin/users');
 });
 
-test('delegated user managers have a direct Users menu link', async ({
+test('delegated user managers have a direct user management menu link', async ({
   page,
 }) => {
   const menu = await openMenu(page, 8);
-  const users = menu.getByRole('link', { name: 'Users', exact: true });
+  const users = menu.getByRole('link', { name: 'User List', exact: true });
   await users.scrollIntoViewIfNeeded();
   await expect(users).toBeInViewport();
   await expect(users).toHaveAttribute('href', '/admin/users');
@@ -52,6 +54,6 @@ test('regular users do not see user management navigation', async ({
 }) => {
   const menu = await openMenu(page, 32);
   await expect(
-    menu.getByRole('link', { name: 'Users', exact: true })
+    menu.getByRole('link', { name: 'User List', exact: true })
   ).toHaveCount(0);
 });
