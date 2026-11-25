@@ -10837,3 +10837,20 @@ failure artifact under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/hosted-browser-evidence-45676094803/admin-metadata-metadata-settings-follow-the-saved-fr-locale-iphone/`
 and current local runs of `lumen/tests/browser/admin-metadata.spec.ts`
 (`iphone`, French case; six passes total). Latest screenshot and run metadata are retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/metadata-admin-overflow-triage/`.
+
+### Full Lumen browser qualification (2026-11-25)
+
+The full standalone production browser suite ran on `main` at `e044954f7` and
+completed 5,424 cases across desktop, iPhone, Android, and tablet: 5,256 passed,
+164 were project-specific skips, and four timed out. Two poster-request cases
+could not click a card action while its overlay was moving; the administrator
+route-denial case timed out while navigating the webhook route on desktop and
+tablet. Exact isolated reruns passed: both poster cases on desktop and the
+route-denial case on desktop and tablet. No product or test change was made;
+the full run's four timeouts remain recorded as load-sensitive failures rather
+than erased from its totals. API/provider behavior remains fixture-backed, and
+this does not establish native-matched visuals or live authorization. Results
+and reruns are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: none
