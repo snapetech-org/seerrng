@@ -86,7 +86,7 @@ async function setup(
             ],
           },
           productionCompanies: [{ id: 8, name: 'Fixture Studio' }],
-          createdBy: [{ name: 'Fixture Creator' }],
+          createdBy: [{ id: 10, name: 'Fixture Creator' }],
           networks: [{ id: 9, name: 'Fixture Network' }],
           mediaInfo: {
             id: databaseId,
@@ -311,6 +311,9 @@ for (const kind of ['movie', 'tv'] as const) {
     await expect(summary.locator('img')).toBeVisible();
     if (kind === 'tv') {
       await expect(summary.getByText('Fixture Creator')).toBeVisible();
+      await expect(
+        summary.getByRole('link', { name: 'Fixture Creator' })
+      ).toHaveAttribute('href', '/person/10');
       await expect(summary.getByText('Fixture Network')).toBeVisible();
     } else {
       await expect(summary.getByText('Fixture Director')).toBeVisible();

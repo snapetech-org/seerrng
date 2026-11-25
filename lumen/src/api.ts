@@ -952,7 +952,7 @@ export interface TvDetails extends TitleResult {
   credits?: Credits;
   keywords?: SubjectTag[];
   productionCountries?: ProductionCountry[];
-  createdBy?: { name: string }[];
+  createdBy?: { id?: number; name: string }[];
   contentRatings?: { results: { iso_3166_1: string; rating: string }[] };
   lastEpisodeToAir?: {
     airDate: string;

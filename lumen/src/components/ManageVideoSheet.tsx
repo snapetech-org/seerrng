@@ -148,6 +148,12 @@ function VideoDetailsSummary({
             label: t('lumen.manageVideo.creator', 'Creator'),
             values: (tv.createdBy ?? []).slice(0, 2).map((person) => ({
               label: person.name,
+              href:
+                typeof person.id === 'number' &&
+                Number.isSafeInteger(person.id) &&
+                person.id > 0
+                  ? `/person/${person.id}`
+                  : undefined,
             })),
           },
         ];

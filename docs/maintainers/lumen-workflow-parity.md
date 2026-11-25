@@ -10007,6 +10007,8 @@ permissions, and API calls are unchanged.
 
 The movie and TV manager browser cases pass on desktop, iPhone, Android, and
 tablet (8 cases); assertions cover the displayed metadata and loaded poster.
+TV creator names use the server-provided person IDs to link to their profile,
+matching native navigation.
 The production Lumen build and TypeScript check pass. Baseline and candidate
 captures use the same fixtures at desktop 1440×900 and iPhone 390×844; both
 were inspected. Evidence is retained at
