@@ -201,6 +201,17 @@ function validLimit(value: string) {
   return Number.isInteger(limit) && limit >= 1 && limit <= 60;
 }
 
+function stableValue(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(stableValue).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.entries(value)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, item]) => `${JSON.stringify(key)}:${stableValue(item)}`)
+      .join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
 function ConnectionForm({ initial }: { initial: Settings }) {
   const { t } = useLumenLocale();
   const [saved, setSaved] = useState(initial);
@@ -351,11 +362,42 @@ function ConnectionForm({ initial }: { initial: Settings }) {
           searchLimitPerUserPerMinute: limit,
           showIndexerDetails: draft.showIndexerDetails,
         };
-        const confirmed = Object.entries(expected).every(
-          ([field, value]) =>
-            updated[field as keyof Settings] === value &&
-            readback[field as keyof Settings] === value
-        );
+        const expectedCategoryMappings = { ...(saved.categoryMappings ?? {}) };
+        for (const [category, ids] of Object.entries(draft.categoryMappings)) {
+          expectedCategoryMappings[category] = [
+            ...new Set(categoryIds(ids).map(Number)),
+          ];
+        }
+        const expectedIndexerIds = {
+          ...(saved.indexerIdsByCategory ?? {}),
+          ...(Object.keys(draft.indexerIdsByCategory).length
+            ? draft.indexerIdsByCategory
+            : {}),
+        };
+        const expectedIndexerLimits =
+          Object.keys(draft.searchLimitByIndexer).length ||
+          Object.keys(saved.searchLimitByIndexer ?? {}).length
+            ? Object.fromEntries(
+                Object.entries(draft.searchLimitByIndexer).map(
+                  ([id, value]) => [id, Number(value)]
+                )
+              )
+            : (saved.searchLimitByIndexer ?? {});
+        const confirmed =
+          Object.entries(expected).every(
+            ([field, value]) =>
+              updated[field as keyof Settings] === value &&
+              readback[field as keyof Settings] === value
+          ) &&
+          [updated, readback].every(
+            (settings) =>
+              stableValue(settings.categoryMappings ?? {}) ===
+                stableValue(expectedCategoryMappings) &&
+              stableValue(settings.indexerIdsByCategory ?? {}) ===
+                stableValue(expectedIndexerIds) &&
+              stableValue(settings.searchLimitByIndexer ?? {}) ===
+                stableValue(expectedIndexerLimits)
+          );
         if (!confirmed) {
           setFailure(
             t(

@@ -1,0 +1,1 @@
+**Lumen:** Prowlarr administration now verifies category mappings, per-category indexer assignments, and indexer search limits in the save response and fresh settings readback. Failed confirmation keeps the edits available for retry.

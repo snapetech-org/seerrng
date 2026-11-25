@@ -127,6 +127,7 @@ test('Prowlarr routing edits preserve explicit empty assignments and clear limit
     searchLimitByIndexer: { 4: 8 },
   };
   let persisted = initial;
+  let saveCount = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -155,6 +156,15 @@ test('Prowlarr routing edits preserve explicit empty assignments and clear limit
     const body = request.postDataJSON();
     changes.push(body);
     persisted = { ...persisted, ...body };
+    if (saveCount++ === 0)
+      return route.fulfill({
+        json: {
+          ...persisted,
+          categoryMappings: initial.categoryMappings,
+          indexerIdsByCategory: initial.indexerIdsByCategory,
+          searchLimitByIndexer: initial.searchLimitByIndexer,
+        },
+      });
     return route.fulfill({ json: persisted });
   });
   await page.goto(appPath('/admin/prowlarr'));
@@ -173,8 +183,24 @@ test('Prowlarr routing edits preserve explicit empty assignments and clear limit
     .uncheck();
   await page.getByLabel('Catalog Indexer Search Limit').fill('');
   await save.click();
+  await expect(
+    page.getByText('Prowlarr settings could not be saved.', { exact: true })
+  ).toBeVisible();
+  await expect(movies).toHaveValue('2000, 2040, 2040');
+  await expect(
+    page
+      .getByRole('group', { name: 'Indexers for Movies' })
+      .getByLabel('Catalog Indexer')
+  ).not.toBeChecked();
+  await expect(page.getByLabel('Catalog Indexer Search Limit')).toHaveValue('');
+  await save.click();
   await expect(page.getByText('Prowlarr settings saved.')).toBeVisible();
   expect(changes).toEqual([
+    expect.objectContaining({
+      categoryMappings: { movie: [2000, 2040], tv: [5000] },
+      indexerIdsByCategory: { movie: [] },
+      searchLimitByIndexer: {},
+    }),
     expect.objectContaining({
       categoryMappings: { movie: [2000, 2040], tv: [5000] },
       indexerIdsByCategory: { movie: [] },
