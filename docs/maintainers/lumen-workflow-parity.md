@@ -7167,7 +7167,8 @@ controls in English, French, and Arabic. Existing filter values, URL/API
 behavior, and request authorization are unchanged. On narrow screens, the
 search field wraps its clear action when needed; the shared search owner scopes
 this behavior to toolbars with a separate button, leaving Admin Users unchanged.
-Some per-request status and action copy remains a separate parity item.
+Per-request lifecycle labels, request actions, and moderation feedback are now
+localized; provider-backed status details remain outside the fixture evidence.
 
 Twelve browser cases pass across desktop, iPhone, Android, and tablet in all
 three locales. They verify localized controls and empty/error/retry states,
@@ -9723,4 +9724,27 @@ layout remain unchanged; the added regular-request fixture is an extra sample
 row. New English, French, and Arabic screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-status-localization-20261124/`.
 These mocked API cases do not verify live request-status APIs or provider
-handoff. Per-request action labels and bundled `/lumen/` acceptance remain open.
+handoff.
+
+### Bundled Requests workflow acceptance (2026-11-24)
+
+The production Lumen bundle was built with the embedded `/lumen/` base into
+task scratch, then served through SeerrNG's actual `mountLumenFrontend`
+middleware with the initialized, Lumen-selected route configuration. The
+Requests lifecycle localization fixture now supports the same `/lumen/` mount
+as the broader request suites. Its browser API calls remain mocked.
+
+The mounted `/lumen/` build passes 124 Requests page and status cases on desktop,
+iPhone, Android, and tablet, plus the 12 lifecycle localization cases across
+English, French, and Arabic and all four viewports. The browser checks cover
+request history and lifecycle, owner cancellation, manager approval, read-only
+household visibility, filters, progress, and the localized status text. English
+desktop and Arabic phone screenshots were inspected on the mounted bundle; the
+existing card geometry and translated labels fit. Bundled output and browser
+results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-request-status-localization-20261124/`.
+The mount-aware localization fixture also passes 4/4 standalone English
+viewport cases.
+This verifies packaged static assets and the Express mount, not live SeerrNG API
+responses, provider handoff, or household authorization against a running
+production database.

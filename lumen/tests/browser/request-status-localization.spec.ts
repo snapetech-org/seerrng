@@ -5,6 +5,7 @@ const locale = ['en', 'fr', 'ar'].includes(
 )
   ? (process.env.LUMEN_REQUEST_STATUS_LOCALE as 'en' | 'fr' | 'ar')
   : 'en';
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const baseline = process.env.LUMEN_STATUS_BASELINE === '1';
 const detailBaseline = process.env.LUMEN_REQUEST_DETAIL_BASELINE === '1';
 const actionBaseline = process.env.LUMEN_REQUEST_ACTION_BASELINE === '1';
@@ -299,7 +300,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/requests?tab=all');
+  await page.goto(`${mount}/requests?tab=all`);
   await expect(page.locator('.rq')).toHaveCount(23);
   const expected = baseline
     ? {
@@ -542,7 +543,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
     moderationCopy.cancelledToast
   );
 
-  await page.goto('/requests?requestId=not-a-number');
+  await page.goto(`${mount}/requests?requestId=not-a-number`);
   const invalidLink = page.getByRole('alert');
   await expect(invalidLink).toHaveText(
     requestLinkBaseline
