@@ -9440,11 +9440,13 @@ the same `Browse {name}` intent; route targets and the visible genre labels are
 unchanged.
 
 The French `/movies/genres` regression verifies the accessible name and link
-target on desktop and iPhone. Matched baseline and candidate captures at
+target. Both movie and series genre destinations pass in standalone and the
+production-built frontend served by Vite Preview at `/lumen/` on desktop,
+iPhone, Android, and tablet (8 runs per deployment). Matched baseline and candidate captures at
 1440x900 and 390x844 CSS pixels are pixel-identical because only the
 accessibility name changed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-genre-accessibility-20261124/`.
-The standalone client was verified; a production-mounted run remains open.
+Production Express middleware and matched mounted visuals remain open.
 
 ### Configured Discover shelf localization (2026-11-24)
 
