@@ -1,0 +1,1 @@
+Lumen keeps issue and comment deletion confirmations open after failures and presents retry feedback inside the sheet. If a delete response is lost, a fresh issue read confirms whether the issue or comment was already removed before offering another attempt.

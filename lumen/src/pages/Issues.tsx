@@ -6,7 +6,13 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { isIssueSubtypeForMediaType } from '../../../server/constants/issue';
-import { api, artUrl, tmdbImg, type DetailDisclosurePins } from '../api';
+import {
+  api,
+  ApiError,
+  artUrl,
+  tmdbImg,
+  type DetailDisclosurePins,
+} from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
@@ -1033,8 +1039,10 @@ function Discussion({
     submitting.current = true;
     setBusy(true);
     setFailure('');
+    let confirmed = false;
     try {
       await api(endpoint, init);
+      confirmed = true;
       if (action.kind === 'delete-issue') {
         navigate(issueList, { replace: true });
         return;
@@ -1043,15 +1051,41 @@ function Discussion({
       if (action.kind === 'edit-comment') setEdit(undefined);
       refresh();
     } catch {
-      reload();
-      setFailure(
-        t(
-          'lumen.issues.updateUnconfirmed',
-          'Could not confirm the update. Check the discussion before trying again.'
-        )
-      );
+      if (action.kind === 'delete-comment') {
+        try {
+          const latest = await api<Issue>(path, { cache: 'no-store' });
+          if (!latest.comments?.some(({ id }) => id === action.commentId)) {
+            confirmed = true;
+            refresh();
+          }
+        } catch {
+          // Keep the confirmation open when the fresh read cannot establish the result.
+        }
+      } else if (action.kind === 'delete-issue') {
+        try {
+          await api<Issue>(path, { cache: 'no-store' });
+        } catch (error) {
+          if (error instanceof ApiError && error.status === 404) {
+            confirmed = true;
+            navigate(issueList, { replace: true });
+          }
+        }
+      }
+      if (!confirmed) {
+        reload();
+        setFailure(
+          t(
+            'lumen.issues.updateUnconfirmed',
+            'Could not confirm the update. Check the discussion before trying again.'
+          )
+        );
+      }
     } finally {
-      setConfirmation(undefined);
+      if (
+        confirmed ||
+        (action.kind !== 'delete-issue' && action.kind !== 'delete-comment')
+      )
+        setConfirmation(undefined);
       submitting.current = false;
       setBusy(false);
     }
@@ -1081,7 +1115,7 @@ function Discussion({
           {t('lumen.issues.loadingIssue', 'Loading issue…')}
         </p>
       )}
-      {failure && (
+      {failure && !confirmation && (
         <p className="note" role="alert">
           {failure}
         </p>
@@ -1110,9 +1144,19 @@ function Discussion({
               : t('lumen.issues.deleteComment', 'Delete Comment')
           }
           busy={busy}
+          children={
+            failure ? (
+              <p className="note" role="alert">
+                {failure}
+              </p>
+            ) : undefined
+          }
           onConfirm={() => void submit(confirmation)}
           onClose={() => {
-            if (!submitting.current) setConfirmation(undefined);
+            if (!submitting.current) {
+              setConfirmation(undefined);
+              setFailure('');
+            }
           }}
         />
       )}
