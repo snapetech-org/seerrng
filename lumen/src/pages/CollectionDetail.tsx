@@ -10,6 +10,7 @@ import {
 import { isAdministrator, useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { Section, TitleCard } from '../components/cards';
+import { CollectionMetadataDisclosures } from '../components/CollectionMetadataDisclosures';
 import CollectionPlaybackSheet, {
   collectionPlaybackQualities,
 } from '../components/CollectionPlaybackSheet';
@@ -331,6 +332,7 @@ function CollectionContent({ id }: { id: number }) {
           </div>
         )}
         {data.overview && <p className="ov">{data.overview}</p>}
+        <CollectionMetadataDisclosures parts={data.parts} />
         <Section title={t('lumen.collectionDetail.movies', 'Movies')}>
           {data.parts.length ? (
             <div className="grid">

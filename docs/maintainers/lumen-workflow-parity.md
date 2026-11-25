@@ -9822,3 +9822,26 @@ candidate captures record the collapsed page and expanded interaction at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-person-biography-20261124/`.
 Mocked metadata verifies the UI contract; live person responses remain
 unverified.
+
+### Movie collection metadata disclosures (2026-11-24)
+
+Native movie collections expose aggregated Cast, Crew, and Subject Tags panels
+with per-user pin preferences. Lumen now provides those three panels on
+`/collection/:id`, reusing movie disclosure preferences, person links, tag
+routes, and the shared disclosure styles. Member metadata loads when a panel is
+opened, uses the shared request cache and batches no more than five movie
+requests at once. Duplicate credits and tags are removed across member movies.
+Partial failures preserve loaded results and offer a retry; empty and failed
+states are localized in English, French, and Arabic.
+
+The browser fixture uses two movies with overlapping cast and tags, a transient
+member-metadata failure, retry, and a saved Cast preference restored after
+reload. Twelve locale/viewport cases pass across desktop, iPhone, Android, and
+tablet; the existing collection localization/request/media-server suites also
+pass (56 combined cases). The production build passes. Matched `/collection/30`
+captures use the same two-member fixture at 1440×900 and iPhone 390×844; the
+baseline hides the new disclosure controls, and candidate closed/open states
+were inspected at both sizes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-metadata-20261124/`.
+This verifies the client against mocked member metadata and settings responses;
+live TMDB/API behavior remains unverified.

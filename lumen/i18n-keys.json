@@ -6107,5 +6107,14 @@
   "components.PersonDetails.alsoknownas",
   "lumen.people.externalLinks",
   "lumen.people.showMoreBiography",
-  "lumen.people.showLessBiography"
+  "lumen.people.showLessBiography",
+  "lumen.collectionMetadata.cast",
+  "lumen.collectionMetadata.crew",
+  "lumen.collectionMetadata.subjectTags",
+  "lumen.collectionMetadata.loading",
+  "lumen.collectionMetadata.loadFailure",
+  "lumen.collectionMetadata.partialFailure",
+  "lumen.collectionMetadata.retry",
+  "lumen.collectionMetadata.noCredits",
+  "lumen.collectionMetadata.noTags"
 ]

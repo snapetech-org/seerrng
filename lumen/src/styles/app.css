@@ -1095,6 +1095,11 @@ body.is-detail .tabbar {
   gap: 8px;
   flex-wrap: wrap;
 }
+.collection-credits {
+  max-block-size: min(60vh, 32rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .person {
   display: inline-flex;
   align-items: center;

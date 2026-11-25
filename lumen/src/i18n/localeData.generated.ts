@@ -7402,6 +7402,16 @@ export const localeData = [
       'lumen.people.externalLinks': 'روابط خارجية',
       'lumen.people.showMoreBiography': 'عرض المزيد من السيرة الذاتية',
       'lumen.people.showLessBiography': 'عرض أقل من السيرة الذاتية',
+      'lumen.collectionMetadata.cast': 'طاقم التمثيل',
+      'lumen.collectionMetadata.crew': 'طاقم العمل',
+      'lumen.collectionMetadata.subjectTags': 'الوسوم',
+      'lumen.collectionMetadata.loading': 'جارٍ تحميل تفاصيل المجموعة…',
+      'lumen.collectionMetadata.loadFailure': 'تعذر تحميل تفاصيل المجموعة.',
+      'lumen.collectionMetadata.partialFailure':
+        'تعذر تحميل بعض تفاصيل الأفلام.',
+      'lumen.collectionMetadata.retry': 'إعادة المحاولة',
+      'lumen.collectionMetadata.noCredits': 'لا تتوفر معلومات عن طاقم العمل.',
+      'lumen.collectionMetadata.noTags': 'لا تتوفر وسوم.',
     },
   },
   {
@@ -19203,6 +19213,17 @@ export const localeData = [
       'lumen.people.externalLinks': 'External links',
       'lumen.people.showMoreBiography': 'Show More Biography',
       'lumen.people.showLessBiography': 'Show Less Biography',
+      'lumen.collectionMetadata.cast': 'Cast',
+      'lumen.collectionMetadata.crew': 'Crew',
+      'lumen.collectionMetadata.subjectTags': 'Subject Tags',
+      'lumen.collectionMetadata.loading': 'Loading collection details…',
+      'lumen.collectionMetadata.loadFailure':
+        'Could not load collection details.',
+      'lumen.collectionMetadata.partialFailure':
+        'Some movie details could not be loaded.',
+      'lumen.collectionMetadata.retry': 'Retry',
+      'lumen.collectionMetadata.noCredits': 'No credits available.',
+      'lumen.collectionMetadata.noTags': 'No subject tags available.',
     },
   },
   {
@@ -32224,6 +32245,18 @@ export const localeData = [
       'lumen.people.externalLinks': 'Liens externes',
       'lumen.people.showMoreBiography': 'Afficher plus de la biographie',
       'lumen.people.showLessBiography': 'Afficher moins de la biographie',
+      'lumen.collectionMetadata.cast': 'Distribution',
+      'lumen.collectionMetadata.crew': 'Équipe',
+      'lumen.collectionMetadata.subjectTags': 'Mots-clés',
+      'lumen.collectionMetadata.loading':
+        'Chargement des détails de la collection…',
+      'lumen.collectionMetadata.loadFailure':
+        'Impossible de charger les détails de la collection.',
+      'lumen.collectionMetadata.partialFailure':
+        'Certains détails de films n’ont pas pu être chargés.',
+      'lumen.collectionMetadata.retry': 'Réessayer',
+      'lumen.collectionMetadata.noCredits': 'Aucun crédit disponible.',
+      'lumen.collectionMetadata.noTags': 'Aucun mot-clé disponible.',
     },
   },
   {
