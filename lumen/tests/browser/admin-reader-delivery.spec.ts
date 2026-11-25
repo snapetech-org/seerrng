@@ -14,6 +14,9 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
     preferredProvider: 'grimmory',
   };
   let deleteCount = 0;
+  let rejectDelete = true;
+  let removedFromList = false;
+  let staleDeleteReadback = false;
   let reject = true;
   let staleReadback: typeof saved | undefined;
   let saveCount = 0;
@@ -36,11 +39,39 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
     if (pathname === path + '/groupings/17') {
       expect(request.method()).toBe('DELETE');
       deleteCount++;
+      if (rejectDelete) {
+        rejectDelete = false;
+        return route.fulfill({
+          status: 502,
+          json: { message: 'Reader provider unavailable.' },
+        });
+      }
+      if (!removedFromList) {
+        removedFromList = true;
+        staleDeleteReadback = true;
+      }
       return route.fulfill({ json: { deleted: true } });
     }
-    if (pathname === path + '/groupings')
+    if (pathname === path + '/groupings') {
+      if (staleDeleteReadback) {
+        staleDeleteReadback = false;
+        return route.fulfill({
+          json: [
+            {
+              id: 17,
+              provider: 'bookorbit',
+              groupName: 'Fixture Shelf',
+              targetName: 'Fixture Author',
+              isPublic: false,
+              status: 'ready',
+              lastMatchCount: 2,
+              countVerified: true,
+            },
+          ],
+        });
+      }
       return route.fulfill({
-        json: deleteCount
+        json: removedFromList
           ? []
           : [
               {
@@ -55,6 +86,7 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
               },
             ],
       });
+    }
     if (pathname !== path) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
       if (staleReadback) {
@@ -92,7 +124,7 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
   await expect(page.getByLabel('Grimmory OPDS Catalog')).toHaveValue(
     'https://reader.example.test/books/api/v1/opds'
   );
-  await expect(page.getByText('Fixture Shelf')).toBeVisible();
+  await expect(page.getByText('Fixture Shelf', { exact: true })).toBeVisible();
   await page.screenshot({
     path: info.outputPath('configured.png'),
     fullPage: true,
@@ -130,6 +162,25 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
   expect(deleteCount).toBe(0);
   await remove.click();
   await confirm.getByRole('button', { name: 'Remove Shelf' }).click();
+  await expect(confirm.getByRole('alert')).toHaveText(
+    'Reader provider unavailable.'
+  );
+  await expect(confirm).toBeVisible();
+  await expect(page.getByText('Fixture Shelf', { exact: true })).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_READER_SHELF_DELETE)
+    await page.screenshot({
+      path: info.outputPath('delete-provider-failure.png'),
+    });
+  await confirm.getByRole('button', { name: 'Remove Shelf' }).click();
+  await expect(confirm.getByRole('alert')).toHaveText(
+    'Could not confirm the managed shelf was removed. Keep this dialog open and try again.'
+  );
+  await expect(confirm).toBeVisible();
+  if (process.env.LUMEN_CAPTURE_READER_SHELF_DELETE)
+    await page.screenshot({
+      path: info.outputPath('delete-stale-readback.png'),
+    });
+  await confirm.getByRole('button', { name: 'Remove Shelf' }).click();
   await expect(page.getByText('No managed reader shelves.')).toBeVisible();
-  expect(deleteCount).toBe(1);
+  expect(deleteCount).toBe(3);
 });

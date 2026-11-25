@@ -135,6 +135,24 @@ inspected at 1440px and 390px; they are retained under
 No layout or style owner changed; a matched native capture for this newly
 explicit stale-readback state is not available.
 
+### Managed Reader Shelf deletion recovery
+
+Lumen now keeps managed Reader Shelf removal open after a provider error and
+checks a fresh `/settings/reader-delivery/groupings` list before closing after a
+DELETE. A stale list or failed readback keeps the shelf and confirmation in
+place for retry. The retry error is rendered inside the confirmation dialog, so
+it remains visible with the available action. Regression fixtures cover a
+provider failure followed by a successful retry and a stale readback followed
+by confirmed removal. The browser workflow passes on desktop, iPhone, Android,
+and tablet; locale fixtures pass in English, French, and Arabic. Same-viewport
+desktop baseline/candidate captures use the same provider failure: the prior
+revision closed the dialog and left the message behind it, while the candidate
+keeps both visible in the dialog. Desktop and iPhone candidate states were
+inspected and are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-shelf-delete-20261125/`.
+No CSS or shared visual owner changed. Release note:
+`release-notes/fixed-lumen-reader-shelf-deletion-confirmation.md`.
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens

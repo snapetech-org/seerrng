@@ -31,6 +31,8 @@ const labels = {
     shared: 'Shared',
     preview: 'Preview Matches',
     remove: 'Remove Shelf',
+    removeConfirmFailure:
+      'Could not confirm the managed shelf was removed. Keep this dialog open and try again.',
     noShelves: 'No managed reader shelves.',
     title: 'Remove Fixture Shelf?',
     body: 'This removes the reader shelf. Library files are kept.',
@@ -59,6 +61,8 @@ const labels = {
     shared: 'Partagé',
     preview: 'Correspondances de l’aperçu',
     remove: 'Supprimer le rayon',
+    removeConfirmFailure:
+      'Impossible de confirmer la suppression du rayon géré. Gardez cette fenêtre ouverte et réessayez.',
     noShelves: 'Aucun rayon de lecture géré.',
     title: 'Supprimer Fixture Shelf ?',
     body: 'Cette action supprime le rayon. Les fichiers de la bibliothèque sont conservés.',
@@ -87,6 +91,8 @@ const labels = {
     shared: 'مشترك',
     preview: 'مطابقات المعاينة',
     remove: 'إزالة الرف',
+    removeConfirmFailure:
+      'تعذر تأكيد إزالة الرف المُدار. اترك هذه النافذة مفتوحة ثم أعد المحاولة.',
     noShelves: 'لا توجد رفوف قارئ مُدارة.',
     title: 'إزالة Fixture Shelf؟',
     body: 'سيؤدي هذا إلى إزالة رف القارئ. ستبقى ملفات المكتبة كما هي.',
@@ -109,6 +115,8 @@ test('reader delivery settings and managed shelves use the saved locale', async 
     preferredProvider: 'grimmory',
   };
   let deleteCount = 0;
+  let shelfDeleted = false;
+  let staleDeleteReadback = false;
   let reject = true;
   let staleReadback: typeof saved | undefined;
   let saveCount = 0;
@@ -136,11 +144,36 @@ test('reader delivery settings and managed shelves use the saved locale', async 
     if (pathname === path + '/groupings/17') {
       expect(request.method()).toBe('DELETE');
       deleteCount++;
+      if (!shelfDeleted) {
+        shelfDeleted = true;
+        staleDeleteReadback = true;
+      }
       return route.fulfill({ json: { deleted: true } });
     }
-    if (pathname === path + '/groupings')
+    if (pathname === path + '/groupings') {
+      if (staleDeleteReadback) {
+        staleDeleteReadback = false;
+        return route.fulfill({
+          json: [
+            {
+              id: 17,
+              provider: 'bookorbit',
+              groupName: 'Fixture Shelf',
+              targetName: 'Fixture Author',
+              isPublic: true,
+              status: 'ready',
+              lastMatchCount: 2,
+              countVerified: false,
+              lastError: null,
+              syncToKobo: false,
+              koboSyncStatus: 'disabled',
+              koboSyncError: null,
+            },
+          ],
+        });
+      }
       return route.fulfill({
-        json: deleteCount
+        json: shelfDeleted
           ? []
           : [
               {
@@ -159,6 +192,7 @@ test('reader delivery settings and managed shelves use the saved locale', async 
               },
             ],
       });
+    }
     if (pathname !== path) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
       if (staleReadback) {
@@ -249,6 +283,11 @@ test('reader delivery settings and managed shelves use the saved locale', async 
   expect(deleteCount).toBe(0);
   await page.getByRole('button', { name: text.remove, exact: true }).click();
   await confirm.getByRole('button', { name: text.remove }).click();
+  await expect(confirm.getByRole('alert')).toHaveText(
+    text.removeConfirmFailure
+  );
+  await expect(confirm).toBeVisible();
+  await confirm.getByRole('button', { name: text.remove }).click();
   await expect(page.getByText(text.noShelves)).toBeVisible();
-  expect(deleteCount).toBe(1);
+  expect(deleteCount).toBe(2);
 });

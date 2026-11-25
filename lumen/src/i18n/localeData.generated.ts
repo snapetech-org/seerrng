@@ -2513,6 +2513,8 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeSavedCredentials':
         'إزالة بيانات اعتماد {provider} المحفوظة',
       'lumen.adminReaderDelivery.removeShelf': 'إزالة الرف',
+      'lumen.adminReaderDelivery.removeShelfConfirmFailure':
+        'تعذر تأكيد إزالة الرف المُدار. اترك هذه النافذة مفتوحة ثم أعد المحاولة.',
       'lumen.adminReaderDelivery.removeShelfBody':
         'سيؤدي هذا إلى إزالة رف القارئ. ستبقى ملفات المكتبة كما هي.',
       'lumen.adminReaderDelivery.removeShelfTitle': 'إزالة {name}؟',
@@ -14375,6 +14377,8 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeSavedCredentials':
         'Remove Saved {provider} Credentials',
       'lumen.adminReaderDelivery.removeShelf': 'Remove Shelf',
+      'lumen.adminReaderDelivery.removeShelfConfirmFailure':
+        'Could not confirm the managed shelf was removed. Keep this dialog open and try again.',
       'lumen.adminReaderDelivery.removeShelfBody':
         'This removes the reader shelf. Library files are kept.',
       'lumen.adminReaderDelivery.removeShelfTitle': 'Remove {name}?',
@@ -27044,6 +27048,8 @@ export const localeData = [
       'lumen.adminReaderDelivery.removeSavedCredentials':
         'Supprimer les identifiants enregistrés de {provider}',
       'lumen.adminReaderDelivery.removeShelf': 'Supprimer le rayon',
+      'lumen.adminReaderDelivery.removeShelfConfirmFailure':
+        'Impossible de confirmer la suppression du rayon géré. Gardez cette fenêtre ouverte et réessayez.',
       'lumen.adminReaderDelivery.removeShelfBody':
         'Cette action supprime le rayon. Les fichiers de la bibliothèque sont conservés.',
       'lumen.adminReaderDelivery.removeShelfTitle': 'Supprimer {name} ?',

@@ -366,14 +366,38 @@ function ManagedShelves() {
     setBusy(true);
     setError(undefined);
     try {
-      await api(path + '/groupings/' + selected.id, { method: 'DELETE' });
+      let deletionFailure: unknown;
+      try {
+        await api(path + '/groupings/' + selected.id, { method: 'DELETE' });
+      } catch (failure) {
+        deletionFailure = failure;
+      }
+      const readback = await api<Shelf[]>(path + '/groupings', {
+        cache: 'no-store',
+      });
+      if (!Array.isArray(readback)) {
+        throw new Error(
+          t(
+            'lumen.adminReaderDelivery.removeShelfConfirmFailure',
+            'Could not confirm the managed shelf was removed. Keep this dialog open and try again.'
+          )
+        );
+      }
+      if (readback.some(({ id }) => id === selected.id)) {
+        if (deletionFailure) throw deletionFailure;
+        throw new Error(
+          t(
+            'lumen.adminReaderDelivery.removeShelfConfirmFailure',
+            'Could not confirm the managed shelf was removed. Keep this dialog open and try again.'
+          )
+        );
+      }
       setSelected(undefined);
       shelves.reload();
     } catch (failure) {
       setError(
         friendlyError(failure, 'Could not remove the managed shelf.', t)
       );
-      setSelected(undefined);
     } finally {
       deleting.current = false;
       setBusy(false);
@@ -397,11 +421,6 @@ function ManagedShelves() {
         retryLabel={t('lumen.common.retry', 'Retry')}
         retry={shelves.reload}
       />
-      {error && (
-        <p className="note" role="alert">
-          {error}
-        </p>
-      )}
       {!shelves.data && !shelves.error && (
         <p className="note" role="status">
           {t('lumen.adminReaderDelivery.loadingShelves', 'Loading shelves…')}
@@ -469,7 +488,10 @@ function ManagedShelves() {
               <button
                 type="button"
                 className="btn btn-quiet btn-sm"
-                onClick={() => setSelected(shelf)}
+                onClick={() => {
+                  setError(undefined);
+                  setSelected(shelf);
+                }}
               >
                 {t('lumen.adminReaderDelivery.removeShelf', 'Remove Shelf')}
               </button>
@@ -500,9 +522,18 @@ function ManagedShelves() {
           busy={busy}
           onConfirm={() => void remove()}
           onClose={() => {
-            if (!deleting.current) setSelected(undefined);
+            if (!deleting.current) {
+              setSelected(undefined);
+              setError(undefined);
+            }
           }}
-        />
+        >
+          {error && (
+            <p className="note" role="alert">
+              {error}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </Section>
   );
