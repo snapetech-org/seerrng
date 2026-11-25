@@ -9454,14 +9454,18 @@ titles, load errors, and Retry are also localized; selected companies, filter
 IDs, shelf destinations, and retry behavior are unchanged.
 
 French browser coverage verifies a studio browse link, its See all destination,
-and a failed custom shelf followed by successful retry on desktop and iPhone.
+and a failed custom shelf followed by successful retry. The same case passes in
+standalone Lumen and the production-built frontend served by Vite Preview at
+`/lumen/`, across desktop, iPhone, Android, and tablet (8 runs). The mounted run
+also caught and corrected an expectation that incorrectly omitted `/lumen/`
+from internal studio and See all links.
 Matched baseline and candidate screenshots were inspected at 1440x900 and
 390x844 CSS pixels. The French error and control copy is longer, increasing
 content height by 16 desktop pixels and 66 phone pixels, with no horizontal
 overflow or clipped controls. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-configured-shelf-localization-20261124/`.
-The standalone client was verified; the production Express `/lumen/` mount
-remains open.
+Production Express middleware, live API behavior, and matched visuals for the
+mounted deployment remain open.
 
 ### Lumen instance request summary localization (2026-11-24)
 

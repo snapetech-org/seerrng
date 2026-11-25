@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 test('configured studio shelf localizes its company browse name', async ({
   page,
 }, info) => {
@@ -10,9 +12,9 @@ test('configured studio shelf localizes its company browse name', async ({
     route.fulfill({ json: {} })
   );
   await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname.slice(
-      '/api/v1'.length
-    );
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen(?=\/)/, '')
+      .slice('/api/v1'.length);
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'Fixture User', permissions: 2 },
@@ -62,13 +64,13 @@ test('configured studio shelf localizes its company browse name', async ({
     });
   });
 
-  await page.goto('/');
+  await page.goto(`${mount}/`);
   const link = page.getByRole('link', {
     name: baseline
       ? 'Browse movies from Studio Fixture'
       : 'Parcourir les films de Studio Fixture',
   });
-  await expect(link).toHaveAttribute('href', '/movies?studio=55');
+  await expect(link).toHaveAttribute('href', `${mount}/movies?studio=55`);
   const companyShelf = page
     .locator('section')
     .filter({ has: page.getByRole('heading', { name: 'Studios' }) });
@@ -76,7 +78,7 @@ test('configured studio shelf localizes its company browse name', async ({
     companyShelf.getByRole('link', {
       name: baseline ? 'See all' : 'Tout voir',
     })
-  ).toHaveAttribute('href', '/movies');
+  ).toHaveAttribute('href', `${mount}/movies`);
   const searchShelf = page.locator('section').filter({
     has: page.getByRole('heading', {
       name: baseline ? 'Discover Titles' : 'Titres à découvrir',
