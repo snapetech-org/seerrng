@@ -38,7 +38,7 @@ test('shell navigation landmarks and request badges follow the account locale', 
       watchlist: 'قائمة المتابعة',
     },
   }[locale];
-  await page.route('**/api/v1/**', (route) => {
+  await page.route('**/api/v1/**', async (route) => {
     const path = new URL(route.request().url()).pathname
       .replace(/^\/lumen/, '')
       .replace(/^\/api\/v1/, '');
@@ -110,6 +110,69 @@ test('shell navigation landmarks and request badges follow the account locale', 
     await more.click();
     await page.locator('.mobile-nav-scrim').click({ position: { x: 4, y: 4 } });
     await expect(menu).not.toHaveAttribute('data-mobile-open', 'true');
+  }
+});
+
+test('open issue count appears only for issue managers', async ({ page }) => {
+  const permission = Number(process.env.LUMEN_TEST_ISSUE_PERMISSION ?? 1048576);
+  let issueCountRequests = 0;
+  let markCountRequested = () => {};
+  let releaseCount = () => {};
+  const countRequested = new Promise<void>((resolve) => {
+    markCountRequested = resolve;
+  });
+  const countGate = new Promise<void>((resolve) => {
+    releaseCount = resolve;
+  });
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          permissions: permission,
+          userType: 1,
+          displayName: 'Issue User',
+        },
+      });
+    if (path === '/issue/count') {
+      issueCountRequests++;
+      markCountRequested();
+      await countGate;
+      return route.fulfill({ json: { open: 4, total: 6 } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  await page.goto(`${mount}/me`);
+  if ((page.viewportSize()?.width ?? 0) < 1040)
+    await page.getByRole('button', { name: 'More navigation' }).click();
+  const sidebar = page.locator('.side');
+  const captureDir = process.env.LUMEN_MENU_CAPTURE_DIR;
+  if (permission === 1048576) {
+    const link = sidebar.getByRole('link', { name: /Issues/ });
+    await expect(link).toBeVisible();
+    await countRequested;
+    const viewportWidth = page.viewportSize()?.width ?? 0;
+    if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+      await page.screenshot({
+        path: `${captureDir}/issues-menu-before-${viewportWidth}.png`,
+      });
+    releaseCount();
+    await expect(link.locator('[aria-label="Open issues: 4"]')).toHaveText('4');
+    if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+      await page.screenshot({
+        path: `${captureDir}/issues-menu-after-${viewportWidth}.png`,
+      });
+    expect(issueCountRequests).toBeGreaterThan(0);
+  } else {
+    await expect(
+      sidebar.getByRole('link', { name: 'Issues', exact: true })
+    ).toBeVisible();
+    expect(issueCountRequests).toBe(0);
   }
 });
 

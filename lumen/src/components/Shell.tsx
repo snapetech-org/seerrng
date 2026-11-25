@@ -21,7 +21,7 @@ import {
 import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import { canSearchIndexers } from '../indexerPermissions';
-import { canReadIssues } from '../issuePermissions';
+import { canManageIssues, canReadIssues } from '../issuePermissions';
 import { useLiveTvStatus } from '../liveTv';
 import { scrollBehavior } from '../motion';
 import { normalizeSearchParams } from '../searchParams';
@@ -162,6 +162,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const showBlocklist = useBlocklistNavigation();
   const managesRequests = canManageRequests(user?.permissions);
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [openIssues, setOpenIssues] = useState(0);
   useEffect(() => {
     if (!managesRequests) {
       setPendingRequests(0);
@@ -180,6 +181,25 @@ export default function Shell({ children }: { children: ReactNode }) {
       window.clearInterval(timer);
     };
   }, [managesRequests, loc.pathname]);
+  const managesIssues = canManageIssues(user?.permissions);
+  useEffect(() => {
+    if (!managesIssues) {
+      setOpenIssues(0);
+      return;
+    }
+    let live = true;
+    const refresh = () => {
+      api<{ open: number }>('/issue/count')
+        .then((count) => live && setOpenIssues(count.open || 0))
+        .catch(() => live && setOpenIssues(0));
+    };
+    refresh();
+    const timer = window.setInterval(refresh, 30_000);
+    return () => {
+      live = false;
+      window.clearInterval(timer);
+    };
+  }, [managesIssues, loc.pathname]);
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =
@@ -658,6 +678,18 @@ export default function Shell({ children }: { children: ReactNode }) {
             <NavLink to="/issues">
               <Icon name="list" />
               {t('components.Layout.Sidebar.issues', 'Issues')}
+              {managesIssues && openIssues > 0 && (
+                <span
+                  className="n"
+                  aria-label={t(
+                    'lumen.nav.openIssues',
+                    'Open issues: {count}',
+                    { count: openIssues }
+                  )}
+                >
+                  {openIssues}
+                </span>
+              )}
             </NavLink>
           )}
           {showBlocklist && (

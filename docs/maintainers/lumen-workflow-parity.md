@@ -10202,3 +10202,18 @@ permission behavior changed. The companion image build context now includes
 the shared number-formatting helper imported by System Caches, so its production
 container builds with the same locale-aware cache guidance as the standalone
 and bundled apps.
+
+### Open issue count in Lumen navigation (2026-11-25)
+
+The native sidebar shows managers the number of open issues beside its Issues
+link. Lumen now reads the existing aggregate `/issue/count` endpoint only for
+users with `MANAGE_ISSUES`, refreshes it on navigation and every 30 seconds,
+and shows the localized count on the Issues link. Users with other issue
+permissions still see the link when allowed but never request the manager count.
+Focused browser coverage verifies both the visible manager count and the
+no-request behavior for a view-only user. Same-viewport menu captures before
+and after the aggregate resolves were inspected at 1440px and 390px; they are
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-menu-issue-count-20261125/`.
+Native-matched menu comparison, bundled `/lumen/` deployment, and a live
+authorized count remain open.
