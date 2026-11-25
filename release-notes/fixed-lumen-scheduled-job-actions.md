@@ -1,1 +1,1 @@
-Lumen's Scheduled Jobs page now runs, cancels, enables, and disables jobs immediately, matching native SeerrNG. Successful actions show localized feedback. Failed actions remain available to retry.
+Lumen's Scheduled Jobs page now runs, cancels, enables, and disables jobs immediately, matching native SeerrNG. Successful actions show localized feedback. Failed actions remain available to retry. The bundled image now includes the shared utility modules used by Lumen's manager metadata and safe issue links.

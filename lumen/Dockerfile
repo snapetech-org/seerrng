@@ -9,8 +9,10 @@ COPY config/i18n/locales.json /app/config/i18n/locales.json
 COPY src/i18n/locale/ /app/src/i18n/locale/
 COPY src/assets/tmdb_logo.svg /app/src/assets/tmdb_logo.svg
 COPY src/utils/advancedThemePresets.ts \
+     src/utils/creditPriority.ts \
      src/utils/imdbWatchlistCsv.ts \
      src/utils/numberHelpers.ts \
+     src/utils/safeUrl.ts \
      /app/src/utils/
 COPY server/constants/issue.ts /app/server/constants/issue.ts
 COPY server/utils/advancedThemeOverrides.ts /app/server/utils/advancedThemeOverrides.ts
