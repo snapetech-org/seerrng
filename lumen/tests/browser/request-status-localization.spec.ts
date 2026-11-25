@@ -17,6 +17,7 @@ const mediaLinkBaseline = process.env.LUMEN_MEDIA_LINK_BASELINE === '1';
 const labels = {
   en: {
     waiting: 'Waiting for approval',
+    requested: 'Requested',
     approved: 'Approved',
     searching: 'Searching',
     queued: 'Queued',
@@ -33,7 +34,7 @@ const labels = {
       'This book is in your library in another edition than the one requested.',
     inLibrary: 'In library',
     fourK: '4K on Plex',
-    overQuota: 'Over quota',
+    overQuota: 'Over Quota',
     autoQueued: 'Auto-Queued',
     episodeQueue: 'Episode Queue · 2 ahead',
     eta: 'About 3 min left',
@@ -47,6 +48,7 @@ const labels = {
   },
   fr: {
     waiting: 'En attente d’approbation',
+    requested: 'Demandé',
     approved: 'Approuvé',
     searching: 'Recherche en cours',
     queued: 'En attente de téléchargement',
@@ -78,6 +80,7 @@ const labels = {
   },
   ar: {
     waiting: 'بانتظار الموافقة',
+    requested: 'مطلوب',
     approved: 'تمت الموافقة',
     searching: 'جارٍ البحث',
     queued: 'في قائمة الانتظار',
@@ -110,6 +113,7 @@ const labels = {
 
 const statuses = [
   ['waiting', 'requested', 1, {}],
+  ['requested', 'requested', 2, {}],
   ['approved', 'approved', 2, {}],
   ['searching', 'searching', 2, {}],
   ['queued', 'downloading', 2, { percent: 0 }],
@@ -182,7 +186,7 @@ const requests = [
   ...statuses.map(([, stage, requestStatus, options], index) => ({
     ...request(601 + index, stage, requestStatus, options),
     ...(index === 0 ? { watchAheadParentRequestId: 500 } : {}),
-    ...(index === 1 ? { watchAheadEpisodeCount: 2 } : {}),
+    ...(index === 2 ? { watchAheadEpisodeCount: 2 } : {}),
   })),
   {
     ...request(621, 'downloading', 2),
@@ -296,7 +300,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
   });
 
   await page.goto('/requests?tab=all');
-  await expect(page.locator('.rq')).toHaveCount(22);
+  await expect(page.locator('.rq')).toHaveCount(23);
   const expected = baseline
     ? {
         ...labels.en,
@@ -311,16 +315,16 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
     await expect(row).toBeVisible();
     await expect(row.locator('.st')).toContainText(expected[key]);
   }
-  await expect(page.locator('.rq').nth(12).locator('.d')).toContainText(
+  await expect(page.locator('.rq').nth(13).locator('.d')).toContainText(
     detailBaseline
       ? labels.en.differentEditionDetail
       : labels[locale].differentEditionDetail
   );
-  const overQuota = page.locator('.rq').nth(14);
+  const overQuota = page.locator('.rq').nth(15);
   await expect(overQuota.locator('.st')).toContainText(expected.overQuota);
   const autoQueued = page.locator('.rq').nth(0).locator('.st');
-  const episodeQueue = page.locator('.rq').nth(1).locator('.st');
-  const eta = page.locator('.rq').nth(15).locator('.st');
+  const episodeQueue = page.locator('.rq').nth(2).locator('.st');
+  const eta = page.locator('.rq').nth(16).locator('.st');
   await expect(autoQueued).toContainText(
     rowBaseline ? 'Auto-Queued' : labels[locale].autoQueued
   );
@@ -545,7 +549,7 @@ test(`request lifecycle statuses follow ${locale}`, async ({ page }) => {
       ? 'This request link is invalid.'
       : labels[locale].invalidLink
   );
-  await expect(page.locator('.rq')).toHaveCount(22);
+  await expect(page.locator('.rq')).toHaveCount(23);
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)

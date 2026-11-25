@@ -389,6 +389,15 @@ export function requestRowStatus(
   pct?: number;
   detail?: string;
 } {
+  const tr = (
+    id: string,
+    fallback: string,
+    values?: Record<string, string | number>
+  ) =>
+    translate?.(id, fallback, values) ??
+    fallback.replace(/\{(\w+)\}/g, (_, key: string) =>
+      String(values?.[key] ?? `{${key}}`)
+    );
   const r = x.r;
   const current = r.currentStatus;
   const scheduled = requestDownloads(r);
@@ -414,8 +423,12 @@ export function requestRowStatus(
     return {
       k: 'ok',
       word: p?.total
-        ? `${Math.min(p.owned, p.total)} of ${p.total} in library`
-        : 'Partly in library',
+        ? tr(
+            'lumen.requests.row.comicProgress',
+            '{owned} of {total} in library',
+            { owned: Math.min(p.owned, p.total), total: p.total }
+          )
+        : tr('lumen.requests.row.partlyInLibrary', 'Partly in library'),
       ico: 'check',
       active: true,
       detail: current?.message,
@@ -425,10 +438,16 @@ export function requestRowStatus(
     const base = { active: true, detail: current.message };
     const available =
       r.type === 'comic'
-        ? 'Complete'
+        ? tr('lumen.requests.row.complete', 'Complete')
         : r.type !== 'movie' && r.type !== 'tv'
-          ? 'In library'
-          : `${r.is4k ? '4K on' : 'On'} ${serverName}`;
+          ? tr('lumen.requests.row.inLibrary', 'In library')
+          : tr(
+              r.is4k
+                ? 'lumen.requests.row.fourKOn'
+                : 'lumen.requests.row.onServer',
+              r.is4k ? '4K on {server}' : 'On {server}',
+              { server: serverName }
+            );
     switch (current.stage) {
       case 'available':
         return {
@@ -442,13 +461,26 @@ export function requestRowStatus(
         return {
           ...base,
           k: 'wait',
-          word: r.status === 1 ? 'Waiting for approval' : 'Requested',
+          word:
+            r.status === 1
+              ? tr('lumen.requests.row.waitingApproval', 'Waiting for approval')
+              : tr('lumen.requests.row.requested', 'Requested'),
           ico: 'clock',
         };
       case 'approved':
-        return { ...base, k: 'wait', word: 'Approved', ico: 'clock' };
+        return {
+          ...base,
+          k: 'wait',
+          word: tr('lumen.requests.row.approved', 'Approved'),
+          ico: 'clock',
+        };
       case 'searching':
-        return { ...base, k: 'wait', word: 'Searching', ico: 'clock' };
+        return {
+          ...base,
+          k: 'wait',
+          word: tr('lumen.requests.row.searching', 'Searching'),
+          ico: 'clock',
+        };
       case 'downloading': {
         const displayedPct = dls.some(
           (item, index) => item !== scheduled[index]
@@ -465,23 +497,35 @@ export function requestRowStatus(
           k: 'dl',
           word:
             displayedPct === 0
-              ? 'Queued'
+              ? tr('lumen.requests.row.queued', 'Queued')
               : displayedPct === undefined
-                ? 'Downloading'
-                : `Downloading ${displayedPct}%`,
+                ? tr('lumen.requests.row.downloading', 'Downloading')
+                : tr(
+                    'lumen.requests.row.downloadingPercent',
+                    'Downloading {percent}%',
+                    { percent: displayedPct }
+                  ),
           ico: 'down',
           pct: displayedPct,
         };
       }
       case 'importing':
-        return { ...base, k: 'wait', word: 'Importing', ico: 'clock' };
+        return {
+          ...base,
+          k: 'wait',
+          word: tr('lumen.requests.row.importing', 'Importing'),
+          ico: 'clock',
+        };
       case 'library':
         // a completed request pinned to one edition, while another edition of the book is what's
         // in the library: the server keeps saying "library" for it, which would never settle
         if (otherEditionInLibrary(r))
           return {
             k: 'ok',
-            word: 'Different edition in library',
+            word: tr(
+              'lumen.requests.row.differentEdition',
+              'Different edition in library'
+            ),
             ico: 'check',
             active: false,
             detail:
@@ -491,23 +535,52 @@ export function requestRowStatus(
               ) ??
               'This book is in your library in another edition than the one requested.',
           };
-        return { ...base, k: 'wait', word: 'Checking library', ico: 'clock' };
+        return {
+          ...base,
+          k: 'wait',
+          word: tr('lumen.requests.row.checkingLibrary', 'Checking library'),
+          ico: 'clock',
+        };
       case 'failed':
-        return { ...base, k: 'bad', word: 'Couldn’t get it', ico: 'x' };
+        return {
+          ...base,
+          k: 'bad',
+          word: tr('lumen.requests.row.failed', 'Couldn’t get it'),
+          ico: 'x',
+        };
       case 'declined':
-        return { ...base, k: 'bad', word: 'Declined', ico: 'x', active: false };
+        return {
+          ...base,
+          k: 'bad',
+          word: tr('lumen.requests.row.declined', 'Declined'),
+          ico: 'x',
+          active: false,
+        };
       case 'cancelled':
         return {
           ...base,
           k: 'bad',
-          word: 'Cancelled',
+          word: tr('lumen.requests.row.cancelled', 'Cancelled'),
           ico: 'x',
           active: false,
         };
       case 'unavailable':
-        return { ...base, k: 'bad', word: 'Unavailable', ico: 'x' };
+        return {
+          ...base,
+          k: 'bad',
+          word: tr('lumen.requests.row.unavailable', 'Unavailable'),
+          ico: 'x',
+        };
       default:
-        return { ...base, k: 'wait', word: 'Status unavailable', ico: 'clock' };
+        return {
+          ...base,
+          k: 'wait',
+          word: tr(
+            'lumen.requests.row.statusUnavailable',
+            'Status unavailable'
+          ),
+          ico: 'clock',
+        };
     }
   }
   // a 4K request follows the 4K copy, not the HD one already on Plex
@@ -532,21 +605,35 @@ export function requestRowStatus(
       k: 'ok',
       word:
         r.type !== 'movie' && r.type !== 'tv'
-          ? 'In library'
+          ? tr('lumen.requests.row.inLibrary', 'In library')
           : r.is4k
-            ? `4K on ${serverName}`
-            : `On ${serverName}`,
+            ? tr('lumen.requests.row.fourKOn', '4K on {server}', {
+                server: serverName,
+              })
+            : tr('lumen.requests.row.onServer', 'On {server}', {
+                server: serverName,
+              }),
       ico: 'check',
       active: false,
     };
   if (r.status === 3)
-    return { k: 'bad', word: 'Declined', ico: 'x', active: false };
+    return {
+      k: 'bad',
+      word: tr('lumen.requests.row.declined', 'Declined'),
+      ico: 'x',
+      active: false,
+    };
   if (r.status === 4)
-    return { k: 'bad', word: 'Couldn’t get it', ico: 'x', active: true };
+    return {
+      k: 'bad',
+      word: tr('lumen.requests.row.failed', 'Couldn’t get it'),
+      ico: 'x',
+      active: true,
+    };
   if (r.status === 1)
     return {
       k: 'wait',
-      word: 'Waiting for approval',
+      word: tr('lumen.requests.row.waitingApproval', 'Waiting for approval'),
       ico: 'clock',
       active: true,
     };
@@ -556,10 +643,14 @@ export function requestRowStatus(
       // nothing here yet: it's waiting its turn in the download client's queue
       word:
         pct === 0
-          ? 'Queued'
+          ? tr('lumen.requests.row.queued', 'Queued')
           : pct != null
-            ? `Downloading ${pct}%`
-            : 'Downloading',
+            ? tr(
+                'lumen.requests.row.downloadingPercent',
+                'Downloading {percent}%',
+                { percent: pct }
+              )
+            : tr('lumen.requests.row.downloading', 'Downloading'),
       ico: 'down',
       active: true,
       pct,
@@ -570,7 +661,13 @@ export function requestRowStatus(
     return missing && !missing.length
       ? {
           k: 'ok',
-          word: r.is4k ? `4K on ${serverName}` : `On ${serverName}`,
+          word: r.is4k
+            ? tr('lumen.requests.row.fourKOn', '4K on {server}', {
+                server: serverName,
+              })
+            : tr('lumen.requests.row.onServer', 'On {server}', {
+                server: serverName,
+              }),
           ico: 'check',
           active: false,
           detail:
@@ -588,7 +685,9 @@ export function requestRowStatus(
         }
       : {
           k: 'ok',
-          word: `Partly on ${serverName}`,
+          word: tr('lumen.requests.row.partlyOnServer', 'Partly on {server}', {
+            server: serverName,
+          }),
           ico: 'check',
           active: true,
           detail: missing?.length
@@ -602,7 +701,12 @@ export function requestRowStatus(
             : undefined,
         };
   }
-  return { k: 'wait', word: 'Requested', ico: 'clock', active: true };
+  return {
+    k: 'wait',
+    word: tr('lumen.requests.row.requested', 'Requested'),
+    ico: 'clock',
+    active: true,
+  };
 }
 
 // How much of a request's download is here (0 to 1). Radarr and Sonarr call everything in the
