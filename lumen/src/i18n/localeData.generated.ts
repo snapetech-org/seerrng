@@ -3393,6 +3393,8 @@ export const localeData = [
       'lumen.calendar.noReturned': 'لم تُرجع المصادر التي استجابت أي إصدارات.',
       'lumen.calendar.partialSources':
         'تعذر الوصول إلى بعض مصادر الإصدارات. قد تكون إصداراتها غير ظاهرة.',
+      'lumen.calendar.partialTitle': 'تعذر الوصول إلى بعض مصادر الإصدارات.',
+      'lumen.calendar.partialBody': 'قد تكون إصداراتها غير ظاهرة.',
       'lumen.calendar.previousMonth': 'الشهر السابق',
       'lumen.calendar.releases': 'الإصدارات',
       'lumen.calendar.requestedFor': 'مطلوب لمنصة {platform}',
@@ -15294,6 +15296,9 @@ export const localeData = [
         'No releases were returned by the sources that responded.',
       'lumen.calendar.partialSources':
         'Some release sources could not be reached. Their releases may be missing.',
+      'lumen.calendar.partialTitle':
+        'Some release sources could not be reached.',
+      'lumen.calendar.partialBody': 'Their releases may be missing.',
       'lumen.calendar.previousMonth': 'Previous Month',
       'lumen.calendar.releases': 'releases',
       'lumen.calendar.requestedFor': 'Requested for {platform}',
@@ -28043,6 +28048,9 @@ export const localeData = [
         'Les sources qui ont répondu n’ont renvoyé aucune sortie.',
       'lumen.calendar.partialSources':
         'Certaines sources de sorties sont inaccessibles. Leurs sorties peuvent manquer.',
+      'lumen.calendar.partialTitle':
+        'Certaines sources de sorties sont inaccessibles.',
+      'lumen.calendar.partialBody': 'Leurs sorties peuvent manquer.',
       'lumen.calendar.previousMonth': 'Mois précédent',
       'lumen.calendar.releases': 'sorties',
       'lumen.calendar.requestedFor': 'Demandé pour {platform}',

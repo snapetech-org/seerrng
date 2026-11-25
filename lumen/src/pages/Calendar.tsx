@@ -171,22 +171,30 @@ function CalendarResults({ path }: { path: string | null }) {
 
   return (
     <>
-      {(loadError || !!data.partialSources.length) && (
+      {loadError && (
         <ServiceNote
-          error={
-            loadError
-              ? t(
-                  'lumen.calendar.retryFailed',
-                  'Retry failed: {error} Showing the previous results.',
-                  { error: loadError }
-                )
-              : t(
-                  'lumen.calendar.partialSources',
-                  'Some release sources could not be reached. Their releases may be missing.'
-                )
-          }
+          error={t(
+            'lumen.calendar.retryFailed',
+            'Retry failed: {error} Showing the previous results.',
+            { error: loadError }
+          )}
           what={t('lumen.calendar.allSources', 'all release sources')}
           retry={reload}
+        />
+      )}
+      {!loadError && !!data.partialSources.length && (
+        <ServiceNote
+          error={t(
+            'lumen.calendar.partialBody',
+            'Their releases may be missing.'
+          )}
+          title={t(
+            'lumen.calendar.partialTitle',
+            'Some release sources could not be reached.'
+          )}
+          retry={reload}
+          tone="warning"
+          what={t('lumen.calendar.allSources', 'all release sources')}
         />
       )}
       {data.truncated && (

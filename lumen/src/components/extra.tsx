@@ -395,6 +395,7 @@ export function ServiceNote({
   retryLabel,
   retry,
   retryDisabled = false,
+  tone,
 }: {
   error: string | null;
   what: string;
@@ -402,11 +403,16 @@ export function ServiceNote({
   retryLabel?: string;
   retry?: () => void;
   retryDisabled?: boolean;
+  tone?: 'warning';
 }) {
   const { t } = useLumenLocale();
   if (!error) return null;
   return (
-    <div className="empty" role={retry ? 'alert' : undefined}>
+    <div
+      className="empty"
+      data-tone={tone}
+      role={tone === 'warning' ? 'status' : retry ? 'alert' : undefined}
+    >
       <b>
         {title ?? t('lumen.error.loadWhat', 'Couldn’t load {what}', { what })}
       </b>

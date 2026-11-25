@@ -36,7 +36,7 @@ test('Release Calendar localizes filters, states, and release details', async ({
     if (path === '/calendar')
       return route.fulfill({
         json: {
-          partialSources: [],
+          partialSources: [{ source: 'radarr' }],
           truncated: false,
           results: [
             {
@@ -121,6 +121,28 @@ test('Release Calendar localizes filters, states, and release details', async ({
     timeZone: 'UTC',
   }).format(new Date('2026-11-20T00:00:00.000Z'));
   await expect(release.locator('time')).toHaveText(expectedDate);
+  if (candidate) {
+    const warning = page.getByRole('status').filter({
+      hasText: text(
+        'Some release sources could not be reached.',
+        'Certaines sources de sorties sont inaccessibles.',
+        'تعذر الوصول إلى بعض مصادر الإصدارات.'
+      ),
+    });
+    await expect(warning).toHaveAttribute('data-tone', 'warning');
+    await expect(warning).toContainText(
+      text(
+        'Their releases may be missing.',
+        'Leurs sorties peuvent manquer.',
+        'قد تكون إصداراتها غير ظاهرة.'
+      )
+    );
+    await expect(
+      warning.getByRole('button', {
+        name: text('Retry', 'Réessayer', 'إعادة المحاولة'),
+      })
+    ).toBeVisible();
+  }
   await expect
     .poll(() =>
       page.evaluate(

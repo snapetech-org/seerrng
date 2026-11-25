@@ -142,6 +142,16 @@ for (const permissions of [2, 32]) {
         exact: false,
       })
     ).toBeVisible();
+    const partialWarning = page
+      .getByRole('status')
+      .filter({ hasText: 'Some release sources could not be reached.' });
+    await expect(partialWarning).toHaveAttribute('data-tone', 'warning');
+    await expect(partialWarning).toContainText(
+      'Their releases may be missing.'
+    );
+    await expect(
+      partialWarning.getByRole('button', { name: 'Retry' })
+    ).toBeVisible();
     await page.getByLabel('Month', { exact: true }).fill('2026-01');
     await page.getByLabel('Media Type').selectOption('book');
     if (permissions === 2) {

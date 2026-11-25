@@ -1783,6 +1783,12 @@ a.person:hover {
   border-radius: var(--r-lg);
   box-shadow: 0 0 0 1px var(--line);
 }
+.empty[data-tone='warning'] {
+  box-shadow: 0 0 0 1px var(--wait);
+}
+.empty[data-tone='warning'] b {
+  color: var(--wait);
+}
 .empty b {
   display: block;
   color: var(--ink);

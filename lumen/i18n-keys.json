@@ -2435,6 +2435,8 @@
   "lumen.calendar.noMatches",
   "lumen.calendar.noReturned",
   "lumen.calendar.partialSources",
+  "lumen.calendar.partialTitle",
+  "lumen.calendar.partialBody",
   "lumen.calendar.previousMonth",
   "lumen.calendar.releases",
   "lumen.calendar.requestedFor",
