@@ -1463,7 +1463,7 @@ test('a page that crashes keeps the menus and offers a reload', async ({
   const baseline = process.env.LUMEN_PAGE_BOUNDARY_BASELINE === '1';
   for (const selected of ['en', 'fr', 'ar'] as const) {
     locale = selected;
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const expected = baseline ? labels.en : labels[selected];
     const alert = page.getByRole('alert');
     await expect(
@@ -1481,11 +1481,11 @@ test('a page that crashes keeps the menus and offers a reload', async ({
       });
     // The global shell remains available after the route crashes.
     await page
-      .locator('a[href="/me"]')
+      .locator(`a[href="${testAppPath('/me')}"]`)
       .filter({ visible: true })
       .first()
       .click();
-    await expect(page).toHaveURL(/\/me$/);
+    await page.waitForURL((url) => url.pathname === testAppPath('/me'));
   }
 });
 

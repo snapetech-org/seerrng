@@ -9490,11 +9490,14 @@ existing full-page recovery behavior.
 
 The malformed Discover response regression runs all three locales and confirms
 that `/me` remains reachable after the page crashes. It passes on desktop and
-iPhone in the standalone test deployment. Matched baseline and candidate
+iPhone in the standalone test deployment. It now also passes on desktop,
+iPhone, Android, and tablet against the production-built frontend served by Vite
+Preview at `/lumen/`; the fixture uses mount-aware home and account paths.
+Matched baseline and candidate
 captures at 1440x900 and iPhone 13 390x844 CSS pixels have equal dimensions in
 every locale; only the translated error copy changes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-page-boundary-localization-20261124/`.
-Bundled `/lumen/` and production Express mount behavior remain unverified.
+Production Express middleware and live server behavior remain unverified.
 
 The neighboring `shared-extra-request-localization` fixture exposed a stale
 Music assertion: the first click opens the request sheet and submission needs a
