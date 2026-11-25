@@ -106,12 +106,13 @@ they become Lumen filter values; malformed IDs safely return to Discover.
 Optional catalog routes still pass through their existing Lumen authorization
 and availability gates after redirection.
 
-The route-bookmark suite now passes 34 cases across desktop, iPhone, Android,
-and tablet (136 runs total). It covers each supported native Discover
-destination, query/hash preservation, malformed identifiers, Coming Soon, and
-the native user-list route with manager and standard-user permissions.
-This covers route compatibility and does not substitute for production-mounted
-server acceptance or visual comparison of the destination pages.
+The route-bookmark suite passes 34 cases across desktop, iPhone, Android, and
+tablet in both standalone and production-mounted `/lumen/` deployments (136
+runs each). It covers each supported native Discover destination, query/hash
+preservation, malformed identifiers, Coming Soon, and the native user-list
+route with manager and standard-user permissions. This covers route
+compatibility and does not substitute for production authorization or visual
+comparison of the destination pages.
 
 The native `/coming-soon` bookmark also redirects to Lumen's `/soon` route while
 preserving query and fragment state. The native `/users` list bookmark now
