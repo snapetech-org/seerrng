@@ -245,6 +245,7 @@ for (const locale of locales) {
       return route.fulfill({ json: { results: [] } });
     });
     await page.goto(`${mount}/movie/550`);
+    await page.locator('details#details summary').click();
     await expect(
       page.getByRole('button', { name: locale.request, exact: true }).first()
     ).toBeVisible();
@@ -339,6 +340,7 @@ for (const locale of locales) {
       return route.fulfill({ json: { results: [] } });
     });
     await page.goto(`${mount}/tv/84773`);
+    await page.locator('details#details summary').click();
     await expect(
       page.getByRole('heading', { name: locale.seasonsHeading, exact: true })
     ).toBeVisible();

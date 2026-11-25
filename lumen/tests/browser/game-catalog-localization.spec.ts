@@ -145,18 +145,15 @@ test('Games catalog controls and empty state follow the saved locale', async ({
   await page.goto('/games');
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   await expect(page.getByText(copy.pcHint)).toBeVisible();
-  await expect(page.getByRole('link', { name: copy.finder })).toHaveAttribute(
-    'href',
-    '/games/discovery'
-  );
-  await expect(page.getByRole('link', { name: copy.hacks })).toHaveAttribute(
-    'href',
-    '/patches'
-  );
-  await expect(page.getByRole('link', { name: copy.myGames })).toHaveAttribute(
-    'href',
-    '/game-library'
-  );
+  await expect(
+    page.locator('#view').getByRole('link', { name: copy.finder })
+  ).toHaveAttribute('href', '/games/discovery');
+  await expect(
+    page.locator('#view').getByRole('link', { name: copy.hacks })
+  ).toHaveAttribute('href', '/patches');
+  await expect(
+    page.locator('#view').getByRole('link', { name: copy.myGames })
+  ).toHaveAttribute('href', '/game-library');
   await expect(page.getByRole('group', { name: copy.platform })).toBeVisible();
   await expect(page.getByRole('button', { name: copy.pc })).toBeVisible();
   await expect(page.getByRole('button', { name: copy.retro })).toBeVisible();

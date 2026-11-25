@@ -84,9 +84,11 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(
-      page.getByRole('link', { name: text.recommendations })
+      page.locator('#view').getByRole('link', { name: text.recommendations })
     ).toBeVisible();
-    await expect(page.getByRole('link', { name: text.series })).toBeVisible();
+    await expect(
+      page.locator('#view').getByRole('link', { name: text.series })
+    ).toBeVisible();
     await expect(page.getByRole('group', { name: text.format })).toBeVisible();
     await expect(
       page

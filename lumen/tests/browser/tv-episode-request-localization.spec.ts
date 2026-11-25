@@ -134,7 +134,7 @@ for (const language of locales) {
       .click();
     const sheet = page.getByRole('dialog', { name: language.open });
     await expect(
-      sheet.getByRole('heading', { name: language.open })
+      sheet.getByRole('heading', { name: 'The Rings of Power' })
     ).toBeVisible();
     await expect(sheet.getByText('Season 1', { exact: true })).toBeVisible();
     await expect(sheet.getByText(failureCopy, { exact: true })).toBeVisible();
