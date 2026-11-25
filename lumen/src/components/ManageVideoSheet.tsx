@@ -16,6 +16,7 @@ import { useLumenLocale } from '../i18n';
 import { canManageIssues, canReadIssues } from '../issuePermissions';
 import BlocklistButton from './BlocklistButton';
 import { ConfirmSheet } from './ConfirmSheet';
+import { useToast } from './toast';
 import { useDialog } from './useDialog';
 
 type MediaKind = 'movie' | 'tv';
@@ -103,6 +104,7 @@ export function ManageVideoSheet({
   const box = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const { t, locale } = useLumenLocale();
+  const toast = useToast();
   const admin = isAdministrator(user?.permissions);
   const mayReadIssues = canReadIssues(user?.permissions);
   const mayManageIssues = canManageIssues(user?.permissions);
@@ -242,6 +244,14 @@ export function ManageVideoSheet({
         );
       }
       setIssueAction(undefined);
+      toast(
+        issueAction.action === 'close'
+          ? t(
+              'lumen.manageVideo.issuesClosed',
+              'Open issues marked as resolved.'
+            )
+          : t('lumen.manageVideo.issuesDeleted', 'All issues were deleted.')
+      );
       onUpdated();
     } catch {
       setIssueAction(undefined);

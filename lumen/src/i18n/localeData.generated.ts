@@ -4884,6 +4884,9 @@ export const localeData = [
         'سيتم حذف جميع مشكلات هذا العنوان وتعليقاتها نهائيًا.',
       'lumen.manageVideo.issueActionFailed':
         'ربما تم تحديث بعض المشكلات بالفعل. حدّث العنوان وراجع المشكلات المتبقية.',
+      'lumen.manageVideo.issuesClosed':
+        'تم وضع علامة على المشكلات المفتوحة كمحلولة.',
+      'lumen.manageVideo.issuesDeleted': 'تم حذف جميع المشكلات.',
       'lumen.nav.lumenSettings': 'إعدادات Lumen',
       'lumen.nav.more': 'المزيد',
       'lumen.nav.pendingRequests': 'الطلبات المعلّقة: {count}',
@@ -16581,6 +16584,8 @@ export const localeData = [
         'All issues and comments for this title will be permanently deleted.',
       'lumen.manageVideo.issueActionFailed':
         'Some issues may already have changed. Refresh the title and review the remaining issues.',
+      'lumen.manageVideo.issuesClosed': 'Open issues marked as resolved.',
+      'lumen.manageVideo.issuesDeleted': 'All issues were deleted.',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.more': 'More',
       'lumen.nav.pendingRequests': 'Pending requests: {count}',
@@ -29357,6 +29362,10 @@ export const localeData = [
         'Tous les problèmes de ce titre et leurs commentaires seront supprimés définitivement.',
       'lumen.manageVideo.issueActionFailed':
         'Certains problèmes ont peut-être déjà été modifiés. Actualisez le titre et vérifiez les problèmes restants.',
+      'lumen.manageVideo.issuesClosed':
+        'Les problèmes ouverts ont été marqués comme résolus.',
+      'lumen.manageVideo.issuesDeleted':
+        'Tous les problèmes ont été supprimés.',
       'lumen.nav.lumenSettings': 'Paramètres de Lumen',
       'lumen.nav.more': 'Plus',
       'lumen.nav.pendingRequests': 'Demandes en attente : {count}',

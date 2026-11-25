@@ -3733,6 +3733,8 @@
   "lumen.manageVideo.closeIssuesBody",
   "lumen.manageVideo.deleteIssuesBody",
   "lumen.manageVideo.issueActionFailed",
+  "lumen.manageVideo.issuesClosed",
+  "lumen.manageVideo.issuesDeleted",
   "lumen.nav.lumenSettings",
   "lumen.nav.more",
   "lumen.nav.pendingRequests",

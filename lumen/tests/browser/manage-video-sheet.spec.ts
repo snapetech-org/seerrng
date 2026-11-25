@@ -496,6 +496,9 @@ test('title manager exposes permission-scoped blocklist and issue actions', asyn
   await expect
     .poll(() => state.calls.some((call) => call.path === '/issue/71/resolved'))
     .toBe(true);
+  await expect(page.getByRole('status')).toContainText(
+    'Open issues marked as resolved.'
+  );
   await dialog.getByRole('button', { name: 'Delete all issues' }).click();
   await page
     .getByRole('alertdialog', { name: 'Delete all issues?' })
