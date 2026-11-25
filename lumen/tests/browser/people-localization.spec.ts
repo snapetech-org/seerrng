@@ -72,6 +72,12 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         viewports.desktop
     );
     await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/imageproxy/tmdb/**', (route) =>
+      route.fulfill({
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" width="342" height="513"><rect width="342" height="513" fill="#30405c"/><circle cx="171" cy="171" r="80" fill="#8292b8"/></svg>',
+      })
+    );
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
     );
@@ -93,8 +99,14 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
           json: {
             id: 77,
             name: 'Jane Example',
+            birthday: '1980-01-02',
+            deathday: '2020-03-04',
+            alsoKnownAs: ['Jane Doe', 'J. Example'],
+            imdbId: 'nm1234567',
+            profilePath: '/jane-example.jpg',
             knownForDepartment: 'Acting',
             placeOfBirth: 'Montreal',
+            biography: 'A fixture biography for visual comparison.',
           },
         });
       if (path === '/person/77/combined_credits')
@@ -149,6 +161,46 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(
       page.getByRole('heading', { name: copy.crew, exact: true })
     ).toBeVisible();
+    const formatDate = (value: string) =>
+      new Intl.DateTimeFormat(locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC',
+      }).format(new Date(`${value}T00:00:00.000Z`));
+    await expect(page.locator('.person-overview')).toContainText(
+      formatDate('1980-01-02')
+    );
+    await expect(page.locator('.person-overview')).toContainText(
+      formatDate('2020-03-04')
+    );
+    await expect(page.getByText(/Jane Doe.*J\. Example/)).toBeVisible();
+    const externalLinks = page.getByRole('navigation', {
+      name:
+        locale === 'fr'
+          ? 'Liens externes'
+          : locale === 'ar'
+            ? 'روابط خارجية'
+            : 'External links',
+    });
+    await expect(
+      externalLinks.getByRole('link', { name: 'TMDB' })
+    ).toHaveAttribute(
+      'href',
+      `https://www.themoviedb.org/person/77?language=${locale}`
+    );
+    await expect(
+      externalLinks.getByRole('link', { name: 'IMDb' })
+    ).toHaveAttribute('href', 'https://www.imdb.com/name/nm1234567');
+    if (
+      process.env.LUMEN_PEOPLE_DETAIL_CAPTURE === 'true' &&
+      ['desktop', 'iphone'].includes(info.project.name)
+    ) {
+      await page.screenshot({
+        path: info.outputPath(`people-detail-candidate-${locale}.png`),
+        animations: 'disabled',
+      });
+    }
     await page.getByRole('button', { name: copy.request }).click();
     const dialog = page.getByRole('alertdialog', { name: copy.confirmTitle });
     await expect(dialog).toContainText(copy.confirmation);

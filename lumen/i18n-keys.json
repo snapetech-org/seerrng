@@ -6101,5 +6101,9 @@
   "lumen.requests.row.cancelled",
   "lumen.requests.row.unavailable",
   "lumen.requests.row.statusUnavailable",
-  "lumen.requests.row.partlyOnServer"
+  "lumen.requests.row.partlyOnServer",
+  "components.PersonDetails.birthdate",
+  "components.PersonDetails.lifespan",
+  "components.PersonDetails.alsoknownas",
+  "lumen.people.externalLinks"
 ]

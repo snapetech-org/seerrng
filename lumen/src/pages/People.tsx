@@ -32,10 +32,30 @@ export function PersonCard({ person }: { person: TitleResult }) {
 interface PersonDetails {
   id: number;
   name: string;
+  birthday?: string;
+  deathday?: string;
+  alsoKnownAs?: string[];
   profilePath?: string;
   biography?: string;
   knownForDepartment?: string;
   placeOfBirth?: string;
+  imdbId?: string;
+}
+
+function formatPersonDate(value: string | undefined, locale: string) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return undefined;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  if (
+    !Number.isFinite(date.valueOf()) ||
+    date.toISOString().slice(0, 10) !== value
+  )
+    return undefined;
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
 }
 
 type PersonCredit = Omit<TitleResult, 'mediaType'> & {
@@ -373,7 +393,7 @@ function RequestPersonMovies({
 }
 
 export default function PersonDetail() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { id: rawId } = useParams();
   const { user } = useAuth();
   const extras = useExtras();
@@ -472,14 +492,79 @@ export default function PersonDetail() {
             )}
           </div>
           <div>
+            {person.data.id > 0 && (
+              <nav
+                className="toolbar"
+                aria-label={t('lumen.people.externalLinks', 'External links')}
+              >
+                <a
+                  className="btn btn-quiet btn-sm"
+                  href={`https://www.themoviedb.org/person/${person.data.id}?language=${encodeURIComponent(locale)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  TMDB
+                </a>
+                {person.data.imdbId && /^nm\d+$/.test(person.data.imdbId) && (
+                  <a
+                    className="btn btn-quiet btn-sm"
+                    href={`https://www.imdb.com/name/${person.data.imdbId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    IMDb
+                  </a>
+                )}
+              </nav>
+            )}
             {person.data.knownForDepartment && (
               <p className="sub">{person.data.knownForDepartment}</p>
             )}
+            {person.data.birthday &&
+              (() => {
+                const birthday = formatPersonDate(person.data.birthday, locale);
+                const deathday = formatPersonDate(person.data.deathday, locale);
+                if (!birthday) return null;
+                return (
+                  <p className="sub">
+                    {birthday && deathday
+                      ? t(
+                          'components.PersonDetails.lifespan',
+                          '{birthdate} – {deathdate}',
+                          {
+                            birthdate: birthday,
+                            deathdate: deathday,
+                          }
+                        )
+                      : t(
+                          'components.PersonDetails.birthdate',
+                          'Born {birthdate}',
+                          {
+                            birthdate: birthday,
+                          }
+                        )}
+                  </p>
+                );
+              })()}
             {person.data.placeOfBirth && (
               <p className="sub">
                 {t('lumen.people.bornIn', 'Born in {place}', {
                   place: person.data.placeOfBirth,
                 })}
+              </p>
+            )}
+            {!!person.data.alsoKnownAs?.length && (
+              <p className="sub">
+                {t(
+                  'components.PersonDetails.alsoknownas',
+                  'Also Known As: {names}',
+                  {
+                    names: new Intl.ListFormat(locale, {
+                      style: 'long',
+                      type: 'conjunction',
+                    }).format(person.data.alsoKnownAs),
+                  }
+                )}
               </p>
             )}
             {person.data.biography && (

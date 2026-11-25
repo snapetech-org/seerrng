@@ -1698,6 +1698,9 @@ export const localeData = [
       'i18n.request': 'طلب',
       'i18n.request4k': 'طلب بجودة 4K',
       'i18n.requesting': 'جاري الطلب…',
+      'components.PersonDetails.birthdate': 'تاريخ الميلاد: {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} - {deathdate}',
+      'components.PersonDetails.alsoknownas': 'أسماء أخرى: {names}',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -7396,6 +7399,7 @@ export const localeData = [
       'lumen.requests.row.unavailable': 'غير متاح',
       'lumen.requests.row.statusUnavailable': 'الحالة غير متاحة',
       'lumen.requests.row.partlyOnServer': 'متوفر جزئيًا على {server}',
+      'lumen.people.externalLinks': 'روابط خارجية',
     },
   },
   {
@@ -8061,6 +8065,9 @@ export const localeData = [
       'i18n.request': 'Заявка',
       'i18n.request4k': 'Заявка в 4K',
       'i18n.requesting': 'Заявяване…',
+      'components.PersonDetails.birthdate': 'Роден(а) {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Познат(а) още като: {names}',
     },
   },
   {
@@ -8610,6 +8617,9 @@ export const localeData = [
       'i18n.request': 'Sol·licita',
       'i18n.request4k': 'Sol·licita en 4K',
       'i18n.requesting': "S'està sol·licitant …",
+      'components.PersonDetails.birthdate': 'Nascut/da {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'També conegut com: {names}',
     },
   },
   {
@@ -9271,6 +9281,9 @@ export const localeData = [
       'i18n.request': 'Zažádat',
       'i18n.request4k': 'Zažádat ve 4K',
       'i18n.requesting': 'Vyžadování…',
+      'components.PersonDetails.birthdate': 'Narozen {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Známý také jako: {names}',
     },
   },
   {
@@ -9930,6 +9943,9 @@ export const localeData = [
       'i18n.request': 'Anmod',
       'i18n.request4k': 'Anmod i 4K',
       'i18n.requesting': 'Anmoder…',
+      'components.PersonDetails.birthdate': 'Født {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Også kendt som: {names}',
     },
   },
   {
@@ -11713,6 +11729,9 @@ export const localeData = [
       'i18n.request': 'Anfrage senden',
       'i18n.request4k': 'In 4K anfragen',
       'i18n.requesting': 'Anfragen…',
+      'components.PersonDetails.birthdate': 'Geboren am {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Auch bekannt unter: {names}',
     },
   },
   {
@@ -13457,6 +13476,9 @@ export const localeData = [
       'i18n.request': 'Request',
       'i18n.request4k': 'Request in 4K',
       'i18n.requesting': 'Requesting…',
+      'components.PersonDetails.birthdate': 'Born {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Also Known As: {names}',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -19176,6 +19198,7 @@ export const localeData = [
       'lumen.requests.row.unavailable': 'Unavailable',
       'lumen.requests.row.statusUnavailable': 'Status unavailable',
       'lumen.requests.row.partlyOnServer': 'Partly on {server}',
+      'lumen.people.externalLinks': 'External links',
     },
   },
   {
@@ -19632,6 +19655,9 @@ export const localeData = [
       'i18n.request': 'Ζήτα το',
       'i18n.request4k': 'Ζήτα το σε 4K',
       'i18n.requesting': 'Γίνεται το αίτημα…',
+      'components.PersonDetails.birthdate': 'Γεννήθηκε {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Επίσης Γνωστός/ή ως: {names}',
     },
   },
   {
@@ -21427,6 +21453,9 @@ export const localeData = [
       'i18n.request': 'Solicitar',
       'i18n.request4k': 'Pedir en 4K',
       'i18n.requesting': 'Pidiendo…',
+      'components.PersonDetails.birthdate': 'Nació el {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'También Conocido como: {names}',
     },
   },
   {
@@ -23207,6 +23236,9 @@ export const localeData = [
       'i18n.request': 'Solicitar',
       'i18n.request4k': 'Pedir en 4K',
       'i18n.requesting': 'Pidiendo…',
+      'components.PersonDetails.birthdate': 'Nacido el {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'También Conocido como: {names}',
     },
   },
   {
@@ -23863,6 +23895,9 @@ export const localeData = [
       'i18n.request': 'Taotle',
       'i18n.request4k': 'Taotle 4K-s',
       'i18n.requesting': 'Taotlemine…',
+      'components.PersonDetails.birthdate': 'Sündinud {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Tuntud ka kui: {names}',
     },
   },
   {
@@ -24100,6 +24135,9 @@ export const localeData = [
       'i18n.request': 'Pyydä',
       'i18n.request4k': 'Pyydä 4K:na',
       'i18n.requesting': 'Pyydetään…',
+      'components.PersonDetails.birthdate': 'Syntynyt {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Tunnetaan myös nimeltä: {names}',
     },
   },
   {
@@ -25898,6 +25936,10 @@ export const localeData = [
       'i18n.request': 'Demander',
       'i18n.request4k': 'Demander en 4K',
       'i18n.requesting': 'Demande…',
+      'components.PersonDetails.birthdate': 'Né(e) le {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas':
+        'Aussi connu sous le(s) nom(s) : {names}',
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -32175,6 +32217,7 @@ export const localeData = [
       'lumen.requests.row.unavailable': 'Indisponible',
       'lumen.requests.row.statusUnavailable': 'Statut indisponible',
       'lumen.requests.row.partlyOnServer': 'Partiellement sur {server}',
+      'lumen.people.externalLinks': 'Liens externes',
     },
   },
   {
@@ -32626,6 +32669,9 @@ export const localeData = [
       'i18n.request': 'Zahtjev',
       'i18n.request4k': 'Zatraži u 4K',
       'i18n.requesting': 'Zahtijevanje …',
+      'components.PersonDetails.birthdate': 'Datum rođenja {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Poznat/a i kao: {names}',
     },
   },
   {
@@ -32877,6 +32923,9 @@ export const localeData = [
       'i18n.request': 'בקשה',
       'i18n.request4k': 'בקשה ב-4K',
       'i18n.requesting': 'מבקש…',
+      'components.PersonDetails.birthdate': 'נולד/ה ב-{birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'גם ידוע בתור: {names}',
     },
   },
   {
@@ -34602,6 +34651,9 @@ export const localeData = [
       'i18n.request': 'अनुरोध करें',
       'i18n.request4k': '4K में अनुरोध करें',
       'i18n.requesting': 'अनुरोध किया जा रहा है…',
+      'components.PersonDetails.birthdate': 'जन्म {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'अन्य नाम: {names}',
     },
   },
   {
@@ -35269,6 +35321,9 @@ export const localeData = [
       'i18n.request': 'Kérés',
       'i18n.request4k': 'Kérés 4K-ban',
       'i18n.requesting': 'Kérés folyamatban…',
+      'components.PersonDetails.birthdate': 'Született {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Úgy is ismert mint : {names}',
     },
   },
   {
@@ -37016,6 +37071,9 @@ export const localeData = [
       'i18n.request': 'Minta',
       'i18n.request4k': 'Minta dalam 4K',
       'i18n.requesting': 'Meminta…',
+      'components.PersonDetails.birthdate': 'Lahir {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Juga dikenal sebagai: {names}',
     },
   },
   {
@@ -37672,6 +37730,9 @@ export const localeData = [
       'i18n.request': 'Richiedi',
       'i18n.request4k': 'Richiedi in 4K',
       'i18n.requesting': 'Richiesta in corso…',
+      'components.PersonDetails.birthdate': 'Data di nascita {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Altri nomi: {names}',
     },
   },
   {
@@ -39419,6 +39480,9 @@ export const localeData = [
       'i18n.request': 'リクエスト',
       'i18n.request4k': '4K をリクエスト',
       'i18n.requesting': 'リクエスト中…',
+      'components.PersonDetails.birthdate': '生年月日：{birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
+      'components.PersonDetails.alsoknownas': '別の呼び方：{names}',
     },
   },
   {
@@ -41110,6 +41174,9 @@ export const localeData = [
       'i18n.request': '요청',
       'i18n.request4k': '4K로 요청',
       'i18n.requesting': '요청 중…',
+      'components.PersonDetails.birthdate': '{birthdate} 출생',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': '다른 이름: {names}',
     },
   },
   {
@@ -41275,6 +41342,9 @@ export const localeData = [
       'i18n.request': 'Rezervuoti',
       'i18n.request4k': 'Rezervuoti 4K raiška',
       'i18n.requesting': 'Rezervuojama…',
+      'components.PersonDetails.birthdate': 'Gimtadienis {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Žinomas kaip: {names}',
     },
   },
   {
@@ -41706,6 +41776,9 @@ export const localeData = [
       'i18n.request': 'Forespør',
       'i18n.request4k': 'Forespør i 4K',
       'i18n.requesting': 'Forespør…',
+      'components.PersonDetails.birthdate': 'Født {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Også kjent som: {names}',
     },
   },
   {
@@ -42376,6 +42449,9 @@ export const localeData = [
       'i18n.request': 'Aanvragen',
       'i18n.request4k': 'Aanvragen in 4K',
       'i18n.requesting': 'Aanvragen…',
+      'components.PersonDetails.birthdate': 'Geboren op {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Ook bekend als: {names}',
     },
   },
   {
@@ -43045,6 +43121,9 @@ export const localeData = [
       'i18n.request': 'Poproś',
       'i18n.request4k': 'Poproś o 4K',
       'i18n.requesting': 'Prośba…',
+      'components.PersonDetails.birthdate': 'Urodzony {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} - {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Znany również jako: {names}',
     },
   },
   {
@@ -44825,6 +44904,10 @@ export const localeData = [
       'i18n.request': 'Solicitar',
       'i18n.request4k': 'Solicitar em 4K',
       'i18n.requesting': 'Solicitando…',
+      'components.PersonDetails.birthdate': 'Nascimento {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas':
+        'Também Conhecido(a) Como: {names}',
     },
   },
   {
@@ -45468,6 +45551,9 @@ export const localeData = [
       'i18n.request': 'Pedir',
       'i18n.request4k': 'Pedir em 4K',
       'i18n.requesting': 'A Pedir…',
+      'components.PersonDetails.birthdate': 'Nasceu {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Também Conhecido Como: {names}',
     },
   },
   {
@@ -45816,6 +45902,9 @@ export const localeData = [
       'i18n.request': 'Cere',
       'i18n.request4k': 'Cere în 4K',
       'i18n.requesting': 'Se trimite cererea…',
+      'components.PersonDetails.birthdate': 'Născut {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Cunoscut și ca: {names}',
     },
   },
   {
@@ -46493,6 +46582,9 @@ export const localeData = [
       'i18n.request': 'Запросить',
       'i18n.request4k': 'Запросить в 4К',
       'i18n.requesting': 'Запрос…',
+      'components.PersonDetails.birthdate': 'Рожден(а) {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Также известен(а) как: {names}',
     },
   },
   {
@@ -46917,6 +47009,9 @@ export const localeData = [
       'i18n.request': 'Kërkesë',
       'i18n.request4k': 'Kërkesë në 4K',
       'i18n.requesting': 'Duke kërkuar…',
+      'components.PersonDetails.birthdate': 'Lindur {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Njohur edhe si: {names}',
     },
   },
   {
@@ -47089,6 +47184,7 @@ export const localeData = [
       'i18n.request': 'Zahtev',
       'i18n.request4k': 'Zahtevaj u 4K',
       'i18n.requesting': 'Zahteva se…',
+      'components.PersonDetails.birthdate': 'Rođen {birthdate}',
     },
   },
   {
@@ -47755,6 +47851,9 @@ export const localeData = [
       'i18n.request': 'Begär',
       'i18n.request4k': 'Begär i 4K',
       'i18n.requesting': 'Begär…',
+      'components.PersonDetails.birthdate': 'Född {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Även känd som: {names}',
     },
   },
   {
@@ -48410,6 +48509,9 @@ export const localeData = [
       'i18n.request': 'Talep Et',
       'i18n.request4k': '4K Olarak Talep Et',
       'i18n.requesting': 'Talep ediliyor…',
+      'components.PersonDetails.birthdate': '{birthdate} doğumlu',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Diğer Adları: {names}',
     },
   },
   {
@@ -49033,6 +49135,9 @@ export const localeData = [
       'i18n.request': 'Запит',
       'i18n.request4k': 'Запит у 4K',
       'i18n.requesting': 'Запит…',
+      'components.PersonDetails.birthdate': 'Народжений {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas': 'Також відомий(а) як: {names}',
     },
   },
   {
@@ -50654,6 +50759,9 @@ export const localeData = [
       'i18n.request': '提交请求',
       'i18n.request4k': '提交 4K 请求',
       'i18n.requesting': '提交请求中…',
+      'components.PersonDetails.birthdate': '出生日期：{birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
+      'components.PersonDetails.alsoknownas': '別名：{names}',
     },
   },
   {
@@ -52271,6 +52379,9 @@ export const localeData = [
       'i18n.request': '提出請求',
       'i18n.request4k': '提出 4K 請求',
       'i18n.requesting': '提出請求中…',
+      'components.PersonDetails.birthdate': '出生日期：{birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
+      'components.PersonDetails.alsoknownas': '別名：{names}',
     },
   },
   {
@@ -54013,6 +54124,10 @@ export const localeData = [
       'i18n.request': 'Yêu cầu',
       'i18n.request4k': 'Yêu cầu bản 4K',
       'i18n.requesting': 'Đang gửi yêu cầu…',
+      'components.PersonDetails.birthdate': 'Sinh ngày {birthdate}',
+      'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
+      'components.PersonDetails.alsoknownas':
+        'Còn được biết đến với tên: {names}',
     },
   },
 ] as const;

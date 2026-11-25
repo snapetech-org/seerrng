@@ -4926,7 +4926,8 @@
     "lumen.requests.row.cancelled": "Cancelled",
     "lumen.requests.row.unavailable": "Unavailable",
     "lumen.requests.row.statusUnavailable": "Status unavailable",
-    "lumen.requests.row.partlyOnServer": "Partly on {server}"
+    "lumen.requests.row.partlyOnServer": "Partly on {server}",
+    "lumen.people.externalLinks": "External links"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10018,7 +10019,8 @@
     "lumen.requests.row.cancelled": "Annulé",
     "lumen.requests.row.unavailable": "Indisponible",
     "lumen.requests.row.statusUnavailable": "Statut indisponible",
-    "lumen.requests.row.partlyOnServer": "Partiellement sur {server}"
+    "lumen.requests.row.partlyOnServer": "Partiellement sur {server}",
+    "lumen.people.externalLinks": "Liens externes"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15114,6 +15116,7 @@
     "lumen.requests.row.cancelled": "ملغى",
     "lumen.requests.row.unavailable": "غير متاح",
     "lumen.requests.row.statusUnavailable": "الحالة غير متاحة",
-    "lumen.requests.row.partlyOnServer": "متوفر جزئيًا على {server}"
+    "lumen.requests.row.partlyOnServer": "متوفر جزئيًا على {server}",
+    "lumen.people.externalLinks": "روابط خارجية"
   }
 }
