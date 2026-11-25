@@ -53,7 +53,7 @@ test('request managers see the pending count and can approve a book in place', a
 
   await page.goto('/requests');
   await expect(
-    page.locator('[aria-label="1 pending requests"]:visible')
+    page.locator('[aria-label="Pending requests: 1"]:visible')
   ).toHaveCount(1);
   if (process.env.UI_EVIDENCE_DIR)
     await page.screenshot({

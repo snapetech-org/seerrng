@@ -1,9 +1,15 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const testAppPath = (path: string) => `${testMount}${path}`;
 const testApiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').replace(/^\/api\/v1/, '');
+
+async function expectRouteLink(link: Locator, path: string) {
+  const href = await link.getAttribute('href');
+  expect(href).not.toBeNull();
+  expect(new URL(href!, 'http://lumen.local').pathname).toBe(testAppPath(path));
+}
 
 test('directory Watchlist and Requests links scope reads to the selected user', async ({
   page,
@@ -60,9 +66,10 @@ test('directory Watchlist and Requests links scope reads to the selected user', 
   await expect(
     page.getByRole('heading', { name: 'User Watchlist' })
   ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'Example Movie' })
-  ).toHaveAttribute('href', testAppPath('/movie/20'));
+  await expectRouteLink(
+    page.getByRole('link', { name: 'Example Movie' }),
+    '/movie/20'
+  );
   await expect(
     page.getByRole('button', { name: /remove.*watchlist/i })
   ).toHaveCount(0);
@@ -199,9 +206,10 @@ for (const combined of [false, true]) {
     await expect(
       page.getByRole('heading', { name: 'Watchlist' })
     ).toBeVisible();
-    await expect(
-      page.getByRole('link', { name: 'Example Movie' })
-    ).toHaveAttribute('href', testAppPath('/movie/20'));
+    await expectRouteLink(
+      page.getByRole('link', { name: 'Example Movie' }),
+      '/movie/20'
+    );
     if (combined) {
       await expect(
         page.getByText('Plex and SeerrNG items share this list.', {
@@ -338,9 +346,10 @@ test('combined Watchlist removes the SeerrNG entry and retains its Plex match', 
   });
   await remove.click();
   await expect(remove).toHaveCount(0);
-  await expect(
-    page.getByRole('link', { name: 'Example Movie' })
-  ).toHaveAttribute('href', testAppPath('/movie/20'));
+  await expectRouteLink(
+    page.getByRole('link', { name: 'Example Movie' }),
+    '/movie/20'
+  );
   expect(removed).toBe(true);
 });
 
@@ -386,20 +395,22 @@ test('video Watchlist action confirms the current title and server response', as
   await page.goto(testAppPath('/movie/20'));
   await page
     .getByRole('button', { name: 'Add Example Movie to your Watchlist' })
+    .first()
     .click();
   await expect(
     page.getByRole('button', {
       name: 'Remove Example Movie from your Watchlist',
     })
-  ).toBeVisible();
+  ).toHaveCount(1);
   expect(writes).toBe(1);
   await page.reload();
   await page
     .getByRole('button', { name: 'Remove Example Movie from your Watchlist' })
+    .first()
     .click();
   await expect(
     page.getByRole('button', { name: 'Add Example Movie to your Watchlist' })
-  ).toBeVisible();
+  ).toHaveCount(3);
   expect(writes).toBe(2);
 });
 
@@ -519,9 +530,10 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
   await expect(
     page.getByRole('heading', { name: 'Discover Watchlist' })
   ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'Movie Result' })
-  ).toHaveAttribute('href', testAppPath('/movie/20'));
+  await expectRouteLink(
+    page.getByRole('link', { name: 'Movie Result' }),
+    '/movie/20'
+  );
   await expect(page.getByRole('link', { name: 'Series Result' })).toHaveCount(
     0
   );

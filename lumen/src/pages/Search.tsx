@@ -334,6 +334,7 @@ function SearchResults({
     magazine: extras.categoryEnabled('magazine'),
     sports: extras.categoryEnabled('sports'),
   };
+  const currentScopeEnabled = scopeEnabled[f];
   const disabledScope =
     categorySettingsReady && f !== 'all' && !scopeEnabled[f] && !!term0;
   const wantsTitles =
@@ -579,7 +580,7 @@ function SearchResults({
     ebookEnabled,
     audiobookEnabled,
     bookEnabled,
-    scopeEnabled[f],
+    currentScopeEnabled,
     t,
   ]);
 
@@ -815,7 +816,7 @@ function SearchResults({
             f === 'movie' ||
             f === 'tv' ||
             f === 'ebook' ||
-            f === 'audio') && <div className="toolbar"></div>}
+            f === 'audio') && <div className="toolbar" />}
       </header>
       {!hasSearch && !!recent.length && (
         <Section
@@ -895,7 +896,6 @@ function SearchResults({
         <ServiceNote
           error={searchError}
           what={nothing ? 'search results' : 'some search results'}
-          title={t('lumen.search.failed', 'Search failed')}
           retryLabel={t('lumen.search.retry', 'Retry')}
           retry={() => {
             retryReply.current = lastReply.current;

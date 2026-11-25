@@ -76,6 +76,11 @@ for (const [route, label] of [
         (entry) => entry.startsWith(list) && /[?&]search=/.test(entry)
       )
     ).toEqual([]);
+    if (route === '/issues')
+      await page
+        .locator('summary')
+        .filter({ hasText: /^Filters$/ })
+        .click();
     await page.getByRole('searchbox', { name: label }).fill('dune');
     await page.getByRole('searchbox', { name: label }).press('Enter');
     await expect

@@ -1,7 +1,13 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 const testAppPath = (path: string) =>
   `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
+async function expectRoutePath(link: Locator, path: string) {
+  const href = await link.getAttribute('href');
+  expect(href).not.toBeNull();
+  expect(new URL(href!, 'http://lumen.local').pathname).toBe(testAppPath(path));
+}
 
 // These fixtures exercise the built frontend's API boundary, not provider credentials.
 const movie = {
@@ -691,14 +697,14 @@ test('account changes clear private API responses and preferences without reload
 
 test('empty and failed trending feeds finish loading', async ({ page }) => {
   const fixture = await fixtures(page);
-  await page.route('**/api/v1/discover/trending', (route) =>
+  await page.route('**/api/v1/discover/trending**', (route) =>
     route.fulfill({ json: paged([]) })
   );
   await page.goto('/');
   await expect(
     page.getByText('No popular titles available', { exact: true })
   ).toBeVisible();
-  await page.route('**/api/v1/discover/trending', (route) =>
+  await page.route('**/api/v1/discover/trending**', (route) =>
     route.fulfill({ status: 503, json: { message: 'Provider unavailable' } })
   );
   // the saved answers survive a reload (written when the page goes away): drop them
@@ -709,7 +715,7 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
   });
   await page.reload();
   await expect(
-    page.getByText('Couldn’t load popular titles', { exact: true })
+    page.getByText('This section could not be loaded.', { exact: true })
   ).toBeVisible();
   expect(fixture.errors).toEqual([]);
 });
@@ -717,7 +723,7 @@ test('empty and failed trending feeds finish loading', async ({ page }) => {
 test('a failed Discover row can be retried', async ({ page }) => {
   const fixture = await fixtures(page);
   let fail = true;
-  await page.route('**/api/v1/discover/trending', (route) =>
+  await page.route('**/api/v1/discover/trending**', (route) =>
     fail
       ? route.fulfill({
           status: 503,
@@ -726,16 +732,17 @@ test('a failed Discover row can be retried', async ({ page }) => {
       : route.fallback()
   );
   await page.goto('/');
-  const failed = page.getByText('Couldn’t load popular titles', {
-    exact: true,
+  const section = page.locator('section').filter({
+    has: page.getByRole('heading', {
+      name: 'Popular Right Now',
+      exact: true,
+    }),
   });
-  await expect(failed).toBeVisible();
+  const retry = section.getByRole('button', { name: 'Retry', exact: true });
+  await expect(retry).toBeVisible();
   fail = false;
-  await page
-    .locator('.empty', { hasText: 'Couldn’t load popular titles' })
-    .getByRole('button', { name: 'Retry', exact: true })
-    .click();
-  await expect(failed).toHaveCount(0);
+  await retry.click();
+  await expect(retry).toHaveCount(0);
   expect(fixture.errors).toEqual([]);
 });
 
@@ -964,7 +971,7 @@ test('Discover leaves out rows that came back empty', async ({ page }) => {
   await fixtures(page);
   await page.goto('/');
   await expect(
-    page.getByRole('heading', { name: 'Trending movies' })
+    page.getByRole('heading', { name: 'Popular Movies' })
   ).toBeVisible();
   // the fixtures have no series and no books
   await expect(
@@ -4463,7 +4470,7 @@ test('Discover restores a movie shelf offset after browser Back', async ({
   const rail = page
     .locator('section')
     .filter({
-      has: page.getByRole('heading', { name: 'Trending movies', exact: true }),
+      has: page.getByRole('heading', { name: 'Popular Movies', exact: true }),
     })
     .locator('.rail');
   await expect(
@@ -4478,10 +4485,10 @@ test('Discover restores a movie shelf offset after browser Back', async ({
   const offset = await rail.evaluate((element) => element.scrollLeft);
   await rail.evaluate((element) => {
     element
-      .querySelector<HTMLAnchorElement>('a.hit[href="/movie/101"]')
+      .querySelector<HTMLAnchorElement>('a.hit[href^="/movie/101"]')
       ?.click();
   });
-  await expect(page).toHaveURL(/\/movie\/101$/);
+  await expect(page).toHaveURL(/\/movie\/101(?:\?|$)/);
   await page.goBack();
   await expect
     .poll(() => rail.evaluate((element) => element.scrollLeft))
@@ -4681,9 +4688,10 @@ test('Trending preserves mixed title identities and sends scoped filters', async
   await expect(
     page.getByRole('link', { name: 'Trending Collection' })
   ).toHaveAttribute('href', '/collection/101');
-  await expect(
-    page.getByRole('link', { name: 'Trending Series' })
-  ).toHaveAttribute('href', '/tv/101');
+  await expectRoutePath(
+    page.getByRole('link', { name: 'Trending Series' }),
+    '/tv/101'
+  );
   await page.getByRole('button', { name: 'Series', exact: true }).click();
   await page.getByRole('button', { name: 'Weekly', exact: true }).click();
   await expect
@@ -11540,7 +11548,7 @@ test('Discover and Movies apply visibility defaults while the library view still
   );
   await page.goto('./');
   const rail = page.getByRole('heading', {
-    name: 'Trending movies',
+    name: 'Popular Movies',
     exact: true,
   });
   await expect(rail).toBeVisible();

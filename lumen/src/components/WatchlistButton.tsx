@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api, MediaStatus, type MediaInfo } from '../api';
 import { useAuth } from '../auth';
 import { friendlyError } from '../errors';
@@ -13,6 +13,30 @@ interface WatchlistTitle {
   title?: string;
   onUserWatchlist?: boolean;
   mediaInfo?: Pick<MediaInfo, 'status'> | null;
+}
+
+const watchlistConfirmations = new Map<string, boolean>();
+const watchlistListeners = new Map<string, Set<(value: boolean) => void>>();
+const MAX_WATCHLIST_CONFIRMATIONS = 256;
+
+function confirmationKey(
+  userId: number | undefined,
+  generation: number,
+  mediaType: string,
+  id: string
+) {
+  return `${generation}:${userId ?? 'anonymous'}:${mediaType}:${id}`;
+}
+
+function publishConfirmation(key: string, value: boolean) {
+  watchlistConfirmations.delete(key);
+  watchlistConfirmations.set(key, value);
+  while (watchlistConfirmations.size > MAX_WATCHLIST_CONFIRMATIONS) {
+    const oldest = watchlistConfirmations.keys().next().value;
+    if (oldest === undefined) break;
+    watchlistConfirmations.delete(oldest);
+  }
+  watchlistListeners.get(key)?.forEach((listener) => listener(value));
 }
 
 export default function WatchlistButton({
@@ -33,9 +57,29 @@ export default function WatchlistButton({
   const toast = useToast();
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
-  const [confirmed, setConfirmed] = useState<boolean>();
-  const [unavailable, setUnavailable] = useState(false);
   const id = canonicalMediaId(mediaType, detail.id);
+  const confirmation = confirmationKey(
+    user?.id,
+    sessionGeneration(),
+    mediaType,
+    id ?? ''
+  );
+  const [confirmed, setConfirmed] = useState<boolean | undefined>(() =>
+    watchlistConfirmations.get(confirmation)
+  );
+  const [unavailable, setUnavailable] = useState(false);
+  useEffect(() => {
+    const listeners = watchlistListeners.get(confirmation) ?? new Set();
+    const sync = (value: boolean) => setConfirmed(value);
+    listeners.add(sync);
+    watchlistListeners.set(confirmation, listeners);
+    const value = watchlistConfirmations.get(confirmation);
+    if (value !== undefined) setConfirmed(value);
+    return () => {
+      listeners.delete(sync);
+      if (!listeners.size) watchlistListeners.delete(confirmation);
+    };
+  }, [confirmation]);
   if (
     unavailable ||
     !user?.userType ||
@@ -115,6 +159,7 @@ export default function WatchlistButton({
         }
       }
       if (sessionGeneration() !== session) return;
+      publishConfirmation(confirmation, desired);
       setConfirmed(desired);
       toast(
         alreadySaved
