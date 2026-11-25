@@ -109,10 +109,12 @@ export default function Recordings() {
     pending.current = true;
     setBusy(true);
     setNotice(undefined);
+    let succeeded = false;
     const path = `${base}/${selected.recording.id}`;
     try {
       if (selected.action === 'cancel') await api(path, { method: 'DELETE' });
       else await api(`${path}/${selected.action}`, { method: 'POST' });
+      succeeded = true;
       setNotice({ text: t('lumen.recordings.updated', 'Recording updated.') });
     } catch (failure) {
       setNotice({
@@ -128,7 +130,7 @@ export default function Recordings() {
     } finally {
       pending.current = false;
       setBusy(false);
-      setSelected(undefined);
+      if (succeeded) setSelected(undefined);
       rows.reload();
     }
   }
@@ -221,7 +223,7 @@ export default function Recordings() {
             error={rows.error}
             retry={rows.reload}
           />
-          {notice && (
+          {notice && !selected && (
             <p className="note" role={notice.error ? 'alert' : 'status'}>
               {notice.text}
             </p>
@@ -377,7 +379,13 @@ export default function Recordings() {
           onClose={() => {
             if (!pending.current) setSelected(undefined);
           }}
-        />
+        >
+          {notice?.error && (
+            <p className="note" role="alert">
+              {notice.text}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

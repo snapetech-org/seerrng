@@ -18,7 +18,8 @@ async function fixture(
   configured = true,
   locale = 'en',
   holdRecordings = false,
-  failure?: 'status' | 'recordings'
+  failure?: 'status' | 'recordings',
+  failActionOnce = false
 ) {
   let status = active.status;
   const writes: string[] = [];
@@ -84,6 +85,13 @@ async function fixture(
       path === '/live-tv/recordings/17'
     ) {
       writes.push(request.method() + ' ' + path);
+      if (failActionOnce) {
+        failActionOnce = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary recording failure.' },
+        });
+      }
       status = path.endsWith('/approve') ? 'scheduled' : 'cancelled';
       return route.fulfill({ json: { ...active, status } });
     }
@@ -250,7 +258,15 @@ test('recording managers can review all users and approve an airing', async ({
 test('a member can cancel their own request and see it in history', async ({
   page,
 }) => {
-  const { writes, reads } = await fixture(page, 32);
+  const { writes, reads } = await fixture(
+    page,
+    32,
+    true,
+    'en',
+    false,
+    undefined,
+    true
+  );
   await page.goto('/recordings');
   await expect(page.getByText('Fixture Airing')).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Scope' })).toHaveCount(0);
@@ -265,16 +281,22 @@ test('a member can cancel their own request and see it in history', async ({
     .click();
   expect(writes).toEqual([]);
   await cancel.click();
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Cancel Recording' })
-    .click();
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation.getByRole('button', { name: 'Cancel Recording' }).click();
+  await expect(confirmation.getByRole('alert')).toBeVisible();
+  await expect(confirmation).toBeVisible();
+  expect(writes).toHaveLength(1);
+  await confirmation.getByRole('button', { name: 'Cancel Recording' }).click();
   await expect(page.getByText('No recordings match this view.')).toBeVisible();
+  await expect(confirmation).toHaveCount(0);
   await page
     .getByRole('combobox', { name: 'Status Filter' })
     .selectOption('all');
   await expect(page.getByText('Cancelled', { exact: true })).toBeVisible();
-  expect(writes).toEqual(['DELETE /live-tv/recordings/17']);
+  expect(writes).toEqual([
+    'DELETE /live-tv/recordings/17',
+    'DELETE /live-tv/recordings/17',
+  ]);
   expect([...new Set(reads)]).toEqual(['mine']);
 });
 

@@ -1,0 +1,1 @@
+Lumen keeps recording cancel, approve, and decline confirmations open when the server rejects an action, with the error and retry available together. Successful actions still close the confirmation and refresh the list.
