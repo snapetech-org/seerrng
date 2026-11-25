@@ -14,6 +14,7 @@ import {
 } from '../components/cards';
 import {
   ComicCard,
+  ComicServiceFailure,
   editionLabel,
   requestComicEdition,
 } from '../components/comics';
@@ -846,7 +847,15 @@ export function ComicDetail() {
       refresh();
     } catch (e) {
       toast(
-        friendlyError(e, t('lumen.comicDetail.requestFailed', 'Request failed'))
+        e instanceof ComicServiceFailure
+          ? t(
+              'lumen.comicDetail.serviceFailure',
+              'The request was submitted, but the comics service rejected it while processing.'
+            )
+          : friendlyError(
+              e,
+              t('lumen.comicDetail.requestFailed', 'Request failed')
+            )
       );
     } finally {
       sending.current = false;

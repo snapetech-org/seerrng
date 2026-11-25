@@ -6648,6 +6648,8 @@ export const localeData = [
       'lumen.comicDetail.requestFailed': 'فشل الطلب',
       'lumen.comicDetail.requestManga': 'طلب المانغا',
       'lumen.comicDetail.requestSeries': 'طلب السلسلة',
+      'lumen.comicDetail.serviceFailure':
+        'وقد قُدِّم الطلب، غير أن دائرة الصور المصورة رفضته أثناء تجهيزه.',
       'lumen.comicDetail.started': 'بدأت',
       'lumen.comicDetail.status': 'الحالة',
       'lumen.comicDetail.theIssues': 'الأعداد',
@@ -18521,6 +18523,8 @@ export const localeData = [
       'lumen.comicDetail.requestFailed': 'Request failed',
       'lumen.comicDetail.requestManga': 'Request manga',
       'lumen.comicDetail.requestSeries': 'Request series',
+      'lumen.comicDetail.serviceFailure':
+        'The request was submitted, but the comics service rejected it while processing.',
       'lumen.comicDetail.started': 'Started',
       'lumen.comicDetail.status': 'Status',
       'lumen.comicDetail.theIssues': 'the issues',
@@ -31585,6 +31589,8 @@ export const localeData = [
       'lumen.comicDetail.requestFailed': 'Échec de la demande',
       'lumen.comicDetail.requestManga': 'Demander le manga',
       'lumen.comicDetail.requestSeries': 'Demander la série',
+      'lumen.comicDetail.serviceFailure':
+        "La demande a été présentée, mais le service de bande dessinée l'a rejetée pendant le traitement.",
       'lumen.comicDetail.started': 'Début',
       'lumen.comicDetail.status': 'Statut',
       'lumen.comicDetail.theIssues': 'les numéros',

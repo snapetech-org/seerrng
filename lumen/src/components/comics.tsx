@@ -47,12 +47,16 @@ export const comicCardMeta = (w: ComicWork) =>
 export const editionLabel = (e: ComicEdition) =>
   [e.publisher, e.languageName].filter(Boolean).join(', ');
 
+export class ComicServiceFailure extends Error {}
+
 /** Asks for one edition and says which in the toast. */
 export async function requestComicEdition(
   w: ComicWork,
   e: ComicEdition
 ): Promise<string> {
-  await requestExtra('comic', Number(e.id));
+  const result = await requestExtra('comic', Number(e.id));
+  if ((result as { status?: number } | null)?.status === 4)
+    throw new ComicServiceFailure();
   return `Requested ${w.title} · ${editionLabel(e) || 'edition'}`;
 }
 
@@ -117,7 +121,16 @@ export function ComicCard({ w }: { w: ComicWork }) {
       if (mounted.current) setAsked(edition.id);
     } catch (e) {
       toast(
-        friendlyError(e, t('lumen.error.requestFailed', 'Request failed'), t)
+        e instanceof ComicServiceFailure
+          ? t(
+              'lumen.comicDetail.serviceFailure',
+              'The request was submitted, but the comics service rejected it while processing.'
+            )
+          : friendlyError(
+              e,
+              t('lumen.error.requestFailed', 'Request failed'),
+              t
+            )
       );
     } finally {
       running.current = false;

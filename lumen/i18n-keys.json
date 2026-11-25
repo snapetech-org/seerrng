@@ -5407,6 +5407,7 @@
   "lumen.comicDetail.requestFailed",
   "lumen.comicDetail.requestManga",
   "lumen.comicDetail.requestSeries",
+  "lumen.comicDetail.serviceFailure",
   "lumen.comicDetail.started",
   "lumen.comicDetail.status",
   "lumen.comicDetail.theIssues",

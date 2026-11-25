@@ -10517,3 +10517,19 @@ live account authorization, email delivery, provider import, and persisted
 server state remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/network-acceptance/users-corrected-standalone-en/`
 and the sibling `users-corrected-{standalone,embedded}-{en,fr,ar}` directories.
+
+### Comic request provider failure recovery (2026-11-25)
+
+Comic edition requests now inspect the returned request status. If the comics
+provider reports asynchronous processing failure, Lumen shows the localized
+provider-rejection message and leaves the edition request action available;
+the card and detail-page paths share this behavior. English, French, and Arabic
+browser fixtures verify the returned status, failure message, retryable action,
+and unchanged request identity. The comics/manga suite passes 125 cases with
+31 viewport-specific skips. API responses are mocked, so live provider handoff
+is unverified. Candidate desktop and iPhone failure-state captures were
+inspected; a matching native capture for this state was unavailable, so native
+visual parity remains unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-request-acceptance/`.
+
+release-note: `release-notes/fixed-comic-request-provider-failure.md`

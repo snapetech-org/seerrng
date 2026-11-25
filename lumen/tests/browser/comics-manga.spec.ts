@@ -211,6 +211,7 @@ async function fixtures(
     config = {} as Record<string, unknown>,
     locale = 'en',
     magazinesEnabled = false,
+    requestStatus = 1,
   } = {}
 ) {
   const requested: unknown[] = [];
@@ -314,7 +315,10 @@ async function fixtures(
       });
     if (path === '/request' && r.request().method() === 'POST') {
       requested.push(r.request().postDataJSON());
-      return r.fulfill({ status: 201, json: { id: 99 } });
+      return r.fulfill({
+        status: 201,
+        json: { id: 99, status: requestStatus },
+      });
     }
     if (path === '/request')
       return r.fulfill({
@@ -532,6 +536,51 @@ test('the edition picker defaults to the recommended English edition', async ({
   expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 155485 });
   await expect(rows.nth(5)).toContainText('Requested');
 });
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  const copy = {
+    en: {
+      button: 'Request · Viz, English',
+      failure:
+        'The request was submitted, but the comics service rejected it while processing.',
+    },
+    fr: {
+      button: 'Demander · Viz, English',
+      failure:
+        "La demande a été présentée, mais le service de bande dessinée l'a rejetée pendant le traitement.",
+    },
+    ar: {
+      button: 'طلب · Viz, English',
+      failure:
+        'وقد قُدِّم الطلب، غير أن دائرة الصور المصورة رفضته أثناء تجهيزه.',
+    },
+  }[locale];
+
+  test(`comic service processing failure stays visible in ${locale}`, async ({
+    page,
+  }, info) => {
+    const { requested } = await fixtures(page, {
+      locale,
+      requestStatus: 4,
+    });
+    await page.goto('/comic/al-105778');
+    const request = page.getByRole('button', { name: copy.button });
+    await request.click();
+    await expect(page.getByRole('status')).toContainText(copy.failure);
+    await expect(request).toBeVisible();
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`comic-service-failure-${locale}.png`),
+        fullPage: true,
+      });
+    expect(requested).toEqual([
+      {
+        mediaType: 'comic',
+        mediaId: 130799,
+      },
+    ]);
+  });
+}
 
 for (const locale of ['en', 'fr', 'ar'] as const) {
   const baseline = process.env.LUMEN_COMIC_DETAIL_BASELINE === 'true';
