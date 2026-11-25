@@ -9898,6 +9898,7 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-ratings-20261124/`.
 All provider and issue results are mocked; live Soulseek, MusicBrainz, and
 Lidarr behavior remains unverified.
+
 ### Cross-catalog book detail metadata (2026-11-24)
 
 When an ebook and audiobook catalog contain the same provider work but one
