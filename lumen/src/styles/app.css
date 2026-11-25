@@ -1034,6 +1034,37 @@ body.is-detail .tabbar {
   min-width: 0;
   max-width: 100%;
 }
+.video-rating-popover {
+  position: fixed;
+  z-index: 90;
+  display: grid;
+  gap: 10px;
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-float);
+}
+.video-rating-popover-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+.video-rating-popover-heading strong {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+.video-rating-popover-heading .icon-btn {
+  flex: none;
+  width: 32px;
+  height: 32px;
+}
 .dstatus .dnote {
   color: var(--ink-3);
   font-size: 13px;

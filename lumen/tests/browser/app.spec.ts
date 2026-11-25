@@ -42,6 +42,7 @@ async function fixtures(page: Page) {
   let pending: Promise<void> | undefined;
   const unknown: string[] = [];
   const errors: string[] = [];
+  const requests: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.route('https://**/*', (route) => route.abort());
   await page.route(/(?:image\.tmdb\.org|\/imageproxy\/tmdb)\//, (route) =>
@@ -56,6 +57,7 @@ async function fixtures(page: Page) {
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    requests.push(`${request.method()} ${path}`);
     let body: unknown;
     let status = 200;
     if (path === '/request/status')
@@ -70,6 +72,8 @@ async function fixtures(page: Page) {
         : { message: 'Sign in' };
     } else if (/^\/user\/\d+\/settings\/main$/.test(path)) {
       body = {};
+    } else if (/^\/user\/\d+\/settings\/discover-book-sections$/.test(path)) {
+      body = [];
     } else if (path === '/auth/logout') {
       user = '';
       status = 204;
@@ -167,6 +171,7 @@ async function fixtures(page: Page) {
   return {
     unknown,
     errors,
+    requests,
     hold() {
       holdFriend = true;
       pending = new Promise<void>((r) => {
@@ -333,6 +338,225 @@ test('movie and TV details show valid available ratings and safe links', async (
     []
   );
   expect(qa.errors).toEqual([]);
+});
+
+test('movie cards load a bounded rating popover after it is opened', async ({
+  page,
+}, testInfo) => {
+  const qa = await fixtures(page);
+  await page.clock.install();
+  await page.route(/\/api\/v1\/discover\/tv(\/upcoming)?(\?|$)/, (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 202,
+          mediaType: 'tv',
+          title: undefined,
+          name: 'The Test Series',
+          releaseDate: undefined,
+          firstAirDate: '2018-01-01',
+        },
+      ]),
+    })
+  );
+  await page.goto('/');
+  const projectWidth = page.viewportSize()?.width ?? 1440;
+  const projectHeight = page.viewportSize()?.height ?? 900;
+  for (const width of [...new Set([320, projectWidth])]) {
+    const height = width === 320 ? 800 : projectHeight;
+    await page.setViewportSize({ width, height });
+    if (process.env.LUMEN_RATING_CARD_CAPTURE_DIR) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_RATING_CARD_CAPTURE_DIR}/candidate-discover-${testInfo.project.name}-${width}.png`,
+        fullPage: true,
+      });
+    }
+    const trigger = page
+      .getByRole('button', {
+        name: 'Show ratings for The Test Film',
+      })
+      .first();
+    await expect(trigger).toBeVisible();
+    if (width === 320)
+      expect(
+        qa.requests.filter(
+          (request) => request === 'GET /movie/101/ratingscombined'
+        )
+      ).toHaveLength(0);
+
+    await trigger.click();
+    const dialog = page.getByRole('dialog', {
+      name: 'Show ratings for The Test Film',
+    });
+    await expect(dialog).toBeVisible();
+    if (width === 320) {
+      await page.clock.fastForward(299);
+      expect(
+        qa.requests.filter(
+          (request) => request === 'GET /movie/101/ratingscombined'
+        )
+      ).toHaveLength(0);
+      await page.clock.fastForward(1);
+    } else {
+      await page.clock.fastForward(300);
+    }
+    await expect(
+      dialog.getByTitle('Rotten Tomatoes audience: 92%', { exact: true })
+    ).toBeVisible();
+    expect(
+      qa.requests.filter(
+        (request) => request === 'GET /movie/101/ratingscombined'
+      )
+    ).toHaveLength(1);
+
+    const dimensions = await page.evaluate(() => {
+      const popover = document.querySelector('.video-rating-popover')!;
+      const rect = popover.getBoundingClientRect();
+      return {
+        viewport: innerWidth,
+        viewportHeight: innerHeight,
+        page: document.documentElement.scrollWidth,
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        content: popover.scrollWidth,
+        client: popover.clientWidth,
+      };
+    });
+    expect(dimensions.page).toBeLessThanOrEqual(dimensions.viewport);
+    expect(dimensions.left).toBeGreaterThanOrEqual(0);
+    expect(dimensions.right).toBeLessThanOrEqual(dimensions.viewport);
+    expect(dimensions.top).toBeGreaterThanOrEqual(0);
+    expect(dimensions.bottom).toBeLessThanOrEqual(dimensions.viewportHeight);
+    expect(dimensions.content).toBeLessThanOrEqual(dimensions.client);
+    await expect(dialog.locator('.chips.wrap')).toBeVisible();
+    if (process.env.LUMEN_RATING_CARD_CAPTURE_DIR) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_RATING_CARD_CAPTURE_DIR}/candidate-${testInfo.project.name}-${width}.png`,
+      });
+    }
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await expect(trigger).toBeFocused();
+
+    const tvTrigger = page
+      .getByRole('button', {
+        name: 'Show ratings for The Test Series',
+      })
+      .first();
+    await expect(tvTrigger).toBeVisible();
+    if (width === 320)
+      expect(
+        qa.requests.filter(
+          (request) => request === 'GET /tv/202/ratingscombined'
+        )
+      ).toHaveLength(0);
+    await tvTrigger.click();
+    const tvDialog = page.getByRole('dialog', {
+      name: 'Show ratings for The Test Series',
+    });
+    await page.clock.fastForward(300);
+    await expect(
+      tvDialog.getByTitle('Rotten Tomatoes critics: 81%', { exact: true })
+    ).toBeVisible();
+    expect(
+      qa.requests.filter((request) => request === 'GET /tv/202/ratingscombined')
+    ).toHaveLength(1);
+    await page.keyboard.press('Escape');
+    await expect(tvDialog).toHaveCount(0);
+  }
+  expect(qa.errors).toEqual([]);
+  expect(qa.unknown).toEqual([]);
+});
+
+test('movie rating popovers explain unavailable ratings and load failures', async ({
+  page,
+}) => {
+  const qa = await fixtures(page);
+  await page.route(/\/api\/v1\/discover\/(trending|movies)(\?|$)/, (route) =>
+    route.fulfill({
+      json: paged([
+        { ...movie, voteAverage: undefined, voteCount: 0 },
+        {
+          ...movie,
+          id: 102,
+          title: 'The Failing Film',
+          voteAverage: undefined,
+          voteCount: 0,
+        },
+      ]),
+    })
+  );
+  await page.route('**/api/v1/movie/101/ratingscombined', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/movie/102/ratingscombined', (route) =>
+    route.fulfill({ status: 503, json: { message: 'Provider unavailable' } })
+  );
+  await page.goto('/');
+  const trigger = page
+    .getByRole('button', {
+      name: 'Show ratings for The Test Film',
+    })
+    .first();
+  await expect(trigger).toHaveText('Ratings');
+  await trigger.click();
+  await expect(
+    page.getByRole('dialog', { name: 'Show ratings for The Test Film' })
+  ).toContainText('No ratings available');
+
+  await page
+    .getByRole('button', { name: 'Show ratings for The Failing Film' })
+    .first()
+    .click();
+  await expect(
+    page.getByRole('dialog', { name: 'Show ratings for The Failing Film' })
+  ).toContainText('Ratings could not be loaded.');
+  expect(qa.errors).toEqual([]);
+});
+
+test('movie card rating controls use saved French and Arabic locales', async ({
+  page,
+}) => {
+  const qa = await fixtures(page);
+  let locale = 'fr';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
+  await page.clock.install();
+  for (const item of [
+    {
+      locale: 'fr',
+      trigger: 'Afficher les évaluations de The Test Film',
+      heading: 'Évaluations',
+      close: 'Fermer les évaluations',
+    },
+    {
+      locale: 'ar',
+      trigger: 'عرض تقييمات The Test Film',
+      heading: 'التقييمات',
+      close: 'إغلاق التقييمات',
+    },
+  ]) {
+    locale = item.locale;
+    await page.goto('/');
+    const trigger = page.getByRole('button', { name: item.trigger }).first();
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+    const dialog = page.getByRole('dialog', { name: item.trigger });
+    await expect(dialog).toContainText(item.heading);
+    await page.clock.fastForward(300);
+    await expect(
+      dialog.getByRole('button', { name: item.close })
+    ).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+  }
+  expect(qa.errors).toEqual([]);
+  expect(qa.unknown).toEqual([]);
 });
 
 test('New on Plex keeps all recent videos when other media types share the library', async ({

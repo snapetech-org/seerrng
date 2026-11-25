@@ -4988,7 +4988,12 @@
     "lumen.videoRating.tmdb": "TMDB",
     "lumen.videoRating.criticsShort": "C",
     "lumen.videoRating.audienceShort": "A",
-    "lumen.videoRating.heading": "Ratings"
+    "lumen.videoRating.heading": "Ratings",
+    "lumen.videoRating.showForTitle": "Show ratings for {title}",
+    "lumen.videoRating.close": "Close ratings",
+    "lumen.videoRating.loading": "Loading ratings…",
+    "lumen.videoRating.unavailable": "No ratings available",
+    "lumen.videoRating.loadFailed": "Ratings could not be loaded."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10142,7 +10147,12 @@
     "lumen.videoRating.tmdb": "TMDB",
     "lumen.videoRating.criticsShort": "Crit.",
     "lumen.videoRating.audienceShort": "Public",
-    "lumen.videoRating.heading": "Évaluations"
+    "lumen.videoRating.heading": "Évaluations",
+    "lumen.videoRating.showForTitle": "Afficher les évaluations de {title}",
+    "lumen.videoRating.close": "Fermer les évaluations",
+    "lumen.videoRating.loading": "Chargement des évaluations…",
+    "lumen.videoRating.unavailable": "Aucune évaluation disponible",
+    "lumen.videoRating.loadFailed": "Impossible de charger les évaluations."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15300,6 +15310,11 @@
     "lumen.videoRating.tmdb": "TMDB",
     "lumen.videoRating.criticsShort": "نقاد",
     "lumen.videoRating.audienceShort": "جمهور",
-    "lumen.videoRating.heading": "التقييمات"
+    "lumen.videoRating.heading": "التقييمات",
+    "lumen.videoRating.showForTitle": "عرض تقييمات {title}",
+    "lumen.videoRating.close": "إغلاق التقييمات",
+    "lumen.videoRating.loading": "جارٍ تحميل التقييمات…",
+    "lumen.videoRating.unavailable": "لا تتوفر تقييمات",
+    "lumen.videoRating.loadFailed": "تعذر تحميل التقييمات."
   }
 }

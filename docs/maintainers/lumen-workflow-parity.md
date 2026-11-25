@@ -9936,3 +9936,24 @@ is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-ratings-20261124/`.
 Ratings are mocked; live provider responses and live endpoint behavior remain
 unverified.
+
+### Movie and TV card rating summaries (2026-11-24)
+
+Movie and TV poster cards now show a compact TMDB rating control beside their
+existing metadata when the title has votes. Opening it displays available
+Rotten Tomatoes critics and audience, IMDb, Metacritic, Trakt, and TMDB scores
+in provider order. It waits 300 ms before calling the authenticated combined
+ratings endpoint, opens as a bounded dialog, wraps ratings at narrow widths,
+and supports touch, keyboard Escape, outside-click dismissal, and focus return.
+Missing scores, no ratings, and endpoint failures have separate states. English,
+French, and Arabic strings are included.
+
+Browser coverage verifies movie and TV card results, the 300 ms request delay,
+request deduplication across repeated opens, no-data and failed-endpoint
+feedback, dismissal and focus behavior, and viewport containment at 320 px and
+the desktop, iPhone, Android, and tablet project widths. Matched baseline and
+candidate Discover captures cover desktop and iPhone; candidate popover
+captures cover desktop, iPhone, Android, tablet, and the 320 px narrow case.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-ratings-20261124/`.
+These use mocked API responses; live provider calls remain unverified.

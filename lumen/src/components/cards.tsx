@@ -54,6 +54,7 @@ import {
 import { canRequestBook } from './detail';
 import { useQuickRequest } from './requestSheet';
 import { useToast } from './toast';
+import { VideoRatingsPopover } from './VideoRatings';
 import WatchlistButton from './WatchlistButton';
 
 // A stable theme-owned tone per title keeps drawn covers consistent between visits.
@@ -523,6 +524,7 @@ export function TitleCard({
   return (
     <div
       className={hold ? 'poster hold' : 'poster'}
+      data-media-type={tv ? 'tv' : 'movie'}
       data-title-mode={it.posterPath ? titleMode : undefined}
     >
       <div className="art">
@@ -581,7 +583,16 @@ export function TitleCard({
       >
         {titleOf(it)}
       </Link>
-      <div className="m">{m}</div>
+      <div className="m">
+        <span className="card-meta">{m}</span>
+        <VideoRatingsPopover
+          mediaType={tv ? 'tv' : 'movie'}
+          id={it.id}
+          voteAverage={it.voteAverage}
+          voteCount={it.voteCount}
+          title={titleOf(it)}
+        />
+      </div>
       {quick.sheet}
     </div>
   );
