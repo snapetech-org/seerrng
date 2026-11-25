@@ -14,6 +14,7 @@ test('client tokens display the secret once and revoke after confirmation', asyn
   };
   let listed = false;
   let revoked = false;
+  let failRevoke = true;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -38,6 +39,13 @@ test('client tokens display the secret once and revoke after confirmation', asyn
       return route.fulfill({ json: listed ? [token] : [] });
     }
     if (path === '/auth/client-tokens/7' && request.method() === 'DELETE') {
+      if (failRevoke) {
+        failRevoke = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
+      }
       listed = false;
       revoked = true;
       return route.fulfill({ status: 204 });
@@ -66,11 +74,15 @@ test('client tokens display the secret once and revoke after confirmation', asyn
     .getByRole('button', { name: 'Revoke token Fixture Client' })
     .click();
   expect(revoked).toBe(false);
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Revoke Token' })
-    .click();
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation.getByRole('button', { name: 'Revoke Token' }).click();
+  await expect(confirmation.getByRole('alert')).toContainText(
+    'Could not confirm revocation'
+  );
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole('button', { name: 'Revoke Token' }).click();
   await expect(page.getByText('Token revoked.')).toBeVisible();
+  await expect(confirmation).toHaveCount(0);
   await expect(page.getByText('No client tokens yet.')).toBeVisible();
   expect(revoked).toBe(true);
 });
@@ -119,7 +131,7 @@ for (const locale of ['fr', 'ar'] as const) {
             title: 'رموز العميل',
             back: 'العودة إلى إعدادات الحساب',
             loadTitle: 'تعذّر تحميل رموز العميل',
-            loadError: 'واجه الخادم مشكلة. حاول مجدداً بعد قليل.',
+            loadError: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
             retry: 'إعادة المحاولة',
             description:
               'اربط تطبيقاً باستخدام صلاحية الاستكشاف أو الطلب في حسابك.',

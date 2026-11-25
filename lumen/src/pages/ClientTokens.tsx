@@ -72,10 +72,12 @@ function TokenSettings() {
     setFailure('');
     setNotice('');
     const generation = sessionGeneration();
+    let succeeded = false;
     try {
       if (target) {
         await api<void>(`${PATH}/${target.id}`, { method: 'DELETE' });
         if (sessionGeneration() !== generation) return;
+        succeeded = true;
         setRevoked((ids) => [...ids, target.id]);
         setNotice(t('lumen.clientTokens.revoked', 'Token revoked.'));
       } else {
@@ -100,6 +102,7 @@ function TokenSettings() {
       refresh();
     } catch (err) {
       if (sessionGeneration() !== generation) return;
+      if (succeeded) return;
       setFailure(
         target
           ? t(
@@ -120,7 +123,7 @@ function TokenSettings() {
     } finally {
       working.current = false;
       setBusy(false);
-      setTarget(undefined);
+      if (!target || succeeded) setTarget(undefined);
     }
   }
 
@@ -162,7 +165,7 @@ function TokenSettings() {
           {t('lumen.clientTokens.loading', 'Loading client tokens…')}
         </p>
       )}
-      {failure && (
+      {failure && !target && (
         <p className="note" role="alert">
           {failure}
         </p>
@@ -355,7 +358,13 @@ function TokenSettings() {
           onClose={() => {
             if (!working.current) setTarget(undefined);
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {failure}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );
