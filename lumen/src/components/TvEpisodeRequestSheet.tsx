@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { api, type Season, type SeasonRequestSelection } from '../api';
+import { api, tmdbImg, type Season, type SeasonRequestSelection } from '../api';
 import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { ServiceNote } from './extra';
@@ -27,6 +27,9 @@ const SEASON_BATCH_ATTEMPTS = 2;
 
 export default function TvEpisodeRequestSheet({
   tvId,
+  title,
+  posterPath,
+  year,
   seasons,
   initialSeason,
   initialEpisode,
@@ -40,6 +43,9 @@ export default function TvEpisodeRequestSheet({
   close,
 }: {
   tvId: number;
+  title: string;
+  posterPath?: string;
+  year?: string;
   seasons: Season[];
   initialSeason?: number;
   initialEpisode?: number;
@@ -80,6 +86,9 @@ export default function TvEpisodeRequestSheet({
     if (streamingOverride) closeButton.current?.focus();
   }, [streamingOverride]);
   const seasonKey = seasons.map(({ seasonNumber }) => seasonNumber).join(',');
+  const regularSeasonCount = seasons.filter(
+    ({ seasonNumber }) => seasonNumber > 0
+  ).length;
   const seasonNumbers = useMemo(
     () => (seasonKey ? seasonKey.split(',').map(Number) : []),
     [seasonKey]
@@ -244,12 +253,26 @@ export default function TvEpisodeRequestSheet({
       >
         <div className="grab" />
         <div className="pk">
-          <header>
-            <h3>
-              {is4k
-                ? t('lumen.tvEpisodeRequest.title4k', 'Request Episodes in 4K')
-                : t('lumen.tvEpisodeRequest.title', 'Request Episodes')}
-            </h3>
+          <header className="pk-head">
+            {posterPath && tmdbImg(posterPath) && (
+              <div className="p">
+                <img src={tmdbImg(posterPath)} alt="" />
+              </div>
+            )}
+            <div>
+              <h3>
+                {title || t('components.Layout.Sidebar.browsetv', 'Series')}
+              </h3>
+              <p className="meta">
+                {year}
+                {regularSeasonCount > 0 &&
+                  `${year ? ' · ' : ''}${t(
+                    'lumen.tv.seasonCount',
+                    '{count} seasons',
+                    { count: regularSeasonCount }
+                  )}`}
+              </p>
+            </div>
           </header>
           <div className="toolbar">
             <button

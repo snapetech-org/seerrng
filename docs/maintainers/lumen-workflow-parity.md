@@ -8855,6 +8855,23 @@ series browser cases across desktop, iPhone, Android, and tablet pass. Candidate
 desktop and iPhone captures show the new control at its target viewports; live
 provider metadata and matched native visual acceptance remain unverified.
 
+### TV episode request identity context (2026-11-24)
+
+The Lumen episode picker now identifies the selected series with its poster,
+title, release year, and regular-season count, matching the native request
+sheet's identity header. It reuses the existing picker header and TMDB image
+proxy. The dialog remains named “Request Episodes” for assistive technology;
+season selection and request payloads are unchanged.
+
+The large-series retry regression verifies the identity header and poster
+source. Its 88 TV request-state browser cases pass across desktop, iPhone,
+Android, and tablet. The candidate was inspected at 1440×900 and 390×844 CSS
+pixels; the user-provided native request screenshot was used as the identity
+reference. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-request-context-20261124/`.
+This closes the missing title/poster/year context gap. Native-matched review of
+the bulk-control layout and live provider metadata remain open.
+
 ### Media-specific issue reasons in Lumen issue rows (2026-11-23)
 
 Lumen issue rows now show the localized reason for valid book, comic, and

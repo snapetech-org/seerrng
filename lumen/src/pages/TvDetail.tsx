@@ -957,6 +957,9 @@ export default function TvDetail() {
                 <TvEpisodeRequestSheet
                   key={String(is4k)}
                   tvId={t.id}
+                  title={t.name ?? ''}
+                  posterPath={t.posterPath}
+                  year={t.firstAirDate?.slice(0, 4)}
                   seasons={episodeSeasons}
                   initialSeason={
                     seasonAnchor === undefined
