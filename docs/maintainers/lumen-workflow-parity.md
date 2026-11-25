@@ -10818,4 +10818,4 @@ overflow report is treated as transient pending recurrence. Evidence: hosted
 failure artifact under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/hosted-browser-evidence-45676094803/admin-metadata-metadata-settings-follow-the-saved-fr-locale-iphone/`
 and current local runs of `lumen/tests/browser/admin-metadata.spec.ts`
-(`iphone`, French case; six passes total).
+(`iphone`, French case; six passes total). Latest screenshot and run metadata are retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/metadata-admin-overflow-triage/`.
