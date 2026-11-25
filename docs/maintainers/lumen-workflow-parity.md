@@ -5544,7 +5544,9 @@ lost. The Blocklist management list also keeps its confirmation open after a
 failed removal, rechecks the exact entry before retry, and recognizes a delete
 whose response was lost. Focused desktop/iPhone browser coverage passes for
 the list and detail actions. Matched visual screenshots and production
-`/lumen/` mount remain open.
+`/lumen/` mount remain open. Curated movie-collection Blocklist actions use
+the same recoverable confirmation and verify the collection state before
+closing after an uncertain response; focused browser coverage passes.
 
 Curated TV collections now offer a trailer from the first visible series
 using the same validated YouTube destination as movie details. Forty-four

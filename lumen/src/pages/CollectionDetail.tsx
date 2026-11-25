@@ -53,6 +53,7 @@ function CollectionContent({ id }: { id: number }) {
     { currentPathOnly: true }
   );
   const [confirm, setConfirm] = useState<'add' | 'remove'>();
+  const [confirmFailure, setConfirmFailure] = useState(false);
   const settings = usePublicSettings();
   const trailer = youtubeTrailerUrl(
     firstMovieDetails.data?.relatedVideos,
@@ -134,12 +135,14 @@ function CollectionContent({ id }: { id: number }) {
       return;
     working.current = true;
     setBusy(true);
+    let succeeded = false;
     try {
       await api<void>(
         `/blocklist/collection/${id}`,
         { method: action === 'add' ? 'POST' : 'DELETE' },
         'empty'
       );
+      succeeded = true;
       refresh();
       toast(
         action === 'add'
@@ -153,16 +156,44 @@ function CollectionContent({ id }: { id: number }) {
             )
       );
     } catch {
-      reload();
-      toast(
-        t(
-          'lumen.collectionDetail.changeUnconfirmed',
-          'Could not confirm the change. Check the collection before trying again.'
-        )
-      );
+      try {
+        const latest = await api<MovieCollection>(`/collection/${id}`, {
+          method: 'GET',
+          cache: 'no-store',
+        });
+        const blockedCount = latest.parts.filter(
+          (part) => part.mediaInfo?.status === MediaStatus.BLOCKLISTED
+        ).length;
+        succeeded =
+          latest.id === id &&
+          latest.parts.length > 0 &&
+          (action === 'add'
+            ? blockedCount === latest.parts.length
+            : blockedCount === 0);
+      } catch {
+        succeeded = false;
+      }
+      if (succeeded) {
+        refresh();
+        toast(
+          action === 'add'
+            ? t(
+                'lumen.collectionDetail.added',
+                'Collection added to the Blocklist.'
+              )
+            : t(
+                'lumen.collectionDetail.removed',
+                'Collection removed from the Blocklist.'
+              )
+        );
+      } else {
+        setConfirmFailure(true);
+      }
     } finally {
-      notifyBlocklistChanged();
-      setConfirm(undefined);
+      if (succeeded) {
+        notifyBlocklistChanged();
+        setConfirm(undefined);
+      }
       working.current = false;
       setBusy(false);
     }
@@ -324,7 +355,10 @@ function CollectionContent({ id }: { id: number }) {
               <button
                 className="btn btn-quiet btn-sm"
                 disabled={busy}
-                onClick={() => setConfirm(action)}
+                onClick={() => {
+                  setConfirmFailure(false);
+                  setConfirm(action);
+                }}
               >
                 {title}
               </button>
@@ -402,12 +436,25 @@ function CollectionContent({ id }: { id: number }) {
                 )
           }
           confirm={title}
+          cancel={t('lumen.tvRequests.cancel', 'Cancel')}
           busy={busy}
           onConfirm={() => void apply()}
           onClose={() => {
-            if (!working.current) setConfirm(undefined);
+            if (!working.current) {
+              setConfirm(undefined);
+              setConfirmFailure(false);
+            }
           }}
-        />
+        >
+          {confirmFailure && (
+            <p className="note" role="alert">
+              {t(
+                'lumen.collectionDetail.changeUnconfirmed',
+                'Could not confirm the change. Check the collection before trying again.'
+              )}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </article>
   );

@@ -74,6 +74,66 @@ test('collections are reachable from search and blocklist as one collection', as
   expect(actions).toEqual(['POST', 'DELETE']);
 });
 
+test('collection Blocklist confirmation stays open after failure and retries', async ({
+  page,
+}) => {
+  let blocked = false;
+  let writes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/collection/30')
+      return route.fulfill({
+        json: {
+          id: 30,
+          name: 'Example Collection',
+          parts: [
+            {
+              id: 20,
+              mediaType: 'movie',
+              title: 'Example Movie',
+              mediaInfo: { status: blocked ? 6 : 1 },
+            },
+          ],
+        },
+      });
+    if (path === '/blocklist/collection/30' && request.method() === 'POST') {
+      writes++;
+      if (writes === 1)
+        return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
+      blocked = true;
+      return route.fulfill({ status: 201 });
+    }
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(`${mount}/collection/30`);
+  await page
+    .getByRole('button', { name: 'Blocklist Collection', exact: true })
+    .click();
+  const dialog = page.getByRole('alertdialog');
+  const captureDir = process.env.LUMEN_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/collection-confirm-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Blocklist Collection' }).click();
+  await expect(dialog.getByRole('alert')).toBeVisible();
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/collection-retry-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Blocklist Collection' }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByText('1 of 1 blocklisted')).toBeVisible();
+  expect(writes).toBe(2);
+});
+
 test('progressive requests start, stop, and restart the selected quality', async ({
   page,
 }) => {
