@@ -6105,5 +6105,7 @@
   "components.PersonDetails.birthdate",
   "components.PersonDetails.lifespan",
   "components.PersonDetails.alsoknownas",
-  "lumen.people.externalLinks"
+  "lumen.people.externalLinks",
+  "lumen.people.showMoreBiography",
+  "lumen.people.showLessBiography"
 ]

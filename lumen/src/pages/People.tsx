@@ -395,12 +395,16 @@ function RequestPersonMovies({
 export default function PersonDetail() {
   const { t, locale } = useLumenLocale();
   const { id: rawId } = useParams();
+  const [expandedBiographyId, setExpandedBiographyId] = useState<number | null>(
+    null
+  );
   const { user } = useAuth();
   const extras = useExtras();
   const movieEnabled = extras.categoryEnabled('movie');
   const tvEnabled = extras.categoryEnabled('tv');
   const settings = usePublicSettings();
   const id = Number(rawId);
+  const biographyExpanded = expandedBiographyId === id;
   const path =
     Number.isInteger(id) && id > 0 && id <= 1_000_000_000
       ? `/person/${id}`
@@ -568,7 +572,32 @@ export default function PersonDetail() {
               </p>
             )}
             {person.data.biography && (
-              <p className="ov long">{person.data.biography}</p>
+              <div>
+                <p
+                  className="ov long"
+                  data-collapsible="true"
+                  data-expanded={biographyExpanded}
+                  id={`person-biography-${id}`}
+                >
+                  {person.data.biography}
+                </p>
+                <button
+                  aria-controls={`person-biography-${id}`}
+                  aria-expanded={biographyExpanded}
+                  className="btn btn-quiet btn-sm"
+                  onClick={() =>
+                    setExpandedBiographyId(biographyExpanded ? null : id)
+                  }
+                  type="button"
+                >
+                  {biographyExpanded
+                    ? t('lumen.people.showLessBiography', 'Show Less Biography')
+                    : t(
+                        'lumen.people.showMoreBiography',
+                        'Show More Biography'
+                      )}
+                </button>
+              </div>
             )}
           </div>
         </div>

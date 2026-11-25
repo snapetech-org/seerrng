@@ -9803,3 +9803,22 @@ were inspected; additional locale/viewport pairs are retained. Evidence is at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-person-details-20261124/`.
 The comparison is against the native SeerrNG source and mocked metadata; live
 TMDB responses and a live authenticated account remain unverified.
+
+### Person biography disclosure parity (2026-11-24)
+
+Native person details collapse biographies after six lines and let viewers
+expand them. Lumen now uses the same six-line default with a localized,
+keyboard-operable Show More/Show Less button. The text remains available in the
+document and the button reports its expanded state and controlled biography.
+The existing overview prose owner and shared quiet small-button family are reused;
+no page-specific styling was added.
+
+The person fixture contains twelve deterministic paragraphs. Browser checks cover
+the collapsed line clamp, expanded height, pointer and Space-key toggling,
+accessible state/relationship, all three locales, and desktop, iPhone, Android,
+and tablet viewports. Baseline captures show the previous full-biography state;
+candidate captures record the collapsed page and expanded interaction at
+1440×900 and 390×844. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-person-biography-20261124/`.
+Mocked metadata verifies the UI contract; live person responses remain
+unverified.

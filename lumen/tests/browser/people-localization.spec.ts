@@ -17,6 +17,8 @@ const text = {
     requestAll: 'Request All',
     cancel: 'Cancel',
     result: '1 submitted · 0 skipped · 0 failed',
+    biographyMore: 'Show More Biography',
+    biographyLess: 'Show Less Biography',
   },
   fr: {
     credits: 'Crédits',
@@ -34,6 +36,8 @@ const text = {
     requestAll: 'Tout demander',
     cancel: 'Annuler',
     result: 'Soumis : 1 · Ignorés : 0 · Échecs : 0',
+    biographyMore: 'Afficher plus de la biographie',
+    biographyLess: 'Afficher moins de la biographie',
   },
   ar: {
     credits: 'الأعمال',
@@ -51,6 +55,8 @@ const text = {
     requestAll: 'طلب الكل',
     cancel: 'إلغاء',
     result: 'تم إرسال 1 · تم تخطي 0 · فشل 0',
+    biographyMore: 'عرض المزيد من السيرة الذاتية',
+    biographyLess: 'عرض أقل من السيرة الذاتية',
   },
 } as const;
 
@@ -106,7 +112,11 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             profilePath: '/jane-example.jpg',
             knownForDepartment: 'Acting',
             placeOfBirth: 'Montreal',
-            biography: 'A fixture biography for visual comparison.',
+            biography: Array.from(
+              { length: 12 },
+              (_, index) =>
+                `Biography paragraph ${index + 1}: Jane Example is known for thoughtful performances across film and television. This fixture checks how longer person biographies remain readable on narrow and wide screens. `
+            ).join('\n\n'),
           },
         });
       if (path === '/person/77/combined_credits')
@@ -201,6 +211,45 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         animations: 'disabled',
       });
     }
+    const biography = page.locator('#person-biography-77');
+    const biographyToggle = page.getByRole('button', {
+      name: copy.biographyMore,
+    });
+    await expect(biographyToggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(biographyToggle).toHaveAttribute(
+      'aria-controls',
+      'person-biography-77'
+    );
+    expect(
+      await biography.evaluate(
+        (element) => getComputedStyle(element).webkitLineClamp
+      )
+    ).toBe('6');
+    const collapsedHeight = await biography.evaluate(
+      (element) => element.getBoundingClientRect().height
+    );
+    await biographyToggle.click();
+    const biographyLess = page.getByRole('button', {
+      name: copy.biographyLess,
+    });
+    await expect(biographyLess).toHaveAttribute('aria-expanded', 'true');
+    const expandedHeight = await biography.evaluate(
+      (element) => element.getBoundingClientRect().height
+    );
+    expect(expandedHeight).toBeGreaterThan(collapsedHeight * 1.5);
+    if (
+      process.env.LUMEN_PEOPLE_DETAIL_CAPTURE === 'true' &&
+      ['desktop', 'iphone'].includes(info.project.name)
+    ) {
+      await page.screenshot({
+        path: info.outputPath(`people-biography-expanded-${locale}.png`),
+        animations: 'disabled',
+        fullPage: true,
+      });
+    }
+    await biographyLess.focus();
+    await biographyLess.press('Space');
+    await expect(biographyToggle).toHaveAttribute('aria-expanded', 'false');
     await page.getByRole('button', { name: copy.request }).click();
     const dialog = page.getByRole('alertdialog', { name: copy.confirmTitle });
     await expect(dialog).toContainText(copy.confirmation);

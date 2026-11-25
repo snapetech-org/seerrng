@@ -7400,6 +7400,8 @@ export const localeData = [
       'lumen.requests.row.statusUnavailable': 'الحالة غير متاحة',
       'lumen.requests.row.partlyOnServer': 'متوفر جزئيًا على {server}',
       'lumen.people.externalLinks': 'روابط خارجية',
+      'lumen.people.showMoreBiography': 'عرض المزيد من السيرة الذاتية',
+      'lumen.people.showLessBiography': 'عرض أقل من السيرة الذاتية',
     },
   },
   {
@@ -19199,6 +19201,8 @@ export const localeData = [
       'lumen.requests.row.statusUnavailable': 'Status unavailable',
       'lumen.requests.row.partlyOnServer': 'Partly on {server}',
       'lumen.people.externalLinks': 'External links',
+      'lumen.people.showMoreBiography': 'Show More Biography',
+      'lumen.people.showLessBiography': 'Show Less Biography',
     },
   },
   {
@@ -32218,6 +32222,8 @@ export const localeData = [
       'lumen.requests.row.statusUnavailable': 'Statut indisponible',
       'lumen.requests.row.partlyOnServer': 'Partiellement sur {server}',
       'lumen.people.externalLinks': 'Liens externes',
+      'lumen.people.showMoreBiography': 'Afficher plus de la biographie',
+      'lumen.people.showLessBiography': 'Afficher moins de la biographie',
     },
   },
   {

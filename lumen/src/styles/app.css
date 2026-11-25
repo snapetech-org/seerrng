@@ -973,6 +973,13 @@ body.is-detail .tabbar {
   overflow-wrap: anywhere;
   white-space: pre-line;
 }
+.ov.long[data-collapsible='true'][data-expanded='false'] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+}
 .dtitle h1 {
   font-size: 26px;
   font-weight: 800;

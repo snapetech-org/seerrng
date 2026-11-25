@@ -4927,7 +4927,9 @@
     "lumen.requests.row.unavailable": "Unavailable",
     "lumen.requests.row.statusUnavailable": "Status unavailable",
     "lumen.requests.row.partlyOnServer": "Partly on {server}",
-    "lumen.people.externalLinks": "External links"
+    "lumen.people.externalLinks": "External links",
+    "lumen.people.showMoreBiography": "Show More Biography",
+    "lumen.people.showLessBiography": "Show Less Biography"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10020,7 +10022,9 @@
     "lumen.requests.row.unavailable": "Indisponible",
     "lumen.requests.row.statusUnavailable": "Statut indisponible",
     "lumen.requests.row.partlyOnServer": "Partiellement sur {server}",
-    "lumen.people.externalLinks": "Liens externes"
+    "lumen.people.externalLinks": "Liens externes",
+    "lumen.people.showMoreBiography": "Afficher plus de la biographie",
+    "lumen.people.showLessBiography": "Afficher moins de la biographie"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15117,6 +15121,8 @@
     "lumen.requests.row.unavailable": "غير متاح",
     "lumen.requests.row.statusUnavailable": "الحالة غير متاحة",
     "lumen.requests.row.partlyOnServer": "متوفر جزئيًا على {server}",
-    "lumen.people.externalLinks": "روابط خارجية"
+    "lumen.people.externalLinks": "روابط خارجية",
+    "lumen.people.showMoreBiography": "عرض المزيد من السيرة الذاتية",
+    "lumen.people.showLessBiography": "عرض أقل من السيرة الذاتية"
   }
 }
