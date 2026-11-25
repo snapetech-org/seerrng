@@ -129,6 +129,10 @@ test('general application settings localize and recover failed saves', async ({
   let failOnce = true;
   let staleReadbackOnce = false;
   let title = 'SeerrNG';
+  let defaultFrontend: 'native' | 'lumen' | 'external' = 'native';
+  let enforceDefaultFrontend = false;
+  let lockLumenForNonAdmins = false;
+  let lumenPublicUrl = '';
   let spotifyClientId = '';
   let spotifyClientSecret = '';
   let downloadPathMappings: Record<string, unknown>[] = [];
@@ -181,6 +185,18 @@ test('general application settings localize and recover failed saves', async ({
         }
         if (typeof body.applicationTitle === 'string')
           title = body.applicationTitle;
+        if (
+          body.defaultFrontend === 'native' ||
+          body.defaultFrontend === 'lumen' ||
+          body.defaultFrontend === 'external'
+        )
+          defaultFrontend = body.defaultFrontend;
+        if (typeof body.enforceDefaultFrontend === 'boolean')
+          enforceDefaultFrontend = body.enforceDefaultFrontend;
+        if (typeof body.lockLumenForNonAdmins === 'boolean')
+          lockLumenForNonAdmins = body.lockLumenForNonAdmins;
+        if (typeof body.lumenPublicUrl === 'string')
+          lumenPublicUrl = body.lumenPublicUrl;
         if (typeof body.spotifyClientId === 'string')
           spotifyClientId = body.spotifyClientId;
         if (typeof body.spotifyClientSecret === 'string')
@@ -216,10 +232,10 @@ test('general application settings localize and recover failed saves', async ({
           youtubeUrl: '',
           cacheImages: true,
           versionCheck: true,
-          defaultFrontend: 'native',
-          enforceDefaultFrontend: false,
-          lockLumenForNonAdmins: false,
-          lumenPublicUrl: '',
+          defaultFrontend,
+          enforceDefaultFrontend,
+          lockLumenForNonAdmins,
+          lumenPublicUrl,
           localLogin: true,
           mediaServerLogin: true,
           newPlexLogin: true,
@@ -439,6 +455,59 @@ test('general application settings localize and recover failed saves', async ({
     )
   ).toBeVisible();
   await expect(apiKeyPanel.locator('input')).toHaveValue('••••••••••••••••');
+
+  const defaultInterface = page.getByLabel(text.interface, { exact: true });
+  const saveApplication = page.getByRole('button', {
+    name: text.save,
+    exact: true,
+  });
+  await defaultInterface.selectOption('external');
+  await page
+    .locator('input[type="url"][required]')
+    .fill('https://lumen.example.test');
+  await page
+    .getByRole('checkbox', {
+      name:
+        locale === 'fr'
+          ? 'Imposer l’interface par défaut'
+          : locale === 'ar'
+            ? 'فرض الواجهة الافتراضية'
+            : 'Enforce Default Interface',
+    })
+    .check();
+  await saveApplication.click();
+  await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
+  expect(writes[9]).toEqual({
+    defaultFrontend: 'external',
+    enforceDefaultFrontend: true,
+    lumenPublicUrl: 'https://lumen.example.test',
+  });
+
+  await defaultInterface.selectOption('lumen');
+  await page
+    .getByRole('checkbox', {
+      name:
+        locale === 'fr'
+          ? 'Conserver Lumen pour les non-administrateurs'
+          : locale === 'ar'
+            ? 'إبقاء غير المسؤولين في Lumen'
+            : 'Keep Non-Administrators in Lumen',
+    })
+    .check();
+  await saveApplication.click();
+  await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
+  expect(writes[10]).toEqual({
+    defaultFrontend: 'lumen',
+    lockLumenForNonAdmins: true,
+  });
+
+  await defaultInterface.selectOption('native');
+  await saveApplication.click();
+  await expect(page.getByText(text.saved, { exact: true })).toBeVisible();
+  expect(writes[11]).toEqual({
+    defaultFrontend: 'native',
+    lockLumenForNonAdmins: false,
+  });
   const widths = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,
     viewport: document.documentElement.clientWidth,

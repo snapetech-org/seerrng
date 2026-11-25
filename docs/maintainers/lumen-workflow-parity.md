@@ -10445,9 +10445,12 @@ the production-built frontend mounted at `/lumen/`, in English, French, and
 Arabic across desktop, iPhone, Android, and tablet (24 cases). The run exercised
 application-setting save failure with draft retention and retry, stale readback
 detection with retry, Spotify credentials, download-path mapping validation,
-instance request defaults, default quota, default permissions, and API-key
-confirmation. No missing General Settings control or client-side recovery gap
-was found in this pass. API responses were mocked; server authorization,
-provider persistence, and published-image visual acceptance remain separate
-gates. Browser results are retained at
+instance request defaults, default quota, default permissions, API-key
+confirmation, and the interface selector's external URL, enforce-default,
+Lumen non-administrator lock, and return-to-native behavior. These cases verify
+the client submits the expected changed fields and clears the lock when leaving
+Lumen. No missing General Settings control or client-side recovery gap was
+found in this pass. API responses were mocked; server authorization, provider
+persistence, and published-image visual acceptance remain separate gates.
+Browser results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/general-settings-acceptance/`.
