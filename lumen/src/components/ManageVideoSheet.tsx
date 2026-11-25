@@ -244,6 +244,7 @@ export function ManageVideoSheet({
       setIssueAction(undefined);
       onUpdated();
     } catch {
+      setIssueAction(undefined);
       setFailure(
         t(
           'lumen.manageVideo.issueActionFailed',

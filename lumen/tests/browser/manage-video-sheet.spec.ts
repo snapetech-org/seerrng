@@ -18,6 +18,7 @@ async function setup(
   let watchReads = 0;
   let jellystatReads = 0;
   let requestDeleted = false;
+  let failIssueDelete = false;
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -184,10 +185,12 @@ async function setup(
     }
     if (path === '/issue/71' && request.method() === 'DELETE') {
       calls.push({ method: request.method(), path });
+      if (failIssueDelete) return route.fulfill({ status: 500 });
       return route.fulfill({ status: 204, body: '' });
     }
     if (path === '/issue/72' && request.method() === 'DELETE') {
       calls.push({ method: request.method(), path });
+      if (failIssueDelete) return route.fulfill({ status: 500 });
       return route.fulfill({ status: 204, body: '' });
     }
     if (
@@ -222,6 +225,9 @@ async function setup(
     },
     get jellystatReads() {
       return jellystatReads;
+    },
+    set failIssueDelete(value: boolean) {
+      failIssueDelete = value;
     },
   };
 }
@@ -517,4 +523,31 @@ test('title manager exposes permission-scoped blocklist and issue actions', asyn
   await expect
     .poll(() => state.calls.find((call) => call.path === '/blocklist')?.body)
     .toEqual({ mediaType: 'movie', title: 'Fixture Movie', tmdbId: 42 });
+});
+
+test('issue action failure stops the batch, closes stale confirmation, and refreshes', async ({
+  page,
+}) => {
+  const state = await setup(page, 2 | 1048576 | 7340032);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
+  state.failIssueDelete = true;
+  await dialog.getByRole('button', { name: 'Delete all issues' }).click();
+  await page
+    .getByRole('alertdialog', { name: 'Delete all issues?' })
+    .getByRole('button', { name: 'Delete all issues' })
+    .click();
+  await expect(page.getByRole('alert')).toContainText(
+    'Some issues may already have changed'
+  );
+  await expect(
+    page.getByRole('alertdialog', { name: 'Delete all issues?' })
+  ).toHaveCount(0);
+  expect(
+    state.calls
+      .filter(
+        (call) => call.method === 'DELETE' && call.path.startsWith('/issue/')
+      )
+      .map((call) => call.path)
+  ).toEqual(['/issue/71']);
 });

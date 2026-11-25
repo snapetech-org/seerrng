@@ -9633,10 +9633,10 @@ succeeded. Issue reads remain gated by `VIEW_ISSUES`/`MANAGE_ISSUES`, and
 blocklist actions retain their independent `MANAGE_BLOCKLIST` gate and existing
 server routes.
 
-The manager browser workflow now passes 32/32 cases across desktop, iPhone,
+The manager browser workflow now passes 36/36 cases across desktop, iPhone,
 Android, and tablet, including exact title-scoped issue mutations, confirmation,
-the blocklist request payload, and the prior library, request, permission, and
-playback cases. The production Lumen build passes. The new issue and blocklist
+the blocklist request payload, failed-batch refresh, and the prior library,
+request, permission, and playback cases. The production Lumen build passes. The new issue and blocklist
 panel was not compared against a live provider response or a separately
 captured native panel; title detail baseline and candidate captures remain at
 1440x900 and iPhone 390x844, with manager and confirmation candidates in the
