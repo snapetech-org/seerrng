@@ -9495,3 +9495,14 @@ The attempted same-state Lumen baseline build did not produce retained captures;
 the isolated build worktree was removed after the process exited. The native
 reference screen has not yet been rendered for matched comparison, and live
 TMDB logo responses remain unverified.
+
+### TV series playback selection
+
+Lumen's TV detail Media Server disclosure contains playback selection for the
+viewer-authorized episode catalog. The browser workflow excludes seasons shared
+only by other household members, permits selection within an accessible season,
+and submits only the selected media-server item IDs. Its focused browser test
+now supplies the public `mediaServerType` setting required to render that
+disclosure, so the test exercises the real entry point rather than timing out
+before reaching playback. Desktop, iPhone, Android, and tablet fixtures pass.
+This does not verify live device discovery or server playback.

@@ -22,7 +22,11 @@ test('TV detail plays only selected episodes from seasons the viewer may access'
       });
     if (path === '/settings/public')
       return route.fulfill({
-        json: { initialized: true, otherUsersAvailability: 'distinguish' },
+        json: {
+          initialized: true,
+          mediaServerType: 2,
+          otherUsersAvailability: 'distinguish',
+        },
       });
     if (path === '/user/17/settings/main')
       return route.fulfill({ json: { locale: 'en' } });
@@ -139,6 +143,7 @@ test('TV detail plays only selected episodes from seasons the viewer may access'
   });
 
   await page.goto(`${mount}/tv/42`);
+  await page.getByTestId('tv-media-server').locator('summary').first().click();
   await page.getByRole('button', { name: 'Playback Options' }).click();
   const dialog = page.getByRole('dialog', { name: 'Play Series' });
   await expect(dialog).toBeVisible();
