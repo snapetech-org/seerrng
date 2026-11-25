@@ -9920,6 +9920,7 @@ test('Scheduled Jobs describes calendar presets and preserves existing custom sc
 test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await fixtures(page);
   let flushed = false;
+  let failFlushOnce = true;
   let status = 200;
   await page.route('**/api/v1/status/appdata', (route) =>
     route.fulfill({ json: { appDataPath: '/data/fixture/' } })
@@ -9959,6 +9960,13 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
     '**/api/v1/settings/cache/dns/cache.example/flush',
     (route) => {
       expect(route.request().method()).toBe('POST');
+      if (failFlushOnce) {
+        failFlushOnce = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary flush failure.' },
+        });
+      }
       flushed = true;
       return route.fulfill({ status: 204 });
     }
@@ -9968,11 +9976,18 @@ test('System Caches confirms and refreshes a DNS flush', async ({ page }) => {
   await expect(page.getByText('/data/fixture/cache/images')).toBeVisible();
   await page.getByRole('button', { name: 'Flush DNS Entry' }).click();
   expect(flushed).toBe(false);
-  await page
-    .getByRole('alertdialog')
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation
+    .getByRole('button', { name: 'Flush', exact: true })
+    .click();
+  await expect(confirmation.getByRole('alert')).toBeVisible();
+  await expect(confirmation).toBeVisible();
+  expect(flushed).toBe(false);
+  await confirmation
     .getByRole('button', { name: 'Flush', exact: true })
     .click();
   await expect(page.getByText('Flushed cache.example.')).toBeVisible();
+  await expect(confirmation).toHaveCount(0);
   await expect(page.getByText('No DNS cache entries.')).toBeVisible();
   expect(flushed).toBe(true);
   const refresh = page.getByRole('button', { name: 'Refresh', exact: true });

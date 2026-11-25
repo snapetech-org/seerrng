@@ -68,8 +68,10 @@ export default function AdminCaches() {
     setBusy(true);
     setFailure('');
     setNotice('');
+    let succeeded = false;
     try {
       await api(path, { method: 'POST' }, 'empty');
+      succeeded = true;
       setNotice(
         selection.kind === 'dns'
           ? t('lumen.adminCaches.dnsFlushed', 'Flushed {name}.', {
@@ -89,7 +91,7 @@ export default function AdminCaches() {
     } finally {
       working.current = false;
       setBusy(false);
-      setSelection(undefined);
+      if (succeeded) setSelection(undefined);
       reload();
     }
   }
@@ -118,7 +120,7 @@ export default function AdminCaches() {
         what={t('lumen.adminCaches.systemCaches', 'system caches')}
         retry={reload}
       />
-      {failure && (
+      {failure && !selection && (
         <p className="note" role="alert">
           {failure}
         </p>
@@ -343,7 +345,13 @@ export default function AdminCaches() {
           onClose={() => {
             if (!working.current) setSelection(undefined);
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {failure}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

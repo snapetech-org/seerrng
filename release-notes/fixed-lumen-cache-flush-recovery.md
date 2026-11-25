@@ -1,0 +1,1 @@
+Lumen keeps the System Caches confirmation open when a cache flush fails, with the error and retry action together. A successful flush still closes the confirmation and refreshes the displayed cache data.
