@@ -10437,3 +10437,17 @@ it does not establish published-image visual acceptance, live authorization,
 or provider behavior. The published-image fresh dark default, saved native and
 external choices, direct detail links, and matched native/Lumen visual matrix
 remain open as tracked in `lumen-single-container-remaining-work.md`.
+
+### General Settings recovery matrix (2026-11-25)
+
+The General Settings browser workflow passed on both the standalone build and
+the production-built frontend mounted at `/lumen/`, in English, French, and
+Arabic across desktop, iPhone, Android, and tablet (24 cases). The run exercised
+application-setting save failure with draft retention and retry, stale readback
+detection with retry, Spotify credentials, download-path mapping validation,
+instance request defaults, default quota, default permissions, and API-key
+confirmation. No missing General Settings control or client-side recovery gap
+was found in this pass. API responses were mocked; server authorization,
+provider persistence, and published-image visual acceptance remain separate
+gates. Browser results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/general-settings-acceptance/`.
