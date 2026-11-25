@@ -379,4 +379,8 @@ test('large TV requests load in bounded batches and recover only the failed seas
       ],
     },
   ]);
+  await expect(
+    page.getByText('Episodes requested for Long Running Fixture')
+  ).toBeVisible();
+  await expect(sheet).toHaveCount(0);
 });
