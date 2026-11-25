@@ -4063,6 +4063,7 @@ test('series network details open the matching discovery query', async ({
     route.fulfill({ json: { id: 42, name: 'Fixture Network' } })
   );
   await page.goto('/tv/202');
+  await page.locator('summary').filter({ hasText: 'Series Details' }).click();
   await expect(
     page.getByText('Unmapped Network', { exact: false })
   ).toBeVisible();
@@ -4122,6 +4123,7 @@ test('movie studio details open the matching discovery query', async ({
     route.fulfill({ json: { id: 42, name: 'Fixture Studio' } })
   );
   await page.goto('/movie/101');
+  await page.locator('summary').filter({ hasText: 'Movie Details' }).click();
   const query = page.waitForRequest((request) => {
     const url = new URL(request.url());
     return (
@@ -4740,12 +4742,12 @@ test('public TMDB lists show the named list and retain exact identities across p
   await expect(
     page.getByRole('heading', { name: 'Public Fixture List' })
   ).toBeVisible();
-  await expect(page.getByRole('link', { name: 'List Film' })).toHaveAttribute(
-    'href',
+  await expectRoutePath(
+    page.getByRole('link', { name: 'List Film' }),
     '/movie/101'
   );
-  await expect(page.getByRole('link', { name: 'List Series' })).toHaveAttribute(
-    'href',
+  await expectRoutePath(
+    page.getByRole('link', { name: 'List Series' }),
     '/tv/101'
   );
   await page.getByRole('button', { name: 'Next Page' }).click();
