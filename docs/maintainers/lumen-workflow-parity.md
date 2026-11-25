@@ -218,6 +218,18 @@ live provider catalogs, and independent linguistic review remain unverified.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-search-localization-20261121/`.
 
+### Account cache isolation mounted acceptance
+
+The late-category-probe account-isolation regression now uses the shared
+mount-aware route helper when opening the profile. This keeps the same fixture
+valid for the standalone companion and the production `/lumen/` mount; previously
+the embedded run stopped at the server's base-path notice before the app mounted.
+The production-bundle browser test passes on desktop, iPhone, Android, and tablet
+for both deployment forms (8 runs total). It verifies that a delayed response
+from the signed-out account does not repopulate that account's probe cache or
+overwrite the new account's successful result. This remains deterministic
+fixture coverage and does not replace live multi-account session validation.
+
 ### Lumen administrator settings localization
 
 The Lumen-specific administrator settings screen now localizes its own

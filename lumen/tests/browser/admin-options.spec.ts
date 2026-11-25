@@ -1016,7 +1016,7 @@ test('late category probes remain scoped to the account that started them', asyn
     } else
       await route.fulfill({ json: { results: [], comicVineConfigured: true } });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect.poll(() => started).toBe(true);
   await page.getByRole('button', { name: 'Sign out', exact: true }).click();
   await page
