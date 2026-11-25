@@ -146,6 +146,18 @@ test('system logs follow the saved locale and keep search and copy usable', asyn
   await expect(
     page.getByRole('combobox', { name: labels[3], exact: true })
   ).toBeVisible();
+  const searchInput = page.getByLabel(labels[1], { exact: true });
+  await searchInput.fill('Fixture');
+  await page.clock.fastForward(300);
+  await expect
+    .poll(() =>
+      logQueries.some(
+        (request) => new URL(request).searchParams.get('search') === 'Fixture'
+      )
+    )
+    .toBe(true);
+  await searchInput.fill('');
+  await page.clock.fastForward(300);
   await page.getByRole('button', { name: labels[4], exact: true }).click();
   await expect(page.getByText('Fixture log message')).toBeVisible();
   const expectedTimestamp = await page.evaluate(
@@ -247,4 +259,50 @@ test('empty severity results can return to all logs and reset paging', async ({
   await expect(page).toHaveURL(/\/admin\/logs$/);
   expect(requests.at(-1)?.searchParams.get('filter')).toBe('debug');
   expect(requests.at(-1)?.searchParams.get('skip')).toBe('0');
+});
+
+test('debounced log search resets the bookmarked page without submission', async ({
+  page,
+}) => {
+  const requests: URL[] = [];
+  await page.clock.install();
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.replace(/^\/lumen/, '');
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path.endsWith('/settings/logs')) {
+      requests.push(url);
+      return route.fulfill({
+        json: {
+          pageInfo: { pages: 4 },
+          results: [
+            {
+              timestamp: '2026-11-20T00:00:00Z',
+              level: 'error',
+              message: 'Fixture error log',
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(appPath('/admin/logs?page=3'));
+  await expect.poll(() => requests.length).toBeGreaterThan(0);
+  expect(requests.at(-1)?.searchParams.get('skip')).toBe('50');
+  await page.getByLabel('Search logs', { exact: true }).fill('error');
+  await page.clock.fastForward(300);
+  await expect
+    .poll(() =>
+      requests.find((request) => request.searchParams.get('search') === 'error')
+    )
+    .toBeTruthy();
+  expect(requests.at(-1)?.searchParams.get('skip')).toBe('0');
+  await expect(page).toHaveURL(/\/admin\/logs$/);
 });

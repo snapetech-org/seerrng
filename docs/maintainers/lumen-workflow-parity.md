@@ -3526,11 +3526,15 @@ seconds and can be paused with Live Refresh, matching the native default.
 Existing search, copy, paging, endpoint, and authorization behavior remains
 intact.
 
+Search also follows the native 300 ms input debounce; Enter and the Search
+button still submit immediately, and changing the query returns to page one.
+
 The browser matrix verifies log search, localized timestamp and severity,
 structured details, copy feedback, log-file guidance, empty-filter recovery,
 and page reset in English, French, and Arabic across desktop, iPhone, Android,
-and tablet. The 24 locale/viewport cases pass. They also verify that automatic
-refresh starts enabled. English baseline/candidate renders were compared at
+and tablet. The 36 focused locale/viewport cases pass, including automatic
+refresh, the debounced query, and returning a bookmarked page to page one.
+English baseline/candidate renders were compared at
 1440×900 and 390×844 with the same paused state, Info filter, and fixture
 entry; French desktop and Arabic iPhone candidates were inspected.
 There is no page-level horizontal overflow. Evidence is retained at

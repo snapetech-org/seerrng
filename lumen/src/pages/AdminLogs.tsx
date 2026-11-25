@@ -70,6 +70,18 @@ function LogViewer({ storageKey }: { storageKey: string }) {
     }
   }, [level, storageKey, take]);
 
+  useEffect(() => {
+    const nextSearch = input.trim();
+    if (nextSearch === search) return;
+    const timer = window.setTimeout(() => {
+      const nextParams = new URLSearchParams(params);
+      nextParams.delete('page');
+      setParams(nextParams, { replace: true });
+      setSearch(nextSearch);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [input, params, search, setParams]);
+
   function setPage(nextPage: number, replace = false) {
     if (nextPage === 1 && !params.has('page')) return;
     const next = new URLSearchParams(params);
