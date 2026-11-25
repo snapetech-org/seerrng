@@ -10246,8 +10246,9 @@ no-request behavior for a view-only user. Same-viewport menu captures before
 and after the aggregate resolves were inspected at 1440px and 390px; they are
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-menu-issue-count-20261125/`.
-Native-matched menu comparison, bundled `/lumen/` deployment, and a live
-authorized count remain open.
+The bundled production `/lumen/` navigation suite passes (23 passed, 5
+intentional skips across four viewport projects). Native-matched menu comparison
+and a live authorized count remain open.
 
 ### Unread Following count in Lumen navigation (2026-11-25)
 
@@ -10266,8 +10267,9 @@ desktop, iPhone, Android, and tablet (19 passed, 5 expected skips). Captures
 before and after the response were inspected at 1440px and 390px and are
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-count-20261125/`.
-Native-matched menu comparison, bundled `/lumen/` deployment, and a live
-authorized Following count remain open.
+The bundled production `/lumen/` navigation suite passes (23 passed, 5
+intentional skips across four viewport projects). Native-matched menu comparison
+and a live authorized Following count remain open.
 
 ### Administrator version status in Lumen navigation (2026-11-25)
 
@@ -10285,8 +10287,24 @@ the link. Desktop and iPhone captures before and after status arrival were
 inspected; the card stays readable at both menu widths. The focused browser
 checks pass on both viewports and in French and Arabic. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-version-status-20261125/`.
-Bundled `/lumen/` mounting, live update-provider responses, and matched native
-screenshots remain open.
+Bundled `/lumen/` mounting passes in the production navigation suite (23
+passed, 5 intentional skips across four viewport projects). Live update-provider
+responses and matched native screenshots remain open.
+
+### Bundled navigation and menu acceptance (2026-11-25)
+
+The mobile-navigation browser spec now prefixes all route visits and the
+Following link selector when `LUMEN_TEST_MOUNT=/lumen`, so it exercises the
+actual bundled route instead of falling through to the native app. The full
+suite passes in standalone Lumen and against the embedded production build served
+from the published v3.72.40 Express image: 23 passed and 5 intentional viewport
+skips in each run across desktop, iPhone, Android, and tablet. This includes the manager-only open issue
+count, permission-scoped Following count, admin-only version status, category
+visibility, and responsive tab/menu behavior. API responses were browser
+fixtures; live authorized counts and update-provider responses remain open, as
+does matched native-menu comparison. Standalone and bundled results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mobile-nav-standalone-results/`
+and `.../mobile-nav-embedded-results-verified/`.
 
 ### Manage sheet service-link permission parity (2026-11-25)
 

@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 test('shell navigation landmarks and request badges follow the account locale', async ({
   page,
 }) => {
@@ -58,8 +61,7 @@ test('shell navigation landmarks and request badges follow the account locale', 
     return route.fulfill({ json: {} });
   });
 
-  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
-  await page.goto(`${mount}/me`);
+  await page.goto(appPath('/me'));
   await expect(page.locator('.side')).toHaveAttribute(
     'aria-label',
     labels.primary
@@ -146,8 +148,7 @@ test('open issue count appears only for issue managers', async ({ page }) => {
     return route.fulfill({ json: {} });
   });
 
-  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
-  await page.goto(`${mount}/me`);
+  await page.goto(appPath('/me'));
   if ((page.viewportSize()?.width ?? 0) < 1040)
     await page.getByRole('button', { name: 'More navigation' }).click();
   const sidebar = page.locator('.side');
@@ -221,8 +222,8 @@ test('Following unread count is permission scoped and capped visually', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me');
-  const following = page.locator('.side a[href="/following"]');
+  await page.goto(appPath('/me'));
+  const following = page.locator(`.side a[href="${appPath('/following')}"]`);
   if (permission & 32) {
     await countRequested;
     if ((page.viewportSize()?.width ?? 0) < 1040)
@@ -344,8 +345,7 @@ test('admin sidebar exposes version status without querying for regular users', 
     return route.fulfill({ json: {} });
   });
 
-  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
-  await page.goto(`${mount}/me`);
+  await page.goto(appPath('/me'));
   if (permission === 2) {
     await statusRequested;
     expect(updateCheckRequested).toBe('true');
@@ -435,7 +435,7 @@ test('More navigation filters categories and fits a compact phone', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   await page.getByRole('button', { name: 'More navigation' }).click();
   const menu = page.locator('.side');
   await expect(menu).toHaveAttribute('data-mobile-open', 'true');
@@ -518,7 +518,7 @@ test('mobile tabs yield to long forms on scroll and return on scroll up', async 
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/admin/users');
+  await page.goto(appPath('/admin/users'));
   await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible();
   const tabs = page.locator('.tabbar');
   await expect(tabs).toBeVisible();
@@ -641,7 +641,7 @@ test('mobile tabs yield on an ordinary user library screen', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/library?source=trakt');
+  await page.goto(appPath('/library?source=trakt'));
   await expect(page.getByRole('heading', { name: 'My Media' })).toBeVisible();
   await expect(page.getByText('Library Fixture 24')).toBeVisible();
   const captureDir = process.env.LUMEN_NAV_CAPTURE_DIR;
