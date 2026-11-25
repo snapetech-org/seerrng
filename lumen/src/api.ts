@@ -164,6 +164,8 @@ export interface MediaInfo {
   readerUrl?: string;
   status?: number;
   status4k?: number;
+  serviceUrl?: string | null;
+  serviceUrl4k?: string | null;
   mediaAddedAt?: string;
   mediaUrl?: string;
   mediaUrl4k?: string;
@@ -962,6 +964,31 @@ export interface TvDetails extends TitleResult {
   mediaInfo?: MediaInfo & {
     seasons?: { seasonNumber: number; status: number; status4k?: number }[];
   };
+}
+
+export interface LibraryRemovalTarget {
+  key: string;
+  serviceId: number;
+  serviceType:
+    | 'radarr'
+    | 'sonarr'
+    | 'lidarr'
+    | 'readarr'
+    | 'mylar'
+    | 'kapowarr'
+    | 'backissue'
+    | 'lazylibrarian';
+  externalId: number | string;
+  service: string;
+  quality: string;
+  url: string;
+}
+
+export interface LibraryRemovalPlan {
+  targets: LibraryRemovalTarget[];
+  token: string;
+  verifiedServices: number;
+  staleAvailabilityQualities?: ('HD' | '4K')[];
 }
 export interface BookDetails extends BookResult {
   onUserWatchlist?: boolean;

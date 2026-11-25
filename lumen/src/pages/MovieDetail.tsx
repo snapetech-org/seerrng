@@ -29,6 +29,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   ActionBar,
   AdvancedOptions,
+  canManageRequests,
   canRequest4k,
   canRequestMovies,
   CreditsDisclosure,
@@ -46,6 +47,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import LiveTvAirings from '../components/LiveTvAirings';
+import { ManageVideoSheet } from '../components/ManageVideoSheet';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
@@ -121,6 +123,7 @@ export default function MovieDetail() {
   const { t } = useLumenLocale();
   const serverName = useMediaServerName();
   const { id } = useParams();
+  const [manageOpen, setManageOpen] = useState(false);
   const [quality] = useSearchParams();
   const {
     data: m,
@@ -469,6 +472,16 @@ export default function MovieDetail() {
             )}
         </div>
         <div className="dacts pc">
+          {m.mediaInfo?.id && canManageRequests(user?.permissions) && (
+            <button
+              className="btn btn-tonal"
+              type="button"
+              onClick={() => setManageOpen(true)}
+            >
+              <Icon name="list" />
+              {t('lumen.manageVideo.open', 'Manage')}
+            </button>
+          )}
           {main}
           {fourK}
           {trailerBtn}
@@ -660,8 +673,30 @@ export default function MovieDetail() {
         title={m.title || ''}
         meta={[fmtRun(m.runtime), certification].filter(Boolean).join(' · ')}
       >
+        {m.mediaInfo?.id && canManageRequests(user?.permissions) && (
+          <button
+            className="btn btn-tonal"
+            type="button"
+            onClick={() => setManageOpen(true)}
+          >
+            <Icon name="list" />
+            {t('lumen.manageVideo.open', 'Manage')}
+          </button>
+        )}
         {main}
       </ActionBar>
+      {manageOpen && m.mediaInfo?.id && (
+        <ManageVideoSheet
+          kind="movie"
+          title={m.title || ''}
+          year={m.releaseDate?.slice(0, 4)}
+          media={
+            m.mediaInfo as NonNullable<typeof m.mediaInfo> & { id: number }
+          }
+          onClose={() => setManageOpen(false)}
+          onUpdated={refresh}
+        />
+      )}
       {override?.movieId === m.id && (
         <ConfirmSheet
           title={t('lumen.movie.policy.title', 'Streaming Request Policy')}

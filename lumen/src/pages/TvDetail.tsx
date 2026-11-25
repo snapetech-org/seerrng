@@ -29,6 +29,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   ActionBar,
   AdvancedOptions,
+  canManageRequests,
   canRequestSeries,
   CreditsDisclosure,
   DetailTop,
@@ -47,6 +48,7 @@ import { EpisodeAvailabilityPanel } from '../components/EpisodeAvailabilityPanel
 import { ServiceNote } from '../components/extra';
 import IndexerSearchLink from '../components/IndexerSearchLink';
 import LiveTvAirings from '../components/LiveTvAirings';
+import { ManageVideoSheet } from '../components/ManageVideoSheet';
 import MediaServerCollectionsButton from '../components/MediaServerCollectionsButton';
 import MediaServerSavedItemButton from '../components/MediaServerSavedItemButton';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -95,6 +97,7 @@ export default function TvDetail() {
   ).data;
 
   const { id } = useParams();
+  const [manageOpen, setManageOpen] = useState(false);
   const loc = useLocation();
   const navigate = useNavigate();
   const {
@@ -747,6 +750,16 @@ export default function TvDetail() {
         )}
         <TvCollectionLinks key={t.id} id={t.id} />
         <div className="dacts pc">
+          {t.mediaInfo?.id && canManageRequests(user?.permissions) && (
+            <button
+              className="btn btn-tonal"
+              type="button"
+              onClick={() => setManageOpen(true)}
+            >
+              <Icon name="list" />
+              {translate('lumen.manageVideo.open', 'Manage')}
+            </button>
+          )}
           {main}
           {trailer && <TrailerButton href={trailer} />}
           {canPlay && missing.length > 0 && (
@@ -1258,6 +1271,16 @@ export default function TvDetail() {
           })
         }
       >
+        {t.mediaInfo?.id && canManageRequests(user?.permissions) && (
+          <button
+            className="btn btn-tonal"
+            type="button"
+            onClick={() => setManageOpen(true)}
+          >
+            <Icon name="list" />
+            {translate('lumen.manageVideo.open', 'Manage')}
+          </button>
+        )}
         {/* phones only get this bar: keep a way to watch the seasons already there */}
         {canPlay && missing.length > 0 && (
           <a
@@ -1275,6 +1298,18 @@ export default function TvDetail() {
         )}
         {main}
       </ActionBar>
+      {manageOpen && t.mediaInfo?.id && (
+        <ManageVideoSheet
+          kind="tv"
+          title={t.name || ''}
+          year={t.firstAirDate?.slice(0, 4)}
+          media={
+            t.mediaInfo as NonNullable<typeof t.mediaInfo> & { id: number }
+          }
+          onClose={() => setManageOpen(false)}
+          onUpdated={refresh}
+        />
+      )}
       {streamingOverride?.seriesId === t.id && (
         <ConfirmSheet
           title={translate(

@@ -288,6 +288,10 @@ h3 {
   background: var(--ok-soft);
   color: var(--ok);
 }
+.btn-danger {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
 .btn-sm {
   min-height: 36px;
   padding: 0 14px;

@@ -9583,7 +9583,7 @@ horizontal overflow. The 20 browser cases pass across desktop, iPhone, Android,
 and tablet projects. These route fixtures verify menu visibility and links, not
 live provider availability.
 
-### Unshipped gap: contextual Movie and TV administration (2026-11-24)
+### Contextual Movie and TV administration (2026-11-24, partial)
 
 Source comparison found no Lumen equivalent to the manager control on native
 Movie and TV detail pages. Native `src/components/TvDetails/index.tsx` and
@@ -9592,17 +9592,33 @@ Movie and TV detail pages. Native `src/components/TvDetails/index.tsx` and
 requests and download status; administrator service links and playback
 statistics; token-confirmed removal of verified library copies and recovery of
 stale availability; and request, blocklist, and issue management actions.
-Lumen distributes some individual actions across Requests, Issues, and media
-details, but has no per-title management surface and does not expose the
-administrator library-removal plan/actions at all. Existing actions remain
-server-authorized, and library mutations require a fresh server plan/token.
+Lumen now has a contextual management sheet on Movie and TV details for users
+with `MANAGE_REQUESTS`. It shows request states, download progress, safe
+service links, and (for administrators) the verified library target list,
+token-confirmed removal, and stale-availability recovery. It uses the existing
+server plan/readback and mutation routes; viewers without request-management
+permission do not receive the entry point, and non-administrators do not query
+or see administrator-only library actions. The confirmation lists each
+verified service copy before deletion. Mutation requests carry the current
+plan token and selected stale quality.
 
-This is an active parity gap, not shipped work. A replacement must preserve the
-`MANAGE_REQUESTS` entry condition, stricter administrator gates, per-request
-actions, live refreshed media state, failure recovery, and the server-verified
-destructive confirmation contract. The implementation must be exercised on
-Movie and TV details at matching desktop and phone states before this entry can
-be closed. Source references: `src/components/ManageSlideOver/index.tsx`,
+The focused browser workflow passes 20/20 cases across desktop, iPhone,
+Android, and tablet, including permission gating, exact mutation payloads,
+cancel-before-delete, TV and movie service links, and overflow checks. The
+production Lumen build passes. Candidate screenshots cover Movie and TV
+details before opening the sheet and the open sheet at 1440x900 and iPhone
+390x844. The existing detail state can be compared with the pre-change
+`b23841b5a` baseline; the new manager state has no prior Lumen equivalent.
+Live provider-backed service responses and a native-matched interaction review
+remain unverified.
+
+This is a partial parity milestone, not closure of the administration gap.
+Still missing from the contextual sheet are per-request edit/delete/approve
+actions, playback/watch summaries, and direct blocklist and issue management.
+Some corresponding actions remain available elsewhere in Lumen, but workflow
+parity requires auditing and connecting them without widening permissions.
+Next work must compare these flows against
+`src/components/ManageSlideOver/index.tsx`,
 `src/components/ManageSlideOver/ManageMediaActions.tsx`, and
-`server/routes/media.ts` (`/:id/library` and
-`/:id/library/clear-stale-availability`).
+`server/routes/media.ts`; preserve request-specific authorization and
+server-verified confirmation contracts.
