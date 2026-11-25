@@ -1459,6 +1459,14 @@ Comic poster actions are available only when the browse result provides a
 supported edition identity; the comic detail action remains covered separately.
 Native-matched visual acceptance and live provider effects remain open.
 
+The shared Watchlist action now synchronizes successful add/remove results
+across duplicate mounted controls on the same title, so a detail-page rerender
+does not leave another control stale. Search distinguishes a total provider
+failure from partial results. When a TV access review loses a race to another
+administrator, Lumen refreshes the review list while preserving the conflict
+message. Browser regressions cover these paths across desktop, iPhone, Android,
+and tablet.
+
 Headed Chrome at 1440 × 1000 rendered the Open Library detail action. Add and
 Remove completed against a synthetic account and used the canonical work ID in
 the request. Native-matched visual checks for albums, comic edition changes,
@@ -10649,3 +10657,19 @@ acceptance checks remain open. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/adult-quota-acceptance/`.
 
 release-note: `release-notes/fixed-lumen-adult-request-quota.md`
+
+### Workflow recovery and menu audit (2026-11-25)
+
+The shared Watchlist action synchronizes successful membership changes across
+duplicate controls on the same title, Search distinguishes partial-provider
+errors from total failures, and a stale TV access review reloads after a 409
+without dismissing its conflict feedback. The 12-case user-management menu
+matrix passes across desktop, iPhone, Android, and tablet. Its former failure
+was an outdated test label (`Users`); the shared menu correctly renders
+`User List` for administrators and delegated managers and hides it from regular
+users. The 12-case 330-episode request matrix also passes on all four viewports,
+covering bounded batches, transient retry with selection retained, and request
+cancellation when the sheet closes. The current full hosted Lumen validation is
+still required on the final PR head; live service behavior remains separate.
+
+release-note: `release-notes/fixed-lumen-workflow-recovery.md`
