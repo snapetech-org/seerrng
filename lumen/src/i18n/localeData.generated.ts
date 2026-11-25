@@ -3451,6 +3451,8 @@ export const localeData = [
       'lumen.clientTokens.title': 'رموز العميل',
       'lumen.clientTokens.tokenName': 'اسم الرمز',
       'lumen.clientTokens.yourTokens': 'رموزك',
+      'lumen.collectors.description':
+        'الإصدارات التي يشاركها هواة الجمع الذين تتابعهم. يوضح كل إصدار سبب ظهوره.',
       'lumen.collectors.empty':
         'لا يشارك هواة الجمع الذين تتابعهم أي شيء حتى الآن.',
       'lumen.collectors.followArtist': 'متابعة إصدارات الفنان',
@@ -3459,15 +3461,16 @@ export const localeData = [
       'lumen.collectors.followedNotice': 'تمت متابعة الفنان.',
       'lumen.collectors.following': 'تتابع',
       'lumen.collectors.followingProgress': 'جارٍ المتابعة…',
-      'lumen.collectors.noAlbum': 'لا يوجد ألبوم مطابق في الفهرس',
+      'lumen.collectors.noAlbum': 'لم تتم مطابقة ألبوم في الفهرس',
       'lumen.collectors.openAlbum': 'فتح الألبوم',
+      'lumen.collectors.openSettings': 'فتح إعدادات Soulseek',
       'lumen.collectors.sharedMany':
         'تمت المشاركة بواسطة {count} من هواة الجمع الموثوقين',
       'lumen.collectors.sharedOne':
         'تمت المشاركة بواسطة {count} من هواة الجمع الموثوقين',
       'lumen.collectors.title': 'اختيارات هواة الجمع',
       'lumen.collectors.unavailable':
-        'تتطلب اختيارات هواة الجمع slskdN مع تفعيل التبادل الاجتماعي.',
+        'تتطلب اختيارات هواة الجمع تفعيل التبادل الاجتماعي في slskdN. يمكن للمسؤول ربطه من الإعدادات → الخدمات.',
       'lumen.collectors.what': 'اختيارات هواة الجمع',
       'lumen.common.request': 'طلب',
       'lumen.common.requestFailed': 'تعذر إرسال الطلب.',
@@ -15203,6 +15206,8 @@ export const localeData = [
       'lumen.clientTokens.title': 'Client Tokens',
       'lumen.clientTokens.tokenName': 'Token Name',
       'lumen.clientTokens.yourTokens': 'Your Tokens',
+      'lumen.collectors.description':
+        'Releases being shared by collectors you follow. Each one shows why it appeared.',
       'lumen.collectors.empty':
         'Nothing is being shared by collectors you follow yet.',
       'lumen.collectors.followArtist': 'Follow Artist Releases',
@@ -15211,13 +15216,14 @@ export const localeData = [
       'lumen.collectors.followedNotice': 'Artist followed.',
       'lumen.collectors.following': 'Following',
       'lumen.collectors.followingProgress': 'Following…',
-      'lumen.collectors.noAlbum': 'No catalog album match',
+      'lumen.collectors.noAlbum': 'Not matched to a catalog album',
       'lumen.collectors.openAlbum': 'Open Album',
+      'lumen.collectors.openSettings': 'Open Soulseek Settings',
       'lumen.collectors.sharedMany': 'Shared by {count} trusted collectors',
       'lumen.collectors.sharedOne': 'Shared by {count} trusted collector',
       'lumen.collectors.title': 'Collector Picks',
       'lumen.collectors.unavailable':
-        'Collector picks require slskdN with social federation enabled.',
+        'Collector picks need slskdN with social federation turned on. An administrator can connect it in Settings → Services.',
       'lumen.collectors.what': 'collector picks',
       'lumen.common.request': 'Request',
       'lumen.common.requestFailed': 'The request could not be submitted.',
@@ -27804,6 +27810,8 @@ export const localeData = [
       'lumen.clientTokens.title': 'Jetons client',
       'lumen.clientTokens.tokenName': 'Nom du jeton',
       'lumen.clientTokens.yourTokens': 'Vos jetons',
+      'lumen.collectors.description':
+        'Sorties partagées par les collectionneurs que vous suivez. Chacune indique pourquoi elle apparaît.',
       'lumen.collectors.empty':
         'Les collectionneurs que vous suivez ne partagent encore rien.',
       'lumen.collectors.followArtist': 'Suivre les sorties de l’artiste',
@@ -27814,13 +27822,14 @@ export const localeData = [
       'lumen.collectors.followingProgress': 'Abonnement…',
       'lumen.collectors.noAlbum': 'Aucun album correspondant dans le catalogue',
       'lumen.collectors.openAlbum': 'Ouvrir l’album',
+      'lumen.collectors.openSettings': 'Ouvrir les paramètres Soulseek',
       'lumen.collectors.sharedMany':
         'Partagé par {count} collectionneurs de confiance',
       'lumen.collectors.sharedOne':
         'Partagé par {count} collectionneur de confiance',
       'lumen.collectors.title': 'Sélections des collectionneurs',
       'lumen.collectors.unavailable':
-        'Les sélections nécessitent slskdN avec la fédération sociale activée.',
+        'Les sélections nécessitent slskdN avec la fédération sociale activée. Un administrateur peut le connecter dans Paramètres → Services.',
       'lumen.collectors.what': 'sélections des collectionneurs',
       'lumen.common.request': 'Demander',
       'lumen.common.requestFailed': 'La demande n’a pas pu être envoyée.',

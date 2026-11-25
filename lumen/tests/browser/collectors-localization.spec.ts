@@ -3,6 +3,8 @@ import { expect, test } from '@playwright/test';
 const copy = {
   en: {
     title: 'Collector Picks',
+    description:
+      'Releases being shared by collectors you follow. Each one shows why it appeared.',
     count: 'Shared by 2 trusted collectors',
     album: 'Open Album',
     follow: 'Follow Artist Releases',
@@ -11,6 +13,8 @@ const copy = {
   },
   fr: {
     title: 'Sélections des collectionneurs',
+    description:
+      'Sorties partagées par les collectionneurs que vous suivez. Chacune indique pourquoi elle apparaît.',
     count: 'Partagé par 2 collectionneurs de confiance',
     album: 'Ouvrir l’album',
     follow: 'Suivre les sorties de l’artiste',
@@ -19,6 +23,8 @@ const copy = {
   },
   ar: {
     title: 'اختيارات هواة الجمع',
+    description:
+      'الإصدارات التي يشاركها هواة الجمع الذين تتابعهم. يوضح كل إصدار سبب ظهوره.',
     count: 'تمت المشاركة بواسطة 2 من هواة الجمع الموثوقين',
     album: 'فتح الألبوم',
     follow: 'متابعة إصدارات الفنان',
@@ -57,9 +63,14 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
                 title: 'Fixture Album',
                 creator: 'Fixture Artist',
                 year: 2000,
+                score: 0.87,
                 trustedSourceCount: 2,
+                lastSeenAt: '2026-11-20T12:00:00.000Z',
                 reasons: ['Fixture reason'],
-                album: { id: albumId },
+                album: {
+                  id: albumId,
+                  href: `/music/${albumId}?source=collector`,
+                },
                 artistId,
               },
             ],
@@ -78,14 +89,17 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await page.goto('/music/collectors');
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
+    await expect(page.getByText(text.description)).toBeVisible();
     await expect(page.getByText(text.count)).toBeVisible();
     await expect(page.getByRole('link', { name: text.album })).toHaveAttribute(
       'href',
-      `/music/${albumId}`
+      `/music/${albumId}?source=collector`
     );
-    await page.getByRole('button', { name: text.follow }).click();
+    await page
+      .getByRole('button', { name: `${text.follow}: Fixture Album` })
+      .click();
     await expect(
-      page.getByRole('button', { name: text.following, exact: true })
+      page.getByRole('button', { name: `${text.following}: Fixture Album` })
     ).toBeDisabled();
     await expect(page.getByText(text.toast)).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute(

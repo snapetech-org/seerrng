@@ -9669,3 +9669,27 @@ audit. Next work must compare remaining flows against
 `src/components/ManageSlideOver/ManageMediaActions.tsx`, and
 `server/routes/media.ts`; preserve request-specific authorization and
 server-verified confirmation contracts.
+
+### Collector Picks display and action parity (2026-11-24)
+
+Native `src/components/Collectors/index.tsx` includes the page description,
+keeps an artwork fallback for unmatched releases, uses the server-provided
+album destination, and labels album and artist actions with the release title.
+Lumen now preserves those details, describes the feed, identifies catalog
+misses, and offers administrators a direct Soulseek settings link when the
+feed is unavailable. That link is absent for non-administrators. The existing
+follow action still uses SeerrNG's authenticated `/collectors/radar` route and
+retains its local confirmed-follow state; no provider or authorization behavior
+changed.
+
+Browser fixtures verify the description, unmatched-artwork fallback, exact
+server-provided album URL, title-specific action names, administrator settings
+link, and non-administrator gating. The Collector Picks and localization suites
+pass 24 cases across desktop, iPhone, Android, and tablet in English, French,
+and Arabic. The Lumen production build passes. Baseline and candidate renders
+were compared at 1440 × 900 and iPhone 390 × 844; the description and artwork
+fallback fit the existing page and list owners without CSS changes. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-collectors-parity-20261124/`.
+Live slskdN responses and the Express-mounted `/lumen/` deployment remain
+unverified.

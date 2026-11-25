@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import { isAdministrator, useAuth } from '../auth';
 import { Cover } from '../components/cards';
 import { ExtraGate, ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
@@ -12,9 +13,11 @@ type Pick = {
   title: string;
   creator: string | null;
   year: number | null;
+  score: number;
   trustedSourceCount: number;
+  lastSeenAt: string;
   reasons: string[];
-  album: { id: string; imageUrl?: string } | null;
+  album: { id: string; href: string; imageUrl?: string } | null;
   artistId: string | null;
 };
 
@@ -22,6 +25,8 @@ const musicBrainzId = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 
 function CollectorPicks() {
   const { t } = useLumenLocale();
+  const { user } = useAuth();
+  const administrator = isAdministrator(user?.permissions);
   const feed = useApi<{ available: boolean; results: Pick[] }>('/collectors');
   const toast = useToast();
   const [following, setFollowing] = useState<string[]>([]);
@@ -55,7 +60,13 @@ function CollectorPicks() {
 
   return (
     <>
-      <ExtraHeader title={t('lumen.collectors.title', 'Collector Picks')} />
+      <ExtraHeader
+        title={t('lumen.collectors.title', 'Collector Picks')}
+        sub={t(
+          'lumen.collectors.description',
+          'Releases being shared by collectors you follow. Each one shows why it appeared.'
+        )}
+      />
       <ServiceNote
         error={feed.error}
         what={t('lumen.collectors.what', 'collector picks')}
@@ -68,7 +79,12 @@ function CollectorPicks() {
         <p className="note">
           {t(
             'lumen.collectors.unavailable',
-            'Collector picks require slskdN with social federation enabled.'
+            'Collector picks need slskdN with social federation turned on. An administrator can connect it in Settings → Services.'
+          )}{' '}
+          {administrator && (
+            <Link to="/admin/soulseek">
+              {t('lumen.collectors.openSettings', 'Open Soulseek Settings')}
+            </Link>
           )}
         </p>
       )}
@@ -77,8 +93,17 @@ function CollectorPicks() {
           <ul className="setlist">
             {feed.data.results.map((pick) => {
               const artistId = pick.artistId?.toLowerCase();
-              const albumId = pick.album?.id;
+              const album = pick.album;
+              const albumId = album?.id;
               const followed = artistId && following.includes(artistId);
+              const followLabel = followed
+                ? t('lumen.collectors.following', 'Following')
+                : saving === artistId
+                  ? t('lumen.collectors.followingProgress', 'Following…')
+                  : t(
+                      'lumen.collectors.followArtist',
+                      'Follow Artist Releases'
+                    );
               return (
                 <li
                   className="set"
@@ -89,17 +114,16 @@ function CollectorPicks() {
                     albumId,
                   ])}
                 >
-                  {pick.album?.imageUrl && (
-                    <div className="poster sq" aria-hidden="true">
-                      <div className="art">
-                        <Cover
-                          src={pick.album.imageUrl}
-                          title={pick.title}
-                          icon="music"
-                        />
-                      </div>
+                  <div className="poster sq" aria-hidden="true">
+                    <div className="art">
+                      <Cover
+                        src={pick.album?.imageUrl}
+                        title={pick.title}
+                        sub={pick.creator ?? undefined}
+                        icon="music"
+                      />
                     </div>
-                  )}
+                  </div>
                   <span>
                     <b>{pick.title}</b>
                     <small>
@@ -121,15 +145,19 @@ function CollectorPicks() {
                     {pick.reasons.map((reason, index) => (
                       <small key={index}>{reason}</small>
                     ))}
-                    {albumId && musicBrainzId.test(albumId) ? (
-                      <Link className="go" to={`/music/${albumId}`}>
+                    {album ? (
+                      <Link
+                        className="go"
+                        to={album.href}
+                        aria-label={`${t('lumen.collectors.openAlbum', 'Open Album')}: ${pick.title}`}
+                      >
                         {t('lumen.collectors.openAlbum', 'Open Album')}
                       </Link>
                     ) : (
                       <small>
                         {t(
                           'lumen.collectors.noAlbum',
-                          'No catalog album match'
+                          'Not matched to a catalog album'
                         )}
                       </small>
                     )}
@@ -137,20 +165,11 @@ function CollectorPicks() {
                   {artistId && musicBrainzId.test(artistId) && pick.creator && (
                     <button
                       className="btn btn-quiet btn-sm"
+                      aria-label={`${followLabel}: ${pick.title}`}
                       disabled={!!saving || !!followed}
                       onClick={() => void follow(artistId, pick.creator!)}
                     >
-                      {followed
-                        ? t('lumen.collectors.following', 'Following')
-                        : saving === artistId
-                          ? t(
-                              'lumen.collectors.followingProgress',
-                              'Following…'
-                            )
-                          : t(
-                              'lumen.collectors.followArtist',
-                              'Follow Artist Releases'
-                            )}
+                      {followLabel}
                     </button>
                   )}
                 </li>
