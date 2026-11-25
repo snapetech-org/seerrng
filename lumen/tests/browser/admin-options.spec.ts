@@ -3321,7 +3321,7 @@ test('4K poster feedback names the requested tier', async ({ page }, info) => {
   await expect(
     page
       .locator('.poster', { hasText: 'Fresh Pick' })
-      .locator('[title="4K Requested"]')
+      .getByRole('img', { name: '4K: Requested' })
   ).toHaveCount(1);
   await page.screenshot({
     path: info.outputPath('4k-poster-feedback.png'),
