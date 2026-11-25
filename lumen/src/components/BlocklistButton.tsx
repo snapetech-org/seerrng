@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { api } from '../api';
+import { ApiError, api } from '../api';
 import { useAuth } from '../auth';
 import { canManageBlocklist, notifyBlocklistChanged } from '../blocklist';
 import { useApi } from '../hooks';
@@ -31,6 +31,7 @@ function BlocklistAction({
   const path = `/blocklist/${encodeURIComponent(id)}?mediaType=${mediaType}`;
   const { data, error, errorStatus, reload } = useApi<{ id: number }>(path);
   const [choice, setChoice] = useState<'add' | 'remove'>();
+  const [failure, setFailure] = useState(false);
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const toast = useToast();
@@ -41,6 +42,7 @@ function BlocklistAction({
     pending.current = true;
     setBusy(true);
     const session = sessionGeneration();
+    let succeeded = false;
     try {
       if (choice === 'remove') {
         await api<void>(path, { method: 'DELETE' });
@@ -62,6 +64,7 @@ function BlocklistAction({
           'empty'
         );
       }
+      succeeded = true;
       if (sessionGeneration() === session) {
         toast(
           choice === 'add'
@@ -70,41 +73,55 @@ function BlocklistAction({
         );
       }
     } catch {
-      if (sessionGeneration() === session) {
+      // The write may have reached the server even when its response was lost. Confirm
+      // persisted state before deciding whether the action needs a retry.
+      try {
+        await api<{ id: number }>(path, { method: 'GET', cache: 'no-store' });
+        succeeded = choice === 'add';
+      } catch (error) {
+        succeeded =
+          choice === 'remove' &&
+          error instanceof ApiError &&
+          error.status === 404;
+      }
+      if (sessionGeneration() === session && succeeded) {
         toast(
-          t(
-            'lumen.blocklist.action.changeUnconfirmed',
-            'Could not confirm the Blocklist change. The title will refresh.'
-          )
+          choice === 'add'
+            ? t('lumen.blocklist.action.added', 'Added to the Blocklist.')
+            : t('lumen.blocklist.action.removed', 'Removed from the Blocklist.')
         );
+      } else if (sessionGeneration() === session) {
+        setFailure(true);
       }
     } finally {
       if (sessionGeneration() === session) {
-        setChoice(undefined);
-        reload();
-        onChange();
-        notifyBlocklistChanged();
+        if (succeeded) {
+          setChoice(undefined);
+          reload();
+          onChange();
+          notifyBlocklistChanged();
+        }
       }
       pending.current = false;
       setBusy(false);
     }
   }
 
-  if (!action)
+  if (!action && !choice)
     return error ? (
       <button className="btn btn-quiet btn-sm" onClick={reload}>
         {t('lumen.blocklist.action.retryCheck', 'Retry Blocklist Check')}
       </button>
     ) : null;
   const label =
-    action === 'add'
+    (action ?? choice) === 'add'
       ? t('lumen.blocklist.action.add', 'Add to Blocklist')
       : t('lumen.blocklist.action.remove', 'Remove from Blocklist');
   return (
     <>
       <button
         className="btn btn-quiet btn-sm"
-        disabled={busy}
+        disabled={busy || !action}
         onClick={() => setChoice(action)}
       >
         {label}
@@ -137,12 +154,26 @@ function BlocklistAction({
               ? t('lumen.blocklist.action.add', 'Add to Blocklist')
               : t('lumen.blocklist.action.remove', 'Remove from Blocklist')
           }
+          cancel={t('lumen.tvRequests.cancel', 'Cancel')}
           busy={busy}
+          confirmDisabled={Boolean(action && action !== choice)}
           onConfirm={() => void apply()}
           onClose={() => {
-            if (!pending.current) setChoice(undefined);
+            if (!pending.current) {
+              setChoice(undefined);
+              setFailure(false);
+            }
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {t(
+                'lumen.blocklist.action.changeUnconfirmed',
+                'Could not confirm the Blocklist change. The title will refresh.'
+              )}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

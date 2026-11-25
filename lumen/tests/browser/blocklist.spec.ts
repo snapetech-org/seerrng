@@ -324,3 +324,111 @@ test('detail Blocklist actions send the canonical identity for every supported m
     await expect.poll(() => writes.length).toBe(before + 1);
   }
 });
+
+test('failed Blocklist removal stays confirmed and retries after a fresh state check', async ({
+  page,
+}) => {
+  let blocked = true;
+  let deletes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = testApiPath(request.url());
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: {
+          id: 20,
+          title: 'Example Movie',
+          genres: [],
+          mediaInfo: { status: blocked ? 6 : 1 },
+        },
+      });
+    if (path === '/blocklist/20') {
+      if (request.method() === 'DELETE') {
+        deletes++;
+        if (deletes === 1)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Unavailable' },
+          });
+        blocked = false;
+        return route.fulfill({ status: 204 });
+      }
+      return blocked
+        ? route.fulfill({ json: { id: 99 } })
+        : route.fulfill({ status: 404, json: { message: 'Not found' } });
+    }
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto(testAppPath('/movie/20'));
+  await page.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  const dialog = page.getByRole('alertdialog');
+  const captureDir = process.env.LUMEN_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/blocklist-confirm-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await expect(dialog.getByRole('alert')).toBeVisible();
+  await expect(dialog).toBeVisible();
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/blocklist-retry-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await expect(dialog).toHaveCount(0);
+  expect(deletes).toBe(2);
+});
+
+test('lost Blocklist response closes only after readback confirms the change', async ({
+  page,
+}) => {
+  let blocked = true;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = testApiPath(request.url());
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/movie/20')
+      return route.fulfill({
+        json: {
+          id: 20,
+          title: 'Example Movie',
+          genres: [],
+          mediaInfo: { status: blocked ? 6 : 1 },
+        },
+      });
+    if (path === '/blocklist/20') {
+      if (request.method() === 'DELETE') {
+        blocked = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Response lost' },
+        });
+      }
+      return blocked
+        ? route.fulfill({ json: { id: 99 } })
+        : route.fulfill({ status: 404, json: { message: 'Not found' } });
+    }
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto(testAppPath('/movie/20'));
+  await page.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Remove from Blocklist' })
+    .click();
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Add to Blocklist' })
+  ).toBeVisible();
+});

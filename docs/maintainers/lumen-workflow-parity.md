@@ -5531,6 +5531,17 @@ reports partial results. Sixteen standalone browser cases and eight
 bundled Blocklist cases passed. Matched visual comparison remains
 unverified.
 
+### Lumen Blocklist confirmation recovery (2026-11-25)
+
+The shared detail Blocklist action now keeps its confirmation open after an
+unconfirmed add/remove and shows the failure inside the dialog. Before allowing
+a retry, it reads the exact title's current Blocklist state: a lost response
+that already applied the change closes as success, while a state that remains
+unchanged remains retryable. Permission checks, canonical media identity, and
+the existing API writes are unchanged. Focused browser coverage exercises a
+failed removal followed by retry and an applied removal whose response was
+lost. Matched visual screenshots and production `/lumen/` mount remain open.
+
 Curated TV collections now offer a trailer from the first visible series
 using the same validated YouTube destination as movie details. Forty-four
 standalone browser cases and eight bundled collection cases passed,
