@@ -95,6 +95,7 @@ export default function TvEpisodeRequestSheet({
   );
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     const load = async () => {
       setLoading(true);
       setLoadError(false);
@@ -104,6 +105,7 @@ export default function TvEpisodeRequestSheet({
       );
       const failed: number[] = [];
       for (let index = 0; index < missing.length; index += SEASON_BATCH_SIZE) {
+        if (!active) return;
         let pending = missing.slice(index, index + SEASON_BATCH_SIZE);
         for (
           let attempt = 0;
@@ -115,8 +117,10 @@ export default function TvEpisodeRequestSheet({
               seasonNumbers: pending.join(','),
             });
             const values = await api<SeasonEpisodes[]>(
-              `/tv/${tvId}/seasons?${query}`
+              `/tv/${tvId}/seasons?${query}`,
+              { signal: controller.signal }
             );
+            if (!active) return;
             const returned = new Map(
               (Array.isArray(values) ? values : []).map((season) => [
                 season.seasonNumber,
@@ -137,6 +141,7 @@ export default function TvEpisodeRequestSheet({
             if (active) setEpisodesBySeason(new Map(episodesRef.current));
           } catch {
             // Retry this batch once, then continue with later seasons.
+            if (!active) return;
           }
           if (pending.length > 0 && attempt === 0) {
             await new Promise((resolve) => setTimeout(resolve, 250));
@@ -152,6 +157,7 @@ export default function TvEpisodeRequestSheet({
     void load();
     return () => {
       active = false;
+      controller.abort();
     };
   }, [retryCount, seasonKey, seasonNumbers, tvId]);
   const quality = is4k ? 'fourK' : 'hd';

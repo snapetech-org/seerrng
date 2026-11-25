@@ -7072,6 +7072,17 @@ Evidence is retained at
 This does not resolve a provider outage where no season metadata is returned;
 the screenshot's live-provider cause remains unverified.
 
+Closing Lumen's large-series episode picker now aborts the in-flight season
+batch and prevents queued batches and retries from starting. Previously, the
+component stopped rendering after dismissal but continued fetching every
+remaining season, consuming API and metadata-provider capacity. A 30-season
+browser regression closes the picker during its first pending batch and
+confirms that no later batches are sent. The existing retry, selection, and
+payload cases still pass across desktop, iPhone, Android, and tablet. The
+request-sheet appearance is unchanged; the matched large-series desktop and
+phone captures above remain applicable. This resource fix does not establish
+the cause of the reporter's live provider failure.
+
 ### Coming Soon to Release Calendar navigation
 
 Lumen Coming Soon now includes the native page's contextual Release Calendar

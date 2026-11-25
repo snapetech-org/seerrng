@@ -157,6 +157,84 @@ test('330-episode TV requests retry a transient season batch without losing sele
   await expect(sheet.getByText('Selected: 22')).toBeVisible();
 });
 
+test('closing a large-series picker cancels remaining episode metadata batches', async ({
+  page,
+}) => {
+  const batches: string[] = [];
+  const seasons = Array.from({ length: 30 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  let releaseFirstBatch!: () => void;
+  const firstBatch = new Promise<void>((resolve) => {
+    releaseFirstBatch = resolve;
+  });
+
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', async (route) => {
+    const url = new URL(route.request().url());
+    const path = apiPath(url.pathname);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Viewer', permissions: 2 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { partialRequestsEnabled: true } });
+    if (path === '/tv/84773')
+      return route.fulfill({
+        json: {
+          id: 84773,
+          name: 'Long Running Fixture',
+          externalIds: { tvdbId: 80 },
+          overview: 'Thirty seasons.',
+          genres: [],
+          firstAirDate: '2005-01-01',
+          contentRatings: { results: [] },
+          seasons,
+          numberOfSeasons: seasons.length,
+          mediaInfo: { seasons: [], requests: [] },
+        },
+      });
+    if (path === '/tv/84773/seasons') {
+      const requested = url.searchParams.get('seasonNumbers') ?? '';
+      batches.push(requested);
+      if (batches.length === 1) await firstBatch;
+      try {
+        return await route.fulfill({
+          json: requested
+            .split(',')
+            .map(Number)
+            .map((seasonNumber) => ({
+              seasonNumber,
+              episodes: [],
+            })),
+        });
+      } catch {
+        // Closing the picker aborts its in-flight metadata request.
+      }
+    }
+    return route.fulfill({ json: { results: [] } });
+  });
+
+  await page.goto(appPath('/tv/84773'));
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect.poll(() => batches.length).toBe(1);
+  expect(batches).toEqual(['1,2,3,4,5']);
+  await sheet.getByRole('button', { name: 'Close', exact: true }).click();
+  releaseFirstBatch();
+  await expect(sheet).toHaveCount(0);
+  await page.waitForTimeout(500);
+  expect(batches).toEqual(['1,2,3,4,5']);
+});
+
 test('large TV requests load in bounded batches and recover only the failed seasons', async ({
   page,
 }) => {
