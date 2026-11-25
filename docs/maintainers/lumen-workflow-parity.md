@@ -9507,12 +9507,14 @@ Adult scene detail failures now use a localized “could not load this scene”
 heading in English, French, and Arabic. The provider error, page layout, and
 request actions are unchanged.
 
-The focused failure-state browser fixture passes for all three locales on
-desktop and iPhone. Matched standalone baseline and candidate captures at
+The focused failure-state browser fixture passes for all three locales across
+desktop, iPhone, Android, and tablet in both standalone and production-mounted
+`/lumen/` builds (24 runs). The fixture uses the mount-aware route so it tests
+the actual embedded page instead of the root-path notice. Matched standalone baseline and candidate captures at
 1440x900 and iPhone 13 390x844 CSS pixels have the same dimensions; the changed
 region is the translated heading. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-adult-load-error-localization-20261124/`.
-Bundled `/lumen/` and production Express mount checks remain open.
+Live provider error behavior remains unverified.
 
 ### Music request workflow and feedback localization (2026-11-24)
 

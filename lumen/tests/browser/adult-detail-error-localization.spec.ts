@@ -5,6 +5,7 @@ const locale = ['en', 'fr', 'ar'].includes(
 )
   ? (process.env.LUMEN_ADULT_DETAIL_LOCALE as 'en' | 'fr' | 'ar')
   : 'en';
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const copy = {
   en: 'Couldn’t load this scene',
   fr: 'Impossible de charger cette scène',
@@ -41,7 +42,7 @@ test('Adult detail load errors follow the saved locale', async ({
       });
     return route.fulfill({ json: [] });
   });
-  await page.goto('/adult/43');
+  await page.goto(`${mount}/adult/43`);
   const label =
     process.env.LUMEN_ADULT_DETAIL_BASELINE === '1'
       ? 'Couldn’t load this'
