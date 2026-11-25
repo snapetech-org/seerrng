@@ -340,6 +340,10 @@ test('user directory and local-account creation use the saved locale and retain 
       }
       return route.fulfill({ json: { id: 3 } });
     }
+    if (path === '/user/3' && request.method() === 'GET')
+      return route.fulfill({
+        json: { id: 3, displayName: 'New User', email: 'new@example.test' },
+      });
     if (path === '/user/2/settings/episode-queue')
       return route.fulfill({ json: { defaultEpisodeCount: 2 } });
     if (path === '/user/2/settings/tv-season-watch-gate')
@@ -491,6 +495,7 @@ test('user directory and local-account creation use the saved locale and retain 
     page.getByRole('heading', { name: copy.queueConfirm, exact: true })
   ).toBeVisible();
   await page.getByRole('button', { name: copy.queueGoBack }).click();
+  await expect(page.locator('.sheet-wrap.open')).toHaveCount(0);
   await page
     .getByRole('button', { name: copy.tvRequestAccess, exact: true })
     .click();
@@ -613,6 +618,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.queueGoBack, exact: true })
     .click();
+  await expect(page.locator('.sheet-wrap.open')).toHaveCount(0);
   await page
     .getByRole('button', { name: copy.importSelected, exact: true })
     .click();
@@ -638,6 +644,7 @@ test('user directory and local-account creation use the saved locale and retain 
   await page
     .getByRole('button', { name: copy.closeImport, exact: true })
     .click();
+  await expect(page.locator('.sheet-wrap.open')).toHaveCount(0);
 
   await page.getByRole('link', { name: copy.manageUser, exact: true }).click();
   await page
@@ -668,9 +675,7 @@ test('user directory and local-account creation use the saved locale and retain 
     .click();
   await expect(page.getByRole('alert')).toHaveText(copy.unlinkFailure);
   await page
-    .getByRole('button', { name: copy.unlinkTrakt, exact: true })
-    .click();
-  await page
+    .getByRole('alertdialog', { name: copy.unlinkConfirmHeading, exact: true })
     .getByRole('button', { name: copy.unlinkAccount, exact: true })
     .click();
   await expect(page.getByText(copy.unlinked, { exact: true })).toBeVisible();

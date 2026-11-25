@@ -10473,3 +10473,19 @@ The mount-specific coverage defect in `admin-network.spec.ts` is fixed: route
 visits, API fixture parsing, shortcut links, and permission redirects now honor
 `LUMEN_TEST_MOUNT=/lumen`, allowing these cases to exercise the bundled route
 instead of the standalone root.
+
+### User directory and account-creation recovery matrix (2026-11-25)
+
+The administrator user-directory browser workflow passes 24 cases across the
+standalone build and mounted `/lumen/` build, English/French/Arabic, and
+desktop/iPhone/Android/tablet. It covers directory filters, managed account
+panels, Episode Queue and TV-access confirmations, single-use sign-in links,
+password retry, media-category/maturity/quota saves, Jellyfin import recovery,
+linked-account unlink retry, and local-account creation with assigned-ID
+readback. Two acceptance-fixture defects were corrected: unlink retry now
+retries within the still-open confirmation, and the fake API returns the
+created user's readback record. This confirms client workflow behavior only;
+live account authorization, email delivery, provider import, and persisted
+server state remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/network-acceptance/users-corrected-standalone-en/`
+and the sibling `users-corrected-{standalone,embedded}-{en,fr,ar}` directories.
