@@ -107,8 +107,8 @@ Optional catalog routes still pass through their existing Lumen authorization
 and availability gates after redirection.
 
 The route-bookmark suite passes 34 cases across desktop, iPhone, Android, and
-tablet in both standalone and production-mounted `/lumen/` deployments (136
-runs each). It covers each supported native Discover destination, query/hash
+tablet against standalone and production-built frontends served by Vite Preview
+at `/lumen/` (136 runs each). It covers each supported native Discover destination, query/hash
 preservation, malformed identifiers, Coming Soon, and the native user-list
 route with manager and standard-user permissions. This covers route
 compatibility and does not substitute for production authorization or visual
@@ -223,9 +223,9 @@ Evidence is retained at
 
 The late-category-probe account-isolation regression now uses the shared
 mount-aware route helper when opening the profile. This keeps the same fixture
-valid for the standalone companion and the production `/lumen/` mount; previously
-the embedded run stopped at the server's base-path notice before the app mounted.
-The production-bundle browser test passes on desktop, iPhone, Android, and tablet
+valid for the standalone companion and the production-built frontend served at
+`/lumen/`; previously the embedded run stopped at the server's base-path notice
+before the app mounted. The production-build browser test passes on desktop, iPhone, Android, and tablet
 for both deployment forms (8 runs total). It verifies that a delayed response
 from the signed-out account does not repopulate that account's probe cache or
 overwrite the new account's successful result. This remains deterministic
@@ -5071,7 +5071,7 @@ permissions separately from bookmark routing.
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/users/[userId]`                                   | Both deployments map the bookmark to `/household/:id`. Browser fixtures cover independent permission checks and recovery for request and watchlist previews. “Edit Settings” routes a user manager to that member's targeted Admin Users editor; the route and profile editor are verified end to end, while regular-user access stays denied.                                                                                                                                                                                                                                                        |
 | `/discover/collectors`                              | Lumen now shows trusted collector picks, links to matched albums, and starts artist release follows. The shared cover renders artwork returned by matched albums. Live artwork and matched visual acceptance remain open.                                                                                                                                                                                                                                                                                                                                                                             |
-| `/discover/book-recommendations`                    | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Fixtures cover creating a personalized feed and applying feedback in English, French, and Arabic on desktop, iPhone, Android, and tablet, in both standalone and production-mounted `/lumen/` builds (24 runs). Live Hardcover behavior remains unverified.                                                                                                                                                                                                 |
+| `/discover/book-recommendations`                    | Both deployments map the bookmark to `/books/recommendations`. Lumen uses the same feed and per-list endpoints for filters and feedback, and retains the format in the URL. Fixtures cover creating a personalized feed and applying feedback in English, French, and Arabic on desktop, iPhone, Android, and tablet, in standalone and production-built frontends served by Vite Preview at `/lumen/` (24 runs). Live Hardcover behavior remains unverified.                                                                                                                                                                                                 |
 | `/discover/movies/genres` and `/discover/tv/genres` | Lumen lists genres with artwork from the native backdrop endpoints and links to filtered browse. Live artwork and matched native visual acceptance remain open.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `/setup`                                            | Both Lumen deployments open their own first-run setup from their home URL. Administrators can reopen setup from Administration. Lumen has resumable steps, guards unsaved download-client changes, and reviews saved libraries, request services, download clients, and Prowlarr. It groups request-service editors and offers Usenet, torrent, and combined download setup profiles. Twenty fixture browser cases passed in both standalone and freshly built bundled deployments across desktop, iPhone, Android, and tablet. Matched visual acceptance and live provider verification remain open. |
 
@@ -9508,8 +9508,8 @@ heading in English, French, and Arabic. The provider error, page layout, and
 request actions are unchanged.
 
 The focused failure-state browser fixture passes for all three locales across
-desktop, iPhone, Android, and tablet in both standalone and production-mounted
-`/lumen/` builds (24 runs). The fixture uses the mount-aware route so it tests
+desktop, iPhone, Android, and tablet in both standalone and production-built
+frontends served by Vite Preview at `/lumen/` (24 runs). The fixture uses the mount-aware route so it tests
 the actual embedded page instead of the root-path notice. Matched standalone baseline and candidate captures at
 1440x900 and iPhone 13 390x844 CSS pixels have the same dimensions; the changed
 region is the translated heading. Evidence is retained at
@@ -10395,7 +10395,7 @@ Browser coverage verifies administrator link destinations, rejection of a
 credential-bearing 4K URL, and omission for a non-administrator. The focused
 case passes on desktop and iPhone, and the complete Issues browser suite passes
 80 cases across desktop, iPhone, Android, and tablet in both standalone and
-production-mounted `/lumen/` deployments. Matched desktop and phone captures
+production-built frontends served by Vite Preview at `/lumen/`. Matched desktop and phone captures
 were inspected; the existing toolbar wraps naturally and remains within the
 viewport. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-service-links-20261125/`.
