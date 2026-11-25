@@ -10425,3 +10425,15 @@ The embedded build was served with Vite preview and API responses were mocked;
 this verifies directory reachability and mount-relative navigation, not live
 administrator authorization or the workflows behind each destination. The
 broader settings form and matched-native visual audits remain open.
+
+### Express entry and frontend-choice regression check (2026-11-25)
+
+The Express mount and frontend-choice migration regressions pass together: five
+tests cover the selected Lumen shell, setup routing, explicit native escape,
+saved native/Lumen/external choices, legacy upgrade fallback, and the optional
+non-administrator lock while preserving administrator access. This is an
+isolated Express/settings test with temporary frontend assets and mocked roles;
+it does not establish published-image visual acceptance, live authorization,
+or provider behavior. The published-image fresh dark default, saved native and
+external choices, direct detail links, and matched native/Lumen visual matrix
+remain open as tracked in `lumen-single-container-remaining-work.md`.
