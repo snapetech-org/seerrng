@@ -191,8 +191,8 @@ imply a corresponding Lumen or native screen.
 | Installable community theme packages | Not found | .seerrtheme manifest, validation and packaging | [Guide](./interface-themes/authoring.md) |
 | Included Lumen | Not found | Bundled frontend on normal 5055 listener; optional companion | [Guide](./using-seerr/lumen.md) |
 | Default-interface selection and native escape | Not found | General native/included/external selection; /seerrng remains available | [Guide](./using-seerr/lumen.md) |
-| Lumen default for every existing user | Not found | Partial: fresh defaults exist; safe all-existing-user migration remains unfinished | [Guide](./maintainers/lumen-single-container-remaining-work.md) |
-| Lumen companion import and included storage parity | Not found | Planned: checked import and actual included-storage diagnostics remain unfinished | [Guide](./maintainers/lumen-single-container-remaining-work.md) |
+| Lumen default for every existing user | Not found | Optional administrator policy applies the chosen home interface to all users; fresh installs default to bundled Lumen, while upgrades preserve the saved choice. Per-user migration is not performed. | [Guide](./maintainers/lumen-single-container-remaining-work.md) |
+| Lumen companion import and storage parity | Not found | Partial: bundled Lumen imports companion configuration into a draft and reports included storage status; published v3.72.40 companion auth, save/readback, and PNG branding upload passed. Full rollout and visual acceptance remain open. | [Guide](./maintainers/lumen-single-container-remaining-work.md) |
 | Subject tags and detail preferences | Baseline detail sections | Persistent visibility, disclosure pins and section ordering | [Guide](./using-seerr/media-details-and-playback.md) |
 | Android client | Responsive website | Server-switching APK with per-server browser profiles | [Guide](./getting-started/android-app.md) |
 | iOS client | Responsive website | Source client and build/distribution readiness; do not infer App Store availability | [Guide](./getting-started/ios-app.md) |
