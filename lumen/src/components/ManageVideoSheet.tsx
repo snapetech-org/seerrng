@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import {
   api,
   ApiError,
@@ -27,7 +28,11 @@ const safeServiceUrl = (value?: string | null) => {
   if (!value) return undefined;
   try {
     const url = new URL(value);
-    return ['http:', 'https:'].includes(url.protocol) ? url.href : undefined;
+    return ['http:', 'https:'].includes(url.protocol) &&
+      !url.username &&
+      !url.password
+      ? url.href
+      : undefined;
   } catch {
     return undefined;
   }
@@ -612,54 +617,109 @@ export function ManageVideoSheet({
                 </section>
               )}
 
-              {admin && (watchData.data?.data || watchData.data?.data4k) && (
-                <section className="card">
-                  <h4>
-                    {t('lumen.manageVideo.playbackHistory', 'Playback history')}
-                  </h4>
-                  {(['data', 'data4k'] as const).map((key) => {
-                    const counts = watchData.data?.[key];
-                    if (!counts) return null;
-                    const quality = key === 'data4k' ? '4K' : 'HD';
-                    return (
-                      <div className="card" key={key}>
-                        <b>{quality}</b>
-                        <ul className="card-list">
-                          <li>
-                            {t('lumen.manageVideo.past7Days', 'Past 7 days')}
-                            {' · '}
-                            {t('lumen.manageVideo.playCount', '{count} plays', {
-                              count: counts.playCount7Days,
-                            })}
-                          </li>
-                          <li>
-                            {t('lumen.manageVideo.past30Days', 'Past 30 days')}
-                            {' · '}
-                            {t('lumen.manageVideo.playCount', '{count} plays', {
-                              count: counts.playCount30Days,
-                            })}
-                          </li>
-                          <li>
-                            {t('lumen.manageVideo.allTime', 'All time')}
-                            {' · '}
-                            {t('lumen.manageVideo.playCount', '{count} plays', {
-                              count: counts.playCount,
-                            })}
-                          </li>
-                        </ul>
-                        {counts.users.length > 0 && (
-                          <p className="note">
-                            {t('lumen.manageVideo.playedBy', 'Played by')}:{' '}
-                            {counts.users
-                              .map((item) => item.displayName)
-                              .join(', ')}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </section>
-              )}
+              {admin &&
+                (watchData.data?.data ||
+                  watchData.data?.data4k ||
+                  safeServiceUrl(media.tautulliUrl) ||
+                  safeServiceUrl(media.tautulliUrl4k)) && (
+                  <section className="card">
+                    <h4>
+                      {t(
+                        'lumen.manageVideo.playbackHistory',
+                        'Playback history'
+                      )}
+                    </h4>
+                    {(['data', 'data4k'] as const).map((key) => {
+                      const counts = watchData.data?.[key];
+                      if (!counts) return null;
+                      const quality = key === 'data4k' ? '4K' : 'HD';
+                      return (
+                        <div className="card" key={key}>
+                          <b>{quality}</b>
+                          <ul className="card-list">
+                            <li>
+                              {t('lumen.manageVideo.past7Days', 'Past 7 days')}
+                              {' · '}
+                              {t(
+                                'lumen.manageVideo.playCount',
+                                '{count} plays',
+                                {
+                                  count: counts.playCount7Days,
+                                }
+                              )}
+                            </li>
+                            <li>
+                              {t(
+                                'lumen.manageVideo.past30Days',
+                                'Past 30 days'
+                              )}
+                              {' · '}
+                              {t(
+                                'lumen.manageVideo.playCount',
+                                '{count} plays',
+                                {
+                                  count: counts.playCount30Days,
+                                }
+                              )}
+                            </li>
+                            <li>
+                              {t('lumen.manageVideo.allTime', 'All time')}
+                              {' · '}
+                              {t(
+                                'lumen.manageVideo.playCount',
+                                '{count} plays',
+                                {
+                                  count: counts.playCount,
+                                }
+                              )}
+                            </li>
+                          </ul>
+                          {counts.users.length > 0 && (
+                            <p className="note">
+                              {t('lumen.manageVideo.playedBy', 'Played by')}:{' '}
+                              {counts.users.map((item, index) => (
+                                <span key={item.id}>
+                                  {index > 0 ? ', ' : ''}
+                                  <Link
+                                    to={
+                                      item.id === user?.id
+                                        ? '/profile'
+                                        : `/users/${item.id}`
+                                    }
+                                  >
+                                    {item.displayName}
+                                  </Link>
+                                </span>
+                              ))}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                    <div className="toolbar">
+                      {[
+                        ['HD', safeServiceUrl(media.tautulliUrl)],
+                        ['4K', safeServiceUrl(media.tautulliUrl4k)],
+                      ].map(([quality, url]) =>
+                        url ? (
+                          <a
+                            className="btn btn-tonal btn-sm"
+                            href={url}
+                            key={quality}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {t(
+                              'lumen.manageVideo.openTautulli',
+                              'Open in Tautulli'
+                            )}{' '}
+                            · {quality}
+                          </a>
+                        ) : null
+                      )}
+                    </div>
+                  </section>
+                )}
 
               {admin && jellystat.data && (
                 <section

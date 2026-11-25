@@ -166,6 +166,8 @@ export interface MediaInfo {
   status4k?: number;
   serviceUrl?: string | null;
   serviceUrl4k?: string | null;
+  tautulliUrl?: string | null;
+  tautulliUrl4k?: string | null;
   mediaAddedAt?: string;
   mediaUrl?: string;
   mediaUrl4k?: string;

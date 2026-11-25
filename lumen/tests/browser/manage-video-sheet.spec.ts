@@ -98,6 +98,14 @@ async function setup(
               },
             ],
             serviceUrl: 'https://arr.example.test/item/1',
+            tautulliUrl:
+              mediaServerType === 1
+                ? 'https://tautulli.example.test/info?rating_key=17'
+                : undefined,
+            tautulliUrl4k:
+              mediaServerType === 1
+                ? 'https://user:secret@tautulli.example.test/info'
+                : undefined,
           },
         },
       });
@@ -240,10 +248,31 @@ for (const kind of ['movie', 'tv'] as const) {
     await expect(
       dialog.getByRole('heading', { name: 'Playback history' })
     ).toBeVisible();
+    if (['desktop', 'iphone'].includes(info.project.name)) {
+      await dialog
+        .getByRole('heading', { name: 'Playback history' })
+        .scrollIntoViewIfNeeded();
+      await page.screenshot({
+        path: info.outputPath(`${kind}-manager-playback-links.png`),
+        fullPage: false,
+      });
+    }
     await expect(dialog.getByText('Past 7 days · 4 plays')).toBeVisible();
     await expect(dialog.getByText('Past 30 days · 9 plays')).toBeVisible();
     await expect(dialog.getByText('All time · 14 plays')).toBeVisible();
     await expect(dialog.getByText('Plex Viewer')).toBeVisible();
+    await expect(
+      dialog.getByRole('link', { name: 'Open in Tautulli · HD' })
+    ).toHaveAttribute(
+      'href',
+      'https://tautulli.example.test/info?rating_key=17'
+    );
+    await expect(
+      dialog.getByRole('link', { name: 'Open in Tautulli · 4K' })
+    ).toHaveCount(0);
+    await expect(
+      dialog.getByRole('link', { name: 'Plex Viewer' })
+    ).toHaveAttribute('href', '/users/8');
     await expect(dialog.getByText('Jellystat watch activity')).toBeVisible();
     await expect(
       dialog.getByText('12 plays · 1.5 hours of playback')

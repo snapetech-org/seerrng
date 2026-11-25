@@ -9643,11 +9643,23 @@ captured native panel; title detail baseline and candidate captures remain at
 task evidence directory. These are simulated API fixtures, not a live
 SeerrNG integration result.
 
-This is a partial parity milestone, not closure of the administration gap.
-Still missing from the contextual sheet are per-request edit and approval
-actions. Other menu, display, and workflow surfaces remain under the broader
-parity audit.
-Next work must compare these flows against
+The native comparison confirms that request editing and approval are not
+actions in `ManageSlideOver`: it embeds `RequestBlock` with deletion hidden and
+offers its own request deletion action in `ManageMediaActions`; request
+approval remains in the separate Requests workflow. Those actions are not
+listed as manager-sheet gaps. The follow-up source audit found two actual
+playback details still missing from Lumen: separate HD/4K Tautulli links and
+links from watched-by users to their profiles. Lumen now exposes those links
+only in the administrator playback section, rejects external URLs containing
+embedded credentials, and uses the existing profile routes. Browser fixtures
+cover the valid HD link, reject the credential-bearing 4K URL, and verify the
+viewer profile destination. The production build passes and the full manager
+matrix passes 32/32 after the link changes. Updated desktop and iPhone captures
+show the Tautulli link alongside the play counts; candidate evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-management-20261124/candidate-playback-links/`.
+
+Other menu, display, and workflow surfaces remain under the broader parity
+audit. Next work must compare remaining flows against
 `src/components/ManageSlideOver/index.tsx`,
 `src/components/ManageSlideOver/ManageMediaActions.tsx`, and
 `server/routes/media.ts`; preserve request-specific authorization and
