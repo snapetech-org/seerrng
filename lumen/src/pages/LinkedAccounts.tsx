@@ -204,6 +204,7 @@ function Accounts({ user }: { user: User }) {
           method: 'DELETE',
         });
         if (generation !== sessionGeneration()) return;
+        succeeded = true;
         setRemoved((ids) => [...ids, target.id]);
         setNotice(text('unlinkedNotice', 'Account unlinked.'));
       } else {
@@ -218,9 +219,9 @@ function Accounts({ user }: { user: User }) {
       }
       linked.refresh();
       await refreshUser();
-      succeeded = true;
     } catch (err) {
       if (generation !== sessionGeneration()) return;
+      if (succeeded) return;
       setFailure(
         err instanceof ApiError && err.status === 400 && action === 'unlink'
           ? text(

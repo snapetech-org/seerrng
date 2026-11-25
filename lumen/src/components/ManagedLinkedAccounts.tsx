@@ -68,12 +68,13 @@ export default function ManagedLinkedAccounts({
         { method: 'DELETE' },
         'empty'
       );
+      succeeded = true;
       setRemoved((current) => [...current, selected.key]);
       setNotice(t('lumen.managedLinkedAccounts.unlinked', 'Account unlinked.'));
       linked.reload();
       onSaved();
-      succeeded = true;
     } catch (error) {
+      if (succeeded) return;
       setFailure(
         friendlyError(
           error,
