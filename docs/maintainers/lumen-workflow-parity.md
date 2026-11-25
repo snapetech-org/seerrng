@@ -10596,3 +10596,27 @@ unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-quota-acceptance/`.
 
 release-note: `release-notes/added-lumen-comic-request-quota.md`
+
+### Adult request quota and confirmation (2026-11-25)
+
+Adult detail requests now load the signed-in requester's separate Adult quota
+before enabling submission. Lumen shows remaining requests and the quota
+period, blocks a restricted requester, and exposes a retry if quota loading
+fails. The Adult action now opens the shared confirmation sheet; a failed
+Whisparr handoff remains there with an error and can be retried, while a
+successful request refreshes quota state. Existing advanced destination
+selection and the submitted server ID are preserved.
+
+The focused Adult quota and cross-category localization suites passed 24 cases
+across English, French, Arabic, desktop, iPhone, Android, and tablet. Mocked
+cases cover restricted and unavailable quota reads, retry, destination
+selection, and failed-then-successful handoff. Baseline and candidate Lumen
+screenshots were rendered at matching desktop and iPhone sizes with the same
+administrator role and selected Whisparr destination; the candidate sheet and
+blocked state were inspected without overflow or overlapping controls. The
+native request modal's quota behavior was checked in source, but a matching
+native screenshot and live Whisparr round trip are unavailable, so those
+acceptance checks remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/adult-quota-acceptance/`.
+
+release-note: `release-notes/fixed-lumen-adult-request-quota.md`

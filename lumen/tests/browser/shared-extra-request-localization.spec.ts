@@ -9,6 +9,9 @@ const locales = {
     request: 'Request',
     destination: 'Destination Server',
     submitted: 'Request submitted.',
+    adultTitle: 'Request Adult Scene',
+    adultQuota: '4 of 5 Adult requests remaining.',
+    adultSubmitted: 'Adult request submitted.',
     serverFailure: 'The server had a problem. Try again in a moment.',
   },
   fr: {
@@ -18,6 +21,9 @@ const locales = {
     submitted: 'Demande envoyée.',
     serverFailure:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
+    adultTitle: 'Demander une scène pour adultes',
+    adultQuota: 'Il reste 4 demande(s) de contenu adulte sur 5.',
+    adultSubmitted: 'Demande de contenu adulte envoyée.',
   },
   ar: {
     music: 'طلب MP3',
@@ -25,6 +31,9 @@ const locales = {
     destination: 'الخادم المستهدف',
     submitted: 'تم إرسال الطلب.',
     serverFailure: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+    adultTitle: 'طلب مشهد للبالغين',
+    adultQuota: 'المتبقي 4 من أصل 5 من طلبات المحتوى للبالغين.',
+    adultSubmitted: 'تم إرسال طلب المحتوى للبالغين.',
   },
 } as const;
 
@@ -63,7 +72,10 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         });
       if (path === '/user/1/quota')
         return route.fulfill({
-          json: { music: { limit: 5, remaining: 4 } },
+          json: {
+            music: { limit: 5, remaining: 4 },
+            adult: { limit: 5, remaining: 4, days: 7, restricted: false },
+          },
         });
       if (path === '/service/lidarr')
         return route.fulfill({
@@ -164,11 +176,30 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     if (capture)
       await page.screenshot({ path: `${capture}-${locale}-adult-button.png` });
     await adultRequest.click();
-    await expect(page.getByRole('status')).toContainText(copy.submitted);
+    const adultSheet = page.getByRole('alertdialog', {
+      name: copy.adultTitle,
+    });
+    await expect(adultSheet).toBeVisible();
+    await expect(adultSheet.getByText(copy.adultQuota)).toBeVisible();
+    if (capture)
+      await page.screenshot({
+        path: `${capture}-${locale}-${testInfo.project.name}-adult-sheet.png`,
+        animations: 'disabled',
+      });
+    await adultSheet
+      .getByRole('button', { name: copy.request, exact: true })
+      .click();
+    await expect(
+      page.getByRole('status').filter({ hasText: copy.adultSubmitted })
+    ).toBeVisible();
     if (capture)
       await page.screenshot({
         path: `${capture}-${locale}-adult-submitted.png`,
       });
+    await destination.selectOption('1');
+    await expect(
+      page.getByRole('button', { name: copy.request, exact: true })
+    ).toBeEnabled();
     expect(posts).toEqual([
       {
         mediaType: 'music',

@@ -35,6 +35,7 @@ import {
 } from '../extras';
 import { useApi, usePaged } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { Icon } from '../icons';
 import { useLiveTvStatus } from '../liveTv';
 import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 
@@ -800,6 +801,24 @@ export function SceneDetail() {
   const [params, setParams] = useSearchParams();
   const { t } = useLumenLocale();
   const { user } = useAuth();
+  const toast = useToast();
+  const mayRequest = canRequestAdult(user?.permissions);
+  const quota = useApi<{
+    adult?: {
+      limit?: number;
+      remaining?: number;
+      days?: number;
+      restricted?: boolean;
+    };
+  }>(mayRequest && user?.id ? `/user/${user.id}/quota` : null, {
+    currentPathOnly: true,
+  });
+  const adultQuota = quota.data?.adult;
+  const quotaRestricted = adultQuota?.restricted === true;
+  const [requestOpen, setRequestOpen] = useState(false);
+  const [requestBusy, setRequestBusy] = useState(false);
+  const [requestError, setRequestError] = useState<string>();
+  const [requestSubmittedFor, setRequestSubmittedFor] = useState<number>();
   const rawServer = params.get('serverId');
   const serverId =
     rawServer &&
@@ -827,6 +846,8 @@ export function SceneDetail() {
     canChoose || serverId === undefined || serverId === defaultId
       ? x
       : requestDetail.data;
+  const requestSubmitted = requestSubmittedFor === destination?.serviceId;
+  const quotaUnconfirmed = mayRequest && !quota.data && !requestSubmitted;
   const isAdmin = isAdministrator(user?.permissions);
   const sceneMedia = useLiveMediaProgress(x?.mediaInfo, isAdmin);
   const otherDestinationMedia = useLiveMediaProgress(
@@ -844,15 +865,35 @@ export function SceneDetail() {
     );
   if (!x) return <div className="detail-loading" aria-busy="true" />;
   const s = extraStat(sceneMedia);
-  const main = destination && canRequestAdult(user?.permissions) && (
-    <RequestButton
-      key={destination.serviceId}
-      stat={destination === x ? s : extraStat(otherDestinationMedia)}
-      request={() =>
-        requestExtra('adult', destination.id, canChoose ? serverId : undefined)
-      }
-    />
-  );
+  const requestStat = destination === x ? s : extraStat(otherDestinationMedia);
+  const main =
+    destination &&
+    mayRequest &&
+    (requestStat || requestSubmitted ? (
+      <RequestButton
+        key={destination.serviceId}
+        stat={
+          requestStat ?? {
+            k: 'wait',
+            word: t('lumen.status.requested', 'Requested'),
+            ico: 'clock',
+          }
+        }
+        request={async () => undefined}
+      />
+    ) : (
+      <button
+        className="btn btn-primary"
+        disabled={requestBusy || quotaUnconfirmed || quotaRestricted}
+        onClick={() => {
+          setRequestError(undefined);
+          setRequestOpen(true);
+        }}
+      >
+        <Icon name="plus" />
+        {t('lumen.common.request', 'Request')}
+      </button>
+    ));
   const destinationPicker =
     canChoose && (services.data?.length ?? 0) > 1 ? (
       <label className="sel">
@@ -899,6 +940,57 @@ export function SceneDetail() {
             {destinationPicker}
             {main}
           </div>
+          {mayRequest && !requestOpen && (
+            <>
+              {quotaUnconfirmed && !quota.error && (
+                <p className="note" role="status">
+                  {t(
+                    'lumen.adult.quotaLoading',
+                    'Checking Adult request quota…'
+                  )}
+                </p>
+              )}
+              {quotaRestricted && (
+                <p className="note" role="status">
+                  {t(
+                    'lumen.adult.quotaReached',
+                    'Adult request quota reached.'
+                  )}
+                </p>
+              )}
+              {!!adultQuota?.limit && !quotaRestricted && (
+                <p className="note">
+                  {t(
+                    'lumen.adult.quotaRemaining',
+                    '{remaining} of {limit} Adult requests remaining.',
+                    {
+                      remaining: adultQuota.remaining ?? 0,
+                      limit: adultQuota.limit,
+                    }
+                  )}
+                  {!!adultQuota.days &&
+                    ` ${t('lumen.adult.quotaPeriod', 'Quota period: {days} days.', { days: adultQuota.days })}`}
+                </p>
+              )}
+              {quota.error && (
+                <ServiceNote
+                  error={quota.error}
+                  what={t('lumen.adult.quota', 'Adult request quota')}
+                  title={t(
+                    'lumen.adult.quotaLoadFailure',
+                    'Could not load Adult request quota.'
+                  )}
+                  retryLabel={t('lumen.adult.recheckQuota', 'Recheck quota')}
+                  retry={quota.reload}
+                />
+              )}
+              {quotaRestricted && (
+                <button className="chip" type="button" onClick={quota.reload}>
+                  {t('lumen.adult.recheckQuota', 'Recheck quota')}
+                </button>
+              )}
+            </>
+          )}
           <div className="dcols">
             <div>{x.overview && <p className="ov">{x.overview}</p>}</div>
             <aside>
@@ -920,6 +1012,99 @@ export function SceneDetail() {
           {destinationPicker}
           {main}
         </div>
+        {requestOpen && destination && (
+          <ConfirmSheet
+            title={t('lumen.adult.requestTitle', 'Request Adult Scene')}
+            body={x.title}
+            confirm={t('lumen.common.request', 'Request')}
+            cancel={t('lumen.quickRequest.cancel', 'Cancel')}
+            busy={requestBusy}
+            confirmDisabled={quotaUnconfirmed || quotaRestricted}
+            onClose={() => {
+              if (!requestBusy) setRequestOpen(false);
+            }}
+            onConfirm={async () => {
+              if (requestBusy || quotaUnconfirmed || quotaRestricted) return;
+              setRequestBusy(true);
+              setRequestError(undefined);
+              try {
+                const result = await requestExtra(
+                  'adult',
+                  destination.id,
+                  canChoose ? serverId : undefined
+                );
+                if ((result as { status?: number } | null)?.status === 4)
+                  throw new Error(
+                    t(
+                      'lumen.adult.requestBackendFailure',
+                      'The Adult request failed while processing.'
+                    )
+                  );
+                setRequestSubmittedFor(destination.serviceId);
+                setRequestOpen(false);
+                quota.reload();
+                toast(
+                  t('lumen.adult.requestSubmitted', 'Adult request submitted.')
+                );
+              } catch (error) {
+                const message = friendlyError(
+                  error,
+                  t(
+                    'lumen.adult.requestFailure',
+                    'The Adult request could not be submitted.'
+                  ),
+                  t
+                );
+                setRequestError(message);
+                toast(message);
+              } finally {
+                setRequestBusy(false);
+              }
+            }}
+          >
+            {!!adultQuota?.limit && (
+              <p className="note" role={quotaRestricted ? 'status' : undefined}>
+                {quotaRestricted
+                  ? t(
+                      'lumen.adult.quotaReached',
+                      'Adult request quota reached.'
+                    )
+                  : t(
+                      'lumen.adult.quotaRemaining',
+                      '{remaining} of {limit} Adult requests remaining.',
+                      {
+                        remaining: adultQuota.remaining ?? 0,
+                        limit: adultQuota.limit,
+                      }
+                    )}
+                {!!adultQuota.days &&
+                  ` ${t('lumen.adult.quotaPeriod', 'Quota period: {days} days.', { days: adultQuota.days })}`}
+              </p>
+            )}
+            {quota.error && (
+              <ServiceNote
+                error={quota.error}
+                what={t('lumen.adult.quota', 'Adult request quota')}
+                title={t(
+                  'lumen.adult.quotaLoadFailure',
+                  'Could not load Adult request quota.'
+                )}
+                retryLabel={t('lumen.adult.recheckQuota', 'Recheck quota')}
+                retry={quota.reload}
+              />
+            )}
+            {quotaUnconfirmed && !quota.error && (
+              <p className="note" role="status">
+                {t('lumen.adult.quotaLoading', 'Checking Adult request quota…')}
+              </p>
+            )}
+            {requestError && (
+              <div className="err" role="alert">
+                {requestError}
+              </div>
+            )}
+          </ConfirmSheet>
+        )}
       </article>
     </ExtraGate>
   );
