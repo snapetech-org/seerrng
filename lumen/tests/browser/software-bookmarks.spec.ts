@@ -134,8 +134,10 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     '/imageproxy/igdb/shot.png'
   );
   await page.screenshot({ path: info.outputPath('pc-bookmark.png') });
-  await page.getByRole('combobox', { name: 'System' }).selectOption('windows');
-  await page.getByRole('combobox', { name: 'Build' }).selectOption('x64');
+  await page.getByRole('combobox', { name: 'Système' }).selectOption('windows');
+  await page
+    .getByRole('combobox', { name: 'Architecture' })
+    .selectOption('x64');
   await page.evaluate((path) => {
     history.pushState(history.state, '', path);
     window.dispatchEvent(
@@ -146,20 +148,25 @@ test('software bookmarks open catalog titles by provider and preserve search', a
     'Catalog temporarily unavailable.'
   );
   await page.screenshot({ path: info.outputPath('game-retry.png') });
-  await page.getByRole('button', { name: 'Retry', exact: true }).click();
+  await page.getByRole('button', { name: 'Réessayer', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Second PC Game' })
   ).toBeVisible();
   const request = page
-    .getByRole('button', { name: 'Request', exact: true })
+    .getByRole('button', { name: 'Demander', exact: true })
     .filter({ visible: true });
   await expect(request).toBeDisabled();
-  await page.getByRole('combobox', { name: 'System' }).selectOption('linux');
-  await page.getByRole('combobox', { name: 'Build' }).selectOption('arm64');
+  await page.getByRole('combobox', { name: 'Système' }).selectOption('linux');
+  await page
+    .getByRole('combobox', { name: 'Architecture' })
+    .selectOption('arm64');
   await request.click();
   await expect(
     page
-      .getByRole('button', { name: 'Waiting for approval', exact: true })
+      .getByRole('button', {
+        name: 'En attente d’approbation',
+        exact: true,
+      })
       .filter({ visible: true })
   ).toBeDisabled();
   expect(requests).toEqual([
@@ -181,10 +188,12 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   );
   await page.screenshot({ path: info.outputPath('dat-bookmark.png') });
   await page
-    .getByRole('link', { name: 'Translations and Hacks for This Game' })
+    .getByRole('link', {
+      name: 'Traductions et modifications pour ce jeu',
+    })
     .click();
   await expect(
-    page.getByText('Showing projects for the selected game and console.')
+    page.getByText('Projets affichés pour le jeu et la console sélectionnés.')
   ).toBeVisible();
   await expect
     .poll(() => Object.fromEntries(patchReads.at(-1) ?? []))
@@ -192,8 +201,8 @@ test('software bookmarks open catalog titles by provider and preserve search', a
       catalogKey: datKey,
       platform: 'nes',
     });
-  await page.getByLabel('Language').selectOption('fr');
-  await page.getByRole('button', { name: 'Apply Filters' }).click();
+  await page.getByLabel('Langue').selectOption('fr');
+  await page.getByRole('button', { name: 'Appliquer les filtres' }).click();
   await expect
     .poll(() => Object.fromEntries(patchReads.at(-1) ?? []))
     .toEqual({

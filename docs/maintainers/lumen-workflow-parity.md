@@ -10673,3 +10673,17 @@ cancellation when the sheet closes. The current full hosted Lumen validation is
 still required on the final PR head; live service behavior remains separate.
 
 release-note: `release-notes/fixed-lumen-workflow-recovery.md`
+
+### Software bookmark and request locale fixture repair (2026-11-25)
+
+The software bookmark regression fixture set the account locale to French but
+continued to query PC system/build selectors, retry, request status, patch links,
+and filters using their former English labels. Updated those selectors to the
+current French translations. No product behavior changed. The software bookmark
+and game catalog localization suites now pass all 36 cases across desktop,
+iPhone, Android, and tablet, including bookmark query preservation, transient
+catalog retry, selected PC build submission, owned-game edition history, and
+localized patch filtering. These fixtures use mocked catalog and request APIs;
+live QuestarrNG/ROMarrNG behavior remains unverified.
+
+release-note: none
