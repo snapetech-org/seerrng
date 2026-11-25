@@ -10392,11 +10392,12 @@ link.
 Browser coverage verifies administrator link destinations, rejection of a
 credential-bearing 4K URL, and omission for a non-administrator. The focused
 case passes on desktop and iPhone, and the complete Issues browser suite passes
-80 cases across desktop, iPhone, Android, and tablet. Matched desktop and phone
-captures were inspected; the existing toolbar wraps naturally and remains
-within the viewport. Evidence is retained at
+80 cases across desktop, iPhone, Android, and tablet in both standalone and
+production-mounted `/lumen/` deployments. Matched desktop and phone captures
+were inspected; the existing toolbar wraps naturally and remains within the
+viewport. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-service-links-20261125/`.
-Live API authorization and bundled `/lumen/` execution remain open.
+Live API authorization remains open.
 
 ### Administration directory destination inventory (2026-11-25)
 
