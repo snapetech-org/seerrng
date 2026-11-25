@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { api } from '../api';
+import { ApiError, api } from '../api';
 import { useAuth } from '../auth';
 import {
   canManageBlocklist,
@@ -98,6 +98,7 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
   const [target, setTarget] = useState<Entry>();
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
+  const [failure, setFailure] = useState(false);
   const working = useRef(false);
   const args = new URLSearchParams({
     ...filters,
@@ -116,22 +117,26 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
     working.current = true;
     setBusy(true);
     setNotice('');
+    setFailure(false);
+    let succeeded = false;
     try {
       await api<void>(path, { method: 'DELETE' });
-      if (page > 1 && data?.results.length === 1) setPage(page - 1);
-      else refresh();
-      setNotice(t('lumen.blocklist.removed', 'Removed from the Blocklist.'));
+      succeeded = true;
     } catch {
-      reload();
-      setNotice(
-        t(
-          'lumen.blocklist.removalUnconfirmed',
-          'Could not confirm removal. Check the Blocklist before trying again.'
-        )
-      );
+      try {
+        await api<{ id: number }>(path, { method: 'GET', cache: 'no-store' });
+      } catch (error) {
+        succeeded = error instanceof ApiError && error.status === 404;
+      }
+      if (!succeeded) setFailure(true);
     } finally {
-      notifyBlocklistChanged();
-      setTarget(undefined);
+      if (succeeded) {
+        if (page > 1 && data?.results.length === 1) setPage(page - 1);
+        else refresh();
+        notifyBlocklistChanged();
+        setTarget(undefined);
+        setNotice(t('lumen.blocklist.removed', 'Removed from the Blocklist.'));
+      }
       working.current = false;
       setBusy(false);
     }
@@ -252,7 +257,10 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
                       { title }
                     )}
                     disabled={busy}
-                    onClick={() => setTarget(entry)}
+                    onClick={() => {
+                      setFailure(false);
+                      setTarget(entry);
+                    }}
                   >
                     {t('lumen.blocklist.remove', 'Remove')}
                   </button>
@@ -303,12 +311,25 @@ function BlocklistEntries({ manager }: { manager: boolean }) {
                 )
           }
           confirm={t('lumen.blocklist.confirmRemove', 'Remove from Blocklist')}
+          cancel={t('lumen.tvRequests.cancel', 'Cancel')}
           busy={busy}
           onConfirm={() => void remove()}
           onClose={() => {
-            if (!working.current) setTarget(undefined);
+            if (!working.current) {
+              setTarget(undefined);
+              setFailure(false);
+            }
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {t(
+                'lumen.blocklist.removalUnconfirmed',
+                'Could not confirm removal. Check the Blocklist before trying again.'
+              )}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

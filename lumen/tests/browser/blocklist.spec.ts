@@ -432,3 +432,73 @@ test('lost Blocklist response closes only after readback confirms the change', a
     page.getByRole('button', { name: 'Add to Blocklist' })
   ).toBeVisible();
 });
+
+test('Blocklist list removal stays open after failure and closes after confirmed retry', async ({
+  page,
+}) => {
+  let blocked = true;
+  let deletes = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = testApiPath(request.url());
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 268435456 } });
+    if (path === '/blocklist/count')
+      return route.fulfill({ json: { count: Number(blocked) } });
+    if (path === '/blocklist' && request.method() === 'GET')
+      return route.fulfill({
+        json: {
+          results: blocked
+            ? [
+                {
+                  id: 99,
+                  title: 'Example Book',
+                  mediaType: 'book',
+                  externalId: 'hc:123',
+                  createdAt: '2026-11-12T00:00:00Z',
+                },
+              ]
+            : [],
+          pageInfo: { pages: 1 },
+        },
+      });
+    if (path === '/blocklist/hc%3A123') {
+      if (request.method() === 'DELETE') {
+        deletes++;
+        if (deletes === 1)
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Unavailable' },
+          });
+        blocked = false;
+        return route.fulfill({ status: 204 });
+      }
+      return blocked
+        ? route.fulfill({ json: { id: 99 } })
+        : route.fulfill({ status: 404, json: { message: 'Not found' } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(testAppPath('/blocklist'));
+  await page
+    .getByRole('button', { name: 'Remove Example Book from Blocklist' })
+    .click();
+  const dialog = page.getByRole('alertdialog');
+  const captureDir = process.env.LUMEN_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/blocklist-list-confirm-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await expect(dialog.getByRole('alert')).toBeVisible();
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/blocklist-list-retry-${test.info().project.name}.png`,
+    });
+  await dialog.getByRole('button', { name: 'Remove from Blocklist' }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByText('No entries match this view.')).toBeVisible();
+  expect(deletes).toBe(2);
+});

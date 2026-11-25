@@ -5540,7 +5540,11 @@ that already applied the change closes as success, while a state that remains
 unchanged remains retryable. Permission checks, canonical media identity, and
 the existing API writes are unchanged. Focused browser coverage exercises a
 failed removal followed by retry and an applied removal whose response was
-lost. Matched visual screenshots and production `/lumen/` mount remain open.
+lost. The Blocklist management list also keeps its confirmation open after a
+failed removal, rechecks the exact entry before retry, and recognizes a delete
+whose response was lost. Focused desktop/iPhone browser coverage passes for
+the list and detail actions. Matched visual screenshots and production
+`/lumen/` mount remain open.
 
 Curated TV collections now offer a trailer from the first visible series
 using the same validated YouTube destination as movie details. Forty-four
