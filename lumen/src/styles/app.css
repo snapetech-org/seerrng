@@ -50,6 +50,33 @@
   display: grid;
   place-items: center;
 }
+.side a.version-status,
+.side[data-mobile-open='true'] a.version-status {
+  height: auto;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.side .version-status-copy {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+}
+.side .version-status-copy b,
+.side .version-status-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.side .version-status-copy b {
+  font-size: 12px;
+}
+.side .version-status-copy small {
+  color: var(--ink-3);
+  font-size: 11px;
+}
 
 .tabbar {
   --navigation-surface: var(--glass);

@@ -10237,3 +10237,22 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-count-20261125/`.
 Native-matched menu comparison, bundled `/lumen/` deployment, and a live
 authorized Following count remain open.
+
+### Administrator version status in Lumen navigation (2026-11-25)
+
+Native SeerrNG places a build and update status link at the bottom of its
+administrator sidebar. Lumen now shows the same information there and links to
+`/admin/about`. It requests `/status` only for administrators, after the browser
+is idle, uses the existing `versionCheck` setting to control update checks, and
+refreshes while the page is visible every 60 seconds. The link reports the
+stable, main, or local build plus update availability, lag, or check failure.
+English, French, and Arabic labels are covered.
+
+Browser fixtures verify the delayed request, update state, About destination,
+and that users without administrator permission never request `/status` or see
+the link. Desktop and iPhone captures before and after status arrival were
+inspected; the card stays readable at both menu widths. The focused browser
+checks pass on both viewports and in French and Arabic. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-version-status-20261125/`.
+Bundled `/lumen/` mounting, live update-provider responses, and matched native
+screenshots remain open.

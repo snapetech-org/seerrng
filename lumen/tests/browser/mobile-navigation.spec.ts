@@ -229,6 +229,10 @@ test('Following unread count is permission scoped and capped visually', async ({
       await page
         .locator('.tabbar [aria-controls="mobile-primary-navigation"]')
         .click();
+    if ((page.viewportSize()?.width ?? 0) < 1040)
+      await page
+        .locator('.side')
+        .evaluate((element) => (element.scrollTop = element.scrollHeight));
     await expect(following).toBeVisible();
     await expect(following.locator('.n')).toHaveCount(0);
     await following.evaluate((element) =>
@@ -250,6 +254,133 @@ test('Following unread count is permission scoped and capped visually', async ({
     await expect(following).toHaveCount(0);
     await page.waitForTimeout(100);
     expect(followCountRequests).toBe(0);
+  }
+});
+
+test('admin sidebar exposes version status without querying for regular users', async ({
+  page,
+}) => {
+  const permission = Number(process.env.LUMEN_TEST_VERSION_PERMISSION ?? 2);
+  const locale = ['en', 'fr', 'ar'].includes(process.env.LUMEN_NAV_LOCALE ?? '')
+    ? (process.env.LUMEN_NAV_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const messages = {
+    en: {
+      main: 'SeerrNG Main',
+      update: 'Update available',
+      about: 'About SeerrNG: Update available',
+      heading: 'About SeerrNG',
+    },
+    fr: {
+      main: 'SeerrNG Main',
+      update: 'Mise à jour disponible',
+      about: 'À propos de SeerrNG : Mise à jour disponible',
+      heading: 'À propos de SeerrNG',
+    },
+    ar: {
+      main: 'SeerrNG Main',
+      update: 'يتوفر تحديث',
+      about: 'حول SeerrNG: يتوفر تحديث',
+      heading: 'حول SeerrNG',
+    },
+  }[locale];
+  let statusRequests = 0;
+  let updateCheckRequested: string | null = null;
+  let markStatusRequested = () => {};
+  let releaseStatus = () => {};
+  const statusRequested = new Promise<void>((resolve) => {
+    markStatusRequested = resolve;
+  });
+  const statusGate = new Promise<void>((resolve) => {
+    releaseStatus = resolve;
+  });
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          permissions: permission,
+          userType: permission === 2 ? 1 : 2,
+          displayName: 'Version User',
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { applicationTitle: 'SeerrNG', versionCheck: true },
+      });
+    if (path === '/status') {
+      statusRequests++;
+      updateCheckRequested = new URL(route.request().url()).searchParams.get(
+        'checkUpdateAvailable'
+      );
+      markStatusRequested();
+      await statusGate;
+      return route.fulfill({
+        json: {
+          version: 'main-0123456',
+          commitTag: 'main-0123456',
+          updateAvailable: true,
+          updateCheckSucceeded: true,
+          commitsBehind: 3,
+          restartRequired: false,
+        },
+      });
+    }
+    if (path === '/settings/about')
+      return route.fulfill({
+        json: {
+          version: '3.72.40',
+          totalMediaItems: 0,
+          totalRequests: 0,
+          appDataPath: '/config',
+          tz: 'UTC',
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+
+  const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+  await page.goto(`${mount}/me`);
+  if (permission === 2) {
+    await statusRequested;
+    expect(updateCheckRequested).toBe('true');
+    if ((page.viewportSize()?.width ?? 0) < 1040)
+      await page
+        .locator('.tabbar [aria-controls="mobile-primary-navigation"]')
+        .click();
+    if ((page.viewportSize()?.width ?? 0) < 1040)
+      await page
+        .locator('.side')
+        .evaluate((element) => (element.scrollTop = element.scrollHeight));
+    const captureDir = process.env.LUMEN_VERSION_CAPTURE_DIR;
+    const width = page.viewportSize()?.width ?? 0;
+    if (captureDir)
+      await page.screenshot({ path: `${captureDir}/before-${width}.png` });
+    releaseStatus();
+    const statusLink = page.locator('.side a.version-status');
+    await expect(statusLink).toBeVisible();
+    await statusLink.evaluate((element) =>
+      element.scrollIntoView({ block: 'center' })
+    );
+    await expect(statusLink.locator('b')).toHaveText(messages.main);
+    await expect(statusLink.locator('small')).toHaveText(messages.update);
+    await expect(statusLink).toHaveAttribute('aria-label', messages.about);
+    if (captureDir)
+      await page.screenshot({ path: `${captureDir}/after-${width}.png` });
+    await statusLink.click();
+    await expect(page).toHaveURL(/\/admin\/about$/);
+    await expect(
+      page.getByRole('heading', { name: messages.heading })
+    ).toBeVisible();
+  } else {
+    await page.waitForTimeout(100);
+    expect(statusRequests).toBe(0);
+    await expect(page.locator('.side a.version-status')).toHaveCount(0);
   }
 });
 
