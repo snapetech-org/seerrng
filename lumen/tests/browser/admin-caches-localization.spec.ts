@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { formatBytes } from '../../../src/utils/numberHelpers';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -17,6 +18,14 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       title: 'System Caches',
       api: 'API Caches',
       images: 'Image Caches',
+      apiDescription:
+        'SeerrNG caches responses from external API endpoints to improve performance and reduce repeated calls.',
+      imageDescription:
+        'Cached images are stored in SeerrNG application storage.',
+      dnsDescription:
+        'SeerrNG caches DNS lookups to reduce repeated requests when connecting to services.',
+      dnsStatsDescription:
+        'These statistics are aggregated across all DNS cache entries.',
       dns: 'DNS Cache',
       apiFlush: 'Flush Cache',
       noApiCaches: 'No API caches.',
@@ -31,6 +40,14 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       title: 'Caches système',
       api: 'Caches API',
       images: 'Caches d’images',
+      apiDescription:
+        'SeerrNG met en cache les réponses des API externes afin d’améliorer les performances et de réduire les appels répétés.',
+      imageDescription:
+        'Les images en cache sont stockées dans l’espace de stockage de SeerrNG.',
+      dnsDescription:
+        'SeerrNG met en cache les recherches DNS pour réduire les requêtes lors des connexions aux services.',
+      dnsStatsDescription:
+        'Ces statistiques sont agrégées pour toutes les entrées du cache DNS.',
       dns: 'Cache DNS',
       apiFlush: 'Vider le cache',
       noApiCaches: 'Aucun cache API.',
@@ -45,6 +62,13 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       title: 'ذاكرات النظام المؤقتة',
       api: 'ذاكرات API المؤقتة',
       images: 'ذاكرات الصور المؤقتة',
+      apiDescription:
+        'يخزّن SeerrNG مؤقتًا استجابات واجهات API الخارجية لتحسين الأداء وتقليل الطلبات المتكررة.',
+      imageDescription: 'تُحفظ الصور المخزنة مؤقتًا ضمن مساحة تخزين SeerrNG.',
+      dnsDescription:
+        'يخزّن SeerrNG مؤقتًا نتائج DNS لتقليل الطلبات المتكررة عند الاتصال بالخدمات.',
+      dnsStatsDescription:
+        'هذه الإحصاءات مجمّعة من جميع إدخالات ذاكرة DNS المؤقتة.',
       dns: 'ذاكرة تخزين DNS المؤقتة',
       apiFlush: 'محو الملفات المؤقتة',
       noApiCaches: 'لا توجد ذاكرات API مؤقتة.',
@@ -61,6 +85,14 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
         title: 'System Caches',
         api: 'API Caches',
         images: 'Image Caches',
+        apiDescription:
+          'SeerrNG caches responses from external API endpoints to improve performance and reduce repeated calls.',
+        imageDescription:
+          'Cached images are stored in SeerrNG application storage.',
+        dnsDescription:
+          'SeerrNG caches DNS lookups to reduce repeated requests when connecting to services.',
+        dnsStatsDescription:
+          'These statistics are aggregated across all DNS cache entries.',
         dns: 'DNS Cache',
         apiFlush: 'Flush Cache',
         noApiCaches: 'No API caches.',
@@ -109,11 +141,17 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
                 {
                   id: 'tmdb',
                   name: 'TMDB',
-                  stats: { hits: 1234, misses: 5, keys: 6, ksize: 7, vsize: 8 },
+                  stats: {
+                    hits: 1234,
+                    misses: 5,
+                    keys: 6,
+                    ksize: 2048,
+                    vsize: 4096,
+                  },
                 },
               ],
           imageCache: {
-            tmdb: { imageCount: 9, size: 1000 },
+            tmdb: { imageCount: 9, size: 2048 },
             avatar: { imageCount: 1, size: 20 },
           },
           dnsCache: {
@@ -156,8 +194,28 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
   await expect(
     page.getByRole('heading', { name: labels.dns, exact: true })
   ).toBeVisible();
+  if (!baseline) {
+    for (const description of [
+      labels.apiDescription,
+      labels.imageDescription,
+      labels.dnsDescription,
+      labels.dnsStatsDescription,
+    ])
+      await expect(page.getByText(description, { exact: true })).toBeVisible();
+  }
   await expect(page.getByText('/data/fixture/cache/images')).toBeVisible();
   await expect(page.getByText(/1234|1[,\u202f٬]234|١٬٢٣٤/)).toBeVisible();
+  if (!baseline) {
+    await expect(
+      page.getByText(
+        `${formatBytes(2048, 2, locale)} · ${formatBytes(4096, 2, locale)}`,
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(
+      page.locator('.set').filter({ hasText: formatBytes(2048, 2, locale) })
+    ).toHaveCount(2);
+  }
   if (process.env.LUMEN_CAPTURE_CACHES)
     await page.screenshot({
       path: `${process.env.LUMEN_CAPTURE_CACHES}/${locale}-${page.viewportSize()?.width}.png`,

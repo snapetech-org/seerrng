@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { formatBytes } from '../../../src/utils/numberHelpers';
 import { api } from '../api';
 import { Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -135,6 +136,12 @@ export default function AdminCaches() {
       {data && (
         <>
           <Section title={t('lumen.adminCaches.apiCaches', 'API Caches')}>
+            <p className="note">
+              {t(
+                'lumen.adminCaches.apiDescription',
+                'SeerrNG caches responses from external API endpoints to improve performance and reduce repeated calls.'
+              )}
+            </p>
             {!data.apiCaches.length && (
               <p className="note">
                 {t('lumen.adminCaches.noApiCaches', 'No API caches.')}
@@ -164,10 +171,8 @@ export default function AdminCaches() {
                         )}
                       </small>
                       <small>
-                        {stats.ksize.toLocaleString(locale)}{' '}
-                        {t('lumen.adminCaches.keyBytes', 'key bytes')} ·{' '}
-                        {stats.vsize.toLocaleString(locale)}{' '}
-                        {t('lumen.adminCaches.valueBytes', 'value bytes')}
+                        {formatBytes(stats.ksize, 2, locale)} ·{' '}
+                        {formatBytes(stats.vsize, 2, locale)}
                       </small>
                     </div>
                     <button
@@ -186,6 +191,12 @@ export default function AdminCaches() {
             )}
           </Section>
           <Section title={t('lumen.adminCaches.imageCaches', 'Image Caches')}>
+            <p className="note">
+              {t(
+                'lumen.adminCaches.imageDescription',
+                'Cached images are stored in SeerrNG application storage.'
+              )}
+            </p>
             {config?.appDataPath && (
               <p className="note">
                 {t('lumen.adminCaches.diskLocation', 'Disk cache location')}{' '}
@@ -208,8 +219,7 @@ export default function AdminCaches() {
                       'components.Settings.SettingsJobsCache.imagecachecount',
                       'images cached'
                     )}{' '}
-                    · {cache.size.toLocaleString(locale)}{' '}
-                    {t('lumen.adminCaches.bytes', 'bytes')}
+                    · {formatBytes(cache.size, 2, locale)}
                   </small>
                 </li>
               ))}
@@ -221,6 +231,20 @@ export default function AdminCaches() {
               'DNS Cache'
             )}
           >
+            <p className="note">
+              {t(
+                'lumen.adminCaches.dnsDescription',
+                'SeerrNG caches DNS lookups to reduce repeated requests when connecting to services.'
+              )}
+            </p>
+            {data.dnsCache?.stats && (
+              <p className="note">
+                {t(
+                  'lumen.adminCaches.dnsStatsDescription',
+                  'These statistics are aggregated across all DNS cache entries.'
+                )}
+              </p>
+            )}
             {data.dnsCache?.stats && (
               <ul className="setlist">
                 {Object.entries(dnsMetrics).map(([key, message]) => {

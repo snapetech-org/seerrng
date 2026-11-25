@@ -1973,18 +1973,24 @@ export const localeData = [
       'lumen.adminAbout.updateAvailable': 'يتوفر تحديث',
       'lumen.adminAbout.versionCheckDisabled': 'التحقق من الإصدار معطّل',
       'lumen.adminCaches.apiCaches': 'ذاكرات API المؤقتة',
+      'lumen.adminCaches.apiDescription':
+        'يخزّن SeerrNG مؤقتًا استجابات واجهات API الخارجية لتحسين الأداء وتقليل الطلبات المتكررة.',
       'lumen.adminCaches.avatars': 'الصور الرمزية',
-      'lumen.adminCaches.bytes': 'بايت',
       'lumen.adminCaches.cacheFlushed': 'تم مسح {name}.',
       'lumen.adminCaches.confirmFlush': 'مسح الذاكرة المؤقتة؟',
       'lumen.adminCaches.diskLocation': 'موقع ذاكرة القرص المؤقتة',
       'lumen.adminCaches.dnsFlushed': 'تم مسح إدخال DNS ‏{name}.',
+      'lumen.adminCaches.dnsDescription':
+        'يخزّن SeerrNG مؤقتًا نتائج DNS لتقليل الطلبات المتكررة عند الاتصال بالخدمات.',
+      'lumen.adminCaches.dnsStatsDescription':
+        'هذه الإحصاءات مجمّعة من جميع إدخالات ذاكرة DNS المؤقتة.',
       'lumen.adminCaches.dnsUnavailable': 'بيانات ذاكرة DNS المؤقتة غير متاحة.',
       'lumen.adminCaches.flush': 'مسح',
       'lumen.adminCaches.flushDnsEntry': 'مسح إدخال DNS',
       'lumen.adminCaches.flushFailure': 'تعذّر مسح هذه الذاكرة المؤقتة.',
       'lumen.adminCaches.imageCaches': 'ذاكرات الصور المؤقتة',
-      'lumen.adminCaches.keyBytes': 'بايتات المفاتيح',
+      'lumen.adminCaches.imageDescription':
+        'تُحفظ الصور المخزنة مؤقتًا ضمن مساحة تخزين SeerrNG.',
       'lumen.adminCaches.loading': 'جارٍ تحميل ذاكرات النظام المؤقتة…',
       'lumen.adminCaches.metric.size': 'الحجم',
       'lumen.adminCaches.noApiCaches': 'لا توجد ذاكرات API مؤقتة.',
@@ -1995,7 +2001,6 @@ export const localeData = [
       'lumen.adminCaches.systemCaches': 'ذاكرات النظام المؤقتة',
       'lumen.adminCaches.title': 'ذاكرات النظام المؤقتة',
       'lumen.adminCaches.tmdbImages': 'صور TMDB',
-      'lumen.adminCaches.valueBytes': 'بايتات القيم',
       'lumen.adminCategories.adultEnabledNote':
         'يتطلب استكشاف محتوى البالغين إعداد خدمة Whisparr v3 ومنح الحساب الإذن المناسب. لا يمكن للحسابات المقيّدة الوصول إليه.',
       'lumen.adminCategories.ageGateConfirmFailure':
@@ -13806,18 +13811,24 @@ export const localeData = [
       'lumen.adminAbout.updateAvailable': 'Update available',
       'lumen.adminAbout.versionCheckDisabled': 'Version check disabled',
       'lumen.adminCaches.apiCaches': 'API Caches',
+      'lumen.adminCaches.apiDescription':
+        'SeerrNG caches responses from external API endpoints to improve performance and reduce repeated calls.',
       'lumen.adminCaches.avatars': 'Avatars',
-      'lumen.adminCaches.bytes': 'bytes',
       'lumen.adminCaches.cacheFlushed': 'Flushed {name}.',
       'lumen.adminCaches.confirmFlush': 'Flush Cache?',
       'lumen.adminCaches.diskLocation': 'Disk cache location',
       'lumen.adminCaches.dnsFlushed': 'Flushed {name}.',
+      'lumen.adminCaches.dnsDescription':
+        'SeerrNG caches DNS lookups to reduce repeated requests when connecting to services.',
+      'lumen.adminCaches.dnsStatsDescription':
+        'These statistics are aggregated across all DNS cache entries.',
       'lumen.adminCaches.dnsUnavailable': 'DNS cache data is unavailable.',
       'lumen.adminCaches.flush': 'Flush',
       'lumen.adminCaches.flushDnsEntry': 'Flush DNS Entry',
       'lumen.adminCaches.flushFailure': 'Could not flush this cache.',
       'lumen.adminCaches.imageCaches': 'Image Caches',
-      'lumen.adminCaches.keyBytes': 'key bytes',
+      'lumen.adminCaches.imageDescription':
+        'Cached images are stored in SeerrNG application storage.',
       'lumen.adminCaches.loading': 'Loading system caches…',
       'lumen.adminCaches.metric.size': 'Size',
       'lumen.adminCaches.noApiCaches': 'No API caches.',
@@ -13828,7 +13839,6 @@ export const localeData = [
       'lumen.adminCaches.systemCaches': 'system caches',
       'lumen.adminCaches.title': 'System Caches',
       'lumen.adminCaches.tmdbImages': 'TMDB Images',
-      'lumen.adminCaches.valueBytes': 'value bytes',
       'lumen.adminCategories.adultEnabledNote':
         'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.',
       'lumen.adminCategories.ageGateConfirmFailure':
@@ -26390,19 +26400,25 @@ export const localeData = [
       'lumen.adminAbout.versionCheckDisabled':
         'Vérification de la version désactivée',
       'lumen.adminCaches.apiCaches': 'Caches API',
+      'lumen.adminCaches.apiDescription':
+        'SeerrNG met en cache les réponses des API externes afin d’améliorer les performances et de réduire les appels répétés.',
       'lumen.adminCaches.avatars': 'Avatars',
-      'lumen.adminCaches.bytes': 'octets',
       'lumen.adminCaches.cacheFlushed': 'Cache {name} vidé.',
       'lumen.adminCaches.confirmFlush': 'Vider le cache ?',
       'lumen.adminCaches.diskLocation': 'Emplacement du cache disque',
       'lumen.adminCaches.dnsFlushed': 'Entrée DNS {name} vidée.',
+      'lumen.adminCaches.dnsDescription':
+        'SeerrNG met en cache les recherches DNS pour réduire les requêtes lors des connexions aux services.',
+      'lumen.adminCaches.dnsStatsDescription':
+        'Ces statistiques sont agrégées pour toutes les entrées du cache DNS.',
       'lumen.adminCaches.dnsUnavailable':
         'Les données du cache DNS sont indisponibles.',
       'lumen.adminCaches.flush': 'Vider',
       'lumen.adminCaches.flushDnsEntry': 'Vider l’entrée DNS',
       'lumen.adminCaches.flushFailure': 'Impossible de vider ce cache.',
       'lumen.adminCaches.imageCaches': 'Caches d’images',
-      'lumen.adminCaches.keyBytes': 'octets de clés',
+      'lumen.adminCaches.imageDescription':
+        'Les images en cache sont stockées dans l’espace de stockage de SeerrNG.',
       'lumen.adminCaches.loading': 'Chargement des caches système…',
       'lumen.adminCaches.metric.size': 'Taille',
       'lumen.adminCaches.noApiCaches': 'Aucun cache API.',
@@ -26413,7 +26429,6 @@ export const localeData = [
       'lumen.adminCaches.systemCaches': 'caches système',
       'lumen.adminCaches.title': 'Caches système',
       'lumen.adminCaches.tmdbImages': 'Images TMDB',
-      'lumen.adminCaches.valueBytes': 'octets de valeurs',
       'lumen.adminCategories.adultEnabledNote':
         'La découverte de contenus pour adultes nécessite un service Whisparr v3 configuré et l’autorisation correspondante du compte. Les comptes restreints n’y ont pas accès.',
       'lumen.adminCategories.ageGateConfirmFailure':
