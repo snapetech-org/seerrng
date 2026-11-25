@@ -9401,13 +9401,16 @@ The movie collection detail page now localizes its count, section and trailer
 labels, media-server verification/unsupported states, Blocklist confirmation,
 change feedback, and retry action in English, French, and Arabic. The existing
 Blocklist, request, playback, queue, and media-server behavior remains intact.
-Twelve localized browser cases pass across desktop, iPhone, Android, and tablet;
-the 16 existing collection regressions pass on desktop and iPhone. The English
+The 48-case collection suite passes in standalone Lumen and in the
+production-built frontend served by Vite Preview at `/lumen/`, across desktop,
+iPhone, Android, and tablet. It covers localized detail and Blocklist states,
+retry after failure, collection requests, queue actions, playback identity
+filtering, safe playlist links, and on-demand media-server sync. The English
 1440px baseline and candidate captures are pixel-identical. French and Arabic
 phone captures were inspected at 390 CSS pixels without clipping or horizontal
 overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-detail-20261124/`.
-The production Express `/lumen/` mount and live provider-backed media-server
+Production Express middleware and live provider-backed media-server
 verification remain open.
 
 ### Shared control accessibility and localization (2026-11-24)
