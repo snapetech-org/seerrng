@@ -5,6 +5,7 @@ test('Jellystat can connect, reuse a saved password, and disconnect', async ({
 }, info) => {
   const endpoint = '/api/v1/settings/jellystat';
   const tests: Record<string, unknown>[] = [];
+  let saved: Record<string, unknown> | null = null;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -19,12 +20,16 @@ test('Jellystat can connect, reuse a saved password, and disconnect', async ({
       return route.fulfill({ status: 204 });
     }
     if (path !== endpoint) return route.fulfill({ json: {} });
-    if (request.method() === 'GET')
-      return route.fulfill({ body: 'null', contentType: 'application/json' });
-    if (request.method() === 'DELETE') return route.fulfill({ status: 204 });
-    return route.fulfill({
-      json: { ...request.postDataJSON(), apiKey: '[REDACTED]' },
-    });
+    if (request.method() === 'GET') return route.fulfill({ json: saved });
+    if (request.method() === 'DELETE') {
+      saved = null;
+      return route.fulfill({ status: 204 });
+    }
+    if (request.method() === 'PUT') {
+      saved = { ...request.postDataJSON(), apiKey: '[REDACTED]' };
+      return route.fulfill({ json: saved });
+    }
+    return route.fulfill({ status: 405 });
   });
   await page.goto('/me');
   await page.getByRole('link', { name: 'Open Jellystat Settings' }).click();

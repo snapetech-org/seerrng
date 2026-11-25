@@ -8480,7 +8480,7 @@ test('System Logs restores display preferences without retaining search text', a
   );
   await page.goto(testAppPath('/admin/logs'));
   await expect(page.getByRole('combobox', { name: 'Severity' })).toHaveValue(
-    'info'
+    'debug'
   );
   await expect(page.getByRole('combobox', { name: 'Page Size' })).toHaveValue(
     '25'
@@ -11330,9 +11330,9 @@ test('Library Path Mappings retains rejected edits and uses the server-normalize
   const save = page.getByRole('button', { name: 'Save Library Path Mappings' });
   await editor.fill('{');
   await save.click();
-  await expect(
-    page.getByText('Enter a JSON array of path mappings.')
-  ).toBeVisible();
+  await expect(page.getByRole('alert')).toContainText(
+    'Enter a JSON array with at most 100 path mappings.'
+  );
   expect(writes).toHaveLength(0);
 
   const draft = [{ ...mapping, remoteRoot: '/movies/' }];

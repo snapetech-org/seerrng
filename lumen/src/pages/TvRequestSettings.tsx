@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { remember } from '../apiCache';
 import { useAuth } from '../auth';
 import { Section } from '../components/cards';
@@ -93,6 +93,7 @@ function AccessReview({ viewerId }: { viewerId: number }) {
     if (!pending || pending.request.id === viewerId || working.current) return;
     const generation = sessionGeneration();
     let reviewed = false;
+    let staleRequest = false;
     working.current = true;
     setBusy(true);
     setFailure('');
@@ -113,6 +114,7 @@ function AccessReview({ viewerId }: { viewerId: number }) {
       );
     } catch (error) {
       if (generation !== sessionGeneration()) return;
+      staleRequest = error instanceof ApiError && error.status === 409;
       setFailure(
         friendlyError(
           error,
@@ -126,7 +128,7 @@ function AccessReview({ viewerId }: { viewerId: number }) {
       if (generation === sessionGeneration()) {
         if (reviewed) setPending(undefined);
         setBusy(false);
-        if (reviewed) reload();
+        if (reviewed || staleRequest) reload();
       }
       working.current = false;
     }
