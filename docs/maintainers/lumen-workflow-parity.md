@@ -10005,13 +10005,14 @@ network metadata alongside the existing request, availability, and download
 sections. English, French, and Arabic labels are included. Management actions,
 permissions, and API calls are unchanged.
 
-The movie and TV manager browser cases pass on desktop, iPhone, Android, and
-tablet (8 cases); assertions cover the displayed metadata and loaded poster.
-TV creator names use the server-provided person IDs to link to their profile,
-matching native navigation.
-The production Lumen build and TypeScript check pass. Baseline and candidate
-captures use the same fixtures at desktop 1440×900 and iPhone 390×844; both
-were inspected. Evidence is retained at
+The movie and TV manager browser cases pass in standalone Lumen and in an
+embedded production build served through SeerrNG's actual `mountLumenFrontend`
+middleware (8 cases per deployment, 16 total) across desktop, iPhone, Android,
+and tablet. Assertions cover the displayed metadata, loaded poster, and
+mount-relative TV creator profile link. The production Lumen build and
+TypeScript check pass. Baseline and candidate captures use the same fixtures
+at desktop 1440×900 and iPhone 390×844; both were inspected. Embedded build and
+browser results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 The summary reuses SeerrNG's shared crew-priority rule and shows the same two
 highest-priority movie credits as the native summary. A reversed Writer/Director

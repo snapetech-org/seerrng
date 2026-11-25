@@ -313,7 +313,7 @@ for (const kind of ['movie', 'tv'] as const) {
       await expect(summary.getByText('Fixture Creator')).toBeVisible();
       await expect(
         summary.getByRole('link', { name: 'Fixture Creator' })
-      ).toHaveAttribute('href', '/person/10');
+      ).toHaveAttribute('href', `${mount}/person/10`);
       await expect(summary.getByText('Fixture Network')).toBeVisible();
     } else {
       await expect(summary.getByText('Fixture Director')).toBeVisible();
