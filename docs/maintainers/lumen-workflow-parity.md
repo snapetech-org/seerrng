@@ -9509,3 +9509,22 @@ now supplies the public `mediaServerType` setting required to render that
 disclosure, so the test exercises the real entry point rather than timing out
 before reaching playback. Desktop, iPhone, Android, and tablet fixtures pass.
 This does not verify live device discovery or server playback.
+
+### Music artist biography parity (2026-11-24)
+
+Native SeerrNG renders the artist biography returned as `wikipedia.content` by
+the existing artist endpoint. Lumen previously read only `wikipedia.extract`,
+so it omitted biographies from the endpoint's current response shape. Artist
+details now display `content` and retain `extract` as a compatibility fallback;
+the existing API sanitizes and bounds the text before returning it. No provider
+request or authorization behavior changed.
+
+The artist release-group browser workflow now asserts that the biography is
+shown and still passes on desktop, iPhone, Android, and tablet. The production
+Lumen build passes. Pre-change and candidate captures use the same deterministic
+artist and release fixture at 1440x900 and iPhone 390x844; the added paragraph
+was inspected at both sizes and does not cause horizontal overflow or obscure
+the release groups. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-artist-bio-20261124/`.
+Provider-backed biography availability and native-matched screenshot review
+remain unverified.

@@ -342,7 +342,12 @@ export interface ArtistDetails {
     type?: string;
     beginYear?: number;
   };
-  wikipedia?: { extract?: string } | null;
+  wikipedia?: {
+    content?: string;
+    extract?: string;
+    title?: string;
+    url?: string;
+  } | null;
   artistThumb?: string;
   artistBackdrop?: string;
   releaseGroups: Album[];

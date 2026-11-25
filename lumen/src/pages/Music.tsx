@@ -1360,7 +1360,9 @@ export function Artist() {
             <IndexerSearchLink category="music" title={a.artist.name} />
             <AssociationLink mediaType="artist" id={id} />
           </div>
-          {a.wikipedia?.extract && <p className="ov">{a.wikipedia.extract}</p>}
+          {(a.wikipedia?.content || a.wikipedia?.extract) && (
+            <p className="ov">{a.wikipedia.content || a.wikipedia.extract}</p>
+          )}
           {groups.map(({ type, title }) => {
             const releases = a.releaseGroups.filter(
               (release) =>

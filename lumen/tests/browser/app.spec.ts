@@ -5411,6 +5411,11 @@ test('artist detail groups secondary release types and loads the rest of a relea
           area: 'Fixture City',
           beginYear: 1990,
         },
+        wikipedia: {
+          title: 'Fixture Artist',
+          url: 'https://en.wikipedia.org/wiki/Fixture_Artist',
+          content: 'A fixture biography for the artist detail page.',
+        },
         releaseGroups,
         typeCounts: { Album: 21, Live: 1, Compilation: 1 },
       },
@@ -5423,6 +5428,11 @@ test('artist detail groups secondary release types and loads the rest of a relea
     page.getByRole('heading', { name: 'Albums (21)' })
   ).toBeVisible();
   await expect(page.getByText('23 releases', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('A fixture biography for the artist detail page.', {
+      exact: true,
+    })
+  ).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Live (1)' })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Compilation (1)' })
