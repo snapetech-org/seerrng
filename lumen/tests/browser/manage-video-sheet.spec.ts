@@ -14,6 +14,7 @@ async function setup(
 ) {
   const calls: { method: string; path: string; body?: unknown }[] = [];
   let libraryReads = 0;
+  let requestDeleted = false;
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -68,15 +69,18 @@ async function setup(
             id: databaseId,
             status: 5,
             status4k: 2,
-            requests: [
-              {
-                id: 61,
-                status: 2,
-                is4k: false,
-                requestedBy: { displayName: 'Requester' },
-                seasons: kind === 'tv' ? [{ seasonNumber: 1, status: 2 }] : [],
-              },
-            ],
+            requests: requestDeleted
+              ? []
+              : [
+                  {
+                    id: 61,
+                    status: 2,
+                    is4k: false,
+                    requestedBy: { displayName: 'Requester' },
+                    seasons:
+                      kind === 'tv' ? [{ seasonNumber: 1, status: 2 }] : [],
+                  },
+                ],
             downloadStatus: [
               {
                 downloadId: 'hd-download',
@@ -136,6 +140,11 @@ async function setup(
       });
       return route.fulfill({ status: 204, body: '' });
     }
+    if (path === '/request/61/status' && request.method() === 'DELETE') {
+      calls.push({ method: request.method(), path });
+      requestDeleted = true;
+      return route.fulfill({ status: 204, body: '' });
+    }
     return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
   });
   await page.goto(`${mount}/${kind}/${mediaId}`);
@@ -143,6 +152,9 @@ async function setup(
     calls,
     get libraryReads() {
       return libraryReads;
+    },
+    get requestDeleted() {
+      return requestDeleted;
     },
   };
 }
@@ -273,6 +285,43 @@ test('stale availability recovery submits the current token and selected quality
       body: { token, quality: 'HD' },
     },
   ]);
+});
+
+test('request managers can confirm deletion of one title request', async ({
+  page,
+}, info) => {
+  const state = await setup(page, 16);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const sheet = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
+  await sheet.getByRole('button', { name: 'Delete request #61' }).click();
+  const confirmation = page.getByRole('alertdialog', {
+    name: 'Delete request?',
+  });
+  await expect(
+    confirmation.getByText('This removes the selected request and its history')
+  ).toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('request-removal-confirmation.png'),
+      fullPage: false,
+    });
+  await confirmation.getByRole('button', { name: 'Cancel' }).click();
+  expect(state.calls).toEqual([]);
+  await expect(sheet).toBeVisible();
+
+  await sheet.getByRole('button', { name: 'Delete request #61' }).click();
+  await page
+    .getByRole('alertdialog')
+    .getByRole('button', { name: 'Delete request', exact: true })
+    .click();
+  await expect(
+    sheet.getByText('No requests are linked to this title.')
+  ).toBeVisible();
+  expect(state.calls).toEqual([
+    { method: 'DELETE', path: '/request/61/status' },
+  ]);
+  expect(state.requestDeleted).toBe(true);
+  expect(state.libraryReads).toBe(0);
 });
 
 test('request managers can open the panel without administrator library actions', async ({

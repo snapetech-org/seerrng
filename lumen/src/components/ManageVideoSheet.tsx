@@ -13,8 +13,10 @@ import { useLumenLocale } from '../i18n';
 import { useDialog } from './useDialog';
 
 type MediaKind = 'movie' | 'tv';
-type RemovalAction =
-  { kind: 'remove' } | { kind: 'clear'; quality: 'HD' | '4K' };
+type ManagerAction =
+  | { kind: 'remove' }
+  | { kind: 'clear'; quality: 'HD' | '4K' }
+  | { kind: 'deleteRequest'; requestId: number };
 
 const safeServiceUrl = (value?: string | null) => {
   if (!value) return undefined;
@@ -88,7 +90,7 @@ export function ManageVideoSheet({
   const { user } = useAuth();
   const { t } = useLumenLocale();
   const admin = isAdministrator(user?.permissions);
-  const [confirmation, setConfirmation] = useState<RemovalAction>();
+  const [confirmation, setConfirmation] = useState<ManagerAction>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string>();
   const [confirmCancel, setConfirmCancel] = useState<HTMLButtonElement | null>(
@@ -118,12 +120,29 @@ export function ManageVideoSheet({
   ].filter((item) => item.url);
 
   const confirmAction = async () => {
-    if (!confirmation || !library.data || busy) return;
+    if (
+      !confirmation ||
+      busy ||
+      (confirmation.kind !== 'deleteRequest' && !library.data)
+    )
+      return;
     setBusy(true);
     setFailure(undefined);
     try {
-      if (confirmation.kind === 'remove') {
-        if (!library.data.targets.length || !library.data.token) return;
+      if (confirmation.kind === 'deleteRequest') {
+        const request = media.requests?.find(
+          (item) => item.id === confirmation.requestId
+        );
+        if (!request) return;
+        await api(
+          `/request/${request.id}/status`,
+          { method: 'DELETE' },
+          'empty'
+        );
+        setConfirmation(undefined);
+        onUpdated();
+      } else if (confirmation.kind === 'remove') {
+        if (!library.data?.targets.length || !library.data.token) return;
         await api(
           `/media/${media.id}/library`,
           {
@@ -137,8 +156,8 @@ export function ManageVideoSheet({
       } else {
         const quality = confirmation.quality;
         if (
-          !library.data.staleAvailabilityQualities?.includes(quality) ||
-          !library.data.token
+          !library.data?.staleAvailabilityQualities?.includes(quality) ||
+          !library.data?.token
         )
           return;
         await api(
@@ -155,17 +174,24 @@ export function ManageVideoSheet({
       }
     } catch (error) {
       setFailure(
-        error instanceof ApiError && error.status === 409
+        error instanceof ApiError &&
+          error.status === 409 &&
+          confirmation.kind !== 'deleteRequest'
           ? t(
               'lumen.manageVideo.planChanged',
               'The verified library state changed. Refresh the plan and review it again.'
             )
-          : t(
-              'lumen.manageVideo.actionFailed',
-              'The action failed. Refresh the library plan and retry.'
-            )
+          : confirmation.kind === 'deleteRequest'
+            ? t(
+                'lumen.manageVideo.deleteRequestFailed',
+                'Could not delete the request. Refresh and retry.'
+              )
+            : t(
+                'lumen.manageVideo.actionFailed',
+                'The action failed. Refresh the library plan and retry.'
+              )
       );
-      library.revalidate();
+      if (confirmation.kind !== 'deleteRequest') library.revalidate();
       onUpdated();
     } finally {
       setBusy(false);
@@ -174,6 +200,10 @@ export function ManageVideoSheet({
 
   const staleQuality =
     confirmation?.kind === 'clear' ? confirmation.quality : undefined;
+  const requestToDelete =
+    confirmation?.kind === 'deleteRequest'
+      ? media.requests?.find((item) => item.id === confirmation.requestId)
+      : undefined;
 
   return createPortal(
     <div className="sheet-wrap open">
@@ -190,10 +220,15 @@ export function ManageVideoSheet({
                   'lumen.manageVideo.confirmRemoveTitle',
                   'Delete from library?'
                 )
-              : t(
-                  'lumen.manageVideo.confirmClearTitle',
-                  'Clear stale availability?'
-                )
+              : confirmation.kind === 'clear'
+                ? t(
+                    'lumen.manageVideo.confirmClearTitle',
+                    'Clear stale availability?'
+                  )
+                : t(
+                    'lumen.manageVideo.confirmDeleteRequestTitle',
+                    'Delete request?'
+                  )
             : t('lumen.manageVideo.title', 'Manage {title}', { title })
         }
       >
@@ -207,10 +242,15 @@ export function ManageVideoSheet({
                       'lumen.manageVideo.confirmRemoveTitle',
                       'Delete from library?'
                     )
-                  : t(
-                      'lumen.manageVideo.confirmClearTitle',
-                      'Clear stale availability?'
-                    )
+                  : confirmation.kind === 'clear'
+                    ? t(
+                        'lumen.manageVideo.confirmClearTitle',
+                        'Clear stale availability?'
+                      )
+                    : t(
+                        'lumen.manageVideo.confirmDeleteRequestTitle',
+                        'Delete request?'
+                      )
                 : t('lumen.manageVideo.title', 'Manage {title}', { title })}
             </h3>
             <span className="sub">
@@ -220,10 +260,15 @@ export function ManageVideoSheet({
                       'lumen.manageVideo.confirmRemoveBody',
                       'This permanently removes the verified copies listed below, including their files. This cannot be undone.'
                     )
-                  : t(
-                      'lumen.manageVideo.confirmClearBody',
-                      'This resets the verified stale availability state only. It does not delete media files or requests.'
-                    )
+                  : confirmation.kind === 'clear'
+                    ? t(
+                        'lumen.manageVideo.confirmClearBody',
+                        'This resets the verified stale availability state only. It does not delete media files or requests.'
+                      )
+                    : t(
+                        'lumen.manageVideo.confirmDeleteRequestBody',
+                        'This removes the selected request and its history, and may cancel active acquisition work. This cannot be undone.'
+                      )
                 : [year, kind === 'tv' ? 'Series' : 'Movie']
                     .filter(Boolean)
                     .join(' · ')}
@@ -243,7 +288,7 @@ export function ManageVideoSheet({
                     </li>
                   ))}
                 </ul>
-              ) : (
+              ) : confirmation.kind === 'clear' ? (
                 <p className="note">
                   {t(
                     'lumen.manageVideo.clearQuality',
@@ -251,7 +296,18 @@ export function ManageVideoSheet({
                     { quality: staleQuality ?? '', title }
                   )}
                 </p>
-              )}
+              ) : requestToDelete ? (
+                <ul className="card-list">
+                  <li>
+                    <b>#{requestToDelete.id}</b>{' '}
+                    <span className="sub">
+                      {requestToDelete.requestedBy?.displayName ||
+                        t('lumen.manageVideo.unknownUser', 'Unknown user')}
+                      {requestToDelete.is4k ? ' · 4K' : ''}
+                    </span>
+                  </li>
+                </ul>
+              ) : null}
               {failure && (
                 <p role="alert" className="note">
                   {failure}
@@ -259,7 +315,7 @@ export function ManageVideoSheet({
               )}
               <div className="pk-foot">
                 <button
-                  className={`btn ${confirmation.kind === 'remove' ? 'btn-danger' : 'btn-primary'}`}
+                  className={`btn ${confirmation.kind === 'remove' || confirmation.kind === 'deleteRequest' ? 'btn-danger' : 'btn-primary'}`}
                   disabled={busy}
                   onClick={() => void confirmAction()}
                 >
@@ -267,7 +323,12 @@ export function ManageVideoSheet({
                     ? t('lumen.manageVideo.working', 'Working…')
                     : confirmation.kind === 'remove'
                       ? t('lumen.manageVideo.delete', 'Delete verified copies')
-                      : t('lumen.manageVideo.clear', 'Clear availability')}
+                      : confirmation.kind === 'clear'
+                        ? t('lumen.manageVideo.clear', 'Clear availability')
+                        : t(
+                            'lumen.manageVideo.deleteRequest',
+                            'Delete request'
+                          )}
                 </button>
                 <button
                   ref={setConfirmCancel}
@@ -320,6 +381,22 @@ export function ManageVideoSheet({
                             ? ` · ${request.seasons.map((season) => season.seasonNumber).join(', ')}`
                             : ''}
                         </span>
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          disabled={busy}
+                          onClick={() =>
+                            setConfirmation({
+                              kind: 'deleteRequest',
+                              requestId: request.id,
+                            })
+                          }
+                        >
+                          {t(
+                            'lumen.manageVideo.deleteRequestAction',
+                            'Delete request #{id}',
+                            { id: request.id }
+                          )}
+                        </button>
                       </li>
                     ))}
                   </ul>

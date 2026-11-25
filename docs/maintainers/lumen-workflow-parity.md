@@ -9600,20 +9600,25 @@ server plan/readback and mutation routes; viewers without request-management
 permission do not receive the entry point, and non-administrators do not query
 or see administrator-only library actions. The confirmation lists each
 verified service copy before deletion. Mutation requests carry the current
-plan token and selected stale quality.
+plan token and selected stale quality. Request managers can also select and
+delete one linked request after reviewing its requester and format; this uses
+the existing status-aware delete route that removes request history and cleans
+up active work, without requiring administrator access.
 
-The focused browser workflow passes 20/20 cases across desktop, iPhone,
+The focused browser workflow passes 24/24 cases across desktop, iPhone,
 Android, and tablet, including permission gating, exact mutation payloads,
-cancel-before-delete, TV and movie service links, and overflow checks. The
-production Lumen build passes. Candidate screenshots cover Movie and TV
-details before opening the sheet and the open sheet at 1440x900 and iPhone
-390x844. The existing detail state can be compared with the pre-change
-`b23841b5a` baseline; the new manager state has no prior Lumen equivalent.
+cancel-before-delete, status-aware request deletion, TV and movie service
+links, and overflow checks. The production Lumen build passes. Baseline and
+candidate Movie and TV details were captured at 1440x900 and iPhone 390x844;
+candidate captures also cover the open manager, verified library actions, and
+both destructive confirmations. The baseline is commit `b23841b5a`; the new
+manager state has no prior Lumen equivalent. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-20261124/`.
 Live provider-backed service responses and a native-matched interaction review
 remain unverified.
 
 This is a partial parity milestone, not closure of the administration gap.
-Still missing from the contextual sheet are per-request edit/delete/approve
+Still missing from the contextual sheet are per-request edit and approval
 actions, playback/watch summaries, and direct blocklist and issue management.
 Some corresponding actions remain available elsewhere in Lumen, but workflow
 parity requires auditing and connecting them without widening permissions.

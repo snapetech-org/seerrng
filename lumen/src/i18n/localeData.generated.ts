@@ -4851,6 +4851,13 @@ export const localeData = [
         'تغيرت حالة المكتبة التي تم التحقق منها. حدّث الخطة وراجعها مجددًا.',
       'lumen.manageVideo.actionFailed':
         'فشل الإجراء. حدّث خطة المكتبة ثم أعد المحاولة.',
+      'lumen.manageVideo.deleteRequest': 'حذف الطلب',
+      'lumen.manageVideo.deleteRequestAction': 'حذف الطلب رقم {id}',
+      'lumen.manageVideo.confirmDeleteRequestTitle': 'هل تريد حذف الطلب؟',
+      'lumen.manageVideo.confirmDeleteRequestBody':
+        'سيُحذف الطلب المحدد وسجله، وقد يؤدي ذلك إلى إلغاء عملية الاقتناء الجارية. لا يمكن التراجع عن ذلك.',
+      'lumen.manageVideo.deleteRequestFailed':
+        'تعذر حذف الطلب. حدّث الصفحة وحاول مرة أخرى.',
       'lumen.manageVideo.close': 'إغلاق',
       'lumen.nav.lumenSettings': 'إعدادات Lumen',
       'lumen.nav.more': 'المزيد',
@@ -16516,6 +16523,13 @@ export const localeData = [
         'The verified library state changed. Refresh the plan and review it again.',
       'lumen.manageVideo.actionFailed':
         'The action failed. Refresh the library plan and retry.',
+      'lumen.manageVideo.deleteRequest': 'Delete request',
+      'lumen.manageVideo.deleteRequestAction': 'Delete request #{id}',
+      'lumen.manageVideo.confirmDeleteRequestTitle': 'Delete request?',
+      'lumen.manageVideo.confirmDeleteRequestBody':
+        'This removes the selected request and its history, and may cancel active acquisition work. This cannot be undone.',
+      'lumen.manageVideo.deleteRequestFailed':
+        'Could not delete the request. Refresh and retry.',
       'lumen.manageVideo.close': 'Close',
       'lumen.nav.lumenSettings': 'Lumen Settings',
       'lumen.nav.more': 'More',
@@ -29260,6 +29274,13 @@ export const localeData = [
         'L’état vérifié de la bibliothèque a changé. Actualisez le plan et vérifiez-le à nouveau.',
       'lumen.manageVideo.actionFailed':
         'Échec de l’opération. Actualisez le plan de bibliothèque et réessayez.',
+      'lumen.manageVideo.deleteRequest': 'Supprimer la demande',
+      'lumen.manageVideo.deleteRequestAction': 'Supprimer la demande nº {id}',
+      'lumen.manageVideo.confirmDeleteRequestTitle': 'Supprimer la demande ?',
+      'lumen.manageVideo.confirmDeleteRequestBody':
+        'La demande sélectionnée et son historique seront supprimés, et le travail d’acquisition en cours peut être annulé. Cette action est irréversible.',
+      'lumen.manageVideo.deleteRequestFailed':
+        'Impossible de supprimer la demande. Actualisez et réessayez.',
       'lumen.manageVideo.close': 'Fermer',
       'lumen.nav.lumenSettings': 'Paramètres de Lumen',
       'lumen.nav.more': 'Plus',
