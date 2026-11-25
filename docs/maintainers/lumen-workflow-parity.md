@@ -9765,3 +9765,20 @@ viewport cases.
 This verifies packaged static assets and the Express mount, not live SeerrNG API
 responses, provider handoff, or household authorization against a running
 production database.
+
+### Contextual manager request history parity (2026-11-24)
+
+The native Movie/TV manager sheet omits declined requests from its linked
+Requests section. Lumen's contextual manager sheet now applies the same rule,
+and its empty state and available request actions are based on the non-declined
+list. Request history remains visible in the dedicated Requests workflow.
+
+The regression fixture includes an approved and a declined request and verifies
+that only the approved request and its delete action appear. Four browser
+projects pass. The production Lumen build passes. Baseline and candidate
+captures at 1440×900 show the declined row and action removed without changing
+the surrounding sheet; iPhone captures were also retained at the same viewport.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-manage-declined-requests-20261124/`.
+This verifies the UI against the native source contract with mocked API data;
+live server responses remain unverified.

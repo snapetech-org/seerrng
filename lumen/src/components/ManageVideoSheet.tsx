@@ -20,6 +20,7 @@ import { useToast } from './toast';
 import { useDialog } from './useDialog';
 
 type MediaKind = 'movie' | 'tv';
+const DECLINED_REQUEST_STATUS = 3;
 type ManagerAction =
   | { kind: 'remove' }
   | { kind: 'clear'; quality: 'HD' | '4K' }
@@ -137,7 +138,10 @@ export function ManageVideoSheet({
     if (confirmation) confirmCancel?.focus({ preventScroll: true });
   }, [confirmation, confirmCancel]);
 
-  const noRequests = !media.requests?.length;
+  const requests = (media.requests ?? []).filter(
+    (request) => request.status !== DECLINED_REQUEST_STATUS
+  );
+  const noRequests = requests.length === 0;
   const downloads = [
     ...(media.downloadStatus ?? []).map((item) => ({ item, quality: 'HD' })),
     ...(media.downloadStatus4k ?? []).map((item) => ({ item, quality: '4K' })),
@@ -436,7 +440,7 @@ export function ManageVideoSheet({
                   </p>
                 ) : (
                   <ul className="card-list">
-                    {media.requests?.map((request) => (
+                    {requests.map((request) => (
                       <li key={request.id}>
                         <b>
                           #{request.id} ·{' '}

@@ -11,7 +11,8 @@ async function setup(
   permissions = 18,
   kind: 'movie' | 'tv' = 'movie',
   staleAvailabilityQualities: ('HD' | '4K')[] = [],
-  mediaServerType = 1
+  mediaServerType = 1,
+  includeDeclinedRequest = false
 ) {
   const calls: { method: string; path: string; body?: unknown }[] = [];
   let libraryReads = 0;
@@ -84,6 +85,17 @@ async function setup(
                     seasons:
                       kind === 'tv' ? [{ seasonNumber: 1, status: 2 }] : [],
                   },
+                  ...(includeDeclinedRequest
+                    ? [
+                        {
+                          id: 62,
+                          status: 3,
+                          is4k: false,
+                          requestedBy: { displayName: 'Declined requester' },
+                          seasons: [],
+                        },
+                      ]
+                    : []),
                 ],
             issues: [
               { id: 71, status: 1, issueType: 1 },
@@ -431,6 +443,24 @@ test('request managers can confirm deletion of one title request', async ({
   expect(state.libraryReads).toBe(0);
   expect(state.watchReads).toBe(0);
   expect(state.jellystatReads).toBe(0);
+});
+
+test('management requests omit declined request history like native SeerrNG', async ({
+  page,
+}, info) => {
+  await setup(page, 16, 'movie', [], 1, true);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const sheet = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
+  await expect(sheet.getByText('#61 · Approved')).toBeVisible();
+  await expect(sheet.getByText('#62 · Declined')).toHaveCount(0);
+  await expect(
+    sheet.getByRole('button', { name: 'Delete request #62' })
+  ).toHaveCount(0);
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('declined-request-filter.png'),
+      fullPage: false,
+    });
 });
 
 test('Jellyfin administrators see Jellystat without requesting Plex history', async ({
