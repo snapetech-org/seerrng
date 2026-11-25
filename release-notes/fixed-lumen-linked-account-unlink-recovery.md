@@ -1,0 +1,1 @@
+Lumen now keeps linked-account unlink confirmations open when a self-service or managed unlink fails, so the error and retry action stay together. Successful unlink behavior and sign-in protection are unchanged.

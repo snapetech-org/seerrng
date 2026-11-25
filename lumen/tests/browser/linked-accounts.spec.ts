@@ -1,5 +1,60 @@
 import { expect, test } from '@playwright/test';
 
+test('failed unlink stays in the confirmation sheet for retry', async ({
+  page,
+}) => {
+  let linked = true;
+  let attempts = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 2, permissions: 32, userType: 2 } });
+    if (path === '/settings/public')
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (path === '/user/2/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    if (path === '/user/2/settings/linked-accounts')
+      return route.fulfill({
+        json: linked
+          ? [
+              {
+                id: 9,
+                username: 'Fixture Viewer',
+                provider: { slug: 'fixture', name: 'Fixture Identity' },
+              },
+            ]
+          : [],
+      });
+    if (path === '/user/2/settings/linked-accounts/9') {
+      expect(request.method()).toBe('DELETE');
+      attempts += 1;
+      if (attempts === 1)
+        return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
+      linked = false;
+      return route.fulfill({ status: 204 });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('./me/account/linked-accounts');
+  await page.getByRole('button', { name: 'Unlink Fixture Identity' }).click();
+  const confirmation = page.getByRole('alertdialog');
+  await confirmation.getByRole('button', { name: 'Unlink Account' }).click();
+  await expect(confirmation.getByRole('alert')).toContainText(
+    'Could not confirm unlinking'
+  );
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole('button', { name: 'Unlink Account' }).click();
+  await expect(page.getByText('Account unlinked.')).toBeVisible();
+  await expect(confirmation).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Unlink Fixture Identity' })
+  ).toHaveCount(0);
+  expect(attempts).toBe(2);
+});
+
 test('Plex links the signed-in user without calling Plex sign-in', async ({
   page,
 }) => {

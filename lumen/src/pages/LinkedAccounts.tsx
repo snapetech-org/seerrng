@@ -197,6 +197,7 @@ function Accounts({ user }: { user: User }) {
     setNotice('');
     setFailure('');
     const generation = sessionGeneration();
+    let succeeded = false;
     try {
       if (action === 'unlink' && target) {
         await api<void>(`${path}/${encodeURIComponent(target.id)}`, {
@@ -217,6 +218,7 @@ function Accounts({ user }: { user: User }) {
       }
       linked.refresh();
       await refreshUser();
+      succeeded = true;
     } catch (err) {
       if (generation !== sessionGeneration()) return;
       setFailure(
@@ -238,7 +240,7 @@ function Accounts({ user }: { user: User }) {
       linked.reload();
     } finally {
       setPassword('');
-      setTarget(undefined);
+      if (action === 'link' || succeeded) setTarget(undefined);
       working.current = false;
       setBusy(false);
     }
@@ -261,7 +263,7 @@ function Accounts({ user }: { user: User }) {
           {notice}
         </p>
       )}
-      {failure && (
+      {failure && !target && (
         <p className="note" role="alert">
           {failure}
         </p>
@@ -479,7 +481,13 @@ function Accounts({ user }: { user: User }) {
           onClose={() => {
             if (!working.current) setTarget(undefined);
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {failure}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

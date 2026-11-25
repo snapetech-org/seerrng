@@ -11017,8 +11017,15 @@ test('Managed Linked Accounts preserves a last sign-in method', async ({
   await page.route('**/api/v1/user/19/settings/password', (route) =>
     route.fulfill({ json: { hasPassword: false } })
   );
+  let unlinkAttempts = 0;
   await page.route('**/api/v1/user/19/settings/linked-accounts/4', (route) => {
     expect(route.request().method()).toBe('DELETE');
+    unlinkAttempts += 1;
+    if (unlinkAttempts === 1)
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Temporary failure' },
+      });
     accounts = accounts.filter((account) => account.id !== 4);
     return route.fulfill({ status: 204 });
   });
@@ -11029,11 +11036,17 @@ test('Managed Linked Accounts preserves a last sign-in method', async ({
     .getByRole('alertdialog')
     .getByRole('button', { name: 'Unlink Account' })
     .click();
+  const confirmation = page.getByRole('alertdialog');
+  await expect(confirmation.getByRole('alert')).toBeVisible();
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole('button', { name: 'Unlink Account' }).click();
   await expect(page.getByText('Account unlinked.')).toBeVisible();
+  await expect(confirmation).toHaveCount(0);
   await expect(page.getByText('Provider Two', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Unlink Provider Two' })
   ).toHaveCount(0);
+  expect(unlinkAttempts).toBe(2);
 });
 
 test('Managed notifications save for the selected user without touching browser devices', async ({
