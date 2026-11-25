@@ -3,6 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const messages = {
   en: {
     title: 'Request Magazine',
+    requestButton: 'Request magazine',
     latest: 'Latest Issue',
     status: 'Status',
     service: 'Service',
@@ -17,6 +18,7 @@ const messages = {
   },
   fr: {
     title: 'Demander un magazine',
+    requestButton: 'Demander le magazine',
     latest: 'Dernier numéro',
     status: 'État',
     service: 'Service',
@@ -31,6 +33,7 @@ const messages = {
   },
   ar: {
     title: 'طلب مجلة',
+    requestButton: 'اطلب المجلة',
     latest: 'أحدث عدد',
     status: 'الحالة',
     service: 'الخدمة',
@@ -115,9 +118,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     page,
   }, info) => {
     const writes = await setup(page, locale);
-    await page.goto('/magazine/Fixture%20Magazine');
-    await page.getByRole('button', { name: 'Request magazine' }).click();
     const copy = messages[locale];
+    await page.goto('/magazine/Fixture%20Magazine');
+    await page.getByRole('button', { name: copy.requestButton }).click();
     const sheet = page.getByRole('alertdialog', { name: copy.title });
     for (const label of [copy.latest, copy.status, copy.service, copy.approval])
       await expect(
@@ -172,4 +175,39 @@ test('magazine requests stay disabled when no service is configured', async ({
   await expect(
     sheet.getByRole('button', { name: 'Send Request' })
   ).toBeDisabled();
+});
+
+test('magazine backend processing failure keeps the request retryable', async ({
+  page,
+}) => {
+  const writes: unknown[] = [];
+  let attempts = 0;
+  await setup(page, 'en');
+  await page.route('**/api/v1/request', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    const body = route.request().postDataJSON();
+    writes.push(body);
+    attempts += 1;
+    return route.fulfill({
+      json: attempts === 1 ? { id: 9, status: 4 } : { id: 10, status: 1 },
+    });
+  });
+
+  await page.goto('/magazine/Fixture%20Magazine');
+  await page.getByRole('button', { name: 'Request magazine' }).click();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
+  const send = sheet.getByRole('button', { name: 'Send Request' });
+  await send.click();
+  await expect(page.getByRole('status')).toContainText(
+    'The Magazine Request Failed.'
+  );
+  await expect(sheet).toBeVisible();
+  await expect(send).toBeEnabled();
+
+  await send.click();
+  await expect(sheet).toHaveCount(0);
+  expect(writes).toEqual([
+    { mediaType: 'magazine', mediaId: 'Fixture Magazine' },
+    { mediaType: 'magazine', mediaId: 'Fixture Magazine' },
+  ]);
 });

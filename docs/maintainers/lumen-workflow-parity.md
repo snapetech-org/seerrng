@@ -10487,6 +10487,21 @@ unverified, as does matched native visual acceptance. Results are retained at
 
 release-note: none
 
+### Magazine request processing recovery (2026-11-25)
+
+Magazine request acceptance now covers LazyLibrarian's asynchronous failed
+status as well as successful submission and the unconfigured-service state.
+When processing reports failure, the sheet remains open, displays the failure,
+and permits a retry; the retry sends the same title identity and succeeds. The
+focused suite passes 20 cases across English, French, and Arabic, desktop,
+iPhone, Android, and tablet. This run also corrected stale French/Arabic button
+selectors in the acceptance fixture; product copy was already localized. API
+responses are mocked, so live LazyLibrarian handoff and matched native visuals
+remain open. Report:
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/magazine-request-test-results/final/report.json`.
+
+release-note: none
+
 ### User directory and account-creation recovery matrix (2026-11-25)
 
 The administrator user-directory browser workflow passes 24 cases across the
