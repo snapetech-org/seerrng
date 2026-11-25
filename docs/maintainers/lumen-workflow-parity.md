@@ -1592,6 +1592,15 @@ discarded the user's edits. The routing workflow now covers stale map
 confirmation, retained draft values, and successful retry. Live Prowlarr
 behavior and native-matched visual acceptance remain open.
 
+### Metadata provider save confirmation (2026-11-25)
+
+Metadata provider forms now compare the submitted, normalized values against
+both the save response and fresh readback. Previously, a server that ignored a
+write could return the same old values from both requests; Lumen treated that
+as success and replaced the draft. The browser workflow now covers this
+unchanged-response failure, retained input, and successful retry. Live metadata
+provider behavior and native-matched visual acceptance remain open.
+
 ### Indexer Search release-size parity (2026-11-23)
 
 Indexer Search now formats result sizes with the same binary B, KB, MB, GB, and

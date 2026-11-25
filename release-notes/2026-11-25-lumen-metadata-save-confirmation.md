@@ -1,0 +1,1 @@
+**Lumen:** Metadata provider settings now confirm that the requested values appear in both the save response and a fresh read. If the server does not apply a change, the form reports the failure and keeps the draft for retry.

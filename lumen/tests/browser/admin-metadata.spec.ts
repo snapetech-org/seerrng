@@ -157,7 +157,7 @@ test('metadata sections save independently and expose failed provider checks', a
       });
     }
     if (persistWrites) Object.assign(settings[path], body);
-    return route.fulfill({ json: { ...settings[path], ...body } });
+    return route.fulfill({ json: settings[path] });
   });
   await page.goto(`${mount}/me`);
   await page.getByRole('link', { name: 'Open Metadata Providers' }).click();
