@@ -9387,11 +9387,13 @@ The shared reader-download controls and sheet now localize file headings,
 format labels, loading and partial-source feedback, request selection, and
 recovery/close actions in English, French, and Arabic. This covers the shared
 Book, Comic, Magazine, and Request History consumers without changing file
-identity, request scope, or download URLs. Twelve browser cases pass across
-desktop, iPhone, Android, and tablet. At 1440px desktop and 390px phone widths,
+identity, request scope, or download URLs. The 16-case download and localization
+suite passes in standalone Lumen and in the production-built frontend served by
+Vite Preview at `/lumen/` (16 runs each) across desktop, iPhone, Android, and
+tablet. At 1440px desktop and 390px phone widths,
 the English baseline and candidate captures are pixel-identical; French and
-Arabic states were inspected at those widths. The standalone build is verified;
-the production Express `/lumen/` mount and live download endpoints remain open.
+Arabic states were inspected at those widths. Production Express authorization
+and live download endpoints remain open.
 
 ### Movie collection detail localization (2026-11-24)
 
