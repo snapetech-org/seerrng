@@ -9811,7 +9811,7 @@ test('General Settings confirms default permissions and preserves higher permiss
   ).toBeChecked();
 });
 
-test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
+test('Scheduled Jobs runs immediately and saves an edited schedule', async ({
   page,
 }) => {
   await fixtures(page);
@@ -9860,13 +9860,9 @@ test('Scheduled Jobs confirms a run and saves an edited schedule', async ({
     page.getByRole('button', { name: 'Cancellation Unavailable' })
   ).toBeDisabled();
   await page.getByRole('button', { name: 'Run Now' }).click();
-  expect(runs).toBe(0);
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Run Now' })
-    .click();
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  await expect.poll(() => runs).toBe(1);
   await expect(page.getByRole('button', { name: 'Cancel Job' })).toBeVisible();
-  expect(runs).toBe(1);
   await page
     .getByRole('listitem')
     .filter({ hasText: 'Fixture Job' })
