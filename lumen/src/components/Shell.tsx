@@ -163,6 +163,8 @@ export default function Shell({ children }: { children: ReactNode }) {
   const managesRequests = canManageRequests(user?.permissions);
   const [pendingRequests, setPendingRequests] = useState(0);
   const [openIssues, setOpenIssues] = useState(0);
+  const followsUpdates = canViewFollowing(user?.permissions);
+  const [unreadFollowUpdates, setUnreadFollowUpdates] = useState(0);
   useEffect(() => {
     if (!managesRequests) {
       setPendingRequests(0);
@@ -200,6 +202,32 @@ export default function Shell({ children }: { children: ReactNode }) {
       window.clearInterval(timer);
     };
   }, [managesIssues, loc.pathname]);
+  useEffect(() => {
+    if (!followsUpdates) {
+      setUnreadFollowUpdates(0);
+      return;
+    }
+    let live = true;
+    const refresh = () => {
+      api<{ unseen: number }>('/follow/events/count')
+        .then(
+          (count) =>
+            live &&
+            setUnreadFollowUpdates(
+              Number.isSafeInteger(count.unseen) && count.unseen > 0
+                ? count.unseen
+                : 0
+            )
+        )
+        .catch(() => live && setUnreadFollowUpdates(0));
+    };
+    refresh();
+    const timer = window.setInterval(refresh, 5 * 60_000);
+    return () => {
+      live = false;
+      window.clearInterval(timer);
+    };
+  }, [followsUpdates]);
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =
@@ -656,10 +684,22 @@ export default function Shell({ children }: { children: ReactNode }) {
               </span>
             )}
           </NavLink>
-          {canViewFollowing(user?.permissions) && (
+          {followsUpdates && (
             <NavLink to="/following">
               <Icon name="list" />
               {t('components.Layout.Sidebar.following', 'Following')}
+              {unreadFollowUpdates > 0 && (
+                <span
+                  className="n"
+                  aria-label={t(
+                    'lumen.nav.unreadFollowUpdates',
+                    'Unread updates: {count}',
+                    { count: unreadFollowUpdates }
+                  )}
+                >
+                  {unreadFollowUpdates > 99 ? '99+' : unreadFollowUpdates}
+                </span>
+              )}
             </NavLink>
           )}
           {canManageDownloads(user?.permissions) && (

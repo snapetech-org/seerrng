@@ -3747,6 +3747,7 @@
   "lumen.nav.more",
   "lumen.nav.pendingRequests",
   "lumen.nav.openIssues",
+  "lumen.nav.unreadFollowUpdates",
   "lumen.nav.seerrAdministration",
   "lumen.nav.signedIn",
   "lumen.notifications.accountSettings",

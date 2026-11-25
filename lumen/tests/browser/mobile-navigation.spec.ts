@@ -176,6 +176,83 @@ test('open issue count appears only for issue managers', async ({ page }) => {
   }
 });
 
+test('Following unread count is permission scoped and capped visually', async ({
+  page,
+}) => {
+  const permission = Number(process.env.LUMEN_TEST_FOLLOW_PERMISSION ?? 32);
+  const locale = ['en', 'fr', 'ar'].includes(process.env.LUMEN_NAV_LOCALE ?? '')
+    ? (process.env.LUMEN_NAV_LOCALE as 'en' | 'fr' | 'ar')
+    : 'en';
+  const unreadLabel = {
+    en: 'Unread updates: 123',
+    fr: 'Mises à jour non lues : 123',
+    ar: 'التحديثات غير المقروءة: 123',
+  }[locale];
+  let followCountRequests = 0;
+  let markCountRequested = () => {};
+  let releaseCount = () => {};
+  const countRequested = new Promise<void>((resolve) => {
+    markCountRequested = resolve;
+  });
+  const countGate = new Promise<void>((resolve) => {
+    releaseCount = resolve;
+  });
+  await page.route('**/api/v1/**', async (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          permissions: permission,
+          userType: 2,
+          displayName: 'Following User',
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/follow/events/count') {
+      followCountRequests++;
+      markCountRequested();
+      await countGate;
+      return route.fulfill({ json: { unseen: 123 } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/me');
+  const following = page.locator('.side a[href="/following"]');
+  if (permission & 32) {
+    await countRequested;
+    if ((page.viewportSize()?.width ?? 0) < 1040)
+      await page
+        .locator('.tabbar [aria-controls="mobile-primary-navigation"]')
+        .click();
+    await expect(following).toBeVisible();
+    await expect(following.locator('.n')).toHaveCount(0);
+    await following.evaluate((element) =>
+      element.scrollIntoView({ block: 'center' })
+    );
+    const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+    const width = page.viewportSize()?.width ?? 0;
+    if (captureDir)
+      await page.screenshot({ path: `${captureDir}/before-${width}.png` });
+    releaseCount();
+    await expect(following.locator('.n')).toHaveText('99+');
+    await expect(following.locator('.n')).toHaveAttribute(
+      'aria-label',
+      unreadLabel
+    );
+    if (captureDir)
+      await page.screenshot({ path: `${captureDir}/after-${width}.png` });
+  } else {
+    await expect(following).toHaveCount(0);
+    await page.waitForTimeout(100);
+    expect(followCountRequests).toBe(0);
+  }
+});
+
 test('More navigation filters categories and fits a compact phone', async ({
   page,
 }, testInfo) => {

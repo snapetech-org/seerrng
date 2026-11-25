@@ -10217,3 +10217,23 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-menu-issue-count-20261125/`.
 Native-matched menu comparison, bundled `/lumen/` deployment, and a live
 authorized count remain open.
+
+### Unread Following count in Lumen navigation (2026-11-25)
+
+The native sidebar shows each authorized viewer's unseen Following updates.
+Lumen now calls the existing `/follow/events/count` endpoint only when
+`canViewFollowing` allows the Following page, refreshes it every five minutes,
+and displays the count with a localized accessible name. Counts above 99 render
+as `99+`; malformed or failed responses clear the badge. The existing navigation
+badge styles now apply to the mobile More menu as well as the desktop sidebar,
+so the count remains separated from the link label on phones.
+
+Browser coverage verifies the count and cap for desktop and phone, the absence
+of any count request for an account without Following access, and English,
+French, and Arabic labels. The complete mobile-navigation suite passes across
+desktop, iPhone, Android, and tablet (19 passed, 5 expected skips). Captures
+before and after the response were inspected at 1440px and 390px and are
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-count-20261125/`.
+Native-matched menu comparison, bundled `/lumen/` deployment, and a live
+authorized Following count remain open.
