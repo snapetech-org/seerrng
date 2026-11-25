@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Section } from './cards';
@@ -33,9 +34,14 @@ function safeRatingUrl(value: string): string | undefined {
 
 export default function MusicRatings({ albumId }: { albumId: string }) {
   const { t } = useLumenLocale();
-  const { data, error } = useApi<RatingResponse>(
+  const { data, error, revalidate } = useApi<RatingResponse>(
     `/music/${encodeURIComponent(albumId)}/rating`
   );
+  useEffect(() => {
+    if (!data?.failedSources?.length) return;
+    const timer = window.setInterval(revalidate, 60_000);
+    return () => window.clearInterval(timer);
+  }, [data?.failedSources?.length, revalidate]);
   if (!data && !error) return null;
   const ratings = new Map(
     (data?.ratings ?? []).map((rating) => [rating.source, rating])

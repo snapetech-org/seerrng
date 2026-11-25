@@ -9864,3 +9864,26 @@ overflow; evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-ratings-20261124/`.
 These checks use a mocked rating response; provider availability and live rating
 values remain unverified.
+
+### Music edition comparison and library health (2026-11-24)
+
+Lumen album details now compare release variants when SeerrNG has at least two
+MusicBrainz releases. The comparison shows edition type, year, formats, track
+counts, and extra or missing tracks. Users with music request permission can
+submit a specific release through the existing variant-aware request endpoint.
+
+Managers see Library Health only when Soulseek is configured. The panel loads
+album issues on demand, shows severity, status, track and reason, offers retry
+on load failure, and submits only open auto-fixable issue IDs for remediation.
+The authenticated API remains responsible for enforcing manager access and
+validating the remediation request.
+
+The album browser workflow verifies alternate-release differences, a requested
+release ID, manager-only panel availability, issue loading, and remediation
+submission. It passes on desktop, iPhone, Android, and tablet, plus French
+desktop and Arabic iPhone. Matched baseline and candidate screenshots cover
+1440×900 and 390×844; open health states are also inspected at both viewports.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-ratings-20261124/`.
+All provider and issue results are mocked; live Soulseek, MusicBrainz, and
+Lidarr behavior remains unverified.

@@ -5239,6 +5239,16 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'Similar Artists',
       blocklist: 'Add to Blocklist',
       blocklistQuestion: 'Add to the Blocklist?',
+      editionCompare: 'Compare Editions',
+      missingTracks: 'Missing tracks: Bonus Track',
+      extraTracks: 'Additional tracks: Bonus Track, Demo',
+      requestEdition: 'Request this edition',
+      libraryHealth: 'Library Health',
+      healthIssue: 'Suspected transcode',
+      healthReason: 'The lossless file may be transcoded.',
+      healthFix: 'Fix 1 issue with Soulseek',
+      musicBrainzRating: 'MusicBrainz: 4.2/5 from 128 votes',
+      discogsFailure: 'Discogs: temporarily unavailable',
     },
     fr: {
       request: 'Demander FLAC',
@@ -5261,6 +5271,16 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'Artistes similaires',
       blocklist: 'Ajouter à la liste de blocage',
       blocklistQuestion: 'Ajouter à la liste de blocage ?',
+      editionCompare: 'Comparer les éditions',
+      missingTracks: 'Pistes manquantes : Bonus Track',
+      extraTracks: 'Pistes supplémentaires : Bonus Track, Demo',
+      requestEdition: 'Demander cette édition',
+      libraryHealth: 'Santé de la bibliothèque',
+      healthIssue: 'Transcodage suspecté',
+      healthReason: 'The lossless file may be transcoded.',
+      healthFix: 'Corriger 1 problème avec Soulseek',
+      musicBrainzRating: 'MusicBrainz : 4.2/5, 128 votes',
+      discogsFailure: 'Discogs : temporairement indisponible',
     },
     ar: {
       request: 'طلب FLAC',
@@ -5283,15 +5303,26 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'فنانون مشابهون',
       blocklist: 'إضافة إلى قائمة الحظر',
       blocklistQuestion: 'إضافة إلى قائمة الحظر؟',
+      editionCompare: 'مقارنة الإصدارات',
+      missingTracks: 'مقاطع مفقودة: Bonus Track',
+      extraTracks: 'مقاطع إضافية: Bonus Track, Demo',
+      requestEdition: 'طلب هذا الإصدار',
+      libraryHealth: 'سلامة المكتبة',
+      healthIssue: 'اشتباه بتحويل الترميز',
+      healthReason: 'The lossless file may be transcoded.',
+      healthFix: 'إصلاح مشكلة واحدة باستخدام Soulseek',
+      musicBrainzRating: 'MusicBrainz: ‏4.2/5 من 128 تقييمًا',
+      discogsFailure: 'Discogs: غير متاح مؤقتًا',
     },
   }[locale];
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
+  let musicPermissions = 268435474;
   await page.route('**/api/v1/user/1/settings/main', (route) =>
     route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
   );
   await page.route('**/api/v1/auth/me', (route) =>
-    route.fulfill({ json: { id: 1, permissions: 268435474 } })
+    route.fulfill({ json: { id: 1, permissions: musicPermissions } })
   );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
@@ -5342,6 +5373,70 @@ test('Music album and artist details localize their controls and metadata', asyn
       },
     })
   );
+  await page.route(`**/api/v1/collectors/variants/${album}`, (route) =>
+    route.fulfill({
+      json: {
+        variants: [
+          {
+            releaseId: '11111111-1111-4111-8111-111111111111',
+            title: 'Fixture Album',
+            year: 2024,
+            formats: ['CD'],
+            edition: 'standard',
+            trackCount: 10,
+            extraTracks: [],
+            missingTracks: ['Bonus Track'],
+            evidence: [],
+            isStandard: true,
+          },
+          {
+            releaseId: '22222222-2222-4222-8222-222222222222',
+            title: 'Fixture Album Deluxe',
+            disambiguation: 'Deluxe Edition',
+            year: 2024,
+            formats: ['CD', 'Digital Media'],
+            edition: 'deluxe',
+            trackCount: 12,
+            extraTracks: ['Bonus Track', 'Demo'],
+            missingTracks: [],
+            evidence: ['Includes two additional tracks.'],
+            isStandard: false,
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/soulseek/status', (route) =>
+    route.fulfill({ json: { configured: true, canRequest: false } })
+  );
+  const remediationCalls: { issueIds: string[] }[] = [];
+  await page.route(`**/api/v1/soulseek/albums/${album}/issues`, (route) =>
+    route.fulfill({
+      json: {
+        issues: [
+          {
+            issueId: 'health-fix-1',
+            type: 'SuspectedTranscode',
+            severity: 'high',
+            status: 'open',
+            title: 'Fixture Track',
+            reason: 'The lossless file may be transcoded.',
+            canAutoFix: true,
+          },
+        ],
+      },
+    })
+  );
+  await page.route(`**/api/v1/soulseek/albums/${album}/remediate`, (route) => {
+    remediationCalls.push(route.request().postDataJSON());
+    return route.fulfill({ json: { issueCount: 1 } });
+  });
+  const requestedMusicVariants: string[] = [];
+  await page.route('**/api/v1/request', (route) => {
+    const body = route.request().postDataJSON();
+    if (body?.variantKey) requestedMusicVariants.push(body.variantKey);
+    return route.fulfill({ json: { id: 42 } });
+  });
   await page.route(`**/api/v1/blocklist/${album}?mediaType=music`, (route) =>
     route.fulfill({ status: 404, json: { message: 'Not blocklisted' } })
   );
@@ -5395,7 +5490,7 @@ test('Music album and artist details localize their controls and metadata', asyn
 
   await page.goto(testAppPath(`/music/${album}`));
   await expect(
-    page.getByRole('heading', { name: 'Fixture Album' })
+    page.locator('h1').getByText('Fixture Album', { exact: true })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: copy.request })).toBeVisible();
   await expect(page.getByRole('link', { name: copy.search })).toBeVisible();
@@ -5419,30 +5514,14 @@ test('Music album and artist details localize their controls and metadata', asyn
   await expect(page.getByText(copy.plays, { exact: true })).toBeVisible();
   await expect(page.getByText(copy.trackCount, { exact: true })).toBeVisible();
   await expect(page.getByTestId('music-ratings')).toContainText(
-    'MusicBrainz: 4.2/5 from 128 votes'
+    copy.musicBrainzRating
   );
   await expect(page.getByTestId('music-ratings')).toContainText(
-    'Discogs: temporarily unavailable'
+    copy.discogsFailure
   );
   await expect(
     page.getByTestId('music-ratings').getByRole('link')
   ).toHaveAttribute('href', 'https://musicbrainz.org/release-group/fixture');
-  const ratingsCapture = process.env.LUMEN_MUSIC_RATINGS_CAPTURE_DIR;
-  if (
-    ratingsCapture &&
-    ['desktop', 'iphone'].includes(test.info().project.name)
-  ) {
-    if (process.env.LUMEN_MUSIC_RATINGS_BASELINE === 'true') {
-      await page.addStyleTag({
-        content: '#music-ratings { display: none !important; }',
-      });
-    }
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({
-      path: `${ratingsCapture}/${locale}-${test.info().project.name}.png`,
-      fullPage: true,
-    });
-  }
   await expect.poll(() => albumSimilarRequests).toBe(1);
   await expect(
     page.getByRole('heading', { name: copy.similarArtists, exact: true })
@@ -5450,6 +5529,39 @@ test('Music album and artist details localize their controls and metadata', asyn
   await expect(
     page.getByRole('link', { name: 'Similar Fixture Artist' })
   ).toHaveAttribute('href', '/artist/similar-artist-1');
+  await expect(
+    page.getByRole('heading', { name: copy.editionCompare })
+  ).toBeVisible();
+  await expect(page.getByText(copy.missingTracks)).toBeVisible();
+  await expect(page.getByText(copy.extraTracks)).toBeVisible();
+  const ratingsCapture = process.env.LUMEN_MUSIC_RATINGS_CAPTURE_DIR;
+  if (
+    ratingsCapture &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  ) {
+    if (process.env.LUMEN_MUSIC_RATINGS_BASELINE === 'true') {
+      const baselineStyle = await page.addStyleTag({
+        content:
+          '#music-ratings, #music-edition-compare, #music-library-health { display: none !important; }',
+      });
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.screenshot({
+        path: `${ratingsCapture}/${locale}-${test.info().project.name}.png`,
+        fullPage: true,
+      });
+      await baselineStyle.evaluate((element) => element.remove());
+    } else {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.screenshot({
+        path: `${ratingsCapture}/${locale}-${test.info().project.name}.png`,
+        fullPage: true,
+      });
+    }
+  }
+  await page.getByRole('button', { name: copy.requestEdition }).last().click();
+  await expect
+    .poll(() => requestedMusicVariants)
+    .toEqual(['22222222-2222-4222-8222-222222222222']);
   await page.getByText(copy.albumDetails, { exact: true }).click();
   for (const label of [copy.artist, copy.released, copy.label, copy.type])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
@@ -5462,6 +5574,36 @@ test('Music album and artist details localize their controls and metadata', asyn
       fullPage: true,
     });
   }
+
+  await page.getByRole('button', { name: copy.libraryHealth }).click();
+  await expect(page.getByText(copy.healthIssue)).toBeVisible();
+  await expect(page.getByText(copy.healthReason)).toBeVisible();
+  const healthCapture = process.env.LUMEN_MUSIC_HEALTH_CAPTURE_DIR;
+  if (
+    healthCapture &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  ) {
+    const hideToast = await page.addStyleTag({
+      content: '.toast { display: none !important; }',
+    });
+    await page.screenshot({
+      path: `${healthCapture}/${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+    await hideToast.evaluate((element) => element.remove());
+  }
+  await page.getByRole('button', { name: copy.healthFix }).click();
+  await expect
+    .poll(() => remediationCalls)
+    .toEqual([{ issueIds: ['health-fix-1'] }]);
+  musicPermissions = 4294967296;
+  await page.reload();
+  await expect(
+    page.locator('h1').getByText('Fixture Album', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: copy.libraryHealth })
+  ).toHaveCount(0);
 
   await page.goto(testAppPath(`/artist/${artist}`));
   await expect(

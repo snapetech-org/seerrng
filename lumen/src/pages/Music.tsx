@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api, MediaStatus, type RequestOptions } from '../api';
 import { isAdministrator, useAuth } from '../auth';
+import AlbumLibraryHealth from '../components/AlbumLibraryHealth';
 import BlocklistButton from '../components/BlocklistButton';
 import { MoreOnScroll, Rail, Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
@@ -27,6 +28,7 @@ import {
 import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import MusicEditionCompare from '../components/MusicEditionCompare';
 import MusicRatings from '../components/MusicRatings';
 import OpenIssueReports from '../components/OpenIssueReports';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -1170,6 +1172,7 @@ export function AlbumDetail() {
             )}
           </VideoDisclosure>
           <div className="dacts pc">{main}</div>
+          <AlbumLibraryHealth releaseGroupId={a.id} />
           <div className="dcols">
             <div>
               <OpenIssueReports
@@ -1237,6 +1240,7 @@ export function AlbumDetail() {
       <SimilarArtists
         path={`/music/${encodeURIComponent(id ?? '')}/artist-similar`}
       />
+      <MusicEditionCompare releaseGroupId={a.id} />
     </ExtraGate>
   );
 }
