@@ -108,6 +108,7 @@ export default function TvDetail() {
     keepDuringRefresh: true,
   });
   const like = useApi<Paged<TitleResult>>(`/tv/${id}/recommendations`).data;
+  const similar = useApi<Paged<TitleResult>>(`/tv/${id}/similar`).data;
   const progressMedia = useLiveMediaProgress(
     t?.mediaInfo,
     isAdministrator(user?.permissions)
@@ -1217,11 +1218,6 @@ export default function TvDetail() {
             translate('lumen.tv.recommendations', 'Recommendations'),
             `/tv/${id}/recommendations`,
           ]}
-          action={
-            <Link to={`/tv/${id}/similar`}>
-              {translate('lumen.tv.similar', 'Similar Series')}
-            </Link>
-          }
         >
           <div className="toolbar">
             <AssociationLink mediaType="tv" id={id} />
@@ -1237,6 +1233,21 @@ export default function TvDetail() {
             </Rail>
           )}
         </Section>
+        {!!similar?.results.length && (
+          <Section
+            title={translate('lumen.tv.similar', 'Similar Series')}
+            link={[
+              translate('lumen.tv.similar', 'Similar Series'),
+              `/tv/${id}/similar`,
+            ]}
+          >
+            <Rail>
+              {similar.results.map((item) => (
+                <TitleCard key={item.id} it={{ ...item, mediaType: 'tv' }} />
+              ))}
+            </Rail>
+          </Section>
+        )}
       </div>
       <ActionBar
         title={t.name || ''}

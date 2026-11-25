@@ -140,6 +140,7 @@ export default function MovieDetail() {
     revalidate
   );
   const like = useApi<Paged<TitleResult>>(`/movie/${id}/recommendations`).data;
+  const similar = useApi<Paged<TitleResult>>(`/movie/${id}/similar`).data;
   const pub = usePublicSettings();
   const { user } = useAuth();
   const { ratingRegion, streamingProviders } = useTitleRegions(
@@ -627,11 +628,6 @@ export default function MovieDetail() {
         <Section
           title={t('lumen.movie.relatedTitles', 'Related Titles')}
           link={['Recommendations', `/movie/${id}/recommendations`]}
-          action={
-            <Link to={`/movie/${id}/similar`}>
-              {t('lumen.movie.similar', 'Similar Movies')}
-            </Link>
-          }
         >
           <div className="toolbar">
             <AssociationLink mediaType="movie" id={id} />
@@ -644,6 +640,21 @@ export default function MovieDetail() {
             </Rail>
           )}
         </Section>
+        {!!similar?.results.length && (
+          <Section
+            title={t('lumen.movie.similar', 'Similar Movies')}
+            link={[
+              t('lumen.movie.similar', 'Similar Movies'),
+              `/movie/${id}/similar`,
+            ]}
+          >
+            <Rail>
+              {similar.results.map((item) => (
+                <TitleCard key={item.id} it={{ ...item, mediaType: 'movie' }} />
+              ))}
+            </Rail>
+          </Section>
+        )}
       </div>
       <ActionBar
         title={m.title || ''}

@@ -9528,3 +9528,23 @@ the release groups. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-artist-bio-20261124/`.
 Provider-backed biography availability and native-matched screenshot review
 remain unverified.
+
+### Similar movie and TV detail shelves (2026-11-24)
+
+Native movie and TV detail layouts show separate Recommendations and Similar
+Titles shelves. Lumen's detail pages previously showed recommendations and
+provided only a link to the separate similar-title list. Movie and TV details
+now request their existing `/similar` API routes and render populated similar
+cards in their own sections; the existing list routes, recommendation shelves,
+request actions, and permissions are unchanged. Empty similar results omit the
+shelf.
+
+The related-video browser workflow verifies the movie and TV detail shelves,
+card destinations, existing recommendations and similar-list pagination/retry,
+and no horizontal overflow on desktop, iPhone, Android, and tablet. Matched
+pre-change and candidate screenshots cover the same movie and TV fixtures at
+desktop 1440x900 and iPhone 390x844; they confirm both new shelves fit the
+existing layout without clipping. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-similar-20261124/`.
+Live TMDB result availability and a native-matched screenshot comparison
+remain unverified.

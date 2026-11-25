@@ -1,0 +1,1 @@
+Lumen movie and TV detail pages now show Similar Movies and Similar Series shelves alongside recommendations, matching the native detail workflow. Similar-title cards open their corresponding detail pages, and empty similar-title results do not add an empty shelf.

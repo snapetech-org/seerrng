@@ -3942,7 +3942,18 @@ test('related video lists preserve media type, paginate, and retry', async ({
 }) => {
   await fixtures(page);
   await page.route('**/api/v1/tv/202', (route) =>
-    route.fulfill({ json: { id: 202, name: 'Fixture Series', seasons: [] } })
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        name: 'Fixture Series',
+        title: undefined,
+        firstAirDate: '2020-01-01',
+        status: 'Returning Series',
+        seasons: [],
+        mediaInfo: null,
+      },
+    })
   );
   let pageTwoAttempts = 0;
   await page.route(
@@ -3976,6 +3987,29 @@ test('related video lists preserve media type, paginate, and retry', async ({
   );
 
   await page.goto('/movie/101');
+  await expect(
+    page.getByRole('heading', { name: 'The Test Film' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Similar Movies', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Similar Film 1' })
+  ).toHaveAttribute('href', '/movie/301');
+  await expect(
+    page.getByRole('link', { name: 'Recommended Film 1' })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBeTruthy();
+  if (process.env.LUMEN_MOVIE_SIMILAR_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MOVIE_SIMILAR_CAPTURE}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   await page.getByRole('link', { name: 'Similar Movies' }).click();
   await expect(
     page.getByRole('heading', { name: 'Similar Movies' })
@@ -3995,6 +4029,28 @@ test('related video lists preserve media type, paginate, and retry', async ({
   await expect(
     page.getByRole('link', { name: 'Recommended Film 1' })
   ).toBeVisible();
+
+  await page.goto('/tv/202');
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Series' })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Similar Series', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Similar Series 1' })
+  ).toHaveAttribute('href', '/tv/301');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBeTruthy();
+  if (process.env.LUMEN_MOVIE_SIMILAR_CAPTURE) {
+    await page.screenshot({
+      path: `${process.env.LUMEN_MOVIE_SIMILAR_CAPTURE}-tv-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
 
   await page.goto('/tv/202/recommendations');
   await expect(
