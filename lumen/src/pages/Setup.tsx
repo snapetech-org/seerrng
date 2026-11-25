@@ -198,8 +198,8 @@ function SetupRequestServices({
   );
   return (
     <>
-      <label className="sel">
-        {t('lumen.setup.serviceGroup', 'Service Group')}
+      <label className="sel" data-layout="stacked-mobile">
+        <span>{t('lumen.setup.serviceGroup', 'Service Group')}</span>
         <select
           value={group}
           onChange={(event) => setGroup(event.target.value)}

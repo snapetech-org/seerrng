@@ -7909,6 +7909,24 @@ at all viewports. Live media-server discovery and independent linguistic
 review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-setup-localization-20261122/`.
 
+### Mobile Setup service-group control
+
+The Setup wizard's Service Group filter now stacks its label above a full-width
+select at phone widths. The shared `.sel` control owner keeps the existing
+inline layout at tablet and desktop widths. This prevents translated labels
+such as French “Groupe de services” from wrapping into the select and obscuring
+its option text.
+
+Baseline and candidate French service-step captures were compared at matching
+iPhone (390 CSS pixels) and desktop (1440 pixels) viewports; the phone control
+now shows the complete label and option, while desktop remains inline. The
+setup and localization browser suites pass in both standalone production output
+and the compiled SeerrNG `/lumen/` mount (44 cases each across desktop, iPhone,
+Android, and tablet). Provider and backend APIs are mocked, so live setup
+discovery and authentication remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+Release note: `release-notes/fixed-lumen-mobile-setup-service-filter.md`.
+
 ### Indexer Search setup navigation
 
 When Prowlarr is unconfigured, administrators now get a direct link to its

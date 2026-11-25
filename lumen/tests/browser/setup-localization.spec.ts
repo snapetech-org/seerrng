@@ -151,11 +151,35 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(
       page.getByRole('navigation').getByRole('link', { name: copy.services })
     ).toBeVisible();
-    await expect(page.getByLabel(copy.serviceGroup)).toBeVisible();
+    const serviceGroup = page.getByLabel(copy.serviceGroup);
+    const serviceGroupLabel = page
+      .locator('label.sel')
+      .filter({ has: serviceGroup });
+    await expect(serviceGroup).toBeVisible();
+    const labelBounds = await serviceGroupLabel.locator('span').boundingBox();
+    const selectBounds = await serviceGroup.boundingBox();
+    const controlBounds = await serviceGroupLabel.boundingBox();
+    expect(labelBounds).not.toBeNull();
+    expect(selectBounds).not.toBeNull();
+    expect(controlBounds).not.toBeNull();
+    if (!labelBounds || !selectBounds || !controlBounds) {
+      throw new Error('The setup service-group control did not render.');
+    }
+    expect(selectBounds.x + selectBounds.width).toBeLessThanOrEqual(
+      controlBounds.x + controlBounds.width
+    );
+    if (page.viewportSize()!.width <= 699) {
+      expect(selectBounds.y).toBeGreaterThanOrEqual(
+        labelBounds.y + labelBounds.height
+      );
+    } else {
+      expect(labelBounds.y).toBeLessThan(selectBounds.y + selectBounds.height);
+      expect(labelBounds.y + labelBounds.height).toBeGreaterThan(
+        selectBounds.y
+      );
+    }
     await expect(
-      page
-        .getByLabel(copy.serviceGroup)
-        .getByRole('option', { name: copy.allServices })
+      serviceGroup.getByRole('option', { name: copy.allServices })
     ).toBeAttached();
     await expect(page.getByRole('link', { name: copy.next })).toBeVisible();
     await page.screenshot({

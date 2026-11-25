@@ -440,6 +440,16 @@ body.is-detail .tabbar {
 .sel[data-layout='stacked'] select {
   width: 100%;
 }
+@media (max-width: 699px) {
+  .sel[data-layout='stacked-mobile'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .sel[data-layout='stacked-mobile'] select {
+    width: 100%;
+  }
+}
 .sel input[type='month'] {
   min-width: 0;
   border: 0;
