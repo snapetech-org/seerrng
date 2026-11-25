@@ -92,6 +92,7 @@ function AccessReview({ viewerId }: { viewerId: number }) {
   async function review() {
     if (!pending || pending.request.id === viewerId || working.current) return;
     const generation = sessionGeneration();
+    let reviewed = false;
     working.current = true;
     setBusy(true);
     setFailure('');
@@ -105,6 +106,8 @@ function AccessReview({ viewerId }: { viewerId: number }) {
         }
       );
       if (generation !== sessionGeneration()) return;
+      reviewed = true;
+      setFailure('');
       setNotice(
         `Request ${pending.decision === 'approve' ? 'approved' : 'declined'}.`
       );
@@ -121,9 +124,9 @@ function AccessReview({ viewerId }: { viewerId: number }) {
       );
     } finally {
       if (generation === sessionGeneration()) {
-        setPending(undefined);
+        if (reviewed) setPending(undefined);
         setBusy(false);
-        reload();
+        if (reviewed) reload();
       }
       working.current = false;
     }
@@ -141,11 +144,6 @@ function AccessReview({ viewerId }: { viewerId: number }) {
         what={t('lumen.error.what.accessRequests', 'TV access requests')}
         retry={reload}
       />
-      {failure && (
-        <p className="note" role="alert">
-          {failure}
-        </p>
-      )}
       {notice && (
         <p className="note" role="status">
           {notice}
@@ -234,14 +232,21 @@ function AccessReview({ viewerId }: { viewerId: number }) {
                 )
           }
           confirm={label}
-          cancel={t(
-            'components.Login.JellyfinQuickConnectModal.cancel',
-            'Cancel'
-          )}
+          cancel={t('lumen.tvRequests.cancel', 'Cancel')}
           busy={busy}
+          children={
+            failure ? (
+              <p className="note" role="alert">
+                {failure}
+              </p>
+            ) : undefined
+          }
           onConfirm={() => void review()}
           onClose={() => {
-            if (!working.current) setPending(undefined);
+            if (!working.current) {
+              setPending(undefined);
+              setFailure('');
+            }
           }}
         />
       )}
@@ -341,6 +346,7 @@ function RequestSettings({
       return;
     const path = isQueue ? queuePath : gatePath;
     const generation = sessionGeneration();
+    let saved = false;
     working.current = true;
     setBusy(true);
     setNotice('');
@@ -355,6 +361,7 @@ function RequestSettings({
         ),
       });
       if (generation !== sessionGeneration()) return;
+      saved = true;
       remember(path, next);
       if (isQueue) {
         setDraft(undefined);
@@ -387,7 +394,7 @@ function RequestSettings({
       if (isQueue) queue.reload();
       else gate.reload();
     } finally {
-      setConfirmation(undefined);
+      if (saved) setConfirmation(undefined);
       setBusy(false);
       working.current = false;
     }
@@ -405,11 +412,6 @@ function RequestSettings({
       {notice && (
         <p className="note" role="status">
           {notice}
-        </p>
-      )}
-      {failure && (
-        <p className="note" role="alert">
-          {failure}
         </p>
       )}
       <Section
@@ -610,10 +612,21 @@ function RequestSettings({
                 )
           }
           confirm={label}
+          cancel={t('lumen.tvRequests.cancel', 'Cancel')}
           busy={busy}
+          children={
+            failure ? (
+              <p className="note" role="alert">
+                {failure}
+              </p>
+            ) : undefined
+          }
           onConfirm={() => void save()}
           onClose={() => {
-            if (!working.current) setConfirmation(undefined);
+            if (!working.current) {
+              setConfirmation(undefined);
+              setFailure('');
+            }
           }}
         />
       )}

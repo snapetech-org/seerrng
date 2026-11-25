@@ -1,0 +1,1 @@
+Lumen keeps failed TV Request Settings actions recoverable. Episode Queue save and household access review failures remain in their confirmation sheet with an accessible retry message; successful actions still close the sheet. Confirmation dismissal buttons now use English, French, or Arabic for the selected account locale.

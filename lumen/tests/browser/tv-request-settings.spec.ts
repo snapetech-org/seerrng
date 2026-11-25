@@ -127,6 +127,7 @@ test('user managers can review access and save the account Episode Queue default
 }, info) => {
   let episodeCount = 2;
   let rejectNextSave = true;
+  let rejectNextReview = true;
   const posts: { path: string; body: unknown }[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
@@ -152,6 +153,16 @@ test('user managers can review access and save the account Episode Queue default
       }
       return route.fulfill({ json: { defaultEpisodeCount: episodeCount } });
     }
+    if (path === '/user/9/settings/tv-season-watch-gate/review') {
+      if (request.method() === 'POST') {
+        posts.push({ path, body: request.postDataJSON() });
+        if (rejectNextReview) {
+          rejectNextReview = false;
+          return route.fulfill({ status: 503, json: {} });
+        }
+      }
+      return route.fulfill({ json: {} });
+    }
     if (path === '/user/tv-season-watch-gate-requests')
       return route.fulfill({
         json: [{ id: 9, displayName: 'Member', requestedAt: null }],
@@ -164,6 +175,14 @@ test('user managers can review access and save the account Episode Queue default
     page.getByRole('heading', { name: 'Previous-season watch requests' })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: 'Approve' })).toBeVisible();
+  await page.getByRole('button', { name: 'Approve' }).click();
+  const reviewDialog = page.getByRole('alertdialog');
+  await reviewDialog.getByRole('button', { name: 'Approve' }).click();
+  await expect(reviewDialog).toBeVisible();
+  await expect(reviewDialog.getByRole('alert')).toBeVisible();
+  await reviewDialog.getByRole('button', { name: 'Approve' }).click();
+  await expect(reviewDialog).toHaveCount(0);
+
   const episodes = page.getByRole('combobox', {
     name: 'Episodes to keep requested',
   });
@@ -174,20 +193,23 @@ test('user managers can review access and save the account Episode Queue default
     .getByRole('alertdialog')
     .getByRole('button', { name: 'Save default' })
     .click();
-  await expect(
-    page.getByText(
-      'Could not update this user’s Episode Queue default. Try again.'
-    )
-  ).toBeVisible();
+  const queueDialog = page.getByRole('alertdialog');
+  await expect(queueDialog).toBeVisible();
+  await expect(queueDialog.getByRole('alert')).toBeVisible();
   await expect(episodes).toHaveValue('4');
-  await page.getByRole('button', { name: 'Save default' }).click();
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Save default' })
-    .click();
+  await queueDialog.getByRole('button', { name: 'Save default' }).click();
+  await expect(queueDialog).toHaveCount(0);
   await expect(page.getByText('Episode Queue default saved.')).toBeVisible();
   await expect(episodes).toHaveValue('4');
   expect(posts).toEqual([
+    {
+      path: '/user/9/settings/tv-season-watch-gate/review',
+      body: { decision: 'approve' },
+    },
+    {
+      path: '/user/9/settings/tv-season-watch-gate/review',
+      body: { decision: 'approve' },
+    },
     {
       path: '/user/2/settings/episode-queue',
       body: { defaultEpisodeCount: 4 },
@@ -385,5 +407,45 @@ test('Episode Queue options use Arabic and French plural forms', async ({
       )
       .toBe(true);
     await captureSettings(page, info, `${language}-manager-options-candidate`);
+  }
+});
+
+test('TV request confirmation dismissals follow the selected locale', async ({
+  page,
+}) => {
+  let locale = 'en';
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 2, displayName: 'Manager', permissions: 8, userType: 2 },
+      });
+    if (path === '/user/2/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/user/2/settings/tv-season-watch-gate')
+      return route.fulfill({ json: { status: 'off', globallyEnabled: false } });
+    if (path === '/user/2/settings/episode-queue')
+      return route.fulfill({ json: { defaultEpisodeCount: 2 } });
+    if (path === '/user/tv-season-watch-gate-requests')
+      return route.fulfill({ json: [] });
+    return route.fulfill({ json: {} });
+  });
+
+  for (const [tag, save, cancel] of [
+    ['en', 'Save default', 'Cancel'],
+    ['fr', 'Enregistrer la valeur par défaut', 'Annuler'],
+    ['ar', 'حفظ الافتراضي', 'إلغاء'],
+  ] as const) {
+    locale = tag;
+    await page.goto('/me/account/tv-requests');
+    await page.getByRole('combobox').selectOption('3');
+    await page.getByRole('button', { name: save }).click();
+    const dialog = page.getByRole('alertdialog');
+    await expect(dialog.getByRole('button', { name: cancel })).toBeVisible();
+    await dialog.getByRole('button', { name: cancel }).click();
+    await expect(dialog).toHaveCount(0);
   }
 });

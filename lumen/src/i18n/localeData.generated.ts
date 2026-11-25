@@ -5943,6 +5943,7 @@ export const localeData = [
       'lumen.tvRequests.episodeOption.one': '{count} حلقة',
       'lumen.tvRequests.episodeOption.other': '{count} حلقة',
       'lumen.tvRequests.episodeOption.two': '{count} حلقتين',
+      'lumen.tvRequests.cancel': 'إلغاء',
       'lumen.tvRequests.loadingAccess': 'جارٍ تحميل إعدادات طلبات التلفاز…',
       'lumen.videoCredits.backToDetails': 'العودة إلى التفاصيل',
       'lumen.videoCredits.cast': 'طاقم التمثيل',
@@ -17791,6 +17792,7 @@ export const localeData = [
       'lumen.tvRequests.episodeAhead.other': '{count} episodes ahead',
       'lumen.tvRequests.episodeOption.one': '{count} episode',
       'lumen.tvRequests.episodeOption.other': '{count} episodes',
+      'lumen.tvRequests.cancel': 'Cancel',
       'lumen.tvRequests.loadingAccess': 'Loading TV request access…',
       'lumen.videoCredits.backToDetails': 'Back to Details',
       'lumen.videoCredits.cast': 'Cast',
@@ -30786,6 +30788,7 @@ export const localeData = [
       'lumen.tvRequests.episodeAhead.other': '{count} épisodes à venir',
       'lumen.tvRequests.episodeOption.one': '{count} épisode',
       'lumen.tvRequests.episodeOption.other': '{count} épisodes',
+      'lumen.tvRequests.cancel': 'Annuler',
       'lumen.tvRequests.loadingAccess':
         'Chargement des autorisations de demande TV…',
       'lumen.videoCredits.backToDetails': 'Retour aux détails',
