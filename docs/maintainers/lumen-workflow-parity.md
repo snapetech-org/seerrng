@@ -10474,6 +10474,19 @@ visits, API fixture parsing, shortcut links, and permission redirects now honor
 `LUMEN_TEST_MOUNT=/lumen`, allowing these cases to exercise the bundled route
 instead of the standalone root.
 
+### Large-series request recovery recheck (2026-11-25)
+
+At `57b3452a8`, the Lumen production build completed and the large-series TV
+episode request suite passed all 12 cases across desktop, iPhone, Android, and
+tablet. The suite covers a 330-episode series, bounded five-season metadata
+batches, transient retry, selection retention, successful exact-episode
+submission, and cancellation of in-flight metadata work when the sheet closes.
+These are mocked API responses; live metadata latency and service handoff remain
+unverified, as does matched native visual acceptance. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/large-series-test-results/`.
+
+release-note: none
+
 ### User directory and account-creation recovery matrix (2026-11-25)
 
 The administrator user-directory browser workflow passes 24 cases across the
