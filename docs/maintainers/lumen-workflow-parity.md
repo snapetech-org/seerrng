@@ -10275,3 +10275,15 @@ inspected; the sheet retains its layout when the unauthorized section is
 removed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-service-permissions-20261125/`.
 Live role authorization and bundled `/lumen/` behavior remain open.
+
+### Large-series episode request recovery recheck (2026-11-25)
+
+The earlier large-show episode-load failure remains covered by Lumen's bounded
+five-season metadata batches and independent failed-batch recovery. A fresh
+browser run on the current `main` passes 20 cases across desktop, iPhone,
+Android, and tablet: 330-episode selection, transient season-batch retry with
+selection preservation, retry limited to failed seasons, deep-linked episode
+selection, continued selection while a later batch loads, and cancellation of
+remaining metadata requests when the picker closes. The selected payload
+contains only chosen episode identities. These fixtures verify client behavior;
+live provider latency and bundled `/lumen/` execution remain open.
