@@ -9570,3 +9570,15 @@ overflow. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-similar-artists-20261124/`.
 Live ListenBrainz/artist artwork responses and native-matched screenshot
 acceptance remain unverified.
+
+### Extra-category navigation parity coverage (2026-11-24)
+
+Expanded the direct Lumen menu contract to cover native Comics/Manga,
+Magazines, Sports, and Adult destinations alongside the existing Books, Music,
+Games, and software shortcuts. The permission matrix confirms request-only
+shortcuts stay hidden for users without request access while browse destinations
+remain available; a separate account-category case confirms disabled categories
+are hidden. All destinations remain reachable in the 320px phone menu without
+horizontal overflow. The 20 browser cases pass across desktop, iPhone, Android,
+and tablet projects. These route fixtures verify menu visibility and links, not
+live provider availability.

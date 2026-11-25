@@ -25,6 +25,10 @@ async function prepare(
           booksEnabled: true,
           musicEnabled: true,
           softwareEnabled: true,
+          comicsEnabled: true,
+          magazinesEnabled: true,
+          sportsEnabled: true,
+          adultEnabled: true,
           enabledMediaCategories: categories,
         },
       });
@@ -48,11 +52,19 @@ test('native Discover destinations have direct Lumen menu links', async ({
     audiobook: true,
     music: true,
     game: true,
+    comic: true,
+    magazine: true,
+    sports: true,
+    adult: true,
   };
   const menu = await prepare(page, 32, categories);
   const destinations = [
     ['Book Recommendations', '/books/recommendations'],
     ['Collector Picks', '/music/collectors'],
+    ['Comics/Manga', '/comics'],
+    ['Magazines', '/magazines'],
+    ['Sports', '/sports'],
+    ['Adult', '/adult'],
     ['Game Finder', '/games/discovery'],
     ['Software', '/software'],
     ['Translations & Hacks', '/patches'],
@@ -80,6 +92,10 @@ test('request actions stay hidden while software browsing remains available', as
     audiobook: true,
     music: true,
     game: true,
+    comic: true,
+    magazine: true,
+    sports: true,
+    adult: true,
   });
   for (const label of [
     'Book Recommendations',
@@ -90,6 +106,10 @@ test('request actions stay hidden while software browsing remains available', as
     await expect(
       menu.getByRole('link', { name: label, exact: true })
     ).toHaveCount(0);
+  for (const label of ['Comics/Manga', 'Magazines', 'Sports', 'Adult'])
+    await expect(
+      menu.getByRole('link', { name: label, exact: true })
+    ).toBeVisible();
   const software = menu.getByRole('link', { name: 'Software', exact: true });
   await expect(software).toBeVisible();
   if (
@@ -121,10 +141,18 @@ test('Discover menu destinations follow account category restrictions', async ({
     audiobook: false,
     music: false,
     game: false,
+    comic: false,
+    magazine: false,
+    sports: false,
+    adult: false,
   });
   for (const label of [
     'Book Recommendations',
     'Collector Picks',
+    'Comics/Manga',
+    'Magazines',
+    'Sports',
+    'Adult',
     'Game Finder',
     'Software',
     'Translations & Hacks',
@@ -142,6 +170,10 @@ test('book recommendations selects audiobook when ebooks are unavailable', async
     audiobook: true,
     music: false,
     game: false,
+    comic: false,
+    magazine: false,
+    sports: false,
+    adult: false,
   });
   await expect(
     menu.getByRole('link', { name: 'Book Recommendations', exact: true })
@@ -157,10 +189,18 @@ test('all Discover menu links remain reachable without horizontal overflow at 32
     audiobook: true,
     music: true,
     game: true,
+    comic: true,
+    magazine: true,
+    sports: true,
+    adult: true,
   });
   const labels = [
     'Book Recommendations',
     'Collector Picks',
+    'Comics/Manga',
+    'Magazines',
+    'Sports',
+    'Adult',
     'Game Finder',
     'Software',
     'Translations & Hacks',
