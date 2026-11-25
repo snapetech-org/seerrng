@@ -10854,3 +10854,23 @@ and reruns are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
 release-note: none
+
+### Bundled mount suite harness limitation (2026-11-25)
+
+Attempted the full 235-spec browser suite against the compiled Express
+`mountLumenFrontend` route at `/lumen/`. The run completed 3,593 cases with
+1,594 passed, 164 skipped, and 1,835 unexpected. This is not accepted as a
+bundled-product failure total: at least 532 failing `app.spec.ts` cases navigate
+with root-relative paths such as `/` even though the compiled frontend is
+mounted under `/lumen/`; other specs mix mount-aware helpers with paths and
+expectations that still assume the root deployment. The test set therefore
+cannot currently serve as a full mount qualification. The valid focused setup
+and localization matrix, which consistently uses the `/lumen` base, passes 44
+cases across desktop, iPhone, Android, and tablet against the same compiled
+middleware. API/provider behavior in both runs is fixture-backed. Full bundled
+mount acceptance remains open until route fixtures are made consistently
+mount-aware and the affected failures are separated from actual mount defects.
+The complete report and artifacts are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: none
