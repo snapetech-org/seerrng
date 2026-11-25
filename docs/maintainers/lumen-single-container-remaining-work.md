@@ -30,7 +30,7 @@ and all three explicit choices after reloading from disk.
 
 | Remaining work | Acceptance |
 | --- | --- |
-| Finish published-image acceptance | Verify the fresh dark default and saved native/external choices, direct detail links, and matched native/Lumen behavior at phone/tablet/desktop. The v3.72.40 checks below cover a fresh setup entry, an upgraded config clone, saved Lumen routing, existing admin/member accounts, native escape, and companion auth/storage. |
+| Finish published-image acceptance | Verify the fresh dark default and saved native/external choices, signed-in direct detail links, and matched native/Lumen behavior at phone/tablet/desktop. The v3.72.40 checks below cover a fresh setup entry, an upgraded config clone, saved Lumen routing, existing admin/member accounts, native escape, and companion auth/storage. A fresh-install headed check confirms the dark Lumen setup screen; signed-in detail routing and the matched published-image visual matrix remain open. |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
@@ -95,3 +95,18 @@ the default. Desktop and iPhone checks rendered the production bundle through
 Express, with pixel-identical wizard screens for the home redirect and direct
 setup link. Published v3.72.40 now has the partial runtime evidence recorded
 above; the complete visual and saved-choice matrix remains to be qualified.
+
+### Published-image fresh-install headed check (2026-11-25)
+
+Started the published amd64 image `ghcr.io/snapetech-org/seerrng:v3.72.40`
+(digest `sha256:b145f47c52563c342f8aa91ee886455b956777e2bf8b64906b25f74a9c5bcc8d`)
+with a new task-owned config, UID 1000, read-only root, and no outbound
+network. A headed Chrome session opened the container over its internal Docker
+subnet. The root redirected to `/lumen/setup`; the rendered screen showed the
+dark setup card and Plex/Jellyfin/Emby choices. A direct `/lumen/movie/550`
+visit while signed out redirected to setup, as expected for a fresh instance.
+This does not verify a signed-in detail page, saved native/external choices,
+or matched native/Lumen screens. The screenshot is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/published-image-visual-acceptance-b8c4e189/artifacts/fresh-lumen-setup.png`.
+Provider egress was blocked, so live catalog content and provider behavior
+were not exercised. Published-image qualification remains open.
