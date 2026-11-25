@@ -4378,6 +4378,7 @@
   "lumen.status.partlyOnServer",
   "lumen.status.queued",
   "lumen.status.requested",
+  "lumen.status.processing",
   "lumen.status.shared",
   "lumen.streamingFilter.apply",
   "lumen.streamingFilter.clear",

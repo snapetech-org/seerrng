@@ -189,14 +189,14 @@ export const Glyph = ({ s }: { s: Stat }) => {
   ) : null;
 };
 
-type VideoQuality = 'HD' | '4K';
-type VideoStatus = { quality?: VideoQuality; s: Stat };
+export type CardQuality = 'HD' | '4K' | 'MP3' | 'FLAC';
+export type QualityStatus = { quality?: CardQuality; s: Stat };
 
 function videoQualityStatuses(
   media: MediaInfo | undefined,
   serverName: string,
   availability: AvailabilityMode
-): VideoStatus[] {
+): QualityStatus[] {
   if (!media) return [];
   const standard = statusOf(
     { ...media, status4k: undefined, downloadStatus4k: undefined },
@@ -211,14 +211,18 @@ function videoQualityStatuses(
     serverName,
     availability
   );
-  const statuses: VideoStatus[] = [
+  const statuses: QualityStatus[] = [
     ...(standard ? [{ quality: 'HD' as const, s: standard }] : []),
     ...(fourK ? [{ quality: '4K' as const, s: fourK }] : []),
   ];
   return statuses;
 }
 
-function VideoStatusGlyphs({ statuses }: { statuses: VideoStatus[] }) {
+export function QualityStatusGlyphs({
+  statuses,
+}: {
+  statuses: QualityStatus[];
+}) {
   const { t } = useLumenLocale();
   if (!statuses.length) return null;
   return (
@@ -255,6 +259,7 @@ export function statusLabel(
   if (s.word === 'Blocklisted') return t('lumen.status.blocklisted', s.word);
   if (s.word === 'In library') return t('lumen.status.inLibrary', s.word);
   if (s.word === 'Requested') return t('lumen.status.requested', s.word);
+  if (s.word === 'Processing') return t('lumen.status.processing', s.word);
   if (s.word === 'Waiting for approval')
     return t('lumen.status.waitingApproval', s.word);
   if (s.word === 'Approved') return t('lumen.status.approved', s.word);
@@ -456,9 +461,9 @@ export function TitleCard({
   const requestMedia = withoutPending4k(media);
   // Presentation never changes whether the server already has or is acquiring a copy.
   const shown = statusOf(media, false, serverName, availability);
-  const [requestedQuality, setRequestedQuality] = useState<VideoQuality>();
+  const [requestedQuality, setRequestedQuality] = useState<CardQuality>();
   const videoStatuses = videoQualityStatuses(media, serverName, availability);
-  const visibleVideoStatuses: VideoStatus[] = videoStatuses.map((item) =>
+  const visibleVideoStatuses: QualityStatus[] = videoStatuses.map((item) =>
     requestedQuality && item.quality === requestedQuality
       ? {
           ...item,
@@ -621,7 +626,7 @@ export function TitleCard({
           sub={yearOf(it)}
           icon={tv ? 'tv' : 'film'}
         />
-        <VideoStatusGlyphs
+        <QualityStatusGlyphs
           statuses={
             visibleVideoStatuses.length || (!visibleRequestStatus && !shown)
               ? visibleVideoStatuses

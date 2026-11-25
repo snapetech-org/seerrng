@@ -4,7 +4,13 @@ import { api, MediaStatus, type RequestOptions } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import AlbumLibraryHealth from '../components/AlbumLibraryHealth';
 import BlocklistButton from '../components/BlocklistButton';
-import { MoreOnScroll, Rail, Section } from '../components/cards';
+import {
+  MoreOnScroll,
+  Rail,
+  Section,
+  statusOf,
+  type QualityStatus,
+} from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   AdvancedOptions,
@@ -698,21 +704,52 @@ const big = (n?: number) =>
         ? `${Math.round(n / 1e3)}K`
         : String(n);
 
-export const AlbumCard = ({ a }: { a: Album }) => (
-  <ExtraCard
-    href={`/music/${a.id}`}
-    img={a.posterPath}
-    title={a.title}
-    shape="sq"
-    titleKind="album"
-    icon="music"
-    stat={extraStat(a.mediaInfo)}
-    watchlist={{ mediaType: 'music', id: a.id }}
-    meta={[artistOf(a), (a['first-release-date'] || '').slice(0, 4)]
-      .filter(Boolean)
-      .join(' · ')}
-  />
-);
+export const AlbumCard = ({ a }: { a: Album }) => {
+  const source = a.qualityStatuses?.length
+    ? a.qualityStatuses
+    : (a.availableQualities ?? []).map((quality) => ({
+        quality,
+        status: MediaStatus.AVAILABLE,
+      }));
+  const statusBadges: QualityStatus[] = source.flatMap(
+    ({ quality, status }) => {
+      const stat =
+        status === MediaStatus.PENDING
+          ? {
+              k: 'wait' as const,
+              word: 'Waiting for approval',
+              ico: 'clock' as const,
+            }
+          : status === MediaStatus.PROCESSING
+            ? { k: 'dl' as const, word: 'Processing', ico: 'down' as const }
+            : status === MediaStatus.PARTIAL
+              ? {
+                  k: 'ok' as const,
+                  word: 'Partly in library',
+                  ico: 'check' as const,
+                }
+              : statusOf({ status }, true);
+      return stat ? [{ quality, s: stat }] : [];
+    }
+  );
+
+  return (
+    <ExtraCard
+      href={`/music/${a.id}`}
+      img={a.posterPath}
+      title={a.title}
+      shape="sq"
+      titleKind="album"
+      icon="music"
+      stat={extraStat(a.mediaInfo)}
+      statusBadges={statusBadges}
+      watchlist={{ mediaType: 'music', id: a.id }}
+      meta={[artistOf(a), (a['first-release-date'] || '').slice(0, 4)]
+        .filter(Boolean)
+        .join(' · ')}
+    />
+  );
+};
 
 // Music: albums from MusicBrainz and ListenBrainz charts; requests go to Lidarr
 export function Music() {

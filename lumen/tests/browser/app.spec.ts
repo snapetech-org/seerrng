@@ -1286,6 +1286,147 @@ test('movie cards show both independent quality statuses', async ({ page }) => {
   );
 });
 
+test('music cards preserve format-specific status badges', async ({ page }) => {
+  const qa = await fixtures(page);
+  const locale = process.env.LUMEN_MUSIC_STATUS_LOCALE || 'en';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        applicationTitle: 'SeerrNG',
+        enabledMediaCategories: { music: true },
+        mediaServerType: 1,
+      },
+    })
+  );
+  await page.route('**/api/v1/service/lidarr', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, name: 'Fixture MP3', musicQuality: 'mp3' },
+        { id: 2, name: 'Fixture FLAC', musicQuality: 'flac' },
+      ],
+    })
+  );
+  await page.route(/\/api\/v1\/discover\/music(?:\?|$)/, (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          id: 'fixture-album',
+          mediaType: 'album',
+          title: 'Dual Format Album',
+          'primary-type': 'Album',
+          'first-release-date': '2020-01-01',
+          'artist-credit': [{ name: 'Fixture Artist' }],
+          posterPath: '/qa-poster.png',
+          availableQualities: ['MP3'],
+          qualityStatuses: [
+            { quality: 'MP3', status: 5 },
+            { quality: 'FLAC', status: 2 },
+          ],
+          mediaInfo: { status: 5 },
+        },
+        {
+          id: 'processing-album',
+          mediaType: 'album',
+          title: 'Processing Album',
+          'primary-type': 'Album',
+          'artist-credit': [{ name: 'Fixture Artist' }],
+          qualityStatuses: [{ quality: 'FLAC', status: 3 }],
+        },
+        {
+          id: 'fallback-album',
+          mediaType: 'album',
+          title: 'Fallback Album',
+          'primary-type': 'Album',
+          'artist-credit': [{ name: 'Fixture Artist' }],
+          availableQualities: ['MP3'],
+          qualityStatuses: [],
+        },
+        {
+          id: 'aggregate-album',
+          mediaType: 'album',
+          title: 'Aggregate Album',
+          'primary-type': 'Album',
+          'artist-credit': [{ name: 'Fixture Artist' }],
+          qualityStatuses: [{ quality: 'FLAC', status: 1 }],
+          mediaInfo: { status: 2 },
+        },
+      ]),
+    })
+  );
+  await page.goto('/music');
+  const album = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Dual Format Album', exact: true }),
+  });
+  const messages = {
+    en: {
+      available: 'MP3: In library',
+      waiting: 'FLAC: Waiting for approval',
+      processing: 'FLAC: Processing',
+    },
+    fr: {
+      available: 'MP3: Dans la bibliothèque',
+      waiting: 'FLAC: En attente d’approbation',
+      processing: 'FLAC: Traitement en cours',
+    },
+    ar: {
+      available: 'MP3: في المكتبة',
+      waiting: 'FLAC: بانتظار الموافقة',
+      processing: 'FLAC: قيد المعالجة',
+    },
+  } as const;
+  const expected = messages[locale as keyof typeof messages];
+  await expect(album.locator('.glyph[data-quality]')).toHaveCount(2);
+  await expect(album.locator('.glyph[data-quality="MP3"]')).toHaveAttribute(
+    'aria-label',
+    expected.available
+  );
+  await expect(album.locator('.glyph[data-quality="FLAC"]')).toHaveAttribute(
+    'aria-label',
+    expected.waiting
+  );
+  const processing = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Processing Album', exact: true }),
+  });
+  await expect(
+    processing.locator('.glyph[data-quality="FLAC"]')
+  ).toHaveAttribute('aria-label', expected.processing);
+  const fallback = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Fallback Album', exact: true }),
+  });
+  await expect(fallback.locator('.glyph[data-quality="MP3"]')).toHaveAttribute(
+    'aria-label',
+    expected.available
+  );
+  const aggregate = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Aggregate Album', exact: true }),
+  });
+  await expect(aggregate.locator('.glyph')).toHaveAttribute(
+    'title',
+    locale === 'en' ? 'Requested' : locale === 'fr' ? 'Demandé' : 'تم طلبه'
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true);
+  expect(qa.unknown).toEqual([]);
+
+  if (process.env.LUMEN_MUSIC_STATUS_VISUAL === '1') {
+    const output = process.env.LUMEN_VISUAL_EVIDENCE;
+    if (!output) throw new Error('LUMEN_VISUAL_EVIDENCE is required');
+    if (process.env.LUMEN_MUSIC_STATUS_VIEWPORT === '320')
+      await page.setViewportSize({ width: 320, height: 900 });
+    await page.screenshot({
+      path: output,
+      fullPage: true,
+      animations: 'disabled',
+    });
+  }
+});
+
 test('movie details keep shared HD and viewer 4K availability separate', async ({
   page,
 }) => {

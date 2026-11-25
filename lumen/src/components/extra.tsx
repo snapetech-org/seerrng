@@ -16,9 +16,11 @@ import type { ManagedMediaType } from '../mediaIdentity';
 import { usePrefs } from '../settings';
 import {
   Glyph,
+  QualityStatusGlyphs,
   StatLabel,
   statusOf,
   useCardTitleMode,
+  type QualityStatus,
   type Stat,
 } from './cards';
 import { Pill } from './detail';
@@ -134,6 +136,7 @@ export function ExtraCard({
   pct,
   titleKind,
   watchlist,
+  statusBadges,
 }: {
   href: string;
   img?: string;
@@ -146,6 +149,7 @@ export function ExtraCard({
   titleKind?: CardTitleKind;
   watchlist?: { mediaType: ManagedMediaType; id: string | number };
   pct?: number; // a download progress bar along the bottom of the art
+  statusBadges?: QualityStatus[];
 }) {
   const titleMode = useCardTitleMode(titleKind);
   const safeImage = artUrl(img);
@@ -167,7 +171,11 @@ export function ExtraCard({
             <Icon name={icon} />
           </span>
         )}
-        <Glyph s={stat || null} />
+        {statusBadges?.length ? (
+          <QualityStatusGlyphs statuses={statusBadges} />
+        ) : (
+          <Glyph s={stat || null} />
+        )}
         {pct != null && (
           <span className="bar" aria-hidden="true">
             <i style={{ width: `${pct}%` }} />

@@ -9979,3 +9979,24 @@ captures also cover the 320px phone width and were inspected at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-quality-status-20261124/`.
 The UI reads SeerrNG media-status fixtures; live server status and production
 mount behavior remain unverified.
+
+### Independent MP3 and FLAC album-card status in Lumen (2026-11-25)
+
+Native album cards render MP3 and FLAC status independently from the
+server-provided `qualityStatuses`, with `availableQualities` as the fallback.
+Lumen's album card previously rendered only the aggregate media status. Album
+cards now reuse the shared quality-status badge owner to show available,
+waiting-for-approval, and processing state by format. When the server provides
+only available formats, those are shown as available; when it has no
+format-specific data, Lumen retains the aggregate status behavior. Watchlist
+actions and album request/detail workflows are unchanged.
+
+The browser fixture covers separate MP3/FLAC states, processing, available
+format fallback, aggregate fallback, and English, French, and Arabic labels.
+The 12-case locale/viewport matrix passes across desktop, iPhone, Android, and
+tablet. Matched baseline/candidate Music captures cover desktop and iPhone;
+baseline/candidate screenshots at 320px show both formats without page overflow.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-quality-status-20261125/`.
+Statuses are fixture-backed; live Lidarr results and production-mounted
+behavior remain unverified.
