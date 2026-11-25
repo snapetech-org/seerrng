@@ -739,6 +739,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'الغاء الطلب',
       'components.Settings.SettingsJobsCache.command': 'أمر',
       'components.Settings.SettingsJobsCache.disabled': 'معطّل',
+      'components.Settings.SettingsJobsCache.disablejob': 'تعطيل',
       'components.Settings.SettingsJobsCache.dnsCache':
         'ذاكرة تخزين DNS المؤقتة',
       'components.Settings.SettingsJobsCache.dnscachehits': 'إصابات DNS',
@@ -748,6 +749,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'تحميل إعادة تعيين الدمج',
       'components.Settings.SettingsJobsCache.enabled': 'تم التمكين',
+      'components.Settings.SettingsJobsCache.enablejob': 'تفعيل',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'مزامنة قائمة الطلبات الخارجية',
       'components.Settings.SettingsJobsCache.failures': 'الإخفاقات',
@@ -799,6 +801,12 @@ export const localeData = [
         'مزامنة مجموعة BookOrbit Kobo',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'تاريخ الإصدار',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} تم إلغاء هذه المهمة.',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} معاق',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} مُتاح',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} بدأ عمل هذه المهمة.',
       'components.Settings.SettingsJobsCache.runnow': 'تنفيذ " الآن "',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'طلب البرمجيات',
@@ -7956,6 +7964,10 @@ export const localeData = [
         'Обработване на блокираните етикети',
       'components.Settings.SettingsJobsCache.radarr-scan':
         'Сканиране на Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        'Задачата {jobname} е отменена.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        'Задачата {jobname} стартира.',
       'components.Settings.SettingsJobsCache.runnow': 'Изпълни сега',
       'components.Settings.SettingsJobsCache.sonarr-scan':
         'Сканиране на Sonarr',
@@ -8637,6 +8649,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Processa les etiquetes bloquejades',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Escaneig de Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        "{jobname} s'ha cancel·lat.",
+      'components.Settings.SettingsJobsCache.jobstarted':
+        "S'ha iniciat {jobname}.",
       'components.Settings.SettingsJobsCache.runnow': 'Executa-ho ara',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Escaneig de Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -9169,6 +9185,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Zpracovat štítky blokování',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Prohledat Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} zrušeno.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} spuštěno.',
       'components.Settings.SettingsJobsCache.runnow': 'Spustit nyní',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Prohledat Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -9831,6 +9850,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Behandl skjulnings-tags',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-scanning',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} annulleret.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} startet.',
       'components.Settings.SettingsJobsCache.runnow': 'Kør nu',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-scanning',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -10883,6 +10905,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Aufgabe abbrechen',
       'components.Settings.SettingsJobsCache.command': 'Befehl',
       'components.Settings.SettingsJobsCache.disabled': 'Deaktiviert',
+      'components.Settings.SettingsJobsCache.disablejob': 'Deaktivieren',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS-Cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Zugriffe',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Fehlschläge',
@@ -10893,6 +10916,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Download Synchronisierung Zurücksetzen',
       'components.Settings.SettingsJobsCache.enabled': 'Aktiviert',
+      'components.Settings.SettingsJobsCache.enablejob': 'Aktivieren',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Synchronisation der externen Anforderungsliste',
       'components.Settings.SettingsJobsCache.failures': 'Fehlschläge',
@@ -10945,6 +10969,14 @@ export const localeData = [
         'BookOrbit Kobo-Bibliothek-Synchronisation',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Verlauf des Veröffentlichungskalenders',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} abgebrochen.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} deaktiviert.',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname} aktiviert.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} gestartet.',
       'components.Settings.SettingsJobsCache.runnow': 'Jetzt ausführen',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Software-Anforderungsabgleich',
@@ -12658,6 +12690,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Cancel Job',
       'components.Settings.SettingsJobsCache.command': 'Command',
       'components.Settings.SettingsJobsCache.disabled': 'Disabled',
+      'components.Settings.SettingsJobsCache.disablejob': 'Disable',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS Cache',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Hits',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Misses',
@@ -12667,6 +12700,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Download Sync Reset',
       'components.Settings.SettingsJobsCache.enabled': 'Enabled',
+      'components.Settings.SettingsJobsCache.enablejob': 'Enable',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'External Request List Sync',
       'components.Settings.SettingsJobsCache.failures': 'Failures',
@@ -12717,6 +12751,12 @@ export const localeData = [
         'BookOrbit Kobo Collection Sync',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Release Calendar History',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} canceled.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} disabled.',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} enabled.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} started.',
       'components.Settings.SettingsJobsCache.runnow': 'Run Now',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Software Request Reconciliation',
@@ -19843,6 +19883,9 @@ export const localeData = [
         'Συγχρονισμός λίστας παρακολούθησης Plex',
       'components.Settings.SettingsJobsCache.process': 'Διεργασία',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Σάρωση Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} ακυρώθηκε.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} ξεκίνησε.',
       'components.Settings.SettingsJobsCache.runnow': 'Τρέξε τώρα',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Σάρωση Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -20772,6 +20815,7 @@ export const localeData = [
         'Cancelar Tarea Programada',
       'components.Settings.SettingsJobsCache.command': 'Comando',
       'components.Settings.SettingsJobsCache.disabled': 'Desactivado',
+      'components.Settings.SettingsJobsCache.disablejob': 'Deshabilitar',
       'components.Settings.SettingsJobsCache.dnsCache': 'Caché DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Aciertos',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Fallos',
@@ -20782,6 +20826,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Reiniciar Descarga Sincronizada',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.enablejob': 'Habilitar',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Sincronización de lista de solicitudes externas',
       'components.Settings.SettingsJobsCache.failures': 'Fallos',
@@ -20837,6 +20882,14 @@ export const localeData = [
         'Sincronización de colección Kobo de BookOrbit',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Historia del calendario de lanzamiento',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} cancelada.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} discapacitados.',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname} habilitado.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} comenzada.',
       'components.Settings.SettingsJobsCache.runnow': 'Ejecutar Ahora',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Solicitud de software',
@@ -22559,6 +22612,7 @@ export const localeData = [
         'Cancelar Tarea Programada',
       'components.Settings.SettingsJobsCache.command': 'Comando',
       'components.Settings.SettingsJobsCache.disabled': 'Desactivado',
+      'components.Settings.SettingsJobsCache.disablejob': 'Deshabilitar',
       'components.Settings.SettingsJobsCache.dnsCache': 'Caché DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Golpes',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'falla',
@@ -22569,6 +22623,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Reiniciar Descarga Sincronizada',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.enablejob': 'Habilitar',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Sincronización de lista de solicitudes externas',
       'components.Settings.SettingsJobsCache.failures': 'Fallos',
@@ -22624,6 +22679,14 @@ export const localeData = [
         'Sincronización de colección Kobo de BookOrbit',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Historia del calendario de lanzamiento',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} cancelada.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} discapacitados.',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname} habilitado.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} comenzada.',
       'components.Settings.SettingsJobsCache.runnow': 'Ejecutar Ahora',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Solicitud de software',
@@ -23967,6 +24030,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Töötle mustas nimekirjas olevaid silte',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarri skannimine',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} tühistati.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} käivitati.',
       'components.Settings.SettingsJobsCache.runnow': 'Käivita kohe',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarri skannimine',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -25266,6 +25333,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Annuler la tâche',
       'components.Settings.SettingsJobsCache.command': 'Commande',
       'components.Settings.SettingsJobsCache.disabled': 'Désactivé',
+      'components.Settings.SettingsJobsCache.disablejob': 'Désactiver',
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Succès',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Manquées',
@@ -25276,6 +25344,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Reset de la synchronisation des téléchargements',
       'components.Settings.SettingsJobsCache.enabled': 'Activé',
+      'components.Settings.SettingsJobsCache.enablejob': 'Activer',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Synchronisation de la liste de demandes externe',
       'components.Settings.SettingsJobsCache.failures': 'Échecs',
@@ -25329,6 +25398,12 @@ export const localeData = [
         'Synchronisation de la collection Kobo BookOrbit',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Historique du calendrier de publication',
+      'components.Settings.SettingsJobsCache.jobcancelled': '{jobname} annulé.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} handicapés.',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} activé.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} a commencé.',
       'components.Settings.SettingsJobsCache.runnow': 'Exécuter',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Rapprochement des demandes de logiciels',
@@ -33037,6 +33112,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process': 'Obrada',
       'components.Settings.SettingsJobsCache.radarr-scan':
         'Radarr pretraživanje',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        'Zadatak {jobname} prekinut.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        'Zadatak {jobname} je pokrenut.',
       'components.Settings.SettingsJobsCache.runnow': 'Pokreni sada',
       'components.Settings.SettingsJobsCache.sonarr-scan':
         'Sonarr pretraživanje',
@@ -34187,6 +34266,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'नौकरी रद्द करना',
       'components.Settings.SettingsJobsCache.command': 'कमान',
       'components.Settings.SettingsJobsCache.disabled': 'अक्षम',
+      'components.Settings.SettingsJobsCache.disablejob': 'अक्षम',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS कैश',
       'components.Settings.SettingsJobsCache.dnscachehits': 'हिट',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'मिस',
@@ -34195,6 +34275,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Sync रीसेट डाउनलोड करें',
       'components.Settings.SettingsJobsCache.enabled': 'सक्षम',
+      'components.Settings.SettingsJobsCache.enablejob': 'सक्षम करें',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'बाहरी अनुरोध सूची सिंक',
       'components.Settings.SettingsJobsCache.failures': 'विफलता',
@@ -34245,6 +34326,12 @@ export const localeData = [
         'BookOrbit Kobo संग्रह सिंक',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'रिलीज कैलेंडर इतिहास',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} रद्द करना',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} विकलांग',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} सक्षम',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} शुरू किया।',
       'components.Settings.SettingsJobsCache.runnow': 'अब चलायें',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'सॉफ्टवेयर अनुरोध पारस्परिकता',
@@ -35560,6 +35647,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Tiltólistázott címkék feldolgozása',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr szkennelés',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} megszakítva.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} elindult.',
       'components.Settings.SettingsJobsCache.runnow': 'Futtatás most',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr szkennelés',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -36595,6 +36685,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Batalkan Tugas',
       'components.Settings.SettingsJobsCache.command': 'Perintah',
       'components.Settings.SettingsJobsCache.disabled': 'Dinonaktifkan',
+      'components.Settings.SettingsJobsCache.disablejob': 'Matikan',
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Pukulan',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Hilang',
@@ -36603,6 +36694,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync': 'Unduh Selaraskan',
       'components.Settings.SettingsJobsCache.download-sync-reset': 'undo-type',
       'components.Settings.SettingsJobsCache.enabled': 'Diaktifkan',
+      'components.Settings.SettingsJobsCache.enablejob': 'Aktifkan',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Sinkronisasi Daftar Permintaan Eksternal',
       'components.Settings.SettingsJobsCache.failures': 'Gagal',
@@ -36656,6 +36748,13 @@ export const localeData = [
         'Sinkronisasi Koleksi BookOrbit Kobo',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Rilis Riwayat Kalender',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} dibatalkan.',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} dinonaktifkan.',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname} diaktifkan.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} dimulai.',
       'components.Settings.SettingsJobsCache.runnow': 'Jalankan Sekarang',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Permintaan Software Rekonsiliasi',
@@ -37980,6 +38079,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Processa i Tag bloccati',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Scansione Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} annullato.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} avviato.',
       'components.Settings.SettingsJobsCache.runnow': 'Esegui ora',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Scansione Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -39010,6 +39112,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'ジョブのキャンセル',
       'components.Settings.SettingsJobsCache.command': 'コマンド',
       'components.Settings.SettingsJobsCache.disabled': '無効',
+      'components.Settings.SettingsJobsCache.disablejob': '無効化',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNSキャッシュ',
       'components.Settings.SettingsJobsCache.dnscachehits': 'ヒット数',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'ミス',
@@ -39019,6 +39122,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'ダウンロード同期のリセット',
       'components.Settings.SettingsJobsCache.enabled': '有効化',
+      'components.Settings.SettingsJobsCache.enablejob': '有効化',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         '外部リクエストリスト同期',
       'components.Settings.SettingsJobsCache.failures': '失敗',
@@ -39073,6 +39177,14 @@ export const localeData = [
         'BookOrbit Koboコレクション同期',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'リリースカレンダー履歴',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} がキャンセルされました。',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} 無効です。',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname} 有効にします。',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} が開始されました。',
       'components.Settings.SettingsJobsCache.runnow': '今すぐ実行',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'ソフトウェア要求の承諾',
@@ -40733,6 +40845,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': '작업 취소',
       'components.Settings.SettingsJobsCache.command': '명령',
       'components.Settings.SettingsJobsCache.disabled': '비활성화됨',
+      'components.Settings.SettingsJobsCache.disablejob': '비활성화',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 캐시',
       'components.Settings.SettingsJobsCache.dnscachehits': '적중 수',
       'components.Settings.SettingsJobsCache.dnscachemisses': '실패',
@@ -40742,6 +40855,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         '다운로드 동기화 재설정',
       'components.Settings.SettingsJobsCache.enabled': '활성화됨',
+      'components.Settings.SettingsJobsCache.enablejob': '활성화',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         '외부 요청 목록 동기화',
       'components.Settings.SettingsJobsCache.failures': '실패',
@@ -40792,6 +40906,13 @@ export const localeData = [
         'BookOrbit Kobo 컬렉션 동기화',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         '릴리스 일정 기록',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname}이(가) 취소되었습니다.',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} 이용안내',
+      'components.Settings.SettingsJobsCache.jobenabled':
+        '{jobname}가 활성화되었습니다.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname}이(가) 시작되었습니다.',
       'components.Settings.SettingsJobsCache.runnow': '지금 실행',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         '소프트웨어 요청 재구성',
@@ -42165,6 +42286,9 @@ export const localeData = [
         'Synkronisering av Plex Visningsliste',
       'components.Settings.SettingsJobsCache.process': 'Prosess',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-skann',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} stanset.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} startet.',
       'components.Settings.SettingsJobsCache.runnow': 'Kjør nå',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-skann',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -42695,6 +42819,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Geblokkeerde labels verwerken',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-scan',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} geannuleerd.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} gestart.',
       'components.Settings.SettingsJobsCache.runnow': 'Nu uitvoeren',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-scan',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -43370,6 +43497,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Przetwarzaj tagi czarnej listy',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Skan Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} anulowane.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} rozpoczęte.',
       'components.Settings.SettingsJobsCache.runnow': 'Uruchom teraz',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Skanowanie Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -44424,6 +44555,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Cancelar Tarefa',
       'components.Settings.SettingsJobsCache.command': 'Comando',
       'components.Settings.SettingsJobsCache.disabled': 'Desativado',
+      'components.Settings.SettingsJobsCache.disablejob': 'Desativar',
       'components.Settings.SettingsJobsCache.dnsCache': 'Cache DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Acertos',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Falhas',
@@ -44434,6 +44566,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         'Limpar Sincronização de Download',
       'components.Settings.SettingsJobsCache.enabled': 'Activado',
+      'components.Settings.SettingsJobsCache.enablejob': 'Activar',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Sincronização de Lista de Solicitações Externa',
       'components.Settings.SettingsJobsCache.failures': 'Falhas',
@@ -44491,6 +44624,13 @@ export const localeData = [
         'Sincronização de Coleção Kobo BookOrbit',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Histórico do calendário de lançamento',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} cancelado(a).',
+      'components.Settings.SettingsJobsCache.jobdisabled':
+        '{jobname} Deficiente.',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} Ativado.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} iniciado(a).',
       'components.Settings.SettingsJobsCache.runnow': 'Executar Agora',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Solicitação de Software Reconciliação',
@@ -45805,6 +45945,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Processar tags bloqueadas',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Sincronizar Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} cancelado(a).',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} iniciado(a).',
       'components.Settings.SettingsJobsCache.runnow': 'Executar Agora',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sincronizar Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -46827,6 +46971,10 @@ export const localeData = [
         'Обработать заблокированные теги',
       'components.Settings.SettingsJobsCache.radarr-scan':
         'Сканирование Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        'Задание "{jobname}" отменено.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        'Задание "{jobname}" запущено.',
       'components.Settings.SettingsJobsCache.runnow': 'Выполнить сейчас',
       'components.Settings.SettingsJobsCache.sonarr-scan':
         'Сканирование Sonarr',
@@ -47404,6 +47552,9 @@ export const localeData = [
         'Skanimi i të shtuarave kohët e fundit nga Plex',
       'components.Settings.SettingsJobsCache.process': 'Procesi',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Skanimi i Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} u anulua.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} filloi.',
       'components.Settings.SettingsJobsCache.runnow': 'Nise Tani',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Skanimi i Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -47640,6 +47791,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.flushcache': 'Obriši keš',
       'components.Settings.SettingsJobsCache.process': 'Proces',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr skeniranje',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} je otkazan.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} je započeo.',
       'components.Settings.SettingsJobsCache.runnow': 'Pokreni sada',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr skeniranje',
       'components.Settings.SettingsLogs.filterDebug': 'Otklanjanje grešaka',
@@ -48104,6 +48259,9 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Bearbeta blockerade taggar',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr-skanning',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} avbrutet.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} startat.',
       'components.Settings.SettingsJobsCache.runnow': 'Kör nu',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr-skanning',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -48763,6 +48921,10 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.process-blocklisted-tags':
         'Engellenen Etiketleri İşle',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Radarr Taraması',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname} iptal edildi.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} başlatıldı.',
       'components.Settings.SettingsJobsCache.runnow': 'Şimdi Çalıştır',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Sonarr Taraması',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -49403,6 +49565,10 @@ export const localeData = [
         'Синхронізація списку перегляду Plex',
       'components.Settings.SettingsJobsCache.process': 'Процес',
       'components.Settings.SettingsJobsCache.radarr-scan': 'Сканування Radarr',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        'Завдання "{jobname}" скасовано.',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        'Завдання "{jobname}" запущено.',
       'components.Settings.SettingsJobsCache.runnow': 'Виконати зараз',
       'components.Settings.SettingsJobsCache.sonarr-scan': 'Сканування Sonarr',
       'components.Settings.SettingsLogs.copiedLogMessage':
@@ -50364,6 +50530,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': '取消作业',
       'components.Settings.SettingsJobsCache.command': '命令',
       'components.Settings.SettingsJobsCache.disabled': '已禁用',
+      'components.Settings.SettingsJobsCache.disablejob': '禁用',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 缓存',
       'components.Settings.SettingsJobsCache.dnscachehits': '点击数',
       'components.Settings.SettingsJobsCache.dnscachemisses': '错过',
@@ -50372,6 +50539,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         '下载状态同步复位',
       'components.Settings.SettingsJobsCache.enabled': '已启用',
+      'components.Settings.SettingsJobsCache.enablejob': '启用',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         '外部请求列表同步',
       'components.Settings.SettingsJobsCache.failures': '失败',
@@ -50420,6 +50588,12 @@ export const localeData = [
         'BookOrbit Kobo 合集同步',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         '发布日历历史',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname}已被取消。',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} 已禁用。',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} 已启用。',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} 已开始运行。',
       'components.Settings.SettingsJobsCache.runnow': '执行',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         '软件请求调节',
@@ -51992,6 +52166,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': '取消作業',
       'components.Settings.SettingsJobsCache.command': '指令',
       'components.Settings.SettingsJobsCache.disabled': '已禁用',
+      'components.Settings.SettingsJobsCache.disablejob': '禁用',
       'components.Settings.SettingsJobsCache.dnsCache': 'DNS 快取',
       'components.Settings.SettingsJobsCache.dnscachehits': '命中',
       'components.Settings.SettingsJobsCache.dnscachemisses': '失誤',
@@ -52000,6 +52175,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync-reset':
         '下載狀態同步復位',
       'components.Settings.SettingsJobsCache.enabled': '已開啟',
+      'components.Settings.SettingsJobsCache.enablejob': '開啟',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         '外部請求清單同步',
       'components.Settings.SettingsJobsCache.failures': '失敗',
@@ -52047,6 +52223,12 @@ export const localeData = [
         'BookOrbit Kobo 收藏同步',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         '釋放行事曆歷史',
+      'components.Settings.SettingsJobsCache.jobcancelled':
+        '{jobname}已被取消。',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} 已禁用。',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} 啟動 。',
+      'components.Settings.SettingsJobsCache.jobstarted':
+        '{jobname} 已開始運行。',
       'components.Settings.SettingsJobsCache.runnow': '執行',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         '軟體要求對應',
@@ -53674,6 +53856,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.canceljob': 'Thôi công việc',
       'components.Settings.SettingsJobsCache.command': 'Câu lệnh',
       'components.Settings.SettingsJobsCache.disabled': 'Tắt',
+      'components.Settings.SettingsJobsCache.disablejob': 'Tắt',
       'components.Settings.SettingsJobsCache.dnsCache': 'Bộ nhớ tạm DNS',
       'components.Settings.SettingsJobsCache.dnscachehits': 'Trúng',
       'components.Settings.SettingsJobsCache.dnscachemisses': 'Bỏ lỡ',
@@ -53681,6 +53864,7 @@ export const localeData = [
       'components.Settings.SettingsJobsCache.download-sync': 'Đồng bộ tải về',
       'components.Settings.SettingsJobsCache.download-sync-reset': 'Tải về',
       'components.Settings.SettingsJobsCache.enabled': 'Bật',
+      'components.Settings.SettingsJobsCache.enablejob': 'Bật',
       'components.Settings.SettingsJobsCache.external-request-list-sync':
         'Đồng bộ danh sách yêu cầu bên ngoài',
       'components.Settings.SettingsJobsCache.failures': 'Lỗi',
@@ -53734,6 +53918,10 @@ export const localeData = [
         'Đồng bộ bộ sưu tập Kobo của BookOrbit',
       'components.Settings.SettingsJobsCache.release-calendar-history':
         'Lịch sử ra đời',
+      'components.Settings.SettingsJobsCache.jobcancelled': '{jobname} hủy bỏ.',
+      'components.Settings.SettingsJobsCache.jobdisabled': '{jobname} Vô hiệu.',
+      'components.Settings.SettingsJobsCache.jobenabled': '{jobname} đã bật.',
+      'components.Settings.SettingsJobsCache.jobstarted': '{jobname} Bắt đầu.',
       'components.Settings.SettingsJobsCache.runnow': 'Chạy ngay',
       'components.Settings.SettingsJobsCache.software-request-reconciliation':
         'Yêu cầu hòa giải phần mềm',

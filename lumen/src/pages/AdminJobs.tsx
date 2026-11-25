@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
-import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -113,9 +112,10 @@ function ScheduleFrequency({
   );
 }
 
-type Pending = { job: Job; action: 'run' | 'cancel' | 'enabled' };
+type JobAction = 'run' | 'cancel' | 'enabled';
 function actionLabel(
-  { job, action }: Pending,
+  job: Job,
+  action: JobAction,
   t: ReturnType<typeof useLumenLocale>['t']
 ) {
   if (action === 'run')
@@ -123,8 +123,8 @@ function actionLabel(
   if (action === 'cancel')
     return t('components.Settings.SettingsJobsCache.canceljob', 'Cancel Job');
   return job.enabled
-    ? t('lumen.adminJobs.disableSchedule', 'Disable Schedule')
-    : t('lumen.adminJobs.enableSchedule', 'Enable Schedule');
+    ? t('components.Settings.SettingsJobsCache.disablejob', 'Disable')
+    : t('components.Settings.SettingsJobsCache.enablejob', 'Enable');
 }
 
 export default function AdminJobs() {
@@ -132,7 +132,6 @@ export default function AdminJobs() {
   const { data, error, reload } = useApi<Job[]>('/settings/jobs', {
     keepDuringRefresh: true,
   });
-  const [pending, setPending] = useState<Pending>();
   const [edit, setEdit] = useState<{ job: Job; schedule: string }>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
@@ -140,16 +139,12 @@ export default function AdminJobs() {
   const working = useRef(false);
 
   useEffect(() => {
-    if (error || busy || edit || pending) return;
+    if (error || busy || edit) return;
     const timer = window.setInterval(reload, 15000);
     return () => window.clearInterval(timer);
-  }, [error, busy, edit, pending, reload]);
+  }, [error, busy, edit, reload]);
 
-  async function save(
-    job: Job,
-    action: Pending['action'] | 'schedule',
-    body?: object
-  ) {
+  async function save(job: Job, action: JobAction | 'schedule', body?: object) {
     if (working.current) return;
     working.current = true;
     setBusy(true);
@@ -175,6 +170,32 @@ export default function AdminJobs() {
           return;
         }
         setNotice(t('lumen.adminJobs.scheduleSaved', 'Schedule saved.'));
+      } else {
+        const jobname = t(
+          `components.Settings.SettingsJobsCache.${job.id}`,
+          job.name
+        );
+        const message =
+          action === 'run'
+            ? 'jobstarted'
+            : action === 'cancel'
+              ? 'jobcancelled'
+              : body && 'enabled' in body && body.enabled
+                ? 'jobenabled'
+                : 'jobdisabled';
+        const fallback =
+          message === 'jobstarted'
+            ? '{jobname} started.'
+            : message === 'jobcancelled'
+              ? '{jobname} canceled.'
+              : message === 'jobenabled'
+                ? '{jobname} enabled.'
+                : '{jobname} disabled.';
+        setNotice(
+          t(`components.Settings.SettingsJobsCache.${message}`, fallback, {
+            jobname,
+          })
+        );
       }
       setEdit(undefined);
     } catch (error) {
@@ -185,7 +206,6 @@ export default function AdminJobs() {
         )
       );
     } finally {
-      setPending(undefined);
       setBusy(false);
       working.current = false;
       reload();
@@ -353,18 +373,17 @@ export default function AdminJobs() {
                   <button
                     className="btn btn-tonal btn-sm"
                     disabled={busy}
-                    onClick={() => setPending({ job, action: 'enabled' })}
+                    onClick={() =>
+                      void save(job, 'enabled', { enabled: !job.enabled })
+                    }
                   >
-                    {actionLabel({ job, action: 'enabled' }, t)}
+                    {actionLabel(job, 'enabled', t)}
                   </button>
                   <button
                     className="btn btn-tonal btn-sm"
                     disabled={busy || (job.running && job.canCancel === false)}
                     onClick={() =>
-                      setPending({
-                        job,
-                        action: job.running ? 'cancel' : 'run',
-                      })
+                      void save(job, job.running ? 'cancel' : 'run')
                     }
                   >
                     {job.running
@@ -373,35 +392,14 @@ export default function AdminJobs() {
                             'lumen.adminJobs.cancellationUnavailable',
                             'Cancellation Unavailable'
                           )
-                        : actionLabel({ job, action: 'cancel' }, t)
-                      : actionLabel({ job, action: 'run' }, t)}
+                        : actionLabel(job, 'cancel', t)
+                      : actionLabel(job, 'run', t)}
                   </button>
                 </div>
               )}
             </li>
           ))}
         </ul>
-      )}
-      {pending && (
-        <ConfirmSheet
-          title={`${actionLabel(pending, t)}?`}
-          body={pending.job.name}
-          confirm={actionLabel(pending, t)}
-          cancel={t('lumen.adminJobs.goBack', 'Go Back')}
-          busy={busy}
-          onConfirm={() =>
-            void save(
-              pending.job,
-              pending.action,
-              pending.action === 'enabled'
-                ? { enabled: !pending.job.enabled }
-                : undefined
-            )
-          }
-          onClose={() => {
-            if (!working.current) setPending(undefined);
-          }}
-        />
       )}
     </>
   );
