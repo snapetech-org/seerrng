@@ -95,14 +95,18 @@ test('administrator navigation matches the account role', async ({
       : page.getByRole('link', { name: 'Open SeerrNG Administration' });
   await expect(adminEntry).toHaveAttribute('href', '/admin');
   await page.goto('/admin');
+  const primaryNavigation = page.locator('#mobile-primary-navigation');
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)
     )
     .toBe(true);
-  for (const path of adminRoutes.slice(1)) {
-    await expect(page.locator(`a[href="${path}"]`)).toHaveCount(1);
+  for (const path of adminRoutes.slice(1, -1)) {
+    await expect(page.locator(`#view a[href="${path}"]`)).toHaveCount(1);
   }
+  await expect(primaryNavigation.locator('a[href="/admin/users"]')).toHaveCount(
+    1
+  );
   for (const path of adminRoutes) {
     await page.goto(path);
     await expect(page).toHaveURL(new RegExp(`${path.replaceAll('/', '\\/')}$`));
