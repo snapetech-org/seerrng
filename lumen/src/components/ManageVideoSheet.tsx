@@ -12,6 +12,9 @@ import {
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { canManageIssues, canReadIssues } from '../issuePermissions';
+import BlocklistButton from './BlocklistButton';
+import { ConfirmSheet } from './ConfirmSheet';
 import { useDialog } from './useDialog';
 
 type MediaKind = 'movie' | 'tv';
@@ -78,6 +81,7 @@ export function ManageVideoSheet({
   onClose,
   onUpdated,
   mediaServerType,
+  tmdbId,
 }: {
   kind: MediaKind;
   title: string;
@@ -89,11 +93,18 @@ export function ManageVideoSheet({
   onClose: () => void;
   onUpdated: () => void;
   mediaServerType?: number;
+  tmdbId?: number;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const { t, locale } = useLumenLocale();
   const admin = isAdministrator(user?.permissions);
+  const mayReadIssues = canReadIssues(user?.permissions);
+  const mayManageIssues = canManageIssues(user?.permissions);
+  const [issueAction, setIssueAction] = useState<{
+    action: 'close' | 'delete';
+    ids: number[];
+  }>();
   const [confirmation, setConfirmation] = useState<ManagerAction>();
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string>();
@@ -202,6 +213,38 @@ export function ManageVideoSheet({
               )
       );
       if (confirmation.kind !== 'deleteRequest') library.revalidate();
+      onUpdated();
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const confirmIssueAction = async () => {
+    if (!issueAction || busy) return;
+    const ids = issueAction.ids;
+    if (!ids.length || ids.some((id) => !Number.isSafeInteger(id) || id <= 0))
+      return;
+    setBusy(true);
+    setFailure(undefined);
+    try {
+      for (const id of ids) {
+        await api(
+          `/issue/${id}${issueAction.action === 'close' ? '/resolved' : ''}`,
+          {
+            method: issueAction.action === 'close' ? 'POST' : 'DELETE',
+          },
+          'empty'
+        );
+      }
+      setIssueAction(undefined);
+      onUpdated();
+    } catch {
+      setFailure(
+        t(
+          'lumen.manageVideo.issueActionFailed',
+          'Some issues may already have changed. Refresh the title and review the remaining issues.'
+        )
+      );
       onUpdated();
     } finally {
       setBusy(false);
@@ -447,6 +490,103 @@ export function ManageVideoSheet({
                 </section>
               )}
 
+              <section className="card">
+                <h4>{t('lumen.manageVideo.blocklist', 'Blocklist')}</h4>
+                <BlocklistButton
+                  mediaType={kind}
+                  id={tmdbId}
+                  requestedId={tmdbId}
+                  title={title}
+                  onChange={onUpdated}
+                />
+              </section>
+
+              {mayReadIssues && (
+                <section className="card">
+                  <h4>
+                    {t('lumen.manageVideo.issues', 'Issues')} ·{' '}
+                    {(media.issues ?? []).length}
+                  </h4>
+                  {media.issues?.length ? (
+                    <ul className="card-list">
+                      {media.issues.map((issue) => (
+                        <li key={issue.id}>
+                          <a href={`/issues/${issue.id}`}>
+                            {t(
+                              'lumen.manageVideo.issueLink',
+                              'Issue #{id} · {status}',
+                              {
+                                id: issue.id,
+                                status:
+                                  issue.status === 2
+                                    ? t(
+                                        'lumen.manageVideo.resolved',
+                                        'Resolved'
+                                      )
+                                    : t('lumen.manageVideo.openIssue', 'Open'),
+                              }
+                            )}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="note">
+                      {t(
+                        'lumen.manageVideo.noIssues',
+                        'There are no issues for this title.'
+                      )}
+                    </p>
+                  )}
+                  {mayManageIssues && !!media.issues?.length && (
+                    <div className="toolbar">
+                      {!!media.issues.some((issue) => issue.status !== 2) && (
+                        <button
+                          className="btn btn-quiet btn-sm"
+                          disabled={busy}
+                          onClick={() =>
+                            setIssueAction({
+                              action: 'close',
+                              ids: [
+                                ...new Set(
+                                  (media.issues ?? [])
+                                    .filter((issue) => issue.status !== 2)
+                                    .map((issue) => issue.id)
+                                ),
+                              ],
+                            })
+                          }
+                        >
+                          {t(
+                            'lumen.manageVideo.closeIssues',
+                            'Close open issues'
+                          )}
+                        </button>
+                      )}
+                      <button
+                        className="btn btn-danger btn-sm"
+                        disabled={busy}
+                        onClick={() =>
+                          setIssueAction({
+                            action: 'delete',
+                            ids: [
+                              ...new Set(
+                                (media.issues ?? []).map((issue) => issue.id)
+                              ),
+                            ],
+                          })
+                        }
+                      >
+                        {t(
+                          'lumen.manageVideo.deleteIssues',
+                          'Delete all issues'
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </section>
+              )}
+
               {openLinks.length > 0 && (
                 <section className="card">
                   <h4>{t('lumen.manageVideo.services', 'Services')}</h4>
@@ -659,6 +799,36 @@ export function ManageVideoSheet({
           )}
         </div>
       </div>
+      {issueAction && (
+        <ConfirmSheet
+          title={
+            issueAction.action === 'close'
+              ? t('lumen.manageVideo.closeIssuesConfirm', 'Close open issues?')
+              : t('lumen.manageVideo.deleteIssuesConfirm', 'Delete all issues?')
+          }
+          body={
+            issueAction.action === 'close'
+              ? t(
+                  'lumen.manageVideo.closeIssuesBody',
+                  'Open issues for this title will be marked resolved and their history retained.'
+                )
+              : t(
+                  'lumen.manageVideo.deleteIssuesBody',
+                  'All issues and comments for this title will be permanently deleted.'
+                )
+          }
+          confirm={
+            issueAction.action === 'close'
+              ? t('lumen.manageVideo.closeIssues', 'Close open issues')
+              : t('lumen.manageVideo.deleteIssues', 'Delete all issues')
+          }
+          busy={busy}
+          onConfirm={() => void confirmIssueAction()}
+          onClose={() => {
+            if (!busy) setIssueAction(undefined);
+          }}
+        />
+      )}
     </div>,
     document.body
   );

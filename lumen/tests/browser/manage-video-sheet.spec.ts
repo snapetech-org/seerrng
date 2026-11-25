@@ -84,6 +84,10 @@ async function setup(
                       kind === 'tv' ? [{ seasonNumber: 1, status: 2 }] : [],
                   },
                 ],
+            issues: [
+              { id: 71, status: 1, issueType: 1 },
+              { id: 72, status: 2, issueType: 1 },
+            ],
             downloadStatus: [
               {
                 downloadId: 'hd-download',
@@ -156,6 +160,27 @@ async function setup(
       return route.fulfill({
         json: { plays: 12, playbackSeconds: 5400 },
       });
+    }
+    if (path === '/blocklist/42') return route.fulfill({ status: 404 });
+    if (path === '/blocklist' && request.method() === 'POST') {
+      calls.push({
+        method: request.method(),
+        path,
+        body: request.postDataJSON(),
+      });
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/issue/71/resolved' && request.method() === 'POST') {
+      calls.push({ method: request.method(), path });
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/issue/71' && request.method() === 'DELETE') {
+      calls.push({ method: request.method(), path });
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/issue/72' && request.method() === 'DELETE') {
+      calls.push({ method: request.method(), path });
+      return route.fulfill({ status: 204, body: '' });
     }
     if (
       path === `/media/${databaseId}/library` ||
@@ -404,4 +429,63 @@ test('request managers can open the panel without administrator library actions'
     dialog.getByRole('heading', { name: 'Verified library' })
   ).toHaveCount(0);
   expect(state.libraryReads).toBe(0);
+});
+
+test('title manager exposes permission-scoped blocklist and issue actions', async ({
+  page,
+}, info) => {
+  const permissions = 2 | 1048576 | 7340032 | 268435456;
+  const state = await setup(page, permissions);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
+  await expect(
+    dialog.getByRole('link', { name: 'Issue #71 · Open' })
+  ).toHaveAttribute('href', '/issues/71');
+  await expect(
+    dialog.getByRole('link', { name: 'Issue #72 · Resolved' })
+  ).toHaveAttribute('href', '/issues/72');
+  if (['desktop', 'iphone'].includes(info.project.name)) {
+    await dialog
+      .getByRole('heading', { name: 'Issues · 2' })
+      .scrollIntoViewIfNeeded();
+    await page.screenshot({
+      path: info.outputPath('movie-manager-issues.png'),
+      fullPage: false,
+    });
+  }
+  await dialog.getByRole('button', { name: 'Close open issues' }).click();
+  const confirmation = page.getByRole('alertdialog', {
+    name: 'Close open issues?',
+  });
+  await confirmation.getByRole('button', { name: 'Close open issues' }).click();
+  await expect
+    .poll(() => state.calls.some((call) => call.path === '/issue/71/resolved'))
+    .toBe(true);
+  await dialog.getByRole('button', { name: 'Delete all issues' }).click();
+  await page
+    .getByRole('alertdialog', { name: 'Delete all issues?' })
+    .getByRole('button', { name: 'Delete all issues' })
+    .click();
+  await expect
+    .poll(() =>
+      state.calls
+        .filter(
+          (call) => call.method === 'DELETE' && call.path.startsWith('/issue/')
+        )
+        .map((call) => call.path)
+    )
+    .toEqual(['/issue/71', '/issue/72']);
+  await expect(
+    dialog.getByRole('button', { name: 'Add to Blocklist' })
+  ).toBeVisible();
+  await dialog.getByRole('button', { name: 'Add to Blocklist' }).click();
+  const blocklistConfirmation = page.getByRole('alertdialog', {
+    name: 'Add to the Blocklist?',
+  });
+  await blocklistConfirmation
+    .getByRole('button', { name: 'Add to Blocklist' })
+    .click();
+  await expect
+    .poll(() => state.calls.find((call) => call.path === '/blocklist')?.body)
+    .toEqual({ mediaType: 'movie', title: 'Fixture Movie', tmdbId: 42 });
 });

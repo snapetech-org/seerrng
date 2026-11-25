@@ -9622,11 +9622,31 @@ manager state has no prior Lumen equivalent. Evidence is retained at
 Live provider-backed service responses and a native-matched interaction review
 remain unverified.
 
+The next manager slice now reuses Lumen's existing permission-aware
+`BlocklistButton` for movie and TV titles, and adds the native panel's title
+issue summary with links to each Lumen issue detail. Users with `MANAGE_ISSUES`
+can close the currently open issues or delete all listed issues, after a
+separate confirmation. Each confirmation captures and validates the exact
+positive issue IDs displayed when it opens; actions stop on the first API
+failure and tell the user to refresh because earlier mutations may have
+succeeded. Issue reads remain gated by `VIEW_ISSUES`/`MANAGE_ISSUES`, and
+blocklist actions retain their independent `MANAGE_BLOCKLIST` gate and existing
+server routes.
+
+The manager browser workflow now passes 32/32 cases across desktop, iPhone,
+Android, and tablet, including exact title-scoped issue mutations, confirmation,
+the blocklist request payload, and the prior library, request, permission, and
+playback cases. The production Lumen build passes. The new issue and blocklist
+panel was not compared against a live provider response or a separately
+captured native panel; title detail baseline and candidate captures remain at
+1440x900 and iPhone 390x844, with manager and confirmation candidates in the
+task evidence directory. These are simulated API fixtures, not a live
+SeerrNG integration result.
+
 This is a partial parity milestone, not closure of the administration gap.
 Still missing from the contextual sheet are per-request edit and approval
-actions, playback/watch summaries, and direct blocklist and issue management.
-Some corresponding actions remain available elsewhere in Lumen, but workflow
-parity requires auditing and connecting them without widening permissions.
+actions. Other menu, display, and workflow surfaces remain under the broader
+parity audit.
 Next work must compare these flows against
 `src/components/ManageSlideOver/index.tsx`,
 `src/components/ManageSlideOver/ManageMediaActions.tsx`, and

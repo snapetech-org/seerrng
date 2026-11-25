@@ -696,6 +696,7 @@ export default function MovieDetail() {
           onClose={() => setManageOpen(false)}
           onUpdated={refresh}
           mediaServerType={pub?.mediaServerType}
+          tmdbId={m.id}
         />
       )}
       {override?.movieId === m.id && (
