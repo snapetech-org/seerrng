@@ -8883,6 +8883,13 @@ remains visible with the existing manual retry path. All 8 browser cases pass.
 These fixtures verify client behavior, not live provider latency or the cause
 of the original screenshot.
 
+On 2026-11-25, a fresh Lumen production build and the focused episode-picker
+plus TV request-state suites passed 100/100 browser cases across desktop,
+iPhone, Android, and tablet. The run confirms the reported class of partial
+metadata failure remains recoverable in the standalone client; it does not
+reproduce the friend's live SeerrNG instance or establish the original
+provider/proxy failure's root cause. `release-note: none`.
+
 ### Large TV request bulk selection (2026-11-23)
 
 Lumen's episode request sheet now has select-all and per-season select/deselect
