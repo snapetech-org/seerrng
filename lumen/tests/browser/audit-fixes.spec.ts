@@ -298,7 +298,7 @@ test('available movie cards localize their media-server quick link', async ({
   await libraryCard.hover();
   const on = libraryCard.locator('.qbtn.okb');
   await expect(on).toHaveText(baseline ? 'On Plex' : onServer[locale]);
-  await expect(on).toHaveAttribute('href', '/movie/66');
+  await expect(on).toHaveAttribute('href', /^\/movie\/66(?:\?|$)/);
   const width = page.viewportSize()?.width;
   const captureDir = process.env.LUMEN_DETAIL_MEDIA_CAPTURE_DIR;
   if (captureDir && (width === 1440 || width === 390))

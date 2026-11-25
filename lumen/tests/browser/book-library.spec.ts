@@ -784,13 +784,22 @@ test('a failed movie page can be retried', async ({ page }) => {
       : route.fulfill({
           json: {
             id: 77,
+            mediaType: 'movie',
             title: 'Retry Film',
-            genres: [],
             releaseDate: '2020-01-01',
+            posterPath: null,
+            backdropPath: null,
+            genres: [],
+            credits: { cast: [], crew: [] },
+            releases: { results: [] },
+            relatedVideos: [],
           },
         })
   );
   await page.route('**/api/v1/movie/77/recommendations', (route) =>
+    route.fulfill({ json: paged([]) })
+  );
+  await page.route('**/api/v1/movie/77/similar', (route) =>
     route.fulfill({ json: paged([]) })
   );
   await page.goto('/movie/77');

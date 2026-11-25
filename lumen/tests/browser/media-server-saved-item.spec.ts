@@ -121,6 +121,10 @@ async function fixture(
   return { reads, writes };
 }
 
+async function openMediaServerActions(page: Page) {
+  await page.getByTestId('tv-media-server').locator('summary').first().click();
+}
+
 for (const [serverType, name] of [
   [1, 'Plex Watchlist'],
   [2, 'Jellyfin Favorites'],
@@ -131,6 +135,7 @@ for (const [serverType, name] of [
   }, info) => {
     const { reads, writes } = await fixture(page, serverType);
     await page.goto('/tv/202');
+    await openMediaServerActions(page);
     const add = page.getByRole('button', {
       name: `Add Saved Item Fixture to ${name}`,
     });
@@ -148,6 +153,7 @@ for (const [serverType, name] of [
     await expect(remove).toBeVisible();
     expect(writes).toEqual([{ saved: true, is4k: false }]);
     await page.reload();
+    await openMediaServerActions(page);
     await page
       .getByRole('button', { name: `Remove Saved Item Fixture from ${name}` })
       .click();
@@ -165,6 +171,7 @@ for (const [serverType, name] of [
 test('4K saved state uses the selected quality', async ({ page }) => {
   const { reads, writes } = await fixture(page, 2, { fourK: true });
   await page.goto('/tv/202?quality=4k');
+  await openMediaServerActions(page);
   await expect(
     page.getByRole('button', {
       name: 'Add Saved Item Fixture to Jellyfin Favorites',
@@ -189,6 +196,7 @@ test('read retry only reads and does not repeat a saved action', async ({
 }) => {
   const { reads, writes } = await fixture(page, 1, { failInitialRead: true });
   await page.goto('/tv/202');
+  await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Retry Plex Watchlist status' })
   ).toBeVisible();
@@ -226,6 +234,7 @@ test('an unlinked account offers recovery without attempting a write', async ({
     unavailableReason: 'account-not-linked',
   });
   await page.goto('/tv/202');
+  await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Plex Watchlist unavailable' })
   ).toBeDisabled();
@@ -252,6 +261,7 @@ test('a series absent from the viewer catalog has a disabled explained action', 
     unavailableReason: 'series-not-found',
   });
   await page.goto('/tv/202');
+  await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Jellyfin Favorites unavailable' })
   ).toBeDisabled();

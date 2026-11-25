@@ -99,7 +99,7 @@ test('Request 4K Series without request management can pick 4K on the series pag
     'true'
   );
   await page
-    .getByRole('button', { name: 'Entire series', exact: true })
+    .getByRole('button', { name: 'Select entire series', exact: true })
     .click();
   await page
     .getByRole('button', { name: 'Request entire series in 4K' })
@@ -456,7 +456,7 @@ test('two quick taps on Request send one book request', async ({ page }) => {
     .getByRole('button', { name: 'Request ebook' })
     .filter({ visible: true });
   await expect(button).toBeVisible();
-  // both clicks land before React re-renders the button as busy
+  // Both clicks land before React re-renders the button as busy.
   await button.evaluate((b) => {
     (b as HTMLButtonElement).click();
     (b as HTMLButtonElement).click();
@@ -740,6 +740,17 @@ test('two quick taps on a comic Request send one request', async ({ page }) => {
             mediaEditionId: undefined,
           }),
         };
+      if (path === '/service/comic')
+        return {
+          json: [
+            {
+              id: 11,
+              name: 'Fixture Comics',
+              isDefault: true,
+              backendType: 'backissue',
+            },
+          ],
+        };
       if (path.endsWith('/issues')) return { json: paged([]) };
       if (path === '/request' && route.request().method() === 'POST') {
         await new Promise((r) => setTimeout(r, 300));
@@ -753,7 +764,10 @@ test('two quick taps on a comic Request send one request', async ({ page }) => {
     .getByRole('button', { name: 'Request manga' })
     .filter({ visible: true });
   await expect(button).toBeVisible();
-  await button.evaluate((b) => {
+  await button.click();
+  const submit = page.getByRole('alertdialog').getByRole('button').first();
+  await expect(submit).toBeVisible();
+  await submit.evaluate((b) => {
     (b as HTMLButtonElement).click();
     (b as HTMLButtonElement).click();
   });
@@ -980,7 +994,7 @@ test('comic reader shelves preview the selected edition and require empty shelf 
   await expect(dialog.getByLabel('Reader Service')).toHaveValue('bookorbit');
   await dialog.getByLabel('Sync to Kobo').check();
   await dialog.getByRole('button', { name: 'Preview Matches' }).click();
-  await expect(dialog.getByText('0 current matches')).toBeVisible();
+  await expect(dialog.getByText('Current matches: 0')).toBeVisible();
   const create = dialog.getByRole('button', {
     name: 'Create Shelf',
     exact: true,

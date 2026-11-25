@@ -6791,6 +6791,39 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Lumen catalog and request fixture contract refresh (2026-11-25)
+
+Hosted browser evidence exposed stale selectors in the comic catalogue,
+Provider Discovery identity mapping, music blocklist confirmation, and Sportarr
+request dialog fixtures. The tests now assert the rendered names and safe error
+feedback the current Lumen components actually expose; no request policy,
+permissions, or payloads changed. The four workflows pass 20 cases across
+desktop, iPhone, Android, and tablet. API behavior remains mocked. This repairs
+acceptance coverage for those workflows and does not resolve the other failures
+in the captured full-browser run.
+
+release-note: none
+
+### Metadata settings mobile action wrapping (2026-11-25)
+
+The French metadata settings screen overflowed an iPhone-sized viewport by 11
+CSS pixels because the localized provider-test action was longer than the
+available row and used the shared button's default no-wrap behavior. It now opts
+into the existing `data-label-wrap` button variant; no shared CSS owner, action,
+payload, or permission changed. The prior hosted failure capture and the
+candidate capture were compared at 390 × 844 CSS pixels. The candidate keeps
+the action inside the viewport and preserves the existing spacing and form
+controls. The focused French iPhone case passes with no horizontal overflow;
+the complete Metadata suite is being rechecked across all configured locales
+and viewports. Live metadata-provider calls and a native-matched screenshot
+remain outside this fixture.
+
+The full Metadata browser suite passes 12 cases across English, French, and
+Arabic on desktop, iPhone, Android, and tablet. Live metadata-provider calls and
+a native-matched screenshot remain outside this fixture.
+
+release-note: `release-notes/fixed-lumen-metadata-mobile-overflow.md`
+
 ### Tunerr and Sportarr administration localization
 
 The Lumen Tunerr settings and Sportarr integration panels now localize their
@@ -10669,8 +10702,12 @@ was an outdated test label (`Users`); the shared menu correctly renders
 `User List` for administrators and delegated managers and hides it from regular
 users. The 12-case 330-episode request matrix also passes on all four viewports,
 covering bounded batches, transient retry with selection retained, and request
-cancellation when the sheet closes. The current full hosted Lumen validation is
-still required on the final PR head; live service behavior remains separate.
+cancellation when the sheet closes. Hosted run 45676094803 hit its 75-minute
+timeout in the full browser step and produced 184 failing-case artifacts across
+68 distinct browser tests. The evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/hosted-browser-evidence-45676094803/`.
+The failures are under active triage and the run is incomplete; the remaining
+browser matrix and exact final PR head still require hosted validation.
 
 release-note: `release-notes/fixed-lumen-workflow-recovery.md`
 
@@ -10685,5 +10722,45 @@ iPhone, Android, and tablet, including bookmark query preservation, transient
 catalog retry, selected PC build submission, owned-game edition history, and
 localized patch filtering. These fixtures use mocked catalog and request APIs;
 live QuestarrNG/ROMarrNG behavior remains unverified.
+
+release-note: none
+
+### Discovery context and rendered control fixture alignment (2026-11-25)
+
+The hosted evidence also contained stale assertions in configured Discover
+shelves and the long-list return workflow: media links now retain the opaque
+`discoverContext` query, and request status labels include quality (`HD:
+Requested`). The assertions now verify the route identity while allowing its
+context token and use the current status label. The movie/series regional detail
+fixture now expands the saved Details disclosure before asserting its facts.
+With these updates, 40 focused cases pass across desktop, iPhone, Android, and
+tablet.
+These tests use mocked APIs; the remaining full browser run and live provider
+behavior are still open.
+
+release-note: none
+
+### Lumen browser regression triage across viewports (2026-11-25)
+
+The 5,592-case browser run (5,262 passed, 164 skipped, 166 failed) exposed
+stale browser assertions and incomplete API fixtures across Lumen catalog,
+request, detail, setup, and media-server workflows. Affected cases were
+repaired at the fixture or selector boundary when the live component behavior
+was correct: account-switch tests now return valid empty endpoint contracts;
+comic requests provide an enabled comic service; book and movie detail tests
+open their current disclosures/action bars; and setup tests navigate to the
+active guided step. Product request permissions, payloads, and account
+isolation assertions remain intact. The French metadata-settings action
+wrapping fix is the only rendered product change in this batch and has its own
+release note and cross-viewport verification above.
+
+The affected 18-spec slice then ran 1,424 cases on desktop, iPhone, Android,
+and tablet: 1,382 passed and 31 were project-specific skips; 11 cases failed
+on the first pass because the tests still assumed a desktop action row or a
+visible mobile tab after a full-page capture. Those 11 failing cases were
+covered by focused reruns after correction, along with the paired locale and
+responsive cases: all 16 focused cases passed across all four projects. The
+broader 1,424-case slice was not rerun after those final test-only corrections;
+do not report it as a clean final-head matrix. Provider APIs remain mocked.
 
 release-note: none

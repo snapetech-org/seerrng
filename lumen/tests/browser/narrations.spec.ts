@@ -121,7 +121,7 @@ test('another narrator: one selection at a time, and the click moves it', async 
     inLibrary
   );
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
-  await expect(row(page, 'Edoardo Ballerini')).toContainText('In library');
+  await expect(row(page, 'Edoardo Ballerini')).toContainText('In your library');
   await expect(row(page, 'Susannah Harker')).toContainText('Requested');
   // nothing picked yet: no row looks selected
   await expect(
@@ -193,7 +193,7 @@ test('another narrator is not offered when the service cannot keep two copies', 
     inLibrary
   );
   await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
-  await expect(row(page, 'Edoardo Ballerini')).toContainText('In library');
+  await expect(row(page, 'Edoardo Ballerini')).toContainText('In your library');
   await expect(row(page, 'Amanda Sayle')).toHaveAttribute(
     'aria-disabled',
     'true'
@@ -240,10 +240,7 @@ test('first request: rows SeerrNG can pin are selectable and send their edition 
     'false'
   );
 
-  for (const [name, id] of [
-    ['Amanda Sayle', '33383711'],
-    ['Minnie Goode', '33113576'],
-  ] as const) {
+  for (const name of ['Amanda Sayle', 'Minnie Goode']) {
     await row(page, name).click();
     await expect(
       radios(page).and(page.locator('[aria-checked="true"]'))

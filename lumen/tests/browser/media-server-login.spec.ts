@@ -70,6 +70,7 @@ async function fixtures(
       path.startsWith('/discover/') ||
       path.startsWith('/request') ||
       path.endsWith('/recommendations') ||
+      path.endsWith('/similar') ||
       path === '/media'
     )
       return route.fulfill({

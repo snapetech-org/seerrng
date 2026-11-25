@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 const copy = {
   en: {
     title: 'Swipe History',
+    viewHistory: 'View Swipe History',
     category: 'History Category',
     movies: 'Movies',
     restore: 'Restore',
@@ -12,6 +13,7 @@ const copy = {
   },
   fr: {
     title: 'Historique de balayage',
+    viewHistory: 'Afficher l’historique Swipe',
     category: 'Catégorie de l’historique',
     movies: 'Films',
     restore: 'Restaurer',
@@ -21,6 +23,7 @@ const copy = {
   },
   ar: {
     title: 'سجل التمرير',
+    viewHistory: 'عرض سجل Swipe',
     category: 'فئة السجل',
     movies: 'أفلام',
     restore: 'استعادة',
@@ -70,8 +73,8 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       return route.fulfill({ json: {} });
     });
     await page.goto('/swipe');
-    await page.getByRole('button', { name: 'View Swipe History' }).click();
     const text = copy[locale];
+    await page.getByRole('button', { name: text.viewHistory }).click();
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(
       page.getByRole('combobox', { name: text.category })

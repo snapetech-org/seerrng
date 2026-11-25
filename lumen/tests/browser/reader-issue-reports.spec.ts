@@ -109,6 +109,8 @@ test('reader and music detail reports expose category-specific issue controls', 
       });
     if (path.startsWith('/service/') || path.startsWith('/genres/'))
       return route.fulfill({ json: [] });
+    if (path.endsWith('/similar') || path.endsWith('/artist-similar'))
+      return route.fulfill({ json: { results: [] } });
     if (path.startsWith('/discover/genreslider/'))
       return route.fulfill({ json: [] });
     return route.fulfill({ json: {} });

@@ -185,7 +185,8 @@ test('book details reach the author and series and send the exact shelf target',
   }
   await preview();
   await page.goto(appPath('/book/OL11W'));
-  await page.getByRole('link', { name: 'Fixture Series #1' }).click();
+  await page.getByText('Book Details', { exact: true }).click();
+  await page.getByRole('link', { name: /Fixture Series #1/ }).click();
   await expect(
     page.getByRole('heading', { name: 'Fixture Series' })
   ).toBeVisible();

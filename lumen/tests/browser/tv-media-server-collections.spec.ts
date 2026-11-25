@@ -80,6 +80,7 @@ test('TV detail changes only the selected server collection and confirms state',
   });
 
   await page.goto(`${mount}/tv/42`);
+  await page.getByTestId('tv-media-server').locator('summary').first().click();
   const disclosure = page.getByTestId('media-server-collections');
   await expect(disclosure).toBeVisible();
   await disclosure.locator('summary').click();
@@ -150,6 +151,7 @@ test('TV detail does not offer a partial collection list after a server limit re
   });
 
   await page.goto(`${mount}/tv/42`);
+  await page.getByTestId('tv-media-server').locator('summary').first().click();
   await page.getByTestId('media-server-collections').locator('summary').click();
   await expect(
     page

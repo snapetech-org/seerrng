@@ -201,6 +201,8 @@ test('active watch sessions save and revise ballots and show matches', async ({
       });
     if (url.endsWith('/movie/84/recommendations'))
       return route.fulfill({ json: { results: [], totalPages: 0 } });
+    if (url.endsWith('/movie/84/similar'))
+      return route.fulfill({ json: { results: [], totalPages: 0 } });
     if (url === path)
       return route.fulfill({
         json: {

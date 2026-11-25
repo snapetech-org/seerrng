@@ -113,7 +113,11 @@ for (const locale of locales) {
       return route.fulfill({ json: { results: [] } });
     });
     await page.goto(`${mount}/movie/550`);
-    await page.locator('.dacts.pc .btn-primary').first().click();
+    await page
+      .locator('.actionbar .btn-primary, .dacts .btn-primary')
+      .filter({ visible: true })
+      .first()
+      .click();
     const toast = page.getByRole('status');
     await expect(toast).toHaveClass(/show/);
     await expect(toast).toContainText(locale.serverFailure);

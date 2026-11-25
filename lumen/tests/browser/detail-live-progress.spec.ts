@@ -112,6 +112,7 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
     const isAudio = format === 'audiobook';
     const id = isAudio ? audio : ebook;
     let send: () => void = () => {};
+    let streamConnected = false;
     const ready = new Promise<void>((resolve) => {
       send = resolve;
     });
@@ -182,6 +183,7 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
         });
       if (url.pathname.endsWith('/live/downloads')) {
         expect(url.searchParams.get('ids')).toBe(id);
+        streamConnected = true;
         await ready;
         const update = {
           id,
@@ -195,6 +197,13 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
           body: `event: downloads\ndata: ${JSON.stringify([update])}\n\n`,
         });
       }
+      if (url.pathname.endsWith('/service/whisparr'))
+        return route.fulfill({ json: [] });
+      if (
+        url.pathname.endsWith('/similar') ||
+        url.pathname.endsWith('/artist-similar')
+      )
+        return route.fulfill({ json: { results: [] } });
       return route.fulfill({ json: {} });
     });
     const path = {
@@ -211,6 +220,7 @@ for (const format of ['ebook', 'audiobook', 'album', 'scene']) {
       })
     ).toBeVisible();
     await page.screenshot({ path: info.outputPath('scheduled.png') });
+    await expect.poll(() => streamConnected).toBe(true);
     send();
     await expect(
       status.getByText('Downloading 55%', { exact: true })

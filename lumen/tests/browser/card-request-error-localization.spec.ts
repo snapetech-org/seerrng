@@ -44,6 +44,17 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
           });
         if (path === '/user/1/settings/main')
           return route.fulfill({ json: { locale } });
+        if (path === '/service/comic')
+          return route.fulfill({
+            json: [
+              {
+                id: 1,
+                name: 'Fixture Comics',
+                isDefault: true,
+                backendType: 'backissue',
+              },
+            ],
+          });
         if (path === '/book/library')
           return route.fulfill({
             json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
@@ -131,8 +142,11 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
           animations: 'disabled',
         });
       await button.click();
-      const toast = page.getByRole('status');
-      await expect(toast).toHaveClass(/show/);
+      if (kind === 'comic')
+        await page.getByRole('alertdialog').getByRole('button').first().click();
+      const toast = page
+        .getByRole('status')
+        .filter({ hasText: copy[locale].failure });
       if (capture)
         await page.screenshot({
           path: `${capture}-${kind}-${locale}-after.png`,

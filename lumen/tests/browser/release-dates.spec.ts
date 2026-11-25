@@ -41,6 +41,7 @@ async function fixture(page: Page) {
         movie(402, 'Next Year Film', `${nextYear}-03-11`),
       ]);
     else if (path === '/movie/402/recommendations') json = paged([]);
+    else if (path === '/movie/402/similar') json = paged([]);
     else if (path === '/movie/402')
       json = {
         ...movie(402, 'Next Year Film', `${nextYear}-03-11`),
@@ -77,11 +78,11 @@ test('Coming soon on Discover names the year and links to the full page', async 
   });
   await expect(
     row.locator('.poster', { hasText: 'Next Year Film' }).locator('.m')
-  ).toHaveText(`Mar 11, ${nextYear}`);
+  ).toContainText(`Mar 11, ${nextYear}`);
   // this year's dates stay short
   await expect(
     row.locator('.poster', { hasText: 'Later This Year' }).locator('.m')
-  ).toHaveText('Dec 31');
+  ).toContainText('Dec 31');
   const seeAll = row.getByRole('link', { name: 'See all' });
   await expect(seeAll).toHaveAttribute('href', '/soon');
 });

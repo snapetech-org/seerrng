@@ -311,6 +311,7 @@ function MetadataForm({
           <button
             type="button"
             className="btn btn-quiet btn-sm"
+            data-label-wrap
             disabled={busy}
             onClick={() => void submit(true)}
           >

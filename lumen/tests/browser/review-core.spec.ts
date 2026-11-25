@@ -48,6 +48,8 @@ async function fixtures(
           enabledMediaCategories: {},
         },
       });
+    if (path === '/user/1/settings/discover-book-sections')
+      return route.fulfill({ json: [] });
     if (path === '/request' && req.method() === 'POST')
       return route.fulfill({ json: { id: 9 } });
     if (path === '/request')
@@ -221,7 +223,10 @@ test('a 4K-only request leaves the HD request open on posters', async ({
   await page.goto('/movies');
   const poster = page.locator('.poster', { hasText: 'Pending In 4K' });
   // the corner glyph still says something is on its way
-  await expect(poster.locator('.glyph')).toHaveAttribute('title', 'Requested');
+  await expect(poster.locator('.glyph')).toHaveAttribute(
+    'title',
+    '4K: Requested'
+  );
   await poster.hover();
   const hd = poster
     .getByRole('button', { name: /^Request/ })
@@ -284,7 +289,7 @@ test('Back to a long list after a request re-reads only a few pages', async ({
   await page.waitForTimeout(300);
   const last = Math.max(...asked);
   await page.getByRole('link', { name: 'Popular 3-1', exact: true }).click();
-  await expect(page).toHaveURL(/\/movie\/301$/);
+  await expect(page).toHaveURL(/\/movie\/301(?:\?|$)/);
   asked.length = 0;
   await page.goBack();
   await expect(page).toHaveURL(/\/movies$/);
@@ -294,7 +299,7 @@ test('Back to a long list after a request re-reads only a few pages', async ({
       .locator('.poster', { hasText: 'Popular 1-0' })
       .first()
       .locator('.glyph')
-  ).toHaveAttribute('title', 'Requested');
+  ).toHaveAttribute('title', 'HD: Requested');
   await page.waitForTimeout(500);
   // the first two pages and at most the last two are read again, not every page shown
   // (endless scrolling may go on to a new page, which is not a re-read)

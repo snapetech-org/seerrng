@@ -60,6 +60,10 @@ test('Lumen renders saved Studios and Networks on desktop and mobile', async ({
             ]
           : [],
       });
+    if (path === '/user/1/settings/discover-book-sections')
+      return route.fulfill({ json: [] });
+    if (path === '/discover/books' || path === '/discover/tv/upcoming')
+      return route.fulfill({ json: paged });
     if (
       /^\/discover\/(trending|movies|tv|movies\/upcoming)$/.test(path) ||
       path === '/media'

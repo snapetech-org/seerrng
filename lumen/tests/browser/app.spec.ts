@@ -96,6 +96,16 @@ async function fixtures(page: Page) {
         movie4kEnabled: false,
       };
     else if (/^\/user\/\d+\/quota$/.test(path)) body = {};
+    else if (
+      /^\/user\/\d+\/availability-subscriptions\/(movie|tv)\/\d+$/.test(path)
+    )
+      body = { subscribed: false };
+    else if (/^\/user\/\d+\/settings\/episode-queue$/.test(path))
+      body = { defaultEpisodeCount: 2 };
+    else if (path === '/issue/count') body = { open: 0 };
+    else if (path === '/follow/events/count') body = { unseen: 0 };
+    else if (path === '/status') body = {};
+    else if (/^\/(movie|tv)\/\d+\/similar$/.test(path)) body = paged([]);
     else if (path === '/discover/genreslider/movie')
       body = [{ id: 18, name: 'Drama', backdrops: [] }];
     else if (/^\/discover\/(trending|movies|tv)(\/upcoming)?$/.test(path))
@@ -265,20 +275,26 @@ test('catalogue, Plex device links, requests and responsive layout', async ({
   await profile(page);
   await page.screenshot({
     path: info.outputPath('profile.png'),
-    fullPage: true,
+    fullPage: info.project.name === 'desktop',
     animations: 'disabled',
   });
-  await page
-    .locator('a[href="/requests"]')
-    .filter({ visible: true })
-    .first()
-    .click();
+  if (info.project.name === 'desktop') {
+    await page
+      .locator('a[href="/requests"]')
+      .filter({ visible: true })
+      .first()
+      .click();
+  } else {
+    // Other cases exercise mobile and tablet navigation directly; this one
+    // verifies the responsive Requests page after the full-page captures.
+    await page.goto('/requests');
+  }
   await expect(
     page.getByRole('heading', { name: 'Requests', exact: true })
   ).toBeVisible();
   await page.screenshot({
     path: info.outputPath('requests.png'),
-    fullPage: true,
+    fullPage: info.project.name === 'desktop',
     animations: 'disabled',
   });
   expect(fixture.errors).toEqual([]);
@@ -3363,7 +3379,7 @@ test('adult scene details keep the catalog and default request sources distinct'
         title: source === '2' ? 'Catalog Scene' : 'Default Scene',
         serviceId: Number(source),
         performers: [],
-        mediaInfo: source === '2' ? { status: 5 } : undefined,
+        mediaInfo: undefined,
       },
     });
   });
@@ -3378,6 +3394,10 @@ test('adult scene details keep the catalog and default request sources distinct'
   ).toBeVisible();
   const actions = page.getByRole('button', { name: 'Request', exact: true });
   await actions.filter({ visible: true }).click();
+  await page
+    .getByRole('alertdialog', { name: 'Request Adult Scene' })
+    .getByRole('button', { name: 'Request', exact: true })
+    .click();
   await expect
     .poll(() => writes)
     .toEqual([{ mediaType: 'adult', mediaId: scene }]);
@@ -4033,9 +4053,11 @@ test('production country links open the matching movie and series filters', asyn
     })
   );
   await page.goto('/movie/101');
+  await page.getByText('Movie Details', { exact: true }).click();
   await page.getByRole('link', { name: 'Canada', exact: true }).click();
   await expect(page).toHaveURL(/\/movies\?country=CA$/);
   await page.goto('/tv/202');
+  await page.getByText('Series Details', { exact: true }).click();
   await page.getByRole('link', { name: 'Japan', exact: true }).click();
   await expect(page).toHaveURL(/\/series\?country=JP$/);
 });
@@ -4907,7 +4929,7 @@ test('configured video shelves preserve keyword and streaming filters', async ({
   await streaming.scrollIntoViewIfNeeded();
   await expect(
     streaming.getByRole('link', { name: 'Streaming Fixture' })
-  ).toHaveAttribute('href', '/tv/88');
+  ).toHaveAttribute('href', /^\/tv\/88(?:\?|$)/);
   await expect(
     streaming.getByRole('link', { name: 'See all' })
   ).toHaveAttribute('href', '/series?watchRegion=US&watchProviders=8%7C9');
@@ -4988,7 +5010,7 @@ test('configured search shelves link mixed results and preserve the search term'
   ]) {
     await expect(shelf.getByRole('link', { name: label })).toHaveAttribute(
       'href',
-      path
+      new RegExp(`^${path.replaceAll('/', '\\/')}(?:\\?|$)`)
     );
   }
   await expect(shelf.getByText('Other Category')).toHaveCount(0);
@@ -5114,10 +5136,10 @@ test('comic catalogue indexing refreshes into filtered results', async ({
   await page.clock.install();
   await page.goto('/comics?publisher=Image');
   await expect(
-    page.getByRole('status').filter({ hasText: 'Comic catalogue indexing' })
+    page.getByRole('status').filter({ hasText: 'Building comic index' })
   ).toContainText('6 of 20 volumes indexed');
   await expect(page.getByText('No comics found')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Check Again' }).click();
+  await page.getByRole('button', { name: 'Check again' }).click();
   await expect(
     page.getByText('12 of 20 volumes indexed', { exact: false })
   ).toBeVisible();
@@ -5517,9 +5539,7 @@ test('Classic comic discovery bookmarks restore catalogue filters and results', 
   await filterForm
     .getByRole('spinbutton', { name: 'Maximum Issues' })
     .fill('20');
-  await filterForm
-    .getByRole('button', { name: 'Search Comics Catalogue' })
-    .click();
+  await filterForm.getByRole('button', { name: 'Search Comics' }).click();
   await expect.poll(() => reads.at(-1)?.get('maxIssues')).toBe('20');
   await filterForm
     .getByRole('button', { name: 'Back to Comics and Manga' })
@@ -5535,9 +5555,7 @@ test('Classic comic discovery bookmarks restore catalogue filters and results', 
   await filterForm
     .getByRole('searchbox', { name: 'Title', exact: true })
     .fill('Fixture Manga');
-  await filterForm
-    .getByRole('button', { name: 'Search Comics Catalogue' })
-    .click();
+  await filterForm.getByRole('button', { name: 'Search Comics' }).click();
   await expect(
     page.getByRole('link', { name: 'Fixture Manga' })
   ).toHaveAttribute('href', '/comic/al-42');
@@ -6066,7 +6084,7 @@ test('Music album and artist details localize their controls and metadata', asyn
   );
   await page
     .getByRole('alertdialog')
-    .getByRole('button', { name: 'Keep it' })
+    .getByRole('button', { name: 'Cancel' })
     .click();
   await expect(
     page.getByRole('link', { name: copy.discography })
@@ -7388,20 +7406,24 @@ test('Provider Discovery saves and resets an exact viewer title match', async ({
   );
 
   await page.goto('./providers');
-  await page.getByRole('button', { name: 'Match Title', exact: true }).click();
-  await page.getByLabel('Match Media Type').selectOption('tv');
-  await page.getByRole('button', { name: 'Search Matches' }).click();
-  await page.getByRole('button', { name: 'Match Catalogue Series' }).click();
+  await page
+    .getByRole('button', { name: 'Match catalog title', exact: true })
+    .click();
+  await page.getByLabel('Catalog media type').selectOption('tv');
+  await page.getByRole('button', { name: 'Search', exact: true }).click();
+  await page
+    .getByRole('button', { name: 'Use this match: Catalogue Series' })
+    .click();
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })
   ).toHaveAttribute('href', new URL('./tv/202', baseURL).pathname);
   await expect(page.getByText(/Personal match/)).toBeVisible();
-  await page.getByRole('button', { name: 'Reset Match' }).click();
+  await page.getByRole('button', { name: 'Reset title match' }).click();
   await expect(
     page.getByRole('link', { name: 'Provider Fixture', exact: true })
   ).toHaveCount(0);
   await expect(
-    page.getByRole('button', { name: 'Match Title', exact: true })
+    page.getByRole('button', { name: 'Match catalog title', exact: true })
   ).toBeVisible();
   expect(writes).toBe(2);
 });
@@ -11204,7 +11226,10 @@ test('Spotify credentials retain a saved secret on ID changes and allow explicit
   });
   await page.goto('/admin/general#spotifyClientId');
   const id = page.getByLabel('Spotify Client ID', { exact: true });
-  const secret = page.getByLabel('Spotify Client Secret');
+  const secret = page.getByRole('textbox', {
+    name: 'Spotify Client Secret',
+    exact: true,
+  });
   const save = page.getByRole('button', { name: 'Save Spotify Credentials' });
   await expect(secret).toHaveValue('');
   await id.fill('replacement-client');
@@ -11905,6 +11930,11 @@ test('movie and series details use separate account regions for providers and ra
     ['/tv/202', '15', 'TV-MA', 'series'],
   ]) {
     await page.goto(path);
+    await page
+      .getByText(capture === 'movie' ? 'Movie Details' : 'Series Details', {
+        exact: true,
+      })
+      .click();
     await expect(
       page.getByText('Streaming Providers', { exact: true })
     ).toBeVisible();
@@ -12679,7 +12709,7 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
     });
   });
   await page.goto('/adult?query=Fixture&serverId=2');
-  const service = page.getByRole('combobox', { name: 'Whisparr Service' });
+  const service = page.getByRole('combobox', { name: 'Service', exact: true });
   await expect(service).toHaveValue('2');
   await expect
     .poll(() => Object.fromEntries(reads.at(-1) ?? []))
@@ -12687,16 +12717,17 @@ test('adult discovery bookmarks retain the selected Whisparr service', async ({
   await service.selectOption('');
   await expect.poll(() => reads.at(-1)?.has('serverId')).toBe(false);
   expect(reads.at(-1)?.get('query')).toBe('Fixture');
-  const notice = page.getByText('Whisparr returned partial results.', {
-    exact: false,
-  });
+  const notice = page.getByText(
+    'Some Whisparr servers could not be searched. Results may be incomplete.',
+    { exact: false }
+  );
   await expect(notice).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Fixture Result' })
   ).toBeVisible();
   await service.selectOption('2');
   await expect(notice).toHaveCount(0);
-  await expect(page.getByText('Nothing found')).toBeVisible();
+  await expect(page.getByText('No scenes match this search.')).toBeVisible();
 });
 
 test('Sportarr league details explain unmonitored schedules and show event dates', async ({
@@ -12821,8 +12852,8 @@ for (const autoApprove of [false, true]) {
     await page
       .getByRole('button', { name: 'Choose Sportarr Service', exact: true })
       .click();
-    const sheet = page.getByRole('alertdialog', { name: 'Follow League' });
-    const choice = sheet.getByRole('combobox', { name: 'Sportarr Service' });
+    const sheet = page.getByRole('alertdialog', { name: 'Request league' });
+    const choice = sheet.getByRole('combobox', { name: 'Sportarr service' });
     await choice.selectOption('1');
     await expect(
       sheet.getByRole('status').filter({ hasText: /In library|Followed/i })
@@ -12851,7 +12882,7 @@ for (const autoApprove of [false, true]) {
     ).toBeVisible();
     await sheet.getByRole('button', { name: 'Send Request' }).click();
     await expect(sheet.getByRole('alert')).toHaveText(
-      'The league request failed.'
+      'Something went wrong while submitting the sports request.'
     );
     await expect(choice).toHaveValue('2');
     await sheet.getByRole('button', { name: 'Send Request' }).click();

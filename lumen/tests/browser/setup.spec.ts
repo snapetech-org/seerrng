@@ -9,6 +9,7 @@ for (const administrator of [true, false]) {
   }) => {
     const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
     let enabledMediaCategories = { ebook: true, music: false };
+    let downloadSettings = { pollIntervalSeconds: 15, clients: [] };
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
     );
@@ -33,13 +34,9 @@ for (const administrator of [true, false]) {
             pollIntervalSeconds: 30,
             clients: [],
           });
-          return route.fulfill({
-            json: { pollIntervalSeconds: 30, clients: [] },
-          });
+          downloadSettings = route.request().postDataJSON();
         }
-        return route.fulfill({
-          json: { pollIntervalSeconds: 15, clients: [] },
-        });
+        return route.fulfill({ json: downloadSettings });
       }
       if (path === '/settings/main') {
         if (route.request().method() === 'POST') {
@@ -254,17 +251,26 @@ test('first-run Plex setup exchanges the PIN and configures a discovered server'
         });
       case '/settings/plex':
         if (request.method() === 'POST') {
-          expect(request.postDataJSON()).toMatchObject(connection);
+          const body = request.postDataJSON();
+          expect(body).toMatchObject(connection);
+          Object.assign(connection, body);
           connected = true;
         }
         return route.fulfill({
           json: connected
-            ? { ...connection, libraries: [library] }
+            ? {
+                ...connection,
+                webAppUrl: '',
+                analyzeOnPlayback: false,
+                libraries: [library],
+              }
             : { libraries: [] },
         });
       case '/settings/plex/library':
-        expect(request.postDataJSON()).toEqual({ enable: '1' });
-        library.enabled = true;
+        if (request.method() === 'POST') {
+          expect(request.postDataJSON()).toEqual({ enable: '1' });
+          library.enabled = true;
+        }
         return route.fulfill({ json: [library] });
       case '/settings/download-clients':
         return route.fulfill({
@@ -363,8 +369,10 @@ for (const [provider, serverType] of [
             json: { libraries: [{ id: '1', name: 'Films', enabled }] },
           });
         case '/settings/jellyfin/library':
-          expect(route.request().postDataJSON()).toEqual({ enable: '1' });
-          enabled = true;
+          if (route.request().method() === 'POST') {
+            expect(route.request().postDataJSON()).toEqual({ enable: '1' });
+            enabled = true;
+          }
           return route.fulfill({ json: [{ id: '1', name: 'Films', enabled }] });
         case '/settings/main':
           if (route.request().method() === 'POST') {
@@ -447,9 +455,17 @@ for (const [provider, serverType] of [
     ).toBeVisible();
     expect(attempts).toBe(0);
     const library = page.getByRole('checkbox', { name: 'Enable Films' });
+    await page.getByRole('link', { name: 'Start Guided Setup' }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Media Server Libraries' })
+      .click();
     await library.click();
     await expect(library).toBeChecked();
-    await page.getByText('Configure Media Categories', { exact: true }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Media Categories' })
+      .click();
     const defaults = page
       .getByRole('group', { name: 'Available Categories' })
       .last();
@@ -460,7 +476,10 @@ for (const [provider, serverType] of [
     await expect(page.getByText('Default categories saved.')).toBeVisible();
     expect(booksEnabled).toBe(true);
     expect(radarrReads).toBe(0);
-    await page.getByText('Configure Request Services', { exact: true }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Request Services' })
+      .click();
     const radarr = page.getByText('Radarr', { exact: true });
     await radarr.click();
     await page.getByRole('button', { name: 'Add Radarr' }).click();
@@ -491,20 +510,23 @@ for (const [provider, serverType] of [
     await expect(
       page.getByRole('button', { name: 'Edit Fixture Radarr' })
     ).toBeVisible();
-    await page.getByText('Configure Download Clients', { exact: true }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Download Clients' })
+      .click();
     await expect(
       page.getByRole('button', { name: 'Add Torrent Client' })
     ).toBeVisible();
-    await page.getByText('Configure Prowlarr', { exact: true }).click();
+    await page
+      .getByRole('navigation', { name: 'Setup steps' })
+      .getByRole('link', { name: 'Prowlarr' })
+      .click();
     await expect(
       page.getByRole('heading', { name: 'Indexer connection results' })
     ).toBeVisible();
     expect(initialized).toBe(false);
-    await page.getByRole('link', { name: 'Start Guided Setup' }).click();
-    await page
-      .getByRole('navigation', { name: 'Setup steps' })
-      .getByRole('link', { name: 'Review' })
-      .click();
+    await page.getByRole('link', { name: 'Show All Setup Options' }).click();
+    await page.goto(`${bundled ? '/lumen' : ''}/setup?step=review`);
     const review = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Review Setup' }),
     });
