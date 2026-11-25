@@ -1,7 +1,7 @@
 # Included Lumen: integration status and remaining rollout
 
-Status reviewed November 9, 2026. This describes source capabilities and remaining
-work; it does not establish publication of the replacement release.
+Status reviewed November 25, 2026. This describes source capabilities and
+remaining work; it does not establish full feature parity.
 
 The complete shipped Lumen frontend is already bundled by `scripts/build-lumen.mjs`
 and served by `server/lib/lumenFrontend.ts` on SeerrNG's ordinary listener, normally
@@ -30,12 +30,44 @@ and all three explicit choices after reloading from disk.
 
 | Remaining work | Acceptance |
 | --- | --- |
-| Qualify the complete rollout against published images | Fresh and real upgrade configs, old/new accounts, dark default and saved choices, same-origin auth, direct links, optional companion and native escape at phone/tablet/desktop sizes |
+| Finish published-image acceptance | Verify the fresh dark default and saved native/external choices, direct detail links, and matched native/Lumen behavior at phone/tablet/desktop. The v3.72.40 checks below cover a fresh setup entry, an upgraded config clone, saved Lumen routing, existing admin/member accounts, native escape, and companion auth/storage. |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
 Included Lumen now reports a real storage write probe, the effective UID/GID where available, and the applicable storage error. Bundled desktop and iPhone checks with real sign-in simulated a disk-full diagnostic, then used the actual successful probe to confirm recheck enabled Save and retained the draft. Route tests covered an unusable config path and an intact saved configuration. Bundled Lumen imports a companion configuration export into a draft. For companion-local branding, supply the logo or icon as PNG, JPEG or WebP. The raster upload prepares the asset, and Save for everyone publishes its reference with the other settings. Read the saved settings back before retiring the companion. Published-image rollout qualification remains open. Physical Plex or
 Jellyfin playback and real household-provider mutations require separate evidence.
+
+### Published v3.72.40 rollout checks (2026-11-25)
+
+The published amd64 SeerrNG image (`ghcr.io/snapetech-org/seerrng:v3.72.40`,
+digest `sha256:b145f47c52563c342f8aa91ee886455b956777e2bf8b64906b25f74a9c5bcc8d`)
+started with a read-only root filesystem, writable config mount, and UID 1000.
+Its fresh config entered `/lumen/setup` (HTTP 200). An isolated copy of a
+v3.72.28 config was first migrated by v3.72.29 and then upgraded to v3.72.40.
+After setting the Lumen default, home enforcement, and non-admin lock with a
+synthetic administrator, all three values survived a v3.72.40 container
+restart. The existing synthetic admin reached native SeerrNG through `/seerrng`
+and returned to enforced Lumen at `/`; the existing synthetic member was sent
+to `/lumen/` from `/`, a native settings URL, and `/seerrng`.
+
+The published companion image
+(`ghcr.io/snapetech-org/seerrng-lumen:v3.72.40`, amd64 digest
+`sha256:b29b2b51f6607d5a82c88149ade90d93096ca741d48b7b587098be549889b9a5`)
+ran as UID/GID 1000 with a read-only root filesystem and a task-owned
+`/lumen-data` mount. Through its same-origin proxy, the synthetic admin signed
+in and read `/api/v1/auth/me`; the config capability reported writable storage
+at UID/GID 1000; a settings save survived a fresh GET; a PNG upload was
+served back; and anonymous access to the settings endpoint returned 401.
+
+Headless screenshots at 390, 834, and 1440 CSS pixels are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+These runs used an isolated, copied test config and blocked outbound provider
+and media-server access. They establish startup, upgrade persistence, route
+policy, companion session proxying, and mounted-file operations only. The
+discovery screenshot therefore does not establish live catalog behavior; real
+provider responses, playback, fresh-install dark defaults, saved native and
+external choices, direct detail links, and matched native/Lumen visual states
+remain open.
 
 ## Sources and attribution
 
@@ -61,4 +93,5 @@ Fresh bundled installations now enter the Lumen wizard from the server home
 address. Route tests verify the explicit Classic entry and switching back to
 the default. Desktop and iPhone checks rendered the production bundle through
 Express, with pixel-identical wizard screens for the home redirect and direct
-setup link. The final published image remains to be qualified.
+setup link. Published v3.72.40 now has the partial runtime evidence recorded
+above; the complete visual and saved-choice matrix remains to be qualified.
