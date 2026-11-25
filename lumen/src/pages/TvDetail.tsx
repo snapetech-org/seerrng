@@ -1308,6 +1308,7 @@ export default function TvDetail() {
           }
           onClose={() => setManageOpen(false)}
           onUpdated={refresh}
+          mediaServerType={pub?.mediaServerType}
         />
       )}
       {streamingOverride?.seriesId === t.id && (

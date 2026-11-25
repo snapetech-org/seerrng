@@ -9603,12 +9603,17 @@ verified service copy before deletion. Mutation requests carry the current
 plan token and selected stale quality. Request managers can also select and
 delete one linked request after reviewing its requester and format; this uses
 the existing status-aware delete route that removes request history and cleans
-up active work, without requiring administrator access.
+up active work, without requiring administrator access. Administrators also
+see 7-day, 30-day, and lifetime Plex/Tautulli play counts (including HD/4K
+users) when SeerrNG is configured for Plex, plus Jellystat plays and playback
+time when that service has data. These provider routes are never requested by
+non-administrators.
 
-The focused browser workflow passes 24/24 cases across desktop, iPhone,
+The focused browser workflow passes 28/28 cases across desktop, iPhone,
 Android, and tablet, including permission gating, exact mutation payloads,
-cancel-before-delete, status-aware request deletion, TV and movie service
-links, and overflow checks. The production Lumen build passes. Baseline and
+cancel-before-delete, status-aware request deletion, Plex-only Tautulli reads,
+Jellystat playback, TV and movie service links, and overflow checks. The
+production Lumen build passes. Baseline and
 candidate Movie and TV details were captured at 1440x900 and iPhone 390x844;
 candidate captures also cover the open manager, verified library actions, and
 both destructive confirmations. The baseline is commit `b23841b5a`; the new

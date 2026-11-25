@@ -10,10 +10,13 @@ async function setup(
   page: Page,
   permissions = 18,
   kind: 'movie' | 'tv' = 'movie',
-  staleAvailabilityQualities: ('HD' | '4K')[] = []
+  staleAvailabilityQualities: ('HD' | '4K')[] = [],
+  mediaServerType = 1
 ) {
   const calls: { method: string; path: string; body?: unknown }[] = [];
   let libraryReads = 0;
+  let watchReads = 0;
+  let jellystatReads = 0;
   let requestDeleted = false;
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.route('https://**/*', (route) => route.abort());
@@ -39,7 +42,7 @@ async function setup(
       return route.fulfill({
         json: {
           initialized: true,
-          mediaServerType: 1,
+          mediaServerType,
           movie4kEnabled: true,
           series4kEnabled: true,
           enabledMediaCategories: { movie: true, tv: true },
@@ -129,6 +132,31 @@ async function setup(
         },
       });
     }
+    if (path === `/media/${databaseId}/watch_data`) {
+      watchReads++;
+      return route.fulfill({
+        json: {
+          data: {
+            users: [{ id: 8, displayName: 'Plex Viewer' }],
+            playCount: 14,
+            playCount7Days: 4,
+            playCount30Days: 9,
+          },
+          data4k: {
+            users: [],
+            playCount: 3,
+            playCount7Days: 1,
+            playCount30Days: 2,
+          },
+        },
+      });
+    }
+    if (path === `/media/${databaseId}/jellystat`) {
+      jellystatReads++;
+      return route.fulfill({
+        json: { plays: 12, playbackSeconds: 5400 },
+      });
+    }
     if (
       path === `/media/${databaseId}/library` ||
       path === `/media/${databaseId}/library/clear-stale-availability`
@@ -156,6 +184,12 @@ async function setup(
     get requestDeleted() {
       return requestDeleted;
     },
+    get watchReads() {
+      return watchReads;
+    },
+    get jellystatReads() {
+      return jellystatReads;
+    },
   };
 }
 
@@ -178,6 +212,17 @@ for (const kind of ['movie', 'tv'] as const) {
     await expect(dialog.getByText('#61 · Approved')).toBeVisible();
     await expect(dialog.getByText('Requester')).toBeVisible();
     await expect(dialog.getByText('HD · Downloading')).toBeVisible();
+    await expect(
+      dialog.getByRole('heading', { name: 'Playback history' })
+    ).toBeVisible();
+    await expect(dialog.getByText('Past 7 days · 4 plays')).toBeVisible();
+    await expect(dialog.getByText('Past 30 days · 9 plays')).toBeVisible();
+    await expect(dialog.getByText('All time · 14 plays')).toBeVisible();
+    await expect(dialog.getByText('Plex Viewer')).toBeVisible();
+    await expect(dialog.getByText('Jellystat watch activity')).toBeVisible();
+    await expect(
+      dialog.getByText('12 plays · 1.5 hours of playback')
+    ).toBeVisible();
     await expect(
       dialog.getByRole('link', {
         name: kind === 'tv' ? 'Open in Sonarr' : 'Open in Radarr',
@@ -218,6 +263,8 @@ for (const kind of ['movie', 'tv'] as const) {
       });
     }
     expect(state.libraryReads).toBe(1);
+    expect(state.watchReads).toBe(1);
+    expect(state.jellystatReads).toBe(1);
     await expect(page.getByRole('dialog')).toHaveAttribute(
       'aria-modal',
       'true'
@@ -322,6 +369,25 @@ test('request managers can confirm deletion of one title request', async ({
   ]);
   expect(state.requestDeleted).toBe(true);
   expect(state.libraryReads).toBe(0);
+  expect(state.watchReads).toBe(0);
+  expect(state.jellystatReads).toBe(0);
+});
+
+test('Jellyfin administrators see Jellystat without requesting Plex history', async ({
+  page,
+}) => {
+  const state = await setup(page, 18, 'movie', [], 2);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
+  await expect(dialog.getByText('Jellystat watch activity')).toBeVisible();
+  await expect(
+    dialog.getByText('12 plays · 1.5 hours of playback')
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole('heading', { name: 'Playback history' })
+  ).toHaveCount(0);
+  expect(state.watchReads).toBe(0);
+  expect(state.jellystatReads).toBe(1);
 });
 
 test('request managers can open the panel without administrator library actions', async ({

@@ -4,8 +4,10 @@ import {
   api,
   ApiError,
   MediaStatus,
+  type JellystatPlaybackSummary,
   type LibraryRemovalPlan,
   type MediaInfo,
+  type MediaWatchDataResponse,
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
@@ -75,6 +77,7 @@ export function ManageVideoSheet({
   media,
   onClose,
   onUpdated,
+  mediaServerType,
 }: {
   kind: MediaKind;
   title: string;
@@ -85,10 +88,11 @@ export function ManageVideoSheet({
   };
   onClose: () => void;
   onUpdated: () => void;
+  mediaServerType?: number;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const admin = isAdministrator(user?.permissions);
   const [confirmation, setConfirmation] = useState<ManagerAction>();
   const [busy, setBusy] = useState(false);
@@ -99,6 +103,12 @@ export function ManageVideoSheet({
   const library = useApi<LibraryRemovalPlan>(
     admin ? `/media/${media.id}/library` : null,
     { keepDuringRefresh: true }
+  );
+  const watchData = useApi<MediaWatchDataResponse>(
+    admin && mediaServerType === 1 ? `/media/${media.id}/watch_data` : null
+  );
+  const jellystat = useApi<JellystatPlaybackSummary>(
+    admin ? `/media/${media.id}/jellystat` : null
   );
 
   useDialog(box, () => {
@@ -459,6 +469,87 @@ export function ManageVideoSheet({
                       </a>
                     ))}
                   </div>
+                </section>
+              )}
+
+              {admin && (watchData.data?.data || watchData.data?.data4k) && (
+                <section className="card">
+                  <h4>
+                    {t('lumen.manageVideo.playbackHistory', 'Playback history')}
+                  </h4>
+                  {(['data', 'data4k'] as const).map((key) => {
+                    const counts = watchData.data?.[key];
+                    if (!counts) return null;
+                    const quality = key === 'data4k' ? '4K' : 'HD';
+                    return (
+                      <div className="card" key={key}>
+                        <b>{quality}</b>
+                        <ul className="card-list">
+                          <li>
+                            {t('lumen.manageVideo.past7Days', 'Past 7 days')}
+                            {' · '}
+                            {t('lumen.manageVideo.playCount', '{count} plays', {
+                              count: counts.playCount7Days,
+                            })}
+                          </li>
+                          <li>
+                            {t('lumen.manageVideo.past30Days', 'Past 30 days')}
+                            {' · '}
+                            {t('lumen.manageVideo.playCount', '{count} plays', {
+                              count: counts.playCount30Days,
+                            })}
+                          </li>
+                          <li>
+                            {t('lumen.manageVideo.allTime', 'All time')}
+                            {' · '}
+                            {t('lumen.manageVideo.playCount', '{count} plays', {
+                              count: counts.playCount,
+                            })}
+                          </li>
+                        </ul>
+                        {counts.users.length > 0 && (
+                          <p className="note">
+                            {t('lumen.manageVideo.playedBy', 'Played by')}:{' '}
+                            {counts.users
+                              .map((item) => item.displayName)
+                              .join(', ')}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </section>
+              )}
+
+              {admin && jellystat.data && (
+                <section
+                  className="card"
+                  aria-label={t(
+                    'lumen.manageVideo.jellystatActivity',
+                    'Jellystat watch activity'
+                  )}
+                >
+                  <h4>
+                    {t(
+                      'lumen.manageVideo.jellystatActivity',
+                      'Jellystat watch activity'
+                    )}
+                  </h4>
+                  <p className="note">
+                    {t('lumen.manageVideo.playCount', '{count} plays', {
+                      count: jellystat.data.plays,
+                    })}
+                    {' · '}
+                    {t(
+                      'lumen.manageVideo.playbackHours',
+                      '{hours} hours of playback',
+                      {
+                        hours: new Intl.NumberFormat(locale, {
+                          maximumFractionDigits: 1,
+                        }).format(jellystat.data.playbackSeconds / 3600),
+                      }
+                    )}
+                  </p>
                 </section>
               )}
 

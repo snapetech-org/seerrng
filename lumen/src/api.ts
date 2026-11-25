@@ -990,6 +990,24 @@ export interface LibraryRemovalPlan {
   verifiedServices: number;
   staleAvailabilityQualities?: ('HD' | '4K')[];
 }
+
+export interface MediaWatchCounts {
+  users: { id: number; displayName: string; avatar?: string }[];
+  playCount: number;
+  playCount7Days: number;
+  playCount30Days: number;
+}
+
+export interface MediaWatchDataResponse {
+  data?: MediaWatchCounts;
+  data4k?: MediaWatchCounts;
+}
+
+export interface JellystatPlaybackSummary {
+  plays: number;
+  playbackSeconds: number;
+}
+
 export interface BookDetails extends BookResult {
   onUserWatchlist?: boolean;
   description?: string;
