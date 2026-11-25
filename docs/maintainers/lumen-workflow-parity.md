@@ -10785,7 +10785,22 @@ on the first pass because the tests still assumed a desktop action row or a
 visible mobile tab after a full-page capture. Those 11 failing cases were
 covered by focused reruns after correction, along with the paired locale and
 responsive cases: all 16 focused cases passed across all four projects. The
-broader 1,424-case slice was not rerun after those final test-only corrections;
-do not report it as a clean final-head matrix. Provider APIs remain mocked.
+At the time of this triage entry, the broader slice had not been rerun after
+the final test-only corrections. Its later current-main requalification is
+recorded below. Provider APIs remain mocked.
+
+release-note: none
+
+### Cross-viewport regression slice requalification (2026-11-25)
+
+Reran all 19 browser specs touched by the prior cross-viewport fixture repairs
+on current `main` (`2500ddf45a2060af3309068807dc415039f05a68`). The run completed
+with 1,441 passed and 31 project-specific skips across desktop, iPhone, Android,
+and tablet. It covers the repaired setup, account, request, discovery, detail,
+library, media-server, and watch-session workflows. This closes the earlier
+statement that the 1,424-case corrected slice had not been rerun; it does not
+qualify live provider behavior or the full Lumen browser matrix. Results are
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/final-cross-viewport-slice-2500ddf/`.
 
 release-note: none
