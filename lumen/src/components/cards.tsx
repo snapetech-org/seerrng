@@ -189,6 +189,64 @@ export const Glyph = ({ s }: { s: Stat }) => {
   ) : null;
 };
 
+type VideoQuality = 'HD' | '4K';
+type VideoStatus = { quality?: VideoQuality; s: Stat };
+
+function videoQualityStatuses(
+  media: MediaInfo | undefined,
+  serverName: string,
+  availability: AvailabilityMode
+): VideoStatus[] {
+  if (!media) return [];
+  const standard = statusOf(
+    { ...media, status4k: undefined, downloadStatus4k: undefined },
+    false,
+    serverName,
+    availability
+  );
+  if (standard?.word === 'Blocklisted') return [{ s: standard }];
+  const fourK = statusOf(
+    { ...media, status: undefined, downloadStatus: undefined },
+    false,
+    serverName,
+    availability
+  );
+  const statuses: VideoStatus[] = [
+    ...(standard ? [{ quality: 'HD' as const, s: standard }] : []),
+    ...(fourK ? [{ quality: '4K' as const, s: fourK }] : []),
+  ];
+  return statuses;
+}
+
+function VideoStatusGlyphs({ statuses }: { statuses: VideoStatus[] }) {
+  const { t } = useLumenLocale();
+  if (!statuses.length) return null;
+  return (
+    <span className="glyph-stack">
+      {statuses.map(({ quality, s }) => {
+        if (!s) return null;
+        const qualityLabel = quality;
+        const label = qualityLabel
+          ? `${qualityLabel}: ${statusLabel(s, t)}`
+          : statusLabel(s, t);
+        return (
+          <span
+            key={quality ?? 'blocklisted'}
+            className={`glyph ${s.k}`}
+            data-quality={quality}
+            title={label}
+            role="img"
+            aria-label={label}
+          >
+            {quality && <span className="glyph-quality">{qualityLabel}</span>}
+            <Icon name={s.ico} />
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 export function statusLabel(
   s: { word: string } | null,
   t: ReturnType<typeof useLumenLocale>['t']
@@ -398,6 +456,34 @@ export function TitleCard({
   const requestMedia = withoutPending4k(media);
   // Presentation never changes whether the server already has or is acquiring a copy.
   const shown = statusOf(media, false, serverName, availability);
+  const [requestedQuality, setRequestedQuality] = useState<VideoQuality>();
+  const videoStatuses = videoQualityStatuses(media, serverName, availability);
+  const visibleVideoStatuses: VideoStatus[] = videoStatuses.map((item) =>
+    requestedQuality && item.quality === requestedQuality
+      ? {
+          ...item,
+          s: {
+            k: 'wait' as const,
+            word: 'Requested',
+            ico: 'clock' as const,
+          },
+        }
+      : item
+  );
+  if (
+    requestedQuality &&
+    !videoStatuses.some(({ quality }) => quality === requestedQuality) &&
+    videoStatuses.every(({ quality }) => quality)
+  ) {
+    visibleVideoStatuses.push({
+      quality: requestedQuality,
+      s: {
+        k: 'wait',
+        word: 'Requested',
+        ico: 'clock',
+      },
+    });
+  }
   const [s, markRequested] = useRequested(
     statusOf(requestMedia, false, serverName)
   );
@@ -431,6 +517,7 @@ export function TitleCard({
     .join(' · ');
   const quick = useQuickRequest(it, (is4k, series, quotaException) => {
     markRequested(is4k ? '4K Requested' : 'Requested');
+    setRequestedQuality(is4k ? '4K' : 'HD');
     toast(
       quotaException
         ? `Approval requested for ${titleOf(it)}`
@@ -534,7 +621,13 @@ export function TitleCard({
           sub={yearOf(it)}
           icon={tv ? 'tv' : 'film'}
         />
-        <Glyph s={visibleRequestStatus || shown} />
+        <VideoStatusGlyphs
+          statuses={
+            visibleVideoStatuses.length || (!visibleRequestStatus && !shown)
+              ? visibleVideoStatuses
+              : [...visibleVideoStatuses, { s: visibleRequestStatus || shown }]
+          }
+        />
         <Link
           className="hit"
           to={detailHref}

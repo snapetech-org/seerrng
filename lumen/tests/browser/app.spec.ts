@@ -1184,8 +1184,106 @@ test('movie posters distinguish or hide shared copies without offering duplicate
   await expect(poster.locator('.glyph')).toHaveCount(0);
   await expect(
     poster.getByRole('link', { name: 'Shared Movie', exact: true })
-  ).toHaveAttribute('href', '/movie/90');
+  ).toHaveAttribute('href', /^\/movie\/90(?:\?discoverContext=[^&]+)?$/);
   await expect(poster.getByRole('button', { name: /request/i })).toHaveCount(0);
+});
+
+test('movie cards show both independent quality statuses', async ({ page }) => {
+  await fixtures(page);
+  await page.route(/\/api\/v1\/discover\/movies(?:\?|$)/, (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 90,
+          title: 'Dual Quality Movie',
+          mediaInfo: { status: 5, status4k: 5 },
+        },
+        {
+          ...movie,
+          id: 91,
+          title: 'Mixed Quality Movie',
+          mediaInfo: { status: 5, status4k: 2 },
+        },
+      ]),
+    })
+  );
+  await page.goto('/movies');
+
+  const dual = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Dual Quality Movie', exact: true }),
+  });
+  const mixed = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Mixed Quality Movie', exact: true }),
+  });
+  await expect(dual.locator('.glyph[data-quality]')).toHaveCount(2);
+  await expect(dual.locator('.glyph[data-quality="HD"]')).toHaveAttribute(
+    'aria-label',
+    'HD: On Plex'
+  );
+  await expect(dual.locator('.glyph[data-quality="4K"]')).toHaveAttribute(
+    'aria-label',
+    '4K: On Plex'
+  );
+  await expect(mixed.locator('.glyph[data-quality]')).toHaveCount(2);
+  await expect(mixed.locator('.glyph[data-quality="HD"]')).toHaveAttribute(
+    'aria-label',
+    'HD: On Plex'
+  );
+  await expect(mixed.locator('.glyph[data-quality="4K"]')).toHaveAttribute(
+    'aria-label',
+    '4K: Requested'
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true);
+
+  if (process.env.LUMEN_CARD_STATUS_VISUAL === '1') {
+    const output = process.env.LUMEN_VISUAL_EVIDENCE;
+    if (!output) throw new Error('LUMEN_VISUAL_EVIDENCE is required');
+    if (process.env.LUMEN_CARD_STATUS_VIEWPORT === '320')
+      await page.setViewportSize({ width: 320, height: 900 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: output,
+      fullPage: true,
+      animations: 'disabled',
+    });
+  }
+
+  await page.route(/\/api\/v1\/discover\/tv(?:\?|$)/, (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          ...movie,
+          id: 202,
+          title: 'Dual Quality Series',
+          mediaType: 'tv',
+          name: 'Dual Quality Series',
+          mediaInfo: { status: 2, status4k: 5 },
+        },
+      ]),
+    })
+  );
+  await page.goto('/series');
+  const series = page.locator('.poster').filter({
+    has: page.getByRole('link', { name: 'Dual Quality Series', exact: true }),
+  });
+  await expect(series.locator('.glyph[data-quality]')).toHaveCount(2);
+  await expect(series.locator('.glyph[data-quality="HD"]')).toHaveAttribute(
+    'aria-label',
+    'HD: Requested'
+  );
+  await expect(series.locator('.glyph[data-quality="4K"]')).toHaveAttribute(
+    'aria-label',
+    '4K: On Plex'
+  );
 });
 
 test('movie details keep shared HD and viewer 4K availability separate', async ({

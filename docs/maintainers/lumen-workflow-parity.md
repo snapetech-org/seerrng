@@ -9957,3 +9957,25 @@ captures cover desktop, iPhone, Android, tablet, and the 320 px narrow case.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-ratings-20261124/`.
 These use mocked API responses; live provider calls remain unverified.
+
+### Independent HD and 4K poster status in Lumen (2026-11-25)
+
+Native movie and TV posters can show separate HD and 4K states at the same
+time. Lumen previously collapsed both into one generic corner glyph, choosing
+one quality and hiding the other. Movie and TV cards now display each visible
+quality as its own labeled status badge, in HD-then-4K order. Each badge keeps
+the existing availability visibility rules and reflects its own available,
+requested, or downloading state; a title available only in 4K is labeled as
+4K. Blocklisted titles retain their existing single lock indicator. The
+existing bookshelf and extra-catalog glyphs are unchanged.
+
+Browser coverage verifies simultaneous available states, mixed available and
+requested states, TV status, shared-availability hiding, English/French/Arabic
+labels, and no page overflow. The focused card and rating regression group
+passes 24 cases across desktop, iPhone, Android, and tablet; the status
+localization fixture passes 12 locale/viewport combinations. Matching baseline
+and candidate Discover captures cover desktop and iPhone; baseline/candidate
+captures also cover the 320px phone width and were inspected at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-quality-status-20261124/`.
+The UI reads SeerrNG media-status fixtures; live server status and production
+mount behavior remain unverified.

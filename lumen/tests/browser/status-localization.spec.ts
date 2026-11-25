@@ -12,13 +12,23 @@ const copy = {
     onServer: 'On Plex',
     requested: 'Requested',
     blocklisted: 'Blocklisted',
+    qualityAvailable: 'HD: On Plex',
+    qualityRequested: '4K: Requested',
   },
   fr: {
     onServer: 'Sur Plex',
     requested: 'Demandé',
     blocklisted: 'Bloqué',
+    qualityAvailable: 'HD: Sur Plex',
+    qualityRequested: '4K: Demandé',
   },
-  ar: { onServer: 'على Plex', requested: 'تم طلبه', blocklisted: 'محظور' },
+  ar: {
+    onServer: 'على Plex',
+    requested: 'تم طلبه',
+    blocklisted: 'محظور',
+    qualityAvailable: 'HD: على Plex',
+    qualityRequested: '4K: تم طلبه',
+  },
 } as const;
 
 test('poster status labels use the account locale', async ({ page }, info) => {
@@ -55,7 +65,7 @@ test('poster status labels use the account locale', async ({ page }, info) => {
         json: {
           page: 1,
           totalPages: 1,
-          totalResults: 3,
+          totalResults: 4,
           results: [
             {
               id: 51,
@@ -78,6 +88,13 @@ test('poster status labels use the account locale', async ({ page }, info) => {
               releaseDate: '2020-01-01',
               mediaInfo: { id: 53, status: 6 },
             },
+            {
+              id: 54,
+              title: 'Fixture Dual Quality Movie',
+              mediaType: 'movie',
+              releaseDate: '2020-01-01',
+              mediaInfo: { id: 54, status: 5, status4k: 2 },
+            },
           ],
         },
       });
@@ -94,19 +111,32 @@ test('poster status labels use the account locale', async ({ page }, info) => {
   const card = page.locator('.poster', { hasText: 'Fixture Available Movie' });
   await expect(card.locator('.glyph')).toHaveAttribute(
     'title',
-    baseline ? copy.en.onServer : copy[locale as keyof typeof copy].onServer
+    baseline
+      ? `HD: ${copy.en.onServer}`
+      : copy[locale as keyof typeof copy].qualityAvailable
   );
   const expected = baseline ? copy.en : copy[locale as keyof typeof copy];
   await expect(
     page
       .locator('.poster', { hasText: 'Fixture Requested Movie' })
       .locator('.glyph')
-  ).toHaveAttribute('title', expected.requested);
+  ).toHaveAttribute('title', `HD: ${expected.requested}`);
   await expect(
     page
       .locator('.poster', { hasText: 'Fixture Blocklisted Movie' })
       .locator('.glyph')
   ).toHaveAttribute('title', expected.blocklisted);
+  const dual = page.locator('.poster', {
+    hasText: 'Fixture Dual Quality Movie',
+  });
+  await expect(dual.locator('.glyph[data-quality="HD"]')).toHaveAttribute(
+    'title',
+    expected.qualityAvailable
+  );
+  await expect(dual.locator('.glyph[data-quality="4K"]')).toHaveAttribute(
+    'title',
+    expected.qualityRequested
+  );
   await expect(page.locator('html')).toHaveAttribute(
     'dir',
     locale === 'ar' ? 'rtl' : 'ltr'
