@@ -75,10 +75,12 @@ export default function TrackRequests() {
     working.current = true;
     setBusy(true);
     setFailure('');
+    let succeeded = false;
     const path = `/soulseek/track-requests/${track.id}`;
     try {
       if (action === 'cancel') await api(path, { method: 'DELETE' });
       else await api(`${path}/${action}`, { method: 'POST' });
+      succeeded = true;
     } catch (error) {
       setFailure(
         friendlyError(
@@ -90,7 +92,7 @@ export default function TrackRequests() {
         )
       );
     } finally {
-      setConfirmation(undefined);
+      if (succeeded) setConfirmation(undefined);
       setBusy(false);
       working.current = false;
       reload();
@@ -218,7 +220,7 @@ export default function TrackRequests() {
             retryLabel={t('lumen.trackRequests.retry', 'Retry')}
             retry={reload}
           />
-          {failure && (
+          {failure && !confirmation && (
             <p className="note" role="alert">
               {failure}
             </p>
@@ -323,7 +325,13 @@ export default function TrackRequests() {
           onClose={() => {
             if (!working.current) setConfirmation(undefined);
           }}
-        />
+        >
+          {failure && (
+            <p className="note" role="alert">
+              {failure}
+            </p>
+          )}
+        </ConfirmSheet>
       )}
     </>
   );

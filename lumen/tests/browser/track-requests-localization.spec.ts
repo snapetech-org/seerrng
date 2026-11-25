@@ -48,6 +48,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       route.fulfill({ json: {} })
     );
     let cancelled = false;
+    let failCancelOnce = true;
     const scopes: string[] = [];
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
@@ -86,6 +87,13 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       }
       if (path === '/soulseek/track-requests/7') {
         expect(request.method()).toBe('DELETE');
+        if (failCancelOnce) {
+          failCancelOnce = false;
+          return route.fulfill({
+            status: 503,
+            json: { message: 'Temporary cancellation failure.' },
+          });
+        }
         cancelled = true;
         return route.fulfill({ json: { status: 'cancelled' } });
       }
@@ -100,12 +108,19 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(page.getByText(text.pending)).toBeVisible();
     await expect(page.getByText(text.requestedBy)).toBeVisible();
     await page.getByRole('button', { name: text.cancel, exact: true }).click();
-    await expect(page.getByRole('alertdialog')).toContainText(text.confirm);
-    await page
-      .getByRole('alertdialog')
+    const confirmation = page.getByRole('alertdialog');
+    await expect(confirmation).toContainText(text.confirm);
+    await confirmation
+      .getByRole('button', { name: text.cancel, exact: true })
+      .click();
+    await expect(confirmation.getByRole('alert')).toBeVisible();
+    await expect(confirmation).toBeVisible();
+    expect(cancelled).toBe(false);
+    await confirmation
       .getByRole('button', { name: text.cancel, exact: true })
       .click();
     await expect(page.getByText(text.empty)).toBeVisible();
+    await expect(confirmation).toHaveCount(0);
     expect(cancelled).toBe(true);
     await expect(page.locator('html')).toHaveAttribute(
       'dir',

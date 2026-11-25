@@ -1,0 +1,1 @@
+Lumen keeps Track Request confirmations open when cancel, approve, or decline actions fail, with the error and retry action together. Successful actions still close the confirmation and refresh the request list.
