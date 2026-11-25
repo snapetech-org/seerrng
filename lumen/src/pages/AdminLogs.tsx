@@ -16,6 +16,20 @@ interface LogEntry {
 const levels = ['debug', 'info', 'warn', 'error'] as const;
 const MAX_LOG_OFFSET = 100_000;
 const pageSizes = [10, 25, 50, 100];
+const logTimeOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+};
+
+function formatLogTimestamp(value: string, locale: string) {
+  const timestamp = new Date(value);
+  if (!Number.isFinite(timestamp.getTime())) return value;
+  return new Intl.DateTimeFormat(locale, logTimeOptions).format(timestamp);
+}
 
 export default function AdminLogs() {
   const { user } = useAuth();
@@ -25,18 +39,18 @@ export default function AdminLogs() {
 }
 
 function LogViewer({ storageKey }: { storageKey: string }) {
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [{ level, take }, setDisplay] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
       return {
-        level: levels.find((value) => value === saved?.level) ?? 'info',
+        level: levels.find((value) => value === saved?.level) ?? 'debug',
         take: pageSizes.find((value) => value === saved?.take) ?? 25,
       };
     } catch {
-      return { level: 'info', take: 25 };
+      return { level: 'debug', take: 25 };
     }
   });
   const [params, setParams] = useSearchParams();
@@ -45,7 +59,7 @@ function LogViewer({ storageKey }: { storageKey: string }) {
   const page = /^[1-9]\d{0,4}$/.test(bookmarkPage)
     ? Math.min(Number(bookmarkPage), lastPage)
     : 1;
-  const [live, setLive] = useState(false);
+  const [live, setLive] = useState(true);
   const [copyStatus, setCopyStatus] = useState('');
 
   useEffect(() => {
@@ -76,6 +90,10 @@ function LogViewer({ storageKey }: { storageKey: string }) {
     currentPathOnly: true,
     keepDuringRefresh: true,
   });
+  const { data: appData } = useApi<{ appDataPath?: string }>(
+    '/status/appdata',
+    { currentPathOnly: true }
+  );
   const entries = useMemo(() => {
     const occurrences = new Map<string, number>();
     return data?.results.map((entry) => {
@@ -195,6 +213,15 @@ function LogViewer({ storageKey }: { storageKey: string }) {
           </select>
         </label>
       </form>
+      <p className="note">
+        {t(
+          'lumen.adminLogs.logLocation',
+          'You can also view these logs directly via stdout or in the log file:'
+        )}{' '}
+        <code dir="ltr">
+          {`${(appData?.appDataPath || '/app/config').replace(/[\\/]+$/, '')}/logs/seerr.log`}
+        </code>
+      </p>
       <ServiceNote
         error={error}
         what={t('lumen.adminLogs.systemLogs', 'system logs')}
@@ -211,9 +238,23 @@ function LogViewer({ storageKey }: { storageKey: string }) {
         </p>
       )}
       {entries?.length === 0 && (
-        <p className="note">
-          {t('lumen.adminLogs.noResults', 'No logs match these filters.')}
-        </p>
+        <div>
+          <p className="note">
+            {t('lumen.adminLogs.noResults', 'No logs match these filters.')}
+          </p>
+          {level !== 'debug' && (
+            <button
+              className="btn btn-quiet btn-sm"
+              type="button"
+              onClick={() => {
+                setDisplay({ level: 'debug', take });
+                setPage(1, true);
+              }}
+            >
+              {t('lumen.adminLogs.showAll', 'Show All Logs')}
+            </button>
+          )}
+        </div>
       )}
       {!!entries?.length && (
         <ul className="setlist">
@@ -222,7 +263,11 @@ function LogViewer({ storageKey }: { storageKey: string }) {
               <div>
                 <b>{entry.message}</b>
                 <small>
-                  {[entry.timestamp, entry.level, entry.label]
+                  {[
+                    formatLogTimestamp(entry.timestamp, locale),
+                    entry.level.toUpperCase(),
+                    entry.label,
+                  ]
                     .filter(Boolean)
                     .join(' · ')}
                 </small>

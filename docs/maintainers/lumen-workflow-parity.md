@@ -3514,6 +3514,31 @@ distinguishes unavailable DNS data from an empty cache. Four standalone
 browser checks verified the path, DNS flush, data retention during an
 outage, and removal of cache details when the server denies access.
 
+### System Logs display and recovery (2026-11-25)
+
+Lumen System Logs now defaults a new viewer to Debug and above, matching the
+native full-history default. Timestamps use the selected interface locale,
+severity labels are uppercase, and the page shows the configured
+`{appDataPath}/logs/seerr.log` path with `/app/config` as the fallback. When a
+non-Debug filter returns no entries, administrators can restore the full log
+view; this also resets paging. Log polling starts automatically every five
+seconds and can be paused with Live Refresh, matching the native default.
+Existing search, copy, paging, endpoint, and authorization behavior remains
+intact.
+
+The browser matrix verifies log search, localized timestamp and severity,
+structured details, copy feedback, log-file guidance, empty-filter recovery,
+and page reset in English, French, and Arabic across desktop, iPhone, Android,
+and tablet. The 24 locale/viewport cases pass. They also verify that automatic
+refresh starts enabled. English baseline/candidate renders were compared at
+1440×900 and 390×844 with the same paused state, Info filter, and fixture
+entry; French desktop and Arabic iPhone candidates were inspected.
+There is no page-level horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-logs-parity-20261125/`.
+The fixtures mock log and app-data responses; live server logs, clipboard
+behavior, independent translation review, and a native visual comparison
+remain unverified.
+
 ### Managed users
 
 Administrators and delegated user managers can search the user directory,
