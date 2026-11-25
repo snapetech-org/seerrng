@@ -702,6 +702,7 @@ export default function MovieDetail() {
           onUpdated={refresh}
           mediaServerType={pub?.mediaServerType}
           tmdbId={m.id}
+          details={m}
         />
       )}
       {override?.movieId === m.id && (

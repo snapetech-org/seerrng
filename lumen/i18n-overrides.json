@@ -5051,7 +5051,19 @@
     "lumen.videoRating.close": "Close ratings",
     "lumen.videoRating.loading": "Loading ratings…",
     "lumen.videoRating.unavailable": "No ratings available",
-    "lumen.videoRating.loadFailed": "Ratings could not be loaded."
+    "lumen.videoRating.loadFailed": "Ratings could not be loaded.",
+    "lumen.manageVideo.notAvailable": "Not Available",
+    "lumen.manageVideo.mediaFormat": "Media & Format",
+    "lumen.manageVideo.movie": "Movie",
+    "lumen.manageVideo.series": "Series",
+    "lumen.manageVideo.releaseDate": "Release Date",
+    "lumen.manageVideo.runtime": "Runtime",
+    "lumen.manageVideo.genres": "Genres",
+    "lumen.manageVideo.director": "Director",
+    "lumen.manageVideo.creator": "Creator",
+    "lumen.manageVideo.studio": "Studio",
+    "lumen.manageVideo.network": "Network",
+    "lumen.manageVideo.titleDetails": "Title Details"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10268,7 +10280,19 @@
     "lumen.videoRating.close": "Fermer les évaluations",
     "lumen.videoRating.loading": "Chargement des évaluations…",
     "lumen.videoRating.unavailable": "Aucune évaluation disponible",
-    "lumen.videoRating.loadFailed": "Impossible de charger les évaluations."
+    "lumen.videoRating.loadFailed": "Impossible de charger les évaluations.",
+    "lumen.manageVideo.notAvailable": "Non Disponible",
+    "lumen.manageVideo.mediaFormat": "Média et Format",
+    "lumen.manageVideo.movie": "Film",
+    "lumen.manageVideo.series": "Série",
+    "lumen.manageVideo.releaseDate": "Date de Sortie",
+    "lumen.manageVideo.runtime": "Durée",
+    "lumen.manageVideo.genres": "Genres",
+    "lumen.manageVideo.director": "Réalisateur",
+    "lumen.manageVideo.creator": "Créateur",
+    "lumen.manageVideo.studio": "Studio",
+    "lumen.manageVideo.network": "Réseau",
+    "lumen.manageVideo.titleDetails": "Détails du Titre"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15489,6 +15513,18 @@
     "lumen.videoRating.close": "إغلاق التقييمات",
     "lumen.videoRating.loading": "جارٍ تحميل التقييمات…",
     "lumen.videoRating.unavailable": "لا تتوفر تقييمات",
-    "lumen.videoRating.loadFailed": "تعذر تحميل التقييمات."
+    "lumen.videoRating.loadFailed": "تعذر تحميل التقييمات.",
+    "lumen.manageVideo.notAvailable": "غير متاح",
+    "lumen.manageVideo.mediaFormat": "الوسيط والتنسيق",
+    "lumen.manageVideo.movie": "فيلم",
+    "lumen.manageVideo.series": "مسلسل",
+    "lumen.manageVideo.releaseDate": "تاريخ الإصدار",
+    "lumen.manageVideo.runtime": "المدة",
+    "lumen.manageVideo.genres": "الأنواع",
+    "lumen.manageVideo.director": "المخرج",
+    "lumen.manageVideo.creator": "المنشئ",
+    "lumen.manageVideo.studio": "الاستوديو",
+    "lumen.manageVideo.network": "الشبكة",
+    "lumen.manageVideo.titleDetails": "تفاصيل العنوان"
   }
 }

@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { formatBytes } from '../../../src/utils/numberHelpers';
+import {
+  formatBytes,
+  formatDurationMinutes,
+} from '../../../src/utils/numberHelpers';
 import {
   api,
   ApiError,
   MediaStatus,
+  tmdbImg,
   type JellystatPlaybackSummary,
   type LibraryRemovalPlan,
   type MediaInfo,
   type MediaWatchDataResponse,
+  type MovieDetails,
+  type TvDetails,
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
@@ -20,6 +26,7 @@ import {
   useLiveDownloadProgress,
 } from '../useLiveDownloadProgress';
 import BlocklistButton from './BlocklistButton';
+import { Cover } from './cards';
 import { ConfirmSheet } from './ConfirmSheet';
 import { useToast } from './toast';
 import { useDialog } from './useDialog';
@@ -85,6 +92,154 @@ const requestStatusLabel = (
   }
 };
 
+type SummaryValue = { label: string; href?: string };
+type SummaryRow = { label: string; values: SummaryValue[] };
+
+function VideoDetailsSummary({
+  kind,
+  details,
+  locale,
+  t,
+}: {
+  kind: MediaKind;
+  details: MovieDetails | TvDetails;
+  locale: string;
+  t: (id: string, fallback: string) => string;
+}) {
+  const unavailable = t('lumen.manageVideo.notAvailable', 'Not available');
+  const movie = details as MovieDetails;
+  const tv = details as TvDetails;
+  const releaseDate = kind === 'movie' ? movie.releaseDate : tv.firstAirDate;
+  const runtime =
+    kind === 'movie'
+      ? movie.runtime
+      : (tv.episodeRunTime ?? []).find((minutes) => minutes > 0);
+  const genres = (details.genres ?? []).slice(0, 3).map((genre) => ({
+    label: genre.name,
+    href:
+      Number.isSafeInteger(genre.id) && genre.id > 0
+        ? `/discover/${kind === 'movie' ? 'movies' : 'tv'}/genre/${genre.id}`
+        : undefined,
+  }));
+  const people: SummaryValue[] =
+    kind === 'movie'
+      ? (movie.credits?.crew ?? [])
+          .filter((person) => person.job?.toLowerCase() === 'director')
+          .slice(0, 2)
+          .map((person) => ({
+            label: person.name,
+            href:
+              Number.isSafeInteger(person.id) && person.id > 0
+                ? `/person/${person.id}`
+                : undefined,
+          }))
+      : (tv.createdBy ?? []).slice(0, 2).map((person) => ({
+          label: person.name,
+        }));
+  const organizations: SummaryValue[] =
+    kind === 'movie'
+      ? (movie.productionCompanies ?? []).slice(0, 1).map((company) => ({
+          label: company.name,
+          href:
+            Number.isSafeInteger(company.id) && company.id > 0
+              ? `/discover/movies/studio/${company.id}`
+              : undefined,
+        }))
+      : (tv.networks ?? []).slice(0, 2).map((network) => ({
+          label: network.name,
+          href:
+            typeof network.id === 'number' &&
+            Number.isSafeInteger(network.id) &&
+            network.id > 0
+              ? `/discover/tv/network/${network.id}`
+              : undefined,
+        }));
+  const rows: SummaryRow[] = [
+    {
+      label: t('lumen.manageVideo.mediaFormat', 'Media & Format'),
+      values: [
+        {
+          label:
+            kind === 'movie'
+              ? t('lumen.manageVideo.movie', 'Movie')
+              : t('lumen.manageVideo.series', 'Series'),
+        },
+      ],
+    },
+    {
+      label: t('lumen.manageVideo.releaseDate', 'Release Date'),
+      values: [{ label: releaseDate || unavailable }],
+    },
+    {
+      label: t('lumen.manageVideo.runtime', 'Runtime'),
+      values: [
+        {
+          label:
+            typeof runtime === 'number' &&
+            Number.isFinite(runtime) &&
+            runtime > 0
+              ? formatDurationMinutes(Math.round(runtime), locale)
+              : unavailable,
+        },
+      ],
+    },
+    {
+      label: t('lumen.manageVideo.genres', 'Genres'),
+      values: genres.length ? genres : [{ label: unavailable }],
+    },
+    {
+      label:
+        kind === 'movie'
+          ? t('lumen.manageVideo.director', 'Director')
+          : t('lumen.manageVideo.creator', 'Creator'),
+      values: people.length ? people : [{ label: unavailable }],
+    },
+    {
+      label:
+        kind === 'movie'
+          ? t('lumen.manageVideo.studio', 'Studio')
+          : t('lumen.manageVideo.network', 'Network'),
+      values: organizations.length ? organizations : [{ label: unavailable }],
+    },
+  ];
+  const posterTitle =
+    kind === 'movie' ? details.title || '' : details.name || '';
+
+  return (
+    <section
+      className="manager-summary"
+      aria-label={t('lumen.manageVideo.titleDetails', 'Title Details')}
+    >
+      <div className="manager-summary-poster">
+        <Cover
+          src={tmdbImg(details.posterPath, 'w185')}
+          title={posterTitle}
+          icon={kind === 'movie' ? 'film' : 'tv'}
+        />
+      </div>
+      <dl className="manager-summary-facts">
+        {rows.map((row) => (
+          <div className="manager-summary-row" key={row.label}>
+            <dt>{row.label}</dt>
+            <dd>
+              {row.values.map((value, index) => (
+                <span key={`${value.label}-${index}`}>
+                  {index > 0 && ', '}
+                  {value.href ? (
+                    <Link to={value.href}>{value.label}</Link>
+                  ) : (
+                    value.label
+                  )}
+                </span>
+              ))}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
 export function ManageVideoSheet({
   kind,
   title,
@@ -94,6 +249,7 @@ export function ManageVideoSheet({
   onUpdated,
   mediaServerType,
   tmdbId,
+  details,
 }: {
   kind: MediaKind;
   title: string;
@@ -106,6 +262,7 @@ export function ManageVideoSheet({
   onUpdated: () => void;
   mediaServerType?: number;
   tmdbId?: number;
+  details: MovieDetails | TvDetails;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
@@ -355,6 +512,13 @@ export function ManageVideoSheet({
                     .join(' · ')}
             </span>
           </header>
+
+          <VideoDetailsSummary
+            kind={kind}
+            details={details}
+            locale={locale}
+            t={t}
+          />
 
           {confirmation ? (
             <>

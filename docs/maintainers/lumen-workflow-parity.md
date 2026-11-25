@@ -9996,6 +9996,23 @@ Evidence is retained at
 This verifies the UI against the native source contract with mocked API data;
 live server responses remain unverified.
 
+### Contextual manager title summary parity (2026-11-25)
+
+Lumen's contextual manager sheet now carries the already-loaded movie or TV
+details into its summary. It displays poster art, release date, runtime, up to
+three linked genres, movie directors or TV creators, and movie studio or TV
+network metadata alongside the existing request, availability, and download
+sections. English, French, and Arabic labels are included. Management actions,
+permissions, and API calls are unchanged.
+
+The movie and TV manager browser cases pass on desktop, iPhone, Android, and
+tablet (8 cases); assertions cover the displayed metadata and loaded poster.
+The production Lumen build and TypeScript check pass. Baseline and candidate
+captures use the same fixtures at desktop 1440×900 and iPhone 390×844; both
+were inspected. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+This validates the UI against mocked SeerrNG metadata, not a live API.
+
 ### Person detail identity and biography metadata (2026-11-24)
 
 Native SeerrNG person pages show birthday or lifespan, alternate names, and

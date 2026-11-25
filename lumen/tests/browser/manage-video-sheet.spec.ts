@@ -64,15 +64,27 @@ async function setup(
           mediaType: kind,
           title: kind === 'movie' ? 'Fixture Movie' : undefined,
           name: kind === 'tv' ? 'Fixture Series' : undefined,
+          posterPath: '/fixture-poster.jpg',
           releaseDate: '2020-01-01',
           firstAirDate: '2020-01-01',
+          runtime: kind === 'movie' ? 115 : undefined,
+          episodeRunTime: kind === 'tv' ? [42] : undefined,
           overview: 'A fixture title.',
-          genres: [],
+          genres: [
+            { id: 28, name: 'Action' },
+            { id: 18, name: 'Drama' },
+          ],
           seasons:
             kind === 'tv'
               ? [{ id: 1, seasonNumber: 1, episodeCount: 2, name: 'Season 1' }]
               : undefined,
-          credits: { cast: [], crew: [] },
+          credits: {
+            cast: [],
+            crew: [{ id: 7, name: 'Fixture Director', job: 'Director' }],
+          },
+          productionCompanies: [{ id: 8, name: 'Fixture Studio' }],
+          createdBy: [{ name: 'Fixture Creator' }],
+          networks: [{ id: 9, name: 'Fixture Network' }],
           mediaInfo: {
             id: databaseId,
             status: 5,
@@ -238,6 +250,12 @@ async function setup(
     }
     return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
   });
+  await page.route('**/imageproxy/tmdb/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><rect width="2" height="3" fill="#38435c"/></svg>',
+    })
+  );
   await page.goto(`${mount}/${kind}/${mediaId}`);
   return {
     calls,
@@ -275,6 +293,31 @@ for (const kind of ['movie', 'tv'] as const) {
     await open.click();
     const dialog = page.getByRole('dialog', { name: `Manage ${label}` });
     await expect(dialog).toBeVisible();
+    const summary = dialog.getByRole('region', { name: 'Title Details' });
+    await expect(summary).toBeVisible();
+    await expect
+      .poll(() =>
+        summary
+          .locator('img')
+          .evaluate((image) => (image as HTMLImageElement).naturalWidth)
+      )
+      .toBeGreaterThan(0);
+    await expect(summary.getByText('2020-01-01')).toBeVisible();
+    await expect(summary.getByText('Action')).toBeVisible();
+    await expect(summary.getByText('Drama')).toBeVisible();
+    await expect(summary.locator('img')).toBeVisible();
+    if (kind === 'tv') {
+      await expect(summary.getByText('Fixture Creator')).toBeVisible();
+      await expect(summary.getByText('Fixture Network')).toBeVisible();
+    } else {
+      await expect(summary.getByText('Fixture Director')).toBeVisible();
+      await expect(summary.getByText('Fixture Studio')).toBeVisible();
+    }
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`${kind}-manager-summary-candidate.png`),
+        fullPage: false,
+      });
     await expect(dialog.getByText('#61 · Approved')).toBeVisible();
     await expect(dialog.getByText('Requester')).toBeVisible();
     await expect(dialog.getByText('HD · Downloading')).toBeVisible();

@@ -1315,6 +1315,7 @@ export default function TvDetail() {
           onUpdated={refresh}
           mediaServerType={pub?.mediaServerType}
           tmdbId={t.id}
+          details={t}
         />
       )}
       {streamingOverride?.seriesId === t.id && (
