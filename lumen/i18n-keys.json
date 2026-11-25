@@ -3526,6 +3526,7 @@
   "lumen.music.anyReleaseType",
   "lumen.music.applyFilters",
   "lumen.music.artistLoadFailure",
+  "lumen.music.similarArtists",
   "lumen.music.artistMatch",
   "lumen.music.clearExactArtist",
   "lumen.music.clearFilters",

@@ -1,0 +1,1 @@
+Lumen album and artist detail pages now show the Similar Artists recommendations available in SeerrNG, with artist artwork, type, and links to artist details. The shelf title follows English, French, and Arabic account locales.

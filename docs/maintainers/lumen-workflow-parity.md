@@ -9548,3 +9548,25 @@ existing layout without clipping. Captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-similar-20261124/`.
 Live TMDB result availability and a native-matched screenshot comparison
 remain unverified.
+
+### Similar artist shelves on music details (2026-11-24)
+
+Native album and artist detail pages both show a Similar Artists shelf from
+SeerrNG's existing authenticated association endpoints. Lumen had neither
+shelf. Album and artist details now render the returned artist cards using the
+existing Lumen Rail and ExtraCard owners; cards link to the encoded artist
+route, show available artist artwork and type, and omit the shelf when the
+endpoint has no results. The Similar Artists heading is localized in English,
+French, and Arabic. No provider, permission, or association behavior changed.
+
+The existing Music album/artist detail browser workflow verifies both endpoint
+routes and card destinations. It passes in English, French, and Arabic on
+desktop, iPhone, Android, and tablet (12 candidate cases); matched baseline
+runs pass at desktop and iPhone in all three locales (6 cases). The production
+build passes. Matched pre-change/candidate captures for album and artist details
+at desktop 1440x900 and iPhone 390x844 were inspected in English and Arabic;
+the shelf fits the existing layout and the mobile page has no horizontal
+overflow. Captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-similar-artists-20261124/`.
+Live ListenBrainz/artist artwork responses and native-matched screenshot
+acceptance remain unverified.

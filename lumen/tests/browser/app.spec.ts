@@ -5235,6 +5235,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       filter: 'Filter Music by Artist',
       search: 'Search Prowlarr',
       associations: 'Explore Associations',
+      albumDetails: 'Album Details',
+      similarArtists: 'Similar Artists',
       blocklist: 'Add to Blocklist',
       blocklistQuestion: 'Add to the Blocklist?',
     },
@@ -5255,6 +5257,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       filter: 'Filtrer la musique par artiste',
       search: 'Rechercher avec Prowlarr',
       associations: 'Explorer les associations',
+      albumDetails: 'Détails de l’album',
+      similarArtists: 'Artistes similaires',
       blocklist: 'Ajouter à la liste de blocage',
       blocklistQuestion: 'Ajouter à la liste de blocage ?',
     },
@@ -5275,6 +5279,8 @@ test('Music album and artist details localize their controls and metadata', asyn
       filter: 'تصفية الموسيقى حسب الفنان',
       search: 'البحث في Prowlarr',
       associations: 'استكشاف الارتباطات',
+      albumDetails: 'تفاصيل الألبوم',
+      similarArtists: 'فنانون مشابهون',
       blocklist: 'إضافة إلى قائمة الحظر',
       blocklistQuestion: 'إضافة إلى قائمة الحظر؟',
     },
@@ -5346,6 +5352,30 @@ test('Music album and artist details localize their controls and metadata', asyn
       },
     })
   );
+  const similarArtists = {
+    page: 1,
+    pageSize: 20,
+    totalPages: 1,
+    totalResults: 1,
+    results: [
+      {
+        id: 'similar-artist-1',
+        name: 'Similar Fixture Artist',
+        mediaType: 'artist',
+        type: 'Group',
+        'sort-name': 'Similar Fixture Artist',
+        artistThumb: '/similar-artist.png',
+      },
+    ],
+  };
+  let albumSimilarRequests = 0;
+  await page.route(`**/api/v1/music/${album}/artist-similar`, (route) => {
+    albumSimilarRequests++;
+    return route.fulfill({ json: similarArtists });
+  });
+  await page.route(`**/api/v1/artist/${artist}/similar`, (route) =>
+    route.fulfill({ json: similarArtists })
+  );
 
   await page.goto(testAppPath(`/music/${album}`));
   await expect(
@@ -5372,6 +5402,14 @@ test('Music album and artist details localize their controls and metadata', asyn
   await expect(page.getByText(copy.tracks, { exact: true })).toBeVisible();
   await expect(page.getByText(copy.plays, { exact: true })).toBeVisible();
   await expect(page.getByText(copy.trackCount, { exact: true })).toBeVisible();
+  await expect.poll(() => albumSimilarRequests).toBe(1);
+  await expect(
+    page.getByRole('heading', { name: copy.similarArtists, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Similar Fixture Artist' })
+  ).toHaveAttribute('href', '/artist/similar-artist-1');
+  await page.getByText(copy.albumDetails, { exact: true }).click();
   for (const label of [copy.artist, copy.released, copy.label, copy.type])
     await expect(page.getByText(label, { exact: true })).toBeVisible();
   expect(
@@ -5398,6 +5436,12 @@ test('Music album and artist details localize their controls and metadata', asyn
     page.getByText(copy.releaseCount, { exact: true })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: copy.showAll })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: copy.similarArtists, exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Similar Fixture Artist' })
+  ).toHaveAttribute('href', '/artist/similar-artist-1');
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);

@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api, MediaStatus, type RequestOptions } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
-import { MoreOnScroll, Section } from '../components/cards';
+import { MoreOnScroll, Rail, Section } from '../components/cards';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
   AdvancedOptions,
@@ -79,6 +79,36 @@ const SORTS = [
     'This year (ascending)',
   ],
 ] as const;
+
+type SimilarArtist = {
+  id: string;
+  name: string;
+  type?: string;
+  artistThumb?: string | null;
+};
+
+function SimilarArtists({ path }: { path: string }) {
+  const { t } = useLumenLocale();
+  const { data } = useApi<{ results: SimilarArtist[] }>(path);
+  if (!data?.results.length) return null;
+  return (
+    <Section title={t('lumen.music.similarArtists', 'Similar Artists')}>
+      <Rail>
+        {data.results.map((artist) => (
+          <ExtraCard
+            key={artist.id}
+            href={`/artist/${encodeURIComponent(artist.id)}`}
+            img={artist.artistThumb ?? undefined}
+            title={artist.name}
+            meta={artist.type}
+            shape="sq"
+            icon="music"
+          />
+        ))}
+      </Rail>
+    </Section>
+  );
+}
 
 interface MusicService {
   id: number;
@@ -1202,6 +1232,9 @@ export function AlbumDetail() {
           {main}
         </div>
       </article>
+      <SimilarArtists
+        path={`/music/${encodeURIComponent(id ?? '')}/artist-similar`}
+      />
     </ExtraGate>
   );
 }
@@ -1363,6 +1396,7 @@ export function Artist() {
           {(a.wikipedia?.content || a.wikipedia?.extract) && (
             <p className="ov">{a.wikipedia.content || a.wikipedia.extract}</p>
           )}
+          <SimilarArtists path={`/artist/${encodeURIComponent(id)}/similar`} />
           {groups.map(({ type, title }) => {
             const releases = a.releaseGroups.filter(
               (release) =>
