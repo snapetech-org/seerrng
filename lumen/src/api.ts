@@ -1044,6 +1044,8 @@ export interface DownloadItem {
   size: number;
   sizeLeft: number;
   timeLeft?: string; // "hh:mm:ss"
+  estimatedCompletionTime?: string | null;
+  downloadClient?: string;
   status?: string;
 }
 export interface RequestItem {

@@ -5,6 +5,7 @@ const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const mediaId = 42;
 const databaseId = 9;
 const token = 'a'.repeat(64);
+const liveToken = `ld1_${'b'.repeat(32)}`;
 
 async function setup(
   page: Page,
@@ -12,7 +13,9 @@ async function setup(
   kind: 'movie' | 'tv' = 'movie',
   staleAvailabilityQualities: ('HD' | '4K')[] = [],
   mediaServerType = 1,
-  includeDeclinedRequest = false
+  includeDeclinedRequest = false,
+  includeLiveDownloadToken = false,
+  locale = 'en'
 ) {
   const calls: { method: string; path: string; body?: unknown }[] = [];
   let libraryReads = 0;
@@ -51,7 +54,7 @@ async function setup(
         },
       });
     if (path === '/user/7/settings/main')
-      return route.fulfill({ json: { locale: 'en' } });
+      return route.fulfill({ json: { locale } });
     if (path === '/request/count')
       return route.fulfill({ json: { pending: 0 } });
     if (path === `/${kind}/${mediaId}`)
@@ -115,6 +118,11 @@ async function setup(
                 sizeLeft: 25,
                 status: 'Downloading',
                 percent: 75,
+                downloadClient: 'qBittorrent',
+                estimatedCompletionTime: '2026-11-25T18:30:00.000Z',
+                ...(includeLiveDownloadToken
+                  ? { liveDownloadToken: liveToken }
+                  : {}),
               },
             ],
             serviceUrl: 'https://arr.example.test/item/1',
@@ -497,10 +505,123 @@ test('request managers can open the panel without administrator library actions'
   await expect(
     dialog.getByRole('link', { name: 'Open matching requests' })
   ).toHaveAttribute('href', '/requests?mediaType=movie&search=Fixture%20Movie');
+  await expect(dialog.getByText('Client: qBittorrent')).toBeVisible();
+  await expect(dialog.locator('time')).toContainText('2026');
   await expect(
     dialog.getByRole('heading', { name: 'Verified library' })
   ).toHaveCount(0);
   expect(state.libraryReads).toBe(0);
+});
+
+test('manager downloads show safe live progress and client details', async ({
+  page,
+}, info) => {
+  await page.addInitScript((id) => {
+    class FixtureEventSource {
+      static latest?: FixtureEventSource;
+      url: string;
+      listeners = new Map<string, (event: MessageEvent<string>) => void>();
+      readyState = 1;
+
+      constructor(url: string) {
+        this.url = url;
+        FixtureEventSource.latest = this;
+        window.setTimeout(() => {
+          this.listeners.get('downloads')?.({
+            data: JSON.stringify([
+              {
+                id,
+                state: 'downloading',
+                size: 100,
+                sizeLeft: 25,
+                progress: 75,
+                downloadRate: 1024,
+                uploadRate: 0,
+                etaSeconds: 120,
+                seeds: 3,
+                peers: 5,
+                observedAt: new Date().toISOString(),
+                clientName: 'qBittorrent Live',
+              },
+            ]),
+          } as MessageEvent<string>);
+        }, 0);
+      }
+
+      addEventListener(
+        type: string,
+        listener: (event: MessageEvent<string>) => void
+      ) {
+        this.listeners.set(type, listener);
+      }
+
+      close() {
+        this.readyState = 2;
+      }
+    }
+
+    Object.defineProperty(window, 'EventSource', {
+      configurable: true,
+      value: FixtureEventSource,
+    });
+  }, liveToken);
+  const locale = process.env.LUMEN_MANAGER_LOCALE ?? 'en';
+  await setup(page, 16, 'movie', [], 1, false, true, locale);
+  const manageLabel =
+    locale === 'fr' ? 'Gérer' : locale === 'ar' ? 'إدارة' : 'Manage';
+  const dialogTitle = `${manageLabel} Fixture Movie`;
+  await page.getByRole('button', { name: manageLabel, exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: dialogTitle });
+  if (
+    process.env.LUMEN_CAPTURE_BASELINE &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  ) {
+    await dialog
+      .getByRole('heading', { name: 'Downloads' })
+      .scrollIntoViewIfNeeded();
+    await dialog.screenshot({
+      path: info.outputPath('manager-downloads-baseline.png'),
+    });
+    return;
+  }
+  await expect(
+    dialog.getByText(/HD · Downloading|HD · Téléchargement/)
+  ).toBeVisible();
+  await expect(dialog.getByText('75%', { exact: false })).toBeVisible();
+  const clientLabel =
+    locale === 'fr'
+      ? 'Client : qBittorrent Live'
+      : locale === 'ar'
+        ? 'العميل: qBittorrent Live'
+        : 'Client: qBittorrent Live';
+  const seedsLabel =
+    locale === 'fr'
+      ? 'Nombre de graines : 3'
+      : locale === 'ar'
+        ? 'عدد البذور: 3'
+        : 'Seeds: 3';
+  await expect(dialog.getByText(clientLabel)).toBeVisible();
+  await expect(dialog.getByText(seedsLabel)).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  expect(
+    Date.parse((await dialog.locator('time').getAttribute('dateTime')) ?? '')
+  ).not.toBeNaN();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await dialog.screenshot({
+      path: info.outputPath('manager-downloads-candidate.png'),
+    });
+  const source = await page.evaluate(() => {
+    const Constructor = window.EventSource as unknown as {
+      latest?: { url: string };
+    };
+    return Constructor.latest?.url;
+  });
+  expect(source).toContain(encodeURIComponent(liveToken));
+  expect(source).not.toContain('hd-download');
 });
 
 test('title manager exposes permission-scoped blocklist and issue actions', async ({

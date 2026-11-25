@@ -1701,6 +1701,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'تاريخ الميلاد: {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} - {deathdate}',
       'components.PersonDetails.alsoknownas': 'أسماء أخرى: {names}',
+      'components.DownloadBlock.liveError': 'خطأ في العميل',
+      'components.DownloadBlock.liveRate': '{rate}/ث',
+      'components.DownloadBlock.liveStalled': 'عالقة',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -7483,6 +7486,8 @@ export const localeData = [
       'lumen.videoRating.loading': 'جارٍ تحميل التقييمات…',
       'lumen.videoRating.unavailable': 'لا تتوفر تقييمات',
       'lumen.videoRating.loadFailed': 'تعذر تحميل التقييمات.',
+      'lumen.manageVideo.downloadClient': 'العميل: {name}',
+      'lumen.manageVideo.liveSeeds': 'عدد البذور: {count}',
     },
   },
   {
@@ -11815,6 +11820,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'Geboren am {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'Auch bekannt unter: {names}',
+      'components.DownloadBlock.liveError': 'Clientfehler',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'festgefahren',
     },
   },
   {
@@ -13562,6 +13570,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'Born {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'Also Known As: {names}',
+      'components.DownloadBlock.liveError': 'Client Error',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Stalled',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -19363,6 +19374,8 @@ export const localeData = [
       'lumen.videoRating.loading': 'Loading ratings…',
       'lumen.videoRating.unavailable': 'No ratings available',
       'lumen.videoRating.loadFailed': 'Ratings could not be loaded.',
+      'lumen.manageVideo.downloadClient': 'Client: {name}',
+      'lumen.manageVideo.liveSeeds': 'Seeds: {count}',
     },
   },
   {
@@ -21620,6 +21633,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'Nació el {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'También Conocido como: {names}',
+      'components.DownloadBlock.liveError': 'Error de cliente',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Atascado',
     },
   },
   {
@@ -23403,6 +23419,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'Nacido el {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'También Conocido como: {names}',
+      'components.DownloadBlock.liveError': 'Error de cliente',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Apilados',
     },
   },
   {
@@ -26104,6 +26123,9 @@ export const localeData = [
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas':
         'Aussi connu sous le(s) nom(s) : {names}',
+      'components.DownloadBlock.liveError': 'Erreur client',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Bloqué',
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -32465,6 +32487,8 @@ export const localeData = [
       'lumen.videoRating.loading': 'Chargement des évaluations…',
       'lumen.videoRating.unavailable': 'Aucune évaluation disponible',
       'lumen.videoRating.loadFailed': 'Impossible de charger les évaluations.',
+      'lumen.manageVideo.downloadClient': 'Client : {name}',
+      'lumen.manageVideo.liveSeeds': 'Nombre de graines : {count}',
     },
   },
   {
@@ -34901,6 +34925,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'जन्म {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'अन्य नाम: {names}',
+      'components.DownloadBlock.liveError': 'क्लाइंट त्रुटि',
+      'components.DownloadBlock.liveRate': '{rate}/सेकंड',
+      'components.DownloadBlock.liveStalled': 'अटका हुआ',
     },
   },
   {
@@ -37321,6 +37348,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': 'Lahir {birthdate}',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': 'Juga dikenal sebagai: {names}',
+      'components.DownloadBlock.liveError': 'Kesalahan Klien',
+      'components.DownloadBlock.liveRate': '{rate}/ s',
+      'components.DownloadBlock.liveStalled': 'Macet',
     },
   },
   {
@@ -39730,6 +39760,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': '生年月日：{birthdate}',
       'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
       'components.PersonDetails.alsoknownas': '別の呼び方：{names}',
+      'components.DownloadBlock.liveError': 'クライアントエラー',
+      'components.DownloadBlock.liveRate': '{rate}/秒',
+      'components.DownloadBlock.liveStalled': 'ストール',
     },
   },
   {
@@ -41424,6 +41457,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': '{birthdate} 출생',
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas': '다른 이름: {names}',
+      'components.DownloadBlock.liveError': '클라이언트 오류',
+      'components.DownloadBlock.liveRate': '{rate}/초',
+      'components.DownloadBlock.liveStalled': '정체됨',
     },
   },
   {
@@ -45155,6 +45191,9 @@ export const localeData = [
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas':
         'Também Conhecido(a) Como: {names}',
+      'components.DownloadBlock.liveError': 'Erro do Cliente',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Travado',
     },
   },
   {
@@ -51009,6 +51048,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': '出生日期：{birthdate}',
       'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
       'components.PersonDetails.alsoknownas': '別名：{names}',
+      'components.DownloadBlock.liveError': '客户端错误',
+      'components.DownloadBlock.liveRate': '{rate}/秒',
+      'components.DownloadBlock.liveStalled': '已卡住',
     },
   },
   {
@@ -52629,6 +52671,9 @@ export const localeData = [
       'components.PersonDetails.birthdate': '出生日期：{birthdate}',
       'components.PersonDetails.lifespan': '{birthdate}－{deathdate}',
       'components.PersonDetails.alsoknownas': '別名：{names}',
+      'components.DownloadBlock.liveError': '客戶端錯誤',
+      'components.DownloadBlock.liveRate': '{rate}/秒',
+      'components.DownloadBlock.liveStalled': '已卡住',
     },
   },
   {
@@ -54375,6 +54420,9 @@ export const localeData = [
       'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
       'components.PersonDetails.alsoknownas':
         'Còn được biết đến với tên: {names}',
+      'components.DownloadBlock.liveError': 'Lỗi trình khách',
+      'components.DownloadBlock.liveRate': '{rate}/s',
+      'components.DownloadBlock.liveStalled': 'Bị treo',
     },
   },
 ] as const;

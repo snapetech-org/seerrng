@@ -6176,5 +6176,10 @@
   "lumen.videoRating.close",
   "lumen.videoRating.loading",
   "lumen.videoRating.unavailable",
-  "lumen.videoRating.loadFailed"
+  "lumen.videoRating.loadFailed",
+  "components.DownloadBlock.liveError",
+  "components.DownloadBlock.liveRate",
+  "components.DownloadBlock.liveStalled",
+  "lumen.manageVideo.downloadClient",
+  "lumen.manageVideo.liveSeeds"
 ]

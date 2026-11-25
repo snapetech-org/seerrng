@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
+import { formatBytes } from '../../../src/utils/numberHelpers';
 import {
   api,
   ApiError,
@@ -14,6 +15,10 @@ import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { canManageIssues, canReadIssues } from '../issuePermissions';
+import {
+  downloadSubscriptionId,
+  useLiveDownloadProgress,
+} from '../useLiveDownloadProgress';
 import BlocklistButton from './BlocklistButton';
 import { ConfirmSheet } from './ConfirmSheet';
 import { useToast } from './toast';
@@ -146,6 +151,9 @@ export function ManageVideoSheet({
     ...(media.downloadStatus ?? []).map((item) => ({ item, quality: 'HD' })),
     ...(media.downloadStatus4k ?? []).map((item) => ({ item, quality: '4K' })),
   ];
+  const liveDownloads = useLiveDownloadProgress(
+    downloads.map(({ item }) => downloadSubscriptionId(item, admin))
+  );
   const openLinks = [
     { quality: 'HD', url: safeServiceUrl(media.serviceUrl) },
     { quality: '4K', url: safeServiceUrl(media.serviceUrl4k) },
@@ -491,21 +499,132 @@ export function ManageVideoSheet({
                 <section className="card">
                   <h4>{t('lumen.manageVideo.downloads', 'Downloads')}</h4>
                   <ul className="card-list">
-                    {downloads.map(({ item, quality }, index) => (
-                      <li key={`${quality}-${item.downloadId ?? index}`}>
-                        <b>
-                          {quality} ·{' '}
-                          {item.status ||
-                            t('lumen.manageVideo.processing', 'Processing')}
-                        </b>
-                        {typeof item.percent === 'number' && (
-                          <span className="sub">
-                            {' '}
-                            {Math.round(item.percent)}%
-                          </span>
-                        )}
-                      </li>
-                    ))}
+                    {downloads.map(({ item, quality }, index) => {
+                      const liveId = downloadSubscriptionId(item, admin);
+                      const live = liveId
+                        ? liveDownloads.get(liveId)
+                        : undefined;
+                      const validSizes =
+                        Number.isFinite(item.size) &&
+                        item.size > 0 &&
+                        Number.isFinite(item.sizeLeft) &&
+                        item.sizeLeft >= 0 &&
+                        item.sizeLeft <= item.size;
+                      const liveSizesValid =
+                        live &&
+                        Number.isFinite(live.size) &&
+                        live.size > 0 &&
+                        Number.isFinite(live.sizeLeft) &&
+                        live.sizeLeft >= 0 &&
+                        live.sizeLeft <= live.size;
+                      const percent = liveSizesValid
+                        ? ((live.size - live.sizeLeft) / live.size) * 100
+                        : validSizes
+                          ? ((item.size - item.sizeLeft) / item.size) * 100
+                          : item.percent;
+                      const liveState =
+                        live?.state === 'error'
+                          ? t(
+                              'components.DownloadBlock.liveError',
+                              'Client Error'
+                            )
+                          : live?.state === 'stalled'
+                            ? t(
+                                'components.DownloadBlock.liveStalled',
+                                'Stalled'
+                              )
+                            : undefined;
+                      const speed =
+                        live?.state === 'downloading' &&
+                        Number.isFinite(live.downloadRate) &&
+                        live.downloadRate > 0
+                          ? t('components.DownloadBlock.liveRate', '{rate}/s', {
+                              rate: formatBytes(live.downloadRate, 1, locale),
+                            })
+                          : undefined;
+                      const etaSeconds = live?.etaSeconds;
+                      const estimatedAt =
+                        typeof etaSeconds === 'number' &&
+                        Number.isFinite(etaSeconds) &&
+                        etaSeconds >= 0
+                          ? new Date(
+                              Date.now() + etaSeconds * 1000
+                            ).toISOString()
+                          : item.estimatedCompletionTime &&
+                              Number.isFinite(
+                                Date.parse(item.estimatedCompletionTime)
+                              )
+                            ? new Date(
+                                item.estimatedCompletionTime
+                              ).toISOString()
+                            : undefined;
+                      return (
+                        <li key={`${quality}-${item.downloadId ?? index}`}>
+                          <b>
+                            {quality} ·{' '}
+                            {item.status ||
+                              t('lumen.manageVideo.processing', 'Processing')}
+                          </b>
+                          {typeof percent === 'number' &&
+                            Number.isFinite(percent) &&
+                            percent >= 0 &&
+                            percent <= 100 && (
+                              <span className="sub">
+                                {' '}
+                                {Math.round(percent)}%
+                              </span>
+                            )}
+                          {(item.downloadClient ||
+                            live?.clientName ||
+                            live?.seeds != null ||
+                            liveState ||
+                            speed) && (
+                            <span className="sub">
+                              {' · '}
+                              {[
+                                live?.clientName || item.downloadClient
+                                  ? t(
+                                      'lumen.manageVideo.downloadClient',
+                                      'Client: {name}',
+                                      {
+                                        name:
+                                          live?.clientName ||
+                                          item.downloadClient ||
+                                          '',
+                                      }
+                                    )
+                                  : undefined,
+                                speed,
+                                liveState,
+                                live?.seeds != null
+                                  ? t(
+                                      'lumen.manageVideo.liveSeeds',
+                                      'Seeds: {count}',
+                                      {
+                                        count: live.seeds,
+                                      }
+                                    )
+                                  : undefined,
+                              ]
+                                .filter(Boolean)
+                                .join(' · ')}
+                            </span>
+                          )}
+                          {estimatedAt && (
+                            <span className="sub">
+                              {' · '}
+                              {t(
+                                'lumen.requestHistory.estimatedCompletion',
+                                'Estimated completion'
+                              )}{' '}
+                              <time dateTime={estimatedAt}>
+                                {new Date(estimatedAt).toLocaleString(locale)}
+                              </time>
+                            </span>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </section>
               )}
