@@ -4979,7 +4979,16 @@
     "lumen.music.health.MissingMetadata": "Missing metadata",
     "lumen.music.health.MultipleVariants": "Multiple variants",
     "lumen.music.health.WrongDuration": "Wrong duration",
-    "lumen.music.health.fixOne": "Fix 1 issue with Soulseek"
+    "lumen.music.health.fixOne": "Fix 1 issue with Soulseek",
+    "lumen.videoRating.critics": "Rotten Tomatoes critics",
+    "lumen.videoRating.audience": "Rotten Tomatoes audience",
+    "lumen.videoRating.imdb": "IMDb",
+    "lumen.videoRating.metacritic": "Metacritic",
+    "lumen.videoRating.trakt": "Trakt",
+    "lumen.videoRating.tmdb": "TMDB",
+    "lumen.videoRating.criticsShort": "C",
+    "lumen.videoRating.audienceShort": "A",
+    "lumen.videoRating.heading": "Ratings"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10124,7 +10133,16 @@
     "lumen.music.health.MissingMetadata": "Métadonnées manquantes",
     "lumen.music.health.MultipleVariants": "Variantes multiples",
     "lumen.music.health.WrongDuration": "Durée incorrecte",
-    "lumen.music.health.fixOne": "Corriger 1 problème avec Soulseek"
+    "lumen.music.health.fixOne": "Corriger 1 problème avec Soulseek",
+    "lumen.videoRating.critics": "Rotten Tomatoes critiques",
+    "lumen.videoRating.audience": "Rotten Tomatoes public",
+    "lumen.videoRating.imdb": "IMDb",
+    "lumen.videoRating.metacritic": "Metacritic",
+    "lumen.videoRating.trakt": "Trakt",
+    "lumen.videoRating.tmdb": "TMDB",
+    "lumen.videoRating.criticsShort": "Crit.",
+    "lumen.videoRating.audienceShort": "Public",
+    "lumen.videoRating.heading": "Évaluations"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15273,6 +15291,15 @@
     "lumen.music.health.MissingMetadata": "بيانات وصفية مفقودة",
     "lumen.music.health.MultipleVariants": "نسخ متعددة",
     "lumen.music.health.WrongDuration": "مدة غير صحيحة",
-    "lumen.music.health.fixOne": "إصلاح مشكلة واحدة باستخدام Soulseek"
+    "lumen.music.health.fixOne": "إصلاح مشكلة واحدة باستخدام Soulseek",
+    "lumen.videoRating.critics": "روتن توميتوز: النقاد",
+    "lumen.videoRating.audience": "روتن توميتوز: الجمهور",
+    "lumen.videoRating.imdb": "IMDb",
+    "lumen.videoRating.metacritic": "Metacritic",
+    "lumen.videoRating.trakt": "Trakt",
+    "lumen.videoRating.tmdb": "TMDB",
+    "lumen.videoRating.criticsShort": "نقاد",
+    "lumen.videoRating.audienceShort": "جمهور",
+    "lumen.videoRating.heading": "التقييمات"
   }
 }

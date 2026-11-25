@@ -57,6 +57,7 @@ import { useToast } from '../components/toast';
 import TvCollectionLinks from '../components/TvCollectionLinks';
 import TvEpisodeRequestSheet from '../components/TvEpisodeRequestSheet';
 import VideoPlaybackButton from '../components/VideoPlaybackButton';
+import VideoRatings from '../components/VideoRatings';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -678,11 +679,12 @@ export default function TvDetail() {
                   )}
             </Pill>
           )}
-          {!!t.voteAverage && (
-            <Pill k="neutral" icon="star">
-              {t.voteAverage.toFixed(1)} / 10
-            </Pill>
-          )}
+          <VideoRatings
+            mediaType="tv"
+            id={t.id}
+            voteAverage={t.voteAverage}
+            voteCount={t.voteCount}
+          />
           <LiveTvAirings
             key={`live-tv:${t.id}`}
             tmdbId={t.id}

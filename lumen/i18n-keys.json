@@ -6157,5 +6157,14 @@
   "lumen.music.health.MissingMetadata",
   "lumen.music.health.MultipleVariants",
   "lumen.music.health.WrongDuration",
-  "lumen.music.health.fixOne"
+  "lumen.music.health.fixOne",
+  "lumen.videoRating.critics",
+  "lumen.videoRating.audience",
+  "lumen.videoRating.imdb",
+  "lumen.videoRating.metacritic",
+  "lumen.videoRating.trakt",
+  "lumen.videoRating.tmdb",
+  "lumen.videoRating.criticsShort",
+  "lumen.videoRating.audienceShort",
+  "lumen.videoRating.heading"
 ]

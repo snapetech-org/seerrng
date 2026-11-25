@@ -186,6 +186,7 @@ export interface TitleResult {
   releaseDate?: string;
   firstAirDate?: string;
   voteAverage?: number;
+  voteCount?: number;
   directors?: string[];
   writers?: string[];
   genreIds?: number[];

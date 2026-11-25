@@ -9913,3 +9913,26 @@ The Bookshelf utility suite passes 248 tests on the merged source, and the
 server TypeScript check, changed-file ESLint, Prettier, and generated API source
 catalog checks pass. External catalog availability and live provider metadata
 remain unverified.
+
+### Movie and series detail ratings (2026-11-24)
+
+Movie and series details now show the available Rotten Tomatoes critics and
+audience scores, IMDb, Metacritic, Trakt, and TMDB ratings using the existing
+authenticated combined-ratings endpoint. Invalid or unavailable provider
+values are omitted; valid zero scores remain visible. IMDb falls back to the
+MDBList score when needed, and external links are limited to validated HTTPS
+URLs (with a validated IMDb identifier fallback). TMDB remains available from
+the title response while combined ratings load or fail. Labels are localized
+in English, French, and Arabic. The shared rating strip scrolls horizontally
+on phones without widening the page.
+
+The browser fixture verifies endpoint use, score validation and fallback,
+safe links, zero values, and the responsive overflow behavior for movie and TV
+details on desktop, iPhone, Android, and tablet. Matched baseline/candidate
+captures cover movie details at 1440px and 390px; candidate TV captures cover
+the same viewports. Candidate desktop and phone captures were inspected, and
+the browser assertions confirm the viewport itself does not overflow. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-ratings-20261124/`.
+Ratings are mocked; live provider responses and live endpoint behavior remain
+unverified.

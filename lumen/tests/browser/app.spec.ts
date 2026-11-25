@@ -18,6 +18,7 @@ const movie = {
   credits: { cast: [], crew: [] },
   runtime: 100,
   voteAverage: 7.5,
+  voteCount: 1250,
 };
 const available = {
   id: 10,
@@ -108,6 +109,32 @@ async function fixtures(page: Page) {
       body = { total: 0, pending: 0, approved: 0, processing: 0, available: 0 };
     else if (path === '/movie/101/recommendations') body = paged([]);
     else if (path === '/tv/202/recommendations') body = paged([]);
+    else if (path === '/movie/101/ratingscombined')
+      body = {
+        rt: {
+          criticsScore: 0,
+          audienceScore: 92,
+          url: 'http://ratings.invalid/movie',
+        },
+        imdb: { criticsScore: 8.2, url: 'https://www.imdb.com/title/tt123' },
+        mdblist: { metacriticRating: 77, traktRating: 7.4 },
+      };
+    else if (path === '/tv/202/ratingscombined')
+      body = {
+        rt: {
+          criticsScore: 81,
+          audienceScore: 88,
+          url: 'https://www.rottentomatoes.com/tv/test',
+        },
+        imdb: { criticsScore: 11 },
+        mdblist: {
+          imdbId: 'tt456',
+          imdbRating: 7.9,
+          rtRating: 81,
+          metacriticRating: 73,
+          traktRating: 7.1,
+        },
+      };
     else if (path === '/tv/202')
       body = {
         ...movie,
@@ -245,6 +272,67 @@ test('catalogue, Plex device links, requests and responsive layout', async ({
   });
   expect(fixture.errors).toEqual([]);
   expect(fixture.unknown).toEqual([]);
+});
+
+test('movie and TV details show valid available ratings and safe links', async ({
+  page,
+}) => {
+  const qa = await fixtures(page);
+  await page.goto('/movie/101');
+  await expect(
+    page.getByTitle('Rotten Tomatoes critics: 0%', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByTitle('Rotten Tomatoes audience: 92%', { exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByTitle('IMDb: 8.2/10', { exact: true })
+  ).toHaveAttribute('href', 'https://www.imdb.com/title/tt123');
+  await expect(
+    page.getByTitle('Metacritic: 77%', { exact: true })
+  ).toBeVisible();
+  await expect(page.getByTitle('Trakt: 7.4/10', { exact: true })).toBeVisible();
+  await expect(
+    page.getByTitle('TMDB: 7.5/10', { exact: true })
+  ).toHaveAttribute('href', 'https://www.themoviedb.org/movie/101');
+  await expect(
+    page.locator('a[href="http://ratings.invalid/movie"]')
+  ).toHaveCount(0);
+  const movieDimensions = await page.evaluate(() => ({
+    viewport: window.innerWidth,
+    page: document.documentElement.scrollWidth,
+  }));
+  expect(movieDimensions.page).toBeLessThanOrEqual(movieDimensions.viewport);
+  if (movieDimensions.viewport < 700) {
+    const ratingsDimensions = await page
+      .getByTestId('video-ratings')
+      .evaluate((element) => ({
+        viewport: element.clientWidth,
+        content: element.scrollWidth,
+      }));
+    expect(ratingsDimensions.content).toBeGreaterThan(
+      ratingsDimensions.viewport
+    );
+  }
+  await page.goto('/tv/202');
+  await expect(
+    page.getByTitle('Rotten Tomatoes critics: 81%', { exact: true })
+  ).toHaveAttribute('href', 'https://www.rottentomatoes.com/tv/test');
+  await expect(
+    page.getByTitle('IMDb: 7.9/10', { exact: true })
+  ).toHaveAttribute('href', 'https://www.imdb.com/title/tt456');
+  await expect(
+    page.getByTitle('TMDB: 7.5/10', { exact: true })
+  ).toHaveAttribute('href', 'https://www.themoviedb.org/tv/202');
+  const tvDimensions = await page.evaluate(() => ({
+    viewport: window.innerWidth,
+    page: document.documentElement.scrollWidth,
+  }));
+  expect(tvDimensions.page).toBeLessThanOrEqual(tvDimensions.viewport);
+  expect(qa.unknown.filter((path) => path.includes('ratingscombined'))).toEqual(
+    []
+  );
+  expect(qa.errors).toEqual([]);
 });
 
 test('New on Plex keeps all recent videos when other media types share the library', async ({

@@ -1030,6 +1030,10 @@ body.is-detail .tabbar {
   flex-wrap: wrap;
   align-items: center;
 }
+.dstatus > .chips {
+  min-width: 0;
+  max-width: 100%;
+}
 .dstatus .dnote {
   color: var(--ink-3);
   font-size: 13px;

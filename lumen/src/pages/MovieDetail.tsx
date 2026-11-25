@@ -52,6 +52,7 @@ import ReportIssueButton from '../components/ReportIssueButton';
 import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import VideoPlaybackButton from '../components/VideoPlaybackButton';
+import VideoRatings from '../components/VideoRatings';
 import WatchlistButton from '../components/WatchlistButton';
 import { localToday } from '../dates';
 import { friendlyError } from '../errors';
@@ -427,11 +428,12 @@ export default function MovieDetail() {
               )}
             </Pill>
           )}
-          {!!m.voteAverage && (
-            <Pill k="neutral" icon="star">
-              {m.voteAverage.toFixed(1)} / 10
-            </Pill>
-          )}
+          <VideoRatings
+            mediaType="movie"
+            id={m.id}
+            voteAverage={m.voteAverage}
+            voteCount={m.voteCount}
+          />
           <LiveTvAirings
             key={`live-tv:${m.id}`}
             tmdbId={m.id}
