@@ -123,6 +123,22 @@ test('administration is visible in navigation and at the start of You', async ({
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
 
+test('administration directory exposes every settings destination once', async ({
+  page,
+}) => {
+  await session(page, 2);
+  await page.goto(testAppPath('/admin'));
+  const directory = page.locator('.admin-groups');
+  const links = directory.locator('a.go');
+  await expect(links).toHaveCount(41);
+  const destinations = await links.evaluateAll((items) =>
+    items.map((item) => (item as HTMLAnchorElement).getAttribute('href'))
+  );
+  expect(destinations).not.toContain(null);
+  expect(new Set(destinations).size).toBe(41);
+  await expect(directory.locator('section')).toHaveCount(9);
+});
+
 for (const locale of [
   {
     tag: 'fr',

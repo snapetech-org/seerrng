@@ -10384,3 +10384,14 @@ captures were inspected; the existing toolbar wraps naturally and remains
 within the viewport. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-service-links-20261125/`.
 Live API authorization and bundled `/lumen/` execution remain open.
+
+### Administration directory destination inventory (2026-11-25)
+
+The Administration home exposes 41 settings and tool destinations across nine
+groups. A regression now checks that all 41 links are present exactly once and
+the nine groups render. It passes at desktop, iPhone, Android, and tablet sizes
+in both standalone Lumen and the embedded `/lumen/` production build (8 runs).
+The embedded build was served with Vite preview and API responses were mocked;
+this verifies directory reachability and mount-relative navigation, not live
+administrator authorization or the workflows behind each destination. The
+broader settings form and matched-native visual audits remain open.
