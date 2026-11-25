@@ -5326,6 +5326,22 @@ test('Music album and artist details localize their controls and metadata', asyn
       },
     })
   );
+  await page.route(`**/api/v1/music/${album}/rating`, (route) =>
+    route.fulfill({
+      json: {
+        ratings: [
+          {
+            source: 'musicbrainz',
+            score: 4.2,
+            scale: 5,
+            votes: 128,
+            url: 'https://musicbrainz.org/release-group/fixture',
+          },
+        ],
+        failedSources: ['discogs'],
+      },
+    })
+  );
   await page.route(`**/api/v1/blocklist/${album}?mediaType=music`, (route) =>
     route.fulfill({ status: 404, json: { message: 'Not blocklisted' } })
   );
@@ -5402,6 +5418,31 @@ test('Music album and artist details localize their controls and metadata', asyn
   await expect(page.getByText(copy.tracks, { exact: true })).toBeVisible();
   await expect(page.getByText(copy.plays, { exact: true })).toBeVisible();
   await expect(page.getByText(copy.trackCount, { exact: true })).toBeVisible();
+  await expect(page.getByTestId('music-ratings')).toContainText(
+    'MusicBrainz: 4.2/5 from 128 votes'
+  );
+  await expect(page.getByTestId('music-ratings')).toContainText(
+    'Discogs: temporarily unavailable'
+  );
+  await expect(
+    page.getByTestId('music-ratings').getByRole('link')
+  ).toHaveAttribute('href', 'https://musicbrainz.org/release-group/fixture');
+  const ratingsCapture = process.env.LUMEN_MUSIC_RATINGS_CAPTURE_DIR;
+  if (
+    ratingsCapture &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  ) {
+    if (process.env.LUMEN_MUSIC_RATINGS_BASELINE === 'true') {
+      await page.addStyleTag({
+        content: '#music-ratings { display: none !important; }',
+      });
+    }
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: `${ratingsCapture}/${locale}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   await expect.poll(() => albumSimilarRequests).toBe(1);
   await expect(
     page.getByRole('heading', { name: copy.similarArtists, exact: true })

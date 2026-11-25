@@ -9845,3 +9845,22 @@ were inspected at both sizes. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-collection-metadata-20261124/`.
 This verifies the client against mocked member metadata and settings responses;
 live TMDB/API behavior remains unverified.
+
+### Music album rating summaries (2026-11-24)
+
+Native album details show MusicBrainz, Lidarr, TheAudioDB, and Discogs rating
+summaries. Lumen now queries the existing authenticated SeerrNG rating endpoint
+and displays available scores, vote counts, missing ratings, and provider
+failures alongside the album tracks. Rating links are opened only when the
+server-supplied URL is HTTPS. The labels and failure states are translated in
+English, French, and Arabic.
+
+The album detail browser case verifies a populated MusicBrainz rating, absent
+Lidarr and TheAudioDB values, Discogs partial failure, and the safe external
+link on desktop, iPhone, Android, and tablet. French desktop and Arabic iPhone
+runs also pass. The production build passes. Matched screenshots at 1440×900 and
+390×844 show the rating panel in the existing details column without horizontal
+overflow; evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-ratings-20261124/`.
+These checks use a mocked rating response; provider availability and live rating
+values remain unverified.

@@ -7412,6 +7412,12 @@ export const localeData = [
       'lumen.collectionMetadata.retry': 'إعادة المحاولة',
       'lumen.collectionMetadata.noCredits': 'لا تتوفر معلومات عن طاقم العمل.',
       'lumen.collectionMetadata.noTags': 'لا تتوفر وسوم.',
+      'lumen.music.ratings': 'التقييمات',
+      'lumen.music.ratingsFailed': 'تعذر تحميل التقييمات.',
+      'lumen.music.ratingUnavailable': '{source}: غير متاح مؤقتًا',
+      'lumen.music.ratingScore':
+        '{source}: ‏{score}/{scale} من {votes} تقييمًا',
+      'lumen.music.noRating': '{source}: لا يتوفر تقييم',
     },
   },
   {
@@ -19224,6 +19230,11 @@ export const localeData = [
       'lumen.collectionMetadata.retry': 'Retry',
       'lumen.collectionMetadata.noCredits': 'No credits available.',
       'lumen.collectionMetadata.noTags': 'No subject tags available.',
+      'lumen.music.ratings': 'Ratings',
+      'lumen.music.ratingsFailed': 'Ratings could not be loaded.',
+      'lumen.music.ratingUnavailable': '{source}: temporarily unavailable',
+      'lumen.music.ratingScore': '{source}: {score}/{scale} from {votes} votes',
+      'lumen.music.noRating': '{source}: no rating available',
     },
   },
   {
@@ -32257,6 +32268,11 @@ export const localeData = [
       'lumen.collectionMetadata.retry': 'Réessayer',
       'lumen.collectionMetadata.noCredits': 'Aucun crédit disponible.',
       'lumen.collectionMetadata.noTags': 'Aucun mot-clé disponible.',
+      'lumen.music.ratings': 'Notes',
+      'lumen.music.ratingsFailed': 'Impossible de charger les notes.',
+      'lumen.music.ratingUnavailable': '{source} : temporairement indisponible',
+      'lumen.music.ratingScore': '{source} : {score}/{scale}, {votes} votes',
+      'lumen.music.noRating': '{source} : aucune note disponible',
     },
   },
   {

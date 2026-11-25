@@ -4938,7 +4938,12 @@
     "lumen.requests.row.partlyOnServer": "Partly on {server}",
     "lumen.people.externalLinks": "External links",
     "lumen.people.showMoreBiography": "Show More Biography",
-    "lumen.people.showLessBiography": "Show Less Biography"
+    "lumen.people.showLessBiography": "Show Less Biography",
+    "lumen.music.ratings": "Ratings",
+    "lumen.music.ratingsFailed": "Ratings could not be loaded.",
+    "lumen.music.ratingUnavailable": "{source}: temporarily unavailable",
+    "lumen.music.ratingScore": "{source}: {score}/{scale} from {votes} votes",
+    "lumen.music.noRating": "{source}: no rating available"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10042,7 +10047,12 @@
     "lumen.requests.row.partlyOnServer": "Partiellement sur {server}",
     "lumen.people.externalLinks": "Liens externes",
     "lumen.people.showMoreBiography": "Afficher plus de la biographie",
-    "lumen.people.showLessBiography": "Afficher moins de la biographie"
+    "lumen.people.showLessBiography": "Afficher moins de la biographie",
+    "lumen.music.ratings": "Notes",
+    "lumen.music.ratingsFailed": "Impossible de charger les notes.",
+    "lumen.music.ratingUnavailable": "{source} : temporairement indisponible",
+    "lumen.music.ratingScore": "{source} : {score}/{scale}, {votes} votes",
+    "lumen.music.noRating": "{source} : aucune note disponible"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15150,6 +15160,11 @@
     "lumen.requests.row.partlyOnServer": "متوفر جزئيًا على {server}",
     "lumen.people.externalLinks": "روابط خارجية",
     "lumen.people.showMoreBiography": "عرض المزيد من السيرة الذاتية",
-    "lumen.people.showLessBiography": "عرض أقل من السيرة الذاتية"
+    "lumen.people.showLessBiography": "عرض أقل من السيرة الذاتية",
+    "lumen.music.ratings": "التقييمات",
+    "lumen.music.ratingsFailed": "تعذر تحميل التقييمات.",
+    "lumen.music.ratingUnavailable": "{source}: غير متاح مؤقتًا",
+    "lumen.music.ratingScore": "{source}: ‏{score}/{scale} من {votes} تقييمًا",
+    "lumen.music.noRating": "{source}: لا يتوفر تقييم"
   }
 }

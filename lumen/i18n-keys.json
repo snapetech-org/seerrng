@@ -6116,5 +6116,10 @@
   "lumen.collectionMetadata.partialFailure",
   "lumen.collectionMetadata.retry",
   "lumen.collectionMetadata.noCredits",
-  "lumen.collectionMetadata.noTags"
+  "lumen.collectionMetadata.noTags",
+  "lumen.music.ratings",
+  "lumen.music.ratingsFailed",
+  "lumen.music.ratingUnavailable",
+  "lumen.music.ratingScore",
+  "lumen.music.noRating"
 ]

@@ -27,6 +27,7 @@ import {
 import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import MusicRatings from '../components/MusicRatings';
 import OpenIssueReports from '../components/OpenIssueReports';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useToast } from '../components/toast';
@@ -1201,6 +1202,7 @@ export function AlbumDetail() {
               )}
             </div>
             <aside>
+              <MusicRatings albumId={a.id} />
               <VideoDisclosure
                 media="music"
                 panel="details"
