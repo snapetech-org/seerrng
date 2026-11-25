@@ -10011,7 +10011,10 @@ The production Lumen build and TypeScript check pass. Baseline and candidate
 captures use the same fixtures at desktop 1440×900 and iPhone 390×844; both
 were inspected. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
-This validates the UI against mocked SeerrNG metadata, not a live API.
+The summary reuses SeerrNG's shared crew-priority rule and shows the same two
+highest-priority movie credits as the native summary. A reversed Writer/Director
+fixture verifies the priority order. This validates the UI against mocked
+SeerrNG metadata, not a live API.
 
 ### Person detail identity and biography metadata (2026-11-24)
 

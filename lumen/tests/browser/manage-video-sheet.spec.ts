@@ -80,7 +80,10 @@ async function setup(
               : undefined,
           credits: {
             cast: [],
-            crew: [{ id: 7, name: 'Fixture Director', job: 'Director' }],
+            crew: [
+              { id: 8, name: 'Fixture Writer', job: 'Writer' },
+              { id: 7, name: 'Fixture Director', job: 'Director' },
+            ],
           },
           productionCompanies: [{ id: 8, name: 'Fixture Studio' }],
           createdBy: [{ name: 'Fixture Creator' }],
@@ -311,6 +314,11 @@ for (const kind of ['movie', 'tv'] as const) {
       await expect(summary.getByText('Fixture Network')).toBeVisible();
     } else {
       await expect(summary.getByText('Fixture Director')).toBeVisible();
+      await expect(summary.getByText('Fixture Writer')).toBeVisible();
+      await expect(
+        summary.getByText('Director', { exact: true })
+      ).toBeVisible();
+      await expect(summary.getByText('Writer', { exact: true })).toBeVisible();
       await expect(summary.getByText('Fixture Studio')).toBeVisible();
     }
     if (['desktop', 'iphone'].includes(info.project.name))

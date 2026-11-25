@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
+import { sortCrewPriority } from '../../../src/utils/creditPriority';
 import {
   formatBytes,
   formatDurationMinutes,
@@ -121,21 +122,35 @@ function VideoDetailsSummary({
         ? `/discover/${kind === 'movie' ? 'movies' : 'tv'}/genre/${genre.id}`
         : undefined,
   }));
-  const people: SummaryValue[] =
+  const peopleRows: SummaryRow[] =
     kind === 'movie'
-      ? (movie.credits?.crew ?? [])
-          .filter((person) => person.job?.toLowerCase() === 'director')
+      ? sortCrewPriority(
+          (movie.credits?.crew ?? []).filter(
+            (person): person is typeof person & { job: string } =>
+              typeof person.job === 'string'
+          )
+        )
           .slice(0, 2)
           .map((person) => ({
-            label: person.name,
-            href:
-              Number.isSafeInteger(person.id) && person.id > 0
-                ? `/person/${person.id}`
-                : undefined,
+            label: person.job,
+            values: [
+              {
+                label: person.name,
+                href:
+                  Number.isSafeInteger(person.id) && person.id > 0
+                    ? `/person/${person.id}`
+                    : undefined,
+              },
+            ],
           }))
-      : (tv.createdBy ?? []).slice(0, 2).map((person) => ({
-          label: person.name,
-        }));
+      : [
+          {
+            label: t('lumen.manageVideo.creator', 'Creator'),
+            values: (tv.createdBy ?? []).slice(0, 2).map((person) => ({
+              label: person.name,
+            })),
+          },
+        ];
   const organizations: SummaryValue[] =
     kind === 'movie'
       ? (movie.productionCompanies ?? []).slice(0, 1).map((company) => ({
@@ -187,13 +202,10 @@ function VideoDetailsSummary({
       label: t('lumen.manageVideo.genres', 'Genres'),
       values: genres.length ? genres : [{ label: unavailable }],
     },
-    {
-      label:
-        kind === 'movie'
-          ? t('lumen.manageVideo.director', 'Director')
-          : t('lumen.manageVideo.creator', 'Creator'),
-      values: people.length ? people : [{ label: unavailable }],
-    },
+    ...peopleRows.map((row) => ({
+      ...row,
+      values: row.values.length ? row.values : [{ label: unavailable }],
+    })),
     {
       label:
         kind === 'movie'
