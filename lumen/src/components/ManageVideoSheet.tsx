@@ -736,7 +736,7 @@ export function ManageVideoSheet({
                 </section>
               )}
 
-              {openLinks.length > 0 && (
+              {admin && openLinks.length > 0 && (
                 <section className="card">
                   <h4>{t('lumen.manageVideo.services', 'Services')}</h4>
                   <div className="toolbar">

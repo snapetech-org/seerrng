@@ -10256,3 +10256,22 @@ checks pass on both viewports and in French and Arabic. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-version-status-20261125/`.
 Bundled `/lumen/` mounting, live update-provider responses, and matched native
 screenshots remain open.
+
+### Manage sheet service-link permission parity (2026-11-25)
+
+Native `ManageSlideOver` renders Radarr/Sonarr deep links inside its administrator
+actions section. Lumen had sanitized these URLs but rendered the Services section
+to any request manager who could open the sheet, exposing internal service
+addresses. The section now uses the existing administrator gate. Request and
+download controls remain available to request managers; service links remain
+available to administrators.
+
+The focused regression failed against the old source on desktop and iPhone,
+then passed after the gate. The existing administrator manager fixture still
+verifies the Radarr link. The focused browser matrix passes on desktop and
+iPhone, and the complete Manage sheet matrix passes across desktop, iPhone,
+Android, and tablet. Before/after captures at 1440×900 and iPhone 390×844 were
+inspected; the sheet retains its layout when the unauthorized section is
+removed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-service-permissions-20261125/`.
+Live role authorization and bundled `/lumen/` behavior remain open.

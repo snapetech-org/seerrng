@@ -497,11 +497,19 @@ test('Jellyfin administrators see Jellystat without requesting Plex history', as
 
 test('request managers can open the panel without administrator library actions', async ({
   page,
-}) => {
+}, info) => {
   const state = await setup(page, 16);
   await page.getByRole('button', { name: 'Manage', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
   await expect(dialog.getByRole('heading', { name: 'Requests' })).toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('request-manager-service-links.png'),
+      fullPage: false,
+    });
+  await expect(
+    dialog.getByRole('link', { name: 'Open in Radarr' })
+  ).toHaveCount(0);
   await expect(
     dialog.getByRole('link', { name: 'Open matching requests' })
   ).toHaveAttribute('href', '/requests?mediaType=movie&search=Fixture%20Movie');

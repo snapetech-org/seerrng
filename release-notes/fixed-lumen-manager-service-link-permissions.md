@@ -1,0 +1,1 @@
+Lumen now shows Radarr and Sonarr deep links in the Manage sheet only to administrators, matching native SeerrNG. Request managers retain their request and download controls without seeing internal service URLs. Browser coverage verifies both administrator visibility and non-administrator omission.
