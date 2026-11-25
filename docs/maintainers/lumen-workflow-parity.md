@@ -9582,3 +9582,27 @@ are hidden. All destinations remain reachable in the 320px phone menu without
 horizontal overflow. The 20 browser cases pass across desktop, iPhone, Android,
 and tablet projects. These route fixtures verify menu visibility and links, not
 live provider availability.
+
+### Unshipped gap: contextual Movie and TV administration (2026-11-24)
+
+Source comparison found no Lumen equivalent to the manager control on native
+Movie and TV detail pages. Native `src/components/TvDetails/index.tsx` and
+`src/components/MovieDetails/index.tsx` expose `ManageSlideOver` to users with
+`MANAGE_REQUESTS` when a SeerrNG media record exists. The panel covers linked
+requests and download status; administrator service links and playback
+statistics; token-confirmed removal of verified library copies and recovery of
+stale availability; and request, blocklist, and issue management actions.
+Lumen distributes some individual actions across Requests, Issues, and media
+details, but has no per-title management surface and does not expose the
+administrator library-removal plan/actions at all. Existing actions remain
+server-authorized, and library mutations require a fresh server plan/token.
+
+This is an active parity gap, not shipped work. A replacement must preserve the
+`MANAGE_REQUESTS` entry condition, stricter administrator gates, per-request
+actions, live refreshed media state, failure recovery, and the server-verified
+destructive confirmation contract. The implementation must be exercised on
+Movie and TV details at matching desktop and phone states before this entry can
+be closed. Source references: `src/components/ManageSlideOver/index.tsx`,
+`src/components/ManageSlideOver/ManageMediaActions.tsx`, and
+`server/routes/media.ts` (`/:id/library` and
+`/:id/library/clear-stale-availability`).
