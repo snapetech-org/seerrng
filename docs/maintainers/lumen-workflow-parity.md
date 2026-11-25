@@ -10454,3 +10454,22 @@ found in this pass. API responses were mocked; server authorization, provider
 persistence, and published-image visual acceptance remain separate gates.
 Browser results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/general-settings-acceptance/`.
+
+### Network and transport settings acceptance (2026-11-25)
+
+The Lumen network settings suite passed 216 browser cases: standalone and
+production-built `/lumen/`, English/French/Arabic, and desktop/iPhone/Android/
+tablet. Coverage includes safe HTTP authentication acknowledgement, TLS mode
+visibility and environment overrides, administrator-network restrictions,
+proxy credentials, DNS controls, retry after failed save and stale readback,
+and non-administrator access denial. API and transport responses were mocked;
+this does not verify a live listener restart, certificate handshake, outbound
+proxy, DNS resolver, or persisted server state. Matching-native visuals and
+published-image transport verification remain open. Browser traces and
+screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/network-acceptance/`.
+
+The mount-specific coverage defect in `admin-network.spec.ts` is fixed: route
+visits, API fixture parsing, shortcut links, and permission redirects now honor
+`LUMEN_TEST_MOUNT=/lumen`, allowing these cases to exercise the bundled route
+instead of the standalone root.

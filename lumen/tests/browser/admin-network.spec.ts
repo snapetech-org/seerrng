@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 async function fixtures(
   page: Page,
   permissions = 2,
@@ -32,7 +35,9 @@ async function fixtures(
   );
   await page.route('**/api/v1/**', async (route) => {
     const request = route.request();
-    const path = new URL(request.url()).pathname.slice(7);
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, permissions, displayName: 'User' },
@@ -73,7 +78,7 @@ test('network settings send only edited values and recover from a rejected save'
   page,
 }, info) => {
   const { patches } = await fixtures(page);
-  await page.goto('/me');
+  await page.goto(appPath('/me'));
   await page.getByRole('link', { name: 'Open Network Settings' }).click();
   await expect(
     page.getByRole('heading', { name: 'Network Settings' })
@@ -124,7 +129,7 @@ test('network settings keep drafts when a save response fails persisted readback
 }, info) => {
   const fixture = await fixtures(page, 2, [], 'en', false);
   fixture.setPersistWrites(false);
-  await page.goto('/admin/network');
+  await page.goto(appPath('/admin/network'));
   await page.getByLabel('API Request Timeout').fill('3.125');
   await page.getByLabel('DNS Cache Minimum TTL').fill('60');
   await page.getByLabel('Built-in HTTPS mode').selectOption('self-signed');
@@ -174,7 +179,7 @@ test('administration search opens the saved proxy password control safely', asyn
   page,
 }, info) => {
   await fixtures(page);
-  await page.goto('/admin');
+  await page.goto(appPath('/admin'));
   await page
     .getByRole('searchbox', { name: 'Search Settings' })
     .fill('proxy password');
@@ -182,9 +187,14 @@ test('administration search opens the saved proxy password control safely', asyn
     name: 'Open Proxy Password',
     exact: true,
   });
-  await expect(link).toHaveAttribute('href', '/admin/network#proxy.password');
+  await expect(link).toHaveAttribute(
+    'href',
+    `${mount}/admin/network#proxy.password`
+  );
   await link.click();
-  await expect(page).toHaveURL(/\/admin\/network#proxy\.password$/);
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/admin/network#proxy\\.password$`)
+  );
   const password = page.getByRole('textbox', { name: 'Proxy Password' });
   await expect(password).toBeInViewport();
   await expect(password).toHaveValue('');
@@ -201,7 +211,7 @@ test('transport environment overrides prevent Lumen edits', async ({
   page,
 }) => {
   await fixtures(page, 2, ['TLS_MODE']);
-  await page.goto('/admin/network');
+  await page.goto(appPath('/admin/network'));
   await expect(
     page.getByText(
       /Transport settings are overridden by environment variables: TLS_MODE/
@@ -213,8 +223,8 @@ test('transport environment overrides prevent Lumen edits', async ({
 
 test('non-administrators cannot open network settings', async ({ page }) => {
   await fixtures(page, 0);
-  await page.goto('/admin/network');
-  await expect(page).toHaveURL(/\/me$/);
+  await page.goto(appPath('/admin/network'));
+  await expect(page).toHaveURL(new RegExp(`${mount}/me$`));
   await expect(
     page.getByRole('link', { name: 'Open Network Settings' })
   ).toHaveCount(0);
@@ -244,7 +254,7 @@ for (const { locale, certificateFile, guidance } of [
     page,
   }, info) => {
     await fixtures(page, 2, [], locale);
-    await page.goto('/admin/network');
+    await page.goto(appPath('/admin/network'));
     const safetyGuidance = page.getByText(guidance, { exact: true });
     await expect(safetyGuidance).toHaveCount(0);
     await page.getByRole('combobox').selectOption('provided');
