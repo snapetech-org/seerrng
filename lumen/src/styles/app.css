@@ -899,6 +899,7 @@ body.is-detail .tabbar {
   margin: calc(-12px - env(safe-area-inset-top)) calc(-1 * var(--gutter)) 0;
   display: grid;
   gap: 28px;
+  min-width: 0;
 }
 .dhero {
   position: relative;
@@ -1023,12 +1024,22 @@ body.is-detail .tabbar {
   padding: 0 var(--gutter);
   display: grid;
   gap: 26px;
+  min-width: 0;
 }
 .dstatus {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
+  min-width: 0;
+}
+.dstatus > .pill {
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 24px;
+  padding-block: 4px;
+  white-space: normal;
 }
 .dstatus > .chips {
   min-width: 0;

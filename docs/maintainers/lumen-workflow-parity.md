@@ -10067,3 +10067,25 @@ also reviewed. The captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-cache-parity-20261125/`.
 The runs use mocked cache responses; live cache contents and production
 administrator authorization remain covered by their existing server routes.
+
+### Missing movie and TV overview metadata (2026-11-25)
+
+Native movie and series details show a localized “Overview unavailable” value
+when the provider has no synopsis. Lumen previously left the movie summary
+blank and omitted the TV overview disclosure entirely. Both Lumen detail pages
+now preserve the overview area and use localized fallback copy in English,
+French, and Arabic; populated synopses and the TV disclosure's saved open
+preference are unchanged.
+
+The browser regression covers empty movie and TV overviews in all three locales
+at desktop, iPhone, Android, and tablet sizes. Baseline and candidate captures
+use the same empty-metadata fixtures at desktop and iPhone sizes. The same
+responsive fixture exposed a French mobile overflow: the Episode Queue status
+used a no-wrap shared pill and expanded the detail page to 474 CSS pixels at a
+390-pixel viewport. The shared detail status owner now wraps long localized
+pills and constrains the detail grid. All four viewport projects confirm the
+page stays within its viewport before and after opening the overview. No API or
+permission behavior changed. The companion image build context now includes
+the shared number-formatting helper imported by System Caches, so its production
+container builds with the same locale-aware cache guidance as the standalone
+and bundled apps.

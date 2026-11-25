@@ -266,14 +266,16 @@ export function SubjectTagsDisclosure({
 
 export function OverviewDisclosure({ overview }: { overview?: string }) {
   const { t } = useLumenLocale();
-  if (!overview) return null;
   return (
     <VideoDisclosure
       media="tv"
       panel="overview"
       label={t('lumen.detail.overview', 'Overview')}
     >
-      <p className="ov">{overview}</p>
+      <p className="ov">
+        {overview ||
+          t('lumen.detail.overviewUnavailable', 'Overview unavailable')}
+      </p>
     </VideoDisclosure>
   );
 }

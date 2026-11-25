@@ -514,7 +514,10 @@ export default function MovieDetail() {
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
             {m.tagline && <p className="tagline">{m.tagline}</p>}
-            <p className="ov">{m.overview}</p>
+            <p className="ov">
+              {m.overview ||
+                t('lumen.detail.overviewUnavailable', 'Overview unavailable')}
+            </p>
             <CreditsDisclosure
               key={`cast-${m.id}`}
               media="movie"
