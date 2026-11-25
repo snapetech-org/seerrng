@@ -8801,12 +8801,16 @@ selection. This brings Lumen's recovery behavior in line with the native
 request tree and reduces user-visible errors caused by a transient provider or
 proxy failure.
 
-The browser regression passes for desktop, iPhone, Android, and tablet. It
-injects a one-time failure into the first of three batches and verifies the
-automatic recovery and selectable episode data. A persistent failure remains
-visible with the existing manual retry path. The fixture validates client
-behavior and does not establish the reporter's live provider latency or the
-cause of the original screenshot.
+The browser regression passes for desktop, iPhone, Android, and tablet. The
+transient-failure case now uses a realistic 15-season, 330-episode fixture,
+including a failed first batch and 308 episodes eligible for bulk selection.
+It verifies automatic retry, availability-based exclusion, all-season and
+latest-season selection, per-season changes, and clearing state without losing
+the later-season selection. A separate partial-recovery case checks that only
+failed seasons are retried and selected episodes survive. Persistent failure
+remains visible with the existing manual retry path. All 8 browser cases pass.
+These fixtures verify client behavior, not live provider latency or the cause
+of the original screenshot.
 
 ### Large TV request bulk selection (2026-11-23)
 

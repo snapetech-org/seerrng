@@ -5,14 +5,15 @@ const appPath = (path: string) => `${mount}${path}`;
 const apiPath = (pathname: string) =>
   pathname.slice(pathname.indexOf('/api/v1') + '/api/v1'.length);
 
-test('large TV requests retry a transient season batch before showing a load error', async ({
+test('330-episode TV requests retry a transient season batch without losing selection', async ({
   page,
 }, testInfo) => {
   const batches: string[] = [];
   let failedFirstBatch = false;
+  const episodesPerSeason = 22;
   const seasons = Array.from({ length: 15 }, (_, index) => ({
     seasonNumber: index + 1,
-    episodeCount: 1,
+    episodeCount: episodesPerSeason,
     name: `Season ${index + 1}`,
     airDate: '2020-01-01',
   }));
@@ -61,15 +62,13 @@ test('large TV requests retry a transient season batch before showing a load err
         return route.fulfill({
           json: numbers.map((seasonNumber) => ({
             seasonNumber,
-            episodes: [
-              {
-                episodeNumber: 1,
-                name: `Episode from season ${seasonNumber}`,
-                ...(seasonNumber === 1
-                  ? { availabilitySources: [{ hd: true, fourK: false }] }
-                  : {}),
-              },
-            ],
+            episodes: Array.from({ length: episodesPerSeason }, (_, index) => ({
+              episodeNumber: index + 1,
+              name: `Episode ${index + 1} from season ${seasonNumber}`,
+              ...(seasonNumber === 1
+                ? { availabilitySources: [{ hd: true, fourK: false }] }
+                : {}),
+            })),
           })),
         });
       }
@@ -96,7 +95,7 @@ test('large TV requests retry a transient season batch before showing a load err
   await expect(firstSeason).toHaveAttribute('open', '');
   await expect(
     sheet.getByRole('checkbox', {
-      name: /E1 Episode from season 1/,
+      name: /E1 Episode 1 from season 1/,
     })
   ).toBeDisabled();
   await sheet.getByText('Season 1', { exact: true }).click();
@@ -110,9 +109,9 @@ test('large TV requests retry a transient season batch before showing a load err
       exact: true,
     })
   ).toHaveAttribute('aria-checked', 'true');
-  await expect(sheet.getByText('Selected: 14')).toBeVisible();
+  await expect(sheet.getByText('Selected: 308')).toBeVisible();
   await sheet.getByTestId('select-latest-requestable-season').click();
-  await expect(sheet.getByText('Selected: 1')).toBeVisible();
+  await expect(sheet.getByText('Selected: 22')).toBeVisible();
   await expect(
     sheet.getByRole('checkbox', {
       name: 'Deselect all requestable episodes in Season 15',
@@ -120,14 +119,14 @@ test('large TV requests retry a transient season batch before showing a load err
   ).toHaveAttribute('aria-checked', 'true');
 
   await selectAll.click();
-  await expect(sheet.getByText('Selected: 14')).toBeVisible();
+  await expect(sheet.getByText('Selected: 308')).toBeVisible();
 
   const deselectFirstSeason = sheet.getByRole('checkbox', {
     name: 'Deselect all requestable episodes in Season 2',
   });
   await deselectFirstSeason.click();
   await expect(firstSeason).not.toHaveAttribute('open', '');
-  await expect(sheet.getByText('Selected: 13')).toBeVisible();
+  await expect(sheet.getByText('Selected: 286')).toBeVisible();
   await expect(
     sheet.getByRole('checkbox', {
       name: 'Select all requestable episodes in Season 2',
@@ -136,7 +135,7 @@ test('large TV requests retry a transient season batch before showing a load err
   ).toHaveAttribute('aria-checked', 'false');
 
   await selectAll.click();
-  await expect(sheet.getByText('Selected: 14')).toBeVisible();
+  await expect(sheet.getByText('Selected: 308')).toBeVisible();
   const capture = process.env.LUMEN_TV_BULK_CAPTURE;
   if (capture && ['desktop', 'iphone'].includes(testInfo.project.name)) {
     const { mkdir } = await import('node:fs/promises');
@@ -155,7 +154,7 @@ test('large TV requests retry a transient season batch before showing a load err
   });
   await selectSecondSeason.click();
   await expect(selectSecondSeason).toHaveAttribute('aria-checked', 'true');
-  await expect(sheet.getByText('Selected: 1')).toBeVisible();
+  await expect(sheet.getByText('Selected: 22')).toBeVisible();
 });
 
 test('large TV requests load in bounded batches and recover only the failed seasons', async ({
