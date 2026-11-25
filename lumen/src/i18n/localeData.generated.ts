@@ -6644,6 +6644,19 @@ export const localeData = [
       'lumen.comicDetail.mangaLanguageEdition': 'مانغا، نسخة {language}',
       'lumen.comicDetail.noComicService':
         'لم يتم إعداد خدمة للقصص المصورة. طلب القصص المصورة غير متاح.',
+      'lumen.comicDetail.quota': 'حصة طلبات القصص المصورة',
+      'lumen.comicDetail.quotaLoadFailure':
+        'تعذر تحميل حدود طلبات القصص المصورة.',
+      'lumen.comicDetail.quotaReached': 'لقد وصلت إلى حد طلبات القصص المصورة.',
+      'lumen.comicDetail.quotaRemaining':
+        'متبقي {remaining} من أصل {limit} طلبات قصص مصورة.',
+      'lumen.comicDetail.quotaPeriod': 'مدة الحصة: {days} يومًا.',
+      'lumen.comicDetail.quotaLoading':
+        'جارٍ التحقق من حصة طلبات القصص المصورة…',
+      'lumen.comicDetail.recheckQuota': 'إعادة التحقق من الحصة',
+      'lumen.comicDetail.confirmRequestTitle': 'طلب قصة مصورة',
+      'lumen.comicDetail.confirmRequestHelp':
+        'تحقق من حصة القصص المصورة وأكد هذا الطلب.',
       'lumen.comicDetail.noComicVineEdition':
         'لا تتوفر نسخة من هذه السلسلة على ComicVine بعد، لذا لا يمكن طلبها.',
       'lumen.comicDetail.noEdition': 'لا توجد نسخة لطلبها بعد',
@@ -18539,6 +18552,19 @@ export const localeData = [
       'lumen.comicDetail.mangaLanguageEdition': 'Manga, {language} edition',
       'lumen.comicDetail.noComicService':
         'No comics service is configured. Comic requests are unavailable.',
+      'lumen.comicDetail.quota': 'comic request quota',
+      'lumen.comicDetail.quotaLoadFailure':
+        'Could not load comic request limits.',
+      'lumen.comicDetail.quotaReached':
+        'You have reached your comic request limit.',
+      'lumen.comicDetail.quotaRemaining':
+        '{remaining} of {limit} comic requests remaining.',
+      'lumen.comicDetail.quotaPeriod': 'Quota period: {days} days.',
+      'lumen.comicDetail.quotaLoading': 'Checking comic request quota…',
+      'lumen.comicDetail.recheckQuota': 'Recheck quota',
+      'lumen.comicDetail.confirmRequestTitle': 'Request Comic',
+      'lumen.comicDetail.confirmRequestHelp':
+        'Review the comic quota and confirm this request.',
       'lumen.comicDetail.noComicVineEdition':
         'ComicVine has no edition of this series yet, so it can’t be requested.',
       'lumen.comicDetail.noEdition': 'No edition to request yet',
@@ -31626,6 +31652,20 @@ export const localeData = [
       'lumen.comicDetail.mangaLanguageEdition': 'Manga, édition {language}',
       'lumen.comicDetail.noComicService':
         "Aucun service de bande dessinée n'est configuré. Les demandes de bande dessinée sont indisponibles.",
+      'lumen.comicDetail.quota': 'quota des demandes de bandes dessinées',
+      'lumen.comicDetail.quotaLoadFailure':
+        'Impossible de charger les limites de demandes de bandes dessinées.',
+      'lumen.comicDetail.quotaReached':
+        'Vous avez atteint votre limite de demandes de bandes dessinées.',
+      'lumen.comicDetail.quotaRemaining':
+        'Il reste {remaining} demande(s) de bandes dessinées sur {limit}.',
+      'lumen.comicDetail.quotaPeriod': 'Période du quota : {days} jours.',
+      'lumen.comicDetail.quotaLoading':
+        'Vérification du quota de demandes de bandes dessinées…',
+      'lumen.comicDetail.recheckQuota': 'Vérifier à nouveau le quota',
+      'lumen.comicDetail.confirmRequestTitle': 'Demander une bande dessinée',
+      'lumen.comicDetail.confirmRequestHelp':
+        'Vérifiez le quota de bandes dessinées et confirmez cette demande.',
       'lumen.comicDetail.noComicVineEdition':
         'ComicVine ne propose pas encore d’édition de cette série, qui ne peut donc pas être demandée.',
       'lumen.comicDetail.noEdition': 'Aucune édition à demander pour le moment',

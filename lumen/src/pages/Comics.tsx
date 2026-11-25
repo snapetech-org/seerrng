@@ -17,6 +17,7 @@ import {
   ComicRequestOptionsSheet,
   ComicServiceFailure,
   editionLabel,
+  isComicQuotaDenial,
   requestComicEdition,
   type ComicRequestOptions,
 } from '../components/comics';
@@ -770,6 +771,19 @@ export function ComicDetail() {
   const [asked, setAsked] = useState<Set<string>>(new Set());
   const { user } = useAuth();
   const mayRequest = canRequestComic(user?.permissions);
+  const quota = useApi<{
+    comic?: {
+      limit?: number;
+      remaining?: number;
+      days?: number;
+      restricted?: boolean;
+    };
+  }>(mayRequest && user?.id ? `/user/${user.id}/quota` : null, {
+    currentPathOnly: true,
+  });
+  const comicQuota = quota.data?.comic;
+  const quotaRestricted = comicQuota?.restricted === true;
+  const quotaUnconfirmed = mayRequest && !quota.data;
   const [busy, setBusy] = useState(false);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const asksOptions =
@@ -843,7 +857,14 @@ export function ComicDetail() {
         .filter(Boolean)
     : plainText(c?.description);
   const request = async (options?: ComicRequestOptions) => {
-    if (!mayRequest || !chosen || sending.current) return;
+    if (
+      !mayRequest ||
+      !chosen ||
+      sending.current ||
+      quotaRestricted ||
+      quotaUnconfirmed
+    )
+      return;
     if (asksOptions && !options) {
       setOptionsOpen(true);
       return;
@@ -854,17 +875,23 @@ export function ComicDetail() {
       toast(await requestComicEdition(work, chosen, options));
       setAsked((x) => new Set(x).add(chosen.id));
       refresh();
+      quota.reload();
     } catch (e) {
       toast(
-        e instanceof ComicServiceFailure
+        isComicQuotaDenial(e)
           ? t(
-              'lumen.comicDetail.serviceFailure',
-              'The request was submitted, but the comics service rejected it while processing.'
+              'lumen.comicDetail.quotaReached',
+              'You have reached your comic request limit.'
             )
-          : friendlyError(
-              e,
-              t('lumen.comicDetail.requestFailed', 'Request failed')
-            )
+          : e instanceof ComicServiceFailure
+            ? t(
+                'lumen.comicDetail.serviceFailure',
+                'The request was submitted, but the comics service rejected it while processing.'
+              )
+            : friendlyError(
+                e,
+                t('lumen.comicDetail.requestFailed', 'Request failed')
+              )
       );
     } finally {
       sending.current = false;
@@ -909,7 +936,7 @@ export function ComicDetail() {
     ) : !mayRequest ? null : (
       <button
         className="btn btn-primary"
-        disabled={busy}
+        disabled={busy || quotaRestricted || quotaUnconfirmed}
         onClick={() => void request()}
       >
         <Icon name="plus" />
@@ -929,7 +956,7 @@ export function ComicDetail() {
           <ComicRequestOptionsSheet
             onConfirm={(options) => {
               setOptionsOpen(false);
-              void request(options);
+              return request(options);
             }}
             onClose={() => setOptionsOpen(false)}
           />
@@ -1018,6 +1045,50 @@ export function ComicDetail() {
             >
               <i style={{ width: `${cs.pct}%` }} />
             </div>
+          )}
+          {(!!comicQuota?.limit || quotaRestricted) && (
+            <p className="note" role={quotaRestricted ? 'status' : undefined}>
+              {quotaRestricted
+                ? t(
+                    'lumen.comicDetail.quotaReached',
+                    'You have reached your comic request limit.'
+                  )
+                : t(
+                    'lumen.comicDetail.quotaRemaining',
+                    '{remaining} of {limit} comic requests remaining.',
+                    {
+                      remaining: comicQuota.remaining ?? 0,
+                      limit: comicQuota.limit ?? 0,
+                    }
+                  )}
+              {!!comicQuota.days &&
+                ` ${t('lumen.comicDetail.quotaPeriod', 'Quota period: {days} days.', { days: comicQuota.days })}`}
+            </p>
+          )}
+          {quotaUnconfirmed && !quota.error && (
+            <p className="note" role="status">
+              {t(
+                'lumen.comicDetail.quotaLoading',
+                'Checking comic request quota…'
+              )}
+            </p>
+          )}
+          {quotaRestricted && (
+            <button className="chip" type="button" onClick={quota.reload}>
+              {t('lumen.comicDetail.recheckQuota', 'Recheck quota')}
+            </button>
+          )}
+          {quota.error && (
+            <ServiceNote
+              error={quota.error}
+              what={t('lumen.comicDetail.quota', 'comic request quota')}
+              title={t(
+                'lumen.comicDetail.quotaLoadFailure',
+                'Could not load comic request limits.'
+              )}
+              retryLabel={t('lumen.comicDetail.recheckQuota', 'Recheck quota')}
+              retry={quota.reload}
+            />
           )}
           <div className="dcols">
             <div style={{ display: 'grid', gap: 22 }}>

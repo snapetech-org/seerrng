@@ -215,11 +215,24 @@ async function fixtures(
     requestOptions = false,
     rootFolderPreference = {} as Record<string, string>,
     noComicService = false,
+    comicQuota = {
+      limit: 0,
+      used: 0,
+      remaining: 0,
+      restricted: false,
+    } as {
+      limit?: number;
+      used?: number;
+      remaining?: number;
+      days?: number;
+      restricted: boolean;
+    },
   } = {}
 ) {
   const requested: unknown[] = [];
   const browsed: string[] = [];
   const searched: string[] = [];
+  let quotaReads = 0;
   await page.route('https://**/*', (r) => r.abort());
   await page.addInitScript((enabled) => {
     localStorage.setItem(
@@ -251,6 +264,15 @@ async function fixtures(
           enabledMediaCategories: { comic: true, magazine: magazinesEnabled },
         },
       });
+    if (path === '/user/1/quota') {
+      quotaReads++;
+      return r.fulfill({
+        json: {
+          comic: comicQuota,
+          magazine: { limit: 0, used: 0, remaining: 0, restricted: false },
+        },
+      });
+    }
     if (path === '/service/comic')
       return r.fulfill({
         json: noComicService
@@ -365,7 +387,7 @@ async function fixtures(
       });
     return r.fulfill({ json: {} });
   });
-  return { requested, browsed, searched };
+  return { requested, browsed, searched, getQuotaReads: () => quotaReads };
 }
 
 const hoverable = (name: string) =>
@@ -536,6 +558,80 @@ test('comic request options block submission when no service is configured', asy
     sheet.getByRole('button', { name: 'Submit request' })
   ).toBeDisabled();
   expect(requested).toEqual([]);
+});
+
+test('restricted comic quota is visible and blocks detail requests', async ({
+  page,
+}, info) => {
+  const { requested, getQuotaReads } = await fixtures(page, {
+    permissions: 32,
+    comicQuota: {
+      limit: 1,
+      used: 1,
+      remaining: 0,
+      days: 7,
+      restricted: true,
+    },
+  });
+  await page.goto('/comic/al-105778');
+  await expect(
+    page.getByText('You have reached your comic request limit.')
+  ).toBeVisible();
+  await expect(page.getByText('Quota period: 7 days.')).toBeVisible();
+  const request = page.getByRole('button', {
+    name: 'Request · Viz, English',
+  });
+  await expect(request).toBeDisabled();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('comic-quota-detail.png'),
+      fullPage: true,
+    });
+  await page.getByRole('button', { name: 'Recheck quota' }).click();
+  await expect.poll(getQuotaReads).toBeGreaterThan(1);
+  await expect(request).toBeDisabled();
+  expect(requested).toEqual([]);
+});
+
+test('restricted comic quota blocks poster quick requests in its confirmation sheet', async ({
+  page,
+}, info) => {
+  const { requested } = await fixtures(page, {
+    browse: [chainsaw()],
+    permissions: 32,
+    comicQuota: {
+      limit: 1,
+      used: 1,
+      remaining: 0,
+      days: 7,
+      restricted: true,
+    },
+  });
+  await page.goto('/comics?type=manga');
+  const card = page.locator('.comic-grid .poster').first();
+  if (hoverable(info.project.name)) await card.hover();
+  await card
+    .getByRole('button', {
+      name: hoverable(info.project.name)
+        ? 'Request'
+        : 'Request Chainsaw Man (Viz, English)',
+    })
+    .click();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Comic' });
+  await expect(sheet).toBeVisible();
+  await expect(
+    sheet.getByText('You have reached your comic request limit.')
+  ).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Submit request' })
+  ).toBeDisabled();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('comic-quota-quick-request.png'),
+      fullPage: true,
+    });
+  await sheet.getByRole('button', { name: 'Recheck quota' }).click();
+  await expect.poll(() => requested.length).toBe(0);
 });
 
 for (const locale of ['fr', 'ar'] as const) {
@@ -861,6 +957,10 @@ test('hovering a card offers Request and Choose edition', async ({
     card.getByRole('link', { name: 'Choose edition' })
   ).toHaveAttribute('href', '/comic/al-105778#editions');
   await go.click();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Comic' });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.getByLabel('Comics service')).toHaveCount(0);
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
   await expect.poll(() => requested.length).toBe(1);
   expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 130799 });
   await expect(card.locator('.glyph')).toHaveAttribute('title', 'Requested');
@@ -912,6 +1012,9 @@ test('a manga whose editions are not looked up yet is requested in one click', a
   const card = page.locator('.comic-grid .poster').first();
   await card.hover();
   await card.getByRole('button', { name: 'Request', exact: true }).click();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Comic' });
+  await expect(sheet).toBeVisible();
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
   await expect.poll(() => requested.length).toBe(1);
   expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 25155 });
 });
@@ -926,6 +1029,9 @@ test('touch screens get the round request button', async ({ page }, info) => {
   });
   await expect(plus).toBeVisible();
   await plus.tap();
+  const sheet = page.getByRole('alertdialog', { name: 'Request Comic' });
+  await expect(sheet).toBeVisible();
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
   await expect.poll(() => requested.length).toBe(1);
   expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 130799 });
 });

@@ -10543,8 +10543,9 @@ folders and applies the requester's saved per-user folder when it remains
 available; a manual service or folder choice is sent with the requested comic
 edition. Explicitly selecting the default service is preserved in the request
 payload, and an empty service configuration blocks submission with an error.
-Users without advanced request permission keep the one-step default request
-path. The options use the existing confirmation-sheet and stacked selector
+Users without advanced request permission use a confirmation sheet to verify
+quota before the default request; the advanced service/folder selectors remain
+permission-gated. The options use the existing confirmation-sheet and stacked selector
 owners. The comics/manga suite passes 157 cases with 31 viewport-specific skips
 across desktop, iPhone, Android, and tablet; focused cases verify destination
 payloads, saved folder selection, empty-service handling, permission gating,
@@ -10576,3 +10577,22 @@ case matches both the navigation link and the page link. These failures are
 outside the quota change.
 
 release-note: `release-notes/added-lumen-software-request-quota.md`
+
+### Comic request quota parity (2026-11-25)
+
+Lumen comic requests now read the signed-in user's independent comic quota on
+both detail and poster quick-request paths. Remaining requests and the quota
+period are shown; restricted users are blocked with a recheck action, and a
+failed quota read keeps submission disabled while offering retry. Standard
+poster requests use the existing confirmation sheet to check quota before
+submitting, while advanced destination and folder selection remains gated by
+request permissions. A server quota denial receives localized feedback.
+The complete Comics/Manga browser suite passed 165 cases with 31 existing
+viewport skips across desktop, iPhone, Android, and tablet. API responses are
+mocked, so live quota enforcement and comic-service handoff remain unverified.
+Candidate desktop and iPhone screenshots were inspected; native-matched quota
+screenshots are unavailable, so visual parity against native remains
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-quota-acceptance/`.
+
+release-note: `release-notes/added-lumen-comic-request-quota.md`

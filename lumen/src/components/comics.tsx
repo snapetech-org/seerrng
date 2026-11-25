@@ -17,7 +17,7 @@ import { usePrefs } from '../settings';
 import { Cover, Glyph, StatLabel, TouchQuick, type Stat } from './cards';
 import { ConfirmSheet } from './ConfirmSheet';
 import { canChooseRequestOptions, canRequestComic } from './detail';
-import { comicState } from './extra';
+import { comicState, ServiceNote } from './extra';
 import { useToast } from './toast';
 import WatchlistButton from './WatchlistButton';
 
@@ -56,6 +56,9 @@ export interface ComicRequestOptions {
   rootFolder?: string;
 }
 
+export const isComicQuotaDenial = (error: unknown) =>
+  error instanceof Error && error.message === 'Comic Quota exceeded.';
+
 interface ComicService {
   id: number;
   name: string;
@@ -71,13 +74,29 @@ interface ComicRootFolders {
 export function ComicRequestOptionsSheet({
   onConfirm,
   onClose,
+  showOptions = true,
+  requestLabel,
 }: {
-  onConfirm: (options: ComicRequestOptions) => void;
+  onConfirm: (options: ComicRequestOptions) => void | Promise<void>;
   onClose: () => void;
+  showOptions?: boolean;
+  requestLabel?: string;
 }) {
   const { t } = useLumenLocale();
   const { user } = useAuth();
-  const services = useApi<ComicService[]>('/service/comic');
+  const [submitting, setSubmitting] = useState(false);
+  const quota = useApi<{
+    comic?: {
+      limit?: number;
+      remaining?: number;
+      days?: number;
+      restricted?: boolean;
+    };
+  }>(user?.id ? `/user/${user.id}/quota` : null, { currentPathOnly: true });
+  const quotaStatus = quota.data?.comic;
+  const quotaRestricted = quotaStatus?.restricted === true;
+  const canChoose = showOptions && canChooseRequestOptions(user?.permissions);
+  const services = useApi<ComicService[]>(canChoose ? '/service/comic' : null);
   const [serviceId, setServiceId] = useState('');
   const fallback =
     services.data?.find((service) => service.isDefault) ?? services.data?.[0];
@@ -107,35 +126,101 @@ export function ComicRequestOptionsSheet({
     )
       setRootFolder(saved);
   }, [folders.data, preferred.data, rootFolder, service]);
-  const canChoose = canChooseRequestOptions(user?.permissions);
-  if (!canChoose) return null;
   return (
     <ConfirmSheet
-      title={t(
-        'lumen.comicDetail.requestOptionsTitle',
-        'Comic request options'
-      )}
-      body={t(
-        'lumen.comicDetail.requestOptionsHelp',
-        'Choose a comics service and, for Kapowarr, a root folder.'
-      )}
+      title={
+        canChoose
+          ? t('lumen.comicDetail.requestOptionsTitle', 'Comic request options')
+          : t('lumen.comicDetail.confirmRequestTitle', 'Request Comic')
+      }
+      body={
+        canChoose
+          ? t(
+              'lumen.comicDetail.requestOptionsHelp',
+              'Choose a comics service and, for Kapowarr, a root folder.'
+            )
+          : (requestLabel ??
+            t(
+              'lumen.comicDetail.confirmRequestHelp',
+              'Review the comic quota and confirm this request.'
+            ))
+      }
       confirm={t('lumen.comicDetail.submitRequest', 'Submit request')}
       cancel={t('lumen.quickRequest.cancel', 'Cancel')}
+      busy={submitting}
       confirmDisabled={
-        (!services.data && !services.error) || services.data?.length === 0
+        !quota.data ||
+        quotaRestricted ||
+        (canChoose &&
+          ((!services.data && !services.error) || services.data?.length === 0))
       }
-      onConfirm={() =>
-        onConfirm({
-          ...(service && serviceId ? { serverId: service.id } : {}),
-          ...(service?.backendType === 'kapowarr' && rootFolder
-            ? { rootFolder }
-            : {}),
-        })
-      }
+      onConfirm={async () => {
+        if (submitting || quotaRestricted) return;
+        setSubmitting(true);
+        try {
+          await onConfirm({
+            ...(service && serviceId ? { serverId: service.id } : {}),
+            ...(service?.backendType === 'kapowarr' && rootFolder
+              ? { rootFolder }
+              : {}),
+          });
+        } finally {
+          setSubmitting(false);
+        }
+      }}
       onClose={onClose}
     >
       <div className="pk-form">
-        {services.error && (
+        {(!!quotaStatus?.limit || quotaRestricted) && (
+          <p className="note" role={quotaRestricted ? 'status' : undefined}>
+            {quotaRestricted
+              ? t(
+                  'lumen.comicDetail.quotaReached',
+                  'You have reached your comic request limit.'
+                )
+              : t(
+                  'lumen.comicDetail.quotaRemaining',
+                  '{remaining} of {limit} comic requests remaining.',
+                  {
+                    remaining: quotaStatus.remaining ?? 0,
+                    limit: quotaStatus.limit ?? 0,
+                  }
+                )}
+            {!!quotaStatus.days &&
+              ` ${t('lumen.comicDetail.quotaPeriod', 'Quota period: {days} days.', { days: quotaStatus.days })}`}
+          </p>
+        )}
+        {quotaRestricted && (
+          <button
+            className="chip"
+            type="button"
+            disabled={submitting}
+            onClick={quota.reload}
+          >
+            {t('lumen.comicDetail.recheckQuota', 'Recheck quota')}
+          </button>
+        )}
+        {quota.error && (
+          <ServiceNote
+            error={quota.error}
+            what={t('lumen.comicDetail.quota', 'comic request quota')}
+            title={t(
+              'lumen.comicDetail.quotaLoadFailure',
+              'Could not load comic request limits.'
+            )}
+            retryLabel={t('lumen.comicDetail.recheckQuota', 'Recheck quota')}
+            retry={quota.reload}
+          />
+        )}
+        {!quota.data && !quota.error && (
+          <p className="note" role="status">
+            {t(
+              'lumen.comicDetail.quotaLoading',
+              'Checking comic request quota…'
+            )}
+          </p>
+        )}
+        {canChoose && services.error && (
           <div className="err" role="alert">
             {t(
               'lumen.comicDetail.serviceLoadFailure',
@@ -143,7 +228,7 @@ export function ComicRequestOptionsSheet({
             )}
           </div>
         )}
-        {services.data?.length === 0 && (
+        {canChoose && services.data?.length === 0 && (
           <div className="err" role="alert">
             {t(
               'lumen.comicDetail.noComicService',
@@ -151,30 +236,32 @@ export function ComicRequestOptionsSheet({
             )}
           </div>
         )}
-        <label className="sel" data-layout="stacked">
-          <span className="lbl">
-            {t('lumen.comicDetail.service', 'Comics service')}
-          </span>
-          <select
-            value={serviceId}
-            disabled={!services.data || services.data.length < 2}
-            onChange={(event) => setServiceId(event.target.value)}
-          >
-            {fallback && (
-              <option value="">
-                {t('lumen.comicDetail.defaultService', 'Default ({name})', {
-                  name: fallback.name,
-                })}
-              </option>
-            )}
-            {(services.data ?? []).map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name} · {item.backendType}
-              </option>
-            ))}
-          </select>
-        </label>
-        {service?.backendType === 'kapowarr' && (
+        {canChoose && (
+          <label className="sel" data-layout="stacked">
+            <span className="lbl">
+              {t('lumen.comicDetail.service', 'Comics service')}
+            </span>
+            <select
+              value={serviceId}
+              disabled={!services.data || services.data.length < 2}
+              onChange={(event) => setServiceId(event.target.value)}
+            >
+              {fallback && (
+                <option value="">
+                  {t('lumen.comicDetail.defaultService', 'Default ({name})', {
+                    name: fallback.name,
+                  })}
+                </option>
+              )}
+              {(services.data ?? []).map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name} · {item.backendType}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {canChoose && service?.backendType === 'kapowarr' && (
           <label className="sel" data-layout="stacked">
             <span className="lbl">
               {t('lumen.comicDetail.rootFolder', 'Kapowarr root folder')}
@@ -287,13 +374,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
         nav(href + '#editions');
         return;
       }
-      if (asksOptions) {
-        setOptionsTarget({ work, edition });
-        return;
-      }
-      const said = await requestComicEdition(work, edition);
-      toast(said);
-      if (mounted.current) setAsked(edition.id);
+      setOptionsTarget({ work, edition });
     } catch (e) {
       toast(
         e instanceof ComicServiceFailure
@@ -327,16 +408,21 @@ export function ComicCard({ w }: { w: ComicWork }) {
       setOptionsTarget(null);
     } catch (e) {
       toast(
-        e instanceof ComicServiceFailure
+        isComicQuotaDenial(e)
           ? t(
-              'lumen.comicDetail.serviceFailure',
-              'The request was submitted, but the comics service rejected it while processing.'
+              'lumen.comicDetail.quotaReached',
+              'You have reached your comic request limit.'
             )
-          : friendlyError(
-              e,
-              t('lumen.error.requestFailed', 'Request failed'),
-              t
-            )
+          : e instanceof ComicServiceFailure
+            ? t(
+                'lumen.comicDetail.serviceFailure',
+                'The request was submitted, but the comics service rejected it while processing.'
+              )
+            : friendlyError(
+                e,
+                t('lumen.error.requestFailed', 'Request failed'),
+                t
+              )
       );
     } finally {
       running.current = false;
@@ -384,7 +470,9 @@ export function ComicCard({ w }: { w: ComicWork }) {
     <div className="poster book comic-card">
       {optionsTarget && (
         <ComicRequestOptionsSheet
-          onConfirm={(options) => void submitOptions(options)}
+          showOptions={asksOptions}
+          requestLabel={`${optionsTarget.work.title} · ${editionLabel(optionsTarget.edition)}`}
+          onConfirm={submitOptions}
           onClose={() => setOptionsTarget(null)}
         />
       )}
