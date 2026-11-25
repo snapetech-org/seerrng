@@ -15,6 +15,7 @@ import {
   type Stat,
 } from '../components/cards';
 import {
+  canManageRequests,
   canUseRequestAccess,
   DetailTop,
   Facts,
@@ -613,6 +614,17 @@ function GameDetailView({
   const libraryLookup = useApi<{ entry: { id: number } | null }>(
     libraryLookupPath
   );
+  const canRequest = canUseRequestAccess(user?.permissions);
+  const manageRequests = canManageRequests(user?.permissions);
+  const quota = useApi<{
+    software?: {
+      limit?: number;
+      remaining?: number;
+      restricted?: boolean;
+    };
+  }>(canRequest && user ? `/user/${user.id}/quota` : null);
+  const quotaStatus = quota.data?.software;
+  const quotaRestricted = quotaStatus?.restricted === true && !manageRequests;
   if (error)
     return (
       <ExtraGate k="game">
@@ -711,6 +723,7 @@ function GameDetailView({
           : t('lumen.status.requested', 'Requested')
       );
       setRequestId(r.request.id);
+      quota.reload();
       toast(
         t('lumen.games.requestedTitle', 'Requested {title}', {
           title: g.title,
@@ -731,7 +744,7 @@ function GameDetailView({
       setBusy(false);
     }
   };
-  const main = canUseRequestAccess(user?.permissions) ? (
+  const main = canRequest ? (
     baseBlocked || done ? (
       <button className="btn btn-tonal" disabled>
         <Icon name={s?.ico || 'clock'} />
@@ -740,7 +753,7 @@ function GameDetailView({
     ) : (
       <button
         className="btn btn-primary"
-        disabled={!ready || busy}
+        disabled={!ready || busy || quotaRestricted}
         onClick={go}
       >
         <Icon name="plus" />
@@ -909,6 +922,44 @@ function GameDetailView({
                 </p>
               )}
             </div>
+          )}
+          {!!quotaStatus?.limit && (
+            <p className="note" role={quotaRestricted ? 'status' : undefined}>
+              {quotaRestricted
+                ? t(
+                    'lumen.games.softwareQuotaReached',
+                    'You have reached your software request limit.'
+                  )
+                : t(
+                    'lumen.games.softwareQuotaRemaining',
+                    '{remaining} of {limit} software requests remaining.',
+                    {
+                      remaining: new Intl.NumberFormat(locale).format(
+                        quotaStatus.remaining ?? 0
+                      ),
+                      limit: new Intl.NumberFormat(locale).format(
+                        quotaStatus.limit
+                      ),
+                    }
+                  )}
+            </p>
+          )}
+          {quotaRestricted && (
+            <button className="chip" type="button" onClick={quota.reload}>
+              {t('lumen.games.recheckQuota', 'Recheck quota')}
+            </button>
+          )}
+          {quota.error && (
+            <ServiceNote
+              error={quota.error}
+              what={t('lumen.games.softwareQuota', 'software request quota')}
+              title={t(
+                'lumen.games.softwareQuotaLoadFailure',
+                'Could not load software request limits.'
+              )}
+              retryLabel={t('lumen.games.recheckQuota', 'Recheck quota')}
+              retry={quota.reload}
+            />
           )}
           <div className="dacts pc">{main}</div>
           {user && libraryCatalogId && (

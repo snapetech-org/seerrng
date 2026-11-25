@@ -6398,6 +6398,12 @@ export const localeData = [
       'lumen.games.waitingApproval': 'بانتظار الموافقة',
       'lumen.games.requestedTitle': 'تم طلب {title}',
       'lumen.games.quotaReached': 'لقد وصلت إلى الحد الأقصى لطلبات الألعاب.',
+      'lumen.games.softwareQuota': 'حد طلبات البرامج',
+      'lumen.games.softwareQuotaLoadFailure': 'تعذر تحميل حدود طلبات البرامج.',
+      'lumen.games.softwareQuotaReached': 'لقد وصلت إلى حد طلبات البرامج.',
+      'lumen.games.softwareQuotaRemaining':
+        'متبقي {remaining} من أصل {limit} طلبات برامج.',
+      'lumen.games.recheckQuota': 'إعادة التحقق من الحد',
       'lumen.games.gameWhat': 'هذه اللعبة',
       'lumen.sports.followed': 'تمت متابعتها',
       'lumen.sports.catalogTitle': 'الرياضة',
@@ -18281,6 +18287,14 @@ export const localeData = [
       'lumen.games.waitingApproval': 'Waiting for approval',
       'lumen.games.requestedTitle': 'Requested {title}',
       'lumen.games.quotaReached': 'You’ve reached your game request limit.',
+      'lumen.games.softwareQuota': 'software request quota',
+      'lumen.games.softwareQuotaLoadFailure':
+        'Could not load software request limits.',
+      'lumen.games.softwareQuotaReached':
+        'You have reached your software request limit.',
+      'lumen.games.softwareQuotaRemaining':
+        '{remaining} of {limit} software requests remaining.',
+      'lumen.games.recheckQuota': 'Recheck quota',
       'lumen.games.gameWhat': 'this game',
       'lumen.sports.followed': 'Followed',
       'lumen.sports.catalogTitle': 'Sports',
@@ -31347,6 +31361,14 @@ export const localeData = [
       'lumen.games.requestedTitle': 'Demande envoyée : {title}',
       'lumen.games.quotaReached':
         'Vous avez atteint votre limite de demandes de jeux.',
+      'lumen.games.softwareQuota': 'quota des demandes de logiciels',
+      'lumen.games.softwareQuotaLoadFailure':
+        'Impossible de charger les limites de demandes de logiciels.',
+      'lumen.games.softwareQuotaReached':
+        'Vous avez atteint votre limite de demandes de logiciels.',
+      'lumen.games.softwareQuotaRemaining':
+        'Il reste {remaining} demande(s) de logiciels sur {limit}.',
+      'lumen.games.recheckQuota': 'Vérifier à nouveau le quota',
       'lumen.games.gameWhat': 'ce jeu',
       'lumen.sports.followed': 'Suivie',
       'lumen.sports.catalogTitle': 'Sports',

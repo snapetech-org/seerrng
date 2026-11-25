@@ -10555,3 +10555,24 @@ unavailable, so native visual parity remains unverified. Evidence is retained
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-destination-options/`.
 
 release-note: `release-notes/added-lumen-comic-request-options.md`
+
+### Software request quota on game details (2026-11-25)
+
+Lumen game details now fetch the signed-in user's software quota, show remaining
+requests, block a restricted requester from submitting, and expose a quota
+recheck action. Admins and request managers retain the native override; after a
+successful submission Lumen reloads quota data. The focused browser suite passed
+8 cases across desktop, iPhone, Android, and tablet, covering blocked users,
+manager override, successful request submission, and quota refresh. API responses
+are mocked, so live quota enforcement and request handoff remain unverified.
+Candidate desktop and iPhone screenshots were captured; no matched native
+screenshot of the quota state is available, so native visual parity is
+unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/software-quota-acceptance/`.
+The wider game/software browser selection passed 188 cases and skipped 3, but
+5 existing cases failed on stale selectors: four software-bookmark cases look
+for English `System` while their fixture selects French, and one Games catalog
+case matches both the navigation link and the page link. These failures are
+outside the quota change.
+
+release-note: `release-notes/added-lumen-software-request-quota.md`
