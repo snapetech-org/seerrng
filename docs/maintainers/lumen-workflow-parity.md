@@ -10804,3 +10804,18 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/final-cross-viewport-slice-2500ddf/`.
 
 release-note: none
+
+
+### Metadata admin viewport overflow triage (2026-11-25)
+
+A hosted browser artifact reported document `scrollWidth=401` for the French
+metadata administration page at the 390px iPhone viewport. The failure did not
+reproduce on current `main`: the same locale and route passed once with the
+original assertion and in five repeated runs, each measuring element bounds
+against the viewport. No product styling or test assertion was changed. The
+hosted screenshot shows the content within the viewport; that single earlier
+overflow report is treated as transient pending recurrence. Evidence: hosted
+failure artifact under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/hosted-browser-evidence-45676094803/admin-metadata-metadata-settings-follow-the-saved-fr-locale-iphone/`
+and current local runs of `lumen/tests/browser/admin-metadata.spec.ts`
+(`iphone`, French case; six passes total).
