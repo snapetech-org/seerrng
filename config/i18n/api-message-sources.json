@@ -88992,7 +88992,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 982,
+      "line": 1030,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -89001,7 +89001,7 @@
     },
     {
       "path": "server/utils/bookshelfCatalog.ts",
-      "line": 982,
+      "line": 1030,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
