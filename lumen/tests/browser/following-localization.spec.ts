@@ -8,7 +8,7 @@ async function capture(page: Page, info: TestInfo) {
     return;
   await page.screenshot({
     path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/following-${info.project.name}.png`,
-    fullPage: true,
+    animations: 'disabled',
   });
 }
 
@@ -74,8 +74,37 @@ test('Following translates feed controls and event reasons', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('heading', {
-      name: text('Updates', 'Mises à jour', 'التحديثات'),
+      name: text('New for You', 'Nouveautés pour vous', 'جديد لك'),
     })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      text(
+        'Personal news about the people, production companies, networks, genres, narrators, series, games, artists, and projects you follow. Each item explains why it appeared.',
+        'Actualités personnelles sur les personnes, sociétés de production, réseaux, genres, narrateurs, séries, jeux, artistes et projets que vous suivez. Chaque élément explique sa présence ici.',
+        'أخبار شخصية عن الأشخاص وشركات الإنتاج والشبكات والأنواع والرواة والمسلسلات والألعاب والفنانين والمشاريع التي تتابعها. يوضح كل عنصر سبب ظهوره هنا.'
+      )
+    )
+  ).toBeVisible();
+  const how = page.getByText(
+    text(
+      'How Following Works',
+      'Fonctionnement du suivi',
+      'كيف تعمل ميزة المتابعة'
+    ),
+    { exact: true }
+  );
+  await expect(how).toBeVisible();
+  await expect(how.locator('xpath=..')).not.toHaveAttribute('open');
+  await how.click();
+  await expect(
+    page.getByText(
+      text(
+        'The first check can show up to three current upcoming titles per media type; later checks add new recent or upcoming items.',
+        "La première vérification peut afficher jusqu'à trois titres à venir par type de média. Les vérifications suivantes ajoutent des nouveautés récentes ou à venir.",
+        'قد يعرض الفحص الأول ما يصل إلى ثلاثة عناوين قادمة لكل نوع وسائط؛ وتضيف الفحوص اللاحقة عناصر جديدة حديثة أو قادمة.'
+      )
+    )
   ).toBeVisible();
   await expect(
     page.getByText(

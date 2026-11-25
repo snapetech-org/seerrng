@@ -1064,7 +1064,8 @@ network, or genre. Twelve browser cases passed per deployment using API
 fixtures at desktop, iPhone, Android, and tablet sizes. The bundled cases
 served the production build through Express at `/lumen/`. The suites verify
 expansion and patch explanations, game and version-specific patch links, and
-marking an update seen. Live provider and matched visual review remain open.
+marking an update seen. Live provider and exact-fixture native visual review
+remain open.
 
 Movie and Series browse show Follow for a single included genre, a selected
 production company, or a TV network when the viewer has request access.
@@ -1081,7 +1082,9 @@ successful response. The rendered rows initially inherited the browser's list
 indent. Resetting it in the shared list style aligned the update and subscription
 rows with the existing You screen. The isolated desktop could not reach the
 fixture, so this check used a dedicated session on the persistent Agent GUI VM.
-Narrow and embedded-browser visual acceptance remains open.
+Narrow Lumen capture and an existing native screenshot reference were reviewed;
+their fixture content differs, so exact-fixture native comparison and
+embedded-browser acceptance remain open.
 
 Following's feed, subscription controls, access-denied state, and event reason
 messages now use Lumen locale strings in English, French, and Arabic. Four
@@ -1091,6 +1094,28 @@ passes. Matched English/French desktop and iPhone screenshots, plus Arabic
 desktop and iPhone screenshots, were reviewed with no new overflow or layout
 changes. Live provider, role-matrix, native-matched, and embedded-browser
 acceptance remain open.
+
+### Following guidance and section parity (2026-11-25)
+
+Native Following identifies its feed as “New for You,” explains what is shown,
+and provides a collapsed “How Following Works” disclosure. Lumen previously
+omitted the description and guidance and labeled the feed “Updates.” Lumen now
+uses the native section name, explains followed subjects and update reasons,
+and provides the same keyboard-operable disclosure with polling cadence,
+upcoming-result limits, release-date caveat, and book-only automatic-request
+scope. English, French, and Arabic translations were added. Existing shared
+`.note` and `.adv` owners are reused; no page CSS was added.
+
+Browser coverage verifies the English feed, collapsed disclosure, expanded
+guidance, and French and Arabic translations across desktop, iPhone, Android,
+and tablet (12 cases). The production Lumen build passes. Candidate screenshots
+at 1440×900 and phone size were inspected alongside the existing native
+Following reference. Their fixture contents differ, so this is a hierarchy and
+overflow review, not a pixel-matched comparison. Evidence is at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/following-visual-acceptance/`.
+The Express `/lumen/` mount and live follow API remain unverified.
+
+release-note: `release-notes/fixed-lumen-following-guidance.md`
 
 Book details offer Follow New Releases for an identified author. Audiobook
 details offer Follow for each listed solo narrator in the narration picker.

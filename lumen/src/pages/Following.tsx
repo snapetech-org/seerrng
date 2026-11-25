@@ -197,7 +197,7 @@ export default function Following() {
       ) : (
         <>
           <Section
-            title={t('lumen.following.updates', 'Updates')}
+            title={t('lumen.following.updates', 'New for You')}
             action={
               Boolean(count.data?.unseen) && (
                 <button
@@ -214,6 +214,23 @@ export default function Following() {
               )
             }
           >
+            <p className="note">
+              {t(
+                'lumen.following.description',
+                'Personal news about the people, production companies, networks, genres, narrators, series, games, artists, and projects you follow. Each item explains why it appeared.'
+              )}
+            </p>
+            <details className="adv">
+              <summary>
+                {t('lumen.following.howHeading', 'How Following Works')}
+              </summary>
+              <p className="note">
+                {t(
+                  'lumen.following.howBody',
+                  'Press Follow on a person, production company, network, genre, narrator, series, game, artist, or patch project. The first check can show up to three current upcoming titles per media type; later checks add new recent or upcoming items. SeerrNG checks about every 30 minutes. A listed release date does not confirm library availability. Nothing is requested for you unless you turn on Request Automatically, which is limited to books.'
+                )}
+              </p>
+            </details>
             <ServiceNote
               error={events.error}
               what={t('lumen.following.updates', 'updates')}

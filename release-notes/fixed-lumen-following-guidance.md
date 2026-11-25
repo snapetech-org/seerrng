@@ -1,0 +1,1 @@
+Lumen Following now matches SeerrNG's feed guidance: it labels updates “New for You,” explains why followed items appear, and includes a collapsible guide to update timing and automatic book requests. The guide is available in English, French, and Arabic.

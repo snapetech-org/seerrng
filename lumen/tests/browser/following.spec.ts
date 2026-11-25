@@ -122,6 +122,29 @@ test('household users can open Following and manage their own updates', async ({
     new URL('./movie/10', baseURL).pathname
   );
   await expect(
+    page.getByRole('heading', { name: 'New for You', exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Personal news about the people, production companies, networks, genres, narrators, series, games, artists, and projects you follow. Each item explains why it appeared.'
+    )
+  ).toBeVisible();
+  const how = page.getByText('How Following Works', { exact: true });
+  await expect(how).toBeVisible();
+  await expect(how.locator('xpath=..')).not.toHaveAttribute('open');
+  const captureDir = process.env.LUMEN_FOLLOW_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name))
+    await page.screenshot({
+      path: `${captureDir}/following-feed-${test.info().project.name}.png`,
+      animations: 'disabled',
+    });
+  await how.click();
+  await expect(
+    page.getByText(
+      /The first check can show up to three current upcoming titles/
+    )
+  ).toBeVisible();
+  await expect(
     page.getByRole('link', { name: 'New Story Expansion' })
   ).toHaveAttribute('href', new URL('./game/game/42', baseURL).pathname);
   await expect(
