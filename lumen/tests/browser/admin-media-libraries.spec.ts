@@ -409,6 +409,78 @@ test('Plex discovery selects reachable addresses without saving automatically', 
     });
 });
 
+test('library settings stay unchanged until a fresh read confirms the save', async ({
+  page,
+}, info) => {
+  const path = '/api/v1/settings/plex';
+  const original = [
+    { id: 'music', name: 'Audio', type: 'music', enabled: false },
+  ];
+  let saved = original;
+  let returnStaleReadback = false;
+  let updateCount = 0;
+  let staleReadbackSent = false;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const endpoint = new URL(request.url()).pathname;
+    if (endpoint.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (endpoint.endsWith('/settings/public'))
+      return route.fulfill({ json: { mediaServerType: 1 } });
+    if (endpoint === path + '/sync')
+      return route.fulfill({ json: { running: false } });
+    if (endpoint === path) return route.fulfill({ json: { libraries: saved } });
+    if (endpoint === path + '/library') {
+      if (request.method() === 'GET') {
+        if (returnStaleReadback) {
+          returnStaleReadback = false;
+          staleReadbackSent = true;
+          return route.fulfill({ json: original });
+        }
+        return route.fulfill({ json: saved });
+      }
+      updateCount++;
+      const body = request.postDataJSON();
+      saved = saved.map((library) => ({
+        ...library,
+        ...(typeof body.enable === 'string'
+          ? { enabled: body.enable.split(',').includes(library.id) }
+          : {}),
+      }));
+      if (updateCount === 1) returnStaleReadback = true;
+      return route.fulfill({ json: saved });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/admin/media-libraries'));
+  const audio = page.getByLabel('Enable Audio');
+  await expect(audio).not.toBeChecked();
+  await audio.click();
+  await expect.poll(() => updateCount).toBe(1);
+  await expect.poll(() => staleReadbackSent).toBe(true);
+  await expect(
+    page.getByText(
+      'Could not confirm saved media library settings. Keep the current state and try again.'
+    )
+  ).toBeVisible();
+  await expect(audio).not.toBeChecked();
+  if (process.env.LUMEN_CAPTURE_MEDIA_LIBRARIES)
+    await page.screenshot({
+      path: info.outputPath('stale-library-readback.png'),
+      fullPage: true,
+    });
+
+  await audio.click();
+  await expect(audio).toBeChecked();
+  await expect(page.getByText('Library settings updated.')).toBeVisible();
+  expect(updateCount).toBe(2);
+});
+
 test('Tautulli settings preserve saved keys and support disconnecting the service', async ({
   page,
 }, info) => {

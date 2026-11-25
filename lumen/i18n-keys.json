@@ -1570,6 +1570,7 @@
   "lumen.adminMediaLibraries.scanning",
   "lumen.adminMediaLibraries.settings",
   "lumen.adminMediaLibraries.settingsUpdated",
+  "lumen.adminMediaLibraries.confirmFailure",
   "lumen.adminMediaLibraries.startScan",
   "lumen.adminMediaLibraries.tautulliLoadFailure",
   "lumen.adminMediaLibraries.tautulliSettings",

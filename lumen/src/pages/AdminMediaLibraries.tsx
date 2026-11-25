@@ -94,7 +94,22 @@ function MediaLibraries({
           method: 'POST',
           body: JSON.stringify(body),
         });
-        if (generation === sessionGeneration()) setUpdated(result);
+        if (generation !== sessionGeneration()) return;
+        const saved = await api<Library[]>(`${path}/library`);
+        if (generation !== sessionGeneration()) return;
+        if (
+          !Array.isArray(result) ||
+          !Array.isArray(saved) ||
+          JSON.stringify(saved) !== JSON.stringify(result)
+        ) {
+          throw new Error(
+            t(
+              'lumen.adminMediaLibraries.confirmFailure',
+              'Could not confirm saved media library settings.'
+            )
+          );
+        }
+        setUpdated(saved);
       },
       t(
         'lumen.adminMediaLibraries.settingsUpdated',
@@ -114,7 +129,22 @@ function MediaLibraries({
             body: JSON.stringify({ type }),
           }
         );
-        if (generation === sessionGeneration()) setUpdated(result);
+        if (generation !== sessionGeneration()) return;
+        const saved = await api<Library[]>(`${path}/library`);
+        if (generation !== sessionGeneration()) return;
+        if (
+          !Array.isArray(result) ||
+          !Array.isArray(saved) ||
+          JSON.stringify(saved) !== JSON.stringify(result)
+        ) {
+          throw new Error(
+            t(
+              'lumen.adminMediaLibraries.confirmFailure',
+              'Could not confirm saved media library settings.'
+            )
+          );
+        }
+        setUpdated(saved);
       },
       t('lumen.adminMediaLibraries.typeUpdated', 'Library type updated.')
     );

@@ -2400,6 +2400,8 @@ export const localeData = [
         'جارٍ الفحص{library} · {progress} من {total}',
       'lumen.adminMediaLibraries.settings': 'إعدادات خادم الوسائط',
       'lumen.adminMediaLibraries.settingsUpdated': 'تم تحديث إعدادات المكتبة.',
+      'lumen.adminMediaLibraries.confirmFailure':
+        'تعذر تأكيد حفظ إعدادات المكتبة. احتفظ بالحالة الحالية ثم أعد المحاولة.',
       'lumen.adminMediaLibraries.startScan': 'بدء الفحص الكامل',
       'lumen.adminMediaLibraries.tautulliLoadFailure':
         'تعذر تحميل إعدادات Tautulli',
@@ -14256,6 +14258,8 @@ export const localeData = [
         'Scanning{library} · {progress} of {total}',
       'lumen.adminMediaLibraries.settings': 'media server settings',
       'lumen.adminMediaLibraries.settingsUpdated': 'Library settings updated.',
+      'lumen.adminMediaLibraries.confirmFailure':
+        'Could not confirm saved media library settings. Keep the current state and try again.',
       'lumen.adminMediaLibraries.startScan': 'Start Full Scan',
       'lumen.adminMediaLibraries.tautulliLoadFailure':
         'Couldn’t Load Tautulli Settings',
@@ -26913,6 +26917,8 @@ export const localeData = [
       'lumen.adminMediaLibraries.settings': 'paramètres du serveur multimédia',
       'lumen.adminMediaLibraries.settingsUpdated':
         'Paramètres de la bibliothèque mis à jour.',
+      'lumen.adminMediaLibraries.confirmFailure':
+        'Impossible de confirmer l’enregistrement des paramètres de bibliothèque. Conservez l’état actuel et réessayez.',
       'lumen.adminMediaLibraries.startScan': 'Lancer l’analyse complète',
       'lumen.adminMediaLibraries.tautulliLoadFailure':
         'Impossible de charger les paramètres Tautulli',

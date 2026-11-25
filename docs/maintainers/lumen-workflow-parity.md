@@ -119,6 +119,22 @@ redirects to Lumen's `/admin/users`, where its existing manager permission gate
 still applies; an unauthorized user is sent to `/me`. Both redirects preserve
 URL state where authorized.
 
+### Media library settings save confirmation
+
+Plex and Jellyfin media-library actions now compare the mutation response with a
+fresh `GET /settings/{provider}/library` response before updating the displayed
+state or showing success. A stale or mismatched readback leaves the last
+confirmed library state visible and provides localized retry guidance. This
+covers enable/disable, refresh, episode-order updates, and Plex library-type
+changes. A stale-readback fixture verifies that the first response does not
+change the displayed switch and that retry succeeds after readback catches up;
+the full media-library browser suite passes across desktop, iPhone, Android, and
+tablet (40 cases). Desktop and iPhone candidate error-state captures were
+inspected at 1440px and 390px; they are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-library-readback-20261125/`.
+No layout or style owner changed; a matched native capture for this newly
+explicit stale-readback state is not available.
+
 ### Native user profile route compatibility
 
 Native SeerrNG user-profile links now resolve inside Lumen: `/users/:id` opens
