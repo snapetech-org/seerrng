@@ -9716,6 +9716,19 @@ captured native panel; title detail baseline and candidate captures remain at
 task evidence directory. These are simulated API fixtures, not a live
 SeerrNG integration result.
 
+Lumen now also provides a collapsed **View Details** disclosure for each
+manager-sheet issue when its initial report comment is available. This matches
+the native manager's inline issue-description preview while keeping the linked
+issue page available for the full discussion and actions. The existing manager
+fixture verifies the description stays collapsed until opened. Baseline and
+candidate captures at 1440x900 and iPhone 390x844 use the same mock issue; the
+candidate open state preserves the sheet width and avoids horizontal overflow.
+The focused manager workflow and production build pass. API responses remain
+mocked, so live issue privacy scoping and comment data are not verified here.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-issue-descriptions-20261125/`.
+
 The native comparison confirms that request editing and approval are not
 actions in `ManageSlideOver`: it embeds `RequestBlock` with deletion hidden and
 offers its own request deletion action in `ManageMediaActions`; request

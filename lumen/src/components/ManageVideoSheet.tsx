@@ -547,6 +547,16 @@ export function ManageVideoSheet({
                               }
                             )}
                           </a>
+                          {issue.comments?.[0]?.message && (
+                            <details className="adv">
+                              <summary>
+                                {t('lumen.issues.viewDetails', 'View Details')}
+                              </summary>
+                              <p className="note">
+                                {issue.comments[0].message}
+                              </p>
+                            </details>
+                          )}
                         </li>
                       ))}
                     </ul>

@@ -98,7 +98,14 @@ async function setup(
                     : []),
                 ],
             issues: [
-              { id: 71, status: 1, issueType: 1 },
+              {
+                id: 71,
+                status: 1,
+                issueType: 1,
+                comments: [
+                  { message: 'Playback stops after the opening scene.' },
+                ],
+              },
               { id: 72, status: 2, issueType: 1 },
             ],
             downloadStatus: [
@@ -509,6 +516,25 @@ test('title manager exposes permission-scoped blocklist and issue actions', asyn
   await expect(
     dialog.getByRole('link', { name: 'Issue #72 · Resolved' })
   ).toHaveAttribute('href', '/issues/72');
+  const issueDetails = dialog
+    .locator('details.adv')
+    .filter({ hasText: 'Playback stops after the opening scene.' });
+  await expect(issueDetails).toBeVisible();
+  await expect(
+    issueDetails.getByText('Playback stops after the opening scene.')
+  ).not.toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await dialog.screenshot({
+      path: info.outputPath('manager-issue-description-collapsed.png'),
+    });
+  await issueDetails.locator('summary').click();
+  await expect(
+    issueDetails.getByText('Playback stops after the opening scene.')
+  ).toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await dialog.screenshot({
+      path: info.outputPath('manager-issue-description-expanded.png'),
+    });
   if (['desktop', 'iphone'].includes(info.project.name)) {
     await dialog
       .getByRole('heading', { name: 'Issues · 2' })
