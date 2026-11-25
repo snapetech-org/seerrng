@@ -10287,3 +10287,22 @@ selection, continued selection while a later batch loads, and cancellation of
 remaining metadata requests when the picker closes. The selected payload
 contains only chosen episode identities. These fixtures verify client behavior;
 live provider latency and bundled `/lumen/` execution remain open.
+
+### Issue-detail service links in Lumen (2026-11-25)
+
+Native issue details provide administrators links to the affected movie or
+series in Radarr or Sonarr, including the selected 4K service when available.
+Lumen issue details now expose the same destinations only to administrators.
+The links accept safe HTTP(S) URLs and reject credentials or unsupported
+protocols; non-administrator issue viewers see none, even if a response
+contains service URL fields. Other media types do not receive a mislabeled Arr
+link.
+
+Browser coverage verifies administrator link destinations, rejection of a
+credential-bearing 4K URL, and omission for a non-administrator. The focused
+case passes on desktop and iPhone, and the complete Issues browser suite passes
+80 cases across desktop, iPhone, Android, and tablet. Matched desktop and phone
+captures were inspected; the existing toolbar wraps naturally and remains
+within the viewport. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue-service-links-20261125/`.
+Live API authorization and bundled `/lumen/` execution remain open.

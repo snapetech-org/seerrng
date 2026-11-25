@@ -6,6 +6,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { isIssueSubtypeForMediaType } from '../../../server/constants/issue';
+import { getSafeHref } from '../../../src/utils/safeUrl';
 import {
   api,
   ApiError,
@@ -13,7 +14,7 @@ import {
   tmdbImg,
   type DetailDisclosurePins,
 } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Pill } from '../components/detail';
 import { ServiceNote } from '../components/extra';
@@ -39,6 +40,8 @@ interface IssueMedia {
   title?: string;
   name?: string;
   posterPath?: string;
+  serviceUrl?: string | null;
+  serviceUrl4k?: string | null;
   identifiers?: { provider: string; value: string }[];
 }
 
@@ -961,6 +964,7 @@ function Discussion({
 }) {
   const { locale, t } = useLumenLocale();
   const { user } = useAuth();
+  const admin = isAdministrator(user?.permissions);
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const listParams = new URLSearchParams(params);
@@ -1092,6 +1096,20 @@ function Discussion({
   }
 
   const titleLink = issueTitleLink(data?.media);
+  const serviceLinks =
+    admin &&
+    (data?.media?.mediaType === 'movie' || data?.media?.mediaType === 'tv')
+      ? [
+          {
+            quality: 'HD',
+            url: getSafeHref(data.media.serviceUrl),
+          },
+          {
+            quality: '4K',
+            url: getSafeHref(data.media.serviceUrl4k),
+          },
+        ].filter((item) => item.url)
+      : [];
 
   return (
     <>
@@ -1188,6 +1206,19 @@ function Discussion({
                 })}
               </Link>
             )}
+            {serviceLinks.map(({ quality, url }) => (
+              <a
+                className="btn btn-quiet btn-sm"
+                key={quality}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t('lumen.manageVideo.openService', 'Open in {service}', {
+                  service: `${data?.media?.mediaType === 'tv' ? 'Sonarr' : 'Radarr'}${quality === '4K' ? ' 4K' : ''}`,
+                })}
+              </a>
+            ))}
             {editable && (
               <button
                 className="btn btn-quiet btn-sm"

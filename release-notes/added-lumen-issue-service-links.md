@@ -1,0 +1,1 @@
+Lumen issue details now give administrators safe Radarr or Sonarr links for movie and series reports, including separate HD and 4K destinations when available. Non-administrators do not see these links, and unsafe URLs are omitted.

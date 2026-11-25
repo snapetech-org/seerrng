@@ -35,6 +35,68 @@ test.beforeEach(async ({ page, baseURL }) => {
   await authenticateNativeComparison(page, baseURL!);
 });
 
+for (const permissions of [18, 2097152]) {
+  test(`issue detail service links follow administrator permissions ${permissions}`, async ({
+    page,
+  }, info) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const path = testApiPath(route.request().url());
+      if (path === '/auth/me')
+        return route.fulfill({ json: { id: 2, permissions } });
+      if (path === '/issue/71')
+        return route.fulfill({
+          json: {
+            id: 71,
+            status: 1,
+            issueType: 1,
+            is4k: false,
+            media: {
+              mediaType: 'movie',
+              tmdbId: 71,
+              title: 'Service Link Fixture',
+              serviceUrl: 'https://radarr.example.test/movie/71',
+              serviceUrl4k: 'https://user:secret@radarr.example.test/movie/71',
+            },
+            createdBy: { id: 2, displayName: 'Viewer' },
+            createdAt: '2026-11-25T00:00:00Z',
+            comments: [
+              {
+                id: 72,
+                message: 'Playback fails.',
+                createdAt: '2026-11-25T00:00:00Z',
+                user: { id: 2, displayName: 'Viewer' },
+              },
+            ],
+          },
+        });
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto(testAppPath('/issues/71'));
+    await expect(
+      page.getByRole('heading', { name: 'Issue #71' })
+    ).toBeVisible();
+    if (permissions === 18) {
+      if (['desktop', 'iphone'].includes(info.project.name))
+        await page.screenshot({
+          path: info.outputPath('administrator-issue-service-link.png'),
+          fullPage: true,
+        });
+      await expect(
+        page.getByRole('link', { name: 'Open in Radarr' })
+      ).toHaveAttribute('href', 'https://radarr.example.test/movie/71');
+      await expect(
+        page.getByRole('link', { name: 'Open in Radarr 4K' })
+      ).toHaveCount(0);
+    } else {
+      await expect(
+        page.getByRole('link', { name: /Open in Radarr/ })
+      ).toHaveCount(0);
+    }
+  });
+}
+
 for (const permissions of [4194304, 2097152, 32]) {
   test(`issue discussion follows account permissions ${permissions}`, async ({
     page,
