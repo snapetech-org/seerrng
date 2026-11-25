@@ -14,9 +14,11 @@ import {
 } from '../components/cards';
 import {
   ComicCard,
+  ComicRequestOptionsSheet,
   ComicServiceFailure,
   editionLabel,
   requestComicEdition,
+  type ComicRequestOptions,
 } from '../components/comics';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import {
@@ -754,7 +756,7 @@ export function ComicDetail() {
   const { t } = useLumenLocale();
   const { id = '' } = useParams();
   const toast = useToast();
-  const { kavitaUrl } = usePrefs();
+  const { kavitaUrl, prefs } = usePrefs();
   const {
     data: work,
     error: workError,
@@ -769,6 +771,9 @@ export function ComicDetail() {
   const { user } = useAuth();
   const mayRequest = canRequestComic(user?.permissions);
   const [busy, setBusy] = useState(false);
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const asksOptions =
+    prefs.requestOptions && canChooseRequestOptions(user?.permissions);
   // set at once, unlike busy: a double tap can't send the request twice
   const sending = useRef(false);
   useEffect(() => setPick(null), [id]);
@@ -837,12 +842,16 @@ export function ComicDetail() {
         .map((t) => t.trim())
         .filter(Boolean)
     : plainText(c?.description);
-  const request = async () => {
+  const request = async (options?: ComicRequestOptions) => {
     if (!mayRequest || !chosen || sending.current) return;
+    if (asksOptions && !options) {
+      setOptionsOpen(true);
+      return;
+    }
     sending.current = true;
     setBusy(true);
     try {
-      toast(await requestComicEdition(work, chosen));
+      toast(await requestComicEdition(work, chosen, options));
       setAsked((x) => new Set(x).add(chosen.id));
       refresh();
     } catch (e) {
@@ -898,7 +907,11 @@ export function ComicDetail() {
         <StatLabel s={s} />
       </button>
     ) : !mayRequest ? null : (
-      <button className="btn btn-primary" disabled={busy} onClick={request}>
+      <button
+        className="btn btn-primary"
+        disabled={busy}
+        onClick={() => void request()}
+      >
         <Icon name="plus" />
         {editions.length > 1
           ? t('lumen.comicDetail.requestEdition', 'Request · {edition}', {
@@ -912,6 +925,15 @@ export function ComicDetail() {
   return (
     <ExtraGate k="comic">
       <article className="detail">
+        {optionsOpen && (
+          <ComicRequestOptionsSheet
+            onConfirm={(options) => {
+              setOptionsOpen(false);
+              void request(options);
+            }}
+            onClose={() => setOptionsOpen(false)}
+          />
+        )}
         <DetailTop
           status={s}
           poster={artUrl(work.posterPath)}

@@ -6624,6 +6624,8 @@ export const localeData = [
       'lumen.comicDetail.editionLookupFailed':
         'تعذر البحث عن النسخ الآن. أعد المحاولة بعد دقيقة.',
       'lumen.comicDetail.editions': 'النسخ',
+      'lumen.comicDetail.configuredRootFolder': 'الافتراضي المضبوط ({path})',
+      'lumen.comicDetail.defaultService': 'الافتراضي ({name})',
       'lumen.comicDetail.finished': 'مكتملة',
       'lumen.comicDetail.inLibrary': 'في المكتبة',
       'lumen.comicDetail.issue': 'العدد',
@@ -6634,6 +6636,8 @@ export const localeData = [
       'lumen.comicDetail.lookingUpEditions': 'جارٍ البحث عن النسخ…',
       'lumen.comicDetail.manga': 'مانغا',
       'lumen.comicDetail.mangaLanguageEdition': 'مانغا، نسخة {language}',
+      'lumen.comicDetail.noComicService':
+        'لم يتم إعداد خدمة للقصص المصورة. طلب القصص المصورة غير متاح.',
       'lumen.comicDetail.noComicVineEdition':
         'لا تتوفر نسخة من هذه السلسلة على ComicVine بعد، لذا لا يمكن طلبها.',
       'lumen.comicDetail.noEdition': 'لا توجد نسخة لطلبها بعد',
@@ -6646,10 +6650,18 @@ export const localeData = [
       'lumen.comicDetail.recommended': 'موصى بها',
       'lumen.comicDetail.requestEdition': 'طلب · {edition}',
       'lumen.comicDetail.requestFailed': 'فشل الطلب',
+      'lumen.comicDetail.requestOptionsHelp':
+        'اختر خدمة للقصص المصورة ومجلدًا جذريًا في Kapowarr عند استخدامه.',
+      'lumen.comicDetail.requestOptionsTitle': 'خيارات طلب القصص المصورة',
       'lumen.comicDetail.requestManga': 'طلب المانغا',
       'lumen.comicDetail.requestSeries': 'طلب السلسلة',
       'lumen.comicDetail.serviceFailure':
         'وقد قُدِّم الطلب، غير أن دائرة الصور المصورة رفضته أثناء تجهيزه.',
+      'lumen.comicDetail.service': 'خدمة القصص المصورة',
+      'lumen.comicDetail.serviceLoadFailure':
+        'تعذر تحميل خيارات خدمة القصص المصورة. سيستخدم الطلب الخدمة الافتراضية.',
+      'lumen.comicDetail.rootFolder': 'المجلد الجذري في Kapowarr',
+      'lumen.comicDetail.submitRequest': 'إرسال الطلب',
       'lumen.comicDetail.started': 'بدأت',
       'lumen.comicDetail.status': 'الحالة',
       'lumen.comicDetail.theIssues': 'الأعداد',
@@ -18499,6 +18511,8 @@ export const localeData = [
       'lumen.comicDetail.editionLookupFailed':
         'Couldn’t look up the editions right now. Try again in a minute.',
       'lumen.comicDetail.editions': 'Editions',
+      'lumen.comicDetail.configuredRootFolder': 'Configured default ({path})',
+      'lumen.comicDetail.defaultService': 'Default ({name})',
       'lumen.comicDetail.finished': 'Finished',
       'lumen.comicDetail.inLibrary': 'In library',
       'lumen.comicDetail.issue': 'Issue',
@@ -18509,6 +18523,8 @@ export const localeData = [
       'lumen.comicDetail.lookingUpEditions': 'Looking up editions…',
       'lumen.comicDetail.manga': 'Manga',
       'lumen.comicDetail.mangaLanguageEdition': 'Manga, {language} edition',
+      'lumen.comicDetail.noComicService':
+        'No comics service is configured. Comic requests are unavailable.',
       'lumen.comicDetail.noComicVineEdition':
         'ComicVine has no edition of this series yet, so it can’t be requested.',
       'lumen.comicDetail.noEdition': 'No edition to request yet',
@@ -18521,10 +18537,18 @@ export const localeData = [
       'lumen.comicDetail.recommended': 'Recommended',
       'lumen.comicDetail.requestEdition': 'Request · {edition}',
       'lumen.comicDetail.requestFailed': 'Request failed',
+      'lumen.comicDetail.requestOptionsHelp':
+        'Choose a comics service and, for Kapowarr, a root folder.',
+      'lumen.comicDetail.requestOptionsTitle': 'Comic request options',
       'lumen.comicDetail.requestManga': 'Request manga',
       'lumen.comicDetail.requestSeries': 'Request series',
       'lumen.comicDetail.serviceFailure':
         'The request was submitted, but the comics service rejected it while processing.',
+      'lumen.comicDetail.service': 'Comics service',
+      'lumen.comicDetail.serviceLoadFailure':
+        'Could not load comic service options. The request will use the default service.',
+      'lumen.comicDetail.rootFolder': 'Kapowarr root folder',
+      'lumen.comicDetail.submitRequest': 'Submit request',
       'lumen.comicDetail.started': 'Started',
       'lumen.comicDetail.status': 'Status',
       'lumen.comicDetail.theIssues': 'the issues',
@@ -31565,6 +31589,9 @@ export const localeData = [
       'lumen.comicDetail.editionLookupFailed':
         'Impossible de rechercher les éditions pour le moment. Réessayez dans une minute.',
       'lumen.comicDetail.editions': 'Éditions',
+      'lumen.comicDetail.configuredRootFolder':
+        'Valeur par défaut configurée ({path})',
+      'lumen.comicDetail.defaultService': 'Par défaut ({name})',
       'lumen.comicDetail.finished': 'Terminée',
       'lumen.comicDetail.inLibrary': 'Dans la bibliothèque',
       'lumen.comicDetail.issue': 'Numéro',
@@ -31575,6 +31602,8 @@ export const localeData = [
       'lumen.comicDetail.lookingUpEditions': 'Recherche des éditions…',
       'lumen.comicDetail.manga': 'Manga',
       'lumen.comicDetail.mangaLanguageEdition': 'Manga, édition {language}',
+      'lumen.comicDetail.noComicService':
+        "Aucun service de bande dessinée n'est configuré. Les demandes de bande dessinée sont indisponibles.",
       'lumen.comicDetail.noComicVineEdition':
         'ComicVine ne propose pas encore d’édition de cette série, qui ne peut donc pas être demandée.',
       'lumen.comicDetail.noEdition': 'Aucune édition à demander pour le moment',
@@ -31587,10 +31616,19 @@ export const localeData = [
       'lumen.comicDetail.recommended': 'Recommandée',
       'lumen.comicDetail.requestEdition': 'Demander · {edition}',
       'lumen.comicDetail.requestFailed': 'Échec de la demande',
+      'lumen.comicDetail.requestOptionsHelp':
+        'Choisissez un service de bande dessinée et, pour Kapowarr, un dossier racine.',
+      'lumen.comicDetail.requestOptionsTitle':
+        'Options de demande de bande dessinée',
       'lumen.comicDetail.requestManga': 'Demander le manga',
       'lumen.comicDetail.requestSeries': 'Demander la série',
       'lumen.comicDetail.serviceFailure':
         "La demande a été présentée, mais le service de bande dessinée l'a rejetée pendant le traitement.",
+      'lumen.comicDetail.service': 'Service de bande dessinée',
+      'lumen.comicDetail.serviceLoadFailure':
+        'Impossible de charger les services de bande dessinée. La demande utilisera le service par défaut.',
+      'lumen.comicDetail.rootFolder': 'Dossier racine Kapowarr',
+      'lumen.comicDetail.submitRequest': 'Envoyer la demande',
       'lumen.comicDetail.started': 'Début',
       'lumen.comicDetail.status': 'Statut',
       'lumen.comicDetail.theIssues': 'les numéros',

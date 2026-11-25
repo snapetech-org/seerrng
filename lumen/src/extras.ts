@@ -282,11 +282,17 @@ export function useExtras() {
 export const requestExtra = (
   mediaType: Exclude<Extra, 'game'>,
   mediaId: string | number,
-  serverId?: number
+  serverId?: number,
+  rootFolder?: string
 ) =>
   api('/request', {
     method: 'POST',
-    body: JSON.stringify({ mediaType, mediaId, serverId }),
+    body: JSON.stringify({
+      mediaType,
+      mediaId,
+      ...(serverId !== undefined ? { serverId } : {}),
+      ...(rootFolder ? { rootFolder } : {}),
+    }),
   });
 
 // ---- music (MusicBrainz release groups, requested through Lidarr) ----

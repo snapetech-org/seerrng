@@ -10533,3 +10533,25 @@ visual parity remains unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-request-acceptance/`.
 
 release-note: `release-notes/fixed-comic-request-provider-failure.md`
+
+### Comic request destination and folder choices (2026-11-25)
+
+Authorized comic requesters can now choose a configured comics service in both
+the detail request and poster quick-request flows when their Lumen
+`requestOptions` preference is enabled. Selecting Kapowarr exposes its root
+folders and applies the requester's saved per-user folder when it remains
+available; a manual service or folder choice is sent with the requested comic
+edition. Explicitly selecting the default service is preserved in the request
+payload, and an empty service configuration blocks submission with an error.
+Users without advanced request permission keep the one-step default request
+path. The options use the existing confirmation-sheet and stacked selector
+owners. The comics/manga suite passes 157 cases with 31 viewport-specific skips
+across desktop, iPhone, Android, and tablet; focused cases verify destination
+payloads, saved folder selection, empty-service handling, permission gating,
+and English, French, and Arabic labels. Provider responses are mocked. The
+candidate desktop and iPhone captures were inspected and the fields remain
+readable on both, but a matching native capture for this options state is
+unavailable, so native visual parity remains unverified. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/comic-destination-options/`.
+
+release-note: `release-notes/added-lumen-comic-request-options.md`

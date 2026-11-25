@@ -212,12 +212,21 @@ async function fixtures(
     locale = 'en',
     magazinesEnabled = false,
     requestStatus = 1,
+    requestOptions = false,
+    rootFolderPreference = {} as Record<string, string>,
+    noComicService = false,
   } = {}
 ) {
   const requested: unknown[] = [];
   const browsed: string[] = [];
   const searched: string[] = [];
   await page.route('https://**/*', (r) => r.abort());
+  await page.addInitScript((enabled) => {
+    localStorage.setItem(
+      'lumen-prefs:1',
+      JSON.stringify({ requestOptions: enabled })
+    );
+  }, requestOptions);
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: config }));
   await page.route('**/imageproxy/**', (r) =>
     r.fulfill({ body: PNG, contentType: 'image/png' })
@@ -242,6 +251,32 @@ async function fixtures(
           enabledMediaCategories: { comic: true, magazine: magazinesEnabled },
         },
       });
+    if (path === '/service/comic')
+      return r.fulfill({
+        json: noComicService
+          ? []
+          : [
+              { id: 1, name: 'Mylar', isDefault: true, backendType: 'mylar' },
+              {
+                id: 2,
+                name: 'Kapowarr',
+                isDefault: false,
+                backendType: 'kapowarr',
+              },
+            ],
+      });
+    if (path === '/service/comic/2/rootfolders')
+      return r.fulfill({
+        json: {
+          defaultRootFolder: '/Comics',
+          rootFolders: [
+            { id: 1, path: '/Comics' },
+            { id: 2, path: '/Comics/DC' },
+          ],
+        },
+      });
+    if (path === '/user/1/settings/request-root-folders')
+      return r.fulfill({ json: rootFolderPreference });
     if (path === '/genres/tv') return r.fulfill({ json: [] });
     if (path.startsWith('/discover/tv')) return r.fulfill({ json: paged([]) });
     if (path.startsWith('/discover/magazines'))
@@ -385,6 +420,155 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         () => document.documentElement.scrollWidth <= window.innerWidth
       )
     ).toBe(true);
+  });
+}
+
+test('authorized comic requests can choose a Kapowarr destination and root folder', async ({
+  page,
+}, info) => {
+  const { requested } = await fixtures(page, {
+    permissions: 32 | 8192,
+    requestOptions: true,
+  });
+  await page.goto('/comic/al-105778');
+  await page.getByRole('button', { name: 'Request · Viz, English' }).click();
+  const sheet = page.getByRole('alertdialog', {
+    name: 'Comic request options',
+  });
+  await expect(sheet).toBeVisible();
+  await sheet.getByLabel('Comics service').selectOption('2');
+  await sheet.getByLabel('Kapowarr root folder').selectOption('/Comics/DC');
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('comic-destination-options.png'),
+      fullPage: true,
+      animations: 'disabled',
+    });
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
+  await expect.poll(() => requested.length).toBe(1);
+  expect(requested[0]).toEqual({
+    mediaType: 'comic',
+    mediaId: 130799,
+    serverId: 2,
+    rootFolder: '/Comics/DC',
+  });
+});
+
+test('comic request options honor the saved Kapowarr root folder', async ({
+  page,
+}) => {
+  const { requested } = await fixtures(page, {
+    permissions: 32 | 8192,
+    requestOptions: true,
+    rootFolderPreference: { 'comic-kapowarr:2': '/Comics/DC' },
+  });
+  await page.goto('/comic/al-105778');
+  await page.getByRole('button', { name: 'Request · Viz, English' }).click();
+  const sheet = page.getByRole('alertdialog', {
+    name: 'Comic request options',
+  });
+  await sheet.getByLabel('Comics service').selectOption('2');
+  const folder = sheet.getByLabel('Kapowarr root folder');
+  await expect(folder).toHaveValue('/Comics/DC');
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
+  await expect.poll(() => requested.length).toBe(1);
+  expect(requested[0]).toEqual({
+    mediaType: 'comic',
+    mediaId: 130799,
+    serverId: 2,
+    rootFolder: '/Comics/DC',
+  });
+});
+
+test('an explicitly selected default comic service is sent in the request', async ({
+  page,
+}) => {
+  const { requested } = await fixtures(page, {
+    permissions: 32 | 8192,
+    requestOptions: true,
+  });
+  await page.goto('/comic/al-105778');
+  await page.getByRole('button', { name: 'Request · Viz, English' }).click();
+  const sheet = page.getByRole('alertdialog', {
+    name: 'Comic request options',
+  });
+  await sheet.getByLabel('Comics service').selectOption('1');
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
+  await expect.poll(() => requested.length).toBe(1);
+  expect(requested[0]).toEqual({
+    mediaType: 'comic',
+    mediaId: 130799,
+    serverId: 1,
+  });
+});
+
+test('comic request options stay hidden without advanced request permission', async ({
+  page,
+}) => {
+  const { requested } = await fixtures(page, {
+    permissions: 32,
+    requestOptions: true,
+  });
+  await page.goto('/comic/al-105778');
+  await page.getByRole('button', { name: 'Request · Viz, English' }).click();
+  await expect.poll(() => requested.length).toBe(1);
+  await expect(page.getByRole('alertdialog')).toHaveCount(0);
+  expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 130799 });
+});
+
+test('comic request options block submission when no service is configured', async ({
+  page,
+}) => {
+  const { requested } = await fixtures(page, {
+    permissions: 32 | 8192,
+    requestOptions: true,
+    noComicService: true,
+  });
+  await page.goto('/comic/al-105778');
+  await page.getByRole('button', { name: 'Request · Viz, English' }).click();
+  const sheet = page.getByRole('alertdialog', {
+    name: 'Comic request options',
+  });
+  await expect(sheet.getByRole('alert')).toContainText(
+    'No comics service is configured'
+  );
+  await expect(
+    sheet.getByRole('button', { name: 'Submit request' })
+  ).toBeDisabled();
+  expect(requested).toEqual([]);
+});
+
+for (const locale of ['fr', 'ar'] as const) {
+  const copy = {
+    fr: {
+      request: 'Demander · Viz, English',
+      title: 'Options de demande de bande dessinée',
+      service: 'Service de bande dessinée',
+      root: 'Dossier racine Kapowarr',
+      submit: 'Envoyer la demande',
+    },
+    ar: {
+      request: 'طلب · Viz, English',
+      title: 'خيارات طلب القصص المصورة',
+      service: 'خدمة القصص المصورة',
+      root: 'المجلد الجذري في Kapowarr',
+      submit: 'إرسال الطلب',
+    },
+  }[locale];
+  test(`comic request options are localized in ${locale}`, async ({ page }) => {
+    await fixtures(page, {
+      locale,
+      permissions: 32 | 8192,
+      requestOptions: true,
+    });
+    await page.goto('/comic/al-105778');
+    await page.getByRole('button', { name: copy.request }).click();
+    const sheet = page.getByRole('alertdialog', { name: copy.title });
+    await sheet.getByLabel(copy.service).selectOption('2');
+    await expect(sheet.getByLabel(copy.root)).toBeVisible();
+    await expect(
+      sheet.getByRole('button', { name: copy.submit })
+    ).toBeVisible();
   });
 }
 
@@ -744,6 +928,39 @@ test('touch screens get the round request button', async ({ page }, info) => {
   await plus.tap();
   await expect.poll(() => requested.length).toBe(1);
   expect(requested[0]).toEqual({ mediaType: 'comic', mediaId: 130799 });
+});
+
+test('comic poster quick request offers authorized service options', async ({
+  page,
+}, info) => {
+  const { requested } = await fixtures(page, {
+    browse: [chainsaw()],
+    permissions: 32 | 8192,
+    requestOptions: true,
+  });
+  await page.goto('/comics?type=manga');
+  const card = page.locator('.comic-grid .poster').first();
+  if (hoverable(info.project.name)) await card.hover();
+  const quick = card.getByRole('button', {
+    name: hoverable(info.project.name)
+      ? 'Request'
+      : 'Request Chainsaw Man (Viz, English)',
+  });
+  await quick.click();
+  const sheet = page.getByRole('alertdialog', {
+    name: 'Comic request options',
+  });
+  await expect(sheet).toBeVisible();
+  await sheet.getByLabel('Comics service').selectOption('2');
+  await sheet.getByLabel('Kapowarr root folder').selectOption('/Comics/DC');
+  await sheet.getByRole('button', { name: 'Submit request' }).click();
+  await expect.poll(() => requested.length).toBe(1);
+  expect(requested[0]).toEqual({
+    mediaType: 'comic',
+    mediaId: 130799,
+    serverId: 2,
+    rootFolder: '/Comics/DC',
+  });
 });
 
 test('cards show requested, downloading, part-owned and complete', async ({
