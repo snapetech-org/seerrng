@@ -9898,3 +9898,17 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-ratings-20261124/`.
 All provider and issue results are mocked; live Soulseek, MusicBrainz, and
 Lidarr behavior remains unverified.
+### Cross-catalog book detail metadata (2026-11-24)
+
+When an ebook and audiobook catalog contain the same provider work but one
+record is missing its cover or description, SeerrNG now fills the missing book
+details from the other configured catalog. Existing fields are retained,
+provider-scoped IDs are matched exactly, bare numeric local IDs are not matched
+across services, and a sibling catalog outage leaves the current detail page
+usable. Lumen displays the completed metadata through its existing book detail
+response; no client request or authorization behavior changes.
+
+The Bookshelf utility suite passes 248 tests on the merged source, and the
+server TypeScript check, changed-file ESLint, Prettier, and generated API source
+catalog checks pass. External catalog availability and live provider metadata
+remain unverified.
