@@ -2,6 +2,7 @@
 // adult. Each one only shows up when the SeerrNG admin has turned it on; the server checks again
 // on every call, so a hidden page that someone opens by URL just explains it's off.
 import { useEffect, useState } from 'react';
+import { canRequestAdult } from './adultPermissions';
 import { api, ApiError, type MediaInfo, type MusicServiceSummary } from './api';
 import { isAdministrator, useAuth } from './auth';
 import { useApi, type PublicSettings } from './hooks';
@@ -193,6 +194,8 @@ export function useExtras() {
       : !isAdministrator(user.permissions) &&
         settings.data?.ageGate?.defaultRestricted === true
     : false;
+  const adultAccessAllowed =
+    !contentRestricted && canRequestAdult(user?.permissions);
   const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
     user ? `/user/${user.id}/settings/main` : null
   );
@@ -234,13 +237,18 @@ export function useExtras() {
   // Retry on Games: forget the saved game answers and ask again
   const [recheck, setRecheck] = useState(0);
   const key =
-    EXTRAS.map((e) => (enabled(e.key) ? e.key : '')).join(',') +
+    EXTRAS.map((e) =>
+      enabled(e.key) && (e.key !== 'adult' || adultAccessAllowed) ? e.key : ''
+    ).join(',') +
     games.join(',') +
     recheck;
   useEffect(() => {
     if (!pub || !userSettled) return;
     let live = true;
-    const keys = EXTRAS.map((e) => e.key).filter(enabled);
+    const keys = EXTRAS.map((e) => e.key).filter(
+      (category) =>
+        enabled(category) && (category !== 'adult' || adultAccessAllowed)
+    );
     Promise.all(
       keys.map((k) =>
         k === 'game'
@@ -291,7 +299,7 @@ export function useExtras() {
       (e) =>
         enabled(e.key) &&
         working?.has(e.key) &&
-        (e.key !== 'adult' || !contentRestricted)
+        (e.key !== 'adult' || adultAccessAllowed)
     ),
   };
 }

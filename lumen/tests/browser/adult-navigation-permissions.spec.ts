@@ -13,6 +13,7 @@ for (const [permissions, visible] of [
   test(`Adult navigation follows its native permissions (${permissions})`, async ({
     page,
   }, info) => {
+    let adultSearchCalls = 0;
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -50,7 +51,8 @@ for (const [permissions, visible] of [
         return route.fulfill({
           json: [{ iso_3166_1: 'US', english_name: 'United States' }],
         });
-      if (path === '/adult/search')
+      if (path === '/adult/search') {
+        adultSearchCalls++;
         return visible
           ? route.fulfill({ json: {} })
           : route.fulfill({
@@ -60,9 +62,12 @@ for (const [permissions, visible] of [
                 message: 'You do not have permission to access adult media.',
               },
             });
+      }
       return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
     });
     await page.goto(appPath('/'));
+    await page.waitForLoadState('networkidle');
+    expect(adultSearchCalls).toBe(visible ? 1 : 0);
     const adult =
       info.project.name === 'desktop'
         ? page
@@ -89,6 +94,7 @@ for (const [name, permissions, ageDefault, contentRestricted, visible] of [
 ] as const) {
   test(`Adult navigation honors ${name}`, async ({ page }, info) => {
     const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
+    let adultSearchCalls = 0;
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -132,10 +138,15 @@ for (const [name, permissions, ageDefault, contentRestricted, visible] of [
         return route.fulfill({
           json: [{ iso_3166_1: 'US', english_name: 'United States' }],
         });
-      if (path === '/adult/search') return route.fulfill({ json: {} });
+      if (path === '/adult/search') {
+        adultSearchCalls++;
+        return route.fulfill({ json: {} });
+      }
       return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
     });
     await page.goto(appPath('/'));
+    await page.waitForLoadState('networkidle');
+    expect(adultSearchCalls).toBe(visible ? 1 : 0);
     const adult =
       info.project.name === 'desktop'
         ? page

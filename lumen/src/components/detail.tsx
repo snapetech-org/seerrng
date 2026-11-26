@@ -666,10 +666,7 @@ export const canRequestMusic = (permissions?: number) =>
   (BigInt(permissionBits(permissions)) &
     (ADMIN_REQUEST | 32n | 4294967296n)) !==
   0n;
-export const canRequestAdult = (permissions?: number) =>
-  (BigInt(permissionBits(permissions)) &
-    (ADMIN_REQUEST | 16n | 140737488355328n)) !==
-  0n;
+export { canRequestAdult } from '../adultPermissions';
 export const canRequestBook = (permissions?: number) =>
   (BigInt(permissionBits(permissions)) &
     (ADMIN_REQUEST | 32n | 34359738368n)) !==
