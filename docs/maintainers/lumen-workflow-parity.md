@@ -11668,3 +11668,19 @@ the native message values. Candidate desktop and phone renders were inspected;
 matched native/Lumen comparison remains open for the broader detail audit.
 
 release-note: `release-notes/lumen-music-provider-details.md`
+
+### Movie release labels follow the saved locale (2026-11-26)
+
+Lumen now uses SeerrNG's native translations for Theatrical, Digital, and
+Physical release types in Movie Details. This keeps the release metadata in
+French and Arabic when those locales are selected instead of leaving these
+three values in English. The detail layout and disclosure behavior are
+unchanged.
+
+The focused browser case opens Movie Details and checks the French and Arabic
+release labels at desktop, iPhone, Android, and tablet viewports. Locale catalog
+tests and the production Lumen build pass. The rendered candidate state is
+verified; a same-state native/Lumen screenshot comparison remains unverified
+and stays within the broader detail visual audit.
+
+release-note: `release-notes/lumen-movie-release-localization.md`

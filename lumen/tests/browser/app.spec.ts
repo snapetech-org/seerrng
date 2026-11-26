@@ -1572,6 +1572,49 @@ test('movie details keep shared HD and viewer 4K availability separate', async (
   ).toHaveCount(0);
 });
 
+test('movie release type labels use the saved locale', async ({ page }) => {
+  await fixtures(page);
+  let locale = 'fr';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        releases: {
+          results: [
+            {
+              iso_3166_1: 'US',
+              release_dates: [
+                { type: 3, release_date: '2020-01-01T00:00:00.000Z' },
+                { type: 4, release_date: '2020-02-01T00:00:00.000Z' },
+                { type: 5, release_date: '2020-03-01T00:00:00.000Z' },
+              ],
+            },
+          ],
+        },
+      },
+    })
+  );
+  for (const item of [
+    {
+      locale: 'fr',
+      labels: ['Sortie en salles', 'Numérique', 'Physique'],
+    },
+    {
+      locale: 'ar',
+      labels: ['إصدار سينمائي', 'رقمية', 'إصدار مادي'],
+    },
+  ]) {
+    locale = item.locale;
+    await page.goto(testAppPath('/movie/101'));
+    await page.locator('details#details > summary').click();
+    for (const label of item.labels)
+      await expect(page.getByText(label)).toBeVisible();
+  }
+});
+
 test('series details hide or mark shared seasons without reopening requests', async ({
   page,
 }) => {

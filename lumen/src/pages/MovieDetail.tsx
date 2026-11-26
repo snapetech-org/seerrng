@@ -64,12 +64,6 @@ import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
-const releaseKinds = new Map([
-  [3, 'Theatrical'],
-  [4, 'Digital'],
-  [5, 'Physical'],
-]);
-
 const usd = new Intl.NumberFormat(undefined, {
   style: 'currency',
   currency: 'USD',
@@ -185,6 +179,11 @@ export default function MovieDetail() {
   const regionReleases =
     m.releases?.results.find((release) => release.iso_3166_1 === ratingRegion)
       ?.release_dates ?? [];
+  const releaseKinds = new Map([
+    [3, t('components.MovieDetails.Layout.theatrical', 'Theatrical')],
+    [4, t('components.MovieDetails.Layout.digital', 'Digital')],
+    [5, t('components.MovieDetails.Layout.physical', 'Physical')],
+  ]);
   const certification = regionReleases.find(
     (release) => release.certification
   )?.certification;

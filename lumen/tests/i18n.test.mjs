@@ -208,3 +208,22 @@ test('Lumen music details reuse the native English, French, and Arabic labels', 
     }
   }
 });
+
+test('Lumen movie release labels reuse native translations', async () => {
+  const keys = JSON.parse(
+    await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+  );
+  for (const name of ['theatrical', 'digital', 'physical']) {
+    const key = `components.MovieDetails.Layout.${name}`;
+    assert.ok(keys.includes(key), `${key} is part of Lumen's message catalog`);
+    for (const locale of ['en', 'fr', 'ar']) {
+      const native = JSON.parse(
+        await readFile(
+          resolve(root, `../src/i18n/locale/${locale}.json`),
+          'utf8'
+        )
+      );
+      assert.equal(typeof native[key], 'string');
+    }
+  }
+});
