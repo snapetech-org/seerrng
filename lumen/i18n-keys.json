@@ -2456,6 +2456,8 @@
   "lumen.cards.titleViewAction",
   "lumen.cards.titleViewAlways",
   "lumen.cards.titleViewOnHover",
+  "components.Search.series",
+  "lumen.cards.outOn",
   "lumen.category.adminHelp",
   "lumen.category.backDiscover",
   "lumen.category.disabledForAccount",

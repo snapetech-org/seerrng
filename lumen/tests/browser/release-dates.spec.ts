@@ -55,6 +55,12 @@ async function fixture(page: Page) {
         releases: { results: [] },
       };
     else if (path === '/discover/genreslider/movie') json = [];
+    else if (
+      path === '/watchproviders/regions' ||
+      path === '/languages' ||
+      path === '/genres/tv'
+    )
+      json = [];
     else if (/^\/discover\//.test(path) || path === '/media') json = paged([]);
     else if (path === '/request')
       json = { pageInfo: { pages: 1, results: 0 }, results: [] };
@@ -101,6 +107,52 @@ test('Coming soon cards use the saved locale for release dates', async ({
   await expect(
     page.locator('.poster').filter({ hasText: 'Next Year Film' }).locator('.m')
   ).toContainText(`11 mars ${nextYear}`);
+});
+
+test('series cards localize their type and upcoming quick details', async ({
+  page,
+}) => {
+  await fixture(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({
+      json: {
+        mediaServerType: 2,
+        enabledMediaCategories: { movie: true, tv: true },
+      },
+    })
+  );
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      json: { locale: 'fr', lumenPreferences: { hoverRequest: true } },
+    })
+  );
+  await page.route('**/api/v1/discover/tv*', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          id: 501,
+          name: 'Next Year Series',
+          mediaType: 'tv',
+          firstAirDate: `${nextYear}-03-11`,
+          posterPath: null,
+          voteAverage: 0,
+        },
+      ]),
+    })
+  );
+  await page.goto('/series');
+  const card = page.locator('.poster').filter({ hasText: 'Next Year Series' });
+  await expect(card.locator('.m')).toContainText(
+    `11 mars ${nextYear} · Séries`
+  );
+  test.skip(
+    ['iphone', 'android'].includes(test.info().project.name),
+    'quick details use hover on touch devices'
+  );
+  await card.hover();
+  await expect(card.locator('.qm')).toContainText(
+    `Sortie le 11 mars ${nextYear}`
+  );
 });
 
 test('the phone request bar keeps its button on screen and the title readable', async ({

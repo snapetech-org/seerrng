@@ -11732,3 +11732,16 @@ screenshots and live data remain unverified; this does not close the wider
 visual or provider audit.
 
 release-note: `release-notes/lumen-shared-dates-locale.md`
+
+### Shared title cards localize series type and upcoming status (2026-11-26)
+
+Movie and TV title cards now translate the Series type label and the upcoming
+release prefix while preserving the localized release date. This keeps the
+shared card metadata readable in French and Arabic as well as English.
+
+Focused browser coverage checks the French TV card metadata and hover detail;
+locale catalog tests and the production build cover the translation sources.
+The candidate browser state is verified, while a matched native/Lumen capture
+and live provider metadata remain unverified within the broader visual audit.
+
+release-note: `release-notes/lumen-localized-card-labels.md`

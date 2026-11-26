@@ -518,12 +518,16 @@ export function TitleCard({
     meta ||
     [
       unreleased ? shortDate(date, true, locale) : yearOf(it),
-      tv ? 'Series' : '',
+      tv ? t('components.Search.series', 'Series') : '',
     ]
       .filter(Boolean)
       .join(' · ');
   const qm = [
-    unreleased ? 'Out ' + shortDate(date, true, locale) : yearOf(it),
+    unreleased
+      ? t('lumen.cards.outOn', 'Out {date}', {
+          date: shortDate(date, true, locale),
+        })
+      : yearOf(it),
     it.voteAverage ? '★ ' + it.voteAverage.toFixed(1) : '',
   ]
     .filter(Boolean)

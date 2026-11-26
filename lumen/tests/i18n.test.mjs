@@ -47,6 +47,7 @@ const lumenKeys = [
   'lumen.quickRequest.requestApprovalAnyway',
   'lumen.quickRequest.requestAnyway',
   'lumen.cards.preferenceDescription',
+  'lumen.cards.outOn',
   'lumen.requestEdit.title',
   'lumen.requestEdit.askedBy',
   'lumen.requestEdit.seasons',
@@ -183,6 +184,20 @@ test('Lumen includes the localized native user-list menu label', async () => {
       catalog['components.Layout.Sidebar.users'],
       english['components.Layout.Sidebar.users']
     );
+  }
+});
+
+test('Lumen series cards reuse the native localized media-type label', async () => {
+  const keys = JSON.parse(
+    await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+  );
+  const key = 'components.Search.series';
+  assert.ok(keys.includes(key));
+  for (const locale of ['en', 'fr', 'ar']) {
+    const native = JSON.parse(
+      await readFile(resolve(root, `../src/i18n/locale/${locale}.json`), 'utf8')
+    );
+    assert.equal(typeof native[key], 'string');
   }
 });
 
