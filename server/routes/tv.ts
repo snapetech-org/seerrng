@@ -465,6 +465,7 @@ const getRequestSeason = async (
   seasonNumber: number,
   language?: string
 ) => {
+  let emptySeason: Awaited<ReturnType<typeof provider.getTvSeason>> | undefined;
   try {
     const season = await provider.getTvSeason({ tvId, seasonNumber, language });
     if (
@@ -472,7 +473,14 @@ const getRequestSeason = async (
       season.id > 0 &&
       Array.isArray(season.episodes)
     ) {
-      return season;
+      if (season.episodes.length > 0 || isTheMovieDbProvider(provider)) {
+        return season;
+      }
+      // Some configured providers return a structurally valid season without
+      // episodes for long-running shows. Check TMDB before treating that as a
+      // genuinely empty season; retain the configured response if TMDB has no
+      // usable replacement.
+      emptySeason = season;
     }
   } catch (error) {
     logger.debug('Configured provider failed to retrieve request season', {
@@ -483,7 +491,7 @@ const getRequestSeason = async (
     });
   }
 
-  if (isTheMovieDbProvider(provider)) return undefined;
+  if (isTheMovieDbProvider(provider)) return emptySeason;
 
   try {
     const season = await new TheMovieDb().getTvSeason({
@@ -493,9 +501,10 @@ const getRequestSeason = async (
     });
     return season.season_number === seasonNumber &&
       season.id > 0 &&
-      Array.isArray(season.episodes)
+      Array.isArray(season.episodes) &&
+      season.episodes.length > 0
       ? season
-      : undefined;
+      : emptySeason;
   } catch (error) {
     logger.debug('TMDB fallback failed to retrieve request season', {
       label: 'TV',

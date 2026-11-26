@@ -377,4 +377,61 @@ describe('GET /tv/:id/seasons', () => {
       settings.metadataSettings.tv = priorProvider;
     }
   });
+
+  it('uses TMDB episodes when a configured provider returns an empty season', async () => {
+    const settings = getSettings();
+    const priorProvider = settings.metadataSettings.tv;
+    settings.metadataSettings.tv = MetadataProviderType.TVDB;
+    mock.method(
+      Tvdb,
+      'getInstance',
+      async () =>
+        ({
+          getTvSeason: async () => ({
+            id: 102,
+            season_number: 2,
+            episodes: [],
+          }),
+        }) as unknown as Tvdb
+    );
+    const mockGet = mock.method as (
+      object: object,
+      key: string,
+      callback: (url: string) => Promise<unknown>
+    ) => unknown;
+    mockGet.call(mock, ExternalAPI.prototype, 'get', async (url) => {
+      if (url === '/tv/1413') {
+        return {
+          id: 1413,
+          keywords: { results: [] },
+          videos: { results: [] },
+        };
+      }
+      if (url === '/tv/1413/season/2') {
+        return {
+          id: 202,
+          season_number: 2,
+          episodes: [
+            {
+              id: 502,
+              episode_number: 1,
+              season_number: 2,
+              name: 'TMDB episode',
+            },
+          ],
+        };
+      }
+      throw new Error(`Unexpected TMDB request: ${url}`);
+    });
+
+    try {
+      const response = await request(validatedApp)
+        .get('/api/v1/tv/1413/seasons')
+        .query({ seasonNumbers: '2' });
+      assert.strictEqual(response.status, 200, JSON.stringify(response.body));
+      assert.strictEqual(response.body[0].episodes[0].name, 'TMDB episode');
+    } finally {
+      settings.metadataSettings.tv = priorProvider;
+    }
+  });
 });

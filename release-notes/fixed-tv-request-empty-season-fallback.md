@@ -1,0 +1,1 @@
+TV episode requests now try TMDB when a configured metadata provider returns a season without episodes. If TMDB also has no episode data, SeerrNG preserves the configured provider's empty season response.

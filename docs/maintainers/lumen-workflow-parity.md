@@ -11811,3 +11811,21 @@ Matched native/Lumen screenshots remain open. Provider genre IDs outside the
 built-in chart set keep their API-provided names and are not translated here.
 
 release-note: `release-notes/lumen-podcast-localization.md`
+
+### TV season metadata fallback after an empty provider response (2026-11-26)
+
+When a configured non-TMDB provider returned a valid season object with an
+empty episode list, SeerrNG treated it as complete and skipped its existing
+TMDB fallback. The TV request season loader now checks TMDB in that case and
+uses non-empty TMDB episode data when available. If TMDB also has no episodes,
+the original configured-provider response is preserved; TMDB remains the
+source of truth for a genuinely empty TMDB season. This applies to native and
+Lumen episode requests through the shared authenticated API.
+
+A route regression covers the configured-provider empty response and TMDB
+recovery, and the existing route test confirms empty TMDB seasons remain valid.
+The focused route suite passes 7 tests. This closes the empty-response fallback
+gap but does not establish that this provider behavior caused the reported
+large-show screenshot; a live provider reproduction remains open.
+
+release-note: `release-notes/fixed-tv-request-empty-season-fallback.md`
