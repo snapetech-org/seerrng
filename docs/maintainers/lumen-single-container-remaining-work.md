@@ -1,6 +1,6 @@
 # Included Lumen: integration status and remaining rollout
 
-Status reviewed November 25, 2026. This describes source capabilities and
+Status reviewed November 26, 2026. This describes source capabilities and
 remaining work; it does not establish full feature parity.
 
 The complete shipped Lumen frontend is already bundled by `scripts/build-lumen.mjs`
@@ -69,6 +69,26 @@ route in the published image; it does not verify live metadata, native
 server-rendered detail routes, or matched native/Lumen visuals. Screenshots
 and the run report are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-image-20261126/`.
+
+The current `main` Lumen frontend also passes all 12 cases in
+`tv-episode-request-large-series.spec.ts` across desktop, iPhone, Android, and
+tablet. It covers 330-episode selection, bounded five-season requests, retry
+after a transient batch failure, preservation of usable selections, and
+cancellation when the picker closes. The production Vite build and browser
+results are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-image-20261126/tv-large/`.
+
+The published v3.72.40 image predates the current Lumen batch and retry changes:
+`fix(lumen): batch large series episode metadata` (`f579fe7f2`, November 22)
+and `fix(lumen): retry failed episode metadata batches` (`63440f5dd`, November
+23) are not ancestors of its November 20 tag. Running the current browser
+fixture against that old bundle produced 12 failures because it does not issue
+the fixture's five-season batch requests. This is a source-versus-release
+version mismatch, not evidence of a regression on current `main`; it confirms
+that the next published release must carry those changes before this workflow
+can be qualified in a published image. Detailed image-run results and traces
+are retained in the same task directory. The fixture run does not establish
+live TMDB timing or Sonarr handoff.
 
 Headless screenshots at 390, 834, and 1440 CSS pixels are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
