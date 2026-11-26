@@ -396,6 +396,15 @@ function ServerUnavailable({ onRetry }: { onRetry: () => void }) {
   );
 }
 
+function RouteChunkLoading() {
+  const { t } = useLumenLocale();
+  return (
+    <p className="note" role="status">
+      {t('lumen.common.loading', 'Loading…')}
+    </p>
+  );
+}
+
 function AssociationRoute() {
   const { mediaType } = useParams();
   if (mediaType === 'movie')
@@ -723,11 +732,7 @@ function App() {
             path="/games/discovery"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Game Finder…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <ExtraRoute category="game">
                   <GameDiscovery />
@@ -833,11 +838,7 @@ function App() {
             path="/book-series/requests"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading book series requests…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <MediaCategoryRoute categories={['ebook', 'audiobook']}>
                   <BookSeriesRequests />
@@ -855,11 +856,7 @@ function App() {
             path="/downloads"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Download Inbox…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <Downloads allowed={canManageDownloads(user.permissions)} />
               </Suspense>
@@ -869,11 +866,7 @@ function App() {
             path="/indexer-search"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Indexer Search…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <IndexerSearch allowed={canSearchIndexers(user.permissions)} />
               </Suspense>
@@ -883,11 +876,7 @@ function App() {
             path="/issues/:issueId?"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Issues…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <Issues />
               </Suspense>
@@ -897,11 +886,7 @@ function App() {
             path="/blocklist"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Blocklist…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <Blocklist />
               </Suspense>
@@ -921,11 +906,7 @@ function App() {
             path="/collection/:id"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading collection…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <CollectionDetail />
               </Suspense>
@@ -949,11 +930,7 @@ function App() {
             path="/watch-sessions/:id?"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading watch sessions…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <WatchSessions />
               </Suspense>
@@ -964,11 +941,7 @@ function App() {
             path="/swipe"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Swipe…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <Swipe />
               </Suspense>
@@ -980,11 +953,7 @@ function App() {
             path="/me/account"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Account Settings…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <AccountSettings />
               </Suspense>
@@ -994,11 +963,7 @@ function App() {
             path="/me/account/client-tokens"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Client Tokens…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <ClientTokens />
               </Suspense>
@@ -1008,11 +973,7 @@ function App() {
             path="/me/account/linked-accounts"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Linked Accounts…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <LinkedAccounts />
               </Suspense>
@@ -1022,11 +983,7 @@ function App() {
             path="/me/account/tv-requests"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading TV Request Settings…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <TvRequestSettings />
               </Suspense>
@@ -1036,11 +993,7 @@ function App() {
             path="/me/account/notifications"
             element={
               <Suspense
-                fallback={
-                  <p className="note" role="status">
-                    Loading Notification Settings…
-                  </p>
-                }
+                fallback={<RouteChunkLoading />}
               >
                 <NotificationSettings />
               </Suspense>
@@ -1061,11 +1014,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading request override rules…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminOverrideRules />
                 </Suspense>
@@ -1079,11 +1028,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading system logs…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminLogs />
                 </Suspense>
@@ -1097,11 +1042,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading scheduled jobs…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminJobs />
                 </Suspense>
@@ -1115,11 +1056,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading system caches…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminCaches />
                 </Suspense>
@@ -1133,11 +1070,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading media categories…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminCategories />
                 </Suspense>
@@ -1151,11 +1084,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading general settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminGeneral />
                 </Suspense>
@@ -1169,11 +1098,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading request defaults…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminRequestDefaults />
                 </Suspense>
@@ -1187,11 +1112,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading network settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminNetwork />
                 </Suspense>
@@ -1205,11 +1126,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading connection hosts…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminConnectionHosts />
                 </Suspense>
@@ -1223,11 +1140,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Prowlarr settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminProwlarr />
                 </Suspense>
@@ -1241,11 +1154,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Radarr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="radarr" provider="radarr" />
                 </Suspense>
@@ -1259,11 +1168,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Sonarr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="sonarr" provider="sonarr" />
                 </Suspense>
@@ -1277,11 +1182,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Lidarr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="lidarr" provider="lidarr" />
                 </Suspense>
@@ -1295,11 +1196,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Aurral services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="aurral" provider="aurral" />
                 </Suspense>
@@ -1313,11 +1210,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading book and audiobook services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="readarr" provider="readarr" />
                 </Suspense>
@@ -1331,11 +1224,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading LazyLibrarian services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="lazylibrarian" provider="lazylibrarian" />
                 </Suspense>
@@ -1349,11 +1238,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Mylar services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="mylar" provider="mylar" />
                 </Suspense>
@@ -1367,11 +1252,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Kapowarr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="kapowarr" provider="kapowarr" />
                 </Suspense>
@@ -1385,11 +1266,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading BackIssue services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="backissue" provider="backissue" />
                 </Suspense>
@@ -1403,11 +1280,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Sportarr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="sportarr" provider="sportarr" />
                 </Suspense>
@@ -1421,11 +1294,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Soulseek settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminRequestService key="slskdn" provider="slskdn" />
                 </Suspense>
@@ -1439,11 +1308,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading reader settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminReaderDelivery />
                 </Suspense>
@@ -1457,11 +1322,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading software acquisition settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminSoftwareAcquisition />
                 </Suspense>
@@ -1475,11 +1336,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Tunerr settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminTunerr />
                 </Suspense>
@@ -1493,11 +1350,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading recognition settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminRecognition />
                 </Suspense>
@@ -1511,11 +1364,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Swipe settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminSwipe />
                 </Suspense>
@@ -1529,11 +1378,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading download client settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminDownloadClients />
                 </Suspense>
@@ -1547,11 +1392,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading ReadMeABook settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminRequestService
                     key="readmeabook"
@@ -1568,11 +1409,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Navidrome settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminUrlConnection key="navidrome" provider="navidrome" />
                 </Suspense>
@@ -1586,11 +1423,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Jellystat settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminUrlConnection key="jellystat" provider="jellystat" />
                 </Suspense>
@@ -1604,11 +1437,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Audiobookshelf settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminReaders
                     key="audiobookshelf"
@@ -1625,11 +1454,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Kavita settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminReaders key="kavita" provider="kavita" />
                 </Suspense>
@@ -1643,11 +1468,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading Whisparr services…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminServarr key="whisparr" provider="whisparr" />
                 </Suspense>
@@ -1661,11 +1482,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading discovery integrations…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminDiscovery />
                 </Suspense>
@@ -1679,11 +1496,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading metadata providers…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminMetadata />
                 </Suspense>
@@ -1697,11 +1510,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading media server libraries…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminMediaLibraries />
                 </Suspense>
@@ -1715,11 +1524,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading notification settings…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminNotifications />
                 </Suspense>
@@ -1733,11 +1538,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading library migration…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminLibraryMigration />
                 </Suspense>
@@ -1751,11 +1552,7 @@ function App() {
             element={
               isAdministrator(user.permissions) ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading server information…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminAbout />
                 </Suspense>
@@ -1769,11 +1566,7 @@ function App() {
             element={
               (user.permissions & (2 | 8)) !== 0 ? (
                 <Suspense
-                  fallback={
-                    <p className="note" role="status">
-                      Loading users…
-                    </p>
-                  }
+                  fallback={<RouteChunkLoading />}
                 >
                   <AdminUsers />
                 </Suspense>

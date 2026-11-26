@@ -852,3 +852,18 @@ test('All Podcasts source messages are translated in French and Arabic', async (
     }
   }
 });
+
+test('lazy route chunk fallbacks use the localized common loading message', async () => {
+  const source = await readFile(resolve(root, 'src/main.tsx'), 'utf8');
+  assert.match(source, /function RouteChunkLoading\(\)/);
+  assert.match(source, /t\('lumen\.common\.loading', 'Loading…'\)/);
+  assert.doesNotMatch(
+    source,
+    /fallback=\{\s*<p[^>]*role="status"[^>]*>\s*Loading [^<\n]*…/,
+    'route chunk fallbacks do not contain hard-coded English labels'
+  );
+  assert.ok(
+    (source.match(/fallback=\{<RouteChunkLoading \/>\}/g) ?? []).length > 0,
+    'lazy routes use the shared translated fallback'
+  );
+});

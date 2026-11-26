@@ -12140,3 +12140,18 @@ the component styling and layout are unchanged. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-title-loading-20261126/`.
 
 release-note: `release-notes/lumen-card-title-settings-loading-localization.md`
+
+### Lazy route loading follows the saved locale (2026-11-26)
+
+Fifty-four lazy route chunk fallbacks in the Lumen app shell used hard-coded
+English labels. They now share the existing localized loading message, so
+French and Arabic users see the saved interface language while a route chunk
+loads. The fallback retains its existing note/status semantics and styling.
+
+A browser test holds the Game Finder code chunk to verify the fallback before
+and after it resolves. French and Arabic pass on desktop, iPhone, Android, and
+tablet. Matched desktop and iPhone baseline/candidate captures were reviewed in
+both locales; alignment and surfaces are unchanged. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-route-chunk-loading-20261126/`.
+
+release-note: `release-notes/lumen-route-loading-localization.md`
