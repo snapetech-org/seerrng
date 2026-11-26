@@ -815,7 +815,7 @@ export default function TvDetail() {
                     ? ' · ' +
                       (ss.length === seasons.length
                         ? translate('lumen.tv.entireSeries', 'Entire series')
-                        : seasonList(ss))
+                        : seasonList(ss, translate))
                     : ''}
                 </li>
               );

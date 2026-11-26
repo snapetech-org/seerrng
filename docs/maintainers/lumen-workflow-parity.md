@@ -11768,10 +11768,11 @@ request-submitted, over-quota approval, 4K, and selected-season summaries.
 Series summaries preserve their selected season ranges while applying locale
 labels.
 
-The focused French Coming Soon browser case verifies the request confirmation
-and a two-season range across desktop, iPhone, Android, and tablet. Locale
-catalog tests and the production build pass. Native-matched visuals and live
-provider dispatch remain open in the wider workflow audit.
+Focused French browser cases verify Coming Soon request confirmation with a
+two-season range and the TV Details request-activity season range across
+desktop, iPhone, Android, and tablet. Locale catalog tests and the production
+build pass. Native-matched visuals and live provider dispatch remain open in
+the wider workflow audit.
 
 release-note: `release-notes/lumen-localized-request-feedback.md`
 

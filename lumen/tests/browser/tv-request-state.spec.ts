@@ -209,6 +209,29 @@ test('a fully requested series shows Requested and its request, not the request 
   await captureRequestState(page, testInfo, 'fully-requested');
 });
 
+test('TV detail request activity localizes selected season ranges', async ({
+  page,
+}) => {
+  await show(
+    page,
+    {
+      id: 2074,
+      status: 3,
+      status4k: 1,
+      downloadStatus: [],
+      requests: [req([1, 2])],
+      seasons: [],
+    },
+    [],
+    2,
+    undefined,
+    {},
+    seasons,
+    'fr'
+  );
+  await expect(page.locator('.rinfo')).toContainText('Saisons 1–2');
+});
+
 test('a partly requested series keeps the other seasons requestable @tv-request-visual', async ({
   page,
 }, testInfo) => {
