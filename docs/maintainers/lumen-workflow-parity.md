@@ -11417,3 +11417,31 @@ The task-owned embedded mount was stopped after these checks; browser output
 used the repository's ignored `lumen/test-results/` directory.
 
 release-note: none
+
+### Large-show failure and deployed-release boundary (2026-11-26)
+
+The supplied “Episodes Could Not Be Loaded” screenshot is from native SeerrNG's
+`RequestSeasonEpisodeTree` (`components.RequestModal.RequestTree.loadErrorHint`),
+not the Lumen picker. On the current source, the authenticated TV season-batch
+route retries missing seasons serially after concurrent provider failures; the
+focused `GET /tv/:id/seasons` route suite passes five cases with one existing
+skip. Those tests use provider fixtures and do not diagnose live metadata-provider
+failures.
+
+The recovery commit `88edcc83a51f133adc6bff88d07a7cb890b21f76` reached `main` on
+2026-11-21, after the `v3.72.40` release tag at `26ad743ac6b697603e43ec192e901a8026ef447b`
+on 2026-11-20. The live `/api/v1/status` endpoint reports version `3.72.40`;
+GitHub also identifies v3.72.40 as the latest release. Therefore the published
+v3.72.40 artifact predates the concurrency-recovery change. The live version
+string does not identify its source commit, so it is not sufficient to prove
+which code the running container uses. The host summary showed `seerr-host` up
+for five days, but no image digest or commit was available through that check.
+
+The live ingress was reachable only at the unauthenticated sign-in page in the
+headed browser, with no saved login state. The LAN diagnostics connector
+returned transport-closed errors, and the repo-known container-log tool did not
+allow `seerr-host`; no live provider logs were available. The screenshot report
+therefore remains unverified against the running provider. Do not claim the
+reported large-show failure is fixed or closed based on the fixture tests.
+
+release-note: none
