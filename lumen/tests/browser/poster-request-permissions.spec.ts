@@ -45,7 +45,9 @@ for (const cardData of cards) {
       );
       await page.route('**/api/v1/**', (route) => {
         const url = new URL(route.request().url());
-        const path = url.pathname.slice('/api/v1'.length);
+        const path = url.pathname
+          .replace(/^\/lumen(?=\/)/, '')
+          .slice('/api/v1'.length);
         if (path === '/auth/me')
           return route.fulfill({
             json: { id: 1, displayName: 'Viewer', permissions },
@@ -88,15 +90,22 @@ for (const cardData of cards) {
           });
         return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
       });
-      await page.goto(cardData.path);
+      await page.goto(
+        `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${cardData.path}`
+      );
       const card = page.locator('.poster', { hasText: cardData.label }).first();
       await expect(card).toBeVisible();
       await card.hover();
       const mayRequest =
         permissions === 2 || permissions === 32 || permissions === 34359738368;
-      await expect(card.getByRole('button', { name: /request/i })).toHaveCount(
-        mayRequest ? 1 : 0
-      );
+      const requestButton = card.getByRole('button', { name: /request/i });
+      const requestAction = card.locator('.qa .qbtn.go');
+      if (mayRequest) {
+        await expect(requestAction).toHaveCount(1);
+      } else {
+        await expect(requestButton).toHaveCount(0);
+        await expect(requestAction).toHaveCount(0);
+      }
       if (permissions === 0)
         await page.screenshot({
           path: info.outputPath(

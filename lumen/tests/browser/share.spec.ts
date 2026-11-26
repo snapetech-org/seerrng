@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 for (const override of [false, true]) {
   test(`Share retries only the failed series in a mixed batch (streaming override: ${override})`, async ({
     page,
@@ -186,7 +188,7 @@ for (const permissions of [32, 2]) {
       await page.screenshot({ path: info.outputPath('share.png') });
     } else {
       const tabs = page.getByRole('navigation', { name: 'Tabs', exact: true });
-      await tabs.locator('a[href="/me"]').click();
+      await tabs.locator(`a[href="${mount}/me"]`).click();
       const link = page.getByRole('link', {
         name: 'Open Share & Identify',
         exact: true,

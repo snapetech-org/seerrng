@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 type MusicRequest = {
   id: number;
   status: number;
@@ -188,7 +191,7 @@ test('music details link to the request discography workflow with exact identity
     page.getByRole('link', { name: 'Request Discography' })
   ).toHaveAttribute(
     'href',
-    '/collections/music/fixture-artist?view=discography&albumId=42'
+    appPath('/collections/music/fixture-artist?view=discography&albumId=42')
   );
 
   await fixture(page, {}, '/artist/fixture-artist');
@@ -196,7 +199,7 @@ test('music details link to the request discography workflow with exact identity
     page.getByRole('link', { name: 'Request Discography' })
   ).toHaveAttribute(
     'href',
-    '/collections/music/fixture-artist?view=discography'
+    appPath('/collections/music/fixture-artist?view=discography')
   );
 });
 
@@ -250,16 +253,18 @@ test('music album details disclose each unique contributing artist in the saved 
     disclosure.getByRole('link', {
       name: `Fixture Artist · ${copy.album}`,
     })
-  ).toHaveAttribute('href', '/artist/fixture-artist');
+  ).toHaveAttribute('href', appPath('/artist/fixture-artist'));
   const featuredArtist = disclosure.getByRole('link', {
     name: `Featured Artist · ${copy.track}`,
   });
   await expect(featuredArtist).toHaveAttribute(
     'href',
-    '/artist/fixture-featured-artist'
+    appPath('/artist/fixture-featured-artist')
   );
   await expect(
-    disclosure.locator('a[href="/artist/fixture-featured-artist"]')
+    disclosure.locator(
+      `a[href="${appPath('/artist/fixture-featured-artist')}"]`
+    )
   ).toHaveCount(1);
   if (capture) {
     await page.screenshot({

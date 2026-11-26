@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 for (const locale of ['en', 'fr', 'ar'] as const) {
   for (const enabled of [true, false]) {
     test(`global Search ${enabled ? 'shows' : 'hides'} TMDB collections (${locale})`, async ({
@@ -62,7 +65,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         ).toBeVisible();
         await expect(
           page.getByRole('link', { name: 'Foundation Collection' })
-        ).toHaveAttribute('href', '/collection/42');
+        ).toHaveAttribute('href', appPath('/collection/42'));
       } else {
         await expect(
           page.getByRole('heading', { name: heading, exact: true })

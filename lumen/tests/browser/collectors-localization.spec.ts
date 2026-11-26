@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const copy = {
   en: {
     title: 'Collector Picks',
@@ -93,7 +96,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(page.getByText(text.count)).toBeVisible();
     await expect(page.getByRole('link', { name: text.album })).toHaveAttribute(
       'href',
-      `/music/${albumId}?source=collector`
+      appPath(`/music/${albumId}?source=collector`)
     );
     await page
       .getByRole('button', { name: `${text.follow}: Fixture Album` })

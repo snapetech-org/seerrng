@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
 
 async function openMenu(page: Page, permissions: number) {
   await page.route('https://**/*', (route) => route.abort());
@@ -36,7 +37,7 @@ test('administrators have a direct user management menu link', async ({
   const users = menu.getByRole('link', { name: 'User List', exact: true });
   await users.scrollIntoViewIfNeeded();
   await expect(users).toBeInViewport();
-  await expect(users).toHaveAttribute('href', '/admin/users');
+  await expect(users).toHaveAttribute('href', appPath('/admin/users'));
 });
 
 test('delegated user managers have a direct user management menu link', async ({
@@ -46,7 +47,7 @@ test('delegated user managers have a direct user management menu link', async ({
   const users = menu.getByRole('link', { name: 'User List', exact: true });
   await users.scrollIntoViewIfNeeded();
   await expect(users).toBeInViewport();
-  await expect(users).toHaveAttribute('href', '/admin/users');
+  await expect(users).toHaveAttribute('href', appPath('/admin/users'));
 });
 
 test('regular users do not see user management navigation', async ({

@@ -219,9 +219,15 @@ function discoveryDeepLink(
     const value = req.query[key];
     if (typeof value === 'string' && value.length <= 512) query.set(key, value);
   }
-  const sort = req.query.sortBy;
+  const sort = req.query.sortBy ?? req.query.sort;
   if (typeof sort === 'string' && /^[a-z_]+\.(asc|desc)$/.test(sort))
     query.set('sort', sort);
+  if (
+    req.query.show === 'plex' ||
+    req.query.show === 'have' ||
+    req.query.show === 'not'
+  )
+    query.set('show', req.query.show === 'plex' ? 'have' : req.query.show);
   const genre = dimension === 'genre' ? id : req.query.genre;
   if (
     typeof genre === 'string' &&
@@ -923,12 +929,19 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(/^\/lumen\/users\//, (req, res, next) => {
+    // Lumen owns mounted user bookmarks so its client routes can apply the
+    // signed-in user's authorization and preserve search/hash state.
+    if (/^\/lumen\/users(?:\/|$)/.test(req.path)) return next();
     const pathname = req.path.slice('/lumen'.length);
     const destination = workflowDeepLink(req, pathname);
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(/^\/lumen\/(?:profile(?:\/|$)|users\/?$)/, (req, res, next) => {
+    // Lumen's own bookmark components own these mounted routes. In
+    // particular, the native `/profile` alias targets the household profile,
+    // while Lumen's `/profile` bookmark targets the signed-in account.
+    if (/^\/lumen\/(?:profile|users)(?:\/|$)/.test(req.path)) return next();
     const destination = workflowDeepLink(req, req.path.slice('/lumen'.length));
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);

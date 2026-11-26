@@ -6816,6 +6816,53 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Account controls and native user bookmarks under the bundled mount (2026-11-25)
+
+The account settings and native user-route compatibility specs pass 148 cases
+across desktop, iPhone, Android, and tablet against the compiled Express
+`/lumen/` mount. This covers profile and password recovery, self maturity and
+notification bookmarks, user permission gates, account preferences and themes,
+and preservation of legacy request filters through the native `/users/:id`
+entry route. The browser harness was adjusted to let native bookmark paths
+reach SeerrNG's real compatibility middleware. The request test now enters at
+`/users/19/requests` and verifies the middleware's mapped Lumen URL and
+requester scope. The locale check inspects labels in the primary-navigation
+DOM because mobile hides that navigation until the More menu opens; it does not
+assume that a hidden link is accessible while the menu is closed.
+
+Responses are fixture-backed, and this does not verify a live server or
+provider integration. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/account-user-mount-qualified/`.
+
+release-note: none
+
+### Mounted account bookmark and book-action fixture corrections (2026-11-25)
+
+The bundled `/lumen/profile` middleware now leaves mounted profile bookmarks to
+Lumen's own route components. This preserves query state such as
+`?from=native`; native-root `/profile` continues to use the household mapping.
+The server middleware suite passes 2/2, including mounted profile, password,
+and notification bookmarks. The four-viewport mounted user-route suite passes
+40/40. Legacy request status filters are verified through their supported Lumen
+`show` equivalent (for example, `filter=all` becomes `show=all`).
+
+The poster permission fixture now uses the production `/lumen` API path and
+asserts the shared poster request action for audiobooks, including the
+narrator-selection action. The four-viewport bundled permission suite passes
+32/32. Earlier full-mount failures remain tracked as a separate acceptance gap;
+these focused passes do not claim full-suite qualification. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+Mounted `/lumen/users/*` bookmarks are also owned by Lumen's client routes,
+which preserve query/hash state and enforce the same permission-aware gates as
+in-app navigation. The production redirect now carries legacy `sort` and
+`show=plex` filters into Lumen as `sort` and `show=have`. The native Discover
+browser suite passes 136/136 across desktop, iPhone, Android, and tablet; its
+fixture now returns the documented array/object shapes for the catalog
+endpoints. API and provider responses remain fixture-backed.
+
+release-note: none
+
 ### Full administrator surface under the bundled mount (2026-11-25)
 
 All 52 `admin-*.spec.ts` browser specs pass against the standalone production
@@ -11014,5 +11061,28 @@ result is fixture-backed and does not prove live provider handoffs, live server
 authorization, published-image behavior, or native-matched visual acceptance.
 Results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/core-user-workflows-mounted-final-rerun/`.
+
+release-note: none
+
+### Mount-aware navigation assertions across shared workflows (2026-11-25)
+
+Corrected the remaining known root-deployment assumptions in browser assertions
+for movie quick links, collection metadata and search, music collectors and
+discography requests, franchise and related-title links, games and patches,
+genre browse links, recordings, Coming Soon, Share, and user management. The
+Provider Discovery case also no longer prefixes a path that Playwright already
+resolved against the mounted `/lumen/` base URL. Share Target manifest and
+worker assertions now use the bundled mount by default, and Track Requests
+uses the same mount-aware base for its Identify link.
+
+The focused mounted matrix passes 354 browser cases across desktop, iPhone,
+Android, and tablet, with 18 expected viewport skips and no failures. It runs
+against the compiled Express frontend mounted at `/lumen/`; its API and provider
+responses are fixture-backed. The initial matrix identified one additional
+music artist discography assertion, which was fixed and then passed in all four
+projects. This closes the tested mount-relative assertion gaps in these specs,
+but does not establish full bundled-suite acceptance or live provider behavior.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mount-aware-regression-verified/`.
 
 release-note: none

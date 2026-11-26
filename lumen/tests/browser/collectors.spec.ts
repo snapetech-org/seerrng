@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 test('music discovery opens trusted collector picks and follows the matched artist', async ({
   page,
 }) => {
@@ -137,10 +140,10 @@ test('music discovery opens trusted collector picks and follows the matched arti
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Open Album: Fixture Album' })
-  ).toHaveAttribute('href', `/music/${albumId}?source=collector`);
+  ).toHaveAttribute('href', appPath(`/music/${albumId}?source=collector`));
   await expect(
     page.getByRole('link', { name: 'Open Album: Resolved Release' })
-  ).toHaveAttribute('href', '/music/catalog-album-42?source=resolver');
+  ).toHaveAttribute('href', appPath('/music/catalog-album-42?source=resolver'));
   await expect(page.locator('.poster.sq img')).toHaveAttribute(
     'src',
     '/imageproxy/coverartarchive/release/fixture.jpg'
@@ -178,7 +181,7 @@ test('Collector Picks guides administrators to configure unavailable slskdN', as
   await page.goto('/music/collectors');
   await expect(
     page.getByRole('link', { name: 'Open Soulseek Settings' })
-  ).toHaveAttribute('href', '/admin/soulseek');
+  ).toHaveAttribute('href', appPath('/admin/soulseek'));
 });
 
 test('Collector Picks keeps Soulseek settings out of non-admin accounts', async ({

@@ -962,10 +962,13 @@ test('display language persists and localizes the shell and account settings', a
   // The mobile tab bar yields while scrolling through this long form. Return to
   // its visible state before checking the newly localized navigation labels.
   await page.evaluate(() => window.scrollTo(0, 0));
-  await expect(page.getByRole('link', { name: 'Découvrir' })).toBeVisible();
+  const primaryNavigation = page.locator('#mobile-primary-navigation');
   await expect(
-    page.getByRole('link', { name: 'Demandes' }).first()
-  ).toBeVisible();
+    primaryNavigation.locator('a').filter({ hasText: /^Découvrir$/ })
+  ).toHaveCount(1);
+  await expect(
+    primaryNavigation.locator('a').filter({ hasText: /^Demandes$/ })
+  ).toHaveCount(1);
   await expect(
     page.getByRole('heading', { name: 'Paramètres utilisateur' })
   ).toBeVisible();

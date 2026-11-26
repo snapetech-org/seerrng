@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 test('Patch discovery filters, follows the exact project and pages through results', async ({
   page,
 }) => {
@@ -108,7 +111,7 @@ test('Patch discovery filters, follows the exact project and pages through resul
   expect(searches[1]).toEqual(searches[0]);
   await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
     'href',
-    `/game/retro/${key}?dat=1`
+    appPath(`/game/retro/${key}?dat=1`)
   );
   const follow = page.getByRole('button', { name: 'Follow', exact: true });
   await follow.click();
@@ -131,12 +134,12 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await page.goto(`/patches?catalogKey=${key}&platform=switch&category=modern`);
   await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
     'href',
-    `/game/modern/${key}?dat=1&platform=switch`
+    appPath(`/game/modern/${key}?dat=1&platform=switch`)
   );
   const choose = page.getByRole('link', { name: 'Choose a Version' });
   await expect(choose).toHaveAttribute(
     'href',
-    '/patches/patch-1?category=modern&platform=switch'
+    appPath('/patches/patch-1?category=modern&platform=switch')
   );
   await choose.click();
   const invalid = page
@@ -299,7 +302,7 @@ test('a Following update opens its exact patch version and submits only with a c
   const link = page.getByRole('link', { name: 'Patch v1' });
   await expect(link).toHaveAttribute(
     'href',
-    '/patches/patch%3Afixture?version=v1'
+    appPath('/patches/patch%3Afixture?version=v1')
   );
   await link.click();
   await expect(page.getByLabel('Patch Version')).toHaveValue('v1');
@@ -335,7 +338,7 @@ test('a Following update opens its exact patch version and submits only with a c
   });
   await expect(requestedVersion).toHaveAttribute(
     'href',
-    '/patches/patch%3Afixture?version=v2'
+    appPath('/patches/patch%3Afixture?version=v2')
   );
   await requestedVersion.click();
   await expect(page.getByLabel('Patch Version')).toHaveValue('v2');

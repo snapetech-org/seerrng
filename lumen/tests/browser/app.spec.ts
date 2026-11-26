@@ -7406,10 +7406,7 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
   );
   await expect(
     page.getByRole('link', { name: 'Matched Fixture' })
-  ).toHaveAttribute(
-    'href',
-    testAppPath(new URL('./movie/101', baseURL).pathname)
-  );
+  ).toHaveAttribute('href', new URL('./movie/101', baseURL).pathname);
   expect(requests[0].get('list')).toBe('viewer/fixture');
   await expect(page.getByText(/Curated match/)).toBeVisible();
   await expect(page.getByText(/Matched by catalog ID/)).toBeVisible();
@@ -7854,7 +7851,9 @@ test('installed Share Target hands text and image to Share once', async ({
   await page.route('**/api/v1/resolve/capabilities', (route) =>
     route.fulfill({ json: { enabled: true, image: true, maxImageBytes: 100 } })
   );
-  const base = process.env.LUMEN_TEST_SHARE_BASE ?? '/';
+  const base =
+    process.env.LUMEN_TEST_SHARE_BASE ??
+    (process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen/' : '/');
   await page.goto(base + 'share');
   const href = await page.locator('link[rel="manifest"]').getAttribute('href');
   expect(href).toBe(base + 'manifest.webmanifest');
@@ -7987,7 +7986,9 @@ test('Track Requests scopes the queue and confirms manager approval and cancella
     cancelled = true;
     return route.fulfill({ json: { status: 'cancelled' } });
   });
-  const base = process.env.LUMEN_TEST_SHARE_BASE ?? '/';
+  const base =
+    process.env.LUMEN_TEST_SHARE_BASE ??
+    (process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen/' : '/');
   await page.goto(base + 'track-requests');
   await expect(
     page.getByRole('link', { name: 'Identify a Song' })

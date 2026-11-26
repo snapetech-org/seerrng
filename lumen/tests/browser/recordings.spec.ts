@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const active = {
   id: 17,
   kind: 'airing',
@@ -186,7 +189,7 @@ for (const {
         name: label,
         exact: true,
       })
-    ).toHaveAttribute('href', '/recordings');
+    ).toHaveAttribute('href', appPath('/recordings'));
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
