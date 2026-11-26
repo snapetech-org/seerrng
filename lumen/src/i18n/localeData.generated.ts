@@ -7958,6 +7958,20 @@ export const localeData = [
         'تابع الفنان لتنزيل ألبوماته وأغانيه الجديدة تلقائيًا.',
       'lumen.music.ownedAlbums': 'الألبومات في مكتبتك: {owned} من {total}',
       'lumen.music.followingLabel': 'تتابع',
+      'lumen.music.onAlbumAndMoreReason': 'على {title} و{count} أخرى',
+      'lumen.music.onAlbumReason': 'ضمن {title}',
+      'lumen.music.editionOfReason': 'إصدار آخر من {title}',
+      'lumen.music.promoReason': 'إصدار ترويجي',
+      'lumen.music.openRelease': 'فتح {title}',
+      'lumen.music.otherReleases': 'حفلات ومجموعات والمزيد',
+      'lumen.music.showOtherReleases':
+        'عرض {count} من الإصدارات والأغاني المنفردة الأخرى',
+      'lumen.music.hideOtherReleases':
+        'إخفاء الإصدارات والأغاني المنفردة الأخرى',
+      'lumen.music.otherEditionsTitle': 'إصدارات وأغانٍ منفردة أخرى',
+      'lumen.music.hiddenEditions': 'إصدارات أخرى',
+      'lumen.music.hiddenCovered': 'أغانٍ موجودة في الألبومات',
+      'lumen.music.hiddenUnofficial': 'إصدارات ترويجية وغير رسمية',
     },
   },
   {
@@ -33983,6 +33997,20 @@ export const localeData = [
       'lumen.music.ownedAlbums':
         'Albums dans votre bibliothèque : {owned} sur {total}',
       'lumen.music.followingLabel': 'Suivi',
+      'lumen.music.onAlbumAndMoreReason': 'Sur {title} et {count} autres',
+      'lumen.music.onAlbumReason': 'Sur {title}',
+      'lumen.music.editionOfReason': 'Autre édition de {title}',
+      'lumen.music.promoReason': 'Édition promotionnelle',
+      'lumen.music.openRelease': 'Ouvrir {title}',
+      'lumen.music.otherReleases': 'Concerts, compilations et plus',
+      'lumen.music.showOtherReleases':
+        'Afficher {count} autres éditions et singles',
+      'lumen.music.hideOtherReleases': 'Masquer les autres éditions et singles',
+      'lumen.music.otherEditionsTitle': 'Autres éditions et singles',
+      'lumen.music.hiddenEditions': 'Autres éditions',
+      'lumen.music.hiddenCovered': 'Morceaux déjà présents sur les albums',
+      'lumen.music.hiddenUnofficial':
+        'Éditions promotionnelles et non officielles',
     },
   },
   {

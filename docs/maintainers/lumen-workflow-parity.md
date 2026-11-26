@@ -11951,3 +11951,18 @@ Artist recovery errors, release exclusions, and the remaining MusicHome
 feedback strings are still under audit.
 
 release-note: `release-notes/lumen-music-artist-request-localization.md`
+
+### Artist release exclusions and edition explanations (2026-11-26)
+
+The artist page’s collapsed release groups now translate their show/hide
+controls, headings, reasons for duplicate editions and already-owned songs,
+promo labels, and links to the covered release in French and Arabic. The
+underlying exclusion rules and destination links are unchanged. Browser cases
+exercise reveal, reason text, linked release, promo status, and collapse state.
+
+Baseline and candidate runs passed all 8 locale/viewport cases. Evidence is
+retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-release-explanations-i18n-20261126/`.
+Other artist request failure and no-results messages remain under audit.
+
+release-note: `release-notes/lumen-music-release-explanations-localization.md`

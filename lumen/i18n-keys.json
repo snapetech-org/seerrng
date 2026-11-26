@@ -6597,5 +6597,17 @@
   "lumen.music.followingHelp",
   "lumen.music.followHelp2",
   "lumen.music.ownedAlbums",
-  "lumen.music.followingLabel"
+  "lumen.music.followingLabel",
+  "lumen.music.onAlbumAndMoreReason",
+  "lumen.music.onAlbumReason",
+  "lumen.music.editionOfReason",
+  "lumen.music.promoReason",
+  "lumen.music.openRelease",
+  "lumen.music.otherReleases",
+  "lumen.music.showOtherReleases",
+  "lumen.music.hideOtherReleases",
+  "lumen.music.otherEditionsTitle",
+  "lumen.music.hiddenEditions",
+  "lumen.music.hiddenCovered",
+  "lumen.music.hiddenUnofficial"
 ]

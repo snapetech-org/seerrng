@@ -1551,6 +1551,161 @@ test('an artist page hides other editions and covered singles until asked, and s
   await expect(page).not.toHaveURL(/others=1/);
 });
 
+for (const [
+  locale,
+  toggleShow,
+  toggleHide,
+  title,
+  groups,
+  editionReason,
+  openRelease,
+  coveredReason,
+  promoReason,
+] of [
+  [
+    'fr',
+    'Afficher 3 autres éditions et singles',
+    'Masquer les autres éditions et singles',
+    'Autres éditions et singles',
+    [
+      'Autres éditions',
+      'Morceaux déjà présents sur les albums',
+      'Éditions promotionnelles et non officielles',
+    ],
+    'Autre édition de Release 2',
+    'Ouvrir Release 2',
+    'Sur Release 1',
+    'Édition promotionnelle',
+  ],
+  [
+    'ar',
+    'عرض 3 من الإصدارات والأغاني المنفردة الأخرى',
+    'إخفاء الإصدارات والأغاني المنفردة الأخرى',
+    'إصدارات وأغانٍ منفردة أخرى',
+    ['إصدارات أخرى', 'أغانٍ موجودة في الألبومات', 'إصدارات ترويجية وغير رسمية'],
+    'إصدار آخر من Release 2',
+    'فتح Release 2',
+    'ضمن Release 1',
+    'إصدار ترويجي',
+  ],
+] as const) {
+  test(`artist release explanations use the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.route(`**/api/v1/music/artist/${ARTIST_MBID}`, (route) =>
+      route.fulfill({
+        json: {
+          mbid: ARTIST_MBID,
+          name: 'Fixture Band',
+          type: 'Group',
+          country: 'US',
+          beginYear: 2010,
+          endYear: null,
+          genres: [],
+          bio: null,
+          releaseGroups: [
+            rg(1, 'Album', true),
+            rg(2, 'Album'),
+            rg(3, 'Album'),
+            rg(4, 'Single'),
+            {
+              ...rg(5, 'Album'),
+              title: 'Release 2 (Deluxe)',
+              redundant: {
+                code: 'sameAlbum',
+                reason: 'Another edition of Release 2',
+                coveredBy: { mbid: rg(2, 'Album').id, title: 'Release 2' },
+              },
+            },
+            {
+              ...rg(6, 'Single'),
+              redundant: {
+                code: 'covered',
+                reason: 'On Release 1',
+                coveredBy: { mbid: rg(1, 'Album').id, title: 'Release 1' },
+              },
+            },
+            {
+              ...rg(7, 'Single'),
+              title: 'Release 7 Promo CD',
+              redundant: { code: 'unofficial', reason: 'Promo release.' },
+            },
+          ],
+        },
+      })
+    );
+    await page.goto(testAppPath(`/artist/${ARTIST_MBID}`));
+    await page
+      .getByRole('button', {
+        name: baseline ? 'Show 3 other editions and singles' : toggleShow,
+      })
+      .click();
+    const hidden = page.locator('.music-hidden-releases');
+    await expect(
+      hidden.getByRole('heading', {
+        name: baseline ? 'Other editions and singles' : title,
+      })
+    ).toBeVisible();
+    for (const [index, label] of groups.entries()) {
+      await expect(
+        hidden.getByText(
+          baseline
+            ? [
+                'Other editions',
+                'Songs already on the albums',
+                'Promo and unofficial releases',
+              ][index]
+            : label,
+          { exact: true }
+        )
+      ).toBeVisible();
+    }
+    const edition = hidden.locator('.poster', {
+      hasText: 'Release 2 (Deluxe)',
+    });
+    await expect(
+      edition.getByText(
+        baseline ? 'Another edition of Release 2' : editionReason
+      )
+    ).toBeVisible();
+    await expect(
+      edition.getByRole('link', {
+        name: baseline ? 'Open Release 2' : openRelease,
+      })
+    ).toBeVisible();
+    const covered = hidden.locator('.poster', { hasText: 'Release 6' });
+    await expect(
+      covered.getByText(baseline ? 'On Release 1' : coveredReason)
+    ).toBeVisible();
+    const promo = hidden.locator('.poster', { hasText: 'Release 7 Promo CD' });
+    await expect(
+      promo.getByText(baseline ? 'Promo release' : promoReason)
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`music-hidden-releases-${locale}.png`),
+        fullPage: false,
+      });
+    await hidden
+      .getByRole('button', {
+        name: baseline ? 'Hide other editions and singles' : toggleHide,
+      })
+      .click();
+    await expect(
+      hidden.getByRole('heading', {
+        name: baseline ? 'Other editions and singles' : title,
+      })
+    ).toHaveCount(0);
+  });
+}
+
 test('an album page of a covered single points at its album and asks before getting it anyway', async ({
   page,
 }) => {

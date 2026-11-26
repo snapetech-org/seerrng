@@ -309,6 +309,29 @@ test('Lumen artist request and follow labels are registered and translated', () 
   }
 });
 
+test('Lumen artist release explanations are registered and translated', () => {
+  const releaseKeys = [
+    'lumen.music.onAlbumAndMoreReason',
+    'lumen.music.onAlbumReason',
+    'lumen.music.editionOfReason',
+    'lumen.music.promoReason',
+    'lumen.music.openRelease',
+    'lumen.music.otherReleases',
+    'lumen.music.showOtherReleases',
+    'lumen.music.hideOtherReleases',
+    'lumen.music.otherEditionsTitle',
+    'lumen.music.hiddenEditions',
+    'lumen.music.hiddenCovered',
+    'lumen.music.hiddenUnofficial',
+  ];
+  for (const key of releaseKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
 test('Lumen MusicHome library and download activity labels are translated', async () => {
   const source = await readFile(
     resolve(root, 'src/components/MusicHome.tsx'),
