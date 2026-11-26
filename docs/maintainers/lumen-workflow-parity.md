@@ -8195,14 +8195,23 @@ context matches the current media identity; direct detail links remain
 control-free. Context lives in bounded, tab-local session storage and is capped
 at 5,000 results and 12 contexts.
 
+The native Discover route audit confirms its movie and TV genre, studio,
+network, language, keyword, genres-list, and upcoming URLs all map to their
+corresponding Lumen Browse, genre-directory, or Coming Soon destinations while
+preserving supported query and fragment state. The earlier claim that these
+filtered native pages have no Lumen equivalent is stale: a route entry point
+exists for each. Side-by-side native/Lumen rendering of the matched filter
+states and live catalog responses remain unverified.
+
 The browser workflow passes for movie and TV results on desktop and iPhone in
 standalone preview and the production Express `/lumen/` mount. It verifies
 opening from results, forward and backward navigation, end-of-list behavior,
 identity-mismatch and direct-link behavior, and phone-width overflow. A
 Discover Watchlist case verifies its filtered result context and adjacent
 navigation on desktop and iPhone. The desktop and iPhone detail captures were
-visually inspected. Filtered catalog behavior on native Discover pages that
-have no Lumen equivalent, and live catalog data, remain outside this increment.
+visually inspected. Native Discover filtered-route fixtures verify the Lumen
+destination and URL state, but not matched native/Lumen rendering of the filter
+results or live catalog responses.
 Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-discover-navigation-20261122/`.
 
