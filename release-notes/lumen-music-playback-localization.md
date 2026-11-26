@@ -1,0 +1,1 @@
+Lumen's music playback settings and preview controls now use the saved French and Arabic locale, including the playback destination, Aurral and Plex guidance, preview options, and missing-preview feedback. Saved player preferences and playback links are unchanged.

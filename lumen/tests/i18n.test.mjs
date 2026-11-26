@@ -7,6 +7,9 @@ const root = resolve(import.meta.dirname, '..');
 const overrides = JSON.parse(
   await readFile(resolve(root, 'i18n-overrides.json'), 'utf8')
 );
+const lumenKeyRegistry = JSON.parse(
+  await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+);
 const locales = JSON.parse(
   await readFile(resolve(root, '../config/i18n/locales.json'), 'utf8')
 );
@@ -17,6 +20,7 @@ const keys = [
   'components.UserProfile.UserSettings.menuClientTokens',
 ];
 const lumenKeys = [
+  'lumen.common.done',
   'components.MusicDetails.Layout.artistType',
   'components.MusicDetails.Layout.origin',
   'lumen.tv.selectEntireSeries',
@@ -137,6 +141,27 @@ test('Lumen account, request, and settings labels are translated in French and A
         english[key],
         `${locale} translation is not an English fallback: ${key}`
       );
+    }
+  }
+});
+
+test('Lumen music playback and preview labels are translated in French and Arabic', async () => {
+  const source = await readFile(
+    resolve(root, 'src/components/MusicPlayback.tsx'),
+    'utf8'
+  );
+  const musicKeys = new Set(
+    [...source.matchAll(/['\"](lumen\.music\.[^'\"]+)['\"]/g)].map(
+      ([, key]) => key
+    )
+  );
+  assert.ok(musicKeys.size > 0, 'Music playback message keys exist');
+  for (const key of musicKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+  }
+  for (const locale of ['fr', 'ar']) {
+    for (const key of musicKeys) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
     }
   }
 });

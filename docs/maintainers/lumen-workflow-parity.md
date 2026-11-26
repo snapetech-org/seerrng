@@ -11829,3 +11829,22 @@ gap but does not establish that this provider behavior caused the reported
 large-show screenshot; a live provider reproduction remains open.
 
 release-note: `release-notes/fixed-tv-request-empty-season-fallback.md`
+
+### Music playback settings and preview localization (2026-11-26)
+
+The saved French and Arabic locale now covers Music's playback destination
+button, player settings dialog, Shelf/Aurral/Plex guidance, preview preferences,
+preview actions, and missing-preview state. The player selection, preference
+save, and playback destinations are unchanged. All 22 message keys used by
+`MusicPlayback.tsx` are registered and have French and Arabic overrides; the
+shared Done control is localized as well.
+
+The locale catalog test checks registration and translations. The focused
+browser cases render the settings and preview failure states across desktop,
+iPhone, Android, and tablet, with page-width overflow checks. Screenshots from
+the pre-change English-fallback state and the localized candidate are retained
+under `/mnt/disks/scratch/task-deliverables/seerrng-lumen-playback-i18n-20261126/`.
+These fixtures verify client rendering, not live Aurral/Plex handoff. Other
+Music catalog and library labels remain under audit.
+
+release-note: `release-notes/lumen-music-playback-localization.md`

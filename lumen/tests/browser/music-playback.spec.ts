@@ -543,6 +543,167 @@ test('a preview asks SeerrNG for the clip and shows the preview bar', async ({
   await expect(bar).toHaveCount(0);
 });
 
+for (const [
+  locale,
+  playerLabel,
+  playOpensLabel,
+  settingsTitle,
+  handoff,
+  previews,
+  previewLabel,
+  noPreview,
+  previewRegionLabel,
+  previewProgressLabel,
+  closePreviewLabel,
+  doneLabel,
+  baselinePlayOpensLabel,
+  baselineSettingsTitle,
+  baselineHandoff,
+  baselinePreviews,
+  baselinePreviewLabel,
+  baselineNoPreview,
+  baselinePreviewRegionLabel,
+  baselinePreviewProgressLabel,
+  baselineClosePreviewLabel,
+  baselineDoneLabel,
+] of [
+  [
+    'fr',
+    'Application Shelf',
+    'La lecture s’ouvre dans : Aurral',
+    'Quand vous appuyez sur Lire',
+    'Lumen ouvre dans votre application musicale les morceaux que vous possédez.',
+    'Extraits de 30 secondes',
+    'Écouter un extrait de Missing Song',
+    'Aucun extrait disponible pour ce morceau',
+    'Lecteur d’extraits',
+    'Progression de l’extrait',
+    'Fermer l’extrait',
+    'Terminé',
+    'Play opens in: Aurral',
+    'When you press Play',
+    'Lumen hands songs you have to your music app.',
+    '30-second previews',
+    'Preview Missing Song',
+    'No preview for this song',
+    'Preview player',
+    'Preview progress',
+    'Close preview',
+    'Done',
+  ],
+  [
+    'ar',
+    'تطبيق Shelf',
+    'يفتح التشغيل في: Aurral',
+    'عند الضغط على تشغيل',
+    'يفتح Lumen الأغاني المتوفرة لديك في تطبيق الموسيقى.',
+    'مقاطع معاينة مدتها 30 ثانية',
+    'معاينة Missing Song',
+    'لا تتوفر معاينة لهذه الأغنية',
+    'مشغل المعاينة',
+    'تقدم المعاينة',
+    'إغلاق المعاينة',
+    'تم',
+    'Play opens in: Aurral',
+    'When you press Play',
+    'Lumen hands songs you have to your music app.',
+    '30-second previews',
+    'Preview Missing Song',
+    'No preview for this song',
+    'Preview player',
+    'Preview progress',
+    'Close preview',
+    'Done',
+  ],
+] as const) {
+  test(`music playback controls use the saved ${locale} locale`, async ({
+    page,
+  }, testInfo) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.goto(testAppPath('/music'));
+    await page
+      .getByRole('button', {
+        name: baseline ? baselinePlayOpensLabel : playOpensLabel,
+      })
+      .click();
+    const sheet = page.getByRole('dialog', {
+      name: baseline ? baselineSettingsTitle : settingsTitle,
+    });
+    await expect(sheet).toBeVisible();
+    await expect(
+      sheet.getByText(baseline ? baselineHandoff : handoff)
+    ).toBeVisible();
+    await expect(
+      sheet.getByRole('radio', {
+        name: baseline ? 'Shelf app' : playerLabel,
+      })
+    ).toBeDisabled();
+    await expect(
+      sheet.getByText(baseline ? baselinePreviews : previews)
+    ).toBeVisible();
+    await expect(
+      sheet.getByText(
+        locale === 'fr'
+          ? 'Recherche dans Plex dans le même onglet réutilisé.'
+          : 'يبحث عنه في Plex باستخدام علامة التبويب نفسها.'
+      )
+    ).toBeVisible();
+    await expect(
+      sheet.getByText(
+        locale === 'fr'
+          ? 'L’application mobile Shelf. Disponible lorsque l’application pourra ouvrir des liens.'
+          : 'تطبيق Shelf للهاتف. سيتوفر عند دعم فتح الروابط في التطبيق.'
+      )
+    ).toBeVisible();
+    await page.screenshot({
+      path: testInfo.outputPath('music-playback-settings.png'),
+      fullPage: false,
+    });
+    await sheet
+      .getByRole('button', { name: baseline ? baselineDoneLabel : doneLabel })
+      .click();
+
+    await page
+      .locator('li', { hasText: 'Missing Song' })
+      .getByRole('button', {
+        name: baseline ? baselinePreviewLabel : previewLabel,
+      })
+      .click();
+    const preview = page.getByRole('region', {
+      name: baseline ? baselinePreviewRegionLabel : previewRegionLabel,
+    });
+    await expect(
+      preview.getByText(baseline ? baselineNoPreview : noPreview)
+    ).toBeVisible();
+    await expect(
+      preview.getByRole('button', {
+        name: baseline ? baselinePreviewLabel : previewLabel,
+      })
+    ).toBeDisabled();
+    await expect(
+      preview.getByRole('progressbar', {
+        name: baseline ? baselinePreviewProgressLabel : previewProgressLabel,
+      })
+    ).toBeVisible();
+    await expect(
+      preview.getByRole('button', {
+        name: baseline ? baselineClosePreviewLabel : closePreviewLabel,
+      })
+    ).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath('music-preview-error.png'),
+      fullPage: false,
+    });
+  });
+}
+
 test('Play opens in: picking Plex is saved and changes the links', async ({
   page,
 }) => {
