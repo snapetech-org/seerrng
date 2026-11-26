@@ -6825,8 +6825,10 @@ The cases exercise 330-episode/fifteen-season selection, bounded five-season
 metadata batches, transient batch retry without losing selection, retry of
 only failed seasons, selecting loaded seasons while the final batch is still
 pending, cancellation on close, and exact deep-linked episode submission.
-No product defect reproduced, so no UI change was made. Fixtures do not confirm
-live TMDB/SeerrNG response behavior or provider timing. Results and browser
+The focused TV route and request-tree unit suites also pass 18/18, including
+the backend recovery test for provider failures under concurrent season lookup.
+No product defect reproduced, so no UI change was made. Provider fixtures do
+not confirm live TMDB/SeerrNG response behavior or timing. Results and browser
 artifacts are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/large-series-current-standalone/`
 and
