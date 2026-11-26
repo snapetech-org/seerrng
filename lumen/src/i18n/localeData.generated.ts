@@ -1763,6 +1763,8 @@ export const localeData = [
       'lumen.account.backToSettings': 'العودة إلى إعدادات الحساب',
       'lumen.account.backToYou': 'العودة إلى صفحتك',
       'lumen.account.cardTitleOnHover': 'عند التحويم أو التركيز',
+      'lumen.account.cardTitleSettingsLoading':
+        'جارٍ تحميل إعدادات عناوين البطاقات…',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'تعذر تأكيد إعدادات عناوين البطاقات المحفوظة.',
       'lumen.account.cardTitleSettingsSaveFailure':
@@ -14212,6 +14214,7 @@ export const localeData = [
       'lumen.account.backToSettings': 'Back to Account Settings',
       'lumen.account.backToYou': 'Back to You',
       'lumen.account.cardTitleOnHover': 'On hover or keyboard focus',
+      'lumen.account.cardTitleSettingsLoading': 'Loading card title settings…',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Could not confirm the saved card title settings.',
       'lumen.account.cardTitleSettingsSaveFailure':
@@ -27281,6 +27284,8 @@ export const localeData = [
       'lumen.account.backToSettings': 'Retour aux paramètres du compte',
       'lumen.account.backToYou': 'Retour à votre espace',
       'lumen.account.cardTitleOnHover': 'Au survol ou au focus clavier',
+      'lumen.account.cardTitleSettingsLoading':
+        'Chargement des paramètres de titre des cartes…',
       'lumen.account.cardTitleSettingsConfirmFailure':
         'Impossible de confirmer les préférences de titre enregistrées.',
       'lumen.account.cardTitleSettingsSaveFailure':

@@ -12125,3 +12125,18 @@ iPhone pass. The broader provider-driven formatting and native-matched display
 audit remains open.
 
 release-note: `release-notes/lumen-localized-dates-and-download-sizes.md`
+
+### Card Title Preferences loading localization (2026-11-26)
+
+The initial loading status in Account Settings' Card Title Preferences section
+was still English when the saved interface locale was French or Arabic. It now
+uses a registered Lumen message with French and Arabic translations. A held
+settings response keeps the loading state visible for the browser regression;
+desktop, iPhone, Android, and tablet cases pass in both locales.
+
+Matched before/after captures of the same pending state were reviewed at
+desktop and iPhone sizes in French and Arabic. Only the status copy changes;
+the component styling and layout are unchanged. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-card-title-loading-20261126/`.
+
+release-note: `release-notes/lumen-card-title-settings-loading-localization.md`

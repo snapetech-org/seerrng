@@ -1042,6 +1042,7 @@
   "lumen.account.backToSettings",
   "lumen.account.backToYou",
   "lumen.account.cardTitleOnHover",
+  "lumen.account.cardTitleSettingsLoading",
   "lumen.account.cardTitleSettingsConfirmFailure",
   "lumen.account.cardTitleSettingsSaveFailure",
   "lumen.account.cardTitleSettingsSaved",

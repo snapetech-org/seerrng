@@ -162,7 +162,10 @@ export function CardTitlePreferences({ path }: { path: string }) {
       ) : (
         !settings.error && (
           <p className="note" role="status">
-            Loading card title settings…
+            {t(
+              'lumen.account.cardTitleSettingsLoading',
+              'Loading card title settings…'
+            )}
           </p>
         )
       )}
