@@ -10717,6 +10717,24 @@ parity is unverified.
 
 release-note: `release-notes/fixed-lumen-adult-category-guidance.md`
 
+### Scheduled job status and schedule readability (2026-11-26)
+
+Native Scheduled Jobs presents the next execution as a live relative time and
+describes the current frequency in human-readable terms. Lumen previously
+rendered a fixed local date-time and the raw cron expression. Lumen now updates
+the relative next-run label each second, localizes it with `Intl`, and renders
+known built-in schedules with the same locale-aware frequency wording used by
+the schedule editor. Unrecognized custom cron expressions remain visible as
+their exact expression. The job action, schedule persistence/readback, and
+localization specs pass 32 browser cases across desktop, iPhone, Android, and
+tablet; the production Lumen build passes. Desktop and phone captures are
+retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/admin-jobs-readable-display/captures-final/`.
+Candidate layout was inspected; a matched native screenshot remains
+unavailable, so native visual parity is unverified.
+
+release-note: `release-notes/fixed-lumen-scheduled-job-display.md`
+
 ### Express entry and frontend-choice regression check (2026-11-25)
 
 The Express mount and frontend-choice migration regressions pass together: five

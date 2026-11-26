@@ -19,6 +19,8 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
       'Cron Schedule',
       'Save Schedule',
       'Every 20 minutes',
+      'Every 15 minutes',
+      'Next run',
     ],
     fr: [
       'Tâches planifiées',
@@ -27,6 +29,8 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
       'Planning Cron',
       'Enregistrer le planning',
       'Toutes les 20 minutes',
+      'Toutes les 15 minutes',
+      'Prochaine exécution :',
     ],
     ar: [
       'المهام المجدولة',
@@ -35,6 +39,8 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
       'جدول Cron',
       'حفظ الجدول',
       'كل 20 دقيقة',
+      'كل 15 دقيقة',
+      'التشغيل التالي:',
     ],
   }[locale];
   const baseline = process.env.LUMEN_CAPTURE_MODE === 'baseline';
@@ -46,8 +52,11 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
         'Cron Schedule',
         'Save Schedule',
         'Every 20 minutes',
+        'Every 15 minutes',
+        'Next run',
       ]
     : translated;
+  const schedule15 = labels[6];
   const job = {
     id: 'plex-recently-added-scan',
     name: 'Raw internal job name',
@@ -57,6 +66,16 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     enabled: true,
     running: false,
     nextExecutionTime: '2026-11-23T16:00:00.000Z',
+  };
+  const customJob = {
+    id: 'custom-job',
+    name: 'Custom Cron Job',
+    type: 'command',
+    interval: 'minutes',
+    cronSchedule: '15 0 8 * * 1-5',
+    enabled: true,
+    running: false,
+    nextExecutionTime: null,
   };
   const jobName = {
     en: 'Plex Recently Added Scan',
@@ -70,6 +89,7 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
   }[baseline ? 'en' : locale];
   const writes: unknown[] = [];
   let rejectFirstSave = true;
+  await page.clock.install({ time: new Date('2026-11-23T15:59:00.000Z') });
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -91,7 +111,8 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
       job.cronSchedule = body.schedule;
       return route.fulfill({ json: job });
     }
-    if (path.endsWith('/settings/jobs')) return route.fulfill({ json: [job] });
+    if (path.endsWith('/settings/jobs'))
+      return route.fulfill({ json: [job, customJob] });
     return route.fulfill({ json: {} });
   });
   await page.goto(appPath('/admin/jobs'));
@@ -101,6 +122,15 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
   await expect(page.getByText(description, { exact: true })).toBeVisible();
   const row = page.getByRole('listitem').filter({ hasText: jobName });
   await expect(row.getByText(jobName, { exact: true })).toBeVisible();
+  await expect(row.getByText(schedule15, { exact: true })).toBeVisible();
+  await expect(row).toContainText(labels[7]);
+  await expect(row).not.toContainText('2026-11-23T16:00:00.000Z');
+  const customRow = page.getByRole('listitem').filter({
+    hasText: customJob.name,
+  });
+  await expect(
+    customRow.getByText(customJob.cronSchedule, { exact: true })
+  ).toBeVisible();
   await expect(
     row.getByText('Raw internal job name', { exact: true })
   ).toHaveCount(0);
@@ -138,7 +168,7 @@ test('scheduled jobs follow the saved locale and confirm schedule changes', asyn
     { schedule: '0 */20 * * * *' },
     { schedule: '0 */20 * * * *' },
   ]);
-  await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
+  await expect(page.getByText(labels[5], { exact: true })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute(
     'dir',
     locale === 'ar' ? 'rtl' : 'ltr'

@@ -67,6 +67,76 @@ function frequencyLabel(
   );
 }
 
+function scheduleLabel(
+  job: Job,
+  locale: string,
+  t: ReturnType<typeof useLumenLocale>['t']
+) {
+  const frequency = frequencies[job.interval];
+  if (!frequency) return job.cronSchedule;
+  const fields = job.cronSchedule.trim().split(/\s+/);
+  const normalized = (fields.length === 5 ? ['0', ...fields] : fields).join(
+    ' '
+  );
+  const value = frequency.values.find(
+    (candidate) => frequency.cron(candidate) === normalized
+  );
+  return value === undefined
+    ? job.cronSchedule
+    : frequencyLabel(job.interval, value, locale, t);
+}
+
+function RelativeNextRun({
+  time,
+  locale,
+  t,
+}: {
+  time: string;
+  locale: string;
+  t: ReturnType<typeof useLumenLocale>['t'];
+}) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const timestamp = Date.parse(time);
+  if (!Number.isFinite(timestamp)) return null;
+  const seconds = Math.floor((timestamp - now) / 1000);
+  const magnitude = Math.abs(seconds);
+  const unit: Intl.RelativeTimeFormatUnit =
+    magnitude < 60
+      ? 'second'
+      : magnitude < 3600
+        ? 'minute'
+        : magnitude < 86400
+          ? 'hour'
+          : 'day';
+  const divisor =
+    unit === 'second'
+      ? 1
+      : unit === 'minute'
+        ? 60
+        : unit === 'hour'
+          ? 3600
+          : 86400;
+  const relative = new Intl.RelativeTimeFormat(locale, {
+    numeric: 'auto',
+  }).format(Math.round(seconds / divisor), unit);
+
+  return (
+    <small>
+      <time dateTime={time}>
+        {t('lumen.adminJobs.nextRun', 'Next run {date}', {
+          date: relative,
+        })}
+      </time>
+    </small>
+  );
+}
+
 function ScheduleFrequency({
   interval,
   schedule,
@@ -295,15 +365,13 @@ export default function AdminJobs() {
                       )}
                 </small>
                 {job.enabled && job.nextExecutionTime && (
-                  <small>
-                    {t('lumen.adminJobs.nextRun', 'Next run {date}', {
-                      date: new Date(job.nextExecutionTime).toLocaleString(
-                        locale
-                      ),
-                    })}
-                  </small>
+                  <RelativeNextRun
+                    time={job.nextExecutionTime}
+                    locale={locale}
+                    t={t}
+                  />
                 )}
-                <small>{job.cronSchedule}</small>
+                <small>{scheduleLabel(job, locale, t)}</small>
               </div>
               {edit?.job.id === job.id ? (
                 <form

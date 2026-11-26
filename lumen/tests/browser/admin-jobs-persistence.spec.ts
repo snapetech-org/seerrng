@@ -66,7 +66,9 @@ test('schedule editor stays open until a fresh read confirms the saved cron', as
     page.getByText('Schedule saved.', { exact: true })
   ).toBeVisible();
   await expect(row.getByLabel('Cron Schedule')).toHaveCount(0);
-  await expect(row.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
+  await expect(
+    row.getByText('Every 20 minutes', { exact: true })
+  ).toBeVisible();
   if (
     process.env.LUMEN_CAPTURE_JOB_SAVE &&
     ['desktop', 'iphone'].includes(info.project.name)
