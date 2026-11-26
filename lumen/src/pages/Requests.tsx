@@ -1323,9 +1323,20 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
     ['userId', 'requestedBy'],
   ]) {
     const value = next.get(classic);
-    if (value && !next.has(lumen) && next.getAll(classic).length === 1)
+    // `filter` is the classic request-status filter. Map its supported values
+    // to Lumen's equivalent `show` state; leave unknown legacy values intact
+    // so a bookmark never silently loses a filter.
+    const supported =
+      classic !== 'filter' ||
+      EVERYONE_FILTERS.some(([option]) => option === value);
+    if (
+      value &&
+      !next.has(lumen) &&
+      next.getAll(classic).length === 1 &&
+      supported
+    )
       next.set(lumen, value);
-    next.delete(classic);
+    if (supported) next.delete(classic);
   }
   const type = next.get('mediaType');
   if (type === 'audiobook') {

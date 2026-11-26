@@ -929,6 +929,10 @@ export const mountLumenFrontend = (
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });
   server.get(/^\/lumen\/(?:profile(?:\/|$)|users\/?$)/, (req, res, next) => {
+    // Lumen's own bookmark components own these mounted routes. In
+    // particular, the native `/profile` alias targets the household profile,
+    // while Lumen's `/profile` bookmark targets the signed-in account.
+    if (/^\/lumen\/profile(?:\/|$)/.test(req.path)) return next();
     const destination = workflowDeepLink(req, req.path.slice('/lumen'.length));
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);

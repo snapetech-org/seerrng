@@ -48,7 +48,8 @@ test('native user request bookmark preserves filters and enforces the path user'
     new RegExp(`^https?://[^/]+${mount}/requests\\?.*$`)
   );
   const url = new URL(page.url());
-  expect(url.searchParams.get('filter')).toBe('all');
+  expect(url.searchParams.get('show')).toBe('all');
+  expect(url.searchParams.has('filter')).toBe(false);
   expect(url.searchParams.get('mediaType')).toBe('movie');
   expect(url.searchParams.has('userId'), url.href).toBe(false);
   expect(url.searchParams.get('requestedBy')).toBe('19');

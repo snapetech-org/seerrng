@@ -98,6 +98,15 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     );
     assert.equal(legacySeries.headers['cache-control'], 'no-store');
     assert.equal((await request(app).get('/lumen/series/genres')).status, 200);
+    for (const bookmark of [
+      '/lumen/profile?from=native',
+      '/lumen/profile/settings/password?from=native',
+      '/lumen/profile/settings/notifications/telegram?from=native',
+    ]) {
+      const lumenProfile = await request(app).get(bookmark);
+      assert.equal(lumenProfile.status, 200);
+      assert.match(lumenProfile.text, /Lumen/);
+    }
     const userDirectory = await request(app).get('/lumen/users/');
     const general = await request(app).get('/lumen/settings/main/');
     assert.equal(general.headers.location, '/lumen/admin/general');
@@ -174,14 +183,6 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(userDirectory.headers['cache-control'], 'no-store');
     for (const [bookmark, destination] of [
       ['/users/19/', '/household/19'],
-      ['/profile/', '/household/me'],
-      ['/profile/settings/permissions', '/me/account#account-permissions'],
-      ['/profile/settings/password', '/me/account#password'],
-      ['/profile/advanced-theme/', '/me/account#advanced-theme'],
-      [
-        '/profile/settings/episode-queue',
-        '/me/account/tv-requests#episode-queue',
-      ],
       [
         '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie',
         '/requests?requestedBy=19&show=pending&mediaType=movie',
@@ -189,15 +190,6 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       [
         '/users/19/watchlist?search=Arrival&page=2',
         '/watchlist/user/19?search=Arrival&page=2',
-      ],
-      ['/profile/settings/client-tokens', '/me/account/client-tokens'],
-      [
-        '/profile/settings/notifications/email/',
-        '/me/account/notifications#notification-email',
-      ],
-      [
-        '/profile/watchlist?search=Arrival&page=2',
-        '/watchlist?search=Arrival&page=2',
       ],
     ]) {
       const response = await request(app).get(`/lumen${bookmark}`);

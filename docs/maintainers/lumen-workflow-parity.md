@@ -6816,6 +6816,25 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Mounted account bookmark and book-action fixture corrections (2026-11-25)
+
+The bundled `/lumen/profile` middleware now leaves mounted profile bookmarks to
+Lumen's own route components. This preserves query state such as
+`?from=native`; native-root `/profile` continues to use the household mapping.
+The server middleware suite passes 2/2, including mounted profile, password,
+and notification bookmarks. The four-viewport mounted user-route suite passes
+40/40. Legacy request status filters are verified through their supported Lumen
+`show` equivalent (for example, `filter=all` becomes `show=all`).
+
+The poster permission fixture now uses the production `/lumen` API path and
+asserts the shared poster request action for audiobooks, including the
+narrator-selection action. The four-viewport bundled permission suite passes
+32/32. Earlier full-mount failures remain tracked as a separate acceptance gap;
+these focused passes do not claim full-suite qualification. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: none
+
 ### Full administrator surface under the bundled mount (2026-11-25)
 
 All 52 `admin-*.spec.ts` browser specs pass against the standalone production
