@@ -37,6 +37,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
       sports: 'Sports',
       adultEnabledNote:
         'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.',
+      adultWarningTitle: 'Adult content is visible to everyone with access',
+      adultWarning:
+        'If you share this instance with family or expose it through a reverse proxy, anyone granted Request Adult can see what you browse and request. Flag family accounts as restricted below, or under each user’s Permissions, so they never see Adult content.',
       serverProblem: 'The server had a problem. Try again in a moment.',
       confirmFailure: 'The server did not confirm the saved categories.',
       description:
@@ -72,6 +75,10 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
       sports: 'Sports',
       adultEnabledNote:
         'La découverte de contenus pour adultes nécessite un service Whisparr v3 configuré et l’autorisation correspondante du compte. Les comptes restreints n’y ont pas accès.',
+      adultWarningTitle:
+        'Les contenus pour adultes sont visibles par toute personne ayant accès',
+      adultWarning:
+        "Si vous partagez cette instance avec votre famille ou l'exposez via un proxy inversé, toute personne autorisée à Demander Adulte peut voir ce que vous parcourez et demandez. Marquez les comptes familiaux comme restreints ci-dessous, ou dans les Autorisations de chaque utilisateur, pour qu'ils ne voient jamais de contenu pour adultes.",
       serverProblem:
         'Le serveur a rencontré un problème. Réessayez dans un instant.',
       confirmFailure:
@@ -109,6 +116,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
       sports: 'الرياضة',
       adultEnabledNote:
         'يتطلب استكشاف محتوى البالغين إعداد خدمة Whisparr v3 ومنح الحساب الإذن المناسب. لا يمكن للحسابات المقيّدة الوصول إليه.',
+      adultWarningTitle: 'المحتوى البالغ مرئي للجميع الذين لديهم وصول',
+      adultWarning:
+        'إذا شاركت هذه النسخة مع العائلة أو عرّضتها عبر وكيل عكسي، يمكن لأي شخص ممنوح صلاحية طلب البالغين رؤية ما تتصفحه وتطلبه. علّم حسابات العائلة كمقيّدة أدناه، أو تحت صلاحيات كل مستخدم، حتى لا يروا محتوى البالغين أبداً.',
       serverProblem: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
       confirmFailure: 'لم يؤكد الخادم حفظ الفئات.',
       description:
@@ -138,6 +148,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
         groupDescription: '',
         adultEnabledNote:
           'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.',
+        adultWarningTitle: 'Adult content is visible to everyone with access',
+        adultWarning:
+          'If you share this instance with family or expose it through a reverse proxy, anyone granted Request Adult can see what you browse and request. Flag family accounts as restricted below, or under each user’s Permissions, so they never see Adult content.',
         groupName: 'Enabled Media Categories',
         ageGateHeading: 'Age Gate',
       }
@@ -273,6 +286,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   await expect(
     available.getByText(labels.adultEnabledNote, { exact: true })
   ).toBeVisible();
+  const adultWarning = available.getByRole('note');
+  await expect(adultWarning).toContainText(labels.adultWarningTitle);
+  await expect(adultWarning).toContainText(labels.adultWarning);
   await expect(
     page.getByRole('heading', { name: labels.ageGateHeading, exact: true })
   ).toBeVisible();
@@ -299,7 +315,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   await available
     .getByRole('button', { name: labels.saveCategories, exact: true })
     .click();
-  await expect(page.getByRole('alert')).toContainText(labels.confirmFailure);
+  await expect(
+    page.getByText(labels.confirmFailure, { exact: true })
+  ).toBeVisible();
   await expect(
     available.getByRole('checkbox', { name: labels.movie, exact: true })
   ).not.toBeChecked();
@@ -322,7 +340,9 @@ test('Media Categories and Age Gate follow the saved locale and preserve each dr
   await available
     .getByRole('button', { name: labels.saveCategories, exact: true })
     .click();
-  await expect(page.getByRole('alert')).toContainText(labels.serverProblem);
+  await expect(
+    page.getByText(labels.serverProblem, { exact: true })
+  ).toBeVisible();
   await expect(
     available.getByRole('checkbox', { name: labels.ebook, exact: true })
   ).not.toBeChecked();

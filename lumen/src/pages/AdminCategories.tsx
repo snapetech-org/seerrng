@@ -132,12 +132,27 @@ function CategoryForm({
         }}
       />
       {!defaults && (draft.adult ?? categories.adult) && (
-        <p className="note">
-          {t(
-            'lumen.adminCategories.adultEnabledNote',
-            'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.'
-          )}
-        </p>
+        <>
+          <p className="note">
+            {t(
+              'lumen.adminCategories.adultEnabledNote',
+              'Adult discovery requires a configured Whisparr v3 service and account permission. Restricted accounts cannot access it.'
+            )}
+          </p>
+          <p className="note" role="note">
+            <strong>
+              {t(
+                'components.Settings.SettingsCategories.adultWarningTitle',
+                'Adult content is visible to everyone with access'
+              )}
+            </strong>
+            <br />
+            {t(
+              'components.Settings.SettingsCategories.adultWarning',
+              'If you share this instance with family or expose it through a reverse proxy, anyone granted Request Adult can see what you browse and request. Flag family accounts as restricted below, or under each user’s Permissions, so they never see Adult content.'
+            )}
+          </p>
+        </>
       )}
       {failure && (
         <p className="note" role="alert">

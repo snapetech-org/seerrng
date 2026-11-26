@@ -10699,6 +10699,24 @@ native visual audits remain open.
 
 release-note: `release-notes/fixed-lumen-rtorrent-username.md`
 
+### Adult category family-visibility guidance (2026-11-26)
+
+When Adult discovery is enabled, native Media Categories warns that accounts
+granted Request Adult can see the catalog and advises administrators to mark
+family accounts as restricted. Lumen previously only described the Whisparr
+and permission requirements. Lumen now shows the same localized family-sharing
+guidance as a persistent, non-interrupting note while Adult is enabled. The
+existing native English, French, and Arabic translations are reused. The
+categories and Age Gate workflow passes 12 browser cases across those three
+locales and desktop, iPhone, Android, and tablet; the production Lumen build
+passes. Desktop and phone candidate captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/adult-category-warning/captures-final/`.
+The screenshots were inspected for wrapping and neighboring controls; a
+matched native capture for this state remains unavailable, so native visual
+parity is unverified.
+
+release-note: `release-notes/fixed-lumen-adult-category-guidance.md`
+
 ### Express entry and frontend-choice regression check (2026-11-25)
 
 The Express mount and frontend-choice migration regressions pass together: five
