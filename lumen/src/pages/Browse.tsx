@@ -857,7 +857,7 @@ export default function Browse({ kind }: { kind: 'movie' | 'tv' }) {
           <img src={companyLogoSrc} alt={companyLogoAlt} />
         </div>
       )}
-      <div className="toolbar">
+      <div className="toolbar browse-toolbar">
         {canViewFollowing(user?.permissions) && (
           <>
             {followedGenre && (

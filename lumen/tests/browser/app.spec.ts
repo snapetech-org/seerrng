@@ -4342,6 +4342,18 @@ test('movie studio search can select and exclude a studio', async ({
     .getByRole('button', { name: 'Exclude Studio', exact: true })
     .click();
   await query;
+  if (page.viewportSize()!.width <= 1039) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const clearFilters = page.getByRole('button', {
+      name: 'Clear Discovery Filters',
+    });
+    const clearBounds = await clearFilters.boundingBox();
+    const tabsBounds = await page.locator('.tabbar').boundingBox();
+    expect(clearBounds).not.toBeNull();
+    expect(tabsBounds).not.toBeNull();
+    expect(clearBounds!.y).toBeGreaterThanOrEqual(0);
+    expect(clearBounds!.y + clearBounds!.height).toBeLessThan(tabsBounds!.y);
+  }
   await page.reload();
   await expect(
     page.getByRole('button', { name: 'Exclude Studio', exact: true })

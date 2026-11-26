@@ -2995,6 +2995,11 @@ section section,
   .toolbar > .sel input {
     flex: 1 1 auto;
   }
+  /* Keep the discovery reset action above the fixed phone tab bar. */
+  .browse-toolbar > .filters-clear {
+    order: -1;
+    margin-left: 0;
+  }
   .toolbar-search {
     flex-basis: 100%;
   }

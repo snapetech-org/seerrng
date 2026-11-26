@@ -11559,3 +11559,16 @@ focused production-preview browser case passes on desktop, iPhone, Android,
 and tablet.
 
 release-note: `release-notes/lumen-mobile-detail-heading-clearance.md`
+
+### Mobile Browse reset action remains reachable (2026-11-26)
+
+Matched native and Lumen Studio-filter captures exposed that the final
+Clear Discovery Filters button wrapped below the phone viewport and behind
+the floating tab bar. The shared Browse toolbar now orders that action first
+on narrow screens while leaving desktop order and reset behavior unchanged.
+The Studio fixture asserts the button is in the initial viewport above the
+tab bar at phone and tablet widths. Its candidate capture was inspected against
+the existing native iPhone capture; the action is visible without scrolling.
+The check covers fixture behavior and geometry, not live catalog results.
+
+release-note: `release-notes/lumen-mobile-discovery-reset.md`
