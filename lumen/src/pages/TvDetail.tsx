@@ -1140,14 +1140,18 @@ export default function TvDetail() {
                       'lumen.tv.fact.originalLanguage',
                       'Original Language'
                     ),
-                    originalLanguageLink(t.originalLanguage, '/series'),
+                    originalLanguageLink(t.originalLanguage, '/series', locale),
                   ],
                   [
                     translate(
                       'lumen.tv.fact.productionCountries',
                       'Production Countries'
                     ),
-                    productionCountryLinks(t.productionCountries, '/series'),
+                    productionCountryLinks(
+                      t.productionCountries,
+                      '/series',
+                      locale
+                    ),
                   ],
                   [
                     translate('lumen.tv.fact.firstAirDate', 'First Air Date'),

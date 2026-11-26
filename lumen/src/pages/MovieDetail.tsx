@@ -115,7 +115,7 @@ function MovieCollectionSummary({ id, name }: { id: number; name: string }) {
 }
 
 export default function MovieDetail() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { id } = useParams();
   const [manageOpen, setManageOpen] = useState(false);
@@ -558,14 +558,18 @@ export default function MovieDetail() {
                   ],
                   [
                     t('lumen.movie.fact.originalLanguage', 'Original Language'),
-                    originalLanguageLink(m.originalLanguage, '/movies'),
+                    originalLanguageLink(m.originalLanguage, '/movies', locale),
                   ],
                   [
                     t(
                       'lumen.movie.fact.productionCountries',
                       'Production Countries'
                     ),
-                    productionCountryLinks(m.productionCountries, '/movies'),
+                    productionCountryLinks(
+                      m.productionCountries,
+                      '/movies',
+                      locale
+                    ),
                   ],
                   [
                     t(

@@ -412,28 +412,35 @@ export function VideoDisclosure({
   );
 }
 
-const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
-
 export function originalLanguageLink(
   language: string | undefined,
-  path: '/movies' | '/series'
+  path: '/movies' | '/series',
+  locale: string
 ) {
   if (!language || !/^[a-z]{2}$/.test(language)) return null;
+  const localizedName = new Intl.DisplayNames([locale], {
+    type: 'language',
+    fallback: 'none',
+  }).of(language);
   return (
-    <Link to={path + '?language=' + language}>
-      {languageNames.of(language) ?? language}
-    </Link>
+    <Link to={path + '?language=' + language}>{localizedName ?? language}</Link>
   );
 }
 
 export function productionCountryLinks(
   countries: ProductionCountry[] | undefined,
-  browse: '/movies' | '/series'
+  browse: '/movies' | '/series',
+  locale: string
 ) {
   const unique = new Map<string, string>();
   for (const { iso_3166_1: code, name } of countries ?? []) {
-    if (/^[A-Z]{2}$/.test(code) && !unique.has(code))
-      unique.set(code, name || code);
+    if (/^[A-Z]{2}$/.test(code) && !unique.has(code)) {
+      const localizedName = new Intl.DisplayNames([locale], {
+        type: 'region',
+        fallback: 'none',
+      }).of(code);
+      unique.set(code, localizedName ?? name ?? code);
+    }
   }
   if (!unique.size) return null;
   return [...unique].map(([code, name], index) => (

@@ -1615,6 +1615,73 @@ test('movie release type labels use the saved locale', async ({ page }) => {
   }
 });
 
+test('movie and series language and country facts follow the saved locale', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let locale = 'en';
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale } })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        originalLanguage: 'ja',
+        productionCountries: [
+          { iso_3166_1: 'US', name: 'Provider Country Name' },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/tv/202', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        id: 202,
+        mediaType: 'tv',
+        name: 'The Test Series',
+        originalLanguage: 'ja',
+        firstAirDate: '2020-01-01',
+        seasons: [],
+        productionCountries: [
+          { iso_3166_1: 'US', name: 'Provider Country Name' },
+        ],
+        mediaInfo: undefined,
+      },
+    })
+  );
+  const cases = [
+    { locale: 'en', language: 'Japanese', country: 'United States' },
+    { locale: 'fr', language: 'japonais', country: 'États-Unis' },
+    { locale: 'ar', language: 'اليابانية', country: 'الولايات المتحدة' },
+  ];
+  for (const item of cases) {
+    locale = item.locale;
+    for (const [path, mediaPath] of [
+      ['/movie/101', '/movies'],
+      ['/tv/202', '/series'],
+    ]) {
+      await page.goto(testAppPath(path));
+      await page.locator('details#details > summary').click();
+      const language = page.getByRole('link', {
+        name: item.language,
+        exact: true,
+      });
+      const country = page.getByRole('link', {
+        name: item.country,
+        exact: true,
+      });
+      await expect(language).toHaveAttribute(
+        'href',
+        `${mediaPath}?language=ja`
+      );
+      await expect(country).toHaveAttribute('href', `${mediaPath}?country=US`);
+      await expect(page.getByText('Provider Country Name')).toHaveCount(0);
+    }
+  }
+});
+
 test('series details hide or mark shared seasons without reopening requests', async ({
   page,
 }) => {

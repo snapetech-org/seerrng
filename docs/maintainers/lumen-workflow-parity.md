@@ -11684,3 +11684,18 @@ verified; a same-state native/Lumen screenshot comparison remains unverified
 and stays within the broader detail visual audit.
 
 release-note: `release-notes/lumen-movie-release-localization.md`
+
+### Movie and TV language facts follow the saved locale (2026-11-26)
+
+Movie and TV Details now display the original-language and production-country
+names using the signed-in user's saved locale. The language and country values
+remain links to their existing catalog filters. For provider country names
+without a recognized ISO region, Lumen retains the provider-supplied name.
+
+Browser fixtures verify English, French, and Arabic labels and unchanged filter
+links on both detail routes, across desktop, iPhone, Android, and tablet. The
+production Lumen build passes. This establishes rendered behavior in fixtures;
+matched native/Lumen captures, live provider values, and bundled-mount coverage
+for these states remain unverified.
+
+release-note: `release-notes/lumen-localized-detail-geography.md`
