@@ -11793,7 +11793,7 @@ release-note: `release-notes/lumen-localized-card-labels.md`
 All 99 Lumen Podcasts source messages now have French and Arabic translations.
 This covers discovery, search, library and activity states, episode selection
 and acquisition, follow controls, removal confirmations, and recovery feedback.
-The six built-in chart genre names are localized as well; unknown provider
+All 19 built-in chart genre names are localized as well; unknown provider
 genres retain their original names. Podcast selection, authorization, provider
 calls, and download behavior are unchanged.
 
@@ -11801,7 +11801,9 @@ The locale catalog test scans all registered Podcasts messages and verifies
 French and Arabic values. Production-preview browser checks verify the title,
 discovery heading, category group and names, saved document language and RTL
 direction, across desktop, iPhone, Android, and tablet (8 cases). These use
-fixture-backed podcast APIs.
+fixture-backed podcast APIs. At phone widths the category strip is intentionally
+horizontally scrollable; the test scrolls the first RTL genre fully into view
+and confirms the strip does not cause page-level horizontal overflow.
 French and Arabic desktop and iPhone candidate captures were inspected for
 layout, wrapping, and overflow; they are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/podcast-localization-20261126/playwright-results/`.

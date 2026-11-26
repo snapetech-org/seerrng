@@ -1937,6 +1937,8 @@ for (const [
   expectedComedy,
   expectedMoreHeading,
   expectedEpisodeCount,
+  expectedBusiness,
+  expectedTechnology,
 ] of [
   [
     'fr',
@@ -1949,6 +1951,8 @@ for (const [
     'Comédie',
     'Plus d’émissions Actualités',
     'Fixture Charts · 300 épisodes',
+    'Affaires',
+    'Technologie',
   ],
   [
     'ar',
@@ -1961,6 +1965,8 @@ for (const [
     'كوميديا',
     'المزيد من برامج الأخبار',
     'Fixture Charts · 300 حلقة',
+    'الأعمال',
+    'التقنية',
   ],
 ] as const) {
   test(`podcast discovery uses the saved ${locale} locale`, async ({
@@ -1968,6 +1974,18 @@ for (const [
   }, info) => {
     await mockMusic(page, { previews: [], saved: [] }, locale);
     await mockPodcasts(page, { subscribed: [], downloads: [], auto: [] });
+    await page.route('**/api/v1/podcast/genres', (route) =>
+      route.fulfill({
+        json: {
+          genres: [
+            { id: 1303, name: 'Comedy' },
+            { id: 1318, name: 'Technology' },
+            { id: 1321, name: 'Business' },
+            { id: 1489, name: 'News' },
+          ],
+        },
+      })
+    );
     await page.goto(testAppPath('/podcasts'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(
@@ -1985,6 +2003,12 @@ for (const [
     await expect(
       page.getByRole('button', { name: expectedComedy })
     ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: expectedBusiness })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: expectedTechnology })
+    ).toBeVisible();
     await expect(page.getByText(expectedEpisodeCount).first()).toBeVisible();
     await expect(
       page.getByRole('heading', { name: expectedMoreHeading })
@@ -1995,6 +2019,26 @@ for (const [
       'dir',
       locale === 'ar' ? 'rtl' : 'ltr'
     );
+    if (['iphone', 'android'].includes(info.project.name)) {
+      const genreRail = page.locator('.pod-genres');
+      expect(
+        await genreRail.evaluate(
+          (element) => element.scrollWidth > element.clientWidth
+        )
+      ).toBe(true);
+      const firstGenre = page.getByRole('button', { name: expectedNews });
+      await firstGenre.scrollIntoViewIfNeeded();
+      const [railBox, genreBox] = await Promise.all([
+        genreRail.boundingBox(),
+        firstGenre.boundingBox(),
+      ]);
+      expect(railBox).not.toBeNull();
+      expect(genreBox).not.toBeNull();
+      expect(genreBox!.x).toBeGreaterThanOrEqual(railBox!.x - 1);
+      expect(genreBox!.x + genreBox!.width).toBeLessThanOrEqual(
+        railBox!.x + railBox!.width + 1
+      );
+    }
     await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
     if (['desktop', 'iphone'].includes(info.project.name))
       await page.screenshot({

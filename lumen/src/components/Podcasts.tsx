@@ -172,12 +172,25 @@ interface PodcastGenre {
 }
 
 const PODCAST_GENRE_TRANSLATIONS: Record<number, { fr: string; ar: string }> = {
+  1301: { fr: 'Arts', ar: 'الفنون' },
+  1304: { fr: 'Éducation', ar: 'التعليم' },
   1303: { fr: 'Comédie', ar: 'كوميديا' },
+  1305: { fr: 'Enfants et famille', ar: 'الأطفال والعائلة' },
+  1310: { fr: 'Musique', ar: 'الموسيقى' },
+  1314: { fr: 'Religion et spiritualité', ar: 'الدين والروحانية' },
+  1318: { fr: 'Technologie', ar: 'التقنية' },
+  1321: { fr: 'Affaires', ar: 'الأعمال' },
   1324: { fr: 'Société et culture', ar: 'المجتمع والثقافة' },
   1488: { fr: 'Crimes et enquêtes', ar: 'جرائم حقيقية' },
+  1483: { fr: 'Fiction', ar: 'الخيال' },
+  1487: { fr: 'Histoire', ar: 'التاريخ' },
   1489: { fr: 'Actualités', ar: 'الأخبار' },
+  1502: { fr: 'Loisirs', ar: 'الترفيه' },
+  1511: { fr: 'Gouvernement', ar: 'الحكومة' },
+  1512: { fr: 'Santé et forme', ar: 'الصحة واللياقة' },
   1533: { fr: 'Sciences', ar: 'العلوم' },
   1545: { fr: 'Sports', ar: 'الرياضة' },
+  1309: { fr: 'Télévision et cinéma', ar: 'التلفزيون والأفلام' },
 };
 
 function podcastGenreName(id: number, name: string, locale: string) {
