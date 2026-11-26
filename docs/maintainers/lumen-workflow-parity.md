@@ -6824,7 +6824,6 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
-
 ### Avoid denied Adult catalog probes (2026-11-26)
 
 Lumen previously probed `/adult/search` to discover whether the Adult catalog
@@ -11357,5 +11356,27 @@ and browser output are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/active-mounted-failure-triage/`,
 and the bookmark run output is under
 `.../active-admin-bookmark-parity/results/`.
+
+release-note: none
+
+### Embedded Discover menu and schedule browser checks (2026-11-26)
+
+Corrected the Discover-menu browser fixtures to mock the embedded
+configuration endpoint, grant the permissions required for Adult navigation,
+and match the native rule that hides Adult for accounts without request
+permissions. Updated the Scheduled Jobs assertion to check the saved cron
+payload and the human-readable schedule label shown by the UI.
+
+The focused mounted browser run passed all 24 executions across desktop,
+iPhone, Android, and tablet against the production bundle served by
+SeerrNG's compiled `mountLumenFrontend` middleware at `/lumen/`. It includes
+the 320px navigation reachability case and Scheduled Jobs checks. An earlier
+attempt used the default standalone preview because it set the wrong Playwright
+URL variable; those results are excluded. This is a scoped fixture-backed
+requalification, not a rerun of the full suite or evidence of live provider
+behavior or native-matched visual parity.
+
+Retained browser results are under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/embedded-mounted-qa-f8f57fce/`.
 
 release-note: none

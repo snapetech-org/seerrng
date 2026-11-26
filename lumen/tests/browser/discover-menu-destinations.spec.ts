@@ -11,6 +11,9 @@ async function prepare(
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
+  await page.route('**/lumen/configuration', (route) =>
+    route.fulfill({ json: {} })
+  );
   await page.route('**/api/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname
       .replace(/^\/lumen(?=\/)/, '')
@@ -57,7 +60,7 @@ test('native Discover destinations have direct Lumen menu links', async ({
     sports: true,
     adult: true,
   };
-  const menu = await prepare(page, 32, categories);
+  const menu = await prepare(page, 32 | 2, categories);
   const destinations = [
     ['Book Recommendations', '/books/recommendations'],
     ['Collector Picks', '/music/collectors'],
@@ -106,10 +109,13 @@ test('request actions stay hidden while software browsing remains available', as
     await expect(
       menu.getByRole('link', { name: label, exact: true })
     ).toHaveCount(0);
-  for (const label of ['Comics/Manga', 'Magazines', 'Sports', 'Adult'])
+  for (const label of ['Comics/Manga', 'Magazines', 'Sports'])
     await expect(
       menu.getByRole('link', { name: label, exact: true })
     ).toBeVisible();
+  await expect(
+    menu.getByRole('link', { name: 'Adult', exact: true })
+  ).toHaveCount(0);
   const software = menu.getByRole('link', { name: 'Software', exact: true });
   await expect(software).toBeVisible();
   if (
@@ -136,7 +142,7 @@ test('request actions stay hidden while software browsing remains available', as
 test('Discover menu destinations follow account category restrictions', async ({
   page,
 }) => {
-  const menu = await prepare(page, 32, {
+  const menu = await prepare(page, 32 | 2, {
     ebook: false,
     audiobook: false,
     music: false,
@@ -184,7 +190,7 @@ test('all Discover menu links remain reachable without horizontal overflow at 32
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });
-  const menu = await prepare(page, 32, {
+  const menu = await prepare(page, 32 | 2, {
     ebook: true,
     audiobook: true,
     music: true,

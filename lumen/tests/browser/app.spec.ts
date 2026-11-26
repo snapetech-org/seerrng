@@ -10047,7 +10047,10 @@ test('Scheduled Jobs runs immediately and saves an edited schedule', async ({
   await page.getByLabel('Frequency').selectOption('20');
   await expect(page.getByLabel('Cron Schedule')).toHaveValue('0 */20 * * * *');
   await page.getByRole('button', { name: 'Save Schedule' }).click();
-  await expect(page.getByText('0 */20 * * * *', { exact: true })).toBeVisible();
+  await expect.poll(() => job.cronSchedule).toBe('0 */20 * * * *');
+  await expect(
+    page.getByText('Every 20 minutes', { exact: true })
+  ).toBeVisible();
 });
 
 test('Scheduled Jobs describes calendar presets and preserves existing custom schedules', async ({
