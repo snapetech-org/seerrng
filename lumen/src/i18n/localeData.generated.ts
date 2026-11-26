@@ -3453,6 +3453,14 @@ export const localeData = [
       'lumen.cards.listen': 'استمع',
       'lumen.cards.read': 'اقرأ',
       'lumen.cards.chooseNarrator': 'اختر راوياً',
+      'lumen.requestSummary.season': 'الموسم {numbers}',
+      'lumen.requestSummary.seasons': 'المواسم {numbers}',
+      'lumen.requestSummary.title4k': '{title} بدقة 4K',
+      'lumen.requestSummary.requestedSeasons': 'تم طلب {title} · {seasons}',
+      'lumen.requestSummary.submitted': 'تم إرسال طلب {title}',
+      'lumen.requestSummary.approvalRequested': 'تم طلب موافقة لـ {title}',
+      'lumen.requestSummary.movieRequested': 'تم طلب {title}',
+      'lumen.requestSummary.movieRequested4k': 'تم طلب {title} بدقة 4K',
       'lumen.category.adminHelp':
         'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.',
       'lumen.category.backDiscover': 'العودة إلى الاستكشاف',
@@ -15532,6 +15540,15 @@ export const localeData = [
       'lumen.cards.listen': 'Listen',
       'lumen.cards.read': 'Read',
       'lumen.cards.chooseNarrator': 'Choose narrator',
+      'lumen.requestSummary.season': 'Season {numbers}',
+      'lumen.requestSummary.seasons': 'Seasons {numbers}',
+      'lumen.requestSummary.title4k': '{title} in 4K',
+      'lumen.requestSummary.requestedSeasons': 'Requested {title} · {seasons}',
+      'lumen.requestSummary.submitted': 'Request submitted for {title}',
+      'lumen.requestSummary.approvalRequested':
+        'Approval requested for {title}',
+      'lumen.requestSummary.movieRequested': 'Requested {title}',
+      'lumen.requestSummary.movieRequested4k': 'Requested {title} in 4K',
       'lumen.category.adminHelp':
         'An admin can enable it in SeerrNG under Settings › General › Media categories.',
       'lumen.category.backDiscover': 'Back to Discover',
@@ -28537,6 +28554,17 @@ export const localeData = [
       'lumen.cards.listen': 'Écouter',
       'lumen.cards.read': 'Lire',
       'lumen.cards.chooseNarrator': 'Choisir un narrateur',
+      'lumen.requestSummary.season': 'Saison {numbers}',
+      'lumen.requestSummary.seasons': 'Saisons {numbers}',
+      'lumen.requestSummary.title4k': '{title} en 4K',
+      'lumen.requestSummary.requestedSeasons':
+        'Demande envoyée pour {title} · {seasons}',
+      'lumen.requestSummary.submitted': 'Demande envoyée pour {title}',
+      'lumen.requestSummary.approvalRequested':
+        'Demande d’approbation envoyée pour {title}',
+      'lumen.requestSummary.movieRequested': 'Demande envoyée pour {title}',
+      'lumen.requestSummary.movieRequested4k':
+        'Demande envoyée pour {title} en 4K',
       'lumen.category.adminHelp':
         'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
       'lumen.category.backDiscover': 'Retour à Découvrir',

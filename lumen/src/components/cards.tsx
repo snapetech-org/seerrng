@@ -537,10 +537,22 @@ export function TitleCard({
     setRequestedQuality(is4k ? '4K' : 'HD');
     toast(
       quotaException
-        ? `Approval requested for ${titleOf(it)}`
+        ? t(
+            'lumen.requestSummary.approvalRequested',
+            'Approval requested for {title}',
+            {
+              title: titleOf(it),
+            }
+          )
         : tv
-          ? seriesRequestSummary(titleOf(it), series, is4k)
-          : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
+          ? seriesRequestSummary(titleOf(it), series, is4k, t)
+          : t(
+              is4k
+                ? 'lumen.requestSummary.movieRequested4k'
+                : 'lumen.requestSummary.movieRequested',
+              is4k ? 'Requested {title} in 4K' : 'Requested {title}',
+              { title: titleOf(it) }
+            )
     );
   });
   const [request, busy] = useBusy(quick.request);
@@ -953,10 +965,22 @@ export function FeatCard({
     setDone(is4k ? '4K Requested' : 'Requested');
     toast(
       quotaException
-        ? `Approval requested for ${titleOf(it)}`
+        ? t(
+            'lumen.requestSummary.approvalRequested',
+            'Approval requested for {title}',
+            {
+              title: titleOf(it),
+            }
+          )
         : tv
-          ? seriesRequestSummary(titleOf(it), series, is4k)
-          : `Requested ${titleOf(it)}${is4k ? ' in 4K' : ''}`
+          ? seriesRequestSummary(titleOf(it), series, is4k, t)
+          : t(
+              is4k
+                ? 'lumen.requestSummary.movieRequested4k'
+                : 'lumen.requestSummary.movieRequested',
+              is4k ? 'Requested {title} in 4K' : 'Requested {title}',
+              { title: titleOf(it) }
+            )
     );
   });
   const [request, busy] = useBusy(quick.request);

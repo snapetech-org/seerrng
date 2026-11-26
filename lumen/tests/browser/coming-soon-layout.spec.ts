@@ -212,3 +212,40 @@ test('Coming Soon offers approval after a quota denial', async ({
     { mediaType: 'movie', mediaId: 900, requestQuotaApproval: true },
   ]);
 });
+
+test('Coming Soon localizes series request feedback and season ranges', async ({
+  page,
+}) => {
+  await fixtures(page, 32);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.route('**/api/v1/discover/tv/upcoming*', (route) =>
+    route.fulfill({
+      json: paged([
+        {
+          id: 901,
+          name: 'Upcoming Series',
+          mediaType: 'tv',
+          firstAirDate: '2027-03-15',
+        },
+      ]),
+    })
+  );
+  await page.route('**/api/v1/request', (route) =>
+    route.fulfill({
+      json: {
+        id: 42,
+        seasons: [{ seasonNumber: 1 }, { seasonNumber: 2 }],
+      },
+    })
+  );
+  await page.goto(testAppPath('/soon?media=tv'));
+  const row = page.locator('.si').filter({ hasText: 'Upcoming Series' });
+  await row.getByRole('button', { name: 'Demander', exact: true }).click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Demande envoyée pour Upcoming Series · Saisons 1–2' })
+  ).toBeVisible();
+});

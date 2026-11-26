@@ -11761,6 +11761,20 @@ Bookshelf provider responses remain part of the broader parity audit.
 
 release-note: `release-notes/lumen-book-card-localization.md`
 
+### Movie and series request feedback uses the account locale (2026-11-26)
+
+Quick-request cards, featured cards, Coming Soon, and TV Details now localize
+request-submitted, over-quota approval, 4K, and selected-season summaries.
+Series summaries preserve their selected season ranges while applying locale
+labels.
+
+The focused French Coming Soon browser case verifies the request confirmation
+and a two-season range across desktop, iPhone, Android, and tablet. Locale
+catalog tests and the production build pass. Native-matched visuals and live
+provider dispatch remain open in the wider workflow audit.
+
+release-note: `release-notes/lumen-localized-request-feedback.md`
+
 The Discover featured rail uses the same native localized movie and series
 labels as poster cards, with localized request and media-server playback
 actions. French browser coverage checks its series label and request action in

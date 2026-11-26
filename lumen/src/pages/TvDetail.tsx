@@ -444,11 +444,18 @@ export default function TvDetail() {
       const result = await requestSeries(t.id, requestedSeasons, options);
       toast(
         result.quotaException
-          ? `Approval requested for ${t.name || 'this series'}`
+          ? translate(
+              'lumen.requestSummary.approvalRequested',
+              'Approval requested for {title}',
+              {
+                title: t.name || 'this series',
+              }
+            )
           : seriesRequestSummary(
               t.name || 'this series',
               result,
-              !!options.is4k
+              !!options.is4k,
+              translate
             )
       );
       refresh();

@@ -107,7 +107,9 @@ export default function Soon() {
     try {
       const title = it.title || it.name || 'this title';
       if (it.mediaType === 'tv') {
-        toast(seriesRequestSummary(title, await requestSeries(it.id)));
+        toast(
+          seriesRequestSummary(title, await requestSeries(it.id), false, t)
+        );
       } else {
         await requestMovie(it.id);
         toast(
@@ -227,7 +229,8 @@ export default function Soon() {
                   ? seriesRequestSummary(
                       choosing.name || 'this series',
                       series,
-                      is4k
+                      is4k,
+                      t
                     )
                   : t(
                       'lumen.soon.requestedMovie',
