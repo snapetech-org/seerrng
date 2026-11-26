@@ -30,7 +30,7 @@ and all three explicit choices after reloading from disk.
 
 | Remaining work | Acceptance |
 | --- | --- |
-| Finish published-image acceptance | Verify the fresh dark default and saved native/external choices, signed-in direct detail links, and matched native/Lumen behavior at phone/tablet/desktop. The v3.72.40 checks below cover a fresh setup entry, an upgraded config clone, saved Lumen routing, existing admin/member accounts, native escape, and companion auth/storage. A fresh-install headed check confirms the dark Lumen setup screen; signed-in detail routing and the matched published-image visual matrix remain open. |
+| Finish published-image acceptance | Verify the fresh dark default and saved native/external choices, signed-in direct detail links, and matched native/Lumen behavior at phone/tablet/desktop. The v3.72.40 checks below cover a fresh setup entry, an upgraded config clone, saved Lumen routing, existing admin/member accounts, native escape, and companion auth/storage. A fresh-install headed check confirms the dark Lumen setup screen. Authenticated Lumen movie-detail routing is now verified at phone/tablet/desktop with fixture metadata; native detail SSR and the matched published-image visual matrix remain open. |
 
 Normal included Save/reload/PNG upload has passed headless checks against a real
 SeerrNG server. Companion UID1000 save/upload and read-only failure also passed.
@@ -58,6 +58,17 @@ ran as UID/GID 1000 with a read-only root filesystem and a task-owned
 in and read `/api/v1/auth/me`; the config capability reported writable storage
 at UID/GID 1000; a settings save survived a fresh GET; a PNG upload was
 served back; and anonymous access to the settings endpoint returned 401.
+
+An additional check against the published SeerrNG image logged in the
+synthetic administrator and opened `/lumen/movie/550` directly at 390, 834, and
+1440 CSS pixels. The authenticated detail heading rendered, the route remained
+`/lumen/movie/550`, and document width matched viewport width at all three
+sizes. TMDB was unreachable on the isolated internal Docker network, so the
+browser supplied fixture metadata. This verifies Lumen's authenticated client
+route in the published image; it does not verify live metadata, native
+server-rendered detail routes, or matched native/Lumen visuals. Screenshots
+and the run report are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-parity-image-20261126/`.
 
 Headless screenshots at 390, 834, and 1440 CSS pixels are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
