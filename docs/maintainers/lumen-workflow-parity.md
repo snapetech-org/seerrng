@@ -11624,3 +11624,18 @@ iPhone, Android, and tablet for both focus destinations and the protected
 editing, modifier, and modal states.
 
 release-note: `release-notes/lumen-search-shortcut.md`
+
+### Book Details shows native catalog metadata (2026-11-26)
+
+The Lumen Book Details disclosure now includes the available author, publisher,
+page count, edition count, ISBN, edition ID, Open Library work, and ISBN
+candidates alongside series, publication year, listening time, and subjects.
+Author and Open Library values link only when the corresponding identifier is
+available and the Open Library work ID passes its format check. Missing
+provider fields use the native unavailable label. The response stays
+provider-agnostic and no additional metadata request is made.
+
+The focused browser regression verifies populated ebook metadata and safe
+author/Open Library links across desktop, iPhone, Android, and tablet.
+
+release-note: `release-notes/lumen-book-details-metadata.md`

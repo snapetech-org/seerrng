@@ -632,6 +632,95 @@ async function fixtures(
   return requests;
 }
 
+test('Book Details metadata matches native book facts when providers supply them', async ({
+  page,
+}, info) => {
+  await fixtures(page);
+  await page.route(`**/api/v1/book/${encodeURIComponent(ebookId)}*`, (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Metadata book'),
+        provider: 'openlibrary',
+        authorId: 'OL123A',
+        publisher: 'Example Press',
+        numberOfPages: 384,
+        editionCount: 12,
+        isbn13: '9781234567890',
+        editionId: 'OL456M',
+        firstPublishYear: 2020,
+        subjects: ['Fantasy'],
+        isbnCandidates: [
+          {
+            isbn: '9781234567890',
+            editionId: 'OL456M',
+            title: 'Metadata book, first edition',
+            format: 'Hardcover',
+          },
+        ],
+      },
+    })
+  );
+  await page.route('**/api/v1/book/*/ratings*', (route) =>
+    route.fulfill({
+      json: { source: 'openlibrary', count: 0, workId: 'OL789W' },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.locator('summary', { hasText: 'Book Details' }).click();
+  const facts = page.locator('.facts2');
+  for (const fact of [
+    'Example Press',
+    '384',
+    '12',
+    '9781234567890',
+    'OL456M',
+    'Fantasy',
+  ])
+    await expect(facts).toContainText(fact);
+  await expect(
+    facts.getByRole('link', { name: 'Fixture Author' })
+  ).toHaveAttribute('href', '/author/OL123A');
+  await expect(facts.getByRole('link', { name: 'OL789W' })).toHaveAttribute(
+    'href',
+    'https://openlibrary.org/works/OL789W'
+  );
+  await expect(facts).toContainText('9781234567890');
+  await page.screenshot({
+    path: info.outputPath('book-details-metadata.png'),
+    fullPage: true,
+  });
+});
+
+test('Book Details never turns Bookshelf IDs or untrusted rating IDs into Open Library links', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route(`**/api/v1/book/${encodeURIComponent(ebookId)}*`, (route) =>
+    route.fulfill({
+      json: {
+        ...book(ebookId, 'ebook', 'Bookshelf identity'),
+        provider: 'bookshelf',
+      },
+    })
+  );
+  await page.route('**/api/v1/book/*/ratings*', (route) =>
+    route.fulfill({
+      json: {
+        source: 'bookshelf',
+        count: 0,
+        workId: 'https://attacker.example/works/OL123W',
+      },
+    })
+  );
+  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.locator('summary', { hasText: 'Book Details' }).click();
+  const facts = page.locator('.facts2');
+  await expect(facts).toContainText('Not Available');
+  await expect(facts.getByRole('link', { name: /OL|attacker/i })).toHaveCount(
+    0
+  );
+});
+
 for (const format of ['ebook', 'audiobook'] as const) {
   test(`${format} keeps arbitrary native IDs, missing-cover titles and actual library inventory`, async ({
     page,

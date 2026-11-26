@@ -6312,5 +6312,14 @@
   "lumen.songIdentify.unavailable",
   "lumen.songIdentify.unavailableAurral",
   "lumen.trackRequests.unavailable",
-  "lumen.trackRequests.unavailableAurral"
+  "lumen.trackRequests.unavailableAurral",
+  "components.BookDetails.Layout.author",
+  "components.BookDetails.Layout.edition",
+  "components.BookDetails.Layout.editions",
+  "components.BookDetails.Layout.isbn",
+  "components.BookDetails.Layout.isbnCandidates",
+  "components.BookDetails.Layout.notAvailable",
+  "components.BookDetails.Layout.openLibrary",
+  "components.BookDetails.Layout.pages",
+  "components.BookDetails.Layout.publisher"
 ]

@@ -5125,7 +5125,16 @@
     "lumen.manageVideo.creator": "Creator",
     "lumen.manageVideo.studio": "Studio",
     "lumen.manageVideo.network": "Network",
-    "lumen.manageVideo.titleDetails": "Title Details"
+    "lumen.manageVideo.titleDetails": "Title Details",
+    "components.BookDetails.Layout.author": "Author",
+    "components.BookDetails.Layout.edition": "Edition",
+    "components.BookDetails.Layout.editions": "Editions",
+    "components.BookDetails.Layout.isbn": "ISBN",
+    "components.BookDetails.Layout.isbnCandidates": "ISBN Candidates",
+    "components.BookDetails.Layout.notAvailable": "Not Available",
+    "components.BookDetails.Layout.openLibrary": "Open Library",
+    "components.BookDetails.Layout.pages": "Pages",
+    "components.BookDetails.Layout.publisher": "Publisher"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10373,7 +10382,16 @@
     "lumen.manageVideo.creator": "Créateur",
     "lumen.manageVideo.studio": "Studio",
     "lumen.manageVideo.network": "Réseau",
-    "lumen.manageVideo.titleDetails": "Détails du Titre"
+    "lumen.manageVideo.titleDetails": "Détails du Titre",
+    "components.BookDetails.Layout.author": "Auteur",
+    "components.BookDetails.Layout.edition": "Édition",
+    "components.BookDetails.Layout.editions": "Éditions",
+    "components.BookDetails.Layout.isbn": "ISBN",
+    "components.BookDetails.Layout.isbnCandidates": "Candidats ISBN",
+    "components.BookDetails.Layout.notAvailable": "Non disponible",
+    "components.BookDetails.Layout.openLibrary": "Open Library",
+    "components.BookDetails.Layout.pages": "Pages",
+    "components.BookDetails.Layout.publisher": "Éditeur"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15625,6 +15643,15 @@
     "lumen.manageVideo.creator": "المنشئ",
     "lumen.manageVideo.studio": "الاستوديو",
     "lumen.manageVideo.network": "الشبكة",
-    "lumen.manageVideo.titleDetails": "تفاصيل العنوان"
+    "lumen.manageVideo.titleDetails": "تفاصيل العنوان",
+    "components.BookDetails.Layout.author": "صاحب البلاغ",
+    "components.BookDetails.Layout.edition": "الإصدار",
+    "components.BookDetails.Layout.editions": "الشروط",
+    "components.BookDetails.Layout.isbn": "ISBN",
+    "components.BookDetails.Layout.isbnCandidates": "ISBN المرشحون",
+    "components.BookDetails.Layout.notAvailable": "غير متاحة",
+    "components.BookDetails.Layout.openLibrary": "Open Library",
+    "components.BookDetails.Layout.pages": "الصفحة",
+    "components.BookDetails.Layout.publisher": "الناشر"
   }
 }

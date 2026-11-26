@@ -247,7 +247,7 @@ function hcFormId(id: string): string | null {
 }
 
 export default function BookDetail() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { id = '' } = useParams();
   const [p] = useSearchParams();
   const f: 'ebook' | 'audiobook' =
@@ -1075,40 +1075,146 @@ export default function BookDetail() {
               panel="details"
               label={t('lumen.detail.bookDetails', 'Book Details')}
             >
-              <Facts
-                rows={[
-                  [
-                    t('lumen.bookDetail.series', 'Series'),
-                    series?.id && series.title ? (
-                      <Link
-                        to={`/book-series/${encodeURIComponent(series.id)}`}
-                      >
-                        {series.title}
-                        {series.position ? ` #${series.position}` : ''}
-                      </Link>
-                    ) : series?.title ? (
-                      `${series.title}${series.position ? ' #' + series.position : ''}`
-                    ) : (
-                      ''
-                    ),
-                  ],
-                  [
-                    t('lumen.bookDetail.firstPublished', 'First published'),
-                    b.firstPublishYear,
-                  ],
-                  [
-                    t('lumen.bookDetail.listeningTime', 'Listening time'),
-                    audio && longest ? fmtHrs(longest) : '',
-                  ],
-                  [
-                    t('lumen.bookDetail.subjects', 'Subjects'),
-                    (b.subjects || [])
-                      .filter((t) => !FORMAT_TAG.test(t))
-                      .slice(0, 4)
-                      .join(', '),
-                  ],
-                ]}
-              />
+              {(() => {
+                const openLibraryWork =
+                  ratings.data?.source === 'openlibrary' &&
+                  /^OL[0-9]+W$/.test(ratings.data.workId ?? '')
+                    ? ratings.data.workId
+                    : b.provider === 'openlibrary' && /^OL[0-9]+W$/.test(b.id)
+                      ? b.id
+                      : undefined;
+                const unavailable = t(
+                  'components.BookDetails.Layout.notAvailable',
+                  'Not Available'
+                );
+                const number = (value?: number) =>
+                  typeof value === 'number' && value > 0
+                    ? new Intl.NumberFormat(locale).format(value)
+                    : unavailable;
+
+                return (
+                  <Facts
+                    rows={[
+                      [
+                        t('lumen.bookDetail.series', 'Series'),
+                        series?.id && series.title ? (
+                          <Link
+                            to={`/book-series/${encodeURIComponent(series.id)}`}
+                          >
+                            {series.title}
+                            {series.position ? ` #${series.position}` : ''}
+                          </Link>
+                        ) : series?.title ? (
+                          `${series.title}${series.position ? ' #' + series.position : ''}`
+                        ) : (
+                          ''
+                        ),
+                      ],
+                      [
+                        t('components.BookDetails.Layout.author', 'Author'),
+                        b.author ? (
+                          b.authorId ? (
+                            <Link
+                              to={`/author/${encodeURIComponent(b.authorId)}`}
+                            >
+                              {b.author}
+                            </Link>
+                          ) : (
+                            b.author
+                          )
+                        ) : (
+                          unavailable
+                        ),
+                      ],
+                      [
+                        t(
+                          'components.BookDetails.Layout.firstPublished',
+                          'First Published'
+                        ),
+                        b.firstPublishYear ?? unavailable,
+                      ],
+                      [
+                        t(
+                          'components.BookDetails.Layout.publisher',
+                          'Publisher'
+                        ),
+                        b.publisher || unavailable,
+                      ],
+                      [
+                        t('components.BookDetails.Layout.pages', 'Pages'),
+                        audio ? unavailable : number(b.numberOfPages),
+                      ],
+                      [
+                        t('components.BookDetails.Layout.editions', 'Editions'),
+                        number(b.editionCount),
+                      ],
+                      [
+                        t('components.BookDetails.Layout.isbn', 'ISBN'),
+                        b.isbn13 || unavailable,
+                      ],
+                      [
+                        t('components.BookDetails.Layout.edition', 'Edition'),
+                        b.editionId || unavailable,
+                      ],
+                      [
+                        t(
+                          'components.BookDetails.Layout.openLibrary',
+                          'Open Library'
+                        ),
+                        openLibraryWork ? (
+                          <a
+                            href={`https://openlibrary.org/works/${openLibraryWork}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {openLibraryWork}
+                          </a>
+                        ) : (
+                          unavailable
+                        ),
+                      ],
+                      [
+                        t('lumen.bookDetail.listeningTime', 'Listening time'),
+                        audio
+                          ? longest
+                            ? fmtHrs(longest)
+                            : unavailable
+                          : unavailable,
+                      ],
+                      [
+                        t('lumen.bookDetail.subjects', 'Subjects'),
+                        (b.subjects || [])
+                          .filter((t) => !FORMAT_TAG.test(t))
+                          .slice(0, 4)
+                          .join(', ') || unavailable,
+                      ],
+                      [
+                        t(
+                          'components.BookDetails.Layout.isbnCandidates',
+                          'ISBN Candidates'
+                        ),
+                        b.isbnCandidates?.length
+                          ? b.isbnCandidates.slice(0, 4).map((candidate) => (
+                              <span
+                                className="block"
+                                key={`${candidate.editionId ?? candidate.isbn}-${candidate.isbn}`}
+                                title={[
+                                  candidate.isbn,
+                                  candidate.title,
+                                  candidate.format,
+                                ]
+                                  .filter(Boolean)
+                                  .join(' · ')}
+                              >
+                                {candidate.isbn}
+                              </span>
+                            ))
+                          : unavailable,
+                      ],
+                    ]}
+                  />
+                );
+              })()}
             </VideoDisclosure>
           </aside>
         </div>

@@ -1089,7 +1089,15 @@ export interface JellystatPlaybackSummary {
 export interface BookDetails extends BookResult {
   onUserWatchlist?: boolean;
   description?: string;
-  isbnCandidates?: string[];
+  numberOfPages?: number;
+  editionCount?: number;
+  isbnCandidates?: {
+    isbn: string;
+    editionId?: string;
+    title?: string;
+    format?: string;
+    languages?: string[];
+  }[];
 }
 export interface Edition {
   id: string;
