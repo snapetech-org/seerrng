@@ -11215,3 +11215,15 @@ by confirmed removal and asserts that only one decision POST occurs. Fixture
 coverage does not establish live ReadMeABook service behavior.
 
 release-note: `release-notes/fixed-lumen-readmeabook-approval-confirmation.md`
+
+### Full bundled mount-suite requalification (2026-11-26)
+
+Rebuilt the production Lumen bundle at exact current `main` (`0c8a04f259c0d07e7247cb35a01ac060cc260677`) and served it through the compiled SeerrNG Express `mountLumenFrontend` middleware at `/lumen/`. The complete browser suite finished across desktop, iPhone, Android, and tablet with 5,644 passed, 164 expected viewport skips, and zero unexpected failures (5,808 total executions; 58.4 minutes; two workers). This supersedes the earlier statement that the full mounted suite had not been rerun and closes that qualification gap.
+
+Results and screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/full-mounted-0c8a04f25/`.
+The cases use fixture-backed API and provider responses. This run does not
+establish live provider behavior, published-image behavior, or native-matched
+visual parity; the broader feature parity audit remains open.
+
+release-note: none
