@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const text = {
   en: {
     title: 'Share',
@@ -147,7 +150,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(page.getByLabel(copy.matchFor)).toBeVisible();
     await expect(page.getByRole('link', { name: copy.open })).toHaveAttribute(
       'href',
-      '/tv/42'
+      appPath('/tv/42')
     );
     const seasons = page.getByLabel(copy.seasons);
     await expect(

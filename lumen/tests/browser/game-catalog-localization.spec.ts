@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_GAME_CATALOG_LOCALE ?? ''
 )
@@ -147,13 +150,13 @@ test('Games catalog controls and empty state follow the saved locale', async ({
   await expect(page.getByText(copy.pcHint)).toBeVisible();
   await expect(
     page.locator('#view').getByRole('link', { name: copy.finder })
-  ).toHaveAttribute('href', '/games/discovery');
+  ).toHaveAttribute('href', appPath('/games/discovery'));
   await expect(
     page.locator('#view').getByRole('link', { name: copy.hacks })
-  ).toHaveAttribute('href', '/patches');
+  ).toHaveAttribute('href', appPath('/patches'));
   await expect(
     page.locator('#view').getByRole('link', { name: copy.myGames })
-  ).toHaveAttribute('href', '/game-library');
+  ).toHaveAttribute('href', appPath('/game-library'));
   await expect(page.getByRole('group', { name: copy.platform })).toBeVisible();
   await expect(page.getByRole('button', { name: copy.pc })).toBeVisible();
   await expect(page.getByRole('button', { name: copy.retro })).toBeVisible();

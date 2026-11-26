@@ -1,5 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 // Detail pages keep their content while a request refreshes them, a temporary /auth/me
 // failure is not a sign-out, and 4K-only titles still link to the media server.
 const paged = (results: unknown[]) => ({
@@ -298,7 +300,10 @@ test('available movie cards localize their media-server quick link', async ({
   await libraryCard.hover();
   const on = libraryCard.locator('.qbtn.okb');
   await expect(on).toHaveText(baseline ? 'On Plex' : onServer[locale]);
-  await expect(on).toHaveAttribute('href', /^\/movie\/66(?:\?|$)/);
+  await expect(on).toHaveAttribute(
+    'href',
+    new RegExp(`^${mount}/movie/66(?:\\?|$)`)
+  );
   const width = page.viewportSize()?.width;
   const captureDir = process.env.LUMEN_DETAIL_MEDIA_CAPTURE_DIR;
   if (captureDir && (width === 1440 || width === 390))

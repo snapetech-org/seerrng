@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const copy = {
   en: {
     cast: 'Cast',
@@ -192,13 +195,13 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await tags.locator('summary').click();
     await expect(
       tags.getByRole('link', { name: 'Space Opera', exact: true })
-    ).toHaveAttribute('href', '/movies?keywords=301');
+    ).toHaveAttribute('href', appPath('/movies?keywords=301'));
     await expect(
       tags.getByRole('link', { name: 'Space Opera', exact: true })
     ).toHaveCount(1);
     await expect(
       tags.getByRole('link', { name: 'Found Family', exact: true })
-    ).toHaveAttribute('href', '/movies?keywords=302');
+    ).toHaveAttribute('href', appPath('/movies?keywords=302'));
     if (capture && ['desktop', 'iphone'].includes(info.project.name)) {
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({

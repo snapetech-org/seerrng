@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const copy = {
   en: {
     title: 'Similar Movies',
@@ -58,7 +61,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(
       page.getByRole('link', { name: text.related })
-    ).toHaveAttribute('href', '/movie/102');
+    ).toHaveAttribute('href', appPath('/movie/102'));
     await page.getByRole('link', { name: text.back }).click();
     await expect(page).toHaveURL(/\/movie\/101$/);
     await expect(page.locator('html')).toHaveAttribute(

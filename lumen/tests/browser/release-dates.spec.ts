@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 // Release dates name the year when it isn't this one ("Mar 11, 2027"), and Discover's
 // Coming soon row links to the Coming soon page like the other rows.
 const year = new Date().getFullYear();
@@ -84,7 +87,7 @@ test('Coming soon on Discover names the year and links to the full page', async 
     row.locator('.poster', { hasText: 'Later This Year' }).locator('.m')
   ).toContainText('Dec 31');
   const seeAll = row.getByRole('link', { name: 'See all' });
-  await expect(seeAll).toHaveAttribute('href', '/soon');
+  await expect(seeAll).toHaveAttribute('href', appPath('/soon'));
 });
 
 test('the phone request bar keeps its button on screen and the title readable', async ({

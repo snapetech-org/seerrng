@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 // Movies and Series: one Genres button beside Sort instead of a wall of genre chips
 const GENRES = [
   { id: 28, name: 'Action' },
@@ -51,7 +54,7 @@ test('genre directory tiles localize their accessible browse names', async ({
   const genre = page.getByRole('link', {
     name: baseline ? 'Browse Action' : 'Parcourir Action',
   });
-  await expect(genre).toHaveAttribute('href', '/movies?genre=28');
+  await expect(genre).toHaveAttribute('href', appPath('/movies?genre=28'));
   if (
     process.env.LUMEN_A11Y_CAPTURE_DIR &&
     ['desktop', 'iphone'].includes(info.project.name)

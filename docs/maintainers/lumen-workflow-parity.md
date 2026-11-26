@@ -11043,3 +11043,26 @@ Results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/core-user-workflows-mounted-final-rerun/`.
 
 release-note: none
+
+### Mount-aware navigation assertions across shared workflows (2026-11-25)
+
+Corrected the remaining known root-deployment assumptions in browser assertions
+for movie quick links, collection metadata and search, music collectors and
+discography requests, franchise and related-title links, games and patches,
+genre browse links, recordings, Coming Soon, Share, and user management. The
+Provider Discovery case also no longer prefixes a path that Playwright already
+resolved against the mounted `/lumen/` base URL. Share Target manifest and
+worker assertions now use the bundled mount by default, and Track Requests
+uses the same mount-aware base for its Identify link.
+
+The focused mounted matrix passes 354 browser cases across desktop, iPhone,
+Android, and tablet, with 18 expected viewport skips and no failures. It runs
+against the compiled Express frontend mounted at `/lumen/`; its API and provider
+responses are fixture-backed. The initial matrix identified one additional
+music artist discography assertion, which was fixed and then passed in all four
+projects. This closes the tested mount-relative assertion gaps in these specs,
+but does not establish full bundled-suite acceptance or live provider behavior.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mount-aware-regression-verified/`.
+
+release-note: none
