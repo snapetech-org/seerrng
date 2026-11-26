@@ -712,7 +712,7 @@ export function Comics() {
 
 // the chosen edition's volumes or issues, as ComicVine lists them
 function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const issues = usePaged<ComicIssue>(`/comic/${id}/issues`);
   const heading = manga
     ? t('lumen.comicDetail.volumes', 'Volumes')
@@ -746,7 +746,8 @@ function ComicIssues({ id, manga }: { id: string; manga: boolean }) {
               </b>
               {i.coverDate && (
                 <small>
-                  {shortDate(i.coverDate, false)}, {i.coverDate.slice(0, 4)}
+                  {shortDate(i.coverDate, false, locale)},{' '}
+                  {i.coverDate.slice(0, 4)}
                 </small>
               )}
             </span>

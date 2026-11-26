@@ -1539,7 +1539,7 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
 }
 
 export default function Requests() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
   const toast = useToast();
@@ -2862,7 +2862,8 @@ export default function Requests() {
                   {everyone && x.r.requestedBy?.displayName
                     ? `${x.r.requestedBy.displayName} · `
                     : ''}
-                  {x.sub} · {shortDate(x.r.createdAt.slice(0, 10))}
+                  {x.sub} ·{' '}
+                  {shortDate(x.r.createdAt.slice(0, 10), true, locale)}
                 </div>
                 <div className="st">
                   <RequestStatusPills request={x.r} status={st} />

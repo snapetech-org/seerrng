@@ -510,7 +510,7 @@ export default function Discover() {
                     it={{ ...m, mediaType: 'movie' }}
                     discoverContextId={discoverContextId}
                     discoverItems={upcomingNavigationItems}
-                    meta={shortDate(m.releaseDate)}
+                    meta={shortDate(m.releaseDate, true, locale)}
                   />
                 ))}
               </Rail>
@@ -540,7 +540,7 @@ export default function Discover() {
                     it={{ ...series, mediaType: 'tv' }}
                     discoverContextId={discoverContextId}
                     discoverItems={upcomingSeriesNavigationItems}
-                    meta={shortDate(series.firstAirDate)}
+                    meta={shortDate(series.firstAirDate, true, locale)}
                   />
                 ))}
               </Rail>

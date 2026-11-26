@@ -1307,11 +1307,29 @@ test('requests list a manga with its cover, progress and volumes in', async ({
 test('a ComicVine link from Requests opens the work page', async ({
   page,
 }, info) => {
-  await fixtures(page);
+  await fixtures(page, { locale: 'fr' });
+  await page.route('**/api/v1/comic/147500/issues*', (route) =>
+    route.fulfill({
+      json: {
+        page: 1,
+        totalPages: 1,
+        totalResults: 1,
+        results: [
+          {
+            id: '1',
+            issueNumber: '1',
+            name: 'Vol. 1',
+            coverDate: '2026-02-01',
+          },
+        ],
+      },
+    })
+  );
   await page.goto('/comic/147500');
   await expect(page.locator('article.detail h1')).toHaveText('[Oshi no Ko]');
-  await expect(page.getByText('Manga, English edition')).toBeVisible();
+  await expect(page.getByText('Manga, édition English')).toBeVisible();
   await expect(page.locator('.h2', { hasText: 'Volumes' })).toBeVisible();
+  await expect(page.locator('.trow').first()).toContainText('1 févr.');
   await expect(page.getByText('Cover & story', { exact: true })).toBeVisible();
   await expect(
     page.getByText('Literal &lt; and < symbols.', { exact: true })

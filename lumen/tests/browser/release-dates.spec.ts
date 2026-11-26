@@ -90,6 +90,19 @@ test('Coming soon on Discover names the year and links to the full page', async 
   await expect(seeAll).toHaveAttribute('href', appPath('/soon'));
 });
 
+test('Coming soon cards use the saved locale for release dates', async ({
+  page,
+}) => {
+  await fixture(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.goto('/');
+  await expect(
+    page.locator('.poster').filter({ hasText: 'Next Year Film' }).locator('.m')
+  ).toContainText(`11 mars ${nextYear}`);
+});
+
 test('the phone request bar keeps its button on screen and the title readable', async ({
   page,
 }, info) => {

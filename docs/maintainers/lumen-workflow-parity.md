@@ -11715,3 +11715,20 @@ does not establish live metadata, a matched native screenshot comparison, or
 the bundled `/lumen/` mount.
 
 release-note: `release-notes/lumen-localized-detail-dates.md`
+
+### Shared Lumen date displays use the account locale (2026-11-26)
+
+Every current application call site for the shared `shortDate` formatter now
+passes the account locale. This covers upcoming Movie and TV cards on Discover,
+request creation dates, comic issue or volume cover dates, account join dates,
+and the Movie/TV detail dates recorded above. The formatter still preserves
+its existing month/day/year rules and date source.
+
+Focused browser checks cover Discover cards, request rows, and comic issue
+dates, each across desktop, iPhone, Android, and tablet. The Movie/TV locale
+matrix separately covers English, French, and Arabic and asserts no horizontal
+overflow. The production Lumen build and focused checks pass. Same-state native
+screenshots and live data remain unverified; this does not close the wider
+visual or provider audit.
+
+release-note: `release-notes/lumen-shared-dates-locale.md`

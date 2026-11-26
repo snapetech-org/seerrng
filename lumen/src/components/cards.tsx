@@ -455,7 +455,7 @@ export function TitleCard({
   discoverContextId?: string;
   discoverItems?: DiscoverNavigationItem[];
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const toast = useToast();
   const { prefs } = usePrefs();
@@ -516,11 +516,14 @@ export function TitleCard({
   };
   const m =
     meta ||
-    [unreleased ? shortDate(date) : yearOf(it), tv ? 'Series' : '']
+    [
+      unreleased ? shortDate(date, true, locale) : yearOf(it),
+      tv ? 'Series' : '',
+    ]
       .filter(Boolean)
       .join(' · ');
   const qm = [
-    unreleased ? 'Out ' + shortDate(date) : yearOf(it),
+    unreleased ? 'Out ' + shortDate(date, true, locale) : yearOf(it),
     it.voteAverage ? '★ ' + it.voteAverage.toFixed(1) : '',
   ]
     .filter(Boolean)

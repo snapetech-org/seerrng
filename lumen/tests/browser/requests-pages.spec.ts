@@ -142,6 +142,17 @@ test('the Requests link shows another user’s approved movie to a read-only vie
   await expect(row).toBeVisible();
 });
 
+test('request creation dates use the saved locale', async ({ page }) => {
+  await fixture(page, 1);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.goto(testAppPath('/requests?tab=all'));
+  await expect(page.locator('.rq').first().locator('.sub')).toContainText(
+    '8 nov.'
+  );
+});
+
 test('a personal viewer stays on their own requests', async ({ page }) => {
   await fixture(page, 1, { permissions: 32, requesterId: 2 });
   await page.goto(testAppPath('/requests?tab=everyone'));
