@@ -6833,6 +6833,14 @@ narrator-selection action. The four-viewport bundled permission suite passes
 these focused passes do not claim full-suite qualification. Evidence is retained
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
+Mounted `/lumen/users/*` bookmarks are also owned by Lumen's client routes,
+which preserve query/hash state and enforce the same permission-aware gates as
+in-app navigation. The production redirect now carries legacy `sort` and
+`show=plex` filters into Lumen as `sort` and `show=have`. The native Discover
+browser suite passes 136/136 across desktop, iPhone, Android, and tablet; its
+fixture now returns the documented array/object shapes for the catalog
+endpoints. API and provider responses remain fixture-backed.
+
 release-note: none
 
 ### Full administrator surface under the bundled mount (2026-11-25)

@@ -102,6 +102,9 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       '/lumen/profile?from=native',
       '/lumen/profile/settings/password?from=native',
       '/lumen/profile/settings/notifications/telegram?from=native',
+      '/lumen/users/?sort=displayName#user-list',
+      '/lumen/users/19?from=native',
+      '/lumen/users/19/requests?filter=pending',
     ]) {
       const lumenProfile = await request(app).get(bookmark);
       assert.equal(lumenProfile.status, 200);
@@ -178,25 +181,8 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
     assert.equal(admin.status, 200);
     assert.match(admin.text, /Lumen/);
     assert.equal(admin.headers['ratelimit-limit'], '600');
-    assert.equal(userDirectory.status, 302);
-    assert.equal(userDirectory.headers.location, '/lumen/admin/users');
-    assert.equal(userDirectory.headers['cache-control'], 'no-store');
-    for (const [bookmark, destination] of [
-      ['/users/19/', '/household/19'],
-      [
-        '/users/19/requests/?requestedBy=11&filter=pending&mediaType=movie',
-        '/requests?requestedBy=19&show=pending&mediaType=movie',
-      ],
-      [
-        '/users/19/watchlist?search=Arrival&page=2',
-        '/watchlist/user/19?search=Arrival&page=2',
-      ],
-    ]) {
-      const response = await request(app).get(`/lumen${bookmark}`);
-      assert.equal(response.status, 302);
-      assert.equal(response.headers.location, `/lumen${destination}`);
-      assert.equal(response.headers['cache-control'], 'no-store');
-    }
+    assert.equal(userDirectory.status, 200);
+    assert.match(userDirectory.text, /Lumen/);
     for (const userSettings of [
       '/lumen/users/19/settings/maturity',
       '/lumen/users/19/settings/tv-request-access',
@@ -847,6 +833,10 @@ test('optional Lumen lock redirects non-admin native pages but preserves admin a
       [
         '/discover/movies/studio/42?excludeStudio=true&sortBy=vote_average.desc&ignored=1',
         '/lumen/movies?excludeStudio=true&sort=vote_average.desc&studio=42',
+      ],
+      [
+        '/discover/movies/studio/34?sort=popularity.desc&show=plex',
+        '/lumen/movies?sort=popularity.desc&show=have&studio=34',
       ],
       [
         '/discover/tv/network/213?availability=4k',

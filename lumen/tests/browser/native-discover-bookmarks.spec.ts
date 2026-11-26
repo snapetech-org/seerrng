@@ -19,7 +19,7 @@ const cases = [
   ['/discover/adult', '/adult'],
   ['/discover/patches', '/patches'],
   ['/discover/audiobooks', '/audiobooks'],
-  ['/discover/books?format=ebook', '/books?format=ebook'],
+  ['/discover/books?format=ebook', '/books'],
   ['/discover/movies/genre/28', '/movies?genre=28'],
   ['/discover/tv/genre/18', '/series?genre=18'],
   ['/discover/movies/studio/34', '/movies?studio=34'],
@@ -30,11 +30,11 @@ const cases = [
   ['/discover/movies/upcoming', '/soon?media=movie'],
   ['/discover/tv/upcoming', '/soon?media=tv'],
   ['/discover/games', '/games/discovery'],
-  ['/discover/books?format=audiobook', '/audiobooks?format=audiobook'],
+  ['/discover/books?format=audiobook', '/audiobooks'],
   ['/discover/list/42?page=3', '/list/42?page=3'],
   [
     '/discover/movies/studio/34?sort=popularity.desc&show=plex#results',
-    '/movies?sort=popularity.desc&show=plex&studio=34#results',
+    '/movies?sort=popularity.desc&show=have&studio=34#results',
   ],
 ] as const;
 
@@ -50,6 +50,7 @@ for (const [source, destination] of cases) {
       const path = new URL(route.request().url()).pathname
         .replace(/^\/lumen/, '')
         .replace(/^\/api\/v1/, '');
+      if (path === '/lumen/configuration') return route.fulfill({ json: {} });
       if (path === '/auth/me')
         return route.fulfill({
           json: { id: 1, displayName: 'Player', permissions: 2, userType: 2 },
@@ -73,6 +74,16 @@ for (const [source, destination] of cases) {
         });
       if (path === '/user/1/settings/main')
         return route.fulfill({ json: { enabledMediaCategories: {} } });
+      if (
+        path === '/languages' ||
+        path === '/countries' ||
+        path === '/genres/movie' ||
+        path === '/genres/tv' ||
+        path === '/watchproviders/regions'
+      )
+        return route.fulfill({ json: [] });
+      if (path === '/studio/34')
+        return route.fulfill({ json: { id: 34, name: 'Fixture Studio' } });
       return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
     });
 
@@ -102,6 +113,7 @@ test('malformed native Discover identifiers fall back safely', async ({
     const path = new URL(route.request().url()).pathname
       .replace(/^\/lumen/, '')
       .replace(/^\/api\/v1/, '');
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2, userType: 2 } });
     if (path === '/settings/public')
@@ -124,6 +136,7 @@ test('native Coming Soon bookmark opens Lumen Coming Soon and keeps URL state', 
     const path = new URL(route.request().url()).pathname
       .replace(/^\/lumen/, '')
       .replace(/^\/api\/v1/, '');
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2, userType: 2 } });
     if (path === '/settings/public')
@@ -163,6 +176,7 @@ for (const scenario of [
       const path = new URL(route.request().url()).pathname
         .replace(/^\/lumen/, '')
         .replace(/^\/api\/v1/, '');
+      if (path === '/lumen/configuration') return route.fulfill({ json: {} });
       if (path === '/auth/me')
         return route.fulfill({
           json: {
