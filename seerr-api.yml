@@ -24027,6 +24027,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PodcastErrorResponse'
+        '416':
+          description: The requested range is outside the file
         '502':
           description: The remote file could not be read
           content:

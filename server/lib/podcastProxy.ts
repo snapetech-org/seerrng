@@ -1,4 +1,7 @@
-import { PodcastFeedError } from '@server/lib/podcastFeed';
+import {
+  DEFAULT_PODCAST_USER_AGENT,
+  PodcastFeedError,
+} from '@server/lib/podcastFeed';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 import {
@@ -111,7 +114,7 @@ export const createProxyUrls = (
 /** Proxy URLs for this server, or an error when no address is set. */
 export const settingsProxyUrls = (): PodcastProxyUrls => {
   const base = proxyBaseUrl();
-  const secret = getSettings().sessionSecret;
+  const secret = getSettings().podcastProxySecret;
   if (!base || !secret) throw new PodcastProxyUnavailableError();
   return createProxyUrls(base, secret);
 };
@@ -277,7 +280,24 @@ export const renderProxiedFeedXml = (
   });
 };
 
-const MEDIA_TIMEOUT_MS = 30_000;
+// how long the remote host may take to answer; once the file is flowing
+// there is no timeout, so a slow reader (Audiobookshelf's ffmpeg step, a
+// busy disk) that pauses the stream does not cut a long episode short
+const MEDIA_HEADERS_TIMEOUT_MS = 30_000;
+// statuses passed on: the file, part of it, gone (404/410), a bad range
+const PASSED_STATUSES = new Set([200, 206, 404, 410, 416]);
+
+/**
+ * Audiobookshelf retries a refused download as "audiobookshelf (+...; like
+ * iTMS)" because some hosts and trackers only serve iTunes-like clients, so
+ * its own agent is passed on. Anything else gets SeerrNG's.
+ */
+export const podcastUserAgent = (caller: unknown): string =>
+  typeof caller === 'string' &&
+  caller.length <= 256 &&
+  /^audiobookshelf\b/i.test(caller)
+    ? caller
+    : DEFAULT_PODCAST_USER_AGENT;
 // tracking chains (podtrac -> pdst.fm -> ... -> the CDN) take 6-7 hops
 const MAX_MEDIA_REDIRECTS = 15;
 
@@ -294,7 +314,10 @@ export interface PublicMedia {
  */
 export const openPublicMedia = async (
   url: string,
-  range?: string
+  {
+    range,
+    userAgent = DEFAULT_PODCAST_USER_AGENT,
+  }: { range?: string; userAgent?: string } = {}
 ): Promise<PublicMedia> => {
   if (!isValidHttpUrl(url)) {
     throw new PodcastFeedError(
@@ -306,18 +329,23 @@ export const openPublicMedia = async (
   if (!(await isSafeHttpUrl(url))) {
     throw new PodcastFeedError('That file is on a private address.', 'unsafe');
   }
+  const headersDeadline = new AbortController();
+  const timer = setTimeout(
+    () => headersDeadline.abort(),
+    MEDIA_HEADERS_TIMEOUT_MS
+  );
   try {
     const response = await axios.get<Readable>(url, {
       responseType: 'stream',
-      timeout: MEDIA_TIMEOUT_MS,
+      signal: headersDeadline.signal,
       maxRedirects: MAX_MEDIA_REDIRECTS,
       decompress: false,
       headers: {
         Accept: '*/*',
-        'User-Agent': 'SeerrNG-Podcasts/1.0',
+        'User-Agent': userAgent,
         ...(range ? { Range: range } : {}),
       },
-      validateStatus: (status) => status === 200 || status === 206,
+      validateStatus: (status) => PASSED_STATUSES.has(status),
       ...createSafeHttpRequestOptions(false, true, true, true),
     });
     return {
@@ -343,5 +371,7 @@ export const openPublicMedia = async (
       errorMessage: error instanceof Error ? error.message : String(error),
     });
     throw new PodcastFeedError('The file could not be read.', 'unreachable');
+  } finally {
+    clearTimeout(timer);
   }
 };

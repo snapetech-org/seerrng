@@ -250,6 +250,9 @@ describe('podcast files are read by SeerrNG on a pinned connection', () => {
     assert.equal(configs[0]?.responseType, 'stream');
     // podtrac -> pdst.fm -> ... -> CDN chains take six or seven hops
     assert.ok(Number(configs[0]?.maxRedirects) >= 15);
+    // a deadline for the answer, no socket timeout while the file flows
+    assert.equal(configs[0]?.timeout, undefined);
+    assert.ok(configs[0]?.signal instanceof AbortSignal);
   });
 
   it('streams the file when the connection really is public', async () => {

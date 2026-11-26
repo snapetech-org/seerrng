@@ -35,8 +35,13 @@ export class PodcastFeedError extends Error {
 
 export type FetchFeedText = (url: string) => Promise<string>;
 
+export const DEFAULT_PODCAST_USER_AGENT = 'SeerrNG-Podcasts/1.0';
+
 /** Reads a feed over a connection pinned to a public address. */
-export const fetchPublicFeedText: FetchFeedText = async (url) => {
+export const fetchPublicFeedText = async (
+  url: string,
+  userAgent: string = DEFAULT_PODCAST_USER_AGENT
+): Promise<string> => {
   if (!isValidHttpUrl(url)) {
     throw new PodcastFeedError('Feed URL must be http or https.', 'unsafe');
   }
@@ -57,7 +62,7 @@ export const fetchPublicFeedText: FetchFeedText = async (url) => {
       headers: {
         Accept:
           'application/rss+xml, application/xml;q=0.9, text/xml;q=0.9, */*;q=0.5',
-        'User-Agent': 'SeerrNG-Podcasts/1.0',
+        'User-Agent': userAgent,
       },
       validateStatus: (status) => status >= 200 && status < 300,
       // checks every address the socket resolves, redirects included, and

@@ -54,14 +54,20 @@ const answerSocketLookup = (address: string) => {
 };
 
 // a stand-in for axios that connects only through the lookup it was given
-const connectThroughLookup = (body: () => unknown) => {
+const connectThroughLookup = (
+  body: () => unknown,
+  status = 200,
+  headers: Record<string, string> = { 'content-type': 'audio/mpeg' }
+) => {
   const hosts: string[] = [];
+  const configs: Record<string, unknown>[] = [];
   mock.method(
     axios,
     'get',
     (url: string, config: Record<string, unknown>) =>
       new Promise((resolve, reject) => {
         hosts.push(new URL(url).hostname);
+        configs.push(config);
         const lookup = config.lookup as (
           host: string,
           options: object,
@@ -71,14 +77,14 @@ const connectThroughLookup = (body: () => unknown) => {
           error
             ? reject(error)
             : resolve({
-                status: 200,
-                headers: { 'content-type': 'audio/mpeg' },
+                status,
+                headers,
                 data: body(),
               })
         );
       })
   );
-  return hosts;
+  return Object.assign(hosts, { configs });
 };
 
 describe('podcast proxy routes (what Audiobookshelf calls)', () => {
@@ -91,7 +97,7 @@ describe('podcast proxy routes (what Audiobookshelf calls)', () => {
 
   beforeEach(() => {
     // an own property shadows the Settings getter for this test only
-    Object.defineProperty(settings, 'sessionSecret', {
+    Object.defineProperty(settings, 'podcastProxySecret', {
       configurable: true,
       get: () => SECRET,
     });
@@ -112,7 +118,7 @@ describe('podcast proxy routes (what Audiobookshelf calls)', () => {
   afterEach(() => {
     mock.restoreAll();
     syncBuiltinESMExports();
-    delete (settings as { sessionSecret?: string }).sessionSecret;
+    delete (settings as { podcastProxySecret?: string }).podcastProxySecret;
     settings.audiobookshelf = saved.audiobookshelf;
     settings.main.applicationUrl = saved.applicationUrl;
   });
@@ -130,7 +136,7 @@ describe('podcast proxy routes (what Audiobookshelf calls)', () => {
     parts[parts.length - 2] =
       Buffer.from('http://10.0.0.1/').toString('base64url');
     await request(app).get(parts.join('/')).expect(404);
-    assert.deepEqual(hosts, []);
+    assert.equal(hosts.length, 0);
   });
 
   it('refuses a feed host that rebinds from public to private', async () => {
@@ -192,6 +198,72 @@ describe('podcast proxy routes (what Audiobookshelf calls)', () => {
       .expect(200);
     assert.equal(response.headers['content-type'], 'audio/mpeg');
     assert.equal((response.body as Buffer).toString(), 'audio-bytes');
+  });
+
+  const publicHost = () => {
+    mock.method(dns, 'lookup', async () => [
+      { address: '93.184.216.34', family: 4 },
+    ]);
+    answerSocketLookup('93.184.216.34');
+  };
+
+  it('answers HEAD with the headers only and drops the upstream stream', async () => {
+    publicHost();
+    const upstream = Readable.from([Buffer.alloc(1024)]);
+    connectThroughLookup(() => upstream, 200, {
+      'content-type': 'audio/mpeg',
+      'content-length': '987654321',
+    });
+    const media = new URL(urls.media('https://cdn.example.test/one.mp3'));
+    const response = await request(app).head(media.pathname).expect(200);
+    assert.equal(response.headers['content-length'], '987654321');
+    assert.equal(upstream.destroyed, true);
+  });
+
+  it('passes on a removed episode as 404 and a bad range as 416', async () => {
+    publicHost();
+    connectThroughLookup(() => Readable.from([]), 410, {});
+    const gone = new URL(urls.media('https://cdn.example.test/gone.mp3'));
+    await request(app).get(gone.pathname).expect(404);
+
+    mock.restoreAll();
+    publicHost();
+    connectThroughLookup(() => Readable.from([]), 416, {
+      'content-range': 'bytes */1000',
+    });
+    const media = new URL(urls.media('https://cdn.example.test/one.mp3'));
+    const response = await request(app)
+      .get(media.pathname)
+      .set('Range', 'bytes=5000-')
+      .expect(416);
+    assert.equal(response.headers['content-range'], 'bytes */1000');
+  });
+
+  it("passes on Audiobookshelf's own agent and only real ranges", async () => {
+    publicHost();
+    const seen = connectThroughLookup(() => Readable.from(['audio']));
+    const media = new URL(urls.media('https://cdn.example.test/one.mp3'));
+    await request(app)
+      .get(media.pathname)
+      .set(
+        'User-Agent',
+        'audiobookshelf (+https://audiobookshelf.org; like iTMS)'
+      )
+      .set('Range', 'bytes=-')
+      .expect(200);
+    await request(app)
+      .get(media.pathname)
+      .set('User-Agent', 'curl/8')
+      .expect(200);
+    const headers = seen.configs.map(
+      (config) => config.headers as Record<string, string>
+    );
+    assert.equal(
+      headers[0]?.['User-Agent'],
+      'audiobookshelf (+https://audiobookshelf.org; like iTMS)'
+    );
+    assert.equal(headers[0]?.Range, undefined);
+    assert.equal(headers[1]?.['User-Agent'], 'SeerrNG-Podcasts/1.0');
   });
 
   it('answers nothing until podcasts are set up', async () => {

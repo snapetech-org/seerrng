@@ -2121,7 +2121,7 @@
         },
         {
           "path": "server/routes/podcastProxy.ts",
-          "line": 40,
+          "line": 43,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Not found.'",
@@ -49840,7 +49840,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 301,
+          "line": 324,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Only http and https files can be read.'",
@@ -53940,7 +53940,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 76,
+          "line": 81,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The feed could not be read.'",
@@ -53948,7 +53948,7 @@
         },
         {
           "path": "server/routes/podcastProxy.ts",
-          "line": 59,
+          "line": 63,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The feed could not be read.'",
@@ -54736,7 +54736,7 @@
         },
         {
           "path": "server/lib/settings/index.ts",
-          "line": 1510,
+          "line": 1512,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Settings path must be a regular file.'",
@@ -58321,7 +58321,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 142,
+          "line": 147,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The feed is not valid XML.'",
@@ -59129,7 +59129,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 41,
+          "line": 46,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Feed URL must be http or https.'",
@@ -60049,7 +60049,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 148,
+          "line": 153,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This is not a podcast feed.'",
@@ -64959,7 +64959,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 45,
+          "line": 50,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Feed URL must point to a public address.'",
@@ -64967,7 +64967,7 @@
         },
         {
           "path": "server/lib/podcastFeed.ts",
-          "line": 72,
+          "line": 77,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Feed URL must point to a public address.'",
@@ -69142,7 +69142,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 345,
+          "line": 373,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The file could not be read.'",
@@ -71036,7 +71036,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 307,
+          "line": 330,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -71044,7 +71044,7 @@
         },
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 332,
+          "line": 360,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -79402,7 +79402,7 @@
     },
     {
       "path": "server/lib/podcastProxy.ts",
-      "line": 343,
+      "line": 371,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -79411,7 +79411,7 @@
     },
     {
       "path": "server/lib/podcastProxy.ts",
-      "line": 343,
+      "line": 371,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87817,7 +87817,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 49,
+      "line": 53,
       "kind": "authored-message-variable",
       "field": "sendFeedError",
       "expression": "(res: Response, error: unknown) => {\n  if (error instanceof PodcastFeedError) {\n    return res\n      .status(error.kind === 'unreachable' ? 502 : 400)\n      .json({ message: error.message });\n  }\n  logger.warn('Podcast proxy could not answer', {\n    label: 'Podcast Proxy',\n    errorMessage: error instanceof Error ? error.message : String(error),\n  });\n  return res.status(502).json({ message: 'The feed could not be read.' });\n}",
@@ -87826,7 +87826,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 51,
+      "line": 55,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "res\n      .status(error.kind === 'unreachable' ? 502 : 400)\n      .json({ message: error.message })",
@@ -87835,7 +87835,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 53,
+      "line": 57,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -87844,7 +87844,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 57,
+      "line": 61,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87853,7 +87853,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 57,
+      "line": 61,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -87862,7 +87862,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 59,
+      "line": 63,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "res.status(502).json({ message: 'The feed could not be read.' })",
@@ -87871,7 +87871,7 @@
     },
     {
       "path": "server/routes/podcastProxy.ts",
-      "line": 85,
+      "line": 92,
       "kind": "response-body",
       "field": "body",
       "expression": "xml",
