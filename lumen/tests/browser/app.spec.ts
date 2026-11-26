@@ -484,6 +484,36 @@ test('saved French locale formats movie currency and rating numbers', async ({
   }
 });
 
+test('saved locale formats decimal scores on movie cards', async ({
+  page,
+}, testInfo) => {
+  const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+  const captureDir = process.env.LUMEN_FORMAT_CAPTURE_DIR;
+  await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.goto(testAppPath('/discover/movies'));
+  const card = page.locator('.poster', {
+    has: page.getByLabel('The Test Film'),
+  });
+  await expect(card).toBeVisible();
+  await card.hover();
+  await expect(card.locator('.qm')).toContainText(baseline ? '7.5' : '7,5');
+  if (captureDir && ['desktop', 'iphone'].includes(testInfo.project.name)) {
+    const { mkdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    await mkdir(captureDir, { recursive: true });
+    await page.screenshot({
+      path: join(
+        captureDir,
+        `${baseline ? 'baseline' : 'candidate'}-${testInfo.project.name}.png`
+      ),
+      fullPage: false,
+    });
+  }
+});
+
 test('movie cards load a bounded rating popover after it is opened', async ({
   page,
 }, testInfo) => {

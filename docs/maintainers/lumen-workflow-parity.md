@@ -12099,9 +12099,12 @@ release-note: `release-notes/lumen-compact-play-count-formatting.md`
 Movie and TV title-card scores and BookShelf book ratings now format decimal
 digits with the saved locale. Book-series minimum-rating labels localize their
 decimal punctuation, and language filter names use that locale's language
-display names. The production build and all 80 Lumen Node tests pass; the saved
-French movie rating regression passes on desktop and iPhone. Matched native
-visuals and live BookShelf language-name fixtures are still outstanding, so this
-display item is not fully accepted yet.
+display names. The production build and all 80 Lumen Node tests pass. French
+movie detail and title-card score regressions pass on desktop and iPhone. The
+title-card baseline/candidate screenshots were reviewed at both sizes and show
+the decimal comma with unchanged layout. BookShelf rating and book-filter
+locale fixtures and matched screenshots are still outstanding, so this display
+item is not fully accepted yet. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/score-cards/`.
 
 release-note: `release-notes/lumen-localized-score-and-book-filter-labels.md`
