@@ -2313,6 +2313,60 @@ test('an album song owned on another release plays and counts as owned', async (
   ).toBeVisible();
 });
 
+test('Music play totals use the saved locale compact number format', async ({
+  page,
+}, testInfo) => {
+  const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+  const captureDir = process.env.LUMEN_FORMAT_CAPTURE_DIR;
+  await mockMusic(page, { previews: [], saved: [] }, 'fr');
+  await page.route(`**/api/v1/music/${ALBUM_MBID}`, (route) =>
+    route.fulfill({
+      json: {
+        id: ALBUM_MBID,
+        title: 'Fixture Album',
+        type: 'Album',
+        artist: { id: 'artist-1', name: 'Fixture Artist' },
+        tracks: [
+          {
+            position: 1,
+            name: 'Fixture Song',
+            length: 180000,
+            recordingMbid: 'recording-1',
+            totalListenCount: 1234,
+          },
+        ],
+        stats: { totalListenCount: 1234 },
+        trackAvailability: { mp3: [], flac: [], elsewhere: [] },
+      },
+    })
+  );
+
+  await page.goto(testAppPath(`/music/${ALBUM_MBID}`));
+  const compactCount = baseline
+    ? '1K'
+    : await page.evaluate(() =>
+        new Intl.NumberFormat('fr', {
+          notation: 'compact',
+          maximumFractionDigits: 1,
+        }).format(1234)
+      );
+  await expect(
+    page.locator('.trow', { hasText: 'Fixture Song' }).locator('small')
+  ).toHaveText(`${compactCount} écoutes`);
+  if (captureDir && ['desktop', 'iphone'].includes(testInfo.project.name)) {
+    const { mkdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    await mkdir(captureDir, { recursive: true });
+    await page.screenshot({
+      path: join(
+        captureDir,
+        `${baseline ? 'baseline' : 'candidate'}-${testInfo.project.name}.png`
+      ),
+      fullPage: false,
+    });
+  }
+});
+
 test('an album with every song owned somewhere shows the owned state', async ({
   page,
 }) => {

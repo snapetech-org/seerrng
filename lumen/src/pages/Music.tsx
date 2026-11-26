@@ -795,14 +795,13 @@ function MusicArtistFilter({
   );
 }
 
-const big = (n?: number) =>
-  !n
-    ? ''
-    : n >= 1e6
-      ? `${(n / 1e6).toFixed(1)}M`
-      : n >= 1e3
-        ? `${Math.round(n / 1e3)}K`
-        : String(n);
+const big = (n: number | undefined, locale: string) =>
+  n
+    ? new Intl.NumberFormat(locale, {
+        notation: 'compact',
+        maximumFractionDigits: 1,
+      }).format(n)
+    : '';
 
 export const AlbumCard = ({ a }: { a: Album }) => {
   const { t } = useLumenLocale();
@@ -2248,7 +2247,7 @@ export function AlbumDetail() {
 const ALBUM_PENDING_POLL_MS = 15_000;
 
 function AlbumDetailPage() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { id } = useParams();
   const { user } = useAuth();
   const publicSettings = usePublicSettings();
@@ -2623,7 +2622,7 @@ function AlbumDetailPage() {
               : '',
             a.stats?.totalListenCount
               ? t('lumen.music.playCount', '{count} plays', {
-                  count: big(a.stats.totalListenCount),
+                  count: big(a.stats.totalListenCount, locale),
                 })
               : '',
             tags.join(', '),
@@ -2874,7 +2873,7 @@ function AlbumDetailPage() {
                             {!!track.totalListenCount && (
                               <small>
                                 {t('lumen.music.playCount', '{count} plays', {
-                                  count: big(track.totalListenCount),
+                                  count: big(track.totalListenCount, locale),
                                 })}
                               </small>
                             )}

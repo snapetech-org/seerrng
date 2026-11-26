@@ -12081,3 +12081,15 @@ Other provider formatting and native-matched detail visuals remain part of the
 broader display audit.
 
 release-note: `release-notes/lumen-locale-number-formatting.md`
+
+### Saved-locale compact music play counts (2026-11-26)
+
+Album and track play totals now use the saved interface locale's compact number
+notation instead of hard-coded English `K` and `M` suffixes. A French browser
+regression covers the album track row on desktop, iPhone, Android, and tablet.
+Matched French baseline and candidate screenshots on desktop show the expected
+`1K écoutes` to `1,2 k écoutes` change without shifting the surrounding layout;
+the phone pair was reviewed as well. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/compact-play-count/`.
+
+release-note: `release-notes/lumen-compact-play-count-formatting.md`
