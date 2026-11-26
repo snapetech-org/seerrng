@@ -5337,7 +5337,9 @@
     "lumen.admin.home.softwareGames": "Software and Games",
     "lumen.admin.home.system": "System",
     "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "Request full seasons without episode details",
-    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Select a season to request it in full. Retry above to select individual episodes."
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Select a season to request it in full. Retry above to select individual episodes.",
+    "lumen.tv.monitorFutureSeasons": "Get new seasons automatically",
+    "lumen.tv.monitorFutureSeasonsHelp": "Monitor future seasons in Sonarr after this request."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10964,7 +10966,9 @@
     "lumen.admin.home.softwareGames": "Logiciels et jeux",
     "lumen.admin.home.system": "Système",
     "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "Demander des saisons complètes sans détails des épisodes",
-    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Choisissez une saison pour la demander en entier. Réessayez ci-dessus pour sélectionner les épisodes individuellement."
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Choisissez une saison pour la demander en entier. Réessayez ci-dessus pour sélectionner les épisodes individuellement.",
+    "lumen.tv.monitorFutureSeasons": "Obtenir automatiquement les nouvelles saisons",
+    "lumen.tv.monitorFutureSeasonsHelp": "Surveiller les prochaines saisons dans Sonarr après cette demande."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16595,6 +16599,8 @@
     "lumen.admin.home.softwareGames": "البرامج والألعاب",
     "lumen.admin.home.system": "النظام",
     "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "طلب مواسم كاملة دون تفاصيل الحلقات",
-    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "اختر موسمًا لطلبه كاملًا. أعد المحاولة أعلاه لتحديد الحلقات بشكل فردي."
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "اختر موسمًا لطلبه كاملًا. أعد المحاولة أعلاه لتحديد الحلقات بشكل فردي.",
+    "lumen.tv.monitorFutureSeasons": "الحصول على المواسم الجديدة تلقائيًا",
+    "lumen.tv.monitorFutureSeasonsHelp": "مراقبة المواسم القادمة في Sonarr بعد هذا الطلب."
   }
 }

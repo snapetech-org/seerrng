@@ -93,9 +93,6 @@ export default function TvDetail() {
   const { t: translate, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
-  const episodeQueue = useApi<{ defaultEpisodeCount: number }>(
-    user?.id ? `/user/${user.id}/settings/episode-queue` : null
-  ).data;
 
   const { id } = useParams();
   const [manageOpen, setManageOpen] = useState(false);
@@ -129,6 +126,17 @@ export default function TvDetail() {
   const [sel, setSel] = useState<Set<number>>(new Set());
   const quota = useVideoRequestQuota('tv');
   const [opts, setOpts] = useState<RequestOptions>({});
+  const [monitorFutureSeasons, setMonitorFutureSeasons] = useState(true);
+  const requesterId = opts.userId ?? user?.id;
+  const episodeQueue = useApi<{ defaultEpisodeCount: number; status: string }>(
+    requesterId ? `/user/${requesterId}/settings/episode-queue` : null
+  ).data;
+  const seasonWatchAccess = useApi<{
+    status: string;
+    globallyEnabled?: boolean;
+  }>(
+    requesterId ? `/user/${requesterId}/settings/tv-season-watch-gate` : null
+  ).data;
   const [busy, setBusy] = useState(false);
   const episodeSubmission = useRef(false);
   const [episodesOpen, setEpisodesOpen] = useState(false);
@@ -307,7 +315,10 @@ export default function TvDetail() {
     watchFailure?.selection === selectionKey ? watchFailure : undefined;
   const watchRule =
     pub?.tvSeasonWatchGateEnabled === true ||
-    user?.tvSeasonWatchGateStatus === 'enabled';
+    seasonWatchAccess?.globallyEnabled === true ||
+    seasonWatchAccess?.status === 'enabled';
+  const futureSeasonsRestricted =
+    watchRule || episodeQueue?.defaultEpisodeCount !== 0;
   const label = !n
     ? translate('lumen.tv.pickSeasons', 'Pick seasons')
     : n === missing.length && n > 1
@@ -393,7 +404,11 @@ export default function TvDetail() {
       const result = await requestSeries(
         t.id,
         selections.map(({ seasonNumber }) => seasonNumber),
-        options
+        {
+          ...options,
+          monitorFutureSeasons:
+            !futureSeasonsRestricted && monitorFutureSeasons,
+        }
       );
       toast(
         result.quotaException
@@ -453,7 +468,10 @@ export default function TvDetail() {
     setWatchFailure(undefined);
     setBusy(true);
     try {
-      const result = await requestSeries(t.id, requestedSeasons, options);
+      const result = await requestSeries(t.id, requestedSeasons, {
+        ...options,
+        monitorFutureSeasons: !futureSeasonsRestricted && monitorFutureSeasons,
+      });
       toast(
         result.quotaException
           ? translate(
@@ -870,6 +888,36 @@ export default function TvDetail() {
             is4k={is4k}
             onChange={onOpts}
           />
+        )}
+        {missing.length > 0 && (
+          <label className="set cfg-row">
+            <span>
+              <strong>
+                {translate(
+                  'lumen.tv.monitorFutureSeasons',
+                  'Get new seasons automatically'
+                )}
+              </strong>
+              <small>
+                {translate(
+                  'lumen.tv.monitorFutureSeasonsHelp',
+                  'Monitor future seasons in Sonarr after this request.'
+                )}
+              </small>
+            </span>
+            <input
+              type="checkbox"
+              checked={!futureSeasonsRestricted && monitorFutureSeasons}
+              disabled={futureSeasonsRestricted || busy}
+              onChange={(event) =>
+                setMonitorFutureSeasons(event.target.checked)
+              }
+              aria-label={translate(
+                'lumen.tv.monitorFutureSeasons',
+                'Get new seasons automatically'
+              )}
+            />
+          </label>
         )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>

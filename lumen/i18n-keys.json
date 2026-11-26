@@ -6663,5 +6663,7 @@
   "lumen.admin.home.indexersDownloads",
   "lumen.admin.home.booksAudiobooksComics",
   "lumen.admin.home.softwareGames",
-  "lumen.admin.home.system"
+  "lumen.admin.home.system",
+  "lumen.tv.monitorFutureSeasons",
+  "lumen.tv.monitorFutureSeasonsHelp"
 ]

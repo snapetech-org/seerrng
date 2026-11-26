@@ -8050,6 +8050,9 @@ export const localeData = [
         'الكتب والكتب الصوتية والقصص المصورة',
       'lumen.admin.home.softwareGames': 'البرامج والألعاب',
       'lumen.admin.home.system': 'النظام',
+      'lumen.tv.monitorFutureSeasons': 'الحصول على المواسم الجديدة تلقائيًا',
+      'lumen.tv.monitorFutureSeasonsHelp':
+        'مراقبة المواسم القادمة في Sonarr بعد هذا الطلب.',
     },
   },
   {
@@ -20408,6 +20411,9 @@ export const localeData = [
       'lumen.admin.home.booksAudiobooksComics': 'Books, Audiobooks and Comics',
       'lumen.admin.home.softwareGames': 'Software and Games',
       'lumen.admin.home.system': 'System',
+      'lumen.tv.monitorFutureSeasons': 'Get new seasons automatically',
+      'lumen.tv.monitorFutureSeasonsHelp':
+        'Monitor future seasons in Sonarr after this request.',
     },
   },
   {
@@ -34187,6 +34193,10 @@ export const localeData = [
         'Livres, livres audio et bandes dessinées',
       'lumen.admin.home.softwareGames': 'Logiciels et jeux',
       'lumen.admin.home.system': 'Système',
+      'lumen.tv.monitorFutureSeasons':
+        'Obtenir automatiquement les nouvelles saisons',
+      'lumen.tv.monitorFutureSeasonsHelp':
+        'Surveiller les prochaines saisons dans Sonarr après cette demande.',
     },
   },
   {

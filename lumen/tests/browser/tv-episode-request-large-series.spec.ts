@@ -31,6 +31,14 @@ test('330-episode TV requests retry a transient season batch without losing sele
         });
       case '/user/1/settings/main':
         return route.fulfill({ json: { locale: 'en' } });
+      case '/user/1/settings/episode-queue':
+        return route.fulfill({
+          json: { status: 'off', defaultEpisodeCount: 0 },
+        });
+      case '/user/1/settings/tv-season-watch-gate':
+        return route.fulfill({
+          json: { status: 'off', globallyEnabled: false },
+        });
       case '/settings/public':
         return route.fulfill({ json: { partialRequestsEnabled: true } });
       case '/tv/84773':
@@ -78,6 +86,9 @@ test('330-episode TV requests retry a transient season batch without losing sele
   });
 
   await page.goto(appPath('/tv/84773'));
+  await expect(
+    page.getByRole('checkbox', { name: 'Get new seasons automatically' })
+  ).toBeChecked();
   await page
     .getByRole('button', { name: 'Request Episodes', exact: true })
     .click();
@@ -267,6 +278,14 @@ test('large TV requests load in bounded batches and recover only the failed seas
         });
       case '/user/1/settings/main':
         return route.fulfill({ json: { locale: 'en' } });
+      case '/user/1/settings/episode-queue':
+        return route.fulfill({
+          json: { status: 'off', defaultEpisodeCount: 0 },
+        });
+      case '/user/1/settings/tv-season-watch-gate':
+        return route.fulfill({
+          json: { status: 'off', globallyEnabled: false },
+        });
       case '/settings/public':
         return route.fulfill({ json: { partialRequestsEnabled: true } });
       case '/tv/84773':
@@ -313,6 +332,9 @@ test('large TV requests load in bounded batches and recover only the failed seas
   });
 
   await page.goto(appPath('/tv/84773'));
+  await expect(
+    page.getByRole('checkbox', { name: 'Get new seasons automatically' })
+  ).toBeChecked();
   await page
     .getByRole('button', { name: 'Request Episodes', exact: true })
     .click();
@@ -362,7 +384,7 @@ test('large TV requests load in bounded batches and recover only the failed seas
     })
     .check();
   await sheet
-    .getByRole('button', { name: 'Request Selected Episodes', exact: true })
+    .getByRole('button', { name: 'Request Selected Items', exact: true })
     .click();
 
   await expect.poll(() => requests.length).toBe(1);
@@ -371,6 +393,7 @@ test('large TV requests load in bounded batches and recover only the failed seas
       mediaType: 'tv',
       mediaId: 84773,
       is4k: false,
+      monitorFutureSeasons: true,
       seasons: [1, 6, 15],
       seasonRequests: [
         { seasonNumber: 1, episodeNumbers: [1] },

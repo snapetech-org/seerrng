@@ -78,6 +78,10 @@ async function show(
         json: { id: 1, displayName: 'alex', permissions },
       });
     if (path === '/settings/public') return r.fulfill({ json: settings });
+    if (path === '/user/1/settings/episode-queue')
+      return r.fulfill({ json: { status: 'off', defaultEpisodeCount: 0 } });
+    if (path === '/user/1/settings/tv-season-watch-gate')
+      return r.fulfill({ json: { status: 'off', globallyEnabled: false } });
     if (locale && path === '/user/1/settings/main')
       return r.fulfill({ json: { locale } });
     if (quota && path === '/user/1/quota')
@@ -318,7 +322,12 @@ test('a large series selects all fifteen seasons and submits the whole-series re
   expect(posts).toEqual([
     {
       path: '/request',
-      body: { mediaType: 'tv', mediaId: 84773, seasons: 'all' },
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        seasons: 'all',
+        monitorFutureSeasons: true,
+      },
     },
   ]);
 });
@@ -353,9 +362,61 @@ test('a partial season with a live request stays locked and keeps playback avail
   expect(posts).toEqual([
     {
       path: '/request',
-      body: { mediaType: 'tv', mediaId: 84773, seasons: [2, 3] },
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        seasons: [2, 3],
+        monitorFutureSeasons: true,
+      },
     },
   ]);
+});
+
+test('future season monitoring can be disabled for a series request', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  await show(page, { status: 1, requests: [], seasons: [] }, posts);
+  const setting = page.getByRole('checkbox', {
+    name: 'Get new seasons automatically',
+  });
+  await expect(setting).toBeChecked();
+  await setting.uncheck();
+  await page.getByRole('button', { name: 'Request entire series' }).click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts[0]?.body).toMatchObject({ monitorFutureSeasons: false });
+});
+
+test('future season monitoring is disabled when the TV season gate is active', async ({
+  page,
+}) => {
+  await show(page, { status: 1, requests: [], seasons: [] }, [], 2, undefined, {
+    tvSeasonWatchGateEnabled: true,
+  });
+  const setting = page.getByRole('checkbox', {
+    name: 'Get new seasons automatically',
+  });
+  await expect(setting).toBeDisabled();
+  await expect(setting).not.toBeChecked();
+});
+
+test('future season monitoring stays off when the requester uses Episode Queue', async ({
+  page,
+}) => {
+  const posts: RecordedPost[] = [];
+  await show(page, { status: 1, requests: [], seasons: [] }, posts);
+  await page.route('**/api/v1/user/1/settings/episode-queue', (route) =>
+    route.fulfill({ json: { status: 'approved', defaultEpisodeCount: 2 } })
+  );
+  await page.reload();
+  const setting = page.getByRole('checkbox', {
+    name: 'Get new seasons automatically',
+  });
+  await expect(setting).toBeDisabled();
+  await expect(setting).not.toBeChecked();
+  await page.getByRole('button', { name: 'Request entire series' }).click();
+  await expect.poll(() => posts.length).toBe(1);
+  expect(posts[0]?.body).toMatchObject({ monitorFutureSeasons: false });
 });
 
 test('a 4K request does not lock standard seasons', async ({ page }) => {
@@ -558,6 +619,9 @@ test('requesters can ask for approval for TV seasons over quota', async ({
     remaining: 1,
     restricted: false,
   });
+  await expect(
+    page.getByRole('checkbox', { name: 'Get new seasons automatically' })
+  ).toBeChecked();
   const approval = page.getByRole('button', {
     name: 'Request Approval',
     exact: true,
@@ -576,6 +640,7 @@ test('requesters can ask for approval for TV seasons over quota', async ({
         mediaType: 'tv',
         mediaId: 84773,
         seasons: 'all',
+        monitorFutureSeasons: true,
         requestQuotaApproval: true,
       },
     },
@@ -664,9 +729,7 @@ test('TV detail can request missing episodes from a partly requested season', as
     path: info.outputPath('tv-episode-request.png'),
     animations: 'disabled',
   });
-  await sheet
-    .getByRole('button', { name: 'Request Selected Episodes' })
-    .click();
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
   await expect(sheet.getByRole('alert')).toHaveText(
     /No selected episodes were added/
   );
@@ -677,9 +740,7 @@ test('TV detail can request missing episodes from a partly requested season', as
     path: info.outputPath('tv-episode-request-unconfirmed.png'),
     animations: 'disabled',
   });
-  await sheet
-    .getByRole('button', { name: 'Request Selected Episodes' })
-    .click();
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
   await expect(sheet.getByRole('alert')).toHaveText(
     'This episode is available on your streaming service.'
   );
@@ -698,6 +759,7 @@ test('TV detail can request missing episodes from a partly requested season', as
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [1],
         seasonRequests: [{ seasonNumber: 1, episodeNumbers: [3] }],
         bypassStreamingRequestPolicy: true,
@@ -775,7 +837,7 @@ test('large-series episode metadata uses small bounded batches and preserves dee
   retrying = true;
   await sheet.getByRole('button', { name: 'Retry' }).click();
   await expect(
-    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+    sheet.getByRole('button', { name: 'Request Selected Items' })
   ).toBeEnabled();
   await sheet.getByText('Season 1', { exact: true }).click();
   const selectedEpisode = sheet.getByRole('checkbox', {
@@ -789,9 +851,7 @@ test('large-series episode metadata uses small bounded batches and preserves dee
       path: info.outputPath(`tv-request-context-${info.project.name}.png`),
       fullPage: false,
     });
-  await sheet
-    .getByRole('button', { name: 'Request Selected Episodes' })
-    .click();
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
   await expect(
     page.getByText('Episodes requested for The Rings of Power')
   ).toBeVisible();
@@ -802,6 +862,7 @@ test('large-series episode metadata uses small bounded batches and preserves dee
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [15],
         seasonRequests: [{ seasonNumber: 15, episodeNumbers: [3] }],
       },
@@ -877,6 +938,7 @@ test('requests a full season when every episode metadata batch fails', async ({
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [1],
         seasonRequests: [{ seasonNumber: 1 }],
       },
@@ -959,7 +1021,7 @@ test('loaded episodes remain selectable while the final large-series batch is pe
     await episode.check();
     await expect(sheet.getByText('Selected: 1')).toBeVisible();
     await expect(
-      sheet.getByRole('button', { name: 'Request Selected Episodes' })
+      sheet.getByRole('button', { name: 'Request Selected Items' })
     ).toBeDisabled();
   }
   const capture = process.env.LUMEN_TV_BATCH_CAPTURE;
@@ -988,11 +1050,9 @@ test('loaded episodes remain selectable while the final large-series batch is pe
     await expect(sheet.getByText('Selected: 1')).toBeVisible();
   }
   await expect(
-    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+    sheet.getByRole('button', { name: 'Request Selected Items' })
   ).toBeEnabled();
-  await sheet
-    .getByRole('button', { name: 'Request Selected Episodes' })
-    .click();
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
   await expect.poll(() => posts.length).toBe(1);
   expect(posts[0].body).toMatchObject({
     seasons: [1],
@@ -1054,7 +1114,7 @@ test('partial large-series metadata still permits exact requests from loaded sea
   await expect(loadedEpisode).toBeEnabled();
   await loadedEpisode.check();
   const submit = sheet.getByRole('button', {
-    name: 'Request Selected Episodes',
+    name: 'Request Selected Items',
     exact: true,
   });
   await expect(submit).toBeEnabled();
@@ -1079,6 +1139,7 @@ test('partial large-series metadata still permits exact requests from loaded sea
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [14],
         seasonRequests: [{ seasonNumber: 14, episodeNumbers: [1] }],
       },
@@ -1136,16 +1197,14 @@ test('the episode picker submits selections from multiple seasons together', asy
   await sheet.getByRole('button', { name: 'Clear Selection' }).click();
   await expect(sheet.getByText('Selected: 0')).toBeVisible();
   await expect(
-    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+    sheet.getByRole('button', { name: 'Request Selected Items' })
   ).toBeDisabled();
   await sheet.getByRole('checkbox', { name: 'E1 Season 1 episode' }).check();
   await sheet.getByRole('checkbox', { name: 'E2 Season 2 episode' }).check();
   await expect(
-    sheet.getByRole('button', { name: 'Request Selected Episodes' })
+    sheet.getByRole('button', { name: 'Request Selected Items' })
   ).toBeEnabled();
-  await sheet
-    .getByRole('button', { name: 'Request Selected Episodes' })
-    .click();
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
   await expect(
     page.getByText('Episodes requested for The Rings of Power')
   ).toBeVisible();
@@ -1156,6 +1215,7 @@ test('the episode picker submits selections from multiple seasons together', asy
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [1, 2],
         seasonRequests: [
           { seasonNumber: 1, episodeNumbers: [1] },
@@ -1196,6 +1256,9 @@ test('a permitted streaming override retries only the selected seasons', async (
   page,
 }) => {
   await show(page, { status: 2, requests: [req([1])], seasons: [] });
+  await expect(
+    page.getByRole('checkbox', { name: 'Get new seasons automatically' })
+  ).toBeChecked();
   const submissions: unknown[] = [];
   await page.route('**/api/v1/request', (route) => {
     if (route.request().method() !== 'POST') return route.fallback();
@@ -1228,7 +1291,12 @@ test('a permitted streaming override retries only the selected seasons', async (
   await expect(
     confirm.getByText('This series is available on your streaming service.')
   ).toBeVisible();
-  const original = { mediaType: 'tv', mediaId: 84773, seasons: [2] };
+  const original = {
+    mediaType: 'tv',
+    mediaId: 84773,
+    seasons: [2],
+    monitorFutureSeasons: true,
+  };
   expect(submissions).toEqual([original]);
   await confirm.getByRole('button', { name: 'Request Anyway' }).click();
   await expect
@@ -1294,7 +1362,7 @@ for (const scenario of ['eligible', 'owned season', 'owned episode']) {
     if (scenario === 'owned episode') {
       await expect(episode).toBeDisabled();
       await expect(
-        sheet.getByRole('button', { name: 'Request Selected Episodes' })
+        sheet.getByRole('button', { name: 'Request Selected Items' })
       ).toBeDisabled();
     }
   });

@@ -12,7 +12,7 @@ const locales = [
     season: 'Season',
     loadFailure: 'Could not load episodes',
     retry: 'Retry',
-    submit: 'Request Selected Episodes',
+    submit: 'Request Selected Items',
     close: 'Close',
     seasonOne: 'Season 1',
     partialFailure:
@@ -27,7 +27,7 @@ const locales = [
     season: 'Saison',
     loadFailure: 'Impossible de charger les épisodes',
     retry: 'Réessayer',
-    submit: 'Demander les épisodes sélectionnés',
+    submit: 'Demander les éléments sélectionnés',
     close: 'Fermer',
     seasonOne: 'Season 1',
     partialFailure:
@@ -42,7 +42,7 @@ const locales = [
     season: 'الموسم',
     loadFailure: 'تعذر تحميل الحلقات',
     retry: 'إعادة المحاولة',
-    submit: 'طلب الحلقات المحددة',
+    submit: 'طلب العناصر المحددة',
     close: 'إغلاق',
     seasonOne: 'Season 1',
     partialFailure:
@@ -76,6 +76,14 @@ for (const language of locales) {
           });
         case '/user/1/settings/main':
           return route.fulfill({ json: { locale: language.tag } });
+        case '/user/1/settings/episode-queue':
+          return route.fulfill({
+            json: { status: 'off', defaultEpisodeCount: 0 },
+          });
+        case '/user/1/settings/tv-season-watch-gate':
+          return route.fulfill({
+            json: { status: 'off', globallyEnabled: false },
+          });
         case '/settings/public':
           return route.fulfill({ json: { partialRequestsEnabled: true } });
         case '/tv/84773':
@@ -129,6 +137,7 @@ for (const language of locales) {
     });
 
     await page.goto(appPath('/tv/84773'));
+    await expect(page.locator('.cfg-row input[type="checkbox"]')).toBeChecked();
     await page
       .getByRole('button', { name: language.open, exact: true })
       .click();
@@ -168,6 +177,7 @@ for (const language of locales) {
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [1],
         seasonRequests: [{ seasonNumber: 1, episodeNumbers: [2] }],
       },
@@ -196,6 +206,14 @@ for (const language of locales) {
           });
         case '/user/1/settings/main':
           return route.fulfill({ json: { locale: language.tag } });
+        case '/user/1/settings/episode-queue':
+          return route.fulfill({
+            json: { status: 'off', defaultEpisodeCount: 0 },
+          });
+        case '/user/1/settings/tv-season-watch-gate':
+          return route.fulfill({
+            json: { status: 'off', globallyEnabled: false },
+          });
         case '/settings/public':
           return route.fulfill({ json: { partialRequestsEnabled: true } });
         case '/tv/84773':
@@ -256,6 +274,7 @@ for (const language of locales) {
     });
 
     await page.goto(appPath('/tv/84773'));
+    await expect(page.locator('.cfg-row input[type="checkbox"]')).toBeChecked();
     await page
       .getByRole('button', { name: language.open, exact: true })
       .click();
@@ -303,6 +322,7 @@ for (const language of locales) {
         mediaType: 'tv',
         mediaId: 84773,
         is4k: false,
+        monitorFutureSeasons: true,
         seasons: [1, 2],
         seasonRequests: [
           { seasonNumber: 1, episodeNumbers: [2] },

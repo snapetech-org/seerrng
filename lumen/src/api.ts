@@ -530,6 +530,7 @@ export interface SeasonRequestSelection {
 }
 
 export interface RequestOptions {
+  monitorFutureSeasons?: boolean;
   is4k?: boolean;
   serverId?: number;
   profileId?: number;
