@@ -115,12 +115,12 @@ const fmtLength = (seconds: number | null) => {
     : `${hours}\u00a0h`;
 };
 
-const fmtDate = (value: string | null) => {
+const fmtDate = (value: string | null, locale: string) => {
   if (!value) return '';
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? ''
-    : date.toLocaleDateString(undefined, {
+    : date.toLocaleDateString(locale, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -377,7 +377,7 @@ function PodcastSearch({ query }: { query: string }) {
 }
 
 function NewEpisodes({ episodes }: { episodes: LatestEpisode[] }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   return (
     <Section title={t('lumen.podcasts.newEpisodes', 'New episodes')}>
       <ul className="music-eps pod-latest">
@@ -401,7 +401,7 @@ function NewEpisodes({ episodes }: { episodes: LatestEpisode[] }) {
                   {episode.podcastTitle}
                 </Link>
                 {[
-                  fmtDate(episode.publishedAt),
+                  fmtDate(episode.publishedAt, locale),
                   fmtLength(episode.durationSeconds),
                 ]
                   .filter(Boolean)
@@ -1147,7 +1147,7 @@ const AVAILABLE_PAGE = 100;
 const DOWNLOAD_SETTLE_MS = 10_000;
 
 function PodcastDetailPage({ id }: { id: string }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const toast = useToast();
   const location = useLocation();
   const navigate = useNavigate();
@@ -1663,7 +1663,7 @@ function PodcastDetailPage({ id }: { id: string }) {
                       key={episode.id}
                       played={episode.played === true}
                       title={episode.title}
-                      date={fmtDate(episode.publishedAt)}
+                      date={fmtDate(episode.publishedAt, locale)}
                       length={fmtLength(episode.durationSeconds)}
                       description={episode.description}
                       // Audiobookshelf has no link to one episode: the show's
@@ -1741,7 +1741,7 @@ function PodcastDetailPage({ id }: { id: string }) {
                     <EpisodeRow
                       key={episode.key}
                       title={episode.title}
-                      date={fmtDate(episode.publishedAt)}
+                      date={fmtDate(episode.publishedAt, locale)}
                       length={fmtLength(episode.durationSeconds)}
                       description={episode.description}
                       action={
@@ -1895,7 +1895,7 @@ function PodcastDetailPage({ id }: { id: string }) {
 export function PodcastPreview() {
   const [params] = useSearchParams();
   const feed = params.get('feed') || '';
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const toast = useToast();
   const navigate = useNavigate();
   const status = useApi<PodcastStatus>('/podcast/status');
@@ -2171,7 +2171,7 @@ export function PodcastPreview() {
               <EpisodeRow
                 key={episode.key}
                 title={episode.title}
-                date={fmtDate(episode.publishedAt)}
+                date={fmtDate(episode.publishedAt, locale)}
                 length={fmtLength(episode.durationSeconds)}
                 description={episode.description}
                 action={

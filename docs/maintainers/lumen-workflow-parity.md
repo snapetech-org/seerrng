@@ -12108,3 +12108,16 @@ item is not fully accepted yet. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/score-cards/`.
 
 release-note: `release-notes/lumen-localized-score-and-book-filter-labels.md`
+
+### Saved-locale dates in TV access and podcasts; download sizes (2026-11-26)
+
+The follow-up formatting scan found unqualified date and number formatting in
+TV-access request rows, podcast episode dates, and download-import file sizes.
+These now use Lumen's saved locale. The source guard also rejects unqualified
+`toLocaleDateString()` and `toLocaleTimeString()` calls. The production build,
+all 80 Lumen Node tests, the 12-case TV request settings browser matrix on
+desktop and iPhone, and the podcast playback/download workflow on desktop and
+iPhone pass. The broader provider-driven formatting and native-matched display
+audit remains open.
+
+release-note: `release-notes/lumen-localized-dates-and-download-sizes.md`

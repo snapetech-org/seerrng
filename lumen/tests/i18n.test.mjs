@@ -733,7 +733,8 @@ test('Lumen number and list formatting follows the saved interface locale', asyn
     }
   };
   await collectFiles(sourceRoot);
-  const unsafe = /new Intl\.(?:DateTimeFormat|NumberFormat|ListFormat|RelativeTimeFormat)\(\s*undefined|new Intl\.NumberFormat\(\s*\)|\.toLocaleString\(\s*\)/;
+  const unsafe =
+    /new Intl\.(?:DateTimeFormat|NumberFormat|ListFormat|RelativeTimeFormat|DisplayNames)\(\s*undefined|new Intl\.NumberFormat\(\s*\)|\.toLocale(?:String|DateString|TimeString)\(\s*(?:\)|undefined\b)/;
   for (const file of files) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, unsafe, `${file} uses the saved locale`);

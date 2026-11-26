@@ -64,7 +64,7 @@ interface PendingAccessRequest {
 }
 
 function AccessReview({ viewerId }: { viewerId: number }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { data, error, reload } = useApi<PendingAccessRequest[]>(
     '/user/tv-season-watch-gate-requests'
   );
@@ -176,9 +176,9 @@ function AccessReview({ viewerId }: { viewerId: number }) {
                       'components.UserList.TvSeasonWatchGateApprovalQueue.requested',
                       'Requested {date}',
                       {
-                        date: new Date(
-                          request.requestedAt
-                        ).toLocaleDateString(),
+                        date: new Date(request.requestedAt).toLocaleDateString(
+                          locale
+                        ),
                       }
                     )}
                   </small>

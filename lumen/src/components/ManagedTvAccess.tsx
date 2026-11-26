@@ -12,7 +12,7 @@ const statusMessages = {
 } as const;
 
 export default function ManagedTvAccess({ id }: { id: number }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { data, error, reload } = useApi<{
     status: keyof typeof statusMessages;
     globallyEnabled: boolean;
@@ -44,7 +44,7 @@ export default function ManagedTvAccess({ id }: { id: number }) {
           {data.requestedAt && data.status !== 'off' && (
             <p className="note">
               {t('lumen.managedTvAccess.requested', 'Requested {date}', {
-                date: new Date(data.requestedAt).toLocaleDateString(),
+                date: new Date(data.requestedAt).toLocaleDateString(locale),
               })}
             </p>
           )}

@@ -37,7 +37,7 @@ export function DownloadActionSheet({
   close: () => void;
   finished: (message: string) => void;
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const dialog = useRef<HTMLDivElement>(null);
   const writing = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -322,7 +322,7 @@ export function DownloadActionSheet({
                         />{' '}
                         <b>{file.name}</b>
                         <small>
-                          {(file.size / 1048576).toLocaleString(undefined, {
+                          {(file.size / 1048576).toLocaleString(locale, {
                             maximumFractionDigits: 1,
                           })}{' '}
                           MB
