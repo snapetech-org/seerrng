@@ -120,6 +120,8 @@ test('Lumen administration settings follow locale and retain config behavior', a
       return route.fulfill({
         json: { applicationTitle: 'SeerrNG', mediaServerType: 1 },
       });
+    if (path === '/lumen/configuration')
+      return route.fulfill({ json: { defaults: { theme: 'dark' } } });
     return route.fulfill({ json: {} });
   });
 
@@ -147,7 +149,7 @@ test('Lumen administration settings follow locale and retain config behavior', a
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: expected.requestDefaultsLink })
-  ).toHaveAttribute('href', '/admin/requests');
+  ).toHaveAttribute('href', appPath('/admin/requests'));
   await expect(page.locator('.cfg-select').first()).toHaveAttribute(
     'aria-label',
     expected.mediaServer

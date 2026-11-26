@@ -6816,6 +6816,26 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Admin workflows under the bundled mount (2026-11-25)
+
+The complete admin browser suite passes against the standalone production
+preview: 919 passed and one expected skip across four viewport projects. The
+admin settings and options specs also pass through the compiled Express
+`/lumen/` mount: 395 passed and one expected skip. A focused rerun of the
+changed storage guidance, logo upload, poster capability lookup, storage
+recovery, and localized settings cases passes 20/20 in standalone mode.
+
+The mount run exposed test assumptions that were specific to standalone
+hosting: root-relative navigation, companion-only API paths, and companion
+storage copy. The browser fixtures now use the embedded API and mount-aware
+paths and assert the appropriate storage guidance. These were test harness
+corrections; no product defect was reproduced. API and provider responses are
+fixture-backed, so live service behavior is not established by this run.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: none
+
 ### Large-series episode selection and recovery requalification (2026-11-25)
 
 The reported long-series request path was requalified at the current frontend

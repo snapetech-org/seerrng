@@ -49,7 +49,10 @@ async function fixtures(
       posts.push({ path, body: req.postDataJSON() ?? {} });
     let status = 200;
     let json: unknown = {};
-    if (path === '/settings/public')
+    if (path === '/lumen/configuration') json = opts.config || {};
+    else if (path === '/lumen/config')
+      json = req.method() === 'PUT' ? { ok: true } : { canSave: true };
+    else if (path === '/settings/public')
       json = {
         applicationTitle: 'Seerr',
         mediaServerType: 2,
@@ -147,7 +150,7 @@ test('Everyone reports a failed load and retries instead of claiming there are n
         : { pageInfo: { pages: 1, results: 0 }, results: [] },
     })
   );
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await expect(page.getByRole('alert')).toContainText('Couldn’t load requests');
   await expect(
     page.getByText('Nobody has asked for anything.', { exact: true })
@@ -321,7 +324,7 @@ test('Search hides disabled scopes and does not query their catalogs', async ({
       categoryQueries.push(path);
   });
 
-  await page.goto('/search');
+  await page.goto(testAppPath('/search'));
   await expect(page.getByRole('group', { name: 'Search in' })).toBeVisible();
   for (const label of ['Movies', 'Books']) {
     await expect(
@@ -337,11 +340,11 @@ test('Search hides disabled scopes and does not query their catalogs', async ({
         .getByRole('button', { name: label, exact: true })
     ).toBeVisible();
   }
-  await page.goto('/search?q=night&f=movie');
+  await page.goto(testAppPath('/search?q=night&f=movie'));
   await expect(
     page.getByText('This category is turned off for your account.')
   ).toBeVisible();
-  await page.goto('/search?q=night&f=ebook');
+  await page.goto(testAppPath('/search?q=night&f=ebook'));
   await expect(
     page.getByText('This category is turned off for your account.')
   ).toBeVisible();
@@ -752,7 +755,7 @@ for (const theme of ['light', 'dark'] as const) {
     page,
   }, info) => {
     await fixtures(page, { config: { defaults: { theme } } });
-    await page.goto('/me/lumen');
+    await page.goto(testAppPath('/me/lumen'));
     await expect(
       page.getByRole('heading', { name: 'Lumen settings for everyone' })
     ).toBeVisible();
@@ -762,7 +765,7 @@ for (const theme of ['light', 'dark'] as const) {
       path: info.outputPath('settings.png'),
       fullPage: true,
     });
-    await page.goto('/movies');
+    await page.goto(testAppPath('/movies'));
     await quickRequest(page, 'Fresh Pick');
     const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
     await expect(sheet.getByLabel('Quality')).toBeVisible();
@@ -789,7 +792,7 @@ for (const theme of ['light', 'dark'] as const) {
       signedIn: false,
       config: { loginStyle: 'form', defaults: { theme } },
     });
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     await expect(page.getByLabel('Username', { exact: true })).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
     await page.locator('.login-card').evaluate(async (element) => {
@@ -827,7 +830,7 @@ test('quick request waits for destination details and ignores stale server repli
       },
     });
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   await expect.poll(() => firstStarted).toBe(true);
@@ -860,7 +863,7 @@ test('malformed admin preferences do not blank the application', async ({
       defaults: { rows: null, theme: {}, showBooks: 'false' },
     },
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(
     page.getByRole('heading', { name: 'Movies', exact: true })
   ).toBeVisible();
@@ -883,7 +886,7 @@ test('malformed category probe storage does not break navigation', async ({
       },
     })
   );
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(
     page.getByRole('heading', { name: 'Movies', exact: true })
   ).toBeVisible();
@@ -1060,7 +1063,7 @@ test('sign-in form without media server names', async ({ page }) => {
     signedIn: false,
     config: { loginStyle: 'form' },
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.getByLabel('Username', { exact: true })).toBeVisible();
   await expect(page.getByText(/Jellyfin/)).toHaveCount(0);
   await page.getByLabel('Username', { exact: true }).fill('grandma');
@@ -1078,7 +1081,7 @@ test('titles only in the 4K library still show the library glyph', async ({
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const poster = page.locator('.poster', { hasText: 'Only In 4K' }).first();
   await expect(poster.locator('.glyph.ok')).toHaveCount(1);
   await expect(
@@ -1090,7 +1093,7 @@ test('admins choose server, quality and folder on poster quick requests', async 
   page,
 }) => {
   const { posts, errors } = await fixtures(page, { permissions: 2 });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   await expect(sheet).toBeVisible();
@@ -1117,7 +1120,7 @@ test('regular users and admins who turn it off keep one-click requests', async (
   const { posts } = await fixtures(page, {
     permissions: 32, // REQUEST only
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect
@@ -1130,7 +1133,7 @@ test('admin default can switch the request sheet off', async ({ page }) => {
     permissions: 2,
     config: { defaults: { requestOptions: false } },
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect
@@ -1149,7 +1152,7 @@ test('custom name, logo and tab icon', async ({ page }) => {
       },
     },
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.locator('.login-card .brand')).toHaveText('Movie Night');
   await expect(page.locator('.login-card .brand img')).toHaveAttribute(
     'src',
@@ -1169,11 +1172,11 @@ test('unsafe branding addresses are ignored', async ({ page }) => {
       branding: { logo: 'javascript:alert(1)', icon: '//evil.example/x.png' },
     },
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.locator('.login-card .brand img')).toHaveCount(0);
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
     'href',
-    '/favicon-32.png'
+    testAppPath('/favicon-32.png')
   );
   await expect(page).toHaveTitle('SeerrNG');
 });
@@ -1183,7 +1186,7 @@ test('admin settings page builds lumen-config.json', async ({ page }) => {
     permissions: 2,
     config: { seerrPublicUrl: 'https://seerr.example.com', custom: 1 },
   });
-  await page.goto('/admin');
+  await page.goto(testAppPath('/admin'));
   await page
     .getByRole('link', { name: 'Open Lumen Settings', exact: true })
     .click();
@@ -1205,7 +1208,7 @@ test('admin settings page builds lumen-config.json', async ({ page }) => {
   await expect(row.locator('select')).toHaveValue('on');
   await row.locator('select').selectOption('off-locked');
   const json = JSON.parse(
-    await page.getByLabel('lumen-config.json').inputValue()
+    await page.locator('textarea[aria-label="lumen-config.json"]').inputValue()
   );
   expect(json).toEqual({
     seerrPublicUrl: 'https://seerr.example.com',
@@ -1225,9 +1228,9 @@ test('admin settings page builds lumen-config.json', async ({ page }) => {
 
 test('admin settings page is admins only', async ({ page }) => {
   await fixtures(page, { permissions: 32 });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(page.getByText('Lumen settings for everyone')).toHaveCount(0);
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect(page.getByText('Admins only')).toBeVisible();
 });
 
@@ -1238,10 +1241,14 @@ test('admin settings page opened directly starts from the current config', async
     permissions: 2,
     config: { loginStyle: 'form', locked: ['theme'] },
   });
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect
     .poll(async () =>
-      JSON.parse(await page.getByLabel('lumen-config.json').inputValue())
+      JSON.parse(
+        await page
+          .locator('textarea[aria-label="lumen-config.json"]')
+          .inputValue()
+      )
     )
     .toEqual({ loginStyle: 'form', locked: ['theme'] });
   await expect(
@@ -1255,7 +1262,7 @@ test('admin settings page opened directly starts from the current config', async
 
 test('request sheet buttons do not overlap', async ({ page }) => {
   await fixtures(page, { permissions: 2 });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog');
   await sheet.getByLabel('Folder').waitFor();
@@ -1279,7 +1286,7 @@ test('request sheet buttons do not overlap', async ({ page }) => {
 
 test('sign-in card fits narrow phones', async ({ page }) => {
   await fixtures(page, { signedIn: false });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.locator('.login-card').waitFor();
   const box = await page.locator('.login-card').boundingBox();
   const width = page.viewportSize()!.width;
@@ -1300,7 +1307,7 @@ test('a rate-limited settings call is retried instead of blocking Lumen', async 
         })
       : route.fallback()
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible({ timeout: 8000 });
@@ -1330,7 +1337,7 @@ test('filtered Movies view stops after a few pages and offers to look further', 
       },
     });
   });
-  await page.goto('/movies?show=have&language=ja');
+  await page.goto(testAppPath('/movies?show=have&language=ja'));
   await expect(
     page.getByRole('button', { name: 'Look further' })
   ).toBeVisible();
@@ -1366,7 +1373,7 @@ test('a filtered view that keeps finding titles keeps loading as you scroll', as
       },
     });
   });
-  await page.goto('/movies?show=not');
+  await page.goto(testAppPath('/movies?show=not'));
   await expect
     .poll(() => page.locator('.grid .poster').count())
     .toBeGreaterThanOrEqual(20);
@@ -1393,7 +1400,7 @@ test('people without "View Recently Added" get no New on row and no 403s', async
     if (new URL(r.url()).pathname === '/api/v1/media') media.push(r.url());
   });
   await fixtures(page, { permissions: 32 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -1422,10 +1429,10 @@ test('category checks are not repeated on every page load', async ({
       },
     })
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect.poll(() => probes.length).toBe(1);
-  await page.goto('/movies');
-  await page.goto('/me');
+  await page.goto(testAppPath('/movies'));
+  await page.goto(testAppPath('/me'));
   await page.waitForTimeout(800);
   expect(probes.length).toBe(1);
 });
@@ -1534,7 +1541,7 @@ test('categories without a connected service stay out of the menus', async ({
     )
       extraCalls.push(r.url());
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('heading', { name: 'Discover', exact: true })
   ).toBeVisible();
@@ -1549,10 +1556,10 @@ test('categories without a connected service stay out of the menus', async ({
     '/games',
   ])
     await expect(
-      page.locator(`a[href="${href}"]`).filter({ visible: true })
+      page.locator(`a[href="${testAppPath(href)}"]`).filter({ visible: true })
     ).toHaveCount(0);
   expect(extraCalls).toEqual([]);
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(page.getByText('Show books and audiobooks')).toHaveCount(0);
   await expect(page.locator('.quota').getByText('Books')).toHaveCount(0);
 });
@@ -1562,7 +1569,7 @@ test('sign-in errors are written in words', async ({ page }) => {
   await page.route('**/api/v1/auth/jellyfin', (route) =>
     route.fulfill({ status: 401, json: { message: 'INVALID_CREDENTIALS' } })
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByLabel('Username', { exact: true }).fill('grandma');
   await page.getByLabel('Password').fill('nope');
   await page.getByRole('button', { name: 'Sign In', exact: true }).click();
@@ -1575,7 +1582,7 @@ test('fast typing in search keeps every letter', async ({ page }) => {
   // desktop searches from the top bar; this box is the phone/tablet one
   test.skip(page.viewportSize()!.width >= 1040, 'phone and tablet search box');
   await fixtures(page);
-  await page.goto('/search');
+  await page.goto(testAppPath('/search'));
   const box = page.locator('#sq');
   await box.click();
   await box.pressSequentially('night of the living dead', { delay: 0 });
@@ -1591,7 +1598,7 @@ test('fast typing in search keeps every letter', async ({ page }) => {
   await page.goBack();
   await expect(box).toHaveValue('night of the living dead');
   // Back to an empty search still clears the box (the address drives it then)
-  await page.goto('/search?q=sintel');
+  await page.goto(testAppPath('/search?q=sintel'));
   await expect(box).toHaveValue('sintel');
 });
 
@@ -1599,7 +1606,7 @@ test('Back closes the request sheet and stays on the page', async ({
   page,
 }) => {
   await fixtures(page, { permissions: 2 });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog');
   await expect(sheet).toBeVisible();
@@ -1639,7 +1646,7 @@ test('a failed page stops endless scrolling until Retry', async ({ page }) => {
       },
     });
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(page.getByRole('link', { name: 'Popular 1-0' })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   const retry = page
@@ -1661,7 +1668,7 @@ test('a Discover row that fails to load says so', async ({ page }) => {
   await page.route('**/api/v1/discover/tv**', (route) =>
     route.fulfill({ status: 500, json: { message: 'Server error' } })
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   const row = page.locator('section', {
     has: page.getByRole('heading', { name: 'Popular series' }),
   });
@@ -1675,7 +1682,7 @@ test('"open full SeerrNG" works without a configured address', async ({
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/no-such-page');
+  await page.goto(testAppPath('/no-such-page'));
   await expect(
     page.getByRole('link', { name: 'open full SeerrNG' })
   ).toHaveAttribute('href', '/seerrng');
@@ -1700,7 +1707,7 @@ test('a stale failed page cannot block a newly selected filter', async ({
     }
     await route.fulfill({ json: paged([movie(901, 'New filter result')]) });
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await oldRequest;
   await page
     .getByRole('combobox', { name: 'Sort', exact: true })
@@ -1768,7 +1775,7 @@ test('a stale game page cannot overwrite loading or errors after a new search', 
       },
     });
   });
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   await old;
   await page.getByPlaceholder('Search PC games…').fill('new');
   await expect(
@@ -1832,11 +1839,11 @@ test('Games shows with only ROMarrNG, and only the consoles it serves', async ({
       },
     });
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Games', exact: true }).first()
   ).toBeVisible();
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   const platform = page.getByRole('group', { name: 'Platform' });
   await expect(
     platform.getByRole('button', { name: 'Retro consoles' })
@@ -1867,27 +1874,27 @@ test('Discover reuses saved rows when reopened, and asks again after a request',
     ).length;
   const asked: string[] = [];
   page.on('request', (r) => asked.push(r.url()));
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Fresh Pick' }).first()
   ).toBeVisible();
   expect(rowCalls()).toBe(1);
   await page.waitForTimeout(700); // saved after a short pause
   // reopened (new page load): rows show from the saved copy, nothing asked again
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Fresh Pick' }).first()
   ).toBeVisible();
   await page.waitForTimeout(500);
   expect(rowCalls()).toBe(1);
   // a request marks saved answers stale: the next visit asks again
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   await expect
     .poll(() => posts.filter((p) => p.path === '/request').length)
     .toBe(1);
   await page.waitForTimeout(700);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Fresh Pick' }).first()
   ).toBeVisible();
@@ -1896,7 +1903,7 @@ test('Discover reuses saved rows when reopened, and asks again after a request',
 
 test('signing out drops the saved answers', async ({ page }) => {
   await fixtures(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Fresh Pick' }).first()
   ).toBeVisible();
@@ -1904,7 +1911,7 @@ test('signing out drops the saved answers', async ({ page }) => {
   expect(
     await page.evaluate(() => !!localStorage.getItem('lumen-cache:1'))
   ).toBe(true);
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('button', { name: /Sign out/ }).click();
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('lumen-cache:1')))
@@ -1980,7 +1987,7 @@ test('admins see everyone’s requests and approve or decline them', async ({
     });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/requests');
+  await page.goto(testAppPath('/requests'));
   const tab = page.getByRole('button', { name: /Everyone/ });
   await expect(tab).toContainText('1');
   await tab.click();
@@ -2013,7 +2020,7 @@ test('people who can’t manage requests get no Everyone tab', async ({
 }) => {
   await fixtures(page, { permissions: 32 }); // REQUEST only
   const asked = await requestRoutes(page);
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await expect(page.getByRole('button', { name: /^Active/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /Everyone/ })).toHaveCount(0);
   await expect(page.locator('.rq', { hasText: 'Sam' })).toHaveCount(0);
@@ -2036,7 +2043,7 @@ test('admins can request on someone else’s behalf', async ({ page }) => {
       },
     })
   );
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   const who = sheet.getByLabel('Request as');
@@ -2072,7 +2079,7 @@ test('quota override clears when the selected requester changes', async ({
       json: { results: [{ id: 5, displayName: 'Sam', permissions: 32 }] },
     })
   );
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   const who = sheet.getByLabel('Request as');
@@ -2116,7 +2123,7 @@ test('request managers without Manage Users get no Request as', async ({
       json: { results: [{ id: 5, displayName: 'Sam' }] },
     });
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   await expect(sheet.getByLabel('Folder')).toBeVisible();
@@ -2156,7 +2163,7 @@ test('Request 4K is offered before the HD copy exists, and goes to the 4K server
   await page.route('**/api/v1/movie/302/recommendations', (route) =>
     route.fulfill({ json: paged([]) })
   );
-  await page.goto('/movie/302');
+  await page.goto(testAppPath('/movie/302'));
   await expect(page.locator('.dtitle h1')).toHaveText('Fresh Pick');
   const fourK = page
     .getByRole('button', { name: 'Request 4K' })
@@ -2206,7 +2213,7 @@ test('poster request asks 1080p or 4K for people who may request 4K', async ({
   // Request + Request 4K, no Manage Requests: no server choices, just the quality
   const { posts } = await fixtures(page, { permissions: 32 | 1024 });
   await with4k(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   const quality = sheet.getByRole('group', { name: 'Quality' });
@@ -2235,7 +2242,7 @@ test('a failed sign-out says so instead of failing silently', async ({
   await page.route('**/api/v1/auth/logout', (route) =>
     route.fulfill({ status: 503, json: { message: 'Unavailable' } })
   );
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   const signOut = page.getByRole('button', { name: 'Sign out', exact: true });
   await signOut.click();
   await expect(page.getByText('Couldn’t sign out. Try again.')).toBeVisible();
@@ -2250,7 +2257,7 @@ test('signing out when the session already ended still signs out', async ({
   await page.route('**/api/v1/auth/logout', (route) =>
     route.fulfill({ status: 401, json: { message: 'Not signed in' } })
   );
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('button', { name: 'Sign out', exact: true }).click();
   await expect(
     page.getByRole('button', { name: 'Sign out', exact: true })
@@ -2263,7 +2270,7 @@ for (const quality of ['1080p', '4K'] as const) {
   }) => {
     const { posts } = await fixtures(page, { permissions: 2 });
     await with4k(page);
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     await quickRequest(page, 'Fresh Pick');
     const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
     await expect(sheet.getByLabel('Folder')).toBeVisible();
@@ -2302,7 +2309,7 @@ test('a busy sign-in visibly disables the shared primary action', async ({
     await response;
     await route.fallback();
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByLabel('Username', { exact: true }).fill('grandma');
   await page.getByLabel('Password').fill('pw');
   const submit = page.getByRole('button', { name: 'Sign In', exact: true });
@@ -2327,7 +2334,7 @@ test('a busy sign-in visibly disables the shared primary action', async ({
 test('poster request stays one tap for people without 4K', async ({ page }) => {
   const { posts } = await fixtures(page, { permissions: 32 });
   await with4k(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await quickRequest(page, 'Fresh Pick');
   await expect
     .poll(() => posts.filter((p) => p.path === '/request').length)
@@ -2343,7 +2350,7 @@ test('an admin choosing 4K on a poster gets the 4K servers', async ({
 }) => {
   const { posts } = await fixtures(page, { permissions: 2 });
   await with4k(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   await expect(sheet.getByLabel('Server')).toContainText('Radarr HD');
@@ -2383,7 +2390,7 @@ test('Advanced options on a movie list the 4K server, and picking it requests 4K
   await page.route('**/api/v1/movie/302/recommendations', (route) =>
     route.fulfill({ json: paged([]) })
   );
-  await page.goto('/movie/302');
+  await page.goto(testAppPath('/movie/302'));
   await page.getByText('Advanced Request Options').click();
   const server = page.getByLabel('Server');
   await expect(server).toContainText('Radarr UHD');
@@ -2430,7 +2437,7 @@ test('Request 4K stays hidden from people without 4K permission', async ({
   await page.route('**/api/v1/movie/302/recommendations', (route) =>
     route.fulfill({ json: paged([]) })
   );
-  await page.goto('/movie/302');
+  await page.goto(testAppPath('/movie/302'));
   await expect(
     page.getByRole('button', { name: 'Request', exact: true })
   ).toBeVisible();
@@ -2442,7 +2449,7 @@ test('a title in the library shows the check on its page too', async ({
 }) => {
   await fixtures(page);
   await requestRoutes(page);
-  await page.goto('/movie/301');
+  await page.goto(testAppPath('/movie/301'));
   await expect(page.locator('.dposter .glyph.ok')).toBeVisible();
   await page.route('**/api/v1/movie/301', (route) =>
     route.fulfill({ json: { ...details301, mediaInfo: undefined } })
@@ -2471,7 +2478,7 @@ test('admin settings page saves for everyone when the server can', async ({
     }
     return route.fulfill({ json: { canSave: true, folder: 'ok' } });
   });
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   const row = page.locator('.cfg-row', {
     hasText: 'Show books and audiobooks',
   });
@@ -2501,7 +2508,7 @@ test('admin settings page explains a folder it can’t write', async ({
       json: { canSave: false, folder: 'readonly', uid: 1000, gid: 1000 },
     })
   );
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect(
     page.getByRole('button', { name: 'Download lumen-config.json' })
   ).toBeVisible();
@@ -2509,7 +2516,11 @@ test('admin settings page explains a folder it can’t write', async ({
     page.getByRole('button', { name: 'Save for everyone' })
   ).toBeDisabled();
   await expect(
-    page.getByText(/give its host folder to UID:GID 1000:1000/)
+    page.getByText(
+      testMount
+        ? 'SeerrNG runs as UID 1000 and GID 1000.'
+        : /give its host folder to UID:GID 1000:1000/
+    )
   ).toBeVisible();
 });
 
@@ -2543,7 +2554,7 @@ test('downloads that have started show even when far down the history', async ({
           : [];
     return route.fulfill({ json: { pageInfo: { pages: 1 }, results } });
   });
-  await page.goto('/requests?tab=active');
+  await page.goto(testAppPath('/requests?tab=active'));
   await expect(page.locator('.rq')).toHaveCount(2);
   await expect(page.locator('.rq').getByText('Downloading 60%')).toBeVisible();
   await expect(page.locator('.rq').getByText('Queued')).toBeVisible();
@@ -2590,7 +2601,7 @@ test('admins change a waiting request, then approve it', async ({ page }) => {
   await fixtures(page, { permissions: 2 });
   await requestRoutes(page);
   const calls = await adminActionRoutes(page, [waitingRequest]);
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   const row = page.locator('.rq', { hasText: 'Only In 4K' });
   await row.getByRole('button', { name: 'Change' }).click();
   const sheet = page.getByRole('dialog', {
@@ -2655,7 +2666,7 @@ test('changing a series request picks its seasons', async ({ page }, info) => {
       },
     })
   );
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await page
     .locator('.rq', { hasText: 'Long Show' })
     .getByRole('button', { name: 'Change' })
@@ -2731,7 +2742,7 @@ test('series request editor labels follow the saved locale', async ({
       },
     })
   );
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await page
     .locator('.rq', { hasText: 'Long Show' })
     .getByRole('button', { name: 'Modifier' })
@@ -2776,7 +2787,7 @@ test('failed requests can be retried, and Remove asks in a dialog', async ({
   await requestRoutes(page);
   const failed = { ...waitingRequest, id: 78, status: 4 };
   const calls = await adminActionRoutes(page, [failed]);
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   const row = page.locator('.rq', { hasText: 'Only In 4K' });
   await expect(row.getByRole('button', { name: 'Approve' })).toHaveCount(0);
   await row.getByRole('button', { name: 'Retry' }).click();
@@ -2825,7 +2836,7 @@ test('admins upload a logo, and only the logo is saved straight away', async ({
     });
     return route.fulfill({ json: { url: '/branding/logo-123.png' } });
   });
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   // an unsaved change elsewhere must not be saved by the upload
   const row = page.locator('.cfg-row', {
     hasText: 'Show books and audiobooks',
@@ -2841,7 +2852,10 @@ test('admins upload a logo, and only the logo is saved straight away', async ({
   await expect(
     page.getByText('Logo uploaded and saved for everyone.')
   ).toBeVisible();
-  expect(puts.map((p) => p.path)).toEqual(['/lumen/branding/logo', 'config']);
+  expect(puts.map((p) => p.path)).toEqual([
+    testMount ? '/api/v1/lumen/branding/logo' : '/lumen/branding/logo',
+    'config',
+  ]);
   expect(puts[0].type).toBe('image/png');
   expect(JSON.parse(puts[1].body)).toEqual({
     custom: 1,
@@ -2859,7 +2873,7 @@ test('no upload buttons when the server can’t keep files', async ({ page }) =>
   await page.route('**/lumen/config', (route) =>
     route.fulfill({ json: { canSave: false, folder: 'missing' } })
   );
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect(page.getByLabel('Logo address')).toBeVisible();
   await expect(page.getByLabel('Upload logo')).toHaveCount(0);
   await expect(page.getByLabel('Upload tab icon')).toHaveCount(0);
@@ -2867,7 +2881,7 @@ test('no upload buttons when the server can’t keep files', async ({ page }) =>
 
 test('admins rename the media server everywhere', async ({ page }) => {
   await fixtures(page, { config: { mediaServerName: 'Tatsuflix' } });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(
     page.getByRole('button', { name: 'On Tatsuflix', exact: true })
   ).toBeVisible();
@@ -2898,7 +2912,7 @@ for (const [shape, radius, width] of [
         body: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#0af"/></svg>',
       })
     );
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const logo = page.locator('.login-card .brand img.mark');
     await expect(logo).toBeVisible();
     const look = await logo.evaluate((el) => {
@@ -2924,7 +2938,7 @@ test('admin page picks the logo shape with a live preview', async ({
     permissions: 2,
     config: { branding: { name: 'Requests', logo: '/branding/logo.png' } },
   });
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   const preview = page.getByLabel('Logo preview').locator('img');
   await expect(preview).toHaveClass(/mark-rounded/);
   const shapes = page.getByRole('group', { name: 'Logo shape' });
@@ -2937,7 +2951,7 @@ test('admin page picks the logo shape with a live preview', async ({
   await expect(preview).toHaveClass(/mark-circle/);
   await page.getByPlaceholder('Jellyfin').fill('Tatsuflix');
   const json = JSON.parse(
-    await page.getByLabel('lumen-config.json').inputValue()
+    await page.locator('textarea[aria-label="lumen-config.json"]').inputValue()
   );
   expect(json).toMatchObject({
     branding: { logoShape: 'circle' },
@@ -2946,7 +2960,11 @@ test('admin page picks the logo shape with a live preview', async ({
   // back to the default: nothing written
   await shapes.getByRole('button', { name: 'Rounded square' }).click();
   expect(
-    JSON.parse(await page.getByLabel('lumen-config.json').inputValue()).branding
+    JSON.parse(
+      await page
+        .locator('textarea[aria-label="lumen-config.json"]')
+        .inputValue()
+    ).branding
   ).toEqual({ name: 'Requests', logo: '/branding/logo.png' });
 });
 
@@ -2978,7 +2996,7 @@ test('Everyone shows more on request and filters by status', async ({
       },
     });
   });
-  await page.goto('/requests?tab=everyone');
+  await page.goto(testAppPath('/requests?tab=everyone'));
   await expect(page.locator('.rq')).toHaveCount(20);
   await page.getByRole('button', { name: 'Show more' }).click();
   await expect(page.locator('.rq')).toHaveCount(40);
@@ -3063,7 +3081,7 @@ test('a temporary configured game probe failure keeps that platform and Retry re
       })
     )
   );
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   const platform = page.getByRole('group', { name: 'Platform' });
   await platform.getByRole('button', { name: 'Modern consoles' }).click();
   const retry = page.getByRole('button', { name: 'Retry', exact: true });
@@ -3143,7 +3161,7 @@ test('configured game services still hide a platform explicitly denied by the AP
       },
     });
   });
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   await expect(
     page.getByRole('link', {
       name: 'Allowed modern console game',
@@ -3203,7 +3221,7 @@ test('a later game-page failure retains loaded games and retries only that page'
       },
     });
   });
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   await expect(
     page.getByRole('link', { name: 'Retained first game', exact: true })
   ).toBeVisible();
@@ -3267,7 +3285,7 @@ test('game capability denials expire during in-app navigation after the document
       },
     });
   });
-  await page.goto('/games');
+  await page.goto(testAppPath('/games'));
   await expect(
     page.getByRole('link', { name: 'Now available retro', exact: true })
   ).toBeVisible();
@@ -3295,7 +3313,7 @@ for (const permissions of [-1, 2.5, '2']) {
       permissions: permissions as number,
     });
     await with4k(page);
-    await page.goto('/movies');
+    await page.goto(testAppPath('/movies'));
     const poster = page.locator('.poster', { hasText: 'Fresh Pick' });
     await expect(poster).toBeVisible();
     await expect(poster.getByRole('button', { name: /^Request/ })).toHaveCount(
@@ -3308,7 +3326,7 @@ for (const permissions of [-1, 2.5, '2']) {
 test('4K poster feedback names the requested tier', async ({ page }, info) => {
   const { posts } = await fixtures(page, { permissions: 32 | 1024 });
   await with4k(page);
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog');
   await sheet
@@ -3357,7 +3375,7 @@ test('HD controls reset after a 4K advanced request becomes pending', async ({
       },
     })
   );
-  await page.goto('/movie/302');
+  await page.goto(testAppPath('/movie/302'));
   await page.getByText('Advanced Request Options').click();
   await page.getByLabel('Server').selectOption('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/uhd');
@@ -3455,7 +3473,7 @@ test('4K series selection uses 4K season ownership even when every HD season is 
       },
     })
   );
-  await page.goto('/tv/400?quality=4k&source=request#season-2');
+  await page.goto(testAppPath('/tv/400?quality=4k&source=request#season-2'));
   const quality = page.getByRole('group', { name: 'Quality' });
   await expect(quality.getByRole('button', { name: '4K' })).toHaveAttribute(
     'aria-pressed',
@@ -3466,9 +3484,11 @@ test('4K series selection uses 4K season ownership even when every HD season is 
   await page.clock.fastForward(30_100);
   await expect.poll(() => detailReads).toBe(2);
   await quality.getByRole('button', { name: '1080p' }).click();
-  await expect(page).toHaveURL('/tv/400?source=request#season-2');
+  await expect(page).toHaveURL(testAppPath('/tv/400?source=request#season-2'));
   await quality.getByRole('button', { name: '4K' }).click();
-  await expect(page).toHaveURL('/tv/400?source=request&quality=4k#season-2');
+  await expect(page).toHaveURL(
+    testAppPath('/tv/400?source=request&quality=4k#season-2')
+  );
   await page.getByText('Advanced Request Options').click();
   await expect(page.getByLabel('Server')).toHaveValue('2');
   await expect(page.getByLabel('Folder')).toHaveValue('/tv4k');
@@ -3501,7 +3521,7 @@ test('a configured full SeerrNG address explicitly selects the native interface'
   await fixtures(page, {
     config: { seerrPublicUrl: 'https://seerr.example.com/?source=lumen' },
   });
-  await page.goto('/no-such-page');
+  await page.goto(testAppPath('/no-such-page'));
   await expect(
     page.getByRole('link', { name: 'open full SeerrNG' })
   ).toHaveAttribute(
@@ -3514,7 +3534,7 @@ test('unsafe full-interface URLs fall back to the same-origin native entry', asy
   page,
 }) => {
   await fixtures(page, { config: { seerrPublicUrl: 'javascript:alert(1)' } });
-  await page.goto('/no-such-page');
+  await page.goto(testAppPath('/no-such-page'));
   await expect(
     page.getByRole('link', { name: 'open full SeerrNG' })
   ).toHaveAttribute('href', '/seerrng');
@@ -3540,7 +3560,7 @@ test('a page of posters asks for the server settings once, not once per poster',
     const u = new URL(r.url());
     if (u.pathname.startsWith('/api/v1/')) asked.push(u.pathname.slice(7));
   });
-  await page.goto('/series');
+  await page.goto(testAppPath('/series'));
   await expect(page.locator('.poster', { hasText: 'Show 39' })).toHaveCount(1);
   await page.waitForTimeout(500);
   const settingsCalls = () =>
@@ -3548,10 +3568,11 @@ test('a page of posters asks for the server settings once, not once per poster',
   expect(settingsCalls()).toBeLessThanOrEqual(2);
   // moving to another list right away reuses the answer
   const before = settingsCalls();
-  await page.evaluate(() => {
-    history.pushState({}, '', '/movies');
+  const moviesPath = testAppPath('/movies');
+  await page.evaluate((path) => {
+    history.pushState({}, '', path);
     dispatchEvent(new PopStateEvent('popstate'));
-  });
+  }, moviesPath);
   await expect(
     page.getByRole('heading', { name: 'Movies', level: 1 })
   ).toBeVisible();
@@ -3566,7 +3587,7 @@ test('the request sheet still requests when no Radarr server is set up', async (
   await page.route('**/api/v1/service/radarr', (route) =>
     route.fulfill({ json: [] })
   );
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   await expect(sheet.getByText('No Radarr server to choose')).toBeVisible();
@@ -3593,7 +3614,7 @@ test('storage recovery keeps the draft and enables visible Save and Upload contr
       },
     })
   );
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   const save = page.getByRole('button', {
     name: 'Save for everyone',
     exact: true,
@@ -3606,7 +3627,11 @@ test('storage recovery keeps the draft and enables visible Save and Upload contr
   await page
     .getByPlaceholder('SeerrNG', { exact: true })
     .fill('Keep this draft');
-  await expect(page.getByText(/UID:GID 1000:1000/)).toBeVisible();
+  await expect(
+    page.getByText(
+      testMount ? 'SeerrNG runs as UID 1000 and GID 1000.' : /UID:GID 1000:1000/
+    )
+  ).toBeVisible();
   writable = true;
   await page.getByRole('button', { name: 'Check storage again' }).click();
   await expect(save).toBeEnabled();
@@ -3632,7 +3657,7 @@ test('a movie over quota offers approval on its detail page', async ({
     posts.push({ path: '/request', body: route.request().postDataJSON() });
     return route.fulfill({ json: { id: 44, status: 1, quotaException: true } });
   });
-  await page.goto('/movie/302');
+  await page.goto(testAppPath('/movie/302'));
   const approval = page.getByRole('button', {
     name: 'Request Approval',
     exact: true,
@@ -3677,7 +3702,7 @@ test('a poster quota denial offers an explicit approval request', async ({
           }
     );
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await quickRequest(page, 'Fresh Pick');
   const sheet = page.getByRole('dialog', { name: 'Request Fresh Pick' });
   const approve = sheet.getByRole('button', { name: 'Request Approval' });
