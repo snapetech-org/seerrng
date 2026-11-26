@@ -363,7 +363,7 @@ export default function MovieDetail() {
         line={[
           unreleased
             ? t('lumen.movie.theaters', 'In theaters {date}', {
-                date: shortDate(date),
+                date: shortDate(date, true, locale),
               })
             : date.slice(0, 4),
           certification && <span className="cert">{certification}</span>,
@@ -610,13 +610,13 @@ export default function MovieDetail() {
                           ({ label, date }, index) => (
                             <span key={label}>
                               {index > 0 && <br />}
-                              {label} · {shortDate(date, false)},{' '}
+                              {label} · {shortDate(date, false, locale)},{' '}
                               {date.slice(0, 4)}
                             </span>
                           )
                         )
                       : date
-                        ? `${shortDate(date, false)}, ${date.slice(0, 4)}`
+                        ? `${shortDate(date, false, locale)}, ${date.slice(0, 4)}`
                         : '',
                   ],
                   [t('lumen.movie.fact.director', 'Director'), director],

@@ -801,7 +801,7 @@ export default function TvDetail() {
                   {r.createdAt
                     ? ' · ' +
                       translate('lumen.tv.requestedOn', 'on {date}', {
-                        date: shortDate(r.createdAt),
+                        date: shortDate(r.createdAt, true, locale),
                       })
                     : ''}
                   {ss.length
@@ -1000,7 +1000,7 @@ export default function TvDetail() {
                   const yr = s.airDate
                     ? s.airDate > today
                       ? translate('lumen.tv.premieres', 'Premieres {date}', {
-                          date: shortDate(s.airDate),
+                          date: shortDate(s.airDate, true, locale),
                         })
                       : s.airDate.slice(0, 4)
                     : translate('lumen.tv.tba', 'TBA');
@@ -1248,13 +1248,13 @@ export default function TvDetail() {
                   [
                     translate('lumen.tv.fact.lastAired', 'Last aired'),
                     t.lastEpisodeToAir
-                      ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate)}`
+                      ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate, true, locale)}`
                       : '',
                   ],
                   [
                     translate('lumen.tv.fact.nextEpisode', 'Next episode'),
                     t.nextEpisodeToAir
-                      ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate)}`
+                      ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate, true, locale)}`
                       : '',
                   ],
                 ]}

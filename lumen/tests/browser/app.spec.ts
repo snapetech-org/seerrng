@@ -1631,6 +1631,16 @@ test('movie and series language and country facts follow the saved locale', asyn
         productionCountries: [
           { iso_3166_1: 'US', name: 'Provider Country Name' },
         ],
+        releases: {
+          results: [
+            {
+              iso_3166_1: 'US',
+              release_dates: [
+                { type: 3, release_date: '2030-01-01T00:00:00.000Z' },
+              ],
+            },
+          ],
+        },
       },
     })
   );
@@ -1643,7 +1653,15 @@ test('movie and series language and country facts follow the saved locale', asyn
         name: 'The Test Series',
         originalLanguage: 'ja',
         firstAirDate: '2020-01-01',
-        seasons: [],
+        seasons: [
+          {
+            id: 1,
+            seasonNumber: 1,
+            name: 'Season 1',
+            episodeCount: 1,
+            airDate: '2030-01-01',
+          },
+        ],
         productionCountries: [
           { iso_3166_1: 'US', name: 'Provider Country Name' },
         ],
@@ -1652,9 +1670,24 @@ test('movie and series language and country facts follow the saved locale', asyn
     })
   );
   const cases = [
-    { locale: 'en', language: 'Japanese', country: 'United States' },
-    { locale: 'fr', language: 'japonais', country: 'États-Unis' },
-    { locale: 'ar', language: 'اليابانية', country: 'الولايات المتحدة' },
+    {
+      locale: 'en',
+      language: 'Japanese',
+      country: 'United States',
+      date: 'Jan 1',
+    },
+    {
+      locale: 'fr',
+      language: 'japonais',
+      country: 'États-Unis',
+      date: '1 janv.',
+    },
+    {
+      locale: 'ar',
+      language: 'اليابانية',
+      country: 'الولايات المتحدة',
+      date: '1 يناير',
+    },
   ];
   for (const item of cases) {
     locale = item.locale;
@@ -1678,6 +1711,16 @@ test('movie and series language and country facts follow the saved locale', asyn
       );
       await expect(country).toHaveAttribute('href', `${mediaPath}?country=US`);
       await expect(page.getByText('Provider Country Name')).toHaveCount(0);
+      await expect(
+        path.startsWith('/movie')
+          ? page.locator('details#details')
+          : page.locator('#seasons')
+      ).toContainText(item.date);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth
+        )
+      ).toBe(true);
     }
   }
 });

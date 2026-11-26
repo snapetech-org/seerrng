@@ -11699,3 +11699,19 @@ matched native/Lumen captures, live provider values, and bundled-mount coverage
 for these states remain unverified.
 
 release-note: `release-notes/lumen-localized-detail-geography.md`
+
+### Movie and TV detail dates follow the saved locale (2026-11-26)
+
+Movie release and fallback dates, TV request and season dates, and last/next
+episode air dates now pass the saved account locale to the shared date formatter
+instead of falling back to English month names. No date source, request state,
+or filter behavior changed.
+
+The Movie/TV detail browser fixture verifies localized Movie release dates and
+TV season premiere dates alongside the localized language/country facts, and
+checks for horizontal overflow in English, French, and Arabic at desktop,
+iPhone, Android, and tablet sizes. The production build passes. The fixture
+does not establish live metadata, a matched native screenshot comparison, or
+the bundled `/lumen/` mount.
+
+release-note: `release-notes/lumen-localized-detail-dates.md`
