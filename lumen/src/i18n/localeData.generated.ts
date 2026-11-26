@@ -1558,6 +1558,9 @@ export const localeData = [
       'library.watchlist': 'قائمة المتابعة',
       'components.Search.series': 'مسلسلات',
       'components.Requests.movie': 'فيلم',
+      'components.RequestModal.requestseriestitle': 'طلب مسلسل',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'ألعب {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'إصدار سينمائي',
       'components.MovieDetails.Layout.digital': 'رقمية',
       'components.MovieDetails.Layout.physical': 'إصدار مادي',
@@ -8292,6 +8295,7 @@ export const localeData = [
       'i18n.next': 'Напред',
       'i18n.previous': 'Назад',
       'i18n.usersettings': 'Потребителски настройки',
+      'components.RequestModal.requestseriestitle': 'Заявяване на сериал',
       'components.IssueModal.issueOther': 'Друго',
       'components.RequestModal.requesterror':
         'Нещо се обърка при изпращането на заявката.',
@@ -8848,6 +8852,7 @@ export const localeData = [
       'i18n.next': 'Endavant',
       'i18n.previous': 'Endarrere',
       'i18n.usersettings': "Configuració de l'usuari",
+      'components.RequestModal.requestseriestitle': 'Sol·licitud de sèries',
       'components.IssueModal.issueOther': 'Altre',
       'components.RequestModal.requesterror':
         "S'ha produït un error en enviar la sol·licitud.",
@@ -9515,6 +9520,7 @@ export const localeData = [
       'i18n.next': 'Další',
       'i18n.previous': 'Předchozí',
       'i18n.usersettings': 'Uživatelská nastavení',
+      'components.RequestModal.requestseriestitle': 'Žádost o seriál',
       'components.IssueModal.issueOther': 'Jiný',
       'components.RequestModal.requesterror':
         'Při odesílání žádosti se něco pokazilo.',
@@ -10180,6 +10186,7 @@ export const localeData = [
       'i18n.next': 'Næste',
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Brugerindstillinger',
+      'components.RequestModal.requestseriestitle': 'Anmod om serie',
       'components.IssueModal.issueOther': 'Andet',
       'components.RequestModal.requesterror':
         'Noget gik galt under indsendelsen af anmodningen.',
@@ -11827,6 +11834,9 @@ export const localeData = [
       'library.watchlist': 'Merkliste',
       'components.Search.series': 'Serien',
       'components.Requests.movie': 'Film',
+      'components.RequestModal.requestseriestitle': 'Serie anfragen',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Auf {mediaServerName} abspielen',
       'components.MovieDetails.Layout.theatrical': 'Kinostart',
       'components.MovieDetails.Layout.digital': 'Digital',
       'components.MovieDetails.Layout.physical': 'Physisch',
@@ -13611,6 +13621,9 @@ export const localeData = [
       'library.watchlist': 'Watchlist',
       'components.Search.series': 'Series',
       'components.Requests.movie': 'Movie',
+      'components.RequestModal.requestseriestitle': 'Request Series',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Play on {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Theatrical',
       'components.MovieDetails.Layout.digital': 'Digital',
       'components.MovieDetails.Layout.physical': 'Physical',
@@ -20207,6 +20220,7 @@ export const localeData = [
       'i18n.next': 'Επόμενο',
       'i18n.previous': 'Προηγούμενο',
       'i18n.usersettings': 'Ρυθμίσεις χρήστη',
+      'components.RequestModal.requestseriestitle': 'Αίτηση σειράς',
       'components.IssueModal.issueOther': 'Άλλο',
       'components.RequestModal.requesterror':
         'Κάτι πήγε στραβά κατά την υποβολή του αιτήματος.',
@@ -21867,6 +21881,9 @@ export const localeData = [
       'library.watchlist': 'Lista de seguimiento',
       'components.Search.series': 'Serie',
       'components.Requests.movie': 'Película',
+      'components.RequestModal.requestseriestitle': 'Solicitar Serie',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Reproducir en {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Estreno en cines',
       'components.MovieDetails.Layout.digital': 'Formato digital',
       'components.MovieDetails.Layout.physical': 'Física',
@@ -23680,6 +23697,9 @@ export const localeData = [
       'library.watchlist': 'Lista de seguimiento',
       'components.Search.series': 'Serie',
       'components.Requests.movie': 'Película',
+      'components.RequestModal.requestseriestitle': 'Solicitar Serie',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Jugar en {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Teatral',
       'components.MovieDetails.Layout.digital': 'Digital',
       'components.MovieDetails.Layout.physical': 'Física',
@@ -24513,6 +24533,7 @@ export const localeData = [
       'i18n.next': 'Järgmine',
       'i18n.previous': 'Eelmine',
       'i18n.usersettings': 'Kasutaja seaded',
+      'components.RequestModal.requestseriestitle': 'Taotle sarja',
       'components.IssueModal.issueOther': 'Muu',
       'components.RequestModal.requesterror':
         'Taotluse esitamisel tekkis viga.',
@@ -24753,6 +24774,7 @@ export const localeData = [
       'i18n.next': 'Seuraava',
       'i18n.previous': 'Edellinen',
       'i18n.usersettings': 'Käyttäjäasetukset',
+      'components.RequestModal.requestseriestitle': 'Pyydä sarjaa',
       'components.IssueModal.issueOther': 'Muu',
       'components.RequestModal.requesterror':
         'Jotain meni vikaan pyynnön jättämisessä.',
@@ -26413,6 +26435,9 @@ export const localeData = [
       'library.watchlist': 'Liste de suivi',
       'components.Search.series': 'Séries',
       'components.Requests.movie': 'Film',
+      'components.RequestModal.requestseriestitle': 'Demander la série',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Lire sur {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Sortie en salles',
       'components.MovieDetails.Layout.digital': 'Numérique',
       'components.MovieDetails.Layout.physical': 'Physique',
@@ -33532,6 +33557,7 @@ export const localeData = [
       'i18n.next': 'Dalje',
       'i18n.previous': 'Prethodno',
       'i18n.usersettings': 'Korisničke postavke',
+      'components.RequestModal.requestseriestitle': 'Zatraži seriju',
       'components.IssueModal.issueOther': 'Ostalo',
       'components.RequestModal.requesterror':
         'Dogodila se greška prilikom slanja zahtjeva.',
@@ -33788,6 +33814,7 @@ export const localeData = [
       'components.Settings.SettingsNetwork.proxyHostname': 'שם מארח Proxy',
       'i18n.previous': 'קודם',
       'i18n.usersettings': 'הגדרות משתמש',
+      'components.RequestModal.requestseriestitle': 'בקשת סדרה',
       'components.IssueModal.issueOther': 'אחר',
       'components.RequestModal.requesterror': 'משהו השתבש בזמן שליחת הבקשה.',
       'i18n.request': 'בקשה',
@@ -35380,6 +35407,9 @@ export const localeData = [
       'library.watchlist': 'देखने की सूची',
       'components.Search.series': 'श्रृंखला',
       'components.Requests.movie': 'फ़िल्म',
+      'components.RequestModal.requestseriestitle': 'सीरीज़ का अनुरोध करें',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'पर खेलते हैं {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'सिनेमाघरों में रिलीज़',
       'components.MovieDetails.Layout.digital': 'डिजिटल',
       'components.MovieDetails.Layout.physical': 'भौतिक',
@@ -36216,6 +36246,7 @@ export const localeData = [
       'i18n.next': 'Következő',
       'i18n.previous': 'Előző',
       'i18n.usersettings': 'Felhasználói beállítások',
+      'components.RequestModal.requestseriestitle': 'Sorozat kérelem',
       'components.IssueModal.issueOther': 'Egyéb',
       'components.RequestModal.requesterror':
         'Hiba történt a kérés beküldése közben.',
@@ -37833,6 +37864,9 @@ export const localeData = [
       'library.watchlist': 'Daftar Tontonan',
       'components.Search.series': 'Serial',
       'components.Requests.movie': 'Film',
+      'components.RequestModal.requestseriestitle': 'Minta serial',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Mainkan {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Rilis di bioskop',
       'components.MovieDetails.Layout.digital': 'Digital',
       'components.MovieDetails.Layout.physical': 'Fisik',
@@ -38658,6 +38692,7 @@ export const localeData = [
       'i18n.next': 'Avanti',
       'i18n.previous': 'Precedente',
       'i18n.usersettings': 'Impostazioni utente',
+      'components.RequestModal.requestseriestitle': 'Richiedi serie',
       'components.IssueModal.issueOther': 'Altro',
       'components.RequestModal.requesterror':
         "Qualcosa è andato storto durante l'invio della richiesta.",
@@ -40271,6 +40306,9 @@ export const localeData = [
       'library.watchlist': 'ウォッチリスト',
       'components.Search.series': 'シリーズ',
       'components.Requests.movie': '映画',
+      'components.RequestModal.requestseriestitle': 'シリーズのリクエスト',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        '{mediaServerName}で再生する',
       'components.MovieDetails.Layout.theatrical': '劇場公開',
       'components.MovieDetails.Layout.digital': 'デジタル',
       'components.MovieDetails.Layout.physical': 'フィジカル',
@@ -42000,6 +42038,9 @@ export const localeData = [
       'library.watchlist': '관심 목록',
       'components.Search.series': '시리즈',
       'components.Requests.movie': '영화',
+      'components.RequestModal.requestseriestitle': '시리즈 요청',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        '다운로드 {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': '극장 개봉',
       'components.MovieDetails.Layout.digital': '디지털',
       'components.MovieDetails.Layout.physical': '실물',
@@ -42331,6 +42372,7 @@ export const localeData = [
       'i18n.next': 'Kitas',
       'i18n.previous': 'Ankstesnis',
       'i18n.usersettings': 'Vartotojo nustatymai',
+      'components.RequestModal.requestseriestitle': 'Rezervuoti serialą',
       'components.IssueModal.issueOther': 'Kita',
       'components.RequestModal.requesterror':
         'Kažkas nepavyko teikiant rezervaciją.',
@@ -42768,6 +42810,7 @@ export const localeData = [
       'i18n.next': 'Neste',
       'i18n.previous': 'Forrige',
       'i18n.usersettings': 'Bruker-instillinger',
+      'components.RequestModal.requestseriestitle': 'Forespør Serier',
       'components.IssueModal.issueOther': 'Annet',
       'components.RequestModal.requesterror':
         'Noe gikk galt ved sending av forespørsel.',
@@ -43444,6 +43487,7 @@ export const localeData = [
       'i18n.next': 'Volgende',
       'i18n.previous': 'Vorige',
       'i18n.usersettings': 'Gebruikersinstellingen',
+      'components.RequestModal.requestseriestitle': 'Serie aanvragen',
       'components.IssueModal.issueOther': 'Anders',
       'components.RequestModal.requesterror':
         'Er ging iets mis bij het aanvragen.',
@@ -44120,6 +44164,7 @@ export const localeData = [
       'i18n.next': 'Następny',
       'i18n.previous': 'Poprzedni',
       'i18n.usersettings': 'Ustawienia użytkownika',
+      'components.RequestModal.requestseriestitle': 'Poproś o serial',
       'components.IssueModal.issueOther': 'Inny',
       'components.RequestModal.requesterror':
         'Coś poszło nie tak podczas przesyłania prośby.',
@@ -45765,6 +45810,9 @@ export const localeData = [
       'library.watchlist': 'Lista de acompanhamento',
       'components.Search.series': 'Séries',
       'components.Requests.movie': 'Filme',
+      'components.RequestModal.requestseriestitle': 'Solicitar Série',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Assitir no {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Lançamento nos cinemas',
       'components.MovieDetails.Layout.digital': 'Digital',
       'components.MovieDetails.Layout.physical': 'Físico',
@@ -46584,6 +46632,7 @@ export const localeData = [
       'i18n.next': 'Próxima',
       'i18n.previous': 'Anterior',
       'i18n.usersettings': 'Utilizadores',
+      'components.RequestModal.requestseriestitle': 'Solicitar Séries',
       'components.IssueModal.issueOther': 'Outros',
       'components.RequestModal.requesterror':
         'Ocorreu um erro ao submeter o pedido.',
@@ -46936,6 +46985,7 @@ export const localeData = [
       'components.UserProfile.UserSettings.menuPermissions': 'Permisiuni',
       'i18n.previous': 'Precedent',
       'i18n.usersettings': 'Setări utilizator',
+      'components.RequestModal.requestseriestitle': 'Solicitați Serial',
       'components.IssueModal.issueOther': 'Altele',
       'components.RequestModal.requesterror':
         'Ceva nu a funcționat în cursul trimiterii solicitării.',
@@ -47619,6 +47669,7 @@ export const localeData = [
       'i18n.next': 'Следующая',
       'i18n.previous': 'Предыдущая',
       'i18n.usersettings': 'Настройки пользователя',
+      'components.RequestModal.requestseriestitle': 'Запросить сериал',
       'components.IssueModal.issueOther': 'Другое',
       'components.RequestModal.requesterror':
         'Что-то пошло не так при отправке запроса.',
@@ -48898,6 +48949,7 @@ export const localeData = [
       'i18n.next': 'Nästa',
       'i18n.previous': 'Föregående',
       'i18n.usersettings': 'Användarinställningar',
+      'components.RequestModal.requestseriestitle': 'Begär serie',
       'components.IssueModal.issueOther': 'Övrigt',
       'components.RequestModal.requesterror':
         'Något gick fel när förfrågan skickades.',
@@ -49560,6 +49612,7 @@ export const localeData = [
       'i18n.next': 'Sonraki',
       'i18n.previous': 'Önceki',
       'i18n.usersettings': 'Kullanıcı Ayarları',
+      'components.RequestModal.requestseriestitle': 'Dizi Talep Et',
       'components.IssueModal.issueOther': 'Diğer',
       'components.RequestModal.requesterror':
         'Talep gönderilirken bir sorun oluştu.',
@@ -50190,6 +50243,7 @@ export const localeData = [
       'i18n.next': 'Наступна',
       'i18n.previous': 'Попередня',
       'i18n.usersettings': 'Налаштування користувача',
+      'components.RequestModal.requestseriestitle': 'Запит на серіал',
       'components.IssueModal.issueOther': 'Інше',
       'components.RequestModal.requesterror':
         'Щось пішло не так під час надсилання запиту.',
@@ -51696,6 +51750,9 @@ export const localeData = [
       'library.watchlist': '关注列表',
       'components.Search.series': '剧集',
       'components.Requests.movie': '电影',
+      'components.RequestModal.requestseriestitle': '提交电视节目请求',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        '继续玩 {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': '院线上映',
       'components.MovieDetails.Layout.digital': '数字版',
       'components.MovieDetails.Layout.physical': '实体版',
@@ -53349,6 +53406,9 @@ export const localeData = [
       'library.watchlist': '追蹤清單',
       'components.Search.series': '影集',
       'components.Requests.movie': '電影',
+      'components.RequestModal.requestseriestitle': '提出影集請求',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        '在 {mediaServerName} 上觀看',
       'components.MovieDetails.Layout.theatrical': '院線上映',
       'components.MovieDetails.Layout.digital': '數位版',
       'components.MovieDetails.Layout.physical': '實體版',
@@ -55100,6 +55160,9 @@ export const localeData = [
       'library.watchlist': 'Danh sách theo dõi',
       'components.Search.series': 'Loạt phim',
       'components.Requests.movie': 'Phim',
+      'components.RequestModal.requestseriestitle': 'Yêu cầu phim bộ',
+      'components.Common.MediaServerPlayButton.playOnServer':
+        'Chơi {mediaServerName}',
       'components.MovieDetails.Layout.theatrical': 'Phát hành tại rạp',
       'components.MovieDetails.Layout.digital': 'Phát hành kỹ thuật số',
       'components.MovieDetails.Layout.physical': 'Bản phát hành vật lý',

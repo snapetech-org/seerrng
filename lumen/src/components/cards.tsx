@@ -986,12 +986,24 @@ export function FeatCard({
                 {...mediaLink(playbackMedia, false, tv ? 'tv' : 'movie')}
               >
                 <Icon name="play" size="sm" />
-                Watch
+                {t(
+                  'components.Common.MediaServerPlayButton.playOnServer',
+                  'Play on {mediaServerName}',
+                  {
+                    mediaServerName: serverName,
+                  }
+                )}
               </a>
             ) : (
               <Link className="btn go" to={`/${tv ? 'tv' : 'movie'}/${it.id}`}>
                 <Icon name="play" size="sm" />
-                Watch
+                {t(
+                  'components.Common.MediaServerPlayButton.playOnServer',
+                  'Play on {mediaServerName}',
+                  {
+                    mediaServerName: serverName,
+                  }
+                )}
               </Link>
             )
           ) : s || done ? (
@@ -1009,7 +1021,15 @@ export function FeatCard({
           ) : quick.allowed ? (
             <button className="btn go" disabled={busy} onClick={request}>
               <Icon name="plus" size="sm" />
-              {tv ? 'Request series' : 'Request'}
+              {tv
+                ? t(
+                    'components.RequestModal.requestseriestitle',
+                    'Request Series'
+                  )
+                : t(
+                    'components.Common.FormatRequestControl.request',
+                    'Request'
+                  )}
             </button>
           ) : null}
         </span>

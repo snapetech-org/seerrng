@@ -2458,6 +2458,8 @@
   "lumen.cards.titleViewOnHover",
   "components.Search.series",
   "components.Requests.movie",
+  "components.RequestModal.requestseriestitle",
+  "components.Common.MediaServerPlayButton.playOnServer",
   "lumen.cards.outOn",
   "lumen.cards.requestEarly",
   "lumen.cards.ebook",

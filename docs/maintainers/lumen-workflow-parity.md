@@ -11762,10 +11762,10 @@ Bookshelf provider responses remain part of the broader parity audit.
 release-note: `release-notes/lumen-book-card-localization.md`
 
 The Discover featured rail uses the same native localized movie and series
-labels as poster cards. A French browser regression checks the featured series
-metadata in desktop, iPhone, Android, and tablet projects. The candidate text
-is verified; matched native/Lumen screenshots remain part of the open visual
-audit.
+labels as poster cards, with localized request and media-server playback
+actions. French browser coverage checks its series label and request action in
+desktop, iPhone, Android, and tablet projects. The candidate text is verified;
+matched native/Lumen screenshots remain part of the open visual audit.
 
 The standard poster card's early-request action also follows the saved locale.
 The focused browser case checks the French action text when the card is hovered

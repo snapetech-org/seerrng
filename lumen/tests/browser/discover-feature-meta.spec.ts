@@ -177,6 +177,9 @@ test('Discover feature card localizes its series type', async ({ page }) => {
   });
   await page.goto('/');
   await expect(page.locator('.feat .mm').first()).toContainText('Séries');
+  await expect(page.locator('.feat .btn.go').first()).toHaveText(
+    'Demander la série'
+  );
 });
 
 test('movie and series genre directories open the matching filtered browse', async ({
