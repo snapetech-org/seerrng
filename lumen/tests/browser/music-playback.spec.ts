@@ -873,6 +873,39 @@ for (const [
   });
 }
 
+for (const [locale, heading, emptyState] of [
+  ['fr', 'Vos demandes de musique', 'Aucune demande musicale pour le moment.'],
+  ['ar', 'طلباتك الموسيقية', 'لا توجد طلبات موسيقية بعد.'],
+] as const) {
+  test(`music request summary uses the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.goto(testAppPath('/music?tab=activity'));
+    const requests = page.getByRole('heading', {
+      name: baseline ? 'Your music requests' : heading,
+    });
+    await requests.scrollIntoViewIfNeeded();
+    await expect(requests).toBeVisible();
+    await expect(
+      page.getByText(baseline ? 'No music requests yet.' : emptyState, {
+        exact: true,
+      })
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`music-requests-${locale}.png`),
+        fullPage: false,
+      });
+  });
+}
+
 for (const [
   locale,
   searchPlaceholder,

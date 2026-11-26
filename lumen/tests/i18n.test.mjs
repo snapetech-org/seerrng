@@ -198,6 +198,48 @@ test('all Lumen Music page labels are registered and translated', async () => {
   }
 });
 
+test('Music sections and podcast actions are registered and translated', async () => {
+  for (const file of ['MusicSections.tsx', 'Podcasts.tsx']) {
+    const source = await readFile(
+      resolve(root, `src/components/${file}`),
+      'utf8'
+    );
+    const sourceFile = ts.createSourceFile(
+      file,
+      source,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX
+    );
+    const sourceKeys = new Set();
+    const visit = (node) => {
+      if (
+        ts.isCallExpression(node) &&
+        node.arguments.length >= 1 &&
+        ts.isStringLiteral(node.arguments[0]) &&
+        node.arguments[0].text.startsWith('lumen.')
+      ) {
+        sourceKeys.add(node.arguments[0].text);
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(sourceFile);
+    assert.ok(sourceKeys.size > 0, `${file} message keys exist`);
+    for (const key of sourceKeys) {
+      assert.ok(
+        lumenKeyRegistry.includes(key),
+        `registered message key: ${key}`
+      );
+      for (const locale of ['fr', 'ar']) {
+        assert.ok(
+          overrides[locale][key],
+          `${locale} translation exists: ${key}`
+        );
+      }
+    }
+  }
+});
+
 test('Lumen MusicHome library and download activity labels are translated', async () => {
   const source = await readFile(
     resolve(root, 'src/components/MusicHome.tsx'),

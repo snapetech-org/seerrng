@@ -11885,3 +11885,19 @@ MusicSections, Podcast, and other non-Music translation gaps remain under
 review.
 
 release-note: `release-notes/lumen-music-page-localization.md`
+
+### Music sections and podcast actions (2026-11-26)
+
+Music Sections request states, single-track download help, retry feedback, and
+request summaries now have French and Arabic overrides. Shared retry and cancel
+actions, plus the Podcast empty-result heading, use the same locale catalog.
+The request and podcast workflows are unchanged. The AST-based catalog test
+enumerates all literal Lumen messages in both `MusicSections.tsx` and
+`Podcasts.tsx` and requires registry entries and French/Arabic translations.
+
+The existing localized Music and Podcast browser fixtures cover the affected
+pages; this change does not alter layout or styles. Browser evidence for these
+specific empty and request states remains to be captured alongside the next
+MusicHome discovery batch.
+
+release-note: `release-notes/lumen-music-sections-localization.md`

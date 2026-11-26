@@ -6549,5 +6549,15 @@
   "lumen.music.moreByArtist",
   "lumen.music.more",
   "lumen.music.getting",
-  "lumen.music.getSong"
+  "lumen.music.getSong",
+  "lumen.music.partOwned",
+  "lumen.music.getSongOnlyHelp",
+  "lumen.music.seeAlbumsAndSongs",
+  "lumen.music.retryToast",
+  "lumen.music.retryFailed",
+  "lumen.common.tryAgain",
+  "lumen.common.cancel",
+  "lumen.music.readMore",
+  "lumen.music.unfollow",
+  "lumen.music.follow"
 ]
