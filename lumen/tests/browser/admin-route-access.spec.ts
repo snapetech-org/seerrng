@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 const adminRoutes = [
   '/admin',
   '/admin/override-rules',
@@ -93,7 +96,7 @@ test('administrator navigation matches the account role', async ({
           exact: true,
         })
       : page.getByRole('link', { name: 'Open SeerrNG Administration' });
-  await expect(adminEntry).toHaveAttribute('href', '/admin');
+  await expect(adminEntry).toHaveAttribute('href', testAppPath('/admin'));
   await page.goto('/admin');
   const primaryNavigation = page.locator('#mobile-primary-navigation');
   await expect
@@ -102,13 +105,17 @@ test('administrator navigation matches the account role', async ({
     )
     .toBe(true);
   for (const path of adminRoutes.slice(1, -1)) {
-    await expect(page.locator(`#view a[href="${path}"]`)).toHaveCount(1);
+    await expect(
+      page.locator(`#view a[href="${testAppPath(path)}"]`)
+    ).toHaveCount(1);
   }
-  await expect(primaryNavigation.locator('a[href="/admin/users"]')).toHaveCount(
-    1
-  );
+  await expect(
+    primaryNavigation.locator(`a[href="${testAppPath('/admin/users')}"]`)
+  ).toHaveCount(1);
   for (const path of adminRoutes) {
     await page.goto(path);
-    await expect(page).toHaveURL(new RegExp(`${path.replaceAll('/', '\\/')}$`));
+    await expect(page).toHaveURL(
+      new RegExp(`${testAppPath(path).replaceAll('/', '\\/')}$`)
+    );
   }
 });

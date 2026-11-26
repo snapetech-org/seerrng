@@ -45,7 +45,7 @@ for (const permissions of [0, 4, 32, 2]) {
       }
     } else {
       const tabs = page.getByRole('navigation', { name: 'Tabs', exact: true });
-      await tabs.locator('a[href="/me"]').click();
+      await tabs.locator(`a[href="${testAppPath('/me')}"]`).click();
       const link = page.getByRole('link', { name: 'Open Swipe', exact: true });
       await expect(link).toHaveCount(canUseSwipe ? 1 : 0);
       if (canUseSwipe) {

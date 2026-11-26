@@ -157,9 +157,12 @@ test('Bookshelf moves require the current preview and track the queued command',
   );
   await page.getByRole('button', { name: 'Preview Move' }).click();
   await page.getByRole('checkbox', { name: /I reviewed this preview/ }).check();
+  const configurationReadsBeforeSuccessfulMove = configurationReads;
   await page.getByRole('button', { name: 'Start Move' }).click();
   await expect(page.getByText('Move 91: completed.')).toBeVisible();
-  await expect.poll(() => configurationReads).toBe(2);
+  await expect
+    .poll(() => configurationReads)
+    .toBeGreaterThan(configurationReadsBeforeSuccessfulMove);
   expect(requests).toEqual([
     {
       path: 'preview',

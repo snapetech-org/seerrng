@@ -6816,6 +6816,28 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Full administrator surface under the bundled mount (2026-11-25)
+
+All 52 `admin-*.spec.ts` browser specs pass against the standalone production
+preview (919 passed, one expected skip) and the compiled Express `/lumen/`
+mount (919 passed, one expected skip) across desktop, iPhone, Android, and
+tablet projects. The suite exercises localized administration pages,
+permission boundaries and direct routes, provider setup and credential
+handling, connection retries, request moderation, storage recovery, library
+migration, and responsive navigation.
+
+The mounted run required test-only adjustments for the `/lumen` base path and
+for the embedded bundle's additional initial configuration read. A temporary
+test server redirects root-relative document entry URLs into the actual
+`/lumen/` mount; APIs and static assets continue through their normal routes.
+This qualifies client workflows and rendering with fixture-backed API
+responses. It does not establish live provider handoffs, server authorization,
+published-image behavior, or matched-native visual acceptance. Full results
+and traces are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/admin-all-mounted-final/`.
+
+release-note: none
+
 ### Admin workflows under the bundled mount (2026-11-25)
 
 The complete admin browser suite passes against the standalone production
