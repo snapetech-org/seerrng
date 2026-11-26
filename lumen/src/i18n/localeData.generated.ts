@@ -7642,6 +7642,8 @@ export const localeData = [
       'lumen.videoRating.loadFailed': 'تعذر تحميل التقييمات.',
       'lumen.manageVideo.downloadClient': 'العميل: {name}',
       'lumen.manageVideo.liveSeeds': 'عدد البذور: {count}',
+      'lumen.collectors.unavailableSocial':
+        'تتطلب اختيارات هواة الجمع تفعيل الاتحاد الاجتماعي.',
       'lumen.music.all': 'الكل',
       'lumen.music.artists': 'الفنانون',
       'lumen.music.browseCatalog': 'تصفح الفهرس',
@@ -7672,6 +7674,12 @@ export const localeData = [
       'lumen.music.type.song': 'أغنية',
       'lumen.music.viewAll': 'عرض الكل',
       'lumen.music.yourRequests': 'طلباتك الموسيقية',
+      'lumen.requests.openInAurral': 'فتح في Aurral',
+      'lumen.requests.openTrackRequests': 'فتح طلبات المقاطع',
+      'lumen.songIdentify.unavailableAurral':
+        'التعرّف على الأغاني غير متاح إلى أن يفعّل المسؤول طلبات المقاطع في Aurral.',
+      'lumen.trackRequests.unavailableAurral':
+        'طلبات المقاطع غير متاحة إلى أن يفعّلها المسؤول في Aurral.',
       'lumen.podcasts.allCategories': 'الكل',
       'lumen.podcasts.becauseGenre': 'المزيد من برامج {genre}',
       'lumen.podcasts.categories': 'الفئات',
@@ -8011,6 +8019,19 @@ export const localeData = [
       'lumen.music.getSinglesTitle': 'طلب الأغاني المنفردة وEP للفنان {name}؟',
       'lumen.music.fansAlsoLike': 'يعجب المعجبين أيضًا',
       'lumen.common.loading': 'جارٍ التحميل…',
+      'lumen.quickRequest.cancel': 'إلغاء',
+      'lumen.request.couldNotRequestTitle': 'تعذّر طلب {title}.',
+      'lumen.request.failed': 'فشل الطلب',
+      'lumen.collectors.offTitle': 'اختيارات هواة الجمع غير مفعّلة هنا',
+      'lumen.collectors.backToMusic': 'العودة إلى الموسيقى',
+      'lumen.playlist.subtitle':
+        'ألصق رابط قائمة تشغيل لمعرفة الأغاني المتوفرة وطلب البقية. تُفتح روابط Deezer مباشرة؛ ويتطلب Spotify ربط الحساب مرة واحدة.',
+      'lumen.playlist.connectFirst':
+        'اربط Spotify أولاً باستخدام الزر أعلاه، ثم حاول مجدداً.',
+      'lumen.playlist.linkPlaceholder':
+        'https://www.deezer.com/playlist/… أو Spotify / YouTube',
+      'lumen.servarr.keepAvailabilityInSync': 'إبقاء التوفّر متزامناً',
+      'lumen.servarr.musicAndTracks': 'الموسيقى والمقاطع',
     },
   },
   {
@@ -33708,6 +33729,8 @@ export const localeData = [
       'lumen.videoRating.loadFailed': 'Impossible de charger les évaluations.',
       'lumen.manageVideo.downloadClient': 'Client : {name}',
       'lumen.manageVideo.liveSeeds': 'Nombre de graines : {count}',
+      'lumen.collectors.unavailableSocial':
+        'Les sélections des collectionneurs nécessitent l’activation de la fédération sociale.',
       'lumen.music.all': 'Tout',
       'lumen.music.artists': 'Artistes',
       'lumen.music.browseCatalog': 'Parcourir le catalogue',
@@ -33738,6 +33761,12 @@ export const localeData = [
       'lumen.music.type.song': 'Chanson',
       'lumen.music.viewAll': 'Tout voir',
       'lumen.music.yourRequests': 'Vos demandes de musique',
+      'lumen.requests.openInAurral': 'Ouvrir dans Aurral',
+      'lumen.requests.openTrackRequests': 'Ouvrir les demandes de pistes',
+      'lumen.songIdentify.unavailableAurral':
+        'L’identification des chansons est indisponible tant qu’un administrateur n’a pas activé les demandes de pistes dans Aurral.',
+      'lumen.trackRequests.unavailableAurral':
+        'Les demandes de pistes sont indisponibles tant qu’un administrateur ne les a pas activées dans Aurral.',
       'lumen.podcasts.allCategories': 'Toutes',
       'lumen.podcasts.becauseGenre': 'Plus d’émissions {genre}',
       'lumen.podcasts.categories': 'Catégories',
@@ -34091,6 +34120,21 @@ export const localeData = [
       'lumen.music.getSinglesTitle': 'Demander les singles et EP de {name} ?',
       'lumen.music.fansAlsoLike': 'Les fans aiment aussi',
       'lumen.common.loading': 'Chargement…',
+      'lumen.quickRequest.cancel': 'Annuler',
+      'lumen.request.couldNotRequestTitle': 'Impossible de demander {title}.',
+      'lumen.request.failed': 'Échec de la demande',
+      'lumen.collectors.offTitle':
+        'Les sélections des collectionneurs ne sont pas activées ici',
+      'lumen.collectors.backToMusic': 'Retour à Musique',
+      'lumen.playlist.subtitle':
+        'Collez le lien d’une playlist pour voir les titres déjà disponibles et demander les autres. Les liens Deezer s’ouvrent directement ; Spotify nécessite une connexion unique.',
+      'lumen.playlist.connectFirst':
+        'Connectez d’abord Spotify avec le bouton ci-dessus, puis réessayez.',
+      'lumen.playlist.linkPlaceholder':
+        'https://www.deezer.com/playlist/… ou Spotify / YouTube',
+      'lumen.servarr.keepAvailabilityInSync':
+        'Maintenir la disponibilité synchronisée',
+      'lumen.servarr.musicAndTracks': 'Musique et pistes',
     },
   },
   {

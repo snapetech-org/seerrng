@@ -1,0 +1,1 @@
+Lumen now provides French and Arabic translations for all statically identified literal message keys across its source. Collector Picks unavailable feedback and Playlist Import guidance received focused browser coverage across phone, tablet, and desktop viewports.

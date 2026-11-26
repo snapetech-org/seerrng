@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { test } from 'node:test';
 import ts from 'typescript';
@@ -390,6 +390,59 @@ test('all literal MusicHome messages are registered and translated', async () =>
     assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
     for (const locale of ['fr', 'ar']) {
       assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
+test('all literal Lumen messages are registered and translated', async () => {
+  const sourceRoot = resolve(root, 'src');
+  const files = [];
+  const collectFiles = async (directory) => {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const file = resolve(directory, entry.name);
+      if (entry.isDirectory()) await collectFiles(file);
+      else if (/\.[jt]sx?$/.test(entry.name)) files.push(file);
+    }
+  };
+  await collectFiles(sourceRoot);
+  const messages = new Set();
+  for (const file of files) {
+    const source = await readFile(file, 'utf8');
+    const kind =
+      file.endsWith('.tsx') || file.endsWith('.jsx')
+        ? ts.ScriptKind.TSX
+        : ts.ScriptKind.TS;
+    const ast = ts.createSourceFile(
+      file,
+      source,
+      ts.ScriptTarget.Latest,
+      true,
+      kind
+    );
+    const visit = (node) => {
+      if (
+        ts.isCallExpression(node) &&
+        node.arguments.length >= 2 &&
+        ts.isStringLiteral(node.arguments[0]) &&
+        ts.isStringLiteral(node.arguments[1]) &&
+        node.arguments[0].text.startsWith('lumen.')
+      ) {
+        const [keyNode] = node.arguments;
+        messages.add(keyNode.text);
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(ast);
+  }
+
+  assert.ok(messages.size > 0, 'literal Lumen message keys exist');
+  for (const key of messages) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered Lumen key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(
+        overrides[locale]?.[key],
+        `${locale} translation exists: ${key}`
+      );
     }
   }
 });

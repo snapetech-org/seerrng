@@ -8467,7 +8467,10 @@ test('Playlist Import reviews matches and retries only failed requests', async (
   const copy = {
     en: {
       title: 'Import Playlist',
+      subtitle:
+        'Paste a playlist link to see which songs you already have and get the rest. Deezer links open straight away; Spotify needs a one-time connection first.',
       url: 'Spotify or YouTube Playlist URL',
+      linkPlaceholder: 'https://www.deezer.com/playlist/… or Spotify / YouTube',
       preview: 'Preview Matches',
       matched: 'Matched',
       unmatched: 'Unmatched',
@@ -8479,7 +8482,10 @@ test('Playlist Import reviews matches and retries only failed requests', async (
     },
     fr: {
       title: 'Importer une playlist',
+      subtitle:
+        'Collez le lien d’une playlist pour voir les titres déjà disponibles et demander les autres. Les liens Deezer s’ouvrent directement ; Spotify nécessite une connexion unique.',
       url: 'URL de playlist Spotify ou YouTube',
+      linkPlaceholder: 'https://www.deezer.com/playlist/… ou Spotify / YouTube',
       preview: 'Aperçu des correspondances',
       matched: 'Correspondance trouvée',
       unmatched: 'Sans correspondance',
@@ -8491,7 +8497,10 @@ test('Playlist Import reviews matches and retries only failed requests', async (
     },
     ar: {
       title: 'استيراد قائمة تشغيل',
+      subtitle:
+        'ألصق رابط قائمة تشغيل لمعرفة الأغاني المتوفرة وطلب البقية. تُفتح روابط Deezer مباشرة؛ ويتطلب Spotify ربط الحساب مرة واحدة.',
       url: 'رابط قائمة تشغيل Spotify أو YouTube',
+      linkPlaceholder: 'https://www.deezer.com/playlist/… أو Spotify / YouTube',
       preview: 'معاينة التطابقات',
       matched: 'متطابق',
       unmatched: 'غير متطابق',
@@ -8556,6 +8565,25 @@ test('Playlist Import reviews matches and retries only failed requests', async (
   );
   await page.goto(testAppPath('/music/playlist-import'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
+  const captureDir = process.env.LUMEN_I18N_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(test.info().project.name)) {
+    const { mkdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    await mkdir(captureDir, { recursive: true });
+    await page.screenshot({
+      path: join(
+        captureDir,
+        `playlist-${locale}-${test.info().project.name}.png`
+      ),
+      fullPage: true,
+    });
+  }
+  if (process.env.LUMEN_I18N_CAPTURE_ONLY === '1') return;
+  await expect(page.getByText(copy.subtitle)).toBeVisible();
+  await expect(page.getByLabel(copy.url)).toHaveAttribute(
+    'placeholder',
+    copy.linkPlaceholder
+  );
   await page
     .getByLabel(copy.url)
     .fill('https://www.youtube.com/playlist?list=fixture');

@@ -6640,5 +6640,15 @@
   "lumen.music.getSongsTitle",
   "lumen.music.getSinglesTitle",
   "lumen.music.fansAlsoLike",
-  "lumen.common.loading"
+  "lumen.common.loading",
+  "lumen.quickRequest.cancel",
+  "lumen.request.couldNotRequestTitle",
+  "lumen.request.failed",
+  "lumen.collectors.offTitle",
+  "lumen.collectors.backToMusic",
+  "lumen.playlist.subtitle",
+  "lumen.playlist.connectFirst",
+  "lumen.playlist.linkPlaceholder",
+  "lumen.servarr.keepAvailabilityInSync",
+  "lumen.servarr.musicAndTracks"
 ]

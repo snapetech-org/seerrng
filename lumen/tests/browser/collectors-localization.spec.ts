@@ -13,6 +13,8 @@ const copy = {
     follow: 'Follow Artist Releases',
     following: 'Following',
     toast: 'Artist followed.',
+    offTitle: 'Collector Picks are not turned on here',
+    backToMusic: 'Back to Music',
   },
   fr: {
     title: 'Sélections des collectionneurs',
@@ -23,6 +25,8 @@ const copy = {
     follow: 'Suivre les sorties de l’artiste',
     following: 'Abonné',
     toast: 'Artiste suivi.',
+    offTitle: 'Les sélections des collectionneurs ne sont pas activées ici',
+    backToMusic: 'Retour à Musique',
   },
   ar: {
     title: 'اختيارات هواة الجمع',
@@ -33,6 +37,8 @@ const copy = {
     follow: 'متابعة إصدارات الفنان',
     following: 'تتابع',
     toast: 'تمت متابعة الفنان.',
+    offTitle: 'اختيارات هواة الجمع غير مفعّلة هنا',
+    backToMusic: 'العودة إلى الموسيقى',
   },
 } as const;
 
@@ -40,6 +46,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`Collector Picks follow ${locale}`, async ({ page }) => {
     const albumId = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
     const artistId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+    let feedAvailable = true;
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -60,23 +67,25 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       if (path === '/collectors')
         return route.fulfill({
           json: {
-            available: true,
-            results: [
-              {
-                title: 'Fixture Album',
-                creator: 'Fixture Artist',
-                year: 2000,
-                score: 0.87,
-                trustedSourceCount: 2,
-                lastSeenAt: '2026-11-20T12:00:00.000Z',
-                reasons: ['Fixture reason'],
-                album: {
-                  id: albumId,
-                  href: `/music/${albumId}?source=collector`,
-                },
-                artistId,
-              },
-            ],
+            available: feedAvailable,
+            results: feedAvailable
+              ? [
+                  {
+                    title: 'Fixture Album',
+                    creator: 'Fixture Artist',
+                    year: 2000,
+                    score: 0.87,
+                    trustedSourceCount: 2,
+                    lastSeenAt: '2026-11-20T12:00:00.000Z',
+                    reasons: ['Fixture reason'],
+                    album: {
+                      id: albumId,
+                      href: `/music/${albumId}?source=collector`,
+                    },
+                    artistId,
+                  },
+                ]
+              : [],
           },
         });
       if (path === '/collectors/radar') {
@@ -116,5 +125,37 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         )
       )
       .toBe(true);
+    feedAvailable = false;
+    await page.reload();
+    await expect(page.locator('.empty')).toBeVisible();
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth
+        )
+      )
+      .toBe(true);
+    const captureDir = process.env.LUMEN_I18N_CAPTURE_DIR;
+    if (
+      captureDir &&
+      locale !== 'en' &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    ) {
+      const { mkdir } = await import('node:fs/promises');
+      const { join } = await import('node:path');
+      await mkdir(captureDir, { recursive: true });
+      await page.screenshot({
+        path: join(
+          captureDir,
+          `collectors-${locale}-${test.info().project.name}.png`
+        ),
+        fullPage: true,
+      });
+    }
+    if (process.env.LUMEN_I18N_CAPTURE_ONLY === '1') return;
+    await expect(page.getByText(text.offTitle)).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: text.backToMusic })
+    ).toBeVisible();
   });
 }

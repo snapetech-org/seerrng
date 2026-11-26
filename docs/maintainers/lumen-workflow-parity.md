@@ -11983,3 +11983,26 @@ Dynamic message-key composition and gaps in other Lumen components remain
 under audit.
 
 release-note: `release-notes/lumen-music-follow-feedback-localization.md`
+
+### Literal Lumen message localization audit (2026-11-26)
+
+The source-wide AST audit found untranslated literal message keys in Collector
+Picks, Playlist Import, Servarr settings, Requests, and shared request/music
+actions. French and Arabic overrides now cover those labels and recovery states.
+The audit found no remaining literal `lumen.*` message keys without a registered
+catalog entry and both locale overrides. A regression test walks every Lumen
+source file and checks those literal calls; dynamically assembled message keys
+remain outside this static check.
+
+Browser checks cover the Collector Picks unavailable state in all three locales
+across desktop, iPhone, Android, and tablet (12 cases), and Playlist Import's
+description, link placeholder, and request/retry workflow in French and Arabic
+across the same viewports (8 cases). No component styles or layout owners
+changed. Same-state prior-English-fallback and candidate captures were compared
+at 1440×900 and 390×844 in French and Arabic; the translated states retain the
+existing surfaces without text clipping or horizontal overflow. Evidence is
+retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/`.
+This does not establish visual parity for other routes or validate live Aurral,
+Spotify, or provider behavior.
+
+release-note: `release-notes/lumen-literal-message-localization.md`
