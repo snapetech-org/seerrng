@@ -248,8 +248,20 @@ export default function MovieDetail() {
       const result = await requestMovie(m.id, options);
       toast(
         result.quotaException
-          ? `Approval requested for ${m.title}`
-          : `Requested ${m.title}${options.is4k ? ' in 4K' : ''}`
+          ? t(
+              'lumen.requestSummary.approvalRequested',
+              'Approval requested for {title}',
+              {
+                title: m.title || 'this movie',
+              }
+            )
+          : t(
+              options.is4k
+                ? 'lumen.requestSummary.movieRequested4k'
+                : 'lumen.requestSummary.movieRequested',
+              options.is4k ? 'Requested {title} in 4K' : 'Requested {title}',
+              { title: m.title || 'this movie' }
+            )
       );
       refresh();
       quota.refresh();

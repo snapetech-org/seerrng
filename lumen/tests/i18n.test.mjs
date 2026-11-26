@@ -67,6 +67,7 @@ const lumenKeys = [
   'lumen.requestSummary.approvalRequested',
   'lumen.requestSummary.movieRequested',
   'lumen.requestSummary.movieRequested4k',
+  'lumen.requestSummary.episodesRequested',
   'lumen.requestEdit.title',
   'lumen.requestEdit.askedBy',
   'lumen.requestEdit.seasons',

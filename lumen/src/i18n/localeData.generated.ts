@@ -3461,6 +3461,7 @@ export const localeData = [
       'lumen.requestSummary.approvalRequested': 'تم طلب موافقة لـ {title}',
       'lumen.requestSummary.movieRequested': 'تم طلب {title}',
       'lumen.requestSummary.movieRequested4k': 'تم طلب {title} بدقة 4K',
+      'lumen.requestSummary.episodesRequested': 'تم طلب حلقات {title}',
       'lumen.category.adminHelp':
         'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.',
       'lumen.category.backDiscover': 'العودة إلى الاستكشاف',
@@ -15549,6 +15550,8 @@ export const localeData = [
         'Approval requested for {title}',
       'lumen.requestSummary.movieRequested': 'Requested {title}',
       'lumen.requestSummary.movieRequested4k': 'Requested {title} in 4K',
+      'lumen.requestSummary.episodesRequested':
+        'Episodes requested for {title}',
       'lumen.category.adminHelp':
         'An admin can enable it in SeerrNG under Settings › General › Media categories.',
       'lumen.category.backDiscover': 'Back to Discover',
@@ -28565,6 +28568,8 @@ export const localeData = [
       'lumen.requestSummary.movieRequested': 'Demande envoyée pour {title}',
       'lumen.requestSummary.movieRequested4k':
         'Demande envoyée pour {title} en 4K',
+      'lumen.requestSummary.episodesRequested':
+        'Épisodes demandés pour {title}',
       'lumen.category.adminHelp':
         'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
       'lumen.category.backDiscover': 'Retour à Découvrir',

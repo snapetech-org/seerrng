@@ -397,8 +397,20 @@ export default function TvDetail() {
       );
       toast(
         result.quotaException
-          ? `Approval requested for ${t.name || 'this series'}`
-          : `Episodes requested for ${t.name || 'this series'}`
+          ? translate(
+              'lumen.requestSummary.approvalRequested',
+              'Approval requested for {title}',
+              {
+                title: t.name || 'this series',
+              }
+            )
+          : translate(
+              'lumen.requestSummary.episodesRequested',
+              'Episodes requested for {title}',
+              {
+                title: t.name || 'this series',
+              }
+            )
       );
       setEpisodesOpen(false);
       refresh();

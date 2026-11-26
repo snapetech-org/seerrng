@@ -2480,6 +2480,7 @@
   "lumen.requestSummary.approvalRequested",
   "lumen.requestSummary.movieRequested",
   "lumen.requestSummary.movieRequested4k",
+  "lumen.requestSummary.episodesRequested",
   "lumen.category.adminHelp",
   "lumen.category.backDiscover",
   "lumen.category.disabledForAccount",

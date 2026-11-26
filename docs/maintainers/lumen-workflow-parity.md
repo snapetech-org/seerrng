@@ -11763,10 +11763,10 @@ release-note: `release-notes/lumen-book-card-localization.md`
 
 ### Movie and series request feedback uses the account locale (2026-11-26)
 
-Quick-request cards, featured cards, Coming Soon, and TV Details now localize
-request-submitted, over-quota approval, 4K, and selected-season summaries.
-Series summaries preserve their selected season ranges while applying locale
-labels.
+Quick-request cards, featured cards, Coming Soon, Movie Details, and TV Details
+now localize request-submitted, over-quota approval, 4K, episode-request, and
+selected-season summaries. Series summaries preserve their selected season
+ranges while applying locale labels.
 
 Focused French browser cases verify Coming Soon request confirmation with a
 two-season range and the TV Details request-activity season range across
