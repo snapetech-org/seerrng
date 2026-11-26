@@ -11966,3 +11966,20 @@ retained under
 Other artist request failure and no-results messages remain under audit.
 
 release-note: `release-notes/lumen-music-release-explanations-localization.md`
+
+### Artist follow feedback and request planning (2026-11-26)
+
+Lumen now translates artist request planning, additional song counts, failures,
+no-new-music states, and unfollow confirmation/feedback in French and Arabic.
+The artist browser flow verifies follow, request-plan confirmation, request
+submission, unfollow confirmation, and the resulting toast. An AST-based test
+now verifies every literal MusicHome message key for registration and locale
+coverage; the audit currently finds no missing literal keys in that component.
+
+Pre-change and candidate browser runs each passed 8 French/Arabic viewport
+cases. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-follow-feedback-i18n-20261126/`.
+Dynamic message-key composition and gaps in other Lumen components remain
+under audit.
+
+release-note: `release-notes/lumen-music-follow-feedback-localization.md`

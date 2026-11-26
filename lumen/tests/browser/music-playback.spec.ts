@@ -1224,18 +1224,8 @@ for (const [
     };
     await mockMusic(page, seen, locale);
     await page.goto(testAppPath(`/artist/${ARTIST_MBID}`));
-    await expect(
-      page.getByText(baseline ? 'You have 1 of 3 albums' : albumsOwned, {
-        exact: true,
-      })
-    ).toBeVisible();
-    await expect(
-      page.getByText(
-        baseline
-          ? 'Follow to get new albums and singles automatically when they come out.'
-          : followHelp
-      )
-    ).toBeVisible();
+    await expect(page.getByText(albumsOwned, { exact: true })).toBeVisible();
+    await expect(page.getByText(followHelp)).toBeVisible();
     await page.screenshot({
       path: info.outputPath(`music-artist-${locale}.png`),
       fullPage: false,
@@ -1247,46 +1237,98 @@ for (const [
     await expect.poll(() => seen.follows?.length).toBe(1);
     await expect(
       page.getByRole('button', {
-        name: baseline ? 'Following' : locale === 'fr' ? 'Suivi' : 'تتابع',
+        name: locale === 'fr' ? 'Suivi' : 'تتابع',
       })
     ).toBeVisible();
     await expect(
       page.getByText(
-        baseline
-          ? 'Following Fixture Band: new releases will download'
-          : locale === 'fr'
-            ? 'Vous suivez Fixture Band : ses nouveautés seront téléchargées'
-            : 'تتابع Fixture Band؛ ستُنزل إصداراته الجديدة تلقائيًا'
+        locale === 'fr'
+          ? 'Vous suivez Fixture Band : ses nouveautés seront téléchargées'
+          : 'تتابع Fixture Band؛ ستُنزل إصداراته الجديدة تلقائيًا'
       )
     ).toBeVisible();
 
     await page
       .getByRole('button', {
-        name: baseline ? 'Get the 3 missing releases' : getMissing,
+        name: getMissing,
       })
       .click();
     const dialog = page.getByRole('alertdialog', {
-      name: baseline ? 'Get all releases by Fixture Band?' : title,
+      name: title,
     });
-    await expect(
-      dialog.getByText(
-        baseline
-          ? '2 albums and 1 single or EP by Fixture Band will be requested.'
-          : summary,
-        { exact: false }
-      )
-    ).toBeVisible();
-    await expect(
-      dialog.getByText(
-        baseline ? 'Aurral downloads them one after another.' : aurral
-      )
-    ).toBeVisible();
+    await expect(dialog.getByText(summary, { exact: false })).toBeVisible();
+    await expect(dialog.getByText(aurral)).toBeVisible();
     await dialog
       .getByRole('button', {
         name: locale === 'ar' ? 'تنزيلها' : 'Les obtenir',
       })
       .click();
     await expect.poll(() => seen.albumRequests?.length).toBe(3);
+
+    await page
+      .getByRole('button', {
+        name: locale === 'fr' ? 'Suivi' : 'تتابع',
+      })
+      .click();
+    const unfollowDialog = page.getByRole('alertdialog', {
+      name: baseline
+        ? 'Stop following Fixture Band?'
+        : locale === 'fr'
+          ? 'Ne plus suivre Fixture Band ?'
+          : 'إلغاء متابعة Fixture Band؟',
+    });
+    await expect(
+      unfollowDialog.getByText(
+        baseline
+          ? 'New releases will no longer download. Music you already have stays in your library.'
+          : locale === 'fr'
+            ? 'Les nouvelles sorties ne seront plus téléchargées. Votre musique actuelle reste dans votre bibliothèque.'
+            : 'لن تُنزّل الإصدارات الجديدة بعد الآن. وستبقى الموسيقى الموجودة لديك في مكتبتك.'
+      )
+    ).toBeVisible();
+    await unfollowDialog
+      .getByRole('button', {
+        name: locale === 'fr' ? 'Ne plus suivre' : 'إلغاء المتابعة',
+      })
+      .click();
+    await expect.poll(() => seen.follows?.length).toBe(2);
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Stopped following Fixture Band'
+          : locale === 'fr'
+            ? 'Vous ne suivez plus Fixture Band'
+            : 'لم تعد تتابع Fixture Band'
+      )
+    ).toBeVisible();
+  });
+}
+
+for (const locale of ['fr', 'ar'] as const) {
+  test(`artist loading message uses the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.route(`**/api/v1/music/artist/${ARTIST_MBID}`, async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await route.fallback();
+    });
+    await page.goto(testAppPath(`/artist/${ARTIST_MBID}`));
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Loading…'
+          : locale === 'fr'
+            ? 'Chargement…'
+            : 'جارٍ التحميل…',
+        { exact: true }
+      )
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath(`music-artist-loading-${locale}.png`),
+      fullPage: false,
+    });
   });
 }
 

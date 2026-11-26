@@ -300,6 +300,34 @@ test('Lumen artist request and follow labels are registered and translated', () 
     'lumen.music.followingToast',
     'lumen.music.followingLabel',
     'lumen.music.followHelp2',
+    'lumen.music.getAllFailed',
+    'lumen.music.requestedSongs',
+    'lumen.music.requestedReleases',
+    'lumen.music.someRequestsFailed',
+    'lumen.music.getAllPlanFailed',
+    'lumen.music.getAllPlanning',
+    'lumen.music.skippedCoveredOrUnofficial',
+    'lumen.music.getAllNothingNew',
+    'lumen.music.oneExtraSong',
+    'lumen.music.extraSongsCount',
+    'lumen.music.listOfThree',
+    'lumen.music.unfollowedToast',
+    'lumen.music.followFailed',
+    'lumen.music.getSinglesEps',
+    'lumen.music.getMoreSongs',
+    'lumen.music.artistUnavailable',
+    'lumen.music.unknownArtist',
+    'lumen.music.allAlbumsOwned',
+    'lumen.music.requestingProgress',
+    'lumen.music.everythingHad',
+    'lumen.music.artistIncomplete',
+    'lumen.music.artistIncompleteHelp',
+    'lumen.music.seeAllCount',
+    'lumen.music.unfollowTitle',
+    'lumen.music.unfollowBody',
+    'lumen.music.getSongsTitle',
+    'lumen.music.getSinglesTitle',
+    'lumen.music.fansAlsoLike',
   ];
   for (const key of artistKeys) {
     assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
@@ -325,6 +353,40 @@ test('Lumen artist release explanations are registered and translated', () => {
     'lumen.music.hiddenUnofficial',
   ];
   for (const key of releaseKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
+test('all literal MusicHome messages are registered and translated', async () => {
+  const source = await readFile(
+    resolve(root, 'src/components/MusicHome.tsx'),
+    'utf8'
+  );
+  const sourceFile = ts.createSourceFile(
+    'MusicHome.tsx',
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  );
+  const sourceKeys = new Set();
+  const visit = (node) => {
+    if (
+      ts.isCallExpression(node) &&
+      node.arguments.length >= 1 &&
+      ts.isStringLiteral(node.arguments[0]) &&
+      node.arguments[0].text.startsWith('lumen.')
+    ) {
+      sourceKeys.add(node.arguments[0].text);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  assert.ok(sourceKeys.size > 0, 'MusicHome message keys exist');
+  for (const key of sourceKeys) {
     assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
     for (const locale of ['fr', 'ar']) {
       assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
