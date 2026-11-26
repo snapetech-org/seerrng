@@ -24035,6 +24035,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PodcastErrorResponse'
+    head:
+      summary: Headers of a podcast episode or cover for Audiobookshelf
+      description: >-
+        Streams a remote episode or cover that SeerrNG signed, over a connection
+        pinned to a public address (redirects included).
+      security: []
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: signature
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,128}$'
+        - in: path
+          name: target
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,4096}$'
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            pattern: '^file(\.[a-z0-9]{1,5})?$'
+      responses:
+        '200':
+          description: File bytes
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: Part of the file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: The file points at a private address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Unknown or unsigned file, or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '416':
+          description: The requested range is outside the file
+        '502':
+          description: The remote file could not be read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
   /podcast/search:
     get:
       summary: Search for podcasts through Audiobookshelf and match library status

@@ -20,7 +20,7 @@ import xml2js from 'xml2js';
 
 const MAX_FEED_BYTES = 25 * 1024 * 1024;
 const FEED_TIMEOUT_MS = 20_000;
-const MAX_REDIRECTS = 15;
+const MAX_REDIRECTS = 20;
 const MAX_FEED_EPISODES = 5000;
 
 export class PodcastFeedError extends Error {

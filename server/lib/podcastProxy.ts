@@ -298,8 +298,11 @@ export const podcastUserAgent = (caller: unknown): string =>
   /^audiobookshelf\b/i.test(caller)
     ? caller
     : DEFAULT_PODCAST_USER_AGENT;
-// tracking chains (podtrac -> pdst.fm -> ... -> the CDN) take 6-7 hops
-const MAX_MEDIA_REDIRECTS = 15;
+// Tracking chains stack ad-tech hops (podtrac -> pdst.fm -> pscrb.fm ->
+// vpixl -> ... -> the CDN): a fifth of Apple's top 200 shows need 6 or
+// more, the longest 9 (2026-11). Browsers allow 20. Every hop is checked
+// at the socket, so the limit only bounds latency.
+export const MAX_MEDIA_REDIRECTS = 20;
 
 export interface PublicMedia {
   status: number;
@@ -334,6 +337,7 @@ export const openPublicMedia = async (
     () => headersDeadline.abort(),
     MEDIA_HEADERS_TIMEOUT_MS
   );
+  const safeRequest = createSafeHttpRequestOptions(false, true, true, true);
   try {
     const response = await axios.get<Readable>(url, {
       responseType: 'stream',
@@ -346,7 +350,16 @@ export const openPublicMedia = async (
         ...(range ? { Range: range } : {}),
       },
       validateStatus: (status) => PASSED_STATUSES.has(status),
-      ...createSafeHttpRequestOptions(false, true, true, true),
+      ...safeRequest,
+      // Cross-origin redirects drop all but a few headers. A range names
+      // bytes of the file, not a credential, and tracking chains cross
+      // origins on every hop, so it is put back on each one.
+      beforeRedirect: (options, response, request) => {
+        safeRequest.beforeRedirect(options, response, request);
+        if (range && options.headers && typeof options.headers === 'object') {
+          (options.headers as Record<string, unknown>).Range = range;
+        }
+      },
     });
     return {
       status: response.status,

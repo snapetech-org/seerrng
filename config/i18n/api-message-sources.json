@@ -49840,7 +49840,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 324,
+          "line": 327,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Only http and https files can be read.'",
@@ -69142,7 +69142,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 373,
+          "line": 386,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The file could not be read.'",
@@ -71036,7 +71036,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 330,
+          "line": 333,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -71044,7 +71044,7 @@
         },
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 360,
+          "line": 373,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -79402,7 +79402,7 @@
     },
     {
       "path": "server/lib/podcastProxy.ts",
-      "line": 371,
+      "line": 384,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -79411,7 +79411,7 @@
     },
     {
       "path": "server/lib/podcastProxy.ts",
-      "line": 371,
+      "line": 384,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
