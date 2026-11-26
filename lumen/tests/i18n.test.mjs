@@ -18,6 +18,8 @@ const keys = [
 ];
 const lumenKeys = [
   'lumen.tv.selectEntireSeries',
+  'lumen.tv.fact.firstAirDate',
+  'lumen.tv.fact.seriesType',
   'lumen.account.loading',
   'lumen.account.selectedCount',
   'lumen.admin.back',
@@ -112,6 +114,31 @@ test('Lumen account, request, and settings labels are translated in French and A
         english[key],
         `${locale} translation is not an English fallback: ${key}`
       );
+    }
+  }
+});
+
+test('TV detail fact labels use their English, French, and Arabic values', () => {
+  const expected = {
+    'lumen.tv.fact.firstAirDate': {
+      en: 'First Air Date',
+      fr: 'Date de première diffusion',
+      ar: 'تاريخ العرض الأول',
+    },
+    'lumen.tv.fact.genres': {
+      en: 'Genres',
+      fr: 'Genres',
+      ar: 'الأنواع',
+    },
+    'lumen.tv.fact.seriesType': {
+      en: 'Series Type',
+      fr: 'Type de série',
+      ar: 'نوع المسلسل',
+    },
+  };
+  for (const [key, translations] of Object.entries(expected)) {
+    for (const [locale, translation] of Object.entries(translations)) {
+      assert.equal(overrides[locale][key], translation, `${locale}: ${key}`);
     }
   }
 });

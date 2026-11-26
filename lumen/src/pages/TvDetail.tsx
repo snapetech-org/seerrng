@@ -90,7 +90,7 @@ const stateOf = (status?: number): SeasonState =>
 const live = (status?: number) => status === 1 || status === 2;
 
 export default function TvDetail() {
-  const { t: translate } = useLumenLocale();
+  const { t: translate, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const { user } = useAuth();
   const episodeQueue = useApi<{ defaultEpisodeCount: number }>(
@@ -1150,6 +1150,27 @@ export default function TvDetail() {
                     productionCountryLinks(t.productionCountries, '/series'),
                   ],
                   [
+                    translate('lumen.tv.fact.firstAirDate', 'First Air Date'),
+                    shortDate(t.firstAirDate, true, locale),
+                  ],
+                  [
+                    translate('lumen.tv.fact.genres', 'Genres'),
+                    t.genres?.length
+                      ? t.genres.map(({ id, name }, index) => (
+                          <span key={`${id}:${name}`}>
+                            {index > 0 && ', '}
+                            {Number.isSafeInteger(id) &&
+                            id > 0 &&
+                            id <= 1_000_000_000 ? (
+                              <Link to={`/series?genre=${id}`}>{name}</Link>
+                            ) : (
+                              name
+                            )}
+                          </span>
+                        ))
+                      : null,
+                  ],
+                  [
                     translate('lumen.tv.fact.network', 'Network'),
                     t.networks?.length
                       ? t.networks.map(({ id, name }, index) => (
@@ -1166,6 +1187,10 @@ export default function TvDetail() {
                           </span>
                         ))
                       : null,
+                  ],
+                  [
+                    translate('lumen.tv.fact.seriesType', 'Series Type'),
+                    t.type,
                   ],
                   [
                     translate('lumen.tv.fact.status', 'Status'),
@@ -1202,7 +1227,19 @@ export default function TvDetail() {
                   ],
                   [
                     translate('lumen.tv.fact.createdBy', 'Created by'),
-                    t.createdBy?.map((c) => c.name).join(', '),
+                    t.createdBy?.map(({ id, name }, index) => (
+                      <span key={`${id ?? name}:${index}`}>
+                        {index > 0 && ', '}
+                        {id !== undefined &&
+                        Number.isSafeInteger(id) &&
+                        id > 0 &&
+                        id <= 1_000_000_000 ? (
+                          <Link to={`/person/${id}`}>{name}</Link>
+                        ) : (
+                          name
+                        )}
+                      </span>
+                    )),
                   ],
                   [
                     translate('lumen.tv.fact.lastAired', 'Last aired'),

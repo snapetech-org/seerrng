@@ -807,6 +807,35 @@ request-option and server-read failures, overview fallback, and episode
 playback authorization. Playback and provider data are fixture-backed, and the
 screens do not compare matched native states.
 
+### TV detail facts and discovery links (2026-11-26)
+
+Native TV details include first-air date, series type, genre links, and linked
+creators. Lumen showed the date only as a year in its heading, omitted series
+type from Series Details, rendered genres only as plain header text, and showed
+creator names without links. The Lumen Series Details panel now includes the
+localized first-air date, series type, linked genres, and creator links. Genre
+and person identifiers are validated before becoming routes; invalid creator
+IDs keep the creator name as plain text. Existing fact-card ownership and
+disclosure behavior are unchanged.
+
+English, French, and Arabic label checks pass. The production Lumen build
+passes, as do 56 browser cases in standalone Lumen and the same 56 cases through
+SeerrNG's compiled `/lumen/` mount across desktop, iPhone, Android, and tablet.
+The fixture suite verifies displayed facts, exact genre/person destinations,
+season selection, request-option failure recovery, overview fallback, playback
+authorization, media-server collection mutations, and rejection of a partial
+collection list after a provider limit response. Baseline and candidate Series
+Details renders with identical fixture data were inspected at 1440×900 and
+390×844; there is no horizontal overflow, and the expanded facts use the
+existing scrollable detail page and sticky request bar.
+
+Visual and browser evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-facts-acceptance-20261126/`.
+API data and actions are fixture-backed; live TMDB, media-server, and provider
+behavior remain unverified.
+
+release-note: `release-notes/lumen-tv-detail-facts.md`
+
 These optional desktop links and Discover chips now use locale message IDs
 instead of the English labels stored in the catalog metadata. English, French,
 and Arabic fixtures verify all six translated labels and their destinations at

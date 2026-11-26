@@ -20,6 +20,9 @@ const locales = [
     pickSeasons: 'Pick seasons',
     requestOneSeason: 'Request 1 season',
     episodeLength: 'Episode length',
+    firstAirDate: 'First Air Date',
+    seriesType: 'Series Type',
+    genres: 'Genres',
     endedStatus: 'Ended',
     collections: 'Series Collections',
     noCollections: 'This series has no catalog collections.',
@@ -43,6 +46,9 @@ const locales = [
     pickSeasons: 'Choisir les saisons',
     requestOneSeason: 'Demander 1 saison',
     episodeLength: 'Durée d’un épisode',
+    firstAirDate: 'Date de première diffusion',
+    seriesType: 'Type de série',
+    genres: 'Genres',
     endedStatus: 'Terminée',
     collections: 'Collections de séries',
     noCollections: 'Cette série n’appartient à aucune collection du catalogue.',
@@ -67,6 +73,9 @@ const locales = [
     pickSeasons: 'اختر المواسم',
     requestOneSeason: 'طلب موسم 1',
     episodeLength: 'مدة الحلقة',
+    firstAirDate: 'تاريخ العرض الأول',
+    seriesType: 'نوع المسلسل',
+    genres: 'الأنواع',
     endedStatus: 'منتهٍ',
     collections: 'مجموعات المسلسلات',
     noCollections: 'لا ينتمي هذا المسلسل إلى أي مجموعة في الفهرس.',
@@ -300,7 +309,9 @@ for (const locale of locales) {
 }
 
 for (const locale of locales) {
-  test(`TV season selection follows ${locale.tag} locale`, async ({ page }) => {
+  test(`TV season selection follows ${locale.tag} locale`, async ({
+    page,
+  }, info) => {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -323,10 +334,12 @@ for (const locale of locales) {
             id: 84773,
             name: 'Fixture Series',
             overview: 'A fixture.',
-            genres: [],
+            genres: [{ id: 18, name: 'Drama' }],
             originalLanguage: 'en',
             status: 'Ended',
             firstAirDate: '2022-09-01',
+            type: 'Scripted',
+            createdBy: [{ id: 123, name: 'Fixture Creator' }],
             episodeRunTime: [45],
             contentRatings: { results: [] },
             seasons: [
@@ -356,6 +369,32 @@ for (const locale of locales) {
     await expect(
       page.locator('dt', { hasText: locale.episodeLength })
     ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath(`tv-details-${locale.tag}.png`),
+    });
+    const firstAirDate = page.locator('dt', { hasText: locale.firstAirDate });
+    await expect(firstAirDate).toBeVisible();
+    const localizedAirDate = new Date(
+      '2022-09-01T12:00:00Z'
+    ).toLocaleDateString(locale.tag, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    await expect(firstAirDate.locator('xpath=..')).toContainText(
+      localizedAirDate
+    );
+    const seriesType = page.locator('dt', { hasText: locale.seriesType });
+    await expect(seriesType.locator('xpath=..')).toContainText('Scripted');
+    const genres = page.locator('dt', { hasText: locale.genres });
+    await expect(
+      genres
+        .locator('xpath=..')
+        .getByRole('link', { name: 'Drama', exact: true })
+    ).toHaveAttribute('href', `${mount}/series?genre=18`);
+    await expect(
+      page.getByRole('link', { name: 'Fixture Creator', exact: true })
+    ).toHaveAttribute('href', `${mount}/person/123`);
     await expect(
       page.getByText(locale.endedStatus, { exact: true })
     ).toBeVisible();
