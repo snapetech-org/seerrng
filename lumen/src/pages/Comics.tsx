@@ -77,6 +77,20 @@ const COMIC_SORTS = [
   ['title', 'A–Z'],
 ] as const;
 
+function comicVineUrl(value?: string) {
+  try {
+    const url = new URL(value ?? '');
+    return url.protocol === 'https:' &&
+      url.hostname === 'comicvine.gamespot.com' &&
+      !url.username &&
+      !url.password
+      ? url.href
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 const DEFAULT_GENRES = [
   'Action',
   'Adventure',
@@ -816,6 +830,7 @@ export function ComicDetail() {
     chosen ? `/comic/${chosen.id}` : null
   );
   const c = edition?.id === chosen?.id ? edition : undefined;
+  const comicVineDetailUrl = comicVineUrl(c?.siteDetailUrl);
   // Keep queue progress tied to the selected edition.
   const shown = chosen
     ? (chosen.mediaInfo ??
@@ -990,6 +1005,19 @@ export function ComicDetail() {
               category="comic"
               title={chosen?.title || work.title}
             />
+            {comicVineDetailUrl && (
+              <a
+                className="btn btn-quiet"
+                href={comicVineDetailUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t(
+                  'components.ComicDetails.viewOnComicVine',
+                  'View on ComicVine'
+                )}
+              </a>
+            )}
             <BlocklistButton
               mediaType="comic"
               id={c?.id}

@@ -1721,6 +1721,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'الصفحة',
       'components.BookDetails.Layout.publisher': 'الناشر',
+      'components.ComicDetails.viewOnComicVine': 'عرض على ComicVine',
       'components.IssueDetails.allepisodes': 'جميع الحلقات',
       'components.Layout.Sidebar.comingSoon': 'قريبًا',
       'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -11976,6 +11977,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Seiten',
       'components.BookDetails.Layout.publisher': 'Verlag',
+      'components.ComicDetails.viewOnComicVine': 'Ansicht auf ComicVine',
     },
   },
   {
@@ -13743,6 +13745,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Pages',
       'components.BookDetails.Layout.publisher': 'Publisher',
+      'components.ComicDetails.viewOnComicVine': 'View on ComicVine',
       'lumen.account.administratorAccess':
         'This account has administrator access.',
       'lumen.account.backToSettings': 'Back to Account Settings',
@@ -21984,6 +21987,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Páginas',
       'components.BookDetails.Layout.publisher': 'Editorial',
+      'components.ComicDetails.viewOnComicVine': 'Ver en ComicVine',
     },
   },
   {
@@ -23789,6 +23793,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Páginas',
       'components.BookDetails.Layout.publisher': 'Editorial',
+      'components.ComicDetails.viewOnComicVine': 'Ver en ComicVine',
     },
   },
   {
@@ -26514,6 +26519,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Pages',
       'components.BookDetails.Layout.publisher': 'Éditeur',
+      'components.ComicDetails.viewOnComicVine': 'Vue sur ComicVine',
       'components.IssueDetails.allepisodes': 'Tous les épisodes',
       'components.Layout.Sidebar.comingSoon': 'À venir',
       'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -35451,6 +35457,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'पृष्ठ',
       'components.BookDetails.Layout.publisher': 'प्रकाशक',
+      'components.ComicDetails.viewOnComicVine': 'कॉमिकविन पर देखें',
     },
   },
   {
@@ -37895,6 +37902,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Halaman',
       'components.BookDetails.Layout.publisher': 'Penerbit',
+      'components.ComicDetails.viewOnComicVine': 'Tilik pada ComicVine',
     },
   },
   {
@@ -40329,6 +40337,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'ページ数',
       'components.BookDetails.Layout.publisher': '出版社',
+      'components.ComicDetails.viewOnComicVine': 'コミック動画を見る',
     },
   },
   {
@@ -42044,6 +42053,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': '페이지',
       'components.BookDetails.Layout.publisher': '출판사',
+      'components.ComicDetails.viewOnComicVine': 'ComicVine에 보기',
     },
   },
   {
@@ -45806,6 +45816,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Páginas',
       'components.BookDetails.Layout.publisher': 'Editora',
+      'components.ComicDetails.viewOnComicVine': 'Vista em ComicVine',
     },
   },
   {
@@ -51706,6 +51717,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': '页 次',
       'components.BookDetails.Layout.publisher': '出版社',
+      'components.ComicDetails.viewOnComicVine': '在漫画上查看',
     },
   },
   {
@@ -53346,6 +53358,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': '頁面',
       'components.BookDetails.Layout.publisher': '出版社',
+      'components.ComicDetails.viewOnComicVine': '在漫畫上查看',
     },
   },
   {
@@ -55110,6 +55123,7 @@ export const localeData = [
       'components.BookDetails.Layout.openLibrary': 'Open Library',
       'components.BookDetails.Layout.pages': 'Trang',
       'components.BookDetails.Layout.publisher': 'Nhà xuất bản',
+      'components.ComicDetails.viewOnComicVine': 'Xem truyện tranh',
     },
   },
 ] as const;

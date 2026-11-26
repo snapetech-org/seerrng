@@ -214,6 +214,7 @@ async function fixtures(
     requestStatus = 1,
     requestOptions = false,
     rootFolderPreference = {} as Record<string, string>,
+    comicDetail = oshiVolume as Record<string, unknown>,
     noComicService = false,
     comicQuota = {
       limit: 0,
@@ -366,7 +367,7 @@ async function fixtures(
           ],
         },
       });
-    if (path.startsWith('/comic/')) return r.fulfill({ json: oshiVolume });
+    if (path.startsWith('/comic/')) return r.fulfill({ json: comicDetail });
     if (path === '/search')
       return r.fulfill({
         json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
@@ -389,6 +390,50 @@ async function fixtures(
     return r.fulfill({ json: {} });
   });
   return { requested, browsed, searched, getQuotaReads: () => quotaReads };
+}
+
+test('comic detail links to the selected ComicVine volume when the URL is trusted', async ({
+  page,
+}, info) => {
+  await fixtures(page, {
+    comicDetail: {
+      ...oshiVolume,
+      siteDetailUrl: 'https://comicvine.gamespot.com/oshi-no-ko/4050-12345/',
+    },
+  });
+  await page.goto('/comic/al-117195');
+  await expect(
+    page.getByRole('link', { name: 'View on ComicVine' })
+  ).toHaveAttribute(
+    'href',
+    'https://comicvine.gamespot.com/oshi-no-ko/4050-12345/'
+  );
+  await expect(
+    page.getByRole('link', { name: 'View on ComicVine' })
+  ).toHaveAttribute('target', '_blank');
+  await expect(
+    page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).resolves.toBe(true);
+  await page.screenshot({
+    path: info.outputPath('comicvine-source-link.png'),
+    fullPage: true,
+  });
+});
+
+for (const [label, siteDetailUrl] of [
+  ['other host', 'https://attacker.example/volume'],
+  ['embedded credentials', 'https://user:secret@comicvine.gamespot.com/volume'],
+  ['insecure protocol', 'http://comicvine.gamespot.com/volume'],
+] as const) {
+  test(`comic detail hides a ComicVine URL with ${label}`, async ({ page }) => {
+    await fixtures(page, { comicDetail: { ...oshiVolume, siteDetailUrl } });
+    await page.goto('/comic/al-117195');
+    await expect(
+      page.getByRole('link', { name: 'View on ComicVine' })
+    ).toHaveCount(0);
+  });
 }
 
 const hoverable = (name: string) =>

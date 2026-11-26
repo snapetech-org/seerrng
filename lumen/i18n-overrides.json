@@ -5134,7 +5134,8 @@
     "components.BookDetails.Layout.notAvailable": "Not Available",
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "Pages",
-    "components.BookDetails.Layout.publisher": "Publisher"
+    "components.BookDetails.Layout.publisher": "Publisher",
+    "components.ComicDetails.viewOnComicVine": "View on ComicVine"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10391,7 +10392,8 @@
     "components.BookDetails.Layout.notAvailable": "Non disponible",
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "Pages",
-    "components.BookDetails.Layout.publisher": "Éditeur"
+    "components.BookDetails.Layout.publisher": "Éditeur",
+    "components.ComicDetails.viewOnComicVine": "Vue sur ComicVine"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15652,6 +15654,7 @@
     "components.BookDetails.Layout.notAvailable": "غير متاحة",
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "الصفحة",
-    "components.BookDetails.Layout.publisher": "الناشر"
+    "components.BookDetails.Layout.publisher": "الناشر",
+    "components.ComicDetails.viewOnComicVine": "عرض على ComicVine"
   }
 }

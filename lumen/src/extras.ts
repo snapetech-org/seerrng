@@ -571,6 +571,7 @@ export interface Comic {
   posterPath?: string;
   deck?: string;
   description?: string;
+  siteDetailUrl?: string;
   issues?: ComicIssue[];
   mediaInfo?: MediaInfo;
   manga?: boolean; // manga or manhwa, not a Western comic

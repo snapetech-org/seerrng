@@ -6321,5 +6321,6 @@
   "components.BookDetails.Layout.notAvailable",
   "components.BookDetails.Layout.openLibrary",
   "components.BookDetails.Layout.pages",
-  "components.BookDetails.Layout.publisher"
+  "components.BookDetails.Layout.publisher",
+  "components.ComicDetails.viewOnComicVine"
 ]
