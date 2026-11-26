@@ -23,15 +23,17 @@ for (const directory of [
     otherGenre: { id: 18, name: 'Drama' },
   },
 ]) {
-  test(`${directory.title} links genres to the matching browse filter`, async ({
+  test(`${directory.title} links genres, recovers artwork, and opens the matching browse filter`, async ({
     page,
-  }) => {
+  }, testInfo) => {
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/imageproxy/**', (route) =>
-      route.fulfill({
-        contentType: 'image/svg+xml',
-        body: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="48"/>',
-      })
+      route.request().url().endsWith('/shared.jpg')
+        ? route.fulfill({ status: 404, body: '' })
+        : route.fulfill({
+            contentType: 'image/svg+xml',
+            body: `<svg xmlns="http://www.w3.org/2000/svg" width="780" height="390"><defs><linearGradient id="g"><stop stop-color="#${route.request().url().endsWith('/fallback.jpg') ? '6428a8' : '1e5a8a'}"/><stop offset="1" stop-color="#111827"/></linearGradient></defs><rect width="780" height="390" fill="url(#g)"/><circle cx="600" cy="120" r="150" fill="#ffffff" opacity=".12"/></svg>`,
+          })
     );
     await page.route('**/api/v1/**', (route) => {
       const path = testApiPath(route.request().url());
@@ -53,7 +55,10 @@ for (const directory of [
       if (path === `/discover/genreslider/${directory.kind}`)
         return route.fulfill({
           json: [
-            { ...directory.genre, backdrops: ['/shared.jpg'] },
+            {
+              ...directory.genre,
+              backdrops: ['/shared.jpg', '/fallback.jpg'],
+            },
             {
               ...directory.otherGenre,
               backdrops: ['/shared.jpg', '/adventure.jpg'],
@@ -73,15 +78,22 @@ for (const directory of [
       'href',
       testAppPath(`${directory.browse}?genre=${directory.genre.id}`)
     );
-    await expect(
-      page
-        .getByRole('link', { name: `Browse ${directory.genre.name}` })
-        .locator('img')
-    ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w780/shared.jpg');
+    const genreImage = page
+      .getByRole('link', { name: `Browse ${directory.genre.name}` })
+      .locator('img');
+    await genreImage.scrollIntoViewIfNeeded();
+    await expect(genreImage).toHaveAttribute(
+      'src',
+      '/imageproxy/tmdb/t/p/w780/fallback.jpg'
+    );
     await expect(
       page
         .getByRole('link', { name: `Browse ${directory.otherGenre.name}` })
         .locator('img')
     ).toHaveAttribute('src', '/imageproxy/tmdb/t/p/w780/adventure.jpg');
+    await page.screenshot({
+      path: testInfo.outputPath('genre-directory.png'),
+      fullPage: true,
+    });
   });
 }
