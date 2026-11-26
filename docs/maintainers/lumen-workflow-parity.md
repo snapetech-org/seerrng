@@ -11787,3 +11787,26 @@ The focused browser case checks the French action text when the card is hovered
 on desktop and tablet; mobile projects skip this hover-only assertion.
 
 release-note: `release-notes/lumen-localized-card-labels.md`
+
+### Podcast discovery and subscription entry localization (2026-11-26)
+
+The Podcasts discovery and subscription entry now localizes its title, search
+placeholder, section and category names, discovery headings, empty-state copy,
+library/activity labels, subscription confirmation, and follow result/failure
+feedback in French and Arabic. Existing English fallbacks remain the source
+messages. Podcast selection, authorization, provider calls, and download
+behavior are unchanged.
+
+The locale catalog check verifies each selected message in all three locales.
+Production-preview browser checks verify the localized discovery heading and
+category group, saved document language and RTL direction, across desktop,
+iPhone, Android, and tablet (8 cases). These use fixture-backed podcast APIs.
+French and Arabic desktop and iPhone candidate captures were inspected for
+layout, wrapping, and overflow; they are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/podcast-localization-20261126/playwright-results/`.
+Matched native/Lumen screenshots and the remaining episode-management podcast
+messages are still open. Episode counts and provider genre names remain in
+English in this state; the source audit identified additional untranslated
+Podcast keys outside this bounded entry-flow slice.
+
+release-note: `release-notes/lumen-podcast-localization.md`

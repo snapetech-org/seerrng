@@ -265,3 +265,49 @@ test('Lumen movie release labels reuse native translations', async () => {
     }
   }
 });
+
+test('Podcast discovery and subscription labels are translated in French and Arabic', () => {
+  const keys = [
+    'lumen.podcasts.title',
+    'lumen.music.discover',
+    'lumen.music.activity',
+    'lumen.podcasts.openAbs',
+    'lumen.podcasts.searchPlaceholder2',
+    'lumen.podcasts.sections',
+    'lumen.podcasts.categories',
+    'lumen.podcasts.allCategories',
+    'lumen.podcasts.topPodcasts',
+    'lumen.podcasts.topInGenre',
+    'lumen.podcasts.becauseGenre',
+    'lumen.podcasts.welcomeTitle',
+    'lumen.podcasts.welcomeBody',
+    'lumen.podcasts.inYourPodcasts',
+    'lumen.podcasts.newEpisodes',
+    'lumen.podcasts.yourShows',
+    'lumen.podcasts.downloads',
+    'lumen.podcasts.downloadingNow',
+    'lumen.podcasts.waiting',
+    'lumen.podcasts.unavailable',
+    'lumen.podcasts.notSetUp',
+    'lumen.podcasts.notSetUpHelp',
+    'lumen.podcasts.followTitle',
+    'lumen.podcasts.subscribeBody',
+    'lumen.podcasts.followHelpPreview',
+    'lumen.podcasts.followedToast',
+    'lumen.podcasts.followFailed',
+  ];
+  for (const locale of ['fr', 'ar']) {
+    for (const key of keys) {
+      assert.equal(
+        typeof overrides.en[key],
+        'string',
+        `English source: ${key}`
+      );
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale}: ${key}`
+      );
+    }
+  }
+});

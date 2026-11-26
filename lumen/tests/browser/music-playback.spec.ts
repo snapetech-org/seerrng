@@ -107,7 +107,7 @@ const activityItem = (
     : { kind: 'request', name: null },
 });
 
-async function mockMusic(page: Page, seen: Seen) {
+async function mockMusic(page: Page, seen: Seen, locale = 'en') {
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -137,7 +137,7 @@ async function mockMusic(page: Page, seen: Seen) {
         seen.saved.push(body.lumenPreferences);
         lumenPreferences = body.lumenPreferences ?? {};
       }
-      return route.fulfill({ json: { lumenPreferences } });
+      return route.fulfill({ json: { locale, lumenPreferences } });
     }
     if (path === '/service/music')
       return route.fulfill({
@@ -1925,6 +1925,62 @@ test('Podcasts is its own section with Discover, search, your shows and activity
     page.locator('a[href*="/podcasts/preview?feed="]').first()
   ).toBeAttached();
 });
+
+for (const [
+  locale,
+  expectedTitle,
+  expectedCategories,
+  expectedTop,
+  discoverTab,
+  openLibrary,
+] of [
+  [
+    'fr',
+    'Podcasts',
+    'Catégories',
+    'Meilleurs podcasts',
+    'Découvrir',
+    'Ouvrir Audiobookshelf',
+  ],
+  [
+    'ar',
+    'البودكاست',
+    'الفئات',
+    'أفضل البودكاست',
+    'اكتشف',
+    'فتح Audiobookshelf',
+  ],
+] as const) {
+  test(`podcast discovery uses the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await mockPodcasts(page, { subscribed: [], downloads: [], auto: [] });
+    await page.goto(testAppPath('/podcasts'));
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(
+      page.getByRole('heading', { name: expectedTitle, level: 1 })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: expectedTop })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('group', { name: expectedCategories })
+    ).toBeVisible();
+    await expect(page.getByRole('tab', { name: discoverTab })).toBeVisible();
+    await expect(page.getByRole('link', { name: openLibrary })).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute(
+      'dir',
+      locale === 'ar' ? 'rtl' : 'ltr'
+    );
+    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
+    if (['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: info.outputPath(`podcast-discovery-${locale}.png`),
+        fullPage: false,
+      });
+  });
+}
 
 test('following a podcast asks first, then opens the show', async ({
   page,
