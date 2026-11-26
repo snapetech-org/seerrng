@@ -49,7 +49,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 627,
+          "line": 628,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search recordings: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -74,7 +74,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1424,
+          "line": 1432,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral album request response did not include album.id.'",
@@ -1033,7 +1033,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 408,
+          "line": 416,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine ID is required for comic watchlists.'",
@@ -1079,7 +1079,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 581,
+          "line": 582,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search albums: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -1157,7 +1157,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 166,
+          "line": 168,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Open Library ID is invalid for book watchlists.'",
@@ -2414,7 +2414,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2407,
+          "line": 2552,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist MBID must be a valid UUID.'",
@@ -2422,7 +2422,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2644,
+          "line": 2789,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'Artist MBID must be a valid UUID.'",
@@ -2750,7 +2750,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2600,
+          "line": 2745,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`IDs must be 1 to ${MAX_ALBUM_SUMMARIES} comma-separated album MBIDs.`",
@@ -2794,7 +2794,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1748,
+          "line": 1760,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral library sort value is invalid.'",
@@ -3623,7 +3623,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 852,
+          "line": 853,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release labels: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -5131,7 +5131,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 417,
+          "line": 418,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Cannot verify album identity'",
@@ -5758,7 +5758,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 4196,
+          "line": 4368,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve artist discography.'",
@@ -6154,7 +6154,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 792,
+          "line": 793,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz release group ID'",
@@ -6162,7 +6162,7 @@
         },
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 868,
+          "line": 869,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz release group ID'",
@@ -6461,7 +6461,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 722,
+          "line": 723,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search release groups by tag: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -6758,7 +6758,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 528,
+          "line": 529,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz returned no valid artist result.'",
@@ -6823,7 +6823,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 465,
+          "line": 466,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid album catalogue item'",
@@ -7786,7 +7786,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3121,
+          "line": 3266,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'dryRun must be a boolean.'",
@@ -7936,7 +7936,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2832,
+          "line": 2849,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral playlist ID is invalid.'",
@@ -8914,7 +8914,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -8922,7 +8922,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -9057,7 +9057,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1472,
+          "line": 1480,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid album status response.'",
@@ -9550,7 +9550,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 3146,
+          "line": 3163,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid artist response.'",
@@ -9902,7 +9902,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2032,
+          "line": 2151,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load recommended music.'",
@@ -10759,7 +10759,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2102,
+          "line": 2225,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load playlist.'",
@@ -10797,7 +10797,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 547,
+          "line": 489,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to access music.'",
@@ -10835,7 +10835,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 353,
+          "line": 363,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Book request has no supported metadata identifier.'",
@@ -11190,7 +11190,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2155,
+          "line": 2278,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No preview for this song.'",
@@ -11198,7 +11198,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2163,
+          "line": 2286,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No preview for this song.'",
@@ -11887,7 +11887,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 142,
+          "line": 143,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11895,7 +11895,7 @@
         },
         {
           "path": "server/index.ts",
-          "line": 763,
+          "line": 768,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -11903,7 +11903,7 @@
         },
         {
           "path": "server/lib/associations/index.ts",
-          "line": 253,
+          "line": 255,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11911,7 +11911,7 @@
         },
         {
           "path": "server/lib/associations/index.ts",
-          "line": 466,
+          "line": 468,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -11931,6 +11931,22 @@
           "kind": "authored-message-field",
           "field": "error",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/musicAlbumDetails.ts",
+          "line": 149,
+          "kind": "authored-message-field",
+          "field": "errorMessage",
+          "expression": "error instanceof Error ? error.message : 'Unknown error'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/musicAlbumDetails.ts",
+          "line": 158,
+          "kind": "authored-message-variable",
+          "field": "errorMessage",
+          "expression": "musicBrainzError instanceof Error\n          ? musicBrainzError.message\n          : 'Unknown error'",
           "captured": []
         },
         {
@@ -11955,6 +11971,14 @@
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/soulseek/trackRequests.ts",
+          "line": 654,
+          "kind": "authored-message-field",
+          "field": "lastError",
+          "expression": "error instanceof Error\n            ? error.message.slice(0, 500)\n            : 'Unknown error'",
           "captured": []
         },
         {
@@ -12127,7 +12151,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 400,
+          "line": 1770,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12135,15 +12159,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 409,
-          "kind": "authored-message-variable",
-          "field": "errorMessage",
-          "expression": "musicBrainzError instanceof Error\n          ? musicBrainzError.message\n          : 'Unknown error'",
-          "captured": []
-        },
-        {
-          "path": "server/routes/music.ts",
-          "line": 1710,
+          "line": 1873,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12151,7 +12167,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 1758,
+          "line": 1913,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12159,7 +12175,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 1798,
+          "line": 1995,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12167,7 +12183,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 1880,
+          "line": 2147,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12175,7 +12191,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2028,
+          "line": 2170,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12183,7 +12199,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2047,
+          "line": 2221,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12191,7 +12207,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2098,
+          "line": 2296,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12199,7 +12215,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2173,
+          "line": 2345,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12207,7 +12223,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2218,
+          "line": 2434,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12215,7 +12231,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2295,
+          "line": 2504,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12223,7 +12239,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2363,
+          "line": 2531,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12231,7 +12247,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2386,
+          "line": 2576,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12239,7 +12255,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2431,
+          "line": 2630,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12247,7 +12263,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2485,
+          "line": 2718,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12255,7 +12271,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2573,
+          "line": 2844,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12263,7 +12279,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2699,
+          "line": 2922,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12271,7 +12287,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2777,
+          "line": 2951,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12279,15 +12295,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2806,
-          "kind": "authored-message-field",
-          "field": "errorMessage",
-          "expression": "error instanceof Error ? error.message : 'Unknown error'",
-          "captured": []
-        },
-        {
-          "path": "server/routes/music.ts",
-          "line": 3142,
+          "line": 3287,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "detailsResult.reason instanceof Error\n          ? detailsResult.reason.message\n          : 'Unknown error'",
@@ -12295,7 +12303,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3263,
+          "line": 3408,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -12303,7 +12311,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3364,
+          "line": 3509,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "detailsResult.reason instanceof Error\n          ? detailsResult.reason.message\n          : 'Unknown error'",
@@ -12311,7 +12319,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3383,
+          "line": 3528,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "libraryResult.reason instanceof Error\n          ? libraryResult.reason.message\n          : 'Unknown error'",
@@ -12319,7 +12327,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3495,
+          "line": 3640,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -12327,7 +12335,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3545,
+          "line": 3690,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -13209,7 +13217,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2696,
+          "line": 2713,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral genre tag must be a string.'",
@@ -13601,7 +13609,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2478,
+          "line": 2623,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album art not found.'",
@@ -13830,7 +13838,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1386,
+          "line": 1390,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral health response is missing appVersion.'",
@@ -15162,7 +15170,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2810,
+          "line": 2955,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load similar artists.'",
@@ -15429,7 +15437,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1381,
+          "line": 1385,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid health response.'",
@@ -15448,7 +15456,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1904,
+          "line": 1921,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral library artwork kind must be albums or artists.'",
@@ -15819,7 +15827,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 436,
+          "line": 437,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Unverified artist'",
@@ -15884,7 +15892,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 456,
+          "line": 458,
           "kind": "authored-message-field",
           "field": "lastError",
           "expression": "'No downloadable copy was found on Soulseek within two weeks.'",
@@ -16073,7 +16081,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 776,
+          "line": 777,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search artists: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -16886,7 +16894,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 852,
+          "line": 853,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release labels: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -17874,7 +17882,7 @@
       "callsites": [
         {
           "path": "server/lib/musicOwnedSongs.ts",
-          "line": 108,
+          "line": 254,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'timed out'",
@@ -18914,7 +18922,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3309,
+          "line": 3454,
           "kind": "authored-message-variable",
           "field": "reason",
           "expression": "error instanceof Error ? error.message : 'Unable to request this song.'",
@@ -18933,7 +18941,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 582,
+          "line": 589,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "author?.name ? `Also by ${author.name}` : 'Same author'",
@@ -19880,7 +19888,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2177,
+          "line": 2300,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load a preview.'",
@@ -20004,7 +20012,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 535,
+          "line": 477,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Authentication required.'",
@@ -20812,7 +20820,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2733,
+          "line": 2878,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body must be a JSON object.'",
@@ -20820,7 +20828,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3109,
+          "line": 3254,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Request body must be a JSON object.'",
@@ -23715,7 +23723,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 450,
+          "line": 392,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "`${options.fieldName} must be an integer between ${options.min} and ${options.max}.`",
@@ -23905,7 +23913,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2746,
+          "line": 2891,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Follow must be a boolean.'",
@@ -24525,7 +24533,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2986,
+          "line": 3003,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Album artist and title must be 256 characters or fewer.'",
@@ -24728,7 +24736,7 @@
         },
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 373,
+          "line": 375,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Only pending requests can be declined.'",
@@ -25798,7 +25806,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3097,
+          "line": 3242,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Music requests are unavailable for this user.'",
@@ -26018,7 +26026,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 295,
+          "line": 297,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`You can have up to ${MAX_ACTIVE_TRACK_REQUESTS_PER_USER} active track requests.`",
@@ -26480,7 +26488,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2620,
+          "line": 2637,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral tag query must be a string up to 100 characters.'",
@@ -26954,7 +26962,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3987,
+          "line": 4132,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve album details.'",
@@ -28001,7 +28009,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 3238,
+          "line": 3255,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid monitoring response.'",
@@ -28265,7 +28273,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 438,
+          "line": 446,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine volume not found.'",
@@ -28447,7 +28455,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2047,
+          "line": 2064,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral preview artist and track must be between 1 and 256 characters.'",
@@ -28542,7 +28550,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2051,
+          "line": 2174,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load music playlists.'",
@@ -28689,7 +28697,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 232,
+          "line": 234,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "type === 'similar'\n            ? 'Similar tone and audience'\n            : 'Often recommended with this'",
@@ -29389,7 +29397,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 158,
+          "line": 160,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz ID is invalid for music watchlists.'",
@@ -29639,7 +29647,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3643,
+          "line": 3788,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found.'",
@@ -30530,7 +30538,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 240,
+          "line": 242,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "error instanceof Error ? error.message : 'Aurral could not be reached.'",
@@ -30549,7 +30557,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2423,
+          "line": 2568,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist image not found.'",
@@ -30797,7 +30805,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 482,
+          "line": 483,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Artist catalogue exceeds its limit'",
@@ -31233,7 +31241,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -31241,7 +31249,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -31385,7 +31393,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 488,
+          "line": 496,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine title is required for magazine watchlists.'",
@@ -31423,7 +31431,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2208,
+          "line": 2335,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artwork not found.'",
@@ -33109,7 +33117,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3150,
+          "line": 3295,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist not found.'",
@@ -33117,7 +33125,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3376,
+          "line": 3521,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist not found.'",
@@ -33487,7 +33495,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 431,
+          "line": 433,
           "kind": "authored-message-field",
           "field": "lastError",
           "expression": "'The slskdN wishlist entry was removed.'",
@@ -33531,7 +33539,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2575,
+          "line": 2720,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load song art.'",
@@ -33550,7 +33558,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 834,
+          "line": 835,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz release ID'",
@@ -33558,7 +33566,7 @@
         },
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 925,
+          "line": 926,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz release ID'",
@@ -33566,7 +33574,15 @@
         },
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 1039,
+          "line": 964,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Invalid MusicBrainz release ID'",
+          "captured": []
+        },
+        {
+          "path": "server/api/musicbrainz/index.ts",
+          "line": 1125,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz release ID'",
@@ -33639,7 +33655,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 480,
+          "line": 481,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Incomplete artist catalogue'",
@@ -33677,7 +33693,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 813,
+          "line": 814,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz returned an invalid release group.'",
@@ -33976,7 +33992,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2715,
+          "line": 2860,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to request music.'",
@@ -33984,7 +34000,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3092,
+          "line": 3237,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to request music.'",
@@ -34495,6 +34511,25 @@
       ]
     },
     {
+      "key": "m77cf72bb4653c4385674",
+      "id": "utils.ApiMessage.m77cf72bb4653c4385674",
+      "source": "Album lookup timed out.",
+      "defaultMessage": "Album lookup timed out.",
+      "sourceHash": "77cf72bb4653c4385674125c4baef4d9124fa2f1fe2310fa7c3a36edda977577",
+      "parts": ["Album lookup timed out."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/musicAlbumDetails.ts",
+          "line": 24,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Album lookup timed out.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m77daa7c9d23678327c1d",
       "id": "utils.ApiMessage.m77daa7c9d23678327c1d",
       "source": "Missing media identifier",
@@ -34583,7 +34618,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2071,
+          "line": 2194,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playlist ID is invalid.'",
@@ -34701,7 +34736,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2108,
+          "line": 2125,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral preview URL host is not allowed.'",
@@ -34785,7 +34820,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 1762,
+          "line": 1877,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load trending music.'",
@@ -35207,7 +35242,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 284,
+          "line": 286,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Soulseek requests are not set up.'",
@@ -35816,7 +35851,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 582,
+          "line": 589,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "author?.name ? `Also by ${author.name}` : 'Same author'",
@@ -36129,7 +36164,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1745,
+          "line": 1757,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral library kind must be albums or artists.'",
@@ -37970,7 +38005,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2772,
+          "line": 2917,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Aurral does not allow SeerrNG to change monitoring. Give the SeerrNG user the Change monitoring permission in Aurral.'",
@@ -38358,7 +38393,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 174,
+          "line": 176,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine ID is invalid for comic watchlists.'",
@@ -38663,7 +38698,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2700,
+          "line": 2717,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral genre tag must be between 1 and 128 characters.'",
@@ -38682,7 +38717,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2068,
+          "line": 2191,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playlist provider is invalid.'",
@@ -39114,7 +39149,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2124,
+          "line": 2247,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Deezer ID must be 1 to 20 digits.'",
@@ -39642,7 +39677,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 3107,
+          "line": 3124,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Album art sources could not be reached.'",
@@ -39927,7 +39962,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -39935,7 +39970,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -40862,7 +40897,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1418,
+          "line": 1426,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid album request response.'",
@@ -41923,7 +41958,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 232,
+          "line": 234,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "type === 'similar'\n            ? 'Similar tone and audience'\n            : 'Often recommended with this'",
@@ -42356,7 +42391,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 1884,
+          "line": 1999,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load artists for this genre.'",
@@ -42736,7 +42771,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 387,
+          "line": 389,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'This request is no longer active.'",
@@ -42883,7 +42918,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2036,
+          "line": 2053,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral preview artist and track must be strings.'",
@@ -43043,7 +43078,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3444,
+          "line": 3589,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found'",
@@ -43051,7 +43086,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3976,
+          "line": 4121,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found'",
@@ -43059,7 +43094,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3997,
+          "line": 4142,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found'",
@@ -43067,7 +43102,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4083,
+          "line": 4223,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found'",
@@ -43075,7 +43110,31 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4206,
+          "line": 4239,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Album not found'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/music.ts",
+          "line": 4359,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Album not found'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/music.ts",
+          "line": 4378,
+          "kind": "authored-message-field",
+          "field": "message",
+          "expression": "'Album not found'",
+          "captured": []
+        },
+        {
+          "path": "server/routes/music.ts",
+          "line": 4552,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album not found'",
@@ -43122,7 +43181,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 558,
+          "line": 560,
           "kind": "authored-message-field",
           "field": "lastError",
           "expression": "'Aurral track request timed out without a result.'",
@@ -44180,7 +44239,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2720,
+          "line": 2865,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to follow artists. Following needs permission to auto-approve music requests.'",
@@ -44237,7 +44296,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1948,
+          "line": 1965,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Library artwork exceeds maximum allowed size.'",
@@ -44358,7 +44417,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4037,
+          "line": 4190,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist not found'",
@@ -44366,15 +44425,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4117,
-          "kind": "authored-message-field",
-          "field": "message",
-          "expression": "'Artist not found'",
-          "captured": []
-        },
-        {
-          "path": "server/routes/music.ts",
-          "line": 4237,
+          "line": 4286,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist not found'",
@@ -44512,7 +44563,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 668,
+          "line": 676,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Watchlist item not found.'",
@@ -44709,7 +44760,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 277,
+          "line": 279,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz ID is required for music watchlists.'",
@@ -44827,7 +44878,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 4074,
+          "line": 4230,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve artist details.'",
@@ -45668,7 +45719,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2879,
+          "line": 2896,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist name must be 256 characters or fewer.'",
@@ -45911,7 +45962,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2159,
+          "line": 2282,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Invalid preview parameters.'",
@@ -45949,7 +46000,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 425,
+          "line": 426,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid artist ID'",
@@ -46206,7 +46257,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 699,
+          "line": 703,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Preview audio exceeds maximum allowed size.'",
@@ -46427,7 +46478,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 554,
+          "line": 496,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'No music service is configured.'",
@@ -46524,7 +46575,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2193,
+          "line": 2316,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Kind must be albums or artists.'",
@@ -46532,7 +46583,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2240,
+          "line": 2367,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Kind must be albums or artists.'",
@@ -47004,7 +47055,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1751,
+          "line": 1763,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral library page must be a positive integer.'",
@@ -47012,7 +47063,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 1844,
+          "line": 1859,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral library page must be a positive integer.'",
@@ -47334,7 +47385,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 581,
+          "line": 582,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search albums: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -47378,7 +47429,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3146,
+          "line": 3291,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load this artist.'",
@@ -47386,7 +47437,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3370,
+          "line": 3515,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load this artist.'",
@@ -47812,7 +47863,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2453,
+          "line": 2598,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Album MBID must be a valid UUID.'",
@@ -48442,7 +48493,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2183,
+          "line": 2200,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral search query must be a string.'",
@@ -48897,7 +48948,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3570,
+          "line": 3715,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artwork is temporarily unavailable.'",
@@ -48905,7 +48956,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3576,
+          "line": 3721,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artwork is temporarily unavailable.'",
@@ -48986,7 +49037,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 234,
+          "line": 304,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'MusicBrainz ID is invalid.'",
@@ -49233,7 +49284,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 964,
+          "line": 1050,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Invalid MusicBrainz artist ID format'",
@@ -50273,7 +50324,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2978,
+          "line": 2995,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral album MBID must be a valid UUID.'",
@@ -50416,7 +50467,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2099,
+          "line": 2116,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral preview URL is invalid.'",
@@ -50537,7 +50588,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2188,
+          "line": 2205,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral search query must be between 1 and 256 characters.'",
@@ -50787,7 +50838,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1913,
+          "line": 1930,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Aurral library artwork id must be an integer between 1 and ${MAX_LIBRARY_ART_ID}.`",
@@ -50885,7 +50936,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2826,
+          "line": 2843,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral playlist provider is invalid.'",
@@ -52062,7 +52113,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 3291,
+          "line": 3308,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral follow flag must be a boolean.'",
@@ -52125,7 +52176,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2487,
+          "line": 2632,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load album art.'",
@@ -52144,7 +52195,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 486,
+          "line": 496,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Unsupported media notification request ${entity.id}.`",
@@ -52188,7 +52239,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2222,
+          "line": 2349,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load library artwork.'",
@@ -52285,7 +52336,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2742,
+          "line": 2887,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unexpected field in request body.'",
@@ -52293,7 +52344,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 3115,
+          "line": 3260,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unexpected field in request body.'",
@@ -52792,7 +52843,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 222,
+          "line": 224,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "`Shares ${rootGenres.get(sharedGenre)}`",
@@ -52969,7 +53020,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2435,
+          "line": 2580,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load artist image.'",
@@ -53900,7 +53951,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2703,
+          "line": 2848,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load following status.'",
@@ -54287,7 +54338,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2147,
+          "line": 2164,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral Deezer track ID must be 1 to 20 digits.'",
@@ -54558,7 +54609,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 455,
+          "line": 457,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "isWeakTail ? 'Nearby listener overlap' : 'Similar artist'",
@@ -54820,7 +54871,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2485,
+          "line": 2502,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -54828,7 +54879,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 2876,
+          "line": 2893,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -54836,7 +54887,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 3126,
+          "line": 3143,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -54844,7 +54895,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 3169,
+          "line": 3186,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -54852,7 +54903,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 3275,
+          "line": 3292,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -54860,7 +54911,7 @@
         },
         {
           "path": "server/api/aurral.ts",
-          "line": 3288,
+          "line": 3305,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist MBID must be a valid UUID.'",
@@ -55011,7 +55062,7 @@
       "callsites": [
         {
           "path": "server/lib/associations/index.ts",
-          "line": 455,
+          "line": 457,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "isWeakTail ? 'Nearby listener overlap' : 'Similar artist'",
@@ -58139,7 +58190,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 431,
+          "line": 439,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'ComicVine is not configured for comic watchlists.'",
@@ -59518,7 +59569,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 200,
+          "line": 202,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Watchlist actor changed before admission.'",
@@ -59526,7 +59577,7 @@
         },
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 644,
+          "line": 652,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Watchlist actor changed before admission.'",
@@ -59545,7 +59596,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 562,
+          "line": 570,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'TMDB ID is required for movie and series watchlists.'",
@@ -59808,7 +59859,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -59816,7 +59867,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -59976,7 +60027,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 776,
+          "line": 777,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search artists: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -59995,7 +60046,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 4017,
+          "line": 4170,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist details not available for this type'",
@@ -60003,7 +60054,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4110,
+          "line": 4274,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist details not available for this type'",
@@ -60011,7 +60062,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4230,
+          "line": 4410,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist details not available for this type'",
@@ -60330,7 +60381,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 183,
+          "line": 185,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine title is invalid for magazine watchlists.'",
@@ -60588,7 +60639,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 818,
+          "line": 819,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release group details: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -60613,7 +60664,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 1023,
+          "line": 1109,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch Wikipedia extract: ${\n          error instanceof Error ? error.message : 'Unknown error'\n        }`",
@@ -60646,7 +60697,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 4370,
+          "line": 4561,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve similar artists.'",
@@ -60747,7 +60798,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1861,
+          "line": 1878,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid library track page.'",
@@ -60842,7 +60893,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1609,
+          "line": 1621,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral returned an invalid track request response.'",
@@ -61133,7 +61184,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2781,
+          "line": 2926,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to update following.'",
@@ -61712,7 +61763,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 1759,
+          "line": 1771,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Aurral library pageSize must be between 1 and ${MAX_LIBRARY_PAGE_SIZE}.`",
@@ -62232,7 +62283,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2299,
+          "line": 2438,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load your music library.'",
@@ -62240,7 +62291,7 @@
         },
         {
           "path": "server/routes/music.ts",
-          "line": 2390,
+          "line": 2535,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load your music library.'",
@@ -62420,7 +62471,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 1023,
+          "line": 1109,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch Wikipedia extract: ${\n          error instanceof Error ? error.message : 'Unknown error'\n        }`",
@@ -63016,7 +63067,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 818,
+          "line": 819,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release group details: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -63359,7 +63410,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2201,
+          "line": 2324,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`ID must be an integer between 1 and ${MAX_LIBRARY_ART_ID}.`",
@@ -63674,7 +63725,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2566,
+          "line": 2711,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Song art not found.'",
@@ -63740,7 +63791,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2080,
+          "line": 2203,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Playlist not found.'",
@@ -64471,7 +64522,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -64479,7 +64530,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -64757,7 +64808,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 461,
+          "line": 462,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Artist catalogue exceeds its limit or is incomplete'",
@@ -65320,7 +65371,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 2367,
+          "line": 2508,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load music activity.'",
@@ -65861,7 +65912,7 @@
       "callsites": [
         {
           "path": "server/entity/Watchlist.ts",
-          "line": 337,
+          "line": 345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Open Library ID is required for book watchlists.'",
@@ -66141,7 +66192,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 627,
+          "line": 628,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search recordings: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -66686,7 +66737,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 1802,
+          "line": 1917,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to load music genres.'",
@@ -66863,7 +66914,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 3295,
+          "line": 3312,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral artist name must be between 1 and 256 characters.'",
@@ -66947,7 +66998,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -66955,7 +67006,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -66974,7 +67025,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -66982,7 +67033,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 460,
+          "line": 470,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Sports request details are available in SeerrNG.'",
@@ -66990,7 +67041,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -67247,7 +67298,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2125,
+          "line": 2142,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Refusing to follow preview redirect outside allow-list.'",
@@ -67698,7 +67749,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 1714,
+          "line": 1774,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to search music.'",
@@ -68960,7 +69011,7 @@
       "callsites": [
         {
           "path": "server/api/aurral.ts",
-          "line": 2092,
+          "line": 2109,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Aurral preview URL must be a non-empty string.'",
@@ -69161,7 +69212,7 @@
       "callsites": [
         {
           "path": "server/lib/soulseek/trackRequests.ts",
-          "line": 546,
+          "line": 548,
           "kind": "authored-message-field",
           "field": "lastError",
           "expression": "match.statusLabel ?? `Aurral reported track ${normalized}.`",
@@ -69447,7 +69498,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 531,
+          "line": 532,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'MusicBrainz connection test failed.'",
@@ -69681,7 +69732,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 3270,
+          "line": 3415,
           "kind": "authored-message-field",
           "field": "reason",
           "expression": "'Unable to request this release.'",
@@ -69886,7 +69937,7 @@
       "callsites": [
         {
           "path": "server/routes/music.ts",
-          "line": 801,
+          "line": 743,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Music search auxiliary request timed out.'",
@@ -70058,7 +70109,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 431,
+          "line": 441,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -70066,7 +70117,7 @@
         },
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 481,
+          "line": 491,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "`${mediaType} request details are available in SeerrNG.`",
@@ -70125,7 +70176,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 722,
+          "line": 723,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to search release groups by tag: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -70163,7 +70214,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 1064,
+          "line": 1150,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release group: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -71114,7 +71165,7 @@
       "callsites": [
         {
           "path": "server/api/musicbrainz/index.ts",
-          "line": 1064,
+          "line": 1150,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`[MusicBrainz] Failed to fetch release group: ${\n          e instanceof Error ? e.message : 'Unknown error'\n        }`",
@@ -71750,7 +71801,7 @@
       "callsites": [
         {
           "path": "server/lib/notifications/intents.ts",
-          "line": 614,
+          "line": 624,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "`Notification issue ${issue.id} has no comments.`",
@@ -72094,7 +72145,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 748,
+      "line": 752,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "error && typeof error === 'object' && 'response' in error\n    ? (error as { response?: { status?: number } }).response?.status\n    : undefined",
@@ -72103,7 +72154,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 748,
+      "line": 752,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "error && typeof error === 'object' && 'response' in error\n    ? (error as { response?: { status?: number } }).response?.status\n    : undefined",
@@ -72112,7 +72163,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 999,
+      "line": 1003,
       "kind": "authored-message-field",
       "field": "because",
       "expression": "boundedString(entry.sourceArtist, 512)?.trim() ?? null",
@@ -72121,7 +72172,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 999,
+      "line": 1003,
       "kind": "authored-message-field",
       "field": "because",
       "expression": "boundedString(entry.sourceArtist, 512)?.trim() ?? null",
@@ -72130,19 +72181,10 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 1027,
+      "line": 1031,
       "kind": "authored-message-variable",
       "field": "normalizePlaylistSummary",
       "expression": "(\n  entry: unknown\n): AurralPlaylistSummary | undefined => {\n  if (!isRecord(entry)) return undefined;\n  const id = boundedIdString(entry.id, 128);\n  const name = boundedString(entry.name, 512)?.trim();\n  const provider = boundedString(entry.provider, 64)?.trim();\n  if (!id || !name || !provider) return undefined;\n  // Only list playlists the detail route can open.\n  if (\n    !PLAYLIST_PROVIDER_PATTERN.test(provider) ||\n    !PLAYLIST_ID_PATTERN.test(id)\n  )\n    return undefined;\n\n  return {\n    id,\n    name,\n    curator: boundedString(entry.curator, 256)?.trim() ?? null,\n    trackCount: boundedInteger(entry.trackCount) ?? null,\n    artworkUrl: sanitizeAurralImageUrl(entry.artworkUrl),\n    provider,\n  };\n}",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/api/aurral.ts",
-      "line": 1030,
-      "kind": "message-helper-return",
-      "field": "message",
-      "expression": "undefined",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -72157,7 +72199,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 1040,
+      "line": 1038,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "undefined",
@@ -72166,7 +72208,16 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 1042,
+      "line": 1044,
+      "kind": "message-helper-return",
+      "field": "message",
+      "expression": "undefined",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/api/aurral.ts",
+      "line": 1046,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    id,\n    name,\n    curator: boundedString(entry.curator, 256)?.trim() ?? null,\n    trackCount: boundedInteger(entry.trackCount) ?? null,\n    artworkUrl: sanitizeAurralImageUrl(entry.artworkUrl),\n    provider,\n  }",
@@ -72175,7 +72226,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 1489,
+      "line": 1497,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      libraryId: positiveInteger(response.libraryId) ?? albumId,\n      releaseDate:\n        typeof response.releaseDate === 'string'\n          ? response.releaseDate.slice(0, 64)\n          : null,\n      status:\n        (boundedString(response.status, 64) as AurralAlbumDownloadStatus) ??\n        'missing',\n      counts,\n      recovery: response.recovery,\n      requestGroupId:\n        typeof response.requestGroupId === 'string'\n          ? response.requestGroupId.slice(0, 128)\n          : null,\n    }",
@@ -72184,7 +72235,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 3257,
+      "line": 3274,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ inLibrary: false, following: false }",
@@ -72193,7 +72244,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 3260,
+      "line": 3277,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      inLibrary: true,\n      following:\n        state.monitored &&\n        (state.useDefault || state.rules?.newReleases === true),\n      ...(state.monitored && state.useDefault\n        ? { usesDefaultRules: true }\n        : {}),\n    }",
@@ -72202,7 +72253,7 @@
     },
     {
       "path": "server/api/aurral.ts",
-      "line": 3279,
+      "line": 3296,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "AurralAPI.toFollowStatus(state)",
@@ -74965,7 +75016,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 734,
+      "line": 742,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74974,7 +75025,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 744,
+      "line": 752,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74983,7 +75034,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 790,
+      "line": 798,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -74992,7 +75043,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 800,
+      "line": 808,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75001,7 +75052,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 846,
+      "line": 854,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75010,7 +75061,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 856,
+      "line": 864,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75019,7 +75070,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 900,
+      "line": 908,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75028,7 +75079,7 @@
     },
     {
       "path": "server/entity/Watchlist.ts",
-      "line": 910,
+      "line": 918,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -75064,7 +75115,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 141,
+      "line": 142,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "({\n  errorMessage: error instanceof Error ? error.message : 'Unknown error',\n  errorStack: error instanceof Error ? error.stack : undefined,\n})",
@@ -75073,7 +75124,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 142,
+      "line": 143,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75082,7 +75133,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 543,
+      "line": 548,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -75091,7 +75142,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 587,
+      "line": 592,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "err.message",
@@ -75100,7 +75151,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 702,
+      "line": 707,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "err.message",
@@ -75109,7 +75160,7 @@
     },
     {
       "path": "server/index.ts",
-      "line": 763,
+      "line": 768,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -75154,7 +75205,7 @@
     },
     {
       "path": "server/lib/associations/index.ts",
-      "line": 253,
+      "line": 255,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -75163,7 +75214,7 @@
     },
     {
       "path": "server/lib/associations/index.ts",
-      "line": 466,
+      "line": 468,
       "kind": "authored-message-field",
       "field": "error",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -78159,6 +78210,24 @@
       "reason": "dynamic/provider/user value"
     },
     {
+      "path": "server/lib/musicAlbumDetails.ts",
+      "line": 149,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : 'Unknown error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/musicAlbumDetails.ts",
+      "line": 158,
+      "kind": "authored-message-variable",
+      "field": "errorMessage",
+      "expression": "musicBrainzError instanceof Error\n          ? musicBrainzError.message\n          : 'Unknown error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
       "path": "server/lib/musicAvailability.ts",
       "line": 84,
       "kind": "message-helper-return",
@@ -78340,7 +78409,7 @@
     },
     {
       "path": "server/lib/musicOwnedSongs.ts",
-      "line": 154,
+      "line": 186,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -78349,7 +78418,7 @@
     },
     {
       "path": "server/lib/musicOwnedSongs.ts",
-      "line": 154,
+      "line": 186,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -78358,7 +78427,7 @@
     },
     {
       "path": "server/lib/musicOwnedSongs.ts",
-      "line": 414,
+      "line": 316,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -78367,7 +78436,25 @@
     },
     {
       "path": "server/lib/musicOwnedSongs.ts",
-      "line": 414,
+      "line": 316,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/musicOwnedSongs.ts",
+      "line": 652,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/musicOwnedSongs.ts",
+      "line": 652,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -78425,6 +78512,24 @@
       "kind": "message-helper-return",
       "field": "message",
       "expression": "(['MP3', 'FLAC'] as const).flatMap((quality) => {\n    const status = statuses.get(quality);\n    return status === undefined ? [] : [{ quality, status }];\n  })",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/musicReadCache.ts",
+      "line": 87,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/musicReadCache.ts",
+      "line": 87,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -79051,7 +79156,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 271,
+      "line": 276,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "truncate(movie.overview, {\n        length: 500,\n        separator: /\\s/,\n        omission: '…',\n      })",
@@ -79060,7 +79165,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 287,
+      "line": 292,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "truncate(tv.overview, {\n        length: 500,\n        separator: /\\s/,\n        omission: '…',\n      })",
@@ -79069,7 +79174,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 319,
+      "line": 329,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "artist.name",
@@ -79078,7 +79183,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 363,
+      "line": 373,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -79087,7 +79192,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 363,
+      "line": 373,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -79096,7 +79201,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 363,
+      "line": 373,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "author || metadata?.publisher || undefined",
@@ -79105,7 +79210,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 398,
+      "line": 408,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "description\n        ? truncate(description, {\n            length: 500,\n            separator: /\\s/,\n            omission: '…',\n          })\n        : undefined",
@@ -79114,7 +79219,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 398,
+      "line": 408,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "description\n        ? truncate(description, {\n            length: 500,\n            separator: /\\s/,\n            omission: '…',\n          })\n        : undefined",
@@ -79123,7 +79228,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 657,
+      "line": 667,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "firstComment.message",
@@ -79132,7 +79237,7 @@
     },
     {
       "path": "server/lib/notifications/intents.ts",
-      "line": 705,
+      "line": 715,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "firstComment.message",
@@ -81490,7 +81595,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 240,
+      "line": 242,
       "kind": "app-error-candidate",
       "field": "message",
       "expression": "error instanceof Error ? error.message : 'Aurral could not be reached.'",
@@ -81499,7 +81604,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 260,
+      "line": 262,
       "kind": "persisted-message-assignment",
       "field": "lastError",
       "expression": "null",
@@ -81508,7 +81613,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 358,
+      "line": 360,
       "kind": "persisted-message-assignment",
       "field": "lastError",
       "expression": "error instanceof Error ? error.message.slice(0, 500) : null",
@@ -81517,7 +81622,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 358,
+      "line": 360,
       "kind": "persisted-message-assignment",
       "field": "lastError",
       "expression": "error instanceof Error ? error.message.slice(0, 500) : null",
@@ -81526,7 +81631,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 427,
+      "line": 429,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      status: 'failed',\n      searchCount: 0,\n      lastMatchCount: 0,\n      lastError: 'The slskdN wishlist entry was removed.',\n      lastErrorMessageKey: 'm7444a3cd7f02872671b5',\n      removeWishlistItem: false,\n    }",
@@ -81535,7 +81640,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 439,
+      "line": 441,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      status: 'completed',\n      searchCount,\n      lastMatchCount,\n      lastError: null,\n      lastErrorMessageKey: null,\n      removeWishlistItem: false,\n    }",
@@ -81544,7 +81649,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 443,
+      "line": 445,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "null",
@@ -81553,7 +81658,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 452,
+      "line": 454,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      status: 'failed',\n      searchCount,\n      lastMatchCount,\n      lastError: 'No downloadable copy was found on Soulseek within two weeks.',\n      lastErrorMessageKey: 'm359d92c8c887360aa27b',\n      removeWishlistItem: true,\n    }",
@@ -81562,7 +81667,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 461,
+      "line": 463,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n    status: 'searching',\n    searchCount,\n    lastMatchCount,\n    removeWishlistItem: false,\n  }",
@@ -81571,7 +81676,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 536,
+      "line": 538,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ status: 'completed', lastError: null }",
@@ -81580,7 +81685,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 536,
+      "line": 538,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "null",
@@ -81589,7 +81694,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 544,
+      "line": 546,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n        status: 'failed',\n        lastError: match.statusLabel ?? `Aurral reported track ${normalized}.`,\n      }",
@@ -81598,7 +81703,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 546,
+      "line": 548,
       "kind": "authored-message-field",
       "field": "lastError",
       "expression": "match.statusLabel ?? `Aurral reported track ${normalized}.`",
@@ -81607,7 +81712,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 549,
+      "line": 551,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ status: 'searching' }",
@@ -81616,7 +81721,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 556,
+      "line": 558,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{\n      status: 'failed',\n      lastError: 'Aurral track request timed out without a result.',\n    }",
@@ -81625,7 +81730,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 562,
+      "line": 564,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "{ status: 'searching' }",
@@ -81634,7 +81739,43 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 608,
+      "line": 587,
+      "kind": "authored-message-field",
+      "field": "lastError",
+      "expression": "Not(IsNull())",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 642,
+      "kind": "authored-message-field",
+      "field": "lastError",
+      "expression": "update.lastError ?? null",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 642,
+      "kind": "authored-message-field",
+      "field": "lastError",
+      "expression": "update.lastError ?? null",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 654,
+      "kind": "authored-message-field",
+      "field": "lastError",
+      "expression": "error instanceof Error\n            ? error.message.slice(0, 500)\n            : 'Unknown error'",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 677,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81643,7 +81784,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 608,
+      "line": 677,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81652,7 +81793,25 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 619,
+      "line": 719,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 719,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/soulseek/trackRequests.ts",
+      "line": 730,
       "kind": "persisted-message-assignment",
       "field": "lastError",
       "expression": "update.lastError",
@@ -81661,7 +81820,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 628,
+      "line": 739,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81670,7 +81829,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 628,
+      "line": 739,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81679,7 +81838,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 651,
+      "line": 762,
       "kind": "persisted-message-assignment",
       "field": "lastError",
       "expression": "update.lastError",
@@ -81688,7 +81847,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 662,
+      "line": 773,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81697,7 +81856,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 662,
+      "line": 773,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81706,7 +81865,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 670,
+      "line": 781,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -81715,7 +81874,7 @@
     },
     {
       "path": "server/lib/soulseek/trackRequests.ts",
-      "line": 670,
+      "line": 781,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86026,25 +86185,25 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 400,
-      "kind": "authored-message-field",
-      "field": "errorMessage",
-      "expression": "error instanceof Error ? error.message : 'Unknown error'",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/music.ts",
-      "line": 409,
+      "line": 279,
       "kind": "authored-message-variable",
-      "field": "errorMessage",
-      "expression": "musicBrainzError instanceof Error\n          ? musicBrainzError.message\n          : 'Unknown error'",
+      "field": "isNotFoundError",
+      "expression": "(error: unknown) =>\n  error instanceof Error && /status code 404/.test(error.message)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1090,
+      "line": 280,
+      "kind": "message-helper-expression",
+      "field": "message",
+      "expression": "error instanceof Error && /status code 404/.test(error.message)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/music.ts",
+      "line": 1078,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86053,7 +86212,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1090,
+      "line": 1078,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86062,7 +86221,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1226,
+      "line": 1250,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -86071,7 +86230,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1236,
+      "line": 1260,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLimit.error",
@@ -86080,7 +86239,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1710,
+      "line": 1770,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86089,7 +86248,25 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1758,
+      "line": 1832,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/music.ts",
+      "line": 1832,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/music.ts",
+      "line": 1873,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86098,7 +86275,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1776,
+      "line": 1891,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -86107,7 +86284,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1786,
+      "line": 1901,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLimit.error",
@@ -86116,7 +86293,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1798,
+      "line": 1913,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86125,7 +86302,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1816,
+      "line": 1931,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTag.error",
@@ -86134,7 +86311,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1826,
+      "line": 1941,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLimit.error",
@@ -86143,7 +86320,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1836,
+      "line": 1951,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedOffset.error",
@@ -86152,7 +86329,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1851,
+      "line": 1966,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86161,7 +86338,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1851,
+      "line": 1966,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86170,7 +86347,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1880,
+      "line": 1995,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86179,7 +86356,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1979,
+      "line": 2094,
       "kind": "authored-message-variable",
       "field": "activityFailureReason",
       "expression": "(item: AurralActivityItem): string | null => {\n  if (item.status !== 'failed') return null;\n  const text = item.subtitle?.replace(/\\s+/g, ' ').trim();\n  if (!text) return null;\n  const artist = item.artistName?.trim().toLowerCase();\n  // \"Artist · Playlist\" is the plain label, not a reason\n  if (artist && text.toLowerCase().startsWith(artist)) return null;\n  return text.length > 200 ? `${text.slice(0, 199)}…` : text;\n}",
@@ -86188,7 +86365,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1980,
+      "line": 2095,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -86197,7 +86374,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1982,
+      "line": 2097,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -86206,7 +86383,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1985,
+      "line": 2100,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "null",
@@ -86215,7 +86392,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1986,
+      "line": 2101,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "text.length > 200 ? `${text.slice(0, 199)}…` : text",
@@ -86224,7 +86401,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 1986,
+      "line": 2101,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "text.length > 200 ? `${text.slice(0, 199)}…` : text",
@@ -86233,7 +86410,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2007,
+      "line": 2122,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "activityFailureReason(item)",
@@ -86242,7 +86419,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2028,
+      "line": 2147,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86251,7 +86428,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2047,
+      "line": 2170,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86260,7 +86437,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2098,
+      "line": 2221,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86269,7 +86446,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2133,
+      "line": 2256,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedArtist.error",
@@ -86278,7 +86455,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2141,
+      "line": 2264,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTrack.error",
@@ -86287,7 +86464,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2169,
+      "line": 2292,
       "kind": "response-body",
       "field": "body",
       "expression": "audio",
@@ -86296,7 +86473,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2173,
+      "line": 2296,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86305,7 +86482,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2214,
+      "line": 2341,
       "kind": "response-body",
       "field": "body",
       "expression": "artwork.buffer",
@@ -86314,7 +86491,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2218,
+      "line": 2345,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86323,7 +86500,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2250,
+      "line": 2377,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSort.error",
@@ -86332,7 +86509,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2261,
+      "line": 2388,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedPage.error",
@@ -86341,7 +86518,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2271,
+      "line": 2398,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedPageSize.error",
@@ -86350,7 +86527,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2280,
+      "line": 2407,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -86359,7 +86536,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2295,
+      "line": 2434,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86368,7 +86545,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2363,
+      "line": 2504,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86377,7 +86554,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2386,
+      "line": 2531,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86386,7 +86563,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2416,
+      "line": 2561,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedName.error",
@@ -86395,7 +86572,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2431,
+      "line": 2576,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86404,7 +86581,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2460,
+      "line": 2605,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedArtist.error",
@@ -86413,7 +86590,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2467,
+      "line": 2612,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTitle.error",
@@ -86422,7 +86599,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2485,
+      "line": 2630,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86431,7 +86608,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2553,
+      "line": 2698,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedArtist.error",
@@ -86440,7 +86617,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2560,
+      "line": 2705,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedTitle.error",
@@ -86449,7 +86626,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2573,
+      "line": 2718,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86458,7 +86635,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2688,
+      "line": 2833,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMbid.error",
@@ -86467,7 +86644,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2699,
+      "line": 2844,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86476,7 +86653,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2726,
+      "line": 2871,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMbid.error",
@@ -86485,7 +86662,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2754,
+      "line": 2899,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedName.error",
@@ -86494,7 +86671,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2777,
+      "line": 2922,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86503,7 +86680,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2792,
+      "line": 2937,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMbid.error",
@@ -86512,7 +86689,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2806,
+      "line": 2951,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86521,7 +86698,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 2950,
+      "line": 3095,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "redundancy.reason",
@@ -86530,7 +86707,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3044,
+      "line": 3189,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "redundancy.reason",
@@ -86539,7 +86716,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3054,
+      "line": 3199,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86548,7 +86725,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3054,
+      "line": 3199,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86557,7 +86734,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3102,
+      "line": 3247,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMbid.error",
@@ -86566,7 +86743,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3142,
+      "line": 3287,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "detailsResult.reason instanceof Error\n          ? detailsResult.reason.message\n          : 'Unknown error'",
@@ -86575,7 +86752,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3234,
+      "line": 3379,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "error.message",
@@ -86584,7 +86761,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3250,
+      "line": 3395,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "error.message",
@@ -86593,7 +86770,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3259,
+      "line": 3404,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "error.message",
@@ -86602,7 +86779,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3263,
+      "line": 3408,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : 'Unknown error'",
@@ -86611,7 +86788,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3289,
+      "line": 3434,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "songsStoppedReason",
@@ -86620,7 +86797,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3309,
+      "line": 3454,
       "kind": "authored-message-variable",
       "field": "reason",
       "expression": "error instanceof Error ? error.message : 'Unable to request this song.'",
@@ -86629,7 +86806,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3348,
+      "line": 3493,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMbid.error",
@@ -86638,7 +86815,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3364,
+      "line": 3509,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "detailsResult.reason instanceof Error\n          ? detailsResult.reason.message\n          : 'Unknown error'",
@@ -86647,7 +86824,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3383,
+      "line": 3528,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "libraryResult.reason instanceof Error\n          ? libraryResult.reason.message\n          : 'Unknown error'",
@@ -86656,7 +86833,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3495,
+      "line": 3640,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -86665,7 +86842,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3545,
+      "line": 3690,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -86674,7 +86851,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3630,
+      "line": 3775,
       "kind": "authored-message-field",
       "field": "reason",
       "expression": "redundancy.reason",
@@ -86683,7 +86860,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3900,
+      "line": 4045,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86692,7 +86869,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3900,
+      "line": 4045,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -86701,7 +86878,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 3982,
+      "line": 4127,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -86710,7 +86887,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 4071,
+      "line": 4227,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -86719,7 +86896,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 4096,
+      "line": 4252,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedSlider.error",
@@ -86728,7 +86905,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 4191,
+      "line": 4363,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",
@@ -86737,7 +86914,7 @@
     },
     {
       "path": "server/routes/music.ts",
-      "line": 4365,
+      "line": 4556,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error.message",

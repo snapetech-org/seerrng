@@ -12,7 +12,7 @@ import {
   type SlskdnSettings,
 } from '@server/lib/settings';
 import logger from '@server/logger';
-import { In } from 'typeorm';
+import { In, IsNull, LessThan, MoreThan, Not } from 'typeorm';
 
 export const MAX_ACTIVE_TRACK_REQUESTS_PER_USER = 50;
 /** Give up on a wishlist search that has found nothing after this long. */
@@ -236,6 +236,8 @@ export const startTrackSearch = async (
       request.lastError = null;
       request.lastErrorMessageKey = null;
     } catch (error) {
+      // a retry (the sync job, or a manager) still files it under its album
+      if (extra) rememberPendingAurralTrackMetadata(request.id, extra);
       throw new TrackRequestError(
         error instanceof Error ? error.message : 'Aurral could not be reached.',
         502,
@@ -562,10 +564,119 @@ export const nextAurralTrackStatus = (
   return { status: 'searching' };
 };
 
+// An auto-approved song whose hand-off to Aurral failed (Aurral restarting,
+// busy past the timeout) stayed pending for good while the page said
+// "Requested". The sync job sends it again, at most every RETRY_PENDING_MS,
+// for up to RETRY_PENDING_FOR_MS after it was asked for.
+export const RETRY_PENDING_MS = 2 * 60_000;
+export const RETRY_PENDING_FOR_MS = 24 * 60 * 60_000;
+const MAX_PENDING_RETRIES_PER_SYNC = 5;
+
+export const retryFailedAurralDispatches = async (
+  now = new Date()
+): Promise<number> => {
+  const settings = getSettings();
+  if (!isAurralTrackRequestsConfigured(settings.aurral)) return 0;
+  const repository = getRepository(TrackRequest);
+  // only ones that were sent and failed (requests waiting for a manager have
+  // no error), within their retry window, and not touched in the last minutes
+  const pending = await repository.find({
+    where: {
+      status: 'pending',
+      backendType: 'aurral',
+      lastError: Not(IsNull()),
+      createdAt: MoreThan(new Date(now.getTime() - RETRY_PENDING_FOR_MS)),
+      updatedAt: LessThan(new Date(now.getTime() - RETRY_PENDING_MS)),
+    },
+    order: { updatedAt: 'ASC' },
+    take: 50,
+  });
+  let retried = 0;
+  const activityByServer = new Map<
+    number,
+    Awaited<ReturnType<AurralAPI['getActivity']>> | null
+  >();
+  for (const request of pending) {
+    if (retried >= MAX_PENDING_RETRIES_PER_SYNC) break;
+    if (!request.requestedBy || !canAutoApprove(request.requestedBy)) continue;
+    const server =
+      (request.serverId != null
+        ? settings.aurral.find((candidate) => candidate.id === request.serverId)
+        : undefined) ?? getDefaultAurralServer(settings.aurral);
+    if (!server) continue;
+
+    // A hand-off that timed out may have reached Aurral anyway: a job for this
+    // song asked for since the request is taken as its own, never sent twice.
+    let activity = activityByServer.get(server.id);
+    if (activity === undefined) {
+      activity = await aurralApiFor(server)
+        .getActivity()
+        .catch(() => null);
+      activityByServer.set(server.id, activity);
+    }
+    // Aurral cannot be read: the next sync tries again
+    if (activity === null) break;
+    const createdAtMs = new Date(request.createdAt).getTime();
+    const queued = activity.find(
+      (item) =>
+        normalizeTrackText(item.artistName) ===
+          normalizeTrackText(request.artist) &&
+        normalizeTrackText(item.trackName) ===
+          normalizeTrackText(request.title) &&
+        item.requestedAt !== undefined &&
+        new Date(item.requestedAt).getTime() >=
+          createdAtMs - NAME_MATCH_CLOCK_SKEW_MS
+    );
+
+    if (!(await claimPendingTrackRequest(request.id))) continue;
+    retried += 1;
+    if (queued) {
+      const update = nextAurralTrackStatus(
+        { ...request, externalRequestId: queued.jobId ?? queued.id },
+        activity,
+        now
+      );
+      await repository.update(request.id, {
+        status: update.status,
+        externalRequestId: queued.jobId ?? queued.id,
+        lastError: update.lastError ?? null,
+        lastErrorMessageKey: null,
+      });
+      continue;
+    }
+    try {
+      request.status = 'pending';
+      await startTrackSearch(request, request.requestedBy);
+    } catch (error) {
+      await releaseTrackRequestClaim(request.id);
+      await repository.update(request.id, {
+        lastError:
+          error instanceof Error
+            ? error.message.slice(0, 500)
+            : 'Unknown error',
+        lastErrorMessageKey:
+          error instanceof TrackRequestError
+            ? (error.messageKey ?? null)
+            : null,
+      });
+      // Aurral is struggling: one failure ends this run so the sync of songs
+      // already on their way is not held up behind 30 s timeouts
+      break;
+    }
+  }
+  return retried;
+};
+
 export const syncTrackRequests = async (): Promise<void> => {
   if (syncing || !isTrackRequestsConfigured()) return;
   syncing = true;
   try {
+    await retryFailedAurralDispatches().catch((error: unknown) => {
+      logger.warn('Retrying failed Aurral song requests failed', {
+        label: 'Track Requests',
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    });
     const repository = getRepository(TrackRequest);
     const requests = await repository.find({ where: { status: 'searching' } });
     if (requests.length === 0) return;

@@ -129,6 +129,37 @@ describe('owned songs by artist and title', () => {
     assert.ok(stale?.has(ownedSongKey('STELLA LEFTY', 'Boston')));
   });
 
+  it('a refresh with a page it could not read keeps the songs it missed', async () => {
+    let now = 5_000_000;
+    mock.method(Date, 'now', () => now);
+    let failPage2 = false;
+    let refreshes = 0;
+    const { aurral } = fakeAurral(async (pageNumber, _size, sort) => {
+      if (sort === 'newest') return page([], 101);
+      if (pageNumber === 1) {
+        refreshes += 1;
+        return page([{ title: 'First', artistName: 'Artist A' }], 101);
+      }
+      if (failPage2) throw new Error('Aurral busy');
+      return page([{ title: 'Second', artistName: 'Artist B' }], 101, 2);
+    });
+
+    const first = await getOwnedSongKeys(aurral, 'server-refresh');
+    assert.ok(first?.has(ownedSongKey('Artist B', 'Second')));
+
+    failPage2 = true;
+    now += OWNED_SONGS_FULL_REFRESH_MS + 1;
+    await getOwnedSongKeys(aurral, 'server-refresh');
+    for (let i = 0; i < 50 && refreshes < 2; i++)
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const after = await getOwnedSongKeys(aurral, 'server-refresh');
+    assert.strictEqual(refreshes, 2);
+    assert.ok(after?.has(ownedSongKey('Artist A', 'First')));
+    assert.ok(after?.has(ownedSongKey('Artist B', 'Second')));
+  });
+
   it('marks nothing when the library cannot be read, and keeps pages that were read', async () => {
     const failing = fakeAurral(async () => {
       throw new Error('Aurral is down');

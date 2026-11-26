@@ -7,6 +7,7 @@ import type {
   AurralNormalizedTrack,
 } from '@server/api/aurral';
 import {
+  albumPopularityKey,
   applyTrackPopularity,
   dedupeTracks,
   fillTrackArtistMbids,
@@ -274,6 +275,109 @@ describe('hasCoverPenalty and track scoring', () => {
       );
     });
   }
+
+  it("ranks the named artist's song above uploads titled with the whole query", () => {
+    const query = 'too sweet hozier';
+    const parsed = parseMusicQuery(query);
+    const ranked = rankAndDedupeTracks(
+      [
+        makeTrack({
+          title: 'Too sweet hozier',
+          artistName: 'All purpose rain',
+        }),
+        makeTrack({ title: 'Too Sweet', artistName: 'Hozier' }),
+        makeTrack({ title: 'Too Sweet Hozier', artistName: 'Lee Sang Gul' }),
+      ],
+      query,
+      parsed
+    );
+
+    assert.strictEqual(ranked[0].artistName, 'Hozier');
+    assert.strictEqual(ranked[0].title, 'Too Sweet');
+  });
+
+  it('does not boost an artist whose name is only part of a title query', () => {
+    const query = 'dancing queen';
+    const parsed = parseMusicQuery(query);
+    const ranked = rankAndDedupeTracks(
+      [
+        makeTrack({ title: 'Bohemian Rhapsody', artistName: 'Queen' }),
+        makeTrack({ title: 'Dancing Queen', artistName: 'ABBA' }),
+      ],
+      query,
+      parsed
+    );
+    assert.strictEqual(ranked[0].artistName, 'ABBA');
+  });
+
+  it('puts the album Deezer lists first ahead of a same-titled single, and on top over obscure songs', () => {
+    const query = 'abbey road';
+    const parsed = parseMusicQuery(query);
+    const album = (
+      title: string,
+      artistName: string,
+      primaryType: string,
+      mbid: string
+    ) => ({
+      mbid,
+      title,
+      artistName,
+      artistMbid: null,
+      primaryType,
+      releaseDate: null,
+      coverUrl: null,
+      inLibrary: false,
+    });
+    const albums = sortAlbumsForSearch(
+      [
+        album(
+          'Abbey Road',
+          'Diana Herrera',
+          'Single',
+          'aaaaaaaa-0000-4000-8000-000000000001'
+        ),
+        album(
+          'Abbey Road',
+          'The Beatles',
+          'Album',
+          'aaaaaaaa-0000-4000-8000-000000000002'
+        ),
+      ],
+      query,
+      parsed,
+      new Map([[albumPopularityKey('The Beatles', 'Abbey Road'), 0]])
+    );
+    assert.strictEqual(albums[0].artistName, 'The Beatles');
+
+    const tracks = ['DJ Yoda', 'Marsimoto', 'Diana Herrera'].map(
+      (artistName) => ({
+        ...makeTrack({ title: 'Abbey Road', artistName }),
+        popularity: 120_000,
+      })
+    );
+    const top = selectTopResult({
+      query,
+      parsed,
+      artists: [],
+      albums,
+      tracks,
+      upstreamTop: null,
+      popularAlbum: albums[0],
+    });
+    assert.strictEqual(top?.type, 'album');
+
+    // a famous song still wins ("hello")
+    const famous = selectTopResult({
+      query,
+      parsed,
+      artists: [],
+      albums,
+      tracks: [{ ...tracks[0], popularity: 900_000 }, tracks[1], tracks[2]],
+      upstreamTop: null,
+      popularAlbum: albums[0],
+    });
+    assert.strictEqual(famous?.type, 'track');
+  });
 
   it('ranks original above covers and prioritizes exact artist matches', () => {
     const query = 'what was i made for';

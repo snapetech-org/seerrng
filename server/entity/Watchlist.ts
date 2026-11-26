@@ -1,5 +1,6 @@
 import ComicVineAPI from '@server/api/comicvine';
 import ListenBrainzAPI from '@server/api/listenbrainz';
+import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import TheMovieDb from '@server/api/themoviedb';
 import { MediaType } from '@server/constants/media';
@@ -30,6 +31,7 @@ import {
   cleanMagazineTitle,
   normalizeMagazineTitle,
 } from '@server/lib/magazineIdentity';
+import { getAlbumDetails } from '@server/lib/musicAlbumDetails';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import {
@@ -296,7 +298,13 @@ export class Watchlist {
       }
 
       const listenBrainz = new ListenBrainzAPI();
-      const album = await listenBrainz.getAlbum(watchlistRequest.mbId);
+      // ListenBrainz, else MusicBrainz (new albums are not on ListenBrainz)
+      const album = await getAlbumDetails(
+        watchlistRequest.mbId,
+        listenBrainz,
+        new MusicBrainz(),
+        { askMusicBrainzAlongside: false }
+      );
       const title =
         watchlistRequest.title ??
         album.release_group_metadata.release_group.name;

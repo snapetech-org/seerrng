@@ -491,14 +491,22 @@ class CacheManager {
       stdTtl: 43200,
       checkPeriod: 60 * 30,
     }),
+    // A busy Aurral can take seconds to answer: an expired copy (kept a day,
+    // memory only: these are the household's library answers) answers while
+    // the new read is slow.
     aurral: new Cache('aurral', 'Aurral', {
       stdTtl: 60,
       checkPeriod: 60 * 5,
+      staleMaxAge: 24 * 60 * 60,
     }),
+    // public charts, playlists and search: kept across restarts (Deezer's
+    // reads use their own short TTLs, so expired copies are not served)
     deezer: new Cache('deezer', 'Deezer API', {
       stdTtl: 600,
       checkPeriod: 60 * 5,
       maxKeys: 500,
+      staleMaxAge: DEFAULT_STALE_MAX_AGE_SECONDS,
+      persist: true,
     }),
     // public chart lists: kept across restarts, and served while Apple is slow
     podcastcharts: new Cache('podcastcharts', 'Apple Podcasts charts', {
