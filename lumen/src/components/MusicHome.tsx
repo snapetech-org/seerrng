@@ -260,7 +260,8 @@ const NOTHING_FOUND =
 const TURNED_DOWN = /\bdenied\b|\brejected\b|\btoo weak\b|\bmismatch\b/i;
 export const plainFailureReason = (
   reason: string,
-  t: ReturnType<typeof useLumenLocale>['t']
+  t: ReturnType<typeof useLumenLocale>['t'],
+  locale: string
 ): string => {
   const sources: string[] = [];
   let turnedDown = false;
@@ -276,9 +277,7 @@ export const plainFailureReason = (
   if (!sources.length) return reason;
   let list = sources.join(', ');
   try {
-    list = new Intl.ListFormat(undefined, { type: 'disjunction' }).format(
-      sources
-    );
+    list = new Intl.ListFormat(locale, { type: 'disjunction' }).format(sources);
   } catch {
     // older browsers: the plain comma list
   }
@@ -298,7 +297,7 @@ export function ActivityRow({
   item: ActivityItem;
   position?: number;
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const working = item.status === 'processing';
   const done = item.status === 'completed' || item.status === 'unchanged';
   const failed = item.status === 'failed';
@@ -339,7 +338,7 @@ export function ActivityRow({
         <small>{[item.artistName, why].filter(Boolean).join(' · ')}</small>
         {failed && item.reason && (
           <small className="music-act-reason" title={item.reason}>
-            {plainFailureReason(item.reason, t)}
+            {plainFailureReason(item.reason, t, locale)}
           </small>
         )}
       </span>
@@ -587,7 +586,7 @@ const libraryMoreFor = (path: string): LibraryMore =>
   librarySnap.get(path) ?? { path, pages: 1, extra: [], hasMore: true };
 
 export function LibraryTab() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { aurralBase } = useMusicPlayer();
   // kind and sort live in the address (replaced, not added), so Back and reload keep them
   const [params, setParams] = useSearchParams();
@@ -753,10 +752,10 @@ export function LibraryTab() {
           {first.data
             ? kind === 'albums'
               ? t('lumen.music.albumTotal', '{count} albums', {
-                  count: total.toLocaleString(),
+                  count: total.toLocaleString(locale),
                 })
               : t('lumen.music.artistTotal', '{count} artists', {
-                  count: total.toLocaleString(),
+                  count: total.toLocaleString(locale),
                 })
             : ''}
         </span>

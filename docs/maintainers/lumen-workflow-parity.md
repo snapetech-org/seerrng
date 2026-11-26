@@ -12064,3 +12064,20 @@ This closes the Administration home headings only; other runtime-composed keys
 remain under audit.
 
 release-note: `release-notes/lumen-admin-home-localization.md`
+
+### Saved-locale numeric and list formatting (2026-11-26)
+
+Lumen translated its interface text but several displayed values still used the
+browser's default locale. Currency and rating decimals, music library totals and
+request quotas, user request counts, library-migration disk sizes, and joined
+Aurral failure-source lists now format with the saved interface locale. A source
+guard prevents new default-locale `Intl` and `toLocaleString()` calls. A French
+browser regression verifies movie currency and rating values across desktop,
+iPhone, Android, and tablet. Matching English-number fallback and localized
+candidate screenshots were reviewed at desktop and phone sizes; the translated
+values fit the existing layout. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/`.
+Other provider formatting and native-matched detail visuals remain part of the
+broader display audit.
+
+release-note: `release-notes/lumen-locale-number-formatting.md`

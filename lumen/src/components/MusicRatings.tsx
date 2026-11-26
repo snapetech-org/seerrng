@@ -33,7 +33,7 @@ function safeRatingUrl(value: string): string | undefined {
 }
 
 export default function MusicRatings({ albumId }: { albumId: string }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { data, error, revalidate } = useApi<RatingResponse>(
     `/music/${encodeURIComponent(albumId)}/rating`
   );
@@ -76,11 +76,11 @@ export default function MusicRatings({ albumId }: { albumId: string }) {
                   '{source}: {score}/{scale} from {votes} votes',
                   {
                     source: label,
-                    score: new Intl.NumberFormat(undefined, {
+                    score: new Intl.NumberFormat(locale, {
                       maximumFractionDigits: 1,
                     }).format(rating.score),
                     scale: rating.scale ?? 10,
-                    votes: new Intl.NumberFormat().format(rating.votes),
+                    votes: new Intl.NumberFormat(locale).format(rating.votes),
                   }
                 )
               : t('lumen.music.noRating', '{source}: no rating available', {

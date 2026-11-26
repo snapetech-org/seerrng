@@ -251,7 +251,7 @@ function MusicRequestSheet({
   onComplete: () => void;
 }) {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const toast = useToast();
   const canChoose = canChooseRequestOptions(user?.permissions);
   const [options, setOptions] = useState<RequestOptions>({
@@ -400,7 +400,9 @@ function MusicRequestSheet({
           <dt>
             {t('components.RequestModal.Music.trackCount', 'Track Count')}
           </dt>
-          <dd>{new Intl.NumberFormat().format(album.tracks?.length ?? 0)}</dd>
+          <dd>
+            {new Intl.NumberFormat(locale).format(album.tracks?.length ?? 0)}
+          </dd>
         </div>
         {album.releaseDate && (
           <div>
@@ -486,10 +488,10 @@ function MusicRequestSheet({
                 'lumen.music.requestsRemaining',
                 '{remaining} of {limit} Music requests remaining.',
                 {
-                  remaining: new Intl.NumberFormat().format(
+                  remaining: new Intl.NumberFormat(locale).format(
                     quotaInfo.remaining ?? 0
                   ),
-                  limit: new Intl.NumberFormat().format(quotaInfo.limit),
+                  limit: new Intl.NumberFormat(locale).format(quotaInfo.limit),
                 }
               )}
         </p>
@@ -973,7 +975,7 @@ const isSearchable = (term: string) =>
   term.length >= 2 || /[^\u0020-\u024f]/u.test(term);
 
 export function Music() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const navigate = useNavigate();
   const releaseTypeOptions = RELEASE_TYPES.map(({ value, label }) => ({
     value,
@@ -1939,11 +1941,15 @@ export function Music() {
                             '{count} albums',
                             {
                               count:
-                                libraryOverview.data.totalAlbums.toLocaleString(),
+                                libraryOverview.data.totalAlbums.toLocaleString(
+                                  locale
+                                ),
                             }
                           )}
                         >
-                          {libraryOverview.data.totalAlbums.toLocaleString()}
+                          {libraryOverview.data.totalAlbums.toLocaleString(
+                            locale
+                          )}
                         </span>
                       )}
                     {key === 'activity' && downloadingCount > 0 && (

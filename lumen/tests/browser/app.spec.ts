@@ -426,6 +426,64 @@ test('movie and TV details show valid available ratings and safe links', async (
   expect(qa.errors).toEqual([]);
 });
 
+test('saved French locale formats movie currency and rating numbers', async ({
+  page,
+}, testInfo) => {
+  const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+  const captureDir = process.env.LUMEN_FORMAT_CAPTURE_DIR;
+  await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.route('**/api/v1/movie/101', (route) =>
+    route.fulfill({
+      json: {
+        ...movie,
+        budget: 1_000_000,
+        mediaInfo: available,
+      },
+    })
+  );
+  await page.route('**/api/v1/movie/101/ratingscombined', (route) =>
+    route.fulfill({ json: { mdblist: { imdbRating: 8.2 } } })
+  );
+
+  await page.goto(testAppPath('/movie/101'));
+  await page.locator('details#details > summary').click();
+  const budget = await page.evaluate(
+    (isBaseline) =>
+      new Intl.NumberFormat(isBaseline ? undefined : 'fr', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+      }).format(1_000_000),
+    baseline
+  );
+  const score = await page.evaluate(
+    (isBaseline) =>
+      new Intl.NumberFormat(isBaseline ? undefined : 'fr', {
+        maximumFractionDigits: 1,
+      }).format(8.2),
+    baseline
+  );
+  await expect(page.getByText(budget, { exact: true })).toBeVisible();
+  await expect(
+    page.getByTitle(`IMDb: ${score}/10`, { exact: true })
+  ).toBeVisible();
+  if (captureDir && ['desktop', 'iphone'].includes(testInfo.project.name)) {
+    const { mkdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    await mkdir(captureDir, { recursive: true });
+    await page.screenshot({
+      path: join(
+        captureDir,
+        `${baseline ? 'baseline' : 'candidate'}-${testInfo.project.name}.png`
+      ),
+      fullPage: false,
+    });
+  }
+});
+
 test('movie cards load a bounded rating popover after it is opened', async ({
   page,
 }, testInfo) => {

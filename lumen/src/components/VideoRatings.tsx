@@ -66,7 +66,7 @@ export default function VideoRatings({
   className?: string;
   showStatus?: boolean;
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const [ready, setReady] = useState(delayMs === 0);
   const [settled, setSettled] = useState(false);
   useEffect(() => {
@@ -180,7 +180,7 @@ export default function VideoRatings({
     >
       {ratings.map((rating) => {
         const href = safeUrl(rating.url);
-        const formattedScore = new Intl.NumberFormat(undefined, {
+        const formattedScore = new Intl.NumberFormat(locale, {
           maximumFractionDigits: rating.scale === 10 ? 1 : 0,
         }).format(rating.score!);
         const content = `${rating.label}: ${formattedScore}${rating.scale === 100 ? '%' : '/10'}`;
@@ -220,7 +220,7 @@ export function VideoRatingsPopover({
   voteCount?: number;
   title: string;
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
@@ -292,7 +292,7 @@ export function VideoRatingsPopover({
   const formattedScore =
     tmdbScore === undefined
       ? undefined
-      : new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(
+      : new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(
           tmdbScore
         );
 

@@ -722,6 +722,24 @@ test('Administration home group keys are registered and translated', async () =>
   }
 });
 
+test('Lumen number and list formatting follows the saved interface locale', async () => {
+  const sourceRoot = resolve(root, 'src');
+  const files = [];
+  const collectFiles = async (directory) => {
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      const file = resolve(directory, entry.name);
+      if (entry.isDirectory()) await collectFiles(file);
+      else if (/\.[jt]sx?$/.test(entry.name)) files.push(file);
+    }
+  };
+  await collectFiles(sourceRoot);
+  const unsafe = /new Intl\.(?:DateTimeFormat|NumberFormat|ListFormat|RelativeTimeFormat)\(\s*undefined|new Intl\.NumberFormat\(\s*\)|\.toLocaleString\(\s*\)/;
+  for (const file of files) {
+    const source = await readFile(file, 'utf8');
+    assert.doesNotMatch(source, unsafe, `${file} uses the saved locale`);
+  }
+});
+
 test('Lumen includes the localized native user-list menu label', async () => {
   const keys = JSON.parse(
     await readFile(resolve(root, 'i18n-keys.json'), 'utf8')

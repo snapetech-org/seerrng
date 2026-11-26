@@ -397,7 +397,7 @@ function EditProfile({
 }
 
 export default function AdminUsers() {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const { userId, panel } = useParams();
   const target =
     userId && /^[1-9]\d{0,9}$/.test(userId) && Number(userId) <= 1_000_000_000
@@ -766,7 +766,7 @@ export default function AdminUsers() {
                   {user.requestCount !== undefined && (
                     <small>
                       {t('lumen.adminUsers.requestCount', '{count} requests', {
-                        count: user.requestCount.toLocaleString(),
+                        count: user.requestCount.toLocaleString(locale),
                       })}
                     </small>
                   )}

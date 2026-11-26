@@ -73,12 +73,13 @@ function normalizePath(path: string) {
   return /^[a-z]:\//i.test(normalized) ? normalized.toLowerCase() : normalized;
 }
 
-function diskSpace(bytes: number) {
-  return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(bytes / 1024 ** 3)} GiB (${bytes.toLocaleString()} bytes)`;
+function diskSpace(bytes: number, locale: string) {
+  const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+  return `${number.format(bytes / 1024 ** 3)} GiB (${number.format(bytes)} bytes)`;
 }
 
 function PreviewDetails({ preview }: { preview: Preview }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   return (
     <>
       <p className="note">
@@ -95,11 +96,11 @@ function PreviewDetails({ preview }: { preview: Preview }) {
       </p>
       <p className="note">
         {t('lumen.migration.requiredSpace', 'Required copy space: {space}.', {
-          space: diskSpace(preview.requiredCopyBytes),
+          space: diskSpace(preview.requiredCopyBytes, locale),
         })}
         {preview.availableSpace === undefined
           ? ` ${t('lumen.migration.spaceUnavailable', 'Destination free space was unavailable.')}`
-          : ` ${t('lumen.migration.availableSpace', 'Available: {space}.', { space: diskSpace(preview.availableSpace) })}`}
+          : ` ${t('lumen.migration.availableSpace', 'Available: {space}.', { space: diskSpace(preview.availableSpace, locale) })}`}
       </p>
       <div className="setlist">
         {preview.warnings.map((warning, index) => (

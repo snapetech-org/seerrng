@@ -64,15 +64,13 @@ import { useLiveMediaProgress } from '../useLiveDownloadProgress';
 import { isSharedVideoCopy, videoPlaybackMedia } from '../videoAvailability';
 import { AssociationLink } from './Associations';
 
-const usd = new Intl.NumberFormat(undefined, {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 0,
-});
-
-function movieCurrency(value?: number) {
+function movieCurrency(value: number | undefined, locale: string) {
   return typeof value === 'number' && Number.isFinite(value) && value > 0
-    ? usd.format(value)
+    ? new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+      }).format(value)
     : '';
 }
 
@@ -607,11 +605,11 @@ export default function MovieDetail() {
                   [t('lumen.movie.fact.runtime', 'Runtime'), fmtRun(m.runtime)],
                   [
                     t('lumen.movie.fact.budget', 'Budget'),
-                    movieCurrency(m.budget),
+                    movieCurrency(m.budget, locale),
                   ],
                   [
                     t('lumen.movie.fact.revenue', 'Revenue'),
-                    movieCurrency(m.revenue),
+                    movieCurrency(m.revenue, locale),
                   ],
                   [
                     releaseDates.size > 1
