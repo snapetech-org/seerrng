@@ -6824,6 +6824,7 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+
 ### Avoid denied Adult catalog probes (2026-11-26)
 
 Lumen previously probed `/adult/search` to discover whether the Adult catalog
@@ -11333,5 +11334,28 @@ Results and screenshots are retained at
 The cases use fixture-backed API and provider responses. This run does not
 establish live provider behavior, published-image behavior, or native-matched
 visual parity; the broader feature parity audit remains open.
+
+release-note: none
+
+### Mounted failure-slice requalification on current main (2026-11-26)
+
+The retained full mounted-suite report had failures in Classic administrator
+settings bookmarks, book recommendations, Following, Game Finder, household
+profiles, linked accounts, and localized TV episode requests. Rebuilt the Lumen
+production bundle from current `main` (`6562425ba772a541e3f28da511e9f1b617216174`)
+and served it through SeerrNG's compiled `mountLumenFrontend` middleware at
+`/lumen/`. The eight administrator bookmark and permission cases passed across
+desktop, iPhone, Android, and tablet. The six remaining affected specs passed
+all 160 cases across those four projects, with zero skips and failures.
+
+This requalifies those previously failing client workflows on the current
+source; no product code changed in this work. API and provider responses are
+fixture-backed, so live authorization and provider behavior remain unverified.
+The failed report-capture attempt encountered connection refusals after its
+task-owned server had been stopped; it is excluded. The successful run report
+and browser output are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/active-mounted-failure-triage/`,
+and the bookmark run output is under
+`.../active-admin-bookmark-parity/results/`.
 
 release-note: none
