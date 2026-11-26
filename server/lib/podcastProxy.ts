@@ -1,5 +1,6 @@
 import { PodcastFeedError } from '@server/lib/podcastFeed';
 import { getSettings } from '@server/lib/settings';
+import logger from '@server/logger';
 import {
   createSafeHttpRequestOptions,
   isSafeHttpUrl,
@@ -277,7 +278,8 @@ export const renderProxiedFeedXml = (
 };
 
 const MEDIA_TIMEOUT_MS = 30_000;
-const MAX_MEDIA_REDIRECTS = 5;
+// tracking chains (podtrac -> pdst.fm -> ... -> the CDN) take 6-7 hops
+const MAX_MEDIA_REDIRECTS = 15;
 
 export interface PublicMedia {
   status: number;
@@ -331,6 +333,15 @@ export const openPublicMedia = async (
         'unsafe'
       );
     }
+    const status = (error as { response?: { status?: unknown } })?.response
+      ?.status;
+    logger.warn('Podcast proxy could not read a file', {
+      label: 'Podcast Proxy',
+      host: new URL(url).hostname,
+      errorCode: typeof code === 'string' ? code : undefined,
+      upstreamStatus: typeof status === 'number' ? status : undefined,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
     throw new PodcastFeedError('The file could not be read.', 'unreachable');
   }
 };

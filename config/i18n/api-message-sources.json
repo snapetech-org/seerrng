@@ -49840,7 +49840,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 299,
+          "line": 301,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Only http and https files can be read.'",
@@ -69142,7 +69142,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 334,
+          "line": 345,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'The file could not be read.'",
@@ -71036,7 +71036,7 @@
       "callsites": [
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 305,
+          "line": 307,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -71044,7 +71044,7 @@
         },
         {
           "path": "server/lib/podcastProxy.ts",
-          "line": 330,
+          "line": 332,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'That file is on a private address.'",
@@ -79397,6 +79397,24 @@
       "kind": "message-helper-return",
       "field": "message",
       "expression": "typeof status === 'number' ? status : undefined",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/podcastProxy.ts",
+      "line": 343,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/lib/podcastProxy.ts",
+      "line": 343,
+      "kind": "authored-message-field",
+      "field": "errorMessage",
+      "expression": "error instanceof Error ? error.message : String(error)",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },

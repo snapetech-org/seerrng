@@ -248,6 +248,8 @@ describe('podcast files are read by SeerrNG on a pinned connection', () => {
     );
     assert.equal(configs[0]?.proxy, false);
     assert.equal(configs[0]?.responseType, 'stream');
+    // podtrac -> pdst.fm -> ... -> CDN chains take six or seven hops
+    assert.ok(Number(configs[0]?.maxRedirects) >= 15);
   });
 
   it('streams the file when the connection really is public', async () => {
