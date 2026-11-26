@@ -10874,3 +10874,23 @@ The complete report and artifacts are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
 release-note: none
+
+### Main app browser fixture supports the bundled base path (2026-11-26)
+
+The earlier full-mount attempt's 532 failing `app.spec.ts` cases were caused by
+root-relative test navigation and assertions. That spec now uses its `/lumen`
+base helper for direct navigation, internal-link expectations, route patterns,
+and selectors, checks URLs after stripping only the known mount prefix without
+constructing dynamic regular expressions, keeps SeerrNG API/native escape URLs
+at the origin root, and mocks the bundled configuration response. A first
+four-worker mounted rerun reached the real shell limit of 600 responses per
+minute; the two-worker qualification avoids the test-induced burst without
+changing the production limiter. The app spec passes 844 cases against the
+compiled Express `/lumen/` mount across desktop, iPhone, Android, and tablet.
+The same revised spec passes standalone with 840 passes and four
+project-specific skips. This repairs the app-spec portion of the harness only;
+the remaining browser specs have not been rerun as a complete mount suite, and
+full bundled acceptance remains open. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: none
