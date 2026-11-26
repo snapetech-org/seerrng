@@ -12032,3 +12032,16 @@ category option in all three locales. This closes the dynamic My Games label
 gap only; other runtime-composed translation keys remain under audit.
 
 release-note: none
+
+### Podcast and music shell localization (2026-11-26)
+
+The shell selects the optional-category navigation label and search prompt by
+runtime key. The Podcasts navigation key and Podcast and Songs search keys were
+missing from Lumen's registry, so French and Arabic fell back to English in
+those shared controls. All three keys are now registered and have locale
+overrides. Regression coverage checks the dynamic source mappings and renders
+the Podcasts navigation/search controls and Music search prompts in French and
+Arabic. This closes these shared shell labels only; other runtime-composed keys
+remain under audit.
+
+release-note: `release-notes/lumen-podcast-shell-localization.md`

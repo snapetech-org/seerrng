@@ -6650,5 +6650,8 @@
   "lumen.playlist.connectFirst",
   "lumen.playlist.linkPlaceholder",
   "lumen.servarr.keepAvailabilityInSync",
-  "lumen.servarr.musicAndTracks"
+  "lumen.servarr.musicAndTracks",
+  "lumen.nav.podcasts",
+  "lumen.shell.searchPodcasts",
+  "lumen.shell.searchSongs"
 ]

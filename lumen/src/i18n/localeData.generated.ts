@@ -8033,6 +8033,9 @@ export const localeData = [
         'https://www.deezer.com/playlist/… أو Spotify / YouTube',
       'lumen.servarr.keepAvailabilityInSync': 'إبقاء التوفّر متزامناً',
       'lumen.servarr.musicAndTracks': 'الموسيقى والمقاطع',
+      'lumen.nav.podcasts': 'البودكاست',
+      'lumen.shell.searchPodcasts': 'ابحث عن البودكاست…',
+      'lumen.shell.searchSongs': 'ابحث عن الأغاني والألبومات والفنانين…',
     },
   },
   {
@@ -20376,6 +20379,9 @@ export const localeData = [
       'lumen.music.more': 'More',
       'lumen.music.getting': 'Getting…',
       'lumen.music.getSong': 'Get song',
+      'lumen.nav.podcasts': 'Podcasts',
+      'lumen.shell.searchPodcasts': 'Search podcasts…',
+      'lumen.shell.searchSongs': 'Search songs, albums and artists…',
     },
   },
   {
@@ -34137,6 +34143,9 @@ export const localeData = [
       'lumen.servarr.keepAvailabilityInSync':
         'Maintenir la disponibilité synchronisée',
       'lumen.servarr.musicAndTracks': 'Musique et pistes',
+      'lumen.nav.podcasts': 'Podcasts',
+      'lumen.shell.searchPodcasts': 'Rechercher des podcasts…',
+      'lumen.shell.searchSongs': 'Rechercher des chansons, albums et artistes…',
     },
   },
   {

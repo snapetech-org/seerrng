@@ -958,9 +958,17 @@ for (const [
       })
     );
     await page.goto(testAppPath('/music?q=Missing%20query'));
-    await expect(page.getByPlaceholder(searchPlaceholder)).toHaveAttribute(
+    const visibleSearchPlaceholder = baseline
+      ? 'Search songs, albums and artists…'
+      : searchPlaceholder;
+    const searchFields = page.getByPlaceholder(visibleSearchPlaceholder);
+    await expect(searchFields.first()).toHaveAttribute(
       'placeholder',
-      searchPlaceholder
+      visibleSearchPlaceholder
+    );
+    await expect(searchFields.last()).toHaveAttribute(
+      'placeholder',
+      visibleSearchPlaceholder
     );
     await expect(
       page.getByRole('tablist', { name: searchListLabel })
@@ -976,6 +984,20 @@ for (const [
       path: testInfo.outputPath('music-search-empty.png'),
       fullPage: false,
     });
+    const visibleSearchField = page
+      .locator('input[type="search"]:visible')
+      .last();
+    await expect(visibleSearchField).toHaveAttribute(
+      'placeholder',
+      visibleSearchPlaceholder
+    );
+    await visibleSearchField.fill('');
+    if (['desktop', 'iphone'].includes(testInfo.project.name))
+      await page.screenshot({
+        path: testInfo.outputPath('music-search-placeholder.png'),
+        fullPage: false,
+      });
+    if (baseline) return;
 
     await page.goto(testAppPath('/music'));
     for (const [baselineLabel, translatedLabel, changedThisBatch] of [
@@ -2693,6 +2715,8 @@ test('Podcasts is its own section with Discover, search, your shows and activity
 for (const [
   locale,
   expectedTitle,
+  expectedNavigation,
+  expectedSearch,
   expectedCategories,
   expectedTop,
   discoverTab,
@@ -2707,6 +2731,8 @@ for (const [
   [
     'fr',
     'Podcasts',
+    'Podcasts',
+    'Rechercher des podcasts…',
     'Catégories',
     'Meilleurs podcasts',
     'Découvrir',
@@ -2721,6 +2747,8 @@ for (const [
   [
     'ar',
     'البودكاست',
+    'البودكاست',
+    'ابحث عن البودكاست…',
     'الفئات',
     'أفضل البودكاست',
     'اكتشف',
@@ -2736,6 +2764,7 @@ for (const [
   test(`podcast discovery uses the saved ${locale} locale`, async ({
     page,
   }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
     await mockMusic(page, { previews: [], saved: [] }, locale);
     await mockPodcasts(page, { subscribed: [], downloads: [], auto: [] });
     await page.route('**/api/v1/podcast/genres', (route) =>
@@ -2751,10 +2780,21 @@ for (const [
       })
     );
     await page.goto(testAppPath('/podcasts'));
+    const visibleNavigation = baseline ? 'Podcasts' : expectedNavigation;
+    const visibleSearch = baseline ? 'Search podcasts…' : expectedSearch;
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(
       page.getByRole('heading', { name: expectedTitle, level: 1 })
     ).toBeVisible();
+    if ((page.viewportSize()?.width ?? 1440) < 1040)
+      await page.locator('.tabbar button').last().click();
+    await expect(
+      page.getByRole('link', { name: visibleNavigation, exact: true }).first()
+    ).toBeVisible();
+    await expect(page.getByPlaceholder(visibleSearch)).toHaveAttribute(
+      'placeholder',
+      visibleSearch
+    );
     await expect(
       page.getByRole('heading', { name: expectedTop })
     ).toBeVisible();

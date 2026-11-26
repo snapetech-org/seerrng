@@ -662,6 +662,37 @@ test('dynamically generated game-library filter keys exist in every shipped loca
   }
 });
 
+test('dynamic Podcast navigation and search labels exist in every shipped locale', async () => {
+  const extras = await readFile(resolve(root, 'src/extras.ts'), 'utf8');
+  const shell = await readFile(
+    resolve(root, 'src/components/Shell.tsx'),
+    'utf8'
+  );
+  const sources = new Map([
+    ['lumen.nav.podcasts', extras],
+    ['lumen.shell.searchPodcasts', shell],
+    ['lumen.shell.searchSongs', shell],
+  ]);
+  for (const [key, source] of sources) {
+    assert.ok(source.includes(key), `dynamic source references ${key}`);
+    assert.ok(lumenKeyRegistry.includes(key), `registered key: ${key}`);
+    for (const locale of ['en', 'fr', 'ar']) {
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale}: ${key}`
+      );
+      if (locale !== 'en' && key !== 'lumen.nav.podcasts') {
+        assert.notEqual(
+          overrides[locale][key],
+          overrides.en[key],
+          `${locale}: ${key} is translated`
+        );
+      }
+    }
+  }
+});
+
 test('Lumen includes the localized native user-list menu label', async () => {
   const keys = JSON.parse(
     await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
