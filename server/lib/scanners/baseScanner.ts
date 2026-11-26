@@ -96,6 +96,7 @@ export interface ProcessOptions {
   audioFormats?: AudioPlaybackFormat[];
   imdbId?: string;
   serviceId?: number;
+  musicServiceType?: 'lidarr' | 'aurral';
   requestServiceType?: VideoRequestServiceType;
   externalServiceId?: number;
   externalServiceSlug?: string;
@@ -754,6 +755,7 @@ class BaseScanner<T> {
       mediaAddedAt,
       ratingKey,
       serviceId,
+      musicServiceType,
       externalServiceId,
       externalServiceSlug,
       jellyfinMediaId,
@@ -761,12 +763,15 @@ class BaseScanner<T> {
       processing = false,
       title = 'Unknown Album',
       hasFile = true,
+      partiallyAvailable = false,
       mutationGuard,
       outerMutationGuard,
     }: ProcessOptions = {}
   ): Promise<void> {
     const mediaRepository = getRepository(Media);
     const normalizedMbId = normalizeMusicBrainzId(mbId);
+    // Music: some but not all tracks are present (only Aurral passes this).
+    const isPartialAlbum = partiallyAvailable && !hasFile;
 
     await this.runProcessMutation(outerMutationGuard, () =>
       runWithRequestAdmission(
@@ -797,15 +802,17 @@ class BaseScanner<T> {
                 existing.status =
                   !processing && hasFile
                     ? MediaStatus.AVAILABLE
-                    : !processing &&
-                        !hasFile &&
-                        previousStatus === MediaStatus.PROCESSING
-                      ? MediaStatus.UNKNOWN
-                      : processing
-                        ? previousStatus === MediaStatus.DELETED
-                          ? MediaStatus.DELETED
-                          : MediaStatus.PROCESSING
-                        : previousStatus;
+                    : isPartialAlbum
+                      ? MediaStatus.PARTIALLY_AVAILABLE
+                      : !processing &&
+                          !hasFile &&
+                          previousStatus === MediaStatus.PROCESSING
+                        ? MediaStatus.UNKNOWN
+                        : processing
+                          ? previousStatus === MediaStatus.DELETED
+                            ? MediaStatus.DELETED
+                            : MediaStatus.PROCESSING
+                          : previousStatus;
 
                 if (existing.status !== previousStatus) {
                   changedExisting = true;
@@ -824,6 +831,14 @@ class BaseScanner<T> {
                   existing.serviceId !== serviceId
                 ) {
                   existing.serviceId = serviceId;
+                  changedExisting = true;
+                }
+
+                if (
+                  musicServiceType !== undefined &&
+                  existing.musicServiceType !== musicServiceType
+                ) {
+                  existing.musicServiceType = musicServiceType;
                   changedExisting = true;
                 }
 
@@ -926,7 +941,7 @@ class BaseScanner<T> {
                   await mediaRepository.save(existing);
                   this.log(`Updating existing album: ${title}`, 'info');
                 }
-              } else if (processing || hasFile) {
+              } else if (processing || hasFile || isPartialAlbum) {
                 await mediaRepository.save(
                   new Media({
                     tmdbId: 0,
@@ -943,6 +958,7 @@ class BaseScanner<T> {
                         ? ratingKey
                         : undefined,
                     serviceId,
+                    musicServiceType,
                     availableMusicServiceIds:
                       serviceId !== undefined && !processing && hasFile
                         ? [serviceId]
@@ -963,9 +979,11 @@ class BaseScanner<T> {
                     status:
                       !processing && hasFile
                         ? MediaStatus.AVAILABLE
-                        : processing
-                          ? MediaStatus.PROCESSING
-                          : MediaStatus.UNKNOWN,
+                        : isPartialAlbum
+                          ? MediaStatus.PARTIALLY_AVAILABLE
+                          : processing
+                            ? MediaStatus.PROCESSING
+                            : MediaStatus.UNKNOWN,
                     status4k: MediaStatus.UNKNOWN,
                   })
                 );

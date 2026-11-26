@@ -13,6 +13,7 @@ const destinationMessages: Record<string, string> = {
   'Radarr Services': 'lumen.admin.dest.radarr',
   'Sonarr Services': 'lumen.admin.dest.sonarr',
   'Lidarr Services': 'lumen.admin.dest.lidarr',
+  'Aurral Services': 'lumen.admin.dest.aurral',
   'Book and Audiobook Services': 'lumen.admin.dest.books',
   'LazyLibrarian Services': 'lumen.admin.dest.lazyLibrarian',
   'Mylar Services': 'lumen.admin.dest.mylar',
@@ -66,6 +67,7 @@ const destinations = [
   ['Radarr Services', '/admin/radarr'],
   ['Sonarr Services', '/admin/sonarr'],
   ['Lidarr Services', '/admin/lidarr'],
+  ['Aurral Services', '/admin/aurral'],
   ['Book and Audiobook Services', '/admin/readarr'],
   ['LazyLibrarian Services', '/admin/lazylibrarian'],
   ['Mylar Services', '/admin/mylar'],
@@ -119,7 +121,10 @@ const serviceGroups = {
       'kavita',
     ],
   },
-  music: { label: 'Music', pages: ['lidarr', 'soulseek', 'navidrome'] },
+  music: {
+    label: 'Music',
+    pages: ['lidarr', 'aurral', 'soulseek', 'navidrome'],
+  },
   'tools-other': {
     label: 'System Services',
     pages: [
@@ -207,7 +212,7 @@ const homeGroups = [
       '/admin/backissue',
     ],
   ],
-  ['music', 'Music', ['/admin/lidarr', '/admin/soulseek']],
+  ['music', 'Music', ['/admin/lidarr', '/admin/aurral', '/admin/soulseek']],
   ['software', 'Software and Games', ['/admin/software-acquisition']],
   [
     'system',

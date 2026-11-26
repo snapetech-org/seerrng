@@ -54,6 +54,7 @@ import type OverrideRule from '@server/entity/OverrideRule';
 import type { OverrideRuleResultsResponse } from '@server/interfaces/api/overrideRuleInterfaces';
 import type {
   AudiobookshelfSettings,
+  AurralSettings,
   BackIssueSettings,
   JellystatSettings,
   KapowarrSettings,
@@ -88,6 +89,9 @@ const BackIssueModal = dynamic(
 );
 const AudiobookshelfModal = dynamic(
   () => import('@app/components/Settings/AudiobookshelfModal')
+);
+const AurralModal = dynamic(
+  () => import('@app/components/Settings/AurralModal')
 );
 const KavitaModal = dynamic(
   () => import('@app/components/Settings/KavitaModal')
@@ -230,6 +234,10 @@ const messages = defineMessages('components.Settings', {
   noDefaultSportarr:
     'Choose one Sportarr server as the default destination for sports requests.',
   addlidarr: 'Add Lidarr Server',
+  aurralsettings: 'Aurral Settings',
+  aurralDescription:
+    'Connect Aurral for all-in-one album and single-track music acquisition. When Aurral is configured, single-track requests automatically route through Aurral instead of slskdN.',
+  addaurral: 'Add Aurral Server',
   addreadarr: 'Add ChaptarrNG Server',
   addbindery: 'Add Bindery Server',
   addbookorbit: 'Add BookOrbit Server',
@@ -345,6 +353,7 @@ interface ServerInstanceProps {
   isSonarr?: boolean;
   isSportarr?: boolean;
   isLidarr?: boolean;
+  isAurral?: boolean;
   isReadarr?: boolean;
   isAudiobookshelf?: boolean;
   isNavidrome?: boolean;
@@ -401,6 +410,7 @@ const ServerInstance = ({
   isSonarr = false,
   isSportarr = false,
   isLidarr = false,
+  isAurral = false,
   isReadarr = false,
   isBindery = false,
   isBookOrbit = false,
@@ -445,6 +455,8 @@ const ServerInstance = ({
             />
           ) : isLidarr ? (
             <LidarrLogo className="h-10 w-10 flex-shrink-0" />
+          ) : isAurral ? (
+            <MusicalNoteIcon className="h-10 w-10 flex-shrink-0 text-gray-300" />
           ) : isReadarr ? (
             <BookOpenIcon className="h-10 w-10 flex-shrink-0 text-gray-300" />
           ) : isAudiobookshelf ? (
@@ -691,6 +703,11 @@ const SettingsServices = ({
     mutate: revalidateLidarr,
   } = useSWR<LidarrSettings[]>('/api/v1/settings/lidarr');
   const {
+    data: aurralData,
+    error: aurralError,
+    mutate: revalidateAurral,
+  } = useSWR<AurralSettings[]>('/api/v1/settings/aurral');
+  const {
     data: readarrData,
     error: readarrError,
     mutate: revalidateReadarr,
@@ -764,6 +781,13 @@ const SettingsServices = ({
     open: false,
     lidarr: null,
   });
+  const [editAurralModal, setEditAurralModal] = useState<{
+    open: boolean;
+    aurral: AurralSettings | null;
+  }>({
+    open: false,
+    aurral: null,
+  });
   const [editReadarrModal, setEditReadarrModal] = useState<{
     open: boolean;
     readarr: ReadarrSettings | null;
@@ -815,6 +839,7 @@ const SettingsServices = ({
       | 'sonarr'
       | 'sportarr'
       | 'lidarr'
+      | 'aurral'
       | 'readarr'
       | 'audiobookshelf'
       | 'navidrome'
@@ -938,6 +963,7 @@ const SettingsServices = ({
   }
   if (
     lidarrData?.length ||
+    aurralData?.length ||
     navidromeData ||
     slskdnData?.enabled ||
     currentSettings.musicEnabled
@@ -972,7 +998,12 @@ const SettingsServices = ({
   const showMusicServices =
     !setupEnabledMediaCategories ||
     setupEnabledMediaCategories.music ||
-    Boolean(lidarrData?.length || navidromeData || slskdnData?.enabled) ||
+    Boolean(
+      lidarrData?.length ||
+      aurralData?.length ||
+      navidromeData ||
+      slskdnData?.enabled
+    ) ||
     currentSettings.musicEnabled;
   const showMediaStats =
     !setupEnabledMediaCategories ||
@@ -1048,6 +1079,7 @@ const SettingsServices = ({
     revalidateSonarr();
     revalidateSportarr();
     revalidateLidarr();
+    revalidateAurral();
     revalidateReadarr();
     revalidateMylar();
     revalidateKapowarr();
@@ -1258,8 +1290,23 @@ const SettingsServices = ({
                   }
                   onSave={() => {
                     revalidateLidarr();
+                    revalidateAurral();
                     mutate('/api/v1/settings/public');
                     setEditLidarrModal({ open: false, lidarr: null });
+                  }}
+                />
+              )}
+              {editAurralModal.open && (
+                <AurralModal
+                  aurral={editAurralModal.aurral}
+                  onClose={() =>
+                    setEditAurralModal({ open: false, aurral: null })
+                  }
+                  onSave={() => {
+                    revalidateAurral();
+                    revalidateLidarr();
+                    mutate('/api/v1/settings/public');
+                    setEditAurralModal({ open: false, aurral: null });
                   }}
                 />
               )}
@@ -2694,7 +2741,10 @@ const SettingsServices = ({
                 {lidarrData && !lidarrError && (
                   <>
                     {lidarrData.length > 0 &&
-                      (!lidarrData.some((lidarr) => lidarr.isDefault) ? (
+                      !(
+                        lidarrData.some((lidarr) => lidarr.isDefault) ||
+                        aurralData?.some((aurral) => aurral.isDefault)
+                      ) && (
                         <Alert
                           title={intl.formatMessage(messages.noDefaultServer, {
                             serverType: 'Lidarr',
@@ -2703,7 +2753,7 @@ const SettingsServices = ({
                             ),
                           })}
                         />
-                      ) : null)}
+                      )}
                     <ul className="settings-service-grid">
                       {lidarrData.map((lidarr) => (
                         <ServerInstance
@@ -2740,6 +2790,87 @@ const SettingsServices = ({
                             <PlusIcon />
                             <span>
                               {intl.formatMessage(messages.addlidarr)}
+                            </span>
+                          </Button>
+                        </div>
+                      </li>
+                    </ul>
+                  </>
+                )}
+              </div>
+            </div>
+            <div
+              data-settings-category="music"
+              hidden={activeServiceCategory !== 'music'}
+              className={activeServiceCategory === 'music' ? '' : 'hidden'}
+            >
+              <div
+                className="settings-service-heading"
+                hidden={!showMusicServices}
+              >
+                <h3 className="heading">
+                  {intl.formatMessage(messages.aurralsettings)}
+                </h3>
+                <SettingsHelp className="description">
+                  {intl.formatMessage(messages.aurralDescription)}
+                </SettingsHelp>
+              </div>
+              <div
+                className="app-card-sub section settings-service-section"
+                hidden={!showMusicServices}
+              >
+                {!aurralData && !aurralError && <LoadingSpinner />}
+                {aurralData && !aurralError && (
+                  <>
+                    {aurralData.length > 0 &&
+                      !(
+                        aurralData.some((aurral) => aurral.isDefault) ||
+                        lidarrData?.some((lidarr) => lidarr.isDefault)
+                      ) && (
+                        <Alert
+                          title={intl.formatMessage(messages.noDefaultServer, {
+                            serverType: 'Aurral',
+                            mediaType: intl.formatMessage(
+                              messages.mediaTypeMusic
+                            ),
+                          })}
+                        />
+                      )}
+                    <ul className="settings-service-grid">
+                      {aurralData.map((aurral) => (
+                        <ServerInstance
+                          key={`aurral-config-${aurral.id}`}
+                          name={aurral.name}
+                          hostname={aurral.hostname}
+                          port={aurral.port}
+                          isSSL={aurral.useSsl}
+                          isAurral={true}
+                          isDefault={aurral.isDefault}
+                          externalUrl={aurral.externalUrl}
+                          onEdit={() =>
+                            setEditAurralModal({ open: true, aurral })
+                          }
+                          onDelete={() =>
+                            setDeleteServerModal({
+                              open: true,
+                              serverId: aurral.id,
+                              type: 'aurral',
+                            })
+                          }
+                        />
+                      ))}
+                      <li className="settings-service-add-card">
+                        <div className="settings-service-add-card-content">
+                          <Button
+                            buttonType="success"
+                            buttonSize="standard"
+                            onClick={() =>
+                              setEditAurralModal({ open: true, aurral: null })
+                            }
+                          >
+                            <PlusIcon />
+                            <span>
+                              {intl.formatMessage(messages.addaurral)}
                             </span>
                           </Button>
                         </div>

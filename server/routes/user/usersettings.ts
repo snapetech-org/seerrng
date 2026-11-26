@@ -1296,7 +1296,9 @@ const lumenPreferenceBooleanFields = [
   'wholeSeriesDefault',
   'showBooks',
   'requestOptions',
+  'musicPreviews',
 ] as const;
+const lumenMusicPlayers = ['aurral', 'plex', 'shelf'] as const;
 const parseLumenPreferences = (
   input: unknown
 ): { value: UserLumenPreferences | null } | { error: string } => {
@@ -1305,7 +1307,12 @@ const parseLumenPreferences = (
     return { error: 'lumenPreferences must be an object or null.' };
   }
   const source = input as Record<string, unknown>;
-  const allowed = new Set([...lumenPreferenceBooleanFields, 'theme', 'rows']);
+  const allowed = new Set([
+    ...lumenPreferenceBooleanFields,
+    'theme',
+    'rows',
+    'musicPlayer',
+  ]);
   if (Object.keys(source).some((key) => !allowed.has(key))) {
     return { error: 'lumenPreferences contains an unsupported preference.' };
   }
@@ -1326,6 +1333,21 @@ const parseLumenPreferences = (
       };
     }
     value.theme = source.theme as NonNullable<UserLumenPreferences['theme']>;
+  }
+
+  if (hasOwn(source, 'musicPlayer')) {
+    if (
+      !(lumenMusicPlayers as readonly string[]).includes(
+        source.musicPlayer as string
+      )
+    ) {
+      return {
+        error: 'lumenPreferences.musicPlayer must be aurral, plex, or shelf.',
+      };
+    }
+    value.musicPlayer = source.musicPlayer as NonNullable<
+      UserLumenPreferences['musicPlayer']
+    >;
   }
 
   if (hasOwn(source, 'rows')) {

@@ -78,6 +78,8 @@ tags:
     description: Optional protocol-v1 Jellyfin playback for compatible native desktop clients.
   - name: indexer search
     description: Direct manual searches through an administrator-configured Prowlarr instance.
+  - name: podcast
+    description: Browse, search, subscribe to, and download podcasts through Audiobookshelf.
 servers:
   - url: '{server}/api/v1'
     variables:
@@ -3693,6 +3695,10 @@ components:
         externalUrl:
           type: string
           maxLength: 512
+        proxyUrl:
+          type: string
+          maxLength: 512
+          description: Address Audiobookshelf uses to reach SeerrNG's podcast proxy. Defaults to the application URL.
         libraryId:
           type: string
           maxLength: 256
@@ -4161,6 +4167,61 @@ components:
         - isDefault
         - syncEnabled
         - rootFolder
+    AurralSettings:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 0
+          readOnly: true
+        name:
+          type: string
+          example: 'Aurral'
+        hostname:
+          type: string
+          example: '127.0.0.1'
+        port:
+          type: number
+          example: 3001
+        apiKey:
+          type: string
+          example: 'exampleapikey'
+        useSsl:
+          type: boolean
+          example: false
+        baseUrl:
+          type: string
+        isDefault:
+          type: boolean
+          example: false
+        externalUrl:
+          type: string
+          example: https://music.example.com
+        syncEnabled:
+          type: boolean
+          example: false
+        musicQuality:
+          type: string
+          enum: [mp3, flac]
+          nullable: true
+    MusicServiceOption:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        isDefault:
+          type: boolean
+        backendType:
+          type: string
+          enum: [lidarr, aurral]
+        musicQuality:
+          type: string
+          nullable: true
+        externalUrl:
+          type: string
+          nullable: true
     BackIssueSettings:
       type: object
       properties:
@@ -5199,8 +5260,34 @@ components:
               items:
                 type: string
                 format: uuid
+            elsewhere:
+              type: array
+              description: Recording MusicBrainz IDs of this release's songs that are in the library on another release (same artist and title), for example a single's song kept on a compilation.
+              items:
+                type: string
+                format: uuid
         mediaInfo:
           $ref: '#/components/schemas/MediaInfo'
+        libraryAlbum:
+          type: object
+          additionalProperties: false
+          description: The music library's own count of this album's songs (the Library tab's "x of y"), when it holds any of them.
+          required:
+            - status
+            - trackCount
+            - availableTrackCount
+          properties:
+            status:
+              type: string
+              enum: [owned, partial]
+            trackCount:
+              type: integer
+              minimum: 0
+            availableTrackCount:
+              type: integer
+              minimum: 0
+        redundant:
+          $ref: '#/components/schemas/MusicReleaseRedundancy'
     ArtistResult:
       type: object
       required:
@@ -9392,6 +9479,1788 @@ components:
             minimum: 1
       required:
         - mediaIds
+    RequestedSongKey:
+      type: object
+      additionalProperties: false
+      required:
+        - artist
+        - title
+      properties:
+        artist:
+          type: string
+        title:
+          type: string
+        recordingMbid:
+          type: string
+    MusicAurralArtist:
+      type: object
+      required:
+        - mbid
+        - name
+        - image
+        - inLibrary
+      properties:
+        mbid:
+          type: string
+          nullable: true
+        name:
+          type: string
+        image:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+    MusicAurralAlbum:
+      type: object
+      required:
+        - mbid
+        - title
+        - artistName
+        - artistMbid
+        - primaryType
+        - releaseDate
+        - coverUrl
+        - inLibrary
+      properties:
+        mbid:
+          type: string
+          nullable: true
+        title:
+          type: string
+        artistName:
+          type: string
+        artistMbid:
+          type: string
+          nullable: true
+        primaryType:
+          type: string
+        releaseDate:
+          type: string
+          nullable: true
+        coverUrl:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+        partial:
+          type: boolean
+        mediaInfo:
+          $ref: '#/components/schemas/MediaInfo'
+        libraryTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album the music library counts (the Library tab's total), when the library holds any of it.
+        libraryAvailableTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album that are in the music library (the Library tab's "x of y").
+    MusicAurralTrack:
+      type: object
+      required:
+        - title
+        - artistName
+        - artistMbid
+        - albumTitle
+        - albumMbid
+        - durationMs
+        - coverUrl
+        - previewDeezerId
+        - inLibrary
+      properties:
+        title:
+          type: string
+        artistName:
+          type: string
+        artistMbid:
+          type: string
+          nullable: true
+        albumTitle:
+          type: string
+          nullable: true
+        albumMbid:
+          type: string
+          nullable: true
+        durationMs:
+          type: integer
+          nullable: true
+        coverUrl:
+          type: string
+          nullable: true
+        previewDeezerId:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+        albumRequested:
+          type: boolean
+          description: The song's album has an open request (pending or processing), so the song is on its way too.
+    MusicAurralTopResult:
+      type: object
+      nullable: true
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [artist, album, track]
+        mbid:
+          type: string
+          nullable: true
+        name:
+          type: string
+        image:
+          type: string
+          nullable: true
+        title:
+          type: string
+        artistName:
+          type: string
+        artistMbid:
+          type: string
+          nullable: true
+        primaryType:
+          type: string
+        releaseDate:
+          type: string
+          nullable: true
+        coverUrl:
+          type: string
+          nullable: true
+        albumTitle:
+          type: string
+          nullable: true
+        albumMbid:
+          type: string
+          nullable: true
+        durationMs:
+          type: integer
+          nullable: true
+        previewDeezerId:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+        albumRequested:
+          type: boolean
+          description: The song's album has an open request (pending or processing), so the song is on its way too.
+        partial:
+          type: boolean
+        mediaInfo:
+          $ref: '#/components/schemas/MediaInfo'
+        libraryTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album the music library counts (the Library tab's total), when the library holds any of it.
+        libraryAvailableTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album that are in the music library (the Library tab's "x of y").
+    MusicAurralLibrarySearchResult:
+      type: object
+      required:
+        - artists
+        - albums
+        - tracks
+      properties:
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralArtist'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralAlbum'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralTrack'
+    MusicAurralLinkResult:
+      type: object
+      nullable: true
+      required:
+        - type
+        - mbid
+        - title
+        - artistName
+        - albumMbid
+      properties:
+        type:
+          type: string
+          enum: [track, album, artist, playlist]
+        provider:
+          type: string
+          enum: [deezer, spotify, youtube]
+        id:
+          type: string
+          nullable: true
+        mbid:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        artistName:
+          type: string
+          nullable: true
+        albumMbid:
+          type: string
+          nullable: true
+    MusicAurralParsedQuery:
+      type: object
+      nullable: true
+      required:
+        - artist
+        - title
+        - year
+        - edition
+        - type
+      properties:
+        artist:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        edition:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+    MusicAurralSimilarArtist:
+      type: object
+      additionalProperties: false
+      required:
+        - mbid
+        - name
+        - image
+      properties:
+        mbid:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+        image:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+          description: The music library has songs by this artist (matched by normalised name).
+    MusicAurralSimilarArtistsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - artists
+      properties:
+        artists:
+          type: array
+          maxItems: 12
+          items:
+            $ref: '#/components/schemas/MusicAurralSimilarArtist'
+    MusicAurralSearchResponse:
+      type: object
+      required:
+        - artists
+        - albums
+        - tracks
+        - top
+        - degraded
+        - library
+        - link
+        - correctedQuery
+        - parsed
+        - topArtistAlbumsFromArtist
+      properties:
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralArtist'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralAlbum'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralTrack'
+        top:
+          $ref: '#/components/schemas/MusicAurralTopResult'
+        degraded:
+          type: boolean
+        library:
+          $ref: '#/components/schemas/MusicAurralLibrarySearchResult'
+        link:
+          $ref: '#/components/schemas/MusicAurralLinkResult'
+        correctedQuery:
+          type: string
+          nullable: true
+        parsed:
+          $ref: '#/components/schemas/MusicAurralParsedQuery'
+        topArtistAlbumsFromArtist:
+          type: boolean
+          description: True when albums were populated from the selected top artist's release groups rather than title search matches.
+    MusicAurralTrendingResponse:
+      type: object
+      required:
+        - artists
+        - albums
+        - tracks
+      properties:
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralArtist'
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralAlbum'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralTrack'
+    MusicAurralGenresResponse:
+      type: object
+      required:
+        - tags
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+    MusicAurralGenreResponse:
+      type: object
+      required:
+        - tag
+        - artists
+      properties:
+        tag:
+          type: string
+        artists:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralArtist'
+    MusicAurralErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    MusicAurralLibraryAlbum:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        mbid:
+          type: string
+          nullable: true
+        releaseGroupMbid:
+          type: string
+          nullable: true
+        title:
+          type: string
+        albumArtist:
+          type: string
+          nullable: true
+        releaseDate:
+          type: string
+          nullable: true
+        monitored:
+          type: boolean
+        trackCount:
+          type: integer
+        availableTrackCount:
+          type: integer
+        coverUrl:
+          type: string
+          nullable: true
+    MusicAurralLibraryAlbumItem:
+      type: object
+      required:
+        - id
+        - title
+        - artistName
+        - mbid
+        - releaseGroupMbid
+        - releaseDate
+        - addedAt
+        - trackCount
+        - availableTrackCount
+        - coverUrl
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        artistName:
+          type: string
+          nullable: true
+        mbid:
+          type: string
+          nullable: true
+        releaseGroupMbid:
+          type: string
+          nullable: true
+        releaseDate:
+          type: string
+          nullable: true
+        addedAt:
+          type: string
+          format: date-time
+          nullable: true
+        trackCount:
+          type: integer
+        availableTrackCount:
+          type: integer
+        coverUrl:
+          type: string
+    MusicAurralLibraryArtistItem:
+      type: object
+      required:
+        - id
+        - name
+        - mbid
+        - albumCount
+        - trackCount
+        - coverUrl
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        mbid:
+          type: string
+          nullable: true
+        albumCount:
+          type: integer
+        trackCount:
+          type: integer
+        coverUrl:
+          type: string
+    MusicAurralLibraryResponse:
+      type: object
+      required:
+        - kind
+        - page
+        - pageSize
+        - total
+        - hasMore
+        - items
+      properties:
+        kind:
+          type: string
+          enum: [albums, artists]
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        hasMore:
+          type: boolean
+        items:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/MusicAurralLibraryAlbumItem'
+              - $ref: '#/components/schemas/MusicAurralLibraryArtistItem'
+    MusicAurralActivityItem:
+      type: object
+      required:
+        - id
+        - title
+        - artistName
+        - albumName
+        - status
+        - statusLabel
+        - source
+        - requestedAt
+        - cause
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        artistName:
+          type: string
+          nullable: true
+        albumName:
+          type: string
+          nullable: true
+        status:
+          type: string
+        statusLabel:
+          type: string
+          nullable: true
+        source:
+          type: string
+          nullable: true
+        requestedAt:
+          type: string
+          nullable: true
+        cause:
+          type: object
+          nullable: true
+          required:
+            - kind
+            - name
+          properties:
+            kind:
+              type: string
+            name:
+              type: string
+              nullable: true
+        albumMbid:
+          type: string
+          nullable: true
+          description: The MusicBrainz release group of the song's album, when Aurral names it.
+        reason:
+          type: string
+          nullable: true
+          maxLength: 200
+          description: For a failed download, why it failed, in Aurral's words (null when Aurral gave no reason).
+    MusicAurralActivityResponse:
+      type: object
+      required:
+        - active
+        - queued
+        - queuedTotal
+        - recent
+        - failed
+        - failedTotal
+      properties:
+        active:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralActivityItem'
+        queued:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralActivityItem'
+        queuedTotal:
+          type: integer
+        recent:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralActivityItem'
+        failed:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralActivityItem'
+        failedTotal:
+          type: integer
+        albums:
+          type: array
+          maxItems: 100
+          description: Albums with songs downloading or waiting, so album cards and pages can show Downloading.
+          items:
+            type: object
+            required:
+              - albumMbid
+              - albumName
+              - artistName
+              - downloading
+              - queued
+            properties:
+              albumMbid:
+                type: string
+                nullable: true
+              albumName:
+                type: string
+                nullable: true
+              artistName:
+                type: string
+                nullable: true
+              downloading:
+                type: integer
+                minimum: 0
+              queued:
+                type: integer
+                minimum: 0
+    MusicAurralRecommendedArtist:
+      type: object
+      required:
+        - mbid
+        - name
+        - image
+        - because
+        - matchPercent
+      properties:
+        mbid:
+          type: string
+          nullable: true
+        name:
+          type: string
+        image:
+          type: string
+          nullable: true
+        because:
+          type: string
+          nullable: true
+        matchPercent:
+          type: number
+          nullable: true
+        inLibrary:
+          type: boolean
+          description: The music library has songs by this artist (matched by normalised name).
+    MusicAurralTrendingGlobalArtist:
+      type: object
+      required:
+        - mbid
+        - name
+        - image
+        - label
+      properties:
+        mbid:
+          type: string
+          nullable: true
+        name:
+          type: string
+        image:
+          type: string
+          nullable: true
+        label:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+          description: The music library has songs by this artist (matched by normalised name).
+    MusicAurralRecommendedResponse:
+      type: object
+      required:
+        - recommendations
+        - trending
+      properties:
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralRecommendedArtist'
+        trending:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralTrendingGlobalArtist'
+    MusicAurralPlaylistSummary:
+      type: object
+      required:
+        - id
+        - name
+        - curator
+        - trackCount
+        - artworkUrl
+        - provider
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        curator:
+          type: string
+          nullable: true
+        trackCount:
+          type: integer
+          nullable: true
+        artworkUrl:
+          type: string
+          nullable: true
+        provider:
+          type: string
+    MusicAurralPlaylistCategory:
+      type: object
+      required:
+        - id
+        - name
+        - playlists
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        playlists:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralPlaylistSummary'
+    MusicAurralPlaylistsResponse:
+      type: object
+      required:
+        - categories
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralPlaylistCategory'
+    MusicAurralPlaylistTrack:
+      type: object
+      required:
+        - title
+        - artistName
+        - albumTitle
+        - albumMbid
+        - artistMbid
+        - durationMs
+        - coverUrl
+        - previewDeezerId
+        - inLibrary
+      properties:
+        title:
+          type: string
+        artistName:
+          type: string
+        albumTitle:
+          type: string
+          nullable: true
+        albumMbid:
+          type: string
+          nullable: true
+        artistMbid:
+          type: string
+          nullable: true
+        durationMs:
+          type: integer
+          nullable: true
+        coverUrl:
+          type: string
+          nullable: true
+        previewDeezerId:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+        albumRequested:
+          type: boolean
+          description: The song's album has an open request (pending or processing), so the song is on its way too.
+    MusicAurralPlaylistDetailsResponse:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - curator
+        - artworkUrl
+        - provider
+        - tracks
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        curator:
+          type: string
+          nullable: true
+        artworkUrl:
+          type: string
+          nullable: true
+        provider:
+          type: string
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicAurralPlaylistTrack'
+    MusicAurralActiveDownloads:
+      type: object
+      required:
+        - albums
+        - artists
+        - tracks
+      properties:
+        albums:
+          type: array
+          items:
+            type: string
+        artists:
+          type: array
+          items:
+            type: string
+        tracks:
+          type: array
+          items:
+            type: object
+            required:
+              - mbid
+              - artistName
+              - trackName
+            properties:
+              mbid:
+                type: string
+                nullable: true
+              artistName:
+                type: string
+              trackName:
+                type: string
+    MusicAurralLibraryOverviewResponse:
+      type: object
+      required:
+        - totalAlbums
+        - recentlyAdded
+      properties:
+        totalAlbums:
+          type: integer
+          nullable: true
+          description: Albums in the Aurral library; null when Aurral could not say.
+        recentlyAdded:
+          type: array
+          description: The 12 newest albums in the Aurral library.
+          items:
+            $ref: '#/components/schemas/MusicAurralLibraryAlbumItem'
+    MusicReleaseRedundancy:
+      type: object
+      additionalProperties: false
+      description: Why a release is hidden by default, with the release that brings its songs.
+      required:
+        - code
+        - reason
+      properties:
+        code:
+          type: string
+          enum: [sameAlbum, covered, unofficial]
+        reason:
+          type: string
+        alsoOn:
+          type: integer
+          description: For a compilation, how many more albums besides coveredBy hold its songs.
+        coveredBy:
+          type: object
+          additionalProperties: false
+          required:
+            - mbid
+            - title
+          properties:
+            mbid:
+              type: string
+            title:
+              type: string
+    MusicAurralArtistReleaseGroup:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - year
+        - primaryType
+        - secondaryTypes
+        - coverUrl
+        - inLibrary
+        - partial
+        - requested
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        year:
+          type: integer
+          nullable: true
+        primaryType:
+          type: string
+          enum: [Album, EP, Single, Other]
+        secondaryTypes:
+          type: array
+          items:
+            type: string
+        coverUrl:
+          type: string
+          nullable: true
+        inLibrary:
+          type: boolean
+        partial:
+          type: boolean
+        requested:
+          type: boolean
+        libraryTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album the music library counts (the Library tab's total), when the library holds any of it.
+        libraryAvailableTrackCount:
+          type: integer
+          minimum: 0
+          description: Songs of this album that are in the music library (the Library tab's "x of y").
+        blocklisted:
+          type: boolean
+          description: The album is blocklisted, so it is not offered for requests.
+        releaseStatuses:
+          type: array
+          items:
+            type: string
+          description: MusicBrainz release statuses (Official, Promotion, Bootleg), when the catalog gives them.
+        artistCreditIds:
+          type: array
+          items:
+            type: string
+          description: Artist MBIDs credited on the release group, when the catalog gives them.
+        redundant:
+          $ref: '#/components/schemas/MusicReleaseRedundancy'
+    MusicAurralArtistDetailsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - mbid
+        - name
+        - type
+        - country
+        - beginYear
+        - endYear
+        - genres
+        - bio
+        - releaseGroups
+      properties:
+        mbid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        beginYear:
+          type: integer
+          nullable: true
+        endYear:
+          type: integer
+          nullable: true
+        genres:
+          type: array
+          maxItems: 8
+          items:
+            type: string
+        bio:
+          type: string
+          nullable: true
+          maxLength: 4000
+        incomplete:
+          type: boolean
+          description: True when Aurral returned a stub or empty release groups instead of complete artist details.
+        releaseGroups:
+          type: array
+          maxItems: 300
+          items:
+            $ref: '#/components/schemas/MusicAurralArtistReleaseGroup'
+        sameNameArtist:
+          type: object
+          additionalProperties: false
+          description: Present only when this artist has no release groups and another artist with the same normalised name does (for example a band member who shares a solo artist's name). The payload above still describes the requested MBID.
+          required:
+            - mbid
+            - name
+            - releaseCount
+          properties:
+            mbid:
+              type: string
+              format: uuid
+            name:
+              type: string
+            releaseCount:
+              type: integer
+              minimum: 1
+    MusicRequestAllRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        dryRun:
+          type: boolean
+          description: Return the plan without requesting anything.
+    MusicRequestAllItem:
+      type: object
+      required:
+        - mbid
+        - title
+        - primaryType
+        - year
+      properties:
+        mbid:
+          type: string
+        title:
+          type: string
+        primaryType:
+          type: string
+          enum: [Album, EP, Single]
+        year:
+          type: integer
+          nullable: true
+        newSongs:
+          type: integer
+          description: Songs on this single or EP that nothing else in the plan or the library brings.
+    MusicRequestAllSong:
+      type: object
+      required:
+        - title
+        - artistName
+        - fromReleaseMbid
+        - fromReleaseTitle
+      properties:
+        title:
+          type: string
+        artistName:
+          type: string
+        fromReleaseMbid:
+          type: string
+        fromReleaseTitle:
+          type: string
+        durationMs:
+          type: integer
+        releaseMbid:
+          type: string
+          description: The exact release (edition) a bonus track is on.
+        reason:
+          type: string
+          description: Why the song is asked for on its own, e.g. "bonus track on {edition}".
+    MusicRequestAllSkip:
+      type: object
+      required:
+        - mbid
+        - title
+        - primaryType
+        - reasonCode
+        - reason
+      properties:
+        mbid:
+          type: string
+        title:
+          type: string
+        primaryType:
+          type: string
+          enum: [Album, EP, Single]
+        reasonCode:
+          type: string
+          enum:
+            [
+              owned,
+              partial,
+              requested,
+              blocklisted,
+              sameAlbum,
+              covered,
+              duplicate,
+              unofficial,
+              newSongsOnly,
+            ]
+        reason:
+          type: string
+    MusicRequestAllResult:
+      type: object
+      required:
+        - mbid
+        - title
+        - primaryType
+        - status
+      properties:
+        mbid:
+          type: string
+        title:
+          type: string
+        primaryType:
+          type: string
+          enum: [Album, EP, Single]
+        status:
+          type: string
+          enum: [requested, skipped, failed]
+        reason:
+          type: string
+    MusicRequestAllResponse:
+      type: object
+      required:
+        - dryRun
+        - albums
+        - epsAndSingles
+        - skipped
+        - counts
+        - titleOnly
+      properties:
+        dryRun:
+          type: boolean
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicRequestAllItem'
+        epsAndSingles:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicRequestAllItem'
+        songs:
+          type: array
+          description: New songs of singles or EPs that are only partly new, requested as song requests instead of the whole release.
+          items:
+            $ref: '#/components/schemas/MusicRequestAllSong'
+        skipped:
+          type: array
+          items:
+            $ref: '#/components/schemas/MusicRequestAllSkip'
+        counts:
+          type: object
+          required:
+            - albums
+            - epsAndSingles
+            - songs
+            - skipped
+            - covered
+            - unofficial
+          properties:
+            albums:
+              type: integer
+            epsAndSingles:
+              type: integer
+            songs:
+              type: integer
+            skipped:
+              type: integer
+            unofficial:
+              type: integer
+            bonusSongs:
+              type: integer
+              description: Of songs, the bonus tracks of larger official editions of albums the user has.
+            songsRequested:
+              type: integer
+            covered:
+              type: integer
+              description: Skipped because those songs come anyway (another edition, an album or another single has them).
+            requested:
+              type: integer
+            failed:
+              type: integer
+        titleOnly:
+          type: boolean
+          description: True when singles were judged by title only (too many releases to inspect).
+        results:
+          type: array
+          description: Per release outcome; only when dryRun is false.
+          items:
+            $ref: '#/components/schemas/MusicRequestAllResult'
+        songResults:
+          type: array
+          description: Per song outcome; only when dryRun is false.
+          items:
+            type: object
+            required:
+              - title
+              - fromReleaseMbid
+              - fromReleaseTitle
+              - status
+            properties:
+              title:
+                type: string
+              fromReleaseMbid:
+                type: string
+              fromReleaseTitle:
+                type: string
+              status:
+                type: string
+                enum: [requested, failed]
+              reason:
+                type: string
+        stoppedReason:
+          type: string
+          description: Why requesting stopped early (for example the request quota).
+    MusicAurralArtistFollowRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - follow
+        - name
+      properties:
+        follow:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+    MusicAurralArtistFollowResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - inLibrary
+        - following
+      properties:
+        inLibrary:
+          type: boolean
+        following:
+          type: boolean
+        canFollow:
+          type: boolean
+          description: Whether the signed-in user may follow or unfollow artists. Following needs music auto-approve, AUTO_APPROVE, MANAGE_REQUESTS or ADMIN.
+        usesDefaultRules:
+          type: boolean
+          description: Present and true when Aurral monitors the artist with its default rules, which SeerrNG cannot read; following is then assumed.
+    PodcastErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    PodcastDuplicateErrorResponse:
+      type: object
+      required:
+        - message
+        - libraryItemId
+      properties:
+        message:
+          type: string
+        libraryItemId:
+          type: string
+    PodcastStatusResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - configured
+        - libraryName
+        - externalUrl
+        - canManage
+      properties:
+        configured:
+          type: boolean
+        libraryName:
+          type: string
+          nullable: true
+        externalUrl:
+          type: string
+          nullable: true
+        canManage:
+          type: boolean
+        canManageCleanup:
+          type: boolean
+          description: The user may turn "remove played episodes" on or off (admins and request managers).
+    PodcastSummary:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - description
+        - genres
+        - episodeCount
+        - autoDownload
+        - addedAt
+        - coverUrl
+        - openUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+          maxLength: 600
+        genres:
+          type: array
+          items:
+            type: string
+        episodeCount:
+          type: integer
+          minimum: 0
+        autoDownload:
+          type: boolean
+        addedAt:
+          type: string
+          format: date-time
+          nullable: true
+        coverUrl:
+          type: string
+        openUrl:
+          type: string
+          nullable: true
+    PodcastLibraryResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - total
+        - page
+        - limit
+        - results
+      properties:
+        total:
+          type: integer
+          minimum: 0
+        page:
+          type: integer
+          minimum: 1
+        limit:
+          type: integer
+          minimum: 1
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastSummary'
+    PodcastEpisode:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - publishedAt
+        - season
+        - episode
+        - durationSeconds
+        - openUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+          maxLength: 1000
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        season:
+          type: string
+          nullable: true
+        episode:
+          type: string
+          nullable: true
+        durationSeconds:
+          type: integer
+          nullable: true
+          minimum: 0
+        openUrl:
+          type: string
+          nullable: true
+        played:
+          type: boolean
+          description: Someone finished this episode in Audiobookshelf.
+    PodcastDetailsResponse:
+      allOf:
+        - $ref: '#/components/schemas/PodcastSummary'
+        - type: object
+          required:
+            - feedUrl
+            - episodes
+          properties:
+            feedUrl:
+              type: string
+              nullable: true
+            autoRemovePlayed:
+              type: boolean
+              description: Played episodes are removed once 4 newer episodes are in.
+            episodes:
+              type: array
+              items:
+                $ref: '#/components/schemas/PodcastEpisode'
+    PodcastSearchResult:
+      type: object
+      additionalProperties: false
+      required:
+        - itunesId
+        - title
+        - author
+        - coverUrl
+        - feedUrl
+        - genres
+        - episodeCount
+        - explicit
+        - inLibrary
+        - libraryItemId
+      properties:
+        itunesId:
+          type: string
+          nullable: true
+        title:
+          type: string
+        author:
+          type: string
+          nullable: true
+        coverUrl:
+          type: string
+          nullable: true
+        feedUrl:
+          type: string
+          nullable: true
+        genres:
+          type: array
+          items:
+            type: string
+        episodeCount:
+          type: integer
+          nullable: true
+          minimum: 0
+        explicit:
+          type: boolean
+        inLibrary:
+          type: boolean
+        libraryItemId:
+          type: string
+          nullable: true
+        following:
+          type: boolean
+          description: The show is in the library and downloads new episodes on its own.
+    PodcastSearchResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastSearchResult'
+    PodcastFeedEpisode:
+      type: object
+      additionalProperties: false
+      required:
+        - key
+        - title
+        - publishedAt
+        - durationSeconds
+        - description
+      properties:
+        key:
+          type: string
+        title:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        durationSeconds:
+          type: integer
+          nullable: true
+          minimum: 0
+        description:
+          type: string
+          nullable: true
+          maxLength: 600
+    PodcastFeedRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - feedUrl
+      properties:
+        feedUrl:
+          type: string
+          minLength: 1
+          maxLength: 2048
+    PodcastFeedPreviewResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - author
+        - description
+        - imageUrl
+        - feedUrl
+        - episodes
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+          maxLength: 600
+        imageUrl:
+          type: string
+          nullable: true
+        feedUrl:
+          type: string
+        episodeCount:
+          type: integer
+          minimum: 0
+          description: Episodes in the whole feed; the episodes list holds at most 100.
+        episodes:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PodcastFeedEpisode'
+        libraryItemId:
+          type: string
+          nullable: true
+          description: The library show this feed already is (by feed address or iTunes id), or null.
+    PodcastSubscribeRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - feedUrl
+      properties:
+        feedUrl:
+          type: string
+          minLength: 1
+          maxLength: 2048
+        autoDownload:
+          type: boolean
+          default: true
+        downloadLatest:
+          type: integer
+          minimum: 0
+          maximum: 10
+          default: 3
+        episodeKeys:
+          type: array
+          description: Download these episodes instead of the newest ones.
+          minItems: 1
+          maxItems: 25
+          items:
+            type: string
+            minLength: 1
+            maxLength: 2048
+        downloadAll:
+          type: boolean
+          description: Download every episode in the feed.
+    PodcastSubscribeResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - queued
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        queued:
+          type: integer
+          minimum: 0
+        downloadFailed:
+          type: boolean
+          description: The show was added but its first episode downloads could not be started.
+    PodcastDownloadRequest:
+      type: object
+      additionalProperties: false
+      description: Either keys (chosen episodes) or all=true (every missing episode).
+      properties:
+        all:
+          type: boolean
+        keys:
+          type: array
+          minItems: 1
+          maxItems: 25
+          items:
+            type: string
+            minLength: 1
+            maxLength: 2048
+    PodcastDownloadResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - queued
+      properties:
+        queued:
+          type: integer
+          minimum: 0
+        alreadyHave:
+          type: integer
+          minimum: 0
+          description: Requested episodes that are already downloaded.
+        notFound:
+          type: integer
+          minimum: 0
+          description: Requested keys that are no longer in the feed.
+        alreadyQueued:
+          type: integer
+          minimum: 0
+          description: Requested episodes already waiting in or going through the download queue.
+    PodcastAvailableEpisodesResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - episodes
+      properties:
+        total:
+          type: integer
+          minimum: 0
+          description: Undownloaded episodes in the whole feed.
+        page:
+          type: integer
+          minimum: 1
+        limit:
+          type: integer
+          minimum: 1
+        episodes:
+          type: array
+          maxItems: 100
+          items:
+            $ref: '#/components/schemas/PodcastFeedEpisode'
+    PodcastAutoDownloadRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - autoDownload
+      properties:
+        autoDownload:
+          type: boolean
+    PodcastCleanupRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+    PodcastCleanupResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+    PodcastAutoDownloadResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - autoDownload
+      properties:
+        autoDownload:
+          type: boolean
+    PodcastDownloadsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - downloading
+        - queued
+      properties:
+        downloading:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - title
+            properties:
+              title:
+                type: string
+        queued:
+          type: integer
+          minimum: 0
+    PodcastGenre:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    PodcastGenresResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - genres
+      properties:
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastGenre'
+    PodcastDiscoverResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - genre
+        - results
+      properties:
+        genre:
+          type: integer
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastSearchResult'
+    PodcastLatestEpisode:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - publishedAt
+        - durationSeconds
+        - description
+        - podcastId
+        - podcastTitle
+        - podcastAuthor
+        - coverUrl
+        - openUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        durationSeconds:
+          type: integer
+          nullable: true
+          minimum: 0
+        description:
+          type: string
+          nullable: true
+          maxLength: 300
+        podcastId:
+          type: string
+        podcastTitle:
+          type: string
+        podcastAuthor:
+          type: string
+          nullable: true
+        coverUrl:
+          type: string
+        openUrl:
+          type: string
+          nullable: true
+    PodcastLatestResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - episodes
+      properties:
+        episodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastLatestEpisode'
+    PodcastActivityItem:
+      type: object
+      additionalProperties: false
+      required:
+        - title
+        - podcastId
+        - podcastTitle
+      properties:
+        title:
+          type: string
+        podcastId:
+          type: string
+          nullable: true
+        podcastTitle:
+          type: string
+          nullable: true
+    PodcastActivityResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - downloading
+        - queued
+      properties:
+        downloading:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastActivityItem'
+        queued:
+          type: array
+          items:
+            $ref: '#/components/schemas/PodcastActivityItem'
   securitySchemes:
     cookieAuth:
       type: apiKey
@@ -12315,9 +14184,27 @@ paths:
                         maxLength: 255
                       recordingMbid:
                         type: string
+                      albumMbid:
+                        type: string
+                      albumName:
+                        type: string
+                        maxLength: 255
+                      artistMbid:
+                        type: string
+                      releaseMbid:
+                        type: string
+                      durationMs:
+                        type: integer
+                        minimum: 1
+                      trackNumber:
+                        type: integer
+                        minimum: 1
+                      discNumber:
+                        type: integer
+                        minimum: 1
                       source:
                         type: string
-                        enum: [manual, playlist, songid]
+                        enum: [manual, playlist, songid, album]
       responses:
         '201':
           description: Track requests created or reused
@@ -12340,6 +14227,40 @@ paths:
           description: Too many active track requests
         '502':
           description: slskdN could not be reached
+  /soulseek/track-requests/keys:
+    get:
+      summary: List every song with an open request, without who asked
+      description: Every open (pending or searching) track request from any user, plus requests completed in the last 10 minutes, with artist, title and recording MBID only. Song lists use it to show Requested instead of offering Get again. Requires permission to request songs.
+      tags:
+        - soulseek
+      responses:
+        '200':
+          description: Requested song keys
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - active
+                  - completed
+                  - truncated
+                properties:
+                  active:
+                    type: array
+                    maxItems: 5000
+                    items:
+                      $ref: '#/components/schemas/RequestedSongKey'
+                  completed:
+                    type: array
+                    maxItems: 500
+                    items:
+                      $ref: '#/components/schemas/RequestedSongKey'
+                  truncated:
+                    type: boolean
+                    description: More open requests exist than were listed.
+        '403':
+          description: No permission to request songs
   /soulseek/track-requests/{id}/approve:
     post:
       summary: Approve a track request
@@ -12391,6 +14312,261 @@ paths:
         '409':
           description: Not pending
   /soulseek/track-requests/{id}:
+    delete:
+      summary: Cancel a track request
+      description: Removes the slskdN wishlist entry. The requester or a manager can cancel.
+      tags:
+        - soulseek
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackRequest'
+        '403':
+          description: Access denied
+        '404':
+          description: Request not found
+        '409':
+          description: No longer active
+        '502':
+          description: slskdN could not be reached
+  /music/track-requests/status:
+    get:
+      summary: Get music track request availability
+      tags:
+        - soulseek
+      responses:
+        '200':
+          description: Whether a track request backend (Aurral or slskdN) is configured and the user can request tracks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  configured:
+                    type: boolean
+                  slskdnConfigured:
+                    type: boolean
+                  aurralConfigured:
+                    type: boolean
+                  backend:
+                    type: string
+                    nullable: true
+                    enum: [aurral, slskdn, null]
+                  canRequest:
+                    type: boolean
+  /music/track-requests:
+    get:
+      summary: List Soulseek track requests
+      description: Returns the caller's track requests. Users who can manage or view all requests may pass `scope=all`.
+      tags:
+        - soulseek
+      parameters:
+        - in: query
+          name: scope
+          schema:
+            type: string
+            enum: [mine, all]
+        - in: query
+          name: filter
+          schema:
+            type: string
+            enum: [all, active]
+        - in: query
+          name: take
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: Track requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pageInfo:
+                    type: object
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TrackRequest'
+    post:
+      summary: Request tracks from Soulseek
+      description: >-
+        Requests individual tracks through the slskdN wishlist, for example
+        singles or playlist tracks without an album match. Requests by users
+        who can manage requests or auto-approve music start searching
+        immediately; others wait for approval. An identical active request is
+        returned instead of a duplicate.
+      tags:
+        - soulseek
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tracks]
+              properties:
+                tracks:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  items:
+                    type: object
+                    required: [artist, title]
+                    properties:
+                      artist:
+                        type: string
+                        maxLength: 255
+                      title:
+                        type: string
+                        maxLength: 255
+                      recordingMbid:
+                        type: string
+                      albumMbid:
+                        type: string
+                      albumName:
+                        type: string
+                        maxLength: 255
+                      artistMbid:
+                        type: string
+                      releaseMbid:
+                        type: string
+                      durationMs:
+                        type: integer
+                        minimum: 1
+                      trackNumber:
+                        type: integer
+                        minimum: 1
+                      discNumber:
+                        type: integer
+                        minimum: 1
+                      source:
+                        type: string
+                        enum: [manual, playlist, songid, album]
+      responses:
+        '201':
+          description: Track requests created or reused
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TrackRequest'
+        '400':
+          description: Invalid tracks
+        '403':
+          description: The user cannot request music
+        '404':
+          description: slskdN is not set up
+        '409':
+          description: Too many active track requests
+        '502':
+          description: slskdN could not be reached
+  /music/track-requests/keys:
+    get:
+      summary: List every song with an open request, without who asked
+      description: Every open (pending or searching) track request from any user, plus requests completed in the last 10 minutes, with artist, title and recording MBID only. Song lists use it to show Requested instead of offering Get again. Requires permission to request songs.
+      tags:
+        - search
+      responses:
+        '200':
+          description: Requested song keys
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - active
+                  - completed
+                  - truncated
+                properties:
+                  active:
+                    type: array
+                    maxItems: 5000
+                    items:
+                      $ref: '#/components/schemas/RequestedSongKey'
+                  completed:
+                    type: array
+                    maxItems: 500
+                    items:
+                      $ref: '#/components/schemas/RequestedSongKey'
+                  truncated:
+                    type: boolean
+                    description: More open requests exist than were listed.
+        '403':
+          description: No permission to request songs
+  /music/track-requests/{id}/approve:
+    post:
+      summary: Approve a track request
+      tags:
+        - soulseek
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Search started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackRequest'
+        '403':
+          description: Access denied
+        '404':
+          description: Request not found
+        '409':
+          description: Not pending
+        '502':
+          description: slskdN could not be reached
+  /music/track-requests/{id}/decline:
+    post:
+      summary: Decline a track request
+      tags:
+        - soulseek
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Declined
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackRequest'
+        '403':
+          description: Access denied
+        '404':
+          description: Request not found
+        '409':
+          description: Not pending
+  /music/track-requests/{id}:
     delete:
       summary: Cancel a track request
       description: Removes the slskdN wishlist entry. The requester or a manager can cancel.
@@ -20653,6 +22829,1824 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WatchlistListResponse'
+  /music/search:
+    get:
+      summary: Unified music search via configured Aurral service
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 12
+      responses:
+        '200':
+          description: Normalized artists, albums, tracks, and top match returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralSearchResponse'
+        '400':
+          description: Invalid search query or limit
+        '403':
+          description: Music request permission required
+        '404':
+          description: Aurral service is not configured
+  /music/discover/trending:
+    get:
+      summary: Get trending songs, albums, and artists from Aurral
+      tags:
+        - search
+      responses:
+        '200':
+          description: Trending music charts returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralTrendingResponse'
+        '403':
+          description: Music request permission required
+        '404':
+          description: Aurral service is not configured
+  /music/discover/genres:
+    get:
+      summary: Get available music genre tags from Aurral
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+            maxLength: 100
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 20
+      responses:
+        '200':
+          description: Music genre tags returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralGenresResponse'
+        '400':
+          description: Invalid tag query or limit
+        '403':
+          description: Music request permission required
+        '404':
+          description: Aurral service is not configured
+  /music/discover/genre:
+    get:
+      summary: Get artists matching a music genre tag from Aurral
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: tag
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 24
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 1000
+            default: 0
+      responses:
+        '200':
+          description: Genre discovery artists returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralGenreResponse'
+        '400':
+          description: Invalid genre tag or pagination parameters
+        '403':
+          description: Music request permission required
+        '404':
+          description: Aurral service is not configured
+  /music/discover/recommended:
+    get:
+      summary: Get personalized artist recommendations and global trending artists from Aurral
+      tags:
+        - search
+      responses:
+        '200':
+          description: Recommended and trending artists returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralRecommendedResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load recommended music
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/discover/playlists:
+    get:
+      summary: Get curated playlist categories from Aurral
+      tags:
+        - search
+      responses:
+        '200':
+          description: Curated playlist categories returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralPlaylistsResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load music playlists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/discover/playlists/{provider}/{playlistId}:
+    get:
+      summary: Get tracks and details for a curated playlist from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-z][a-z0-9-]{0,31}$'
+        - in: path
+          name: playlistId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      responses:
+        '200':
+          description: Playlist details and tracks returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralPlaylistDetailsResponse'
+        '400':
+          description: Invalid playlist provider or ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Playlist not found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load playlist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/preview:
+    get:
+      summary: Stream a Deezer track preview via Aurral
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: artist
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+        - in: query
+          name: track
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 256
+        - in: query
+          name: deezerId
+          required: false
+          schema:
+            type: string
+            pattern: '^\d{1,20}$'
+      responses:
+        '200':
+          description: MP3 track preview audio stream
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid or missing preview parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: No preview for this song, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load a preview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/library-art/{kind}/{id}:
+    get:
+      summary: Proxy library album or artist cover art from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum: [albums, artists]
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2147483648
+      responses:
+        '200':
+          description: Library artwork image bytes
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid library artwork kind or ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Artwork not found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load library artwork
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/library:
+    get:
+      summary: Browse paged library albums or artists from Aurral
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: q
+          required: false
+          description: Only albums, artists or songs whose names match this text.
+          schema:
+            type: string
+            maxLength: 100
+        - in: query
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum: [albums, artists]
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - newest
+              - album
+              - artist
+              - released
+              - plays
+              - played
+              - random
+              - favorited
+            default: newest
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 1
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 60
+            default: 30
+      responses:
+        '200':
+          description: Paged library albums or artists returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralLibraryResponse'
+        '400':
+          description: Invalid library query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load your music library
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/activity:
+    get:
+      summary: Get active, queued, recent, and failed music download activity from Aurral
+      tags:
+        - search
+      responses:
+        '200':
+          description: Music activity returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralActivityResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load music activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/library-overview:
+    get:
+      summary: Get music library summary and newest albums from Aurral
+      tags:
+        - search
+      responses:
+        '200':
+          description: Music library overview returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralLibraryOverviewResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load your music library
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/artist-image/{mbid}:
+    get:
+      summary: Redirect to an HTTPS artist image from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: name
+          required: false
+          description: Optional artist name used as a fallback when no cover image is found from MusicBrainz.
+          schema:
+            type: string
+            maxLength: 200
+      responses:
+        '302':
+          description: Redirect to an HTTPS artist image URL
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Invalid artist MBID or name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Artist image not found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load artist image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/song-art:
+    get:
+      summary: Redirect to a song's cover, found by artist and title (Deezer)
+      description: For song requests, which carry no album id. Looked up once a week per song.
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: artist
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+        - in: query
+          name: title
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+      responses:
+        '302':
+          description: Redirect to an HTTPS cover URL
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Missing or invalid artist or title
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: No cover found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load song art
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/album-summaries:
+    get:
+      summary: Get the title and artist of several albums at once
+      description: A light lookup for lists of requests, without the library, artwork or artist lookups of a full album page. Albums that cannot be found are left out.
+      tags:
+        - search
+      parameters:
+        - in: query
+          name: ids
+          required: true
+          description: 1 to 12 comma-separated MusicBrainz release group IDs.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 500
+      responses:
+        '200':
+          description: The albums that were found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - results
+                properties:
+                  results:
+                    type: array
+                    maxItems: 12
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - title
+                        - artistName
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        artistName:
+                          type: string
+        '400':
+          description: Missing or invalid IDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/album-art/{mbid}:
+    get:
+      summary: Redirect to album art that loads (Cover Art Archive, then Deezer, then iTunes)
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: artist
+          required: false
+          description: Album artist, used to match Deezer and iTunes when Cover Art Archive has no art.
+          schema:
+            type: string
+            maxLength: 200
+        - in: query
+          name: title
+          required: false
+          description: Album title, used to match Deezer and iTunes when Cover Art Archive has no art.
+          schema:
+            type: string
+            maxLength: 200
+      responses:
+        '302':
+          description: Redirect to an HTTPS album art URL
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Invalid album MBID, artist or title
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: No album art found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load album art
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/artist/{mbid}/similar:
+    get:
+      summary: Get similar artists for an artist from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Up to 12 similar artists returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralSimilarArtistsResponse'
+        '400':
+          description: Invalid artist MBID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load similar artists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/artist/{mbid}/request-all:
+    post:
+      summary: Request every missing release by an artist, each song once
+      description: >-
+        Plans "Get all releases": every missing studio album (one edition per
+        title) plus each single or EP that adds a song no planned, owned or
+        requested album brings. Each release is requested through the normal
+        request path, so approval and quotas apply. With dryRun nothing is
+        requested and the plan is returned.
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MusicRequestAllRequest'
+      responses:
+        '200':
+          description: The plan, and with dryRun false the outcome of each request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicRequestAllResponse'
+        '400':
+          description: Invalid artist MBID or request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Artist not found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load this artist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/artist/{mbid}:
+    get:
+      summary: Get artist details and discography from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Artist details and release groups returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralArtistDetailsResponse'
+        '400':
+          description: Invalid artist MBID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Artist not found, or Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load this artist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /music/artist/{mbid}/follow:
+    get:
+      summary: Get artist follow state from Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Artist library and follow state returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralArtistFollowResponse'
+        '400':
+          description: Invalid artist MBID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to load following status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+    put:
+      summary: Follow or unfollow an artist in Aurral
+      tags:
+        - search
+      parameters:
+        - in: path
+          name: mbid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MusicAurralArtistFollowRequest'
+      responses:
+        '200':
+          description: Updated artist library and follow state returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralArtistFollowResponse'
+        '400':
+          description: Invalid artist MBID or follow request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '403':
+          description: Music request and music auto-approve (or AUTO_APPROVE, MANAGE_REQUESTS, ADMIN) permission required, or Aurral denied monitoring changes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '404':
+          description: Aurral service is not configured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+        '502':
+          description: Unable to update following
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MusicAurralErrorResponse'
+  /podcast/status:
+    get:
+      summary: Get podcast integration availability and permissions
+      tags:
+        - podcast
+      responses:
+        '200':
+          description: Podcast library status returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastStatusResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library:
+    get:
+      summary: Browse podcasts in the configured Audiobookshelf podcast library
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10000
+            default: 1
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 48
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+            enum: [title, added, episodes]
+            default: title
+      responses:
+        '200':
+          description: Paged podcasts returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastLibraryResponse'
+        '400':
+          description: Invalid pagination or sort parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}:
+    get:
+      summary: Get podcast details and downloaded episodes
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      responses:
+        '200':
+          description: Podcast details and downloaded episodes returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDetailsResponse'
+        '400':
+          description: Invalid podcast ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/cover/{itemId}:
+    get:
+      summary: Proxy podcast cover artwork from Audiobookshelf
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      responses:
+        '200':
+          description: Podcast cover image bytes
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid podcast ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Cover not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/proxy/feed:
+    get:
+      summary: Podcast feed for Audiobookshelf, read through SeerrNG
+      description: >-
+        Audiobookshelf reads the feeds SeerrNG subscribes it to from here. The
+        URL is signed by SeerrNG; SeerrNG reads the remote feed on a connection
+        pinned to a public address and returns a feed whose cover and episode
+        addresses are SeerrNG proxy URLs.
+      security: []
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: u
+          required: true
+          schema:
+            type: string
+            maxLength: 2048
+        - in: query
+          name: s
+          required: true
+          schema:
+            type: string
+            maxLength: 128
+      responses:
+        '200':
+          description: RSS feed
+          content:
+            application/rss+xml:
+              schema:
+                type: string
+        '400':
+          description: The feed is not valid or points at a private address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Unknown or unsigned feed, or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: The remote feed could not be read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/proxy/media/{signature}/{target}/{name}:
+    get:
+      summary: Podcast episode or cover for Audiobookshelf, read through SeerrNG
+      description: >-
+        Streams a remote episode or cover that SeerrNG signed, over a connection
+        pinned to a public address (redirects included).
+      security: []
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: signature
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,128}$'
+        - in: path
+          name: target
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,4096}$'
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            pattern: '^file(\.[a-z0-9]{1,5})?$'
+      responses:
+        '200':
+          description: File bytes
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '206':
+          description: Part of the file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: The file points at a private address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Unknown or unsigned file, or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: The remote file could not be read
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/search:
+    get:
+      summary: Search for podcasts through Audiobookshelf and match library status
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+      responses:
+        '200':
+          description: Podcast search results returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastSearchResponse'
+        '400':
+          description: Invalid search query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/lookup:
+    get:
+      summary: Find the library show for a podcast feed
+      description: Whether a feed address is already a show in the podcast library. Available to everyone who can see podcasts; it reads the library only, never the feed.
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: feedUrl
+          required: true
+          schema:
+            type: string
+            maxLength: 2048
+      responses:
+        '200':
+          description: The matching library show, or null
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required:
+                  - libraryItemId
+                properties:
+                  libraryItemId:
+                    type: string
+                    nullable: true
+        '400':
+          description: Invalid feed URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/feed:
+    post:
+      summary: Preview a podcast RSS feed via Audiobookshelf
+      tags:
+        - podcast
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodcastFeedRequest'
+      responses:
+        '200':
+          description: Podcast feed preview returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastFeedPreviewResponse'
+        '400':
+          description: Invalid RSS feed URL, or one that points to a private address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '403':
+          description: Podcast management permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/subscribe:
+    post:
+      summary: Subscribe to a podcast RSS feed in Audiobookshelf
+      tags:
+        - podcast
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodcastSubscribeRequest'
+      responses:
+        '200':
+          description: Podcast subscribed and initial episodes queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastSubscribeResponse'
+        '400':
+          description: Invalid subscribe payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '403':
+          description: Podcast management permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '409':
+          description: Podcast is already in the library
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDuplicateErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/download:
+    post:
+      summary: Queue selected podcast episodes for download
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodcastDownloadRequest'
+      responses:
+        '200':
+          description: Episodes queued for download
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDownloadResponse'
+        '400':
+          description: Invalid podcast ID or episode keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '403':
+          description: Podcast management permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/available:
+    get:
+      summary: List undownloaded episodes from the podcast feed
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 1
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+      responses:
+        '200':
+          description: Undownloaded feed episodes returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastAvailableEpisodesResponse'
+        '400':
+          description: Invalid podcast ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/auto:
+    put:
+      summary: Toggle automatic episode downloads for a podcast
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodcastAutoDownloadRequest'
+      responses:
+        '200':
+          description: Auto-download setting updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastAutoDownloadResponse'
+        '400':
+          description: Invalid podcast ID or request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '403':
+          description: Podcast management permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/follow:
+    post:
+      summary: Follow a podcast as the signed-in person
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      responses:
+        '200':
+          description: Following
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  following:
+                    type: boolean
+                  followers:
+                    type: integer
+        '403':
+          description: No Audiobookshelf account to follow with
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+    delete:
+      summary: Stop following a podcast; the last follower removes it
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+        - in: query
+          name: remove
+          required: false
+          schema:
+            type: string
+            enum: ['1']
+      responses:
+        '200':
+          description: No longer following (removed true when the show was removed)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  following:
+                    type: boolean
+                  removed:
+                    type: boolean
+        '403':
+          description: No Audiobookshelf account to follow with
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '409':
+          description: The last follower must pass remove=1
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/cleanup:
+    put:
+      summary: Remove played episodes of a podcast once 4 newer episodes are in
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodcastCleanupRequest'
+      responses:
+        '200':
+          description: Cleanup setting saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastCleanupResponse'
+        '400':
+          description: Invalid podcast ID or request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '403':
+          description: Admin or request-manager permission required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up (when turning on)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/library/{itemId}/downloads:
+    get:
+      summary: Get active and queued podcast episode downloads
+      tags:
+        - podcast
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9_-]{1,64}$'
+      responses:
+        '200':
+          description: Download status returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDownloadsResponse'
+        '400':
+          description: Invalid podcast ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcast not found or podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/genres:
+    get:
+      summary: List supported Apple Podcasts discovery genres
+      tags:
+        - podcast
+      responses:
+        '200':
+          description: Podcast genres returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastGenresResponse'
+  /podcast/discover:
+    get:
+      summary: Browse top Apple Podcasts charts matched against the library
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: genre
+          required: false
+          schema:
+            type: integer
+            enum:
+              - 1301
+              - 1321
+              - 1303
+              - 1304
+              - 1483
+              - 1511
+              - 1512
+              - 1487
+              - 1305
+              - 1502
+              - 1310
+              - 1489
+              - 1314
+              - 1533
+              - 1324
+              - 1545
+              - 1318
+              - 1488
+              - 1309
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 30
+      responses:
+        '200':
+          description: Podcast chart results returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastDiscoverResponse'
+        '400':
+          description: Invalid genre or limit parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Podcast charts could not be reached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/latest:
+    get:
+      summary: Get newest downloaded episodes across the podcast library
+      tags:
+        - podcast
+      parameters:
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: Latest downloaded episodes returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastLatestResponse'
+        '400':
+          description: Invalid limit parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+  /podcast/activity:
+    get:
+      summary: Get active and queued podcast episode downloads across the library
+      tags:
+        - podcast
+      responses:
+        '200':
+          description: Library download activity returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastActivityResponse'
+        '404':
+          description: Podcasts are not set up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
+        '502':
+          description: Audiobookshelf rejected or could not answer the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodcastErrorResponse'
   /music/{musicId}:
     get:
       summary: Get music album details
@@ -21802,6 +25796,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ComicServiceOption'
+  /service/music:
+    get:
+      summary: Get music service summaries (Lidarr and Aurral)
+      tags:
+        - service
+      responses:
+        '200':
+          description: Music services returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MusicServiceOption'
   /service/comic/{id}/rootfolders:
     get:
       summary: List Kapowarr comic root folders
@@ -22616,6 +26624,109 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/KapowarrSettings'
+  /settings/aurral:
+    get:
+      summary: Get Aurral settings
+      description: Returns all Aurral music service settings in a JSON array.
+      tags:
+        - settings
+      responses:
+        '200':
+          description: 'Values were returned'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AurralSettings'
+    post:
+      summary: Create Aurral instance
+      description: Creates a new Aurral music service instance from the request body.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AurralSettings'
+      responses:
+        '201':
+          description: 'New Aurral instance created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AurralSettings'
+  /settings/aurral/test:
+    post:
+      summary: Test Aurral configuration
+      description: Tests the Aurral URL and user API key. Returns the Aurral version and the user the key belongs to.
+      tags:
+        - settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AurralSettings'
+      responses:
+        '200':
+          description: Successfully connected to Aurral
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appVersion:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      role:
+                        type: string
+  /settings/aurral/{aurralId}:
+    put:
+      summary: Update Aurral instance
+      tags:
+        - settings
+      parameters:
+        - in: path
+          name: aurralId
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AurralSettings'
+      responses:
+        '200':
+          description: Aurral instance updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AurralSettings'
+    delete:
+      summary: Delete Aurral instance
+      tags:
+        - settings
+      parameters:
+        - in: path
+          name: aurralId
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Aurral instance deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AurralSettings'
   /settings/backissue:
     get:
       summary: Get BackIssue settings
@@ -23355,6 +27466,9 @@ paths:
                 bypassStreamingRequestPolicy:
                   type: boolean
                   description: Continue after a matching rejection only when the administrator allows requesters to override the streaming policy. Only valid for a new movie or TV request for the signed-in user.
+                force:
+                  type: boolean
+                  description: Music only. Request the release even when the requester will already have its songs (another edition of, or a single whose songs are all on, a release they own or have requested). Without it such a request answers 409 with `code` MUSIC_RELEASE_REDUNDANT and `coveredBy`.
               required:
                 - mediaType
                 - mediaId
@@ -23390,7 +27504,32 @@ paths:
                     type: boolean
                     description: True when this requester may retry once while bypassing this policy match.
         '409':
-          description: Another quota exception for this media type is already awaiting review
+          description: Another quota exception for this media type is already awaiting review, or (code MUSIC_RELEASE_REDUNDANT) the requester will already have this music release's songs from `coveredBy`; resend with `force` to request it anyway
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    enum: [MUSIC_RELEASE_REDUNDANT]
+                  message:
+                    type: string
+                  coveredBy:
+                    type: object
+                    properties:
+                      mbid:
+                        type: string
+                      title:
+                        type: string
+                  redundant:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum: [sameAlbum, covered]
+                      reason:
+                        type: string
         '503':
           description: Playback history could not be verified for the previous-season watch rule
           content:

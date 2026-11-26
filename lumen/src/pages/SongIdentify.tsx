@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, type MusicServiceSummary } from '../api';
+import { useAuth } from '../auth';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
+import { hasAurralMusicService, type TrackRequestStatus } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 
@@ -35,6 +37,7 @@ const finished = new Set(['completed', 'failed', 'cancelled']);
 
 export default function SongIdentify() {
   const { t } = useLumenLocale();
+  const { user } = useAuth();
   const [params] = useSearchParams();
   const [source, setSource] = useState(() =>
     (params.get('source') ?? '').slice(0, 2048)
@@ -54,9 +57,11 @@ export default function SongIdentify() {
       ),
     [t]
   );
-  const service = useApi<{ configured: boolean; canRequest: boolean }>(
-    '/soulseek/status',
-    { formatError: formatServiceError }
+  const service = useApi<TrackRequestStatus>('/soulseek/status', {
+    formatError: formatServiceError,
+  });
+  const musicServices = useApi<MusicServiceSummary[]>(
+    user ? '/service/music' : null
   );
   const canRequest = service.data?.configured && service.data.canRequest;
   const running = !!run && !finished.has(run.status);
@@ -192,10 +197,15 @@ export default function SongIdentify() {
       />
       {service.data?.configured === false && (
         <p className="note">
-          {t(
-            'lumen.songIdentify.requiresService',
-            'Song identification requires an administrator to connect slskdN.'
-          )}
+          {hasAurralMusicService(musicServices.data, service.data)
+            ? t(
+                'lumen.songIdentify.unavailableAurral',
+                'Song identification is unavailable until an administrator enables track requests in Aurral.'
+              )
+            : t(
+                'lumen.songIdentify.requiresService',
+                'Song identification requires an administrator to connect slskdN.'
+              )}
         </p>
       )}
       {service.data?.configured && !service.data.canRequest && (

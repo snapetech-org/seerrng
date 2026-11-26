@@ -74,6 +74,7 @@ export interface MbRecordingRelease {
 export interface MbRecordingDetails extends MbResult {
   media_type: 'recording';
   title: string;
+  length?: number;
   'artist-credit': {
     name: string;
     artist: {

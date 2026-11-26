@@ -30,6 +30,7 @@ const defaultSettings: PublicSettingsResponse = {
   movie4kEnabled: false,
   series4kEnabled: false,
   musicEnabled: false,
+  trackRequestsEnabled: false,
   booksEnabled: false,
   ebookServiceEnabled: false,
   audiobookServiceEnabled: false,

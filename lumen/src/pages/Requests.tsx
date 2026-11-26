@@ -4,6 +4,7 @@ import {
   api,
   ApiError,
   artUrl,
+  aurralAlbumLink,
   bookArt,
   bookDetailPath,
   bookMediaForFormat,
@@ -15,6 +16,7 @@ import {
   tmdbImg,
   videoDetailPath,
   type BookResult,
+  type MusicServiceSummary,
   type RequestItem,
   type TvDetails,
 } from '../api';
@@ -52,8 +54,9 @@ import {
   type Magazine,
   type Scene,
   type SoftwareRequest,
+  type TrackRequestItem,
 } from '../extras';
-import { useApi, usePullToRefresh } from '../hooks';
+import { useApi, usePublicSettings, usePullToRefresh } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Icon, type IconName } from '../icons';
 import type { LiveDownload } from '../liveDownloadStore';
@@ -71,13 +74,15 @@ import {
 
 // the glyph on a drawn cover when a request has no artwork
 const coverIcon = (type: string, format?: string): IconName =>
-  type === 'book'
-    ? format === 'audiobook'
-      ? 'headphones'
-      : 'book'
-    : type === 'tv'
-      ? 'tv'
-      : 'film';
+  type === 'music'
+    ? 'music'
+    : type === 'book'
+      ? format === 'audiobook'
+        ? 'headphones'
+        : 'book'
+      : type === 'tv'
+        ? 'tv'
+        : 'film';
 
 interface Row {
   r: RequestItem;
@@ -89,6 +94,8 @@ interface Row {
   // series: seasons that hadn't aired when the title was looked up (nothing to wait for yet)
   unaired?: number[];
   airing?: boolean;
+  trackRequest?: TrackRequestItem;
+  updatedAt?: string;
 }
 
 // Everyone tab: SeerrNG's request filters, and how many requests load at a time
@@ -685,9 +692,12 @@ export function requestRowStatus(
         }
       : {
           k: 'ok',
-          word: tr('lumen.requests.row.partlyOnServer', 'Partly on {server}', {
-            server: serverName,
-          }),
+          word:
+            r.type !== 'movie' && r.type !== 'tv'
+              ? tr('lumen.requests.row.partlyInLibrary', 'Partly in library')
+              : tr('lumen.requests.row.partlyOnServer', 'Partly on {server}', {
+                  server: serverName,
+                }),
           ico: 'check',
           active: true,
           detail: missing?.length
@@ -1153,6 +1163,151 @@ function gameRow(g: SoftwareRequest): Row {
   };
 }
 
+const TRACK_REQUEST_ID_OFFSET = 1_000_000_000;
+
+// Every track request, a page of 100 at a time (the Track Requests page shows
+// them all too), up to a sane bound.
+const MAX_TRACK_REQUEST_PAGES = 50;
+async function loadAllTrackRequests(): Promise<TrackRequestItem[]> {
+  const all: TrackRequestItem[] = [];
+  for (let page = 0; page < MAX_TRACK_REQUEST_PAGES; page++) {
+    const d = await api<{
+      results: TrackRequestItem[];
+      pageInfo?: { total?: number };
+    }>(
+      `/soulseek/track-requests?scope=all&filter=all&take=100&skip=${page * 100}`
+    );
+    const results = Array.isArray(d.results) ? d.results : [];
+    all.push(...results);
+    if (
+      results.length < 100 ||
+      (typeof d.pageInfo?.total === 'number' && all.length >= d.pageInfo.total)
+    )
+      break;
+  }
+  return all;
+}
+
+function trackRequestRow(tr: TrackRequestItem): Row {
+  const st = tr.status;
+  const stage =
+    st === 'pending' ? 'requested' : st === 'completed' ? 'available' : st;
+  const status =
+    st === 'pending'
+      ? 1
+      : st === 'completed'
+        ? 5
+        : st === 'failed'
+          ? 4
+          : st === 'declined' || st === 'cancelled'
+            ? 3
+            : 2;
+  const detailMessage =
+    tr.lastError ||
+    (st === 'searching' && tr.searchCount > 0
+      ? `Searches: ${tr.searchCount}${tr.lastMatchCount ? ` · Last matches: ${tr.lastMatchCount}` : ''}`
+      : undefined);
+  const r = {
+    id: -(TRACK_REQUEST_ID_OFFSET + tr.id),
+    status,
+    type: 'music',
+    is4k: false,
+    createdAt: tr.createdAt,
+    seasons: [],
+    requestedBy: tr.requestedBy ?? { id: 0, displayName: '' },
+    currentStatus: {
+      stage,
+      percent: null,
+      message: detailMessage,
+    },
+    media: {
+      mediaType: 'music',
+      tmdbId: 0,
+      status:
+        st === 'completed' ? MediaStatus.AVAILABLE : MediaStatus.PROCESSING,
+      downloadStatus: [],
+    },
+  } as unknown as RequestItem;
+  return {
+    r,
+    title: tr.title,
+    cover: true,
+    href: '/track-requests',
+    sub: ['Track', tr.artist].filter(Boolean).join(' · '),
+    trackRequest: tr,
+    updatedAt: tr.updatedAt ?? tr.createdAt,
+  };
+}
+
+function matchesEveryoneTrackFilters(
+  tr: TrackRequestItem,
+  show: string,
+  requester: string,
+  timeFrame: string,
+  search: string
+): boolean {
+  if (requester !== 'all' && tr.requestedBy?.id !== Number(requester))
+    return false;
+  if (search) {
+    const needle = search.toLowerCase();
+    const hay = [tr.title, tr.artist, tr.requestedBy?.displayName]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    if (!hay.includes(needle)) return false;
+  }
+  if (timeFrame !== 'all') {
+    const days = timeFrame === '7d' ? 7 : timeFrame === '14d' ? 14 : 30;
+    const created = Date.parse(tr.createdAt);
+    if (!Number.isFinite(created) || Date.now() - created > days * 86_400_000)
+      return false;
+  }
+  switch (show) {
+    case 'all':
+      return true;
+    case 'pending':
+      return tr.status === 'pending';
+    case 'processing':
+      return tr.status === 'searching';
+    case 'attention':
+    case 'failed':
+      return tr.status === 'failed';
+    case 'completed':
+    case 'available':
+      return tr.status === 'completed';
+    default:
+      return false;
+  }
+}
+
+function sortMergedRows(
+  a: Row,
+  b: Row,
+  sortMode: (typeof REQUEST_SORTS)[number][0]
+): number {
+  switch (sortMode) {
+    case 'oldest':
+      return a.r.createdAt.localeCompare(b.r.createdAt);
+    case 'updated':
+      return (b.updatedAt ?? b.r.createdAt).localeCompare(
+        a.updatedAt ?? a.r.createdAt
+      );
+    case 'title-asc':
+      return a.title.localeCompare(b.title);
+    case 'title-desc':
+      return b.title.localeCompare(a.title);
+    case 'priority': {
+      const ap = a.r.status === 1 ? 0 : 1;
+      const bp = b.r.status === 1 ? 0 : 1;
+      if (ap !== bp) return ap - bp;
+      return b.r.createdAt.localeCompare(a.r.createdAt);
+    }
+    case 'newest':
+    default:
+      return b.r.createdAt.localeCompare(a.r.createdAt);
+  }
+}
+
 const REQUEST_SORTS = [
   [
     'priority',
@@ -1419,6 +1574,13 @@ export default function Requests() {
     setTick((t) => t + 1);
   });
   const extras = useExtras();
+  const publicSettings = usePublicSettings();
+  const trackRequestsEnabled = Boolean(publicSettings?.trackRequestsEnabled);
+  const musicServices = useApi<MusicServiceSummary[]>(
+    user && (trackRequestsEnabled || extras.list.some((e) => e.key === 'music'))
+      ? '/service/music'
+      : null
+  );
   const manage = canManageRequests(user?.permissions);
   const everyone = viewAll && tab === 'everyone';
   const [others, setOthers] = useState<Row[] | null>(null);
@@ -1532,6 +1694,7 @@ export default function Requests() {
     how: 'decline' | 'cancel' | 'remove' | 'removeMedia';
     title: string;
     request?: RequestItem;
+    trackId?: number;
   } | null>(null);
   useEffect(() => {
     if (!viewAll) return;
@@ -1606,16 +1769,62 @@ export default function Requests() {
         priorityOrder && show === 'all'
           ? list('pending', 50).then((x) => x.results)
           : Promise.resolve([]);
-      const [waitingList, startedList, rest] = await Promise.all([
+      const includeTracks =
+        trackRequestsEnabled &&
+        (mediaType === 'all' || mediaType === 'music') &&
+        bookFormat === 'all' &&
+        [
+          'all',
+          'pending',
+          'processing',
+          'attention',
+          'failed',
+          'completed',
+          'available',
+        ].includes(show);
+      const tracksPromise = includeTracks
+        ? loadAllTrackRequests()
+            .then((results) =>
+              results
+                .filter((tr) =>
+                  matchesEveryoneTrackFilters(
+                    tr,
+                    show,
+                    requester,
+                    timeFrame,
+                    search
+                  )
+                )
+                .map(trackRequestRow)
+            )
+            .catch(() => [] as Row[])
+        : Promise.resolve([] as Row[]);
+      const [waitingList, startedList, rest, trackRows] = await Promise.all([
         pending,
         started,
         list(show, take),
+        tracksPromise,
       ]);
       const rows = await describeAll(
         merge(waitingList, startedList, rest.results),
-        (early) => live && setOthers(early)
+        (early) =>
+          live &&
+          setOthers(
+            trackRows.length
+              ? [...early, ...trackRows].sort((a, b) =>
+                  sortMergedRows(a, b, sortMode)
+                )
+              : early
+          )
       );
-      return { rows, more: rest.more };
+      return {
+        rows: trackRows.length
+          ? [...rows, ...trackRows].sort((a, b) =>
+              sortMergedRows(a, b, sortMode)
+            )
+          : rows,
+        more: rest.more,
+      };
     };
     loads.current++;
     load()
@@ -1651,6 +1860,12 @@ export default function Requests() {
     mediaQuery,
     priorityOrder,
     requestSortQuery,
+    trackRequestsEnabled,
+    mediaType,
+    bookFormat,
+    timeFrame,
+    search,
+    sortMode,
   ]);
 
   useEffect(() => {
@@ -1664,8 +1879,8 @@ export default function Requests() {
     ]).then(([recent, started]) =>
       describeAll(
         merge(recent, started),
-        // with games on, the list waits for both so game requests don't pop in later
-        extras.games.length
+        // with games or track requests on, the list waits so items don't pop in later
+        extras.games.length || trackRequestsEnabled
           ? undefined
           : (early) =>
               live &&
@@ -1684,9 +1899,18 @@ export default function Requests() {
           .then((d) => d.results.map(gameRow))
           .catch(() => [])
       : Promise.resolve([]);
-    Promise.all([media, games])
-      .then(([a, b]) =>
-        a.concat(b).sort((x, y) => y.r.createdAt.localeCompare(x.r.createdAt))
+    const tracks = trackRequestsEnabled
+      ? api<{ results: TrackRequestItem[] }>(
+          '/soulseek/track-requests?scope=mine&filter=all&take=100'
+        )
+          .then((d) => d.results.map(trackRequestRow))
+          .catch(() => [] as Row[])
+      : Promise.resolve([] as Row[]);
+    Promise.all([media, games, tracks])
+      .then(([a, b, c]) =>
+        a
+          .concat(b, c)
+          .sort((x, y) => y.r.createdAt.localeCompare(x.r.createdAt))
       )
       .then((x) => live && setRows(x))
       .catch(() => live && setOwnError(true))
@@ -1697,7 +1921,7 @@ export default function Requests() {
     return () => {
       live = false;
     };
-  }, [user, browseRequests, tick, extras.games.length]);
+  }, [user, browseRequests, tick, extras.games.length, trackRequestsEnabled]);
 
   const all = rows || [];
   const act = all.filter((x) => requestRowStatus(x, serverName).active);
@@ -1772,7 +1996,10 @@ export default function Requests() {
     const gameBusy =
       !everyone &&
       current.some(
-        (x) => x.r.id < 0 && requestRowStatus(x, serverName).pct != null
+        (x) =>
+          x.r.id < 0 &&
+          !x.trackRequest &&
+          requestRowStatus(x, serverName).pct != null
       );
     Promise.all([
       processingRequests(everyone ? mediaQuery : `&requestedBy=${user.id}`),
@@ -1892,6 +2119,44 @@ export default function Requests() {
       setActing(null);
     }
   };
+  const decideTrack = async (trackId: number, how: 'approve' | 'decline') => {
+    if (mutationInFlight.current) return;
+    mutationInFlight.current = true;
+    setActing(-(TRACK_REQUEST_ID_OFFSET + trackId));
+    try {
+      await api(`/soulseek/track-requests/${trackId}/${how}`, {
+        method: 'POST',
+      });
+      toast(how === 'approve' ? 'Request approved' : 'Request declined');
+      setTick((t) => t + 1);
+    } catch (e) {
+      toast(friendlyError(e, 'Couldn’t update the request'));
+    } finally {
+      mutationInFlight.current = false;
+      setActing(null);
+    }
+  };
+  const cancelTrack = async (trackId: number) => {
+    if (mutationInFlight.current) return;
+    mutationInFlight.current = true;
+    setActing(-(TRACK_REQUEST_ID_OFFSET + trackId));
+    try {
+      await api(`/soulseek/track-requests/${trackId}`, { method: 'DELETE' });
+      toast('Request cancelled');
+      setRows(
+        (list) => list && list.filter((x) => x.trackRequest?.id !== trackId)
+      );
+      setOthers(
+        (list) => list && list.filter((x) => x.trackRequest?.id !== trackId)
+      );
+      setTick((t) => t + 1);
+    } catch (e) {
+      toast(friendlyError(e, 'Couldn’t cancel'));
+    } finally {
+      mutationInFlight.current = false;
+      setActing(null);
+    }
+  };
 
   const removeManagedCopy = async (request: RequestItem) => {
     if (!manage || request.canRemove !== true || !request.media.id) return;
@@ -1936,7 +2201,77 @@ export default function Requests() {
   };
 
   const renderRequestActions = (x: Row, moderate: boolean) => {
+    if (x.trackRequest) {
+      const tr = x.trackRequest;
+      const owner = tr.requestedBy?.id === user?.id;
+      const canCancelTrack =
+        (tr.status === 'pending' && owner) ||
+        (tr.status === 'searching' && (moderate || manage || owner));
+      return (
+        <>
+          {moderate && tr.status === 'pending' && (
+            <>
+              <button
+                className="btn btn-sm btn-ok"
+                disabled={acting !== null}
+                onClick={() => void decideTrack(tr.id, 'approve')}
+              >
+                <Icon name="check" size="sm" />
+                {t('components.Requests.approve', 'Approve')}
+              </button>
+              <button
+                className="btn btn-sm btn-quiet"
+                disabled={acting !== null}
+                onClick={() =>
+                  setConfirming({
+                    id: x.r.id,
+                    how: 'decline',
+                    title: x.title,
+                    trackId: tr.id,
+                  })
+                }
+              >
+                <Icon name="x" size="sm" />
+                {t('components.Requests.decline', 'Decline')}
+              </button>
+            </>
+          )}
+          {canCancelTrack && (
+            <button
+              className="btn btn-sm btn-quiet"
+              disabled={acting !== null}
+              onClick={() =>
+                setConfirming({
+                  id: x.r.id,
+                  how: 'cancel',
+                  title: x.title,
+                  trackId: tr.id,
+                })
+              }
+            >
+              Cancel
+            </button>
+          )}
+        </>
+      );
+    }
     const st = requestRowStatus(x, serverName, liveDownloads, allowRawHashes);
+    const plexHref = plexUrl(x.r.media, x.r.is4k);
+    const aurralHref =
+      x.r.type === 'music' && !plexHref
+        ? aurralAlbumLink(x.r.media, musicServices.data)
+        : null;
+    const aurralAction = aurralHref ? (
+      <a
+        className={st.k === 'ok' ? 'btn btn-sm btn-ok' : 'btn btn-sm btn-quiet'}
+        href={aurralHref}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Icon name="music" size="sm" />
+        {t('lumen.requests.openInAurral', 'Open in Aurral')}
+      </a>
+    ) : null;
     return (
       <>
         {canEditEpisodeQueue(x.r, user?.permissions) && (
@@ -2043,10 +2378,9 @@ export default function Requests() {
             >
               {t('lumen.requestHistory.removeRequest', 'Remove')}
             </button>
+            {aurralAction}
           </>
-        ) : st.k === 'ok' &&
-          x.r.type !== 'book' &&
-          plexUrl(x.r.media, x.r.is4k) ? (
+        ) : st.k === 'ok' && x.r.type !== 'book' && plexHref ? (
           <a
             className="btn btn-sm btn-ok"
             {...mediaLink(x.r.media, x.r.is4k, x.r.type, serverName)}
@@ -2060,6 +2394,8 @@ export default function Requests() {
                   server: serverName,
                 })}
           </a>
+        ) : aurralAction ? (
+          aurralAction
         ) : (x.r.id < 0 ? !everyone : x.r.requestedBy?.id === user?.id) &&
           x.r.status === 1 ? (
           <button
@@ -2466,7 +2802,10 @@ export default function Requests() {
           const detail = requestFailureMessage(x.r) ?? st.detail;
           const artwork = artUrl(x.art);
           return (
-            <div className="rq" key={x.r.id}>
+            <div
+              className="rq"
+              key={x.trackRequest ? `track:${x.trackRequest.id}` : x.r.id}
+            >
               <div className={`art ${x.cover ? 'cover' : ''}`}>
                 {x.cover && artwork && (
                   <img
@@ -2499,7 +2838,14 @@ export default function Requests() {
               </div>
               <div style={{ minWidth: 0 }}>
                 <div className="tt">
-                  <Link to={x.href || `?${historyParams(x.r.id)}`}>
+                  <Link
+                    to={
+                      x.href ||
+                      (x.trackRequest
+                        ? '/track-requests'
+                        : `?${historyParams(x.r.id)}`)
+                    }
+                  >
                     {x.title}
                   </Link>
                 </div>
@@ -2527,7 +2873,7 @@ export default function Requests() {
                   {detail && <span className="d">{detail}</span>}
                 </div>
                 <div className="rqa">
-                  {x.r.id !== 0 && (
+                  {x.r.id !== 0 && !x.trackRequest && (
                     <button
                       className="btn btn-sm btn-quiet"
                       onClick={() => setP(historyParams(x.r.id))}
@@ -2542,6 +2888,13 @@ export default function Requests() {
           );
         })}
       </div>
+      {trackRequestsEnabled && !softwareView && (
+        <p className="note">
+          <Link className="btn btn-quiet btn-sm" to="/track-requests">
+            {t('lumen.requests.openTrackRequests', 'Open Track Requests')}
+          </Link>
+        </p>
+      )}
       {browseRequests && hasMore && shown && (
         <div className="more-scroll">
           <button
@@ -2650,8 +3003,13 @@ export default function Requests() {
           cancel={t('lumen.requests.actions.keep', 'Keep it')}
           onClose={() => setConfirming(null)}
           onConfirm={() => {
-            const { id, how, request } = confirming;
+            const { id, how, request, trackId } = confirming;
             setConfirming(null);
+            if (trackId != null) {
+              if (how === 'cancel') void cancelTrack(trackId);
+              else if (how === 'decline') void decideTrack(trackId, 'decline');
+              return;
+            }
             if (how === 'cancel') void cancel(id);
             else if (how === 'removeMedia') {
               if (request) void removeManagedCopy(request);

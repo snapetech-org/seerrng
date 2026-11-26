@@ -1,4 +1,5 @@
 import type {
+  AurralSettings,
   BackIssueSettings,
   CollectorServiceSettings,
   DVRSettings,
@@ -918,4 +919,88 @@ export const parseLazyLibrarianSettings = (
 ): { value: LazyLibrarianSettings } | { error: string } => {
   const parsed = parseCollectorSettings(body, current);
   return 'error' in parsed ? parsed : { value: parsed.value };
+};
+
+export interface AurralConnectionSettings {
+  hostname: string;
+  port: number;
+  apiKey: string;
+  useSsl: boolean;
+  baseUrl?: string;
+}
+
+export const parseAurralConnectionSettings = (
+  body: unknown
+): { value: AurralConnectionSettings } | { error: string } => {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { error: 'settings must be an object.' };
+  }
+
+  const settings = body as Partial<AurralConnectionSettings>;
+  const hostname = parseRequiredServiceString(settings.hostname, 'hostname');
+  if ('error' in hostname) return hostname;
+  const normalizedHostname = normalizeServiceHostname(hostname.value);
+  if (!normalizedHostname) {
+    return { error: 'hostname is invalid.' };
+  }
+
+  const apiKey = parseRequiredServiceString(settings.apiKey, 'apiKey');
+  if ('error' in apiKey) return apiKey;
+
+  const baseUrl = parseOptionalUrlBase(settings.baseUrl);
+  if ('error' in baseUrl) return baseUrl;
+
+  const useSsl = parseServiceBoolean(settings.useSsl, 'useSsl');
+  if ('error' in useSsl) return useSsl;
+
+  const port = parseOptionalNonNegativeInteger(settings.port, MAX_SERVICE_PORT);
+  if (port === undefined || port < 1) {
+    return { error: 'port is invalid.' };
+  }
+
+  return {
+    value: {
+      hostname: normalizedHostname,
+      port,
+      apiKey: apiKey.value,
+      useSsl: useSsl.value,
+      baseUrl: baseUrl.value,
+    },
+  };
+};
+
+export const parseAurralSettings = (
+  body: unknown,
+  current?: AurralSettings
+): { value: AurralSettings } | { error: string } => {
+  const connection = parseAurralConnectionSettings(body);
+  if ('error' in connection) return connection;
+
+  const settings = body as Partial<AurralSettings>;
+  const name = parseRequiredServiceString(settings.name, 'name');
+  if ('error' in name) return name;
+
+  const externalUrl = parseOptionalExternalUrl(settings.externalUrl);
+  if ('error' in externalUrl) return externalUrl;
+
+  const isDefault = parseServiceBoolean(settings.isDefault, 'isDefault');
+  if ('error' in isDefault) return isDefault;
+
+  const syncEnabled = parseServiceBoolean(settings.syncEnabled, 'syncEnabled');
+  if ('error' in syncEnabled) return syncEnabled;
+
+  return {
+    value: {
+      id: current?.id ?? 0,
+      name: name.value,
+      hostname: connection.value.hostname,
+      port: connection.value.port,
+      useSsl: connection.value.useSsl,
+      baseUrl: connection.value.baseUrl,
+      externalUrl: externalUrl.value,
+      apiKey: connection.value.apiKey,
+      isDefault: isDefault.value,
+      syncEnabled: syncEnabled.value,
+    },
+  };
 };

@@ -17,11 +17,14 @@ import {
 import { syncSportsFollows } from '@server/lib/liveTv/sports';
 import movieCollectionQueues from '@server/lib/movieCollectionQueue';
 import plexPlaybackAnalysis from '@server/lib/plexPlaybackAnalysis';
+import { runPodcastCleanup } from '@server/lib/podcastCleanup';
+import { runPodcastFollowerSweep } from '@server/lib/podcastFollowerSweep';
 import { syncBookOrbitKoboCollections } from '@server/lib/readerDeliveryKobo';
 import refreshToken from '@server/lib/refreshToken';
 import { captureReleaseCalendarHistory } from '@server/lib/releaseCalendar/history';
 import { reconcileActiveRequests } from '@server/lib/requestStatus';
 import { audiobookshelfScanner } from '@server/lib/scanners/audiobookshelf';
+import { aurralScanner } from '@server/lib/scanners/aurral';
 import { backissueScanner } from '@server/lib/scanners/comics/backissue';
 import { kapowarrScanner } from '@server/lib/scanners/comics/kapowarr';
 import { mylarScanner } from '@server/lib/scanners/comics/mylar';
@@ -41,7 +44,7 @@ import type { JobId } from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
 import { refreshTrackedSoftwareRequests } from '@server/lib/softwareRequests';
 import {
-  isSlskdnConfigured,
+  isTrackRequestsConfigured,
   syncTrackRequests,
 } from '@server/lib/soulseek/trackRequests';
 import { isWatchAheadMediaServer } from '@server/lib/watchAheadEligibility';
@@ -231,6 +234,27 @@ export const startJobs = (): void => {
       return runTrackedJob('Followed Interests Sync', syncFollows, {
         logCompletion: true,
       });
+    }),
+  });
+
+  scheduledJobs.push({
+    id: 'podcast-cleanup',
+    name: 'Podcast Played Episode Cleanup',
+    type: 'process',
+    interval: 'hours',
+    cronSchedule: jobs['podcast-cleanup'].schedule,
+    job: schedule.scheduleJob(jobs['podcast-cleanup'].schedule, () => {
+      logger.info('Starting scheduled job: Podcast Played Episode Cleanup', {
+        label: 'Jobs',
+      });
+      return runTrackedJob(
+        'Podcast Played Episode Cleanup',
+        () =>
+          runPodcastCleanup()
+            .then(() => runPodcastFollowerSweep())
+            .then(() => undefined),
+        { logCompletion: true }
+      );
     }),
   });
 
@@ -700,13 +724,31 @@ export const startJobs = (): void => {
   });
 
   scheduledJobs.push({
+    id: 'aurral-scan',
+    name: 'Aurral Scan',
+    type: 'process',
+    interval: 'hours',
+    cronSchedule: jobs['aurral-scan'].schedule,
+    job: schedule.scheduleJob(jobs['aurral-scan'].schedule, () => {
+      logger.info('Starting scheduled job: Aurral Scan', {
+        label: 'Jobs',
+      });
+      return runTrackedJob('Aurral Scan', () => aurralScanner.run());
+    }),
+    running: () => aurralScanner.status().running,
+    cancelFn: () => {
+      aurralScanner.cancel();
+    },
+  });
+
+  scheduledJobs.push({
     id: 'soulseek-sync',
     name: 'Soulseek Sync',
     type: 'process',
     interval: 'minutes',
     cronSchedule: jobs['soulseek-sync'].schedule,
     job: schedule.scheduleJob(jobs['soulseek-sync'].schedule, () => {
-      if (!isSlskdnConfigured()) {
+      if (!isTrackRequestsConfigured()) {
         return;
       }
       return runTrackedJob('Soulseek Sync', syncTrackRequests);
@@ -852,6 +894,13 @@ export const startJobs = (): void => {
     getSettings().lidarr.some((server) => server.syncEnabled)
   ) {
     void runTrackedJob('Lidarr Scan', () => lidarrScanner.run());
+  }
+
+  if (
+    jobs['aurral-scan'].enabled !== false &&
+    getSettings().aurral.some((server) => server.syncEnabled)
+  ) {
+    void runTrackedJob('Aurral Scan', () => aurralScanner.run());
   }
 
   logger.info('Scheduled jobs loaded', { label: 'Jobs' });

@@ -455,6 +455,16 @@ class RequestWorkCleanupManager {
         matches = (item) => item.seriesId === externalId;
       }
     } else if (request.type === MediaType.MUSIC) {
+      if (
+        media.musicServiceType === 'aurral' ||
+        request.serviceTargets?.some(
+          (target) => target.serviceType === 'aurral'
+        )
+      ) {
+        throw new RequestWorkCleanupError(
+          'Aurral does not support cancelling an individual album download through its API.'
+        );
+      }
       const server = settings.lidarr.find((item) => item.id === serviceId);
       if (server) {
         api = new LidarrAPI({

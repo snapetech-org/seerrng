@@ -31,6 +31,9 @@ const messages = defineMessages('components.Settings.AudiobookshelfModal', {
   externalUrl: 'External URL',
   externalUrlHelp:
     'Optional browser address for opening the matching audiobook. If you set a URL Base, SeerrNG adds it to this address automatically.',
+  proxyUrl: 'SeerrNG address for Audiobookshelf',
+  proxyUrlHelp:
+    'Optional. The address Audiobookshelf uses to reach SeerrNG when it downloads podcasts through SeerrNG. Leave empty to use the Application URL. On a private address, add its hostname to SSRF_REQUEST_FILTER_WHITELIST in Audiobookshelf.',
   library: 'Audiobook library',
   chooseLibrary: 'Test the connection to load available book libraries',
   test: 'Test connection',
@@ -89,6 +92,11 @@ const AudiobookshelfModal = ({
       intl.formatMessage(messages.urlInvalid),
       (value) => !value || isValidURL(value)
     ),
+    proxyUrl: Yup.string().test(
+      'valid-url',
+      intl.formatMessage(messages.urlInvalid),
+      (value) => !value || isValidURL(value)
+    ),
   });
 
   const testConnection = async (
@@ -142,6 +150,7 @@ const AudiobookshelfModal = ({
         apiKey: settings?.apiKey ?? '',
         baseUrl: settings?.baseUrl ?? '',
         externalUrl: settings?.externalUrl ?? '',
+        proxyUrl: settings?.proxyUrl ?? '',
         libraryId: settings?.libraryId ?? '',
         libraryName: settings?.libraryName ?? '',
         syncEnabled: settings?.syncEnabled ?? true,
@@ -341,6 +350,20 @@ const AudiobookshelfModal = ({
               </div>
               <SettingsHelp as="span" className="settings-form-row-description">
                 {intl.formatMessage(messages.externalUrlHelp)}
+              </SettingsHelp>
+            </div>
+            <div className="form-row">
+              <label className="text-label" htmlFor="proxyUrl">
+                {intl.formatMessage(messages.proxyUrl)}
+              </label>
+              <div className="form-input-area">
+                <Field id="proxyUrl" name="proxyUrl" type="text" />
+                {touched.proxyUrl && typeof errors.proxyUrl === 'string' && (
+                  <div className="error">{errors.proxyUrl}</div>
+                )}
+              </div>
+              <SettingsHelp as="span" className="settings-form-row-description">
+                {intl.formatMessage(messages.proxyUrlHelp)}
               </SettingsHelp>
             </div>
             <div className="form-row">

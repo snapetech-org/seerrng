@@ -55,6 +55,8 @@ imply a corresponding Lumen or native screen.
 | Plex, Jellyfin and Emby | Shared | Authentication, linked libraries and user imports | [Guide](./using-seerr/settings/mediaserver.mdx) |
 | Radarr and Sonarr | Shared | Multiple service connections, HD/4K and anime defaults | [Guide](./using-seerr/settings/services.md) |
 | Music and album requests | Not found | Lidarr acquisition; MusicBrainz, ListenBrainz and artwork providers | [Guide](./using-seerr/music-and-books-alpha.md) |
+| Aurral music and Lumen music pages | Not found | Album and song requests through Aurral; Lumen Discover, search, artist, album, library and activity pages | [Guide](./using-seerr/aurral.md) |
+| Podcasts | Not found | Audiobookshelf podcast library: charts, search, per-person follows, single or all episodes, played-episode cleanup | [Guide](./using-seerr/podcasts.md) |
 | Ebooks and audiobooks | Not found | Independent format requests, approvals and availability | [Guide](./using-seerr/bookshelf-backend.md) |
 | ChaptarrNG and Bookshelf compatibility | Not found | Format-aware requests, import preparation, service key and migration boundaries | [Guide](./using-seerr/bookshelf-backend.md) |
 | Bindery book acquisition | Not found | Dedicated ebook/audiobook backend configuration | [Guide](./using-seerr/bindery-backend.md) |

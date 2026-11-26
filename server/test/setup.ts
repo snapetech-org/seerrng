@@ -26,6 +26,7 @@ Reflect.set(
       sonarr: settings.sonarr,
       sportarr: settings.sportarr,
       lidarr: settings.lidarr,
+      aurral: settings.aurral,
       readarr: settings.readarr,
       mylar: settings.mylar,
       kapowarr: settings.kapowarr,

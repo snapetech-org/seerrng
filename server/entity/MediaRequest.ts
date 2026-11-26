@@ -144,6 +144,29 @@ export class DuplicateMediaRequestError extends Error {}
 export class NoSeasonsAvailableError extends Error {}
 export class BlocklistedMediaError extends Error {}
 export class ServiceConfigurationError extends Error {}
+/** The requested media id does not exist at its metadata source. */
+export class MediaNotFoundError extends Error {}
+
+// The metadata API says the id does not exist: HTTP 404, or 400 (MusicBrainz
+// answers 400 for some well-formed ids it rejects). Looks through wrapped
+// errors (our API clients keep the axios error as the cause).
+const isUnknownIdError = (error: unknown, depth = 0): boolean => {
+  if (
+    depth < 3 &&
+    error instanceof Error &&
+    error.cause &&
+    isUnknownIdError(error.cause, depth + 1)
+  ) {
+    return true;
+  }
+  const status = (error as { response?: { status?: unknown } } | null)?.response
+    ?.status;
+  return (
+    status === 404 ||
+    status === 400 ||
+    (error instanceof Error && /status code 40[04]\b/.test(error.message))
+  );
+};
 
 export type MediaRequestServiceTarget = {
   serviceType: ServarrServiceType;
@@ -445,6 +468,16 @@ const resolveMusicReleaseGroupId = async (
       releaseId: normalizeMusicBrainzId(mediaId),
     })
     .catch((error) => {
+      // neither a release group nor a release (and ListenBrainz did not know
+      // it either): the id does not exist
+      if (
+        isUnknownIdError(error) &&
+        (!listenBrainzError || isUnknownIdError(listenBrainzError))
+      ) {
+        throw new MediaNotFoundError(
+          'That album was not found on MusicBrainz.'
+        );
+      }
       if (listenBrainzError) {
         throw listenBrainzError;
       }
@@ -829,7 +862,9 @@ export class MediaRequest {
           : requestBody.mediaType === MediaType.TV
             ? 'Sonarr'
             : requestBody.mediaType === MediaType.MUSIC
-              ? 'Lidarr'
+              ? settings.aurral.length > 0
+                ? 'Music'
+                : 'Lidarr'
               : 'Bookshelf';
       const selectedService =
         requestBody.mediaType === MediaType.MOVIE
@@ -837,7 +872,10 @@ export class MediaRequest {
           : requestBody.mediaType === MediaType.TV
             ? settings.sonarr.find(({ id }) => id === requestBody.serverId)
             : requestBody.mediaType === MediaType.MUSIC
-              ? settings.lidarr.find(({ id }) => id === requestBody.serverId)
+              ? (settings.lidarr.find(
+                  ({ id }) => id === requestBody.serverId
+                ) ??
+                settings.aurral.find(({ id }) => id === requestBody.serverId))
               : settings.readarr.find(({ id }) => id === requestBody.serverId);
       if (!selectedService) {
         throw new ServiceConfigurationError(
@@ -847,7 +885,8 @@ export class MediaRequest {
       if (
         (requestBody.mediaType === MediaType.MOVIE ||
           requestBody.mediaType === MediaType.TV) &&
-        Boolean(selectedService.is4k) !== Boolean(requestBody.is4k)
+        Boolean('is4k' in selectedService && selectedService.is4k) !==
+          Boolean(requestBody.is4k)
       ) {
         throw new ServiceConfigurationError(
           `Selected ${serviceName} server does not match the requested quality tier.`
@@ -1201,12 +1240,36 @@ export class MediaRequest {
             : settings.sportarr.find(({ isDefault }) => isDefault)?.id
         );
       } else if (requestBody.mediaType === MediaType.MUSIC) {
-        addService(
-          'lidarr',
+        const requestedServerId =
           useAdvancedOptions && requestBody.serverId != null
             ? requestBody.serverId
-            : settings.lidarr.find(({ isDefault }) => isDefault)?.id
-        );
+            : undefined;
+        const requestedLidarr =
+          requestedServerId != null
+            ? settings.lidarr.find(({ id }) => id === requestedServerId)
+            : undefined;
+        const requestedAurral =
+          requestedServerId != null && !requestedLidarr
+            ? settings.aurral.find(({ id }) => id === requestedServerId)
+            : undefined;
+        if (requestedLidarr) {
+          addService('lidarr', requestedLidarr.id);
+        } else if (requestedAurral) {
+          addService('aurral', requestedAurral.id);
+        } else if (requestedServerId == null) {
+          const defaultAurral = settings.aurral.find((a) => a.isDefault);
+          const defaultLidarr = settings.lidarr.find((l) => l.isDefault);
+          if (defaultAurral) {
+            addService('aurral', defaultAurral.id);
+          } else if (defaultLidarr) {
+            addService('lidarr', defaultLidarr.id);
+          } else if (
+            settings.aurral.length > 0 &&
+            settings.lidarr.length === 0
+          ) {
+            addService('aurral', settings.aurral[0].id);
+          }
+        }
       } else if (requestBody.mediaType === MediaType.ADULT) {
         addService(
           'whisparr',
@@ -1344,46 +1407,90 @@ export class MediaRequest {
       const useOverrides = !useAdvancedOptions;
 
       const defaultLidarr = settings.lidarr.find((lidarr) => lidarr.isDefault);
+      const defaultAurral = settings.aurral.find((aurral) => aurral.isDefault);
       const requestedServerId = useAdvancedOptions
         ? requestBody.serverId
         : undefined;
-      const requestedLidarr = settings.lidarr.find(
-        (lidarr) => lidarr.id === requestedServerId
-      );
+      const requestedLidarr =
+        requestedServerId !== undefined && requestedServerId !== null
+          ? settings.lidarr.find((lidarr) => lidarr.id === requestedServerId)
+          : undefined;
+      const requestedAurral =
+        requestedServerId !== undefined &&
+        requestedServerId !== null &&
+        !requestedLidarr
+          ? settings.aurral.find((aurral) => aurral.id === requestedServerId)
+          : undefined;
 
       if (
         requestedServerId !== undefined &&
         requestedServerId !== null &&
-        !requestedLidarr
+        !requestedLidarr &&
+        !requestedAurral
       ) {
         throw new ServiceConfigurationError(
-          'Selected Lidarr server does not exist.'
+          settings.aurral.length > 0
+            ? 'Selected music server does not exist.'
+            : 'Selected Lidarr server does not exist.'
         );
       }
 
-      if (!defaultLidarr && requestedServerId == null) {
+      const fallbackAurral =
+        !defaultAurral && !defaultLidarr && settings.lidarr.length === 0
+          ? settings.aurral[0]
+          : undefined;
+
+      if (
+        !defaultLidarr &&
+        !defaultAurral &&
+        !fallbackAurral &&
+        requestedServerId == null
+      ) {
         throw new ServiceConfigurationError(
-          'No default Lidarr server configured.'
+          settings.aurral.length > 0
+            ? 'No default music server configured.'
+            : 'No default Lidarr server configured.'
         );
       }
 
-      const selectedLidarr = requestedLidarr ?? defaultLidarr;
-      const serverId = selectedLidarr?.id;
-      let rootFolder = useAdvancedOptions
-        ? (requestBody.rootFolder ?? selectedLidarr?.activeDirectory)
-        : selectedLidarr?.activeDirectory;
-      let profileId = useAdvancedOptions
-        ? (requestBody.profileId ?? selectedLidarr?.activeProfileId)
-        : selectedLidarr?.activeProfileId;
-      const metadataProfileId =
-        useAdvancedOptions && requestBody.metadataProfileId !== undefined
+      const selectedMusicService:
+        | { serviceType: 'lidarr'; server: (typeof settings.lidarr)[number] }
+        | { serviceType: 'aurral'; server: (typeof settings.aurral)[number] } =
+        requestedLidarr
+          ? { serviceType: 'lidarr', server: requestedLidarr }
+          : requestedAurral
+            ? { serviceType: 'aurral', server: requestedAurral }
+            : defaultAurral
+              ? { serviceType: 'aurral', server: defaultAurral }
+              : defaultLidarr
+                ? { serviceType: 'lidarr', server: defaultLidarr }
+                : { serviceType: 'aurral', server: fallbackAurral! };
+
+      const serverId = selectedMusicService.server.id;
+      const isAurral = selectedMusicService.serviceType === 'aurral';
+      const selectedLidarr = isAurral ? undefined : selectedMusicService.server;
+      let rootFolder = isAurral
+        ? undefined
+        : useAdvancedOptions
+          ? (requestBody.rootFolder ?? selectedLidarr?.activeDirectory)
+          : selectedLidarr?.activeDirectory;
+      let profileId = isAurral
+        ? undefined
+        : useAdvancedOptions
+          ? (requestBody.profileId ?? selectedLidarr?.activeProfileId)
+          : selectedLidarr?.activeProfileId;
+      const metadataProfileId = isAurral
+        ? undefined
+        : useAdvancedOptions && requestBody.metadataProfileId !== undefined
           ? requestBody.metadataProfileId
           : selectedLidarr?.activeMetadataProfileId;
-      let tags = useAdvancedOptions
-        ? (requestBody.tags ?? selectedLidarr?.tags)
-        : selectedLidarr?.tags;
+      let tags = isAurral
+        ? undefined
+        : useAdvancedOptions
+          ? (requestBody.tags ?? selectedLidarr?.tags)
+          : selectedLidarr?.tags;
 
-      if (useOverrides) {
+      if (useOverrides && !isAurral) {
         const overrideRules = await getRepository(OverrideRule).find({
           where: { lidarrServiceId: serverId },
         });
@@ -1415,7 +1522,7 @@ export class MediaRequest {
         serverId === undefined
           ? undefined
           : {
-              serviceType: 'lidarr',
+              serviceType: selectedMusicService.serviceType,
               format: 'music',
               serverId,
               profileId: profileId ?? null,
@@ -1514,7 +1621,7 @@ export class MediaRequest {
             ? []
             : [
                 {
-                  serviceType: 'lidarr',
+                  serviceType: selectedMusicService.serviceType,
                   format: 'music',
                   serverId,
                   profileId: profileId ?? null,

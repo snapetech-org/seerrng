@@ -11,6 +11,7 @@ import { User } from '@server/entity/User';
 import type {
   ComicServiceOption,
   MagazineServiceOption,
+  MusicServiceOption,
   ServiceCommonServer,
   ServiceCommonServerWithDetails,
   WhisparrServiceOption,
@@ -431,6 +432,61 @@ serviceRoutes.get('/lidarr', async (req, res, next) => {
       );
 
       return res.status(200).json(filteredLidarrServers);
+    });
+  } catch (error) {
+    return reportServiceSummaryReadError(error, next);
+  }
+});
+
+const publicHttpUrl = (value: unknown): string | undefined => {
+  if (typeof value !== 'string' || !value.trim()) return undefined;
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return undefined;
+    if (url.username || url.password) return undefined;
+    url.search = '';
+    url.hash = '';
+    return url.href.replace(/\/+$/, '');
+  } catch {
+    return undefined;
+  }
+};
+
+serviceRoutes.get('/music', async (req, res, next) => {
+  try {
+    return await runServiceSummaryRead(req, () => {
+      const settings = getExternalRuntimeConfig();
+      const musicServices: MusicServiceOption[] = [
+        ...settings.lidarr.map((lidarr): MusicServiceOption => {
+          const musicQuality = getMusicQualityFromLabels(
+            lidarr.activeProfileName,
+            lidarr.name
+          );
+          return {
+            id: lidarr.id,
+            name: lidarr.name,
+            isDefault: lidarr.isDefault,
+            backendType: 'lidarr',
+            ...(musicQuality ? { musicQuality } : {}),
+          };
+        }),
+        ...settings.aurral.map((aurral): MusicServiceOption => {
+          const musicQuality = getMusicQualityFromLabels(aurral.name);
+          const externalUrl = publicHttpUrl(aurral.externalUrl);
+          return {
+            id: aurral.id,
+            name: aurral.name,
+            isDefault: aurral.isDefault,
+            backendType: 'aurral',
+            ...(musicQuality ? { musicQuality } : {}),
+            // Only the public address people open in a browser; never the
+            // internal host, port or key.
+            ...(externalUrl ? { externalUrl } : {}),
+          };
+        }),
+      ];
+
+      return res.status(200).json(musicServices);
     });
   } catch (error) {
     return reportServiceSummaryReadError(error, next);

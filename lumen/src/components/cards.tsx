@@ -150,7 +150,12 @@ export function statusOf(
       ico: 'check',
     };
   if (s === MediaStatus.PARTIAL)
-    return { k: 'ok', word: `Partly on ${serverName}`, ico: 'check' };
+    return {
+      k: 'ok',
+      // music, books and the other library categories have no media server
+      word: book ? 'Partly in library' : `Partly on ${serverName}`,
+      ico: 'check',
+    };
   // processing = handed to Radarr/Sonarr/ChaptarrNG; it's only "downloading" once a download shows up
   if (s === MediaStatus.PROCESSING) {
     const d = downloads?.[0];

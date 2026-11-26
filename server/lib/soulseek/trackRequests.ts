@@ -1,3 +1,4 @@
+import AurralAPI from '@server/api/aurral';
 import SlskdnAPI, { SlskdnError } from '@server/api/slskdn';
 import { getRepository } from '@server/datasource';
 import TrackRequest, {
@@ -5,7 +6,11 @@ import TrackRequest, {
 } from '@server/entity/TrackRequest';
 import type { User } from '@server/entity/User';
 import { Permission } from '@server/lib/permissions';
-import { getSettings, type SlskdnSettings } from '@server/lib/settings';
+import {
+  getSettings,
+  type AurralSettings,
+  type SlskdnSettings,
+} from '@server/lib/settings';
 import logger from '@server/logger';
 import { In } from 'typeorm';
 
@@ -29,6 +34,18 @@ export class TrackRequestError extends Error {
 export const isSlskdnConfigured = (
   settings: SlskdnSettings = getSettings().slskdn
 ) => settings.enabled && !!settings.hostname && !!settings.apiKey;
+
+export const getDefaultAurralServer = (
+  servers: AurralSettings[] = getSettings().aurral
+): AurralSettings | undefined =>
+  servers.find((server) => server.isDefault) ?? servers[0];
+
+export const isAurralTrackRequestsConfigured = (
+  servers: AurralSettings[] = getSettings().aurral
+) => servers.length > 0;
+
+export const isTrackRequestsConfigured = () =>
+  isAurralTrackRequestsConfigured() || isSlskdnConfigured();
 
 export const canRequestTracks = (user: User) =>
   user.hasPermission([Permission.REQUEST, Permission.REQUEST_MUSIC], {
@@ -58,10 +75,57 @@ export interface TrackInput {
   artist: string;
   title: string;
   recordingMbid?: string;
+  albumMbid?: string;
+  albumName?: string;
+  artistMbid?: string;
+  releaseMbid?: string;
+  durationMs?: number;
+  trackNumber?: number;
+  discNumber?: number;
   source?: string;
 }
 
+type AurralTrackMetadata = Pick<
+  TrackInput,
+  | 'albumMbid'
+  | 'albumName'
+  | 'artistMbid'
+  | 'releaseMbid'
+  | 'durationMs'
+  | 'trackNumber'
+  | 'discNumber'
+>;
+
+// Album/track details for pending song requests until a manager approves
+// them. Kept in memory only (no TrackRequest columns yet), so it is bounded
+// and cleared when a request is approved, declined or cancelled.
+const MAX_PENDING_AURRAL_TRACK_METADATA = 2_000;
+const pendingAurralTrackMetadata = new Map<number, AurralTrackMetadata>();
+
+const rememberPendingAurralTrackMetadata = (
+  requestId: number,
+  metadata: AurralTrackMetadata
+) => {
+  pendingAurralTrackMetadata.delete(requestId);
+  pendingAurralTrackMetadata.set(requestId, metadata);
+  while (pendingAurralTrackMetadata.size > MAX_PENDING_AURRAL_TRACK_METADATA) {
+    const oldest = pendingAurralTrackMetadata.keys().next().value;
+    if (oldest === undefined) break;
+    pendingAurralTrackMetadata.delete(oldest);
+  }
+};
+
+/** Exposed for tests. */
+export const hasPendingAurralTrackMetadata = (requestId: number) =>
+  pendingAurralTrackMetadata.has(requestId);
+
 const apiFor = () => new SlskdnAPI(getSettings().slskdn);
+
+const aurralApiFor = (server: AurralSettings) =>
+  new AurralAPI({
+    url: AurralAPI.buildUrl(server),
+    apiKey: server.apiKey,
+  });
 
 const toRequestError = (
   error: unknown,
@@ -81,16 +145,116 @@ const toRequestError = (
         error instanceof SlskdnError ? 'opaque' : 'app'
       );
 
-/** Adds the wishlist item in slskdN and marks the request searching. */
+/**
+ * Claims a pending track request for dispatch, so a double click or two
+ * managers approving at once send it only once. Returns false when another
+ * approval already claimed it (or it is no longer pending).
+ */
+export const claimPendingTrackRequest = async (
+  requestId: number
+): Promise<boolean> => {
+  const result = await getRepository(TrackRequest).update(
+    { id: requestId, status: 'pending' },
+    { status: 'searching' }
+  );
+  return (result.affected ?? 0) > 0;
+};
+
+/** Gives a claimed request back when its dispatch failed, so it can be retried. */
+export const releaseTrackRequestClaim = async (
+  requestId: number
+): Promise<void> => {
+  await getRepository(TrackRequest).update(
+    { id: requestId, status: 'searching' },
+    { status: 'pending' }
+  );
+};
+
+/**
+ * Dispatches a single-track request to Aurral or slskdN: exactly one job for
+ * the requested song. Aurral gets only the track (never its album, which
+ * would queue the album's own copy of the song under the album's title, plus
+ * every other missing song of that release); the album, release and length
+ * travel as hints so Aurral files the song under the right album and can
+ * check its length.
+ */
 export const startTrackSearch = async (
   request: TrackRequest,
-  approver: User
+  approver: User,
+  metadata?: AurralTrackMetadata
 ): Promise<TrackRequest> => {
+  const settings = getSettings();
+  const useAurral =
+    request.backendType === 'aurral' ||
+    (isAurralTrackRequestsConfigured(settings.aurral) &&
+      !request.wishlistItemId);
+
+  if (useAurral) {
+    const aurralServer =
+      (request.serverId != null
+        ? settings.aurral.find((server) => server.id === request.serverId)
+        : undefined) ?? getDefaultAurralServer(settings.aurral);
+
+    if (!aurralServer) {
+      throw new TrackRequestError(
+        'Aurral is not configured.',
+        503,
+        undefined,
+        undefined,
+        'app'
+      );
+    }
+
+    const extra = metadata ?? pendingAurralTrackMetadata.get(request.id);
+    pendingAurralTrackMetadata.delete(request.id);
+
+    try {
+      const result = await aurralApiFor(aurralServer).requestTrack({
+        artistName: request.artist,
+        trackName: request.title,
+        ...(extra?.albumName ? { albumName: extra.albumName } : {}),
+        ...(extra?.artistMbid ? { artistMbid: extra.artistMbid } : {}),
+        ...(extra?.albumMbid ? { albumMbid: extra.albumMbid } : {}),
+        ...(extra?.releaseMbid ? { releaseMbid: extra.releaseMbid } : {}),
+        ...(request.recordingMbid ? { trackMbid: request.recordingMbid } : {}),
+        ...(extra?.durationMs !== undefined
+          ? { durationMs: extra.durationMs }
+          : {}),
+        ...(extra?.trackNumber !== undefined
+          ? { trackNumber: extra.trackNumber }
+          : {}),
+        ...(extra?.discNumber !== undefined
+          ? { discNumber: extra.discNumber }
+          : {}),
+      });
+
+      request.backendType = 'aurral';
+      request.serverId = aurralServer.id;
+      request.externalRequestId =
+        result.jobId ?? request.externalRequestId ?? null;
+      request.status = result.alreadyOwned ? 'completed' : 'searching';
+      request.lastError = null;
+      request.lastErrorMessageKey = null;
+    } catch (error) {
+      throw new TrackRequestError(
+        error instanceof Error ? error.message : 'Aurral could not be reached.',
+        502,
+        undefined,
+        undefined,
+        'opaque'
+      );
+    }
+
+    request.modifiedBy = approver;
+    return getRepository(TrackRequest).save(request);
+  }
+
   try {
     const item = await apiFor().createWishlistItem({
       searchText: trackSearchText(request.artist, request.title),
       filter: getSettings().slskdn.searchFilter,
     });
+    request.backendType = 'slskdn';
     request.wishlistItemId = item.id;
     request.status = 'searching';
     request.lastError = null;
@@ -110,7 +274,12 @@ export const createTrackRequests = async (
   user: User,
   tracks: TrackInput[]
 ): Promise<TrackRequest[]> => {
-  if (!isSlskdnConfigured()) {
+  const settings = getSettings();
+  const useAurral = isAurralTrackRequestsConfigured(settings.aurral);
+  const aurralServer = useAurral
+    ? getDefaultAurralServer(settings.aurral)
+    : undefined;
+  if (!useAurral && !isSlskdnConfigured(settings.slskdn)) {
     throw new TrackRequestError(
       'Soulseek requests are not set up.',
       404,
@@ -130,8 +299,18 @@ export const createTrackRequests = async (
     );
   }
 
-  const created: TrackRequest[] = [];
+  const created: { request: TrackRequest; metadata?: AurralTrackMetadata }[] =
+    [];
   for (const track of tracks) {
+    const metadata: AurralTrackMetadata = {
+      albumMbid: track.albumMbid,
+      albumName: track.albumName,
+      artistMbid: track.artistMbid,
+      releaseMbid: track.releaseMbid,
+      durationMs: track.durationMs,
+      trackNumber: track.trackNumber,
+      discNumber: track.discNumber,
+    };
     const duplicate = await repository.findOne({
       where: {
         requestedById: user.id,
@@ -141,35 +320,39 @@ export const createTrackRequests = async (
       },
     });
     if (duplicate) {
-      created.push(duplicate);
+      created.push({ request: duplicate, metadata });
       continue;
     }
-    created.push(
-      await repository.save(
-        new TrackRequest({
-          requestedBy: user,
-          requestedById: user.id,
-          artist: track.artist,
-          title: track.title,
-          recordingMbid: track.recordingMbid ?? null,
-          source: track.source ?? 'manual',
-          status: 'pending',
-        })
-      )
+    const saved = await repository.save(
+      new TrackRequest({
+        requestedBy: user,
+        requestedById: user.id,
+        artist: track.artist,
+        title: track.title,
+        recordingMbid: track.recordingMbid ?? null,
+        source: track.source ?? 'manual',
+        backendType: useAurral ? 'aurral' : 'slskdn',
+        serverId: aurralServer?.id ?? null,
+        status: 'pending',
+      })
     );
+    if (useAurral) {
+      rememberPendingAurralTrackMetadata(saved.id, metadata);
+    }
+    created.push({ request: saved, metadata });
   }
 
   if (!canAutoApprove(user)) {
-    return created;
+    return created.map((entry) => entry.request);
   }
   const started: TrackRequest[] = [];
-  for (const request of created) {
+  for (const { request, metadata } of created) {
     if (request.status !== 'pending') {
       started.push(request);
       continue;
     }
     try {
-      started.push(await startTrackSearch(request, user));
+      started.push(await startTrackSearch(request, user, metadata));
     } catch (error) {
       request.lastError =
         error instanceof Error ? error.message.slice(0, 500) : null;
@@ -192,6 +375,7 @@ export const declineTrackRequest = async (
       'm55b3b320c5aa37974ce4'
     );
   }
+  pendingAurralTrackMetadata.delete(request.id);
   request.status = 'declined';
   request.modifiedBy = manager;
   return getRepository(TrackRequest).save(request);
@@ -205,13 +389,14 @@ export const cancelTrackRequest = async (request: TrackRequest, user: User) => {
       'm98de0998408c22f6a317'
     );
   }
-  if (request.wishlistItemId) {
+  if (request.backendType !== 'aurral' && request.wishlistItemId) {
     try {
       await apiFor().deleteWishlistItem(request.wishlistItemId);
     } catch (error) {
       throw toRequestError(error, 'slskdN could not be reached to cancel.');
     }
   }
+  pendingAurralTrackMetadata.delete(request.id);
   request.status = 'cancelled';
   request.modifiedBy = user;
   return getRepository(TrackRequest).save(request);
@@ -283,35 +468,205 @@ export const nextTrackStatus = (
 
 let syncing = false;
 
+const normalizeTrackText = (value: string | null | undefined): string =>
+  (value ?? '').trim().toLowerCase();
+
+// A name-only match for a request that has an Aurral job ID must not pick up
+// an older job for the same song; allow a little clock skew.
+const NAME_MATCH_CLOCK_SKEW_MS = 5 * 60 * 1000;
+
+export const nextAurralTrackStatus = (
+  request: Pick<
+    TrackRequest,
+    'status' | 'createdAt' | 'externalRequestId' | 'artist' | 'title'
+  >,
+  activity: {
+    id: string;
+    jobId?: string | null;
+    status: string;
+    statusLabel?: string;
+    artistName?: string | null;
+    trackName?: string | null;
+    requestedAt?: string;
+  }[],
+  now: Date
+): {
+  status: TrackRequest['status'];
+  lastError?: string | null;
+} => {
+  const createdAtMs = new Date(request.createdAt).getTime();
+  const isRecentEnough = (item: { requestedAt?: string }) => {
+    if (!request.externalRequestId) return true;
+    // With a job ID, a name match is only trusted for a job requested at the
+    // same time or later; an older job for the same song is a past attempt.
+    const requestedAtMs = item.requestedAt
+      ? new Date(item.requestedAt).getTime()
+      : Number.NaN;
+    return (
+      Number.isFinite(requestedAtMs) &&
+      Number.isFinite(createdAtMs) &&
+      requestedAtMs >= createdAtMs - NAME_MATCH_CLOCK_SKEW_MS
+    );
+  };
+  const match =
+    (request.externalRequestId
+      ? activity.find(
+          (item) =>
+            item.jobId === request.externalRequestId ||
+            item.id === request.externalRequestId
+        )
+      : undefined) ??
+    activity.find(
+      (item) =>
+        normalizeTrackText(item.artistName) ===
+          normalizeTrackText(request.artist) &&
+        normalizeTrackText(item.trackName) ===
+          normalizeTrackText(request.title) &&
+        isRecentEnough(item)
+    );
+
+  if (match) {
+    const normalized = match.status.trim().toLowerCase();
+    if (
+      normalized === 'completed' ||
+      normalized === 'complete' ||
+      normalized === 'available' ||
+      normalized === 'imported'
+    ) {
+      return { status: 'completed', lastError: null };
+    }
+    if (
+      normalized === 'failed' ||
+      normalized === 'error' ||
+      normalized === 'blocked' ||
+      normalized === 'cancelled'
+    ) {
+      return {
+        status: 'failed',
+        lastError: match.statusLabel ?? `Aurral reported track ${normalized}.`,
+      };
+    }
+    return { status: 'searching' };
+  }
+
+  if (
+    now.getTime() - new Date(request.createdAt).getTime() >
+    SEARCH_GIVE_UP_MS
+  ) {
+    return {
+      status: 'failed',
+      lastError: 'Aurral track request timed out without a result.',
+    };
+  }
+
+  return { status: 'searching' };
+};
+
 export const syncTrackRequests = async (): Promise<void> => {
-  if (syncing || !isSlskdnConfigured()) return;
+  if (syncing || !isTrackRequestsConfigured()) return;
   syncing = true;
   try {
     const repository = getRepository(TrackRequest);
     const requests = await repository.find({ where: { status: 'searching' } });
     if (requests.length === 0) return;
-    const api = apiFor();
+
     const now = new Date();
-    for (const request of requests) {
-      if (!request.wishlistItemId) continue;
-      const item = await api.getWishlistItem(request.wishlistItemId);
-      const update = nextTrackStatus(request, item, now);
-      if (update.removeWishlistItem) {
-        await api.deleteWishlistItem(request.wishlistItemId);
+    const settings = getSettings();
+
+    const aurralRequests = requests.filter(
+      (request) => request.backendType === 'aurral'
+    );
+    if (
+      aurralRequests.length > 0 &&
+      isAurralTrackRequestsConfigured(settings.aurral)
+    ) {
+      const activityByServerId = new Map<
+        number,
+        Awaited<ReturnType<AurralAPI['getActivity']>> | null
+      >();
+
+      for (const request of aurralRequests) {
+        const server =
+          (request.serverId != null
+            ? settings.aurral.find(
+                (candidate) => candidate.id === request.serverId
+              )
+            : undefined) ?? getDefaultAurralServer(settings.aurral);
+        if (!server) continue;
+
+        // One unreachable server skips only its own requests this cycle.
+        let activity = activityByServerId.get(server.id);
+        if (activity === undefined) {
+          try {
+            activity = await aurralApiFor(server).getActivity();
+          } catch (error) {
+            activity = null;
+            logger.warn('Aurral activity lookup for track requests failed', {
+              label: 'Track Requests',
+              serverId: server.id,
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+            });
+          }
+          activityByServerId.set(server.id, activity);
+        }
+        if (activity === null) continue;
+
+        try {
+          const update = nextAurralTrackStatus(request, activity, now);
+          request.status = update.status;
+          if (update.lastError !== undefined) {
+            request.lastError = update.lastError;
+          }
+          request.lastCheckedAt = now;
+          await repository.save(request);
+        } catch (error) {
+          logger.warn('Track request sync failed for one Aurral request', {
+            label: 'Track Requests',
+            requestId: request.id,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          });
+        }
       }
-      request.status = update.status;
-      request.searchCount = update.searchCount;
-      request.lastMatchCount = update.lastMatchCount;
-      if (update.lastError !== undefined) request.lastError = update.lastError;
-      if (update.lastErrorMessageKey !== undefined) {
-        request.lastErrorMessageKey = update.lastErrorMessageKey;
+    }
+
+    const slskdnRequests = requests.filter(
+      (request) => request.backendType !== 'aurral'
+    );
+    if (slskdnRequests.length > 0 && isSlskdnConfigured(settings.slskdn)) {
+      const api = apiFor();
+      for (const request of slskdnRequests) {
+        if (!request.wishlistItemId) continue;
+        try {
+          const item = await api.getWishlistItem(request.wishlistItemId);
+          const update = nextTrackStatus(request, item, now);
+          if (update.removeWishlistItem) {
+            await api.deleteWishlistItem(request.wishlistItemId);
+          }
+          request.status = update.status;
+          request.searchCount = update.searchCount;
+          request.lastMatchCount = update.lastMatchCount;
+          if (update.lastError !== undefined)
+            request.lastError = update.lastError;
+          if (update.lastErrorMessageKey !== undefined) {
+            request.lastErrorMessageKey = update.lastErrorMessageKey;
+          }
+          request.lastCheckedAt = now;
+          await repository.save(request);
+        } catch (error) {
+          logger.warn('Track request sync failed for one slskdN request', {
+            label: 'Track Requests',
+            requestId: request.id,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          });
+        }
       }
-      request.lastCheckedAt = now;
-      await repository.save(request);
     }
   } catch (error) {
-    logger.warn('Soulseek track request sync failed', {
-      label: 'Soulseek',
+    logger.warn('Track request sync failed', {
+      label: 'Track Requests',
       errorMessage: error instanceof Error ? error.message : String(error),
     });
   } finally {

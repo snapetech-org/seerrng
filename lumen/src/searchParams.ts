@@ -1,3 +1,10 @@
+import { strictQuery } from './api';
+
+// SeerrNG's request validator refuses a literal '+' (and !'()*) in query values, so API
+// paths built from URLSearchParams send spaces as %20.
+export const apiQueryString = (params: URLSearchParams) =>
+  strictQuery(`?${params.toString().replace(/\+/g, '%20')}`).slice(1);
+
 export function normalizeSearchParams(params: URLSearchParams) {
   if (!['query', 'type', 'format'].some((key) => params.has(key)))
     return params;
@@ -113,12 +120,12 @@ export function scopedSearchPath(
     const filters = readFilters(params, musicSearchFilters);
     if (!term && filters.size) {
       filters.set('page', page);
-      return `/discover/music?${filters}`;
+      return `/discover/music?${apiQueryString(filters)}`;
     }
     filters.set('query', term);
     filters.set('page', page);
     filters.set('type', 'music');
-    return `/search?${filters}`;
+    return `/search?${apiQueryString(filters)}`;
   }
   const video = scope === 'movie' || scope === 'tv';
   const scoped = scope === 'author' || scope === 'magazine' || video;

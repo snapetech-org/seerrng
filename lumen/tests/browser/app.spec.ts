@@ -151,6 +151,7 @@ async function fixtures(page: Page) {
     else if (path === '/media') body = paged([]);
     else if (path === '/live-tv/status')
       body = { configured: false, guideReady: false, canRequest: false };
+    else if (path === '/podcast/status') body = { configured: false };
     else if (path === '/blocklist/count') body = { count: 0 };
     else if (
       /^\/blocklist\/(101|202)$/.test(path) &&
@@ -6931,6 +6932,8 @@ test('music and Open Library book details open Associations with exact identity'
   await expect(
     page.getByRole('heading', { name: 'Fixture Album' })
   ).toBeVisible();
+  // the album page keeps its less used links in the More menu
+  await page.locator('#view').getByText('More', { exact: true }).click();
   await expect(association).toHaveAttribute(
     'href',
     testAppPath(`/associations/album/${album}`)

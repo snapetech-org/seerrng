@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { Section } from '../components/cards';
 import { embedded } from '../deployment';
@@ -26,8 +26,10 @@ interface Playlist {
 export default function PlaylistImport() {
   const { t } = useLumenLocale();
   const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
   const [spotifyNotice, setSpotifyNotice] = useState('');
-  const [url, setUrl] = useState('');
+  // a playlist link pasted into the music search arrives here as ?url=
+  const [url, setUrl] = useState(() => params.get('url') ?? '');
   const [playlist, setPlaylist] = useState<Playlist>();
   const [selected, setSelected] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState<number[]>([]);
@@ -169,6 +171,12 @@ export default function PlaylistImport() {
     <>
       <header className="ph">
         <h1>{t('lumen.playlist.title', 'Import Playlist')}</h1>
+        <p className="sub">
+          {t(
+            'lumen.playlist.subtitle',
+            'Paste a playlist link to see which songs you already have and get the rest. Deezer links open straight away; Spotify needs a one-time connection first.'
+          )}
+        </p>
       </header>
       <div className="toolbar">
         <Link className="btn btn-quiet btn-sm" to="/music">
@@ -214,16 +222,38 @@ export default function PlaylistImport() {
       <form
         onSubmit={(event) => {
           event.preventDefault();
+          const deezer = url
+            .trim()
+            .match(/deezer\.com\/(?:[a-z]{2}\/)?playlist\/(\d{1,20})/i);
+          if (deezer) {
+            navigate(`/music/playlist/deezer/${deezer[1]}`);
+            return;
+          }
+          if (/open\.spotify\.com/i.test(url) && !spotify.data?.connected) {
+            setError(
+              t(
+                'lumen.playlist.connectFirst',
+                'Connect Spotify first (button above), then try again.'
+              )
+            );
+            return;
+          }
           void preview();
         }}
       >
-        <label className="cfg-row">
-          <span>
+        <label className="sel music-import-field">
+          <span className="lbl">
             {t('lumen.playlist.urlLabel', 'Spotify or YouTube Playlist URL')}
           </span>
           <input
-            className="cfg-input"
-            type="url"
+            className="cfg-json music-import-url"
+            placeholder={t(
+              'lumen.playlist.linkPlaceholder',
+              'https://www.deezer.com/playlist/… or Spotify / YouTube'
+            )}
+            type="text"
+            inputMode="url"
+            autoComplete="off"
             maxLength={2048}
             value={url}
             disabled={busy}
@@ -231,7 +261,7 @@ export default function PlaylistImport() {
           />
         </label>
         <div className="toolbar">
-          <button className="btn btn-tonal" disabled={busy || !url.trim()}>
+          <button className="btn btn-primary" disabled={busy || !url.trim()}>
             {t('lumen.playlist.preview', 'Preview Matches')}
           </button>
         </div>

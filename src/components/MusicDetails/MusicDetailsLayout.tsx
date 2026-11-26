@@ -61,6 +61,9 @@ interface MusicDetailsLayoutProps {
   playbackActions?: (itemIds: string[], useFlac: boolean) => ReactNode;
   ratingData?: MusicRatingResponse;
   additionalContent?: ReactNode;
+  onRequestTrack?: (track: MusicDetails['tracks'][number]) => void;
+  requestingTrackIds?: string[];
+  requestedTrackIds?: string[];
 }
 
 const MusicDetailsLayout = ({
@@ -75,6 +78,9 @@ const MusicDetailsLayout = ({
   playbackActions,
   ratingData,
   additionalContent,
+  onRequestTrack,
+  requestingTrackIds,
+  requestedTrackIds,
 }: MusicDetailsLayoutProps) => {
   const intl = useIntl();
   const { pins, togglePinned } = useDetailDisclosurePins('music');
@@ -373,6 +379,9 @@ const MusicDetailsLayout = ({
             availableRecordingIds={data.trackAvailability?.[selectedQuality]}
             selectedItemIds={selectedPlaybackItemIds}
             onSelectionChange={setSelectedPlaybackItemIds}
+            onRequestTrack={onRequestTrack}
+            requestingTrackIds={requestingTrackIds}
+            requestedTrackIds={requestedTrackIds}
           />
 
           {(playbackActions || ratingData) && (

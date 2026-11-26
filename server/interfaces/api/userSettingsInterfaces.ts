@@ -81,6 +81,8 @@ export interface UserLumenPreferences {
   showBooks?: boolean;
   requestOptions?: boolean;
   theme?: 'dark' | 'light' | 'system';
+  musicPlayer?: 'aurral' | 'plex' | 'shelf';
+  musicPreviews?: boolean;
 }
 
 export type TvSeasonWatchGateStatus =

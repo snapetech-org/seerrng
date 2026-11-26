@@ -12,6 +12,7 @@ import { api } from './api';
 import { useAuth } from './auth';
 import { forgetLumenConfig, readLumenConfig } from './deployment';
 import { serverName, services, type MediaServerSetting } from './mediaServer';
+import { MUSIC_PLAYERS, type MusicPlayer } from './musicPlayback';
 import { isThemeColor, themeColors } from './themeOverrides';
 
 // Every switchable part of Lumen. Admins set defaults (and can lock them) in
@@ -39,6 +40,8 @@ export interface Prefs {
   showBooks: boolean; // Books + Audiobooks in navigation and Discover
   requestOptions: boolean; // poster quick requests ask for server/quality/folder when the account permits advanced requests
   theme: 'dark' | 'light' | 'system';
+  musicPlayer: MusicPlayer; // where Play on music goes
+  musicPreviews: boolean; // 30-second previews of songs not downloaded yet
 }
 
 export const DEFAULT_PREFS: Prefs = {
@@ -58,6 +61,8 @@ export const DEFAULT_PREFS: Prefs = {
   showBooks: true,
   requestOptions: true,
   theme: 'dark',
+  musicPlayer: 'aurral',
+  musicPreviews: true,
 };
 
 export interface AdminConfig {
@@ -126,10 +131,13 @@ const cleanPrefs = (value: unknown): Partial<Prefs> => {
     'wholeSeriesDefault',
     'showBooks',
     'requestOptions',
+    'musicPreviews',
   ] as const)
     if (typeof source[key] === 'boolean') clean[key] = source[key];
   if (['dark', 'light', 'system'].includes(source.theme as string))
     clean.theme = source.theme as Prefs['theme'];
+  if (MUSIC_PLAYERS.includes(source.musicPlayer as MusicPlayer))
+    clean.musicPlayer = source.musicPlayer as MusicPlayer;
   if (source.rows && typeof source.rows === 'object') {
     const rows = record(source.rows);
     clean.rows = Object.fromEntries(
@@ -154,6 +162,9 @@ const merge = (
     } else if (key === 'theme') {
       if (['dark', 'light', 'system'].includes(values.theme as string))
         next.theme = values.theme as Prefs['theme'];
+    } else if (key === 'musicPlayer') {
+      if (MUSIC_PLAYERS.includes(values.musicPlayer as MusicPlayer))
+        next.musicPlayer = values.musicPlayer as MusicPlayer;
     } else if (typeof values[key] === 'boolean') next[key] = values[key];
   }
   return next;

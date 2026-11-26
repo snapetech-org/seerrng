@@ -118,6 +118,9 @@ test('reader and music detail reports expose category-specific issue controls', 
 
   for (const item of cases) {
     await page.goto(appPath(item.path));
+    // the album page keeps Report an Issue in its More menu
+    if (item.path.startsWith('/music/'))
+      await page.locator('#view').getByText('More', { exact: true }).click();
     const report = page.getByRole('button', { name: 'Report an Issue' });
     await expect(report, item.path).toBeEnabled();
     await report.click();

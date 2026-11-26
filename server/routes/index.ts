@@ -54,7 +54,7 @@ import {
   parseOptionalLanguage,
   parseOptionalQueryBoolean,
 } from '@server/utils/validation';
-import { Router, type RequestHandler } from 'express';
+import { Router, type Request, type RequestHandler } from 'express';
 import rateLimit from 'express-rate-limit';
 import semver from 'semver';
 import adultRoutes from './adult';
@@ -98,6 +98,8 @@ import patchRoutes from './patches';
 import personRoutes from './person';
 import playbackRoutes from './playback';
 import playlistRoutes from './playlist';
+import podcastRoutes from './podcast';
+import podcastProxyRoutes from './podcastProxy';
 import queueInterventionRoutes from './queueInterventions';
 import readMeABookRoutes from './readmeabook';
 import requestRoutes from './request';
@@ -107,7 +109,7 @@ import seriesRoutes from './series';
 import serviceRoutes from './service';
 import slackActionRoutes from './slackActions';
 import softwareRoutes from './software';
-import soulseekRoutes from './soulseek';
+import soulseekRoutes, { trackRequestRoutes } from './soulseek';
 import sportarrRoutes from './sportarr';
 import swipeRoutes from './swipe';
 import tvRoutes from './tv';
@@ -191,6 +193,27 @@ const externalMetadataRateLimit = rateLimit({
     process.env.NODE_ENV === 'test' || process.env.E2E_TESTS === 'true',
   keyGenerator: (req) => `user:${req.user!.id}`,
 });
+const MUSIC_METADATA_RATE_LIMIT_EXEMPT_PATTERNS = [
+  /^\/library-art\/[^/]+\/[^/]+\/?$/,
+  /^\/artist-image\/[^/]+\/?$/,
+  /^\/album-art\/[^/]+\/?$/,
+  /^\/song-art\/?$/,
+  /^\/preview\/?$/,
+  /^\/activity\/?$/,
+  /^\/library-overview\/?$/,
+  /^\/search\/?$/,
+];
+const isMusicExternalMetadataExempt = (req: Request): boolean =>
+  (req.method === 'GET' || req.method === 'HEAD') &&
+  MUSIC_METADATA_RATE_LIMIT_EXEMPT_PATTERNS.some((pattern) =>
+    pattern.test(req.path)
+  );
+const musicExternalMetadataRateLimit: RequestHandler = (req, res, next) => {
+  if (isMusicExternalMetadataExempt(req)) {
+    return next();
+  }
+  return externalMetadataRateLimit(req, res, next);
+};
 
 const parsePushoverToken = (value: unknown) =>
   parseBoundedString(value, {
@@ -618,12 +641,21 @@ router.use(
   tvRoutes
 );
 router.use(
+  '/music/track-requests',
+  isAuthenticated(),
+  categoryAvailabilityGuard(['music']),
+  trackRequestRoutes
+);
+router.use(
   '/music',
   isAuthenticated(),
   categoryAvailabilityGuard(['music']),
-  externalMetadataRateLimit,
+  musicExternalMetadataRateLimit,
   musicRoutes
 );
+// Audiobookshelf reads podcast feeds and files here; signed URLs, no session
+router.use('/podcast/proxy', podcastProxyRoutes);
+router.use('/podcast', isAuthenticated(), podcastRoutes);
 router.use(
   '/book',
   isAuthenticated(),

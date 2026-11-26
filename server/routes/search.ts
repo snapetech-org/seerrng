@@ -31,6 +31,10 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { normalizeMagazineTitle } from '@server/lib/magazineIdentity';
 import { findMagazineMediaByTitles } from '@server/lib/magazineMediaMatcher';
 import {
+  loadDefaultOwnedAlbums,
+  markOwnedAlbumResults,
+} from '@server/lib/musicOwnedSongs';
+import {
   getAvailableMusicQualities,
   getMusicQualityStatuses,
 } from '@server/lib/musicQualityAvailability';
@@ -423,7 +427,8 @@ searchRoutes.get('/', async (req, res, next) => {
         ? 'audiobook'
         : undefined);
   const musicEnabled =
-    settings.lidarr.length > 0 && isUserMediaCategoryEnabled(req.user, 'music');
+    (settings.lidarr.length > 0 || settings.aurral.length > 0) &&
+    isUserMediaCategoryEnabled(req.user, 'music');
   const { comicVineApiKey, metronToken } = getSettings().main;
   const comicsEnabled =
     !!comicVineApiKey && isUserMediaCategoryEnabled(req.user, 'comic');
@@ -1354,20 +1359,30 @@ searchRoutes.get('/', async (req, res, next) => {
         : result
     );
 
+    const musicServices = [...getSettings().lidarr, ...getSettings().aurral];
     const mappedResults = await mapSearchResults(results.results, media);
-    const qualityEnrichedResults = mappedResults.map((result) =>
+    // albums the music library holds (all or part of) say so, as on Music
+    const ownedAlbums = mappedResults.some(
+      (result) => result.mediaType === 'album'
+    )
+      ? await loadDefaultOwnedAlbums()
+      : null;
+    const qualityEnrichedResults = markOwnedAlbumResults(
+      mappedResults,
+      ownedAlbums
+    ).map((result) =>
       result.mediaType === 'album'
         ? {
             ...result,
             availableQualities: getAvailableMusicQualities(
               result.mediaInfo,
               result.mediaInfo?.requests ?? [],
-              getSettings().lidarr
+              musicServices
             ),
             qualityStatuses: getMusicQualityStatuses(
               result.mediaInfo,
               result.mediaInfo?.requests ?? [],
-              getSettings().lidarr
+              musicServices
             ),
           }
         : result

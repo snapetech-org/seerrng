@@ -102,6 +102,11 @@ import { findMagazineMediaByTitles } from '@server/lib/magazineMediaMatcher';
 import { getPresentationMediaServerAccessContext } from '@server/lib/mediaServerAvailability';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import {
+  loadDefaultOwnedAlbums,
+  markOwnedAlbumResults,
+  type OwnedAlbumLookup,
+} from '@server/lib/musicOwnedSongs';
+import {
   getAvailableMusicQualities,
   getMusicQualityStatuses,
 } from '@server/lib/musicQualityAvailability';
@@ -631,7 +636,8 @@ const getRelatedMusicMediaMap = async (
 
 const mapDiscoverAlbumResult = (
   album: MbAlbumResult,
-  relatedMediaMap: Map<string, MediaEntity>
+  relatedMediaMap: Map<string, MediaEntity>,
+  ownedAlbums?: OwnedAlbumLookup | null
 ) => {
   const media = getRelatedMusicMedia(relatedMediaMap, album.id);
   const services = getSettings().lidarr;
@@ -641,8 +647,12 @@ const mapDiscoverAlbumResult = (
     services
   );
 
+  const [mapped] = markOwnedAlbumResults(
+    [mapAlbumResult(album, media)],
+    ownedAlbums
+  );
   return {
-    ...mapAlbumResult(album, media),
+    ...mapped,
     availableQualities,
     qualityStatuses: getMusicQualityStatuses(
       media,
@@ -715,13 +725,14 @@ const getLocalAvailableMusic = async ({
   );
   let artistMatches: Set<string> | undefined;
   let secondaryMatches: Set<string> | undefined;
+  const musicServices = [...settings.lidarr, ...settings.aurral];
   if (artistId || secondaryTypes.length) {
     const ids = media
       .filter((item) =>
         getAvailableMusicQualities(
           item,
           item.requests ?? [],
-          settings.lidarr
+          musicServices
         ).includes(requestedQuality as 'MP3' | 'FLAC')
       )
       .map((item) => item.mbId)
@@ -765,7 +776,7 @@ const getLocalAvailableMusic = async ({
       const availableQualities = getAvailableMusicQualities(
         item,
         item.requests ?? [],
-        settings.lidarr
+        musicServices
       );
       const genres = (searchMetadata?.genres ?? '')
         .split(',')
@@ -883,7 +894,7 @@ const getLocalAvailableMusic = async ({
         qualityStatuses: getMusicQualityStatuses(
           item,
           item.requests ?? [],
-          settings.lidarr
+          musicServices
         ),
       })
     ),
@@ -3394,6 +3405,8 @@ discoverRoutes.get<{ language: string }, GenreSliderItem[]>(
 );
 
 discoverRoutes.get('/music', async (req, res) => {
+  // the music library's own state for each album (as on the Music pages)
+  const ownedAlbums = await loadDefaultOwnedAlbums();
   const parsedMusicFilters = parseMusicSearchFilters(req.query);
   if ('error' in parsedMusicFilters)
     return res
@@ -3558,7 +3571,9 @@ discoverRoutes.get('/music', async (req, res) => {
           Math.ceil(response.totalResults / itemsPerPage)
         ),
         totalResults: response.totalResults,
-        results: albums.map((album) => mapDiscoverAlbumResult(album, related)),
+        results: albums.map((album) =>
+          mapDiscoverAlbumResult(album, related, ownedAlbums)
+        ),
       });
     }
 
@@ -3624,7 +3639,7 @@ discoverRoutes.get('/music', async (req, res) => {
         totalPages: Math.max(1, Math.ceil(totalCount / itemsPerPage)),
         totalResults: totalCount,
         results: albums.map((album) =>
-          mapDiscoverAlbumResult(album, relatedMediaMap)
+          mapDiscoverAlbumResult(album, relatedMediaMap, ownedAlbums)
         ),
       });
     }
@@ -3669,7 +3684,7 @@ discoverRoutes.get('/music', async (req, res) => {
         ),
         totalResults: topAlbums.payload.count,
         results: albums.map((album) =>
-          mapDiscoverAlbumResult(album, relatedMediaMap)
+          mapDiscoverAlbumResult(album, relatedMediaMap, ownedAlbums)
         ),
       });
     }
@@ -3809,7 +3824,7 @@ discoverRoutes.get('/music', async (req, res) => {
             itemsPerPage
           ),
           results: fallbackAlbums.map((album) =>
-            mapDiscoverAlbumResult(album, fallbackRelatedMediaMap)
+            mapDiscoverAlbumResult(album, fallbackRelatedMediaMap, ownedAlbums)
           ),
         });
       }
@@ -3880,7 +3895,7 @@ discoverRoutes.get('/music', async (req, res) => {
         totalPages: albums.length === itemsPerPage ? page + 1 : 1,
         totalResults: getUnknownTotalResults(page, albums.length, itemsPerPage),
         results: albums.map((album) =>
-          mapDiscoverAlbumResult(album, relatedMediaMap)
+          mapDiscoverAlbumResult(album, relatedMediaMap, ownedAlbums)
         ),
       });
     }

@@ -59,6 +59,11 @@ export const requestStatusMessages = defineMessages(
       'The connected book service is handling acquisition for this title. SeerrNG will update availability when the book appears in its library.',
     requestRetried: 'The request was retried and is waiting to be dispatched.',
     approvedForProcessing: 'Approved for processing.',
+    aurralSearching: 'Aurral is searching for this album.',
+    aurralDownloading: 'Aurral is downloading this album.',
+    aurralImporting: 'Aurral is importing tracks for this album.',
+    aurralFailed:
+      'Aurral could not download this album. Check activity in Aurral and retry when ready.',
   }
 );
 
@@ -70,6 +75,10 @@ const messagesByKey: Record<
   bookQueueFailed: requestStatusMessages.bookQueueFailed,
   bookCouldNotAccept: requestStatusMessages.bookCouldNotAccept,
   binderyDeclined: requestStatusMessages.binderyDeclined,
+  aurralSearching: requestStatusMessages.aurralSearching,
+  aurralDownloading: requestStatusMessages.aurralDownloading,
+  aurralImporting: requestStatusMessages.aurralImporting,
+  aurralFailed: requestStatusMessages.aurralFailed,
   binderyRequestMissing: requestStatusMessages.binderyRequestMissing,
   comicUnavailable: requestStatusMessages.comicUnavailable,
   comicQueueFailed: requestStatusMessages.comicQueueFailed,

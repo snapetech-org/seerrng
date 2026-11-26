@@ -12,7 +12,13 @@ import {
 import { AuthProvider, isAdministrator, useAuth } from './auth';
 import { ExtraGate } from './components/extra';
 import { MediaCategoryRoute } from './components/MediaCategoryRoute';
+import { MusicPlaylist } from './components/MusicHome';
 import { PageBoundary } from './components/PageBoundary';
+import {
+  PodcastDetail,
+  PodcastPreview,
+  PodcastsHome,
+} from './components/Podcasts';
 import Shell, { Placeholder } from './components/Shell';
 import { ToastProvider } from './components/toast';
 import { embedded } from './deployment';
@@ -603,6 +609,38 @@ function App() {
             element={
               <ExtraRoute category="music">
                 <Music />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/podcasts"
+            element={
+              <ExtraRoute category="podcast">
+                <PodcastsHome />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/podcasts/preview"
+            element={
+              <ExtraRoute category="podcast">
+                <PodcastPreview />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/podcasts/:id"
+            element={
+              <ExtraRoute category="podcast">
+                <PodcastDetail />
+              </ExtraRoute>
+            }
+          />
+          <Route
+            path="/music/playlist/:provider/:id"
+            element={
+              <ExtraRoute category="music">
+                <MusicPlaylist />
               </ExtraRoute>
             }
           />
@@ -1235,6 +1273,24 @@ function App() {
                   }
                 >
                   <AdminServarr key="lidarr" provider="lidarr" />
+                </Suspense>
+              ) : (
+                <Navigate to="/me" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/aurral"
+            element={
+              isAdministrator(user.permissions) ? (
+                <Suspense
+                  fallback={
+                    <p className="note" role="status">
+                      Loading Aurral services…
+                    </p>
+                  }
+                >
+                  <AdminServarr key="aurral" provider="aurral" />
                 </Suspense>
               ) : (
                 <Navigate to="/me" replace />

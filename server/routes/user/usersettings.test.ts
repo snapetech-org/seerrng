@@ -1084,6 +1084,8 @@ describe('per-user Lumen preferences', () => {
       showBooks: true,
       requestOptions: false,
       theme: 'light',
+      musicPlayer: 'plex',
+      musicPreviews: false,
     };
     const saved = await request(app)
       .post(`/user/${userId}/settings/main`)
@@ -1121,6 +1123,8 @@ describe('per-user Lumen preferences', () => {
       { hoverRequest: 'false' },
       { rows: { missingRow: true } },
       { rows: { hero: 1 } },
+      { musicPlayer: 'spotify' },
+      { musicPreviews: 'yes' },
     ];
     for (const lumenPreferences of invalid) {
       const response = await request(app)

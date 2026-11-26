@@ -22,6 +22,7 @@ import MediaIdentifier, {
 import {
   BlocklistedMediaError,
   DuplicateMediaRequestError,
+  MediaNotFoundError,
   MediaRequest,
   NoSeasonsAvailableError,
   QuotaExceptionAlreadyPendingError,
@@ -144,6 +145,7 @@ import {
 import { doesUserAllowVideo } from '@server/lib/videoMaturityPolicy';
 import logger from '@server/logger';
 import { isAuthenticated } from '@server/middleware/auth';
+import { findRedundantMusicRequest } from '@server/routes/music';
 import { parseBookshelfBookId } from '@server/utils/bookshelfCatalog';
 import { mapWithConcurrency } from '@server/utils/concurrency';
 import { filterEntityResponse } from '@server/utils/entityResponse';
@@ -393,7 +395,9 @@ const canRemoveRequestFromService = (
           server.id === (request.is4k ? media.serviceId4k : media.serviceId)
       );
     case MediaType.MUSIC:
-      return settings.lidarr.some((server) => server.id === media.serviceId);
+      return media.musicServiceType === 'aurral'
+        ? false
+        : settings.lidarr.some((server) => server.id === media.serviceId);
     case MediaType.BOOK: {
       const hasEbookLink =
         media.serviceId !== null &&
@@ -1349,6 +1353,19 @@ const sanitizeMediaRequestBody = (
     };
   }
   if (
+    bodyObject.force !== undefined &&
+    (typeof bodyObject.force !== 'boolean' ||
+      (bodyObject.force === true &&
+        (mediaType !== MediaType.MUSIC || !options.requireCreateIdentity)))
+  ) {
+    return {
+      error: {
+        status: 400,
+        message: 'force is only valid as a boolean on a new music request.',
+      },
+    };
+  }
+  if (
     bodyObject.bypassStreamingRequestPolicy !== undefined &&
     typeof bodyObject.bypassStreamingRequestPolicy !== 'boolean'
   ) {
@@ -1953,6 +1970,7 @@ const sanitizeMediaRequestBody = (
     requesterTagOnly: bodyObject.requesterTagOnly as boolean | undefined,
     bypassStreamingRequestPolicy:
       bodyObject.bypassStreamingRequestPolicy === true,
+    ...(bodyObject.force === true ? { force: true } : {}),
   } as MediaRequestBody;
 
   return {
@@ -3110,6 +3128,12 @@ requestRoutes.get<
 
 type MediaRequestCreationResponse =
   | MediaRequest
+  | {
+      code: 'MUSIC_RELEASE_REDUNDANT';
+      message: string;
+      coveredBy: { mbid: string; title: string };
+      redundant: { code: 'sameAlbum' | 'covered'; reason: string };
+    }
   | StreamingRequestPolicyRejectionResponse
   | { code: 'REQUEST_QUOTA_EXCEEDED'; message: string }
   | {
@@ -3229,6 +3253,28 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
         });
       }
 
+      // A release whose songs the requester will already have (another
+      // edition, or a single whose songs are all on an owned or requested
+      // album) is not requested silently; `force` asks for it anyway.
+      if (
+        body.value.mediaType === MediaType.MUSIC &&
+        body.value.force !== true &&
+        typeof body.value.mediaId === 'string'
+      ) {
+        const redundant = await findRedundantMusicRequest(
+          body.value.mediaId,
+          req.user
+        );
+        if (redundant) {
+          return res.status(409).json({
+            code: 'MUSIC_RELEASE_REDUNDANT',
+            message: `You'll already have these songs from ${redundant.coveredBy.title}.`,
+            coveredBy: redundant.coveredBy,
+            redundant: { code: redundant.code, reason: redundant.reason },
+          });
+        }
+      }
+
       const request = await MediaRequest.request(body.value, req.user, {
         expectedCredentialVersion: getExpectedCredentialVersion(req),
         requestQuotaApproval: body.value.requestQuotaApproval === true,
@@ -3294,6 +3340,8 @@ requestRoutes.post<never, MediaRequestCreationResponse, MediaRequestBody>(
           return next({ status: 409, message: error.message });
         case ServiceConfigurationError:
           return next({ status: 400, message: error.message });
+        case MediaNotFoundError:
+          return next({ status: 404, message: error.message });
         case NoSeasonsAvailableError:
           return next({ status: 202, message: error.message });
         case BlocklistedMediaError:

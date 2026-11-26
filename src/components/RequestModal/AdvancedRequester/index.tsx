@@ -238,6 +238,8 @@ const messages = defineMessages('components.RequestModal.AdvancedRequester', {
   notagoptions: 'No tags',
   binderyDefaults:
     'Bindery uses its own acquisition defaults for profiles, folders, and search.',
+  aurralDefaults:
+    'Aurral manages profiles, folders, and track acquisition automatically.',
   bookorbitDefaults:
     'BookOrbit manages approval, download, and library destinations for this request. Set those defaults in BookOrbit.',
   ignoreQuotaTitle: 'Bypass User Quota',
@@ -342,15 +344,16 @@ const AdvancedRequester = ({
         : type === 'book'
           ? 'readarr'
           : 'sonarr';
-  const { data, error } = useSWR<ServiceCommonServer[]>(
-    `/api/v1/service/${serviceType}`,
-    {
-      refreshInterval: 0,
-      refreshWhenHidden: false,
-      revalidateOnFocus: false,
-      revalidateOnMount: true,
-    }
-  );
+  const listEndpoint =
+    type === 'music'
+      ? '/api/v1/service/music'
+      : `/api/v1/service/${serviceType}`;
+  const { data, error } = useSWR<ServiceCommonServer[]>(listEndpoint, {
+    refreshInterval: 0,
+    refreshWhenHidden: false,
+    revalidateOnFocus: false,
+    revalidateOnMount: true,
+  });
   const [selectedServer, setSelectedServer] = useState<number | null>(
     defaultOverrides?.server !== undefined && defaultOverrides?.server >= 0
       ? defaultOverrides?.server
@@ -402,9 +405,16 @@ const AdvancedRequester = ({
     currentHasPermission([Permission.MANAGE_REQUESTS]) &&
     (quotaLimitForType ?? 0) > 0;
 
+  const selectedServerDetails = useMemo(
+    () => (data ?? []).find((server) => server.id === selectedServer),
+    [data, selectedServer]
+  );
+  const selectedIsAurral =
+    type === 'music' && selectedServerDetails?.backendType === 'aurral';
+
   const { data: serverData, isValidating } =
     useSWR<ServiceCommonServerWithDetails>(
-      selectedServer !== null
+      selectedServer !== null && !selectedIsAurral
         ? `/api/v1/service/${serviceType}/${selectedServer}`
         : null,
       {
@@ -545,16 +555,12 @@ const AdvancedRequester = ({
       ),
     [allow4kServerSelection, bookServiceType, data, is4k, type]
   );
-  const selectedServerDetails = useMemo(
-    () => (data ?? []).find((server) => server.id === selectedServer),
-    [data, selectedServer]
-  );
   const selectedIsBindery =
     type === 'book' &&
     (selectedServerDetails?.backend === 'bindery' ||
       selectedServerDetails?.backend === 'bookorbit');
   const canCustomizeServiceRequest =
-    serviceOverridesEnabled && !selectedIsBindery;
+    serviceOverridesEnabled && !selectedIsBindery && !selectedIsAurral;
   const selectedIs4k = allow4kServerSelection
     ? (selectedServerDetails?.is4k ?? is4k)
     : is4k;
@@ -1071,7 +1077,8 @@ const AdvancedRequester = ({
           (type === 'book' && bookFormat !== 'both')) &&
         !currentHasPermission([Permission.MANAGE_REQUESTS]) &&
         serverData?.server.id === selectedServer &&
-        !selectedIsBindery
+        !selectedIsBindery &&
+        !selectedIsAurral
       ) {
         try {
           const { data: override } = await axios.post<OverrideRulesResult>(
@@ -1177,6 +1184,7 @@ const AdvancedRequester = ({
     isAnime,
     serverData?.server.id,
     selectedServer,
+    selectedIsAurral,
     selectedIsBindery,
     selectedUserId,
     requestUser?.id,
@@ -1435,6 +1443,11 @@ const AdvancedRequester = ({
                   }
                   loadingLabel={intl.formatMessage(globalMessages.loading)}
                 />
+              )}
+              {selectedIsAurral && (
+                <p className="description">
+                  {intl.formatMessage(messages.aurralDefaults)}
+                </p>
               )}
               {selectedIsBindery && (
                 <p className="description">

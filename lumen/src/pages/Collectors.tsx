@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../api';
+import { api, type MusicServiceSummary } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { Cover } from '../components/cards';
 import { ExtraGate, ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
+import { hasAurralMusicService, type TrackRequestStatus } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 
@@ -28,6 +29,12 @@ function CollectorPicks() {
   const { user } = useAuth();
   const administrator = isAdministrator(user?.permissions);
   const feed = useApi<{ available: boolean; results: Pick[] }>('/collectors');
+  const trackStatus = useApi<TrackRequestStatus>(
+    user ? '/music/track-requests/status' : null
+  );
+  const musicServices = useApi<MusicServiceSummary[]>(
+    user ? '/service/music' : null
+  );
   const toast = useToast();
   const [following, setFollowing] = useState<string[]>([]);
   const [saving, setSaving] = useState<string>();
@@ -76,17 +83,31 @@ function CollectorPicks() {
         <div className="detail-loading" aria-busy="true" />
       )}
       {feed.data && !feed.data.available && (
-        <p className="note">
-          {t(
-            'lumen.collectors.unavailable',
-            'Collector picks need slskdN with social federation turned on. An administrator can connect it in Settings → Services.'
-          )}{' '}
+        <div className="empty">
+          <b>
+            {t(
+              'lumen.collectors.offTitle',
+              'Collector Picks are not turned on here'
+            )}
+          </b>
+          {hasAurralMusicService(musicServices.data, trackStatus.data)
+            ? t(
+                'lumen.collectors.unavailableSocial',
+                'Collector picks require social federation to be enabled.'
+              )
+            : t(
+                'lumen.collectors.unavailable',
+                'Collector picks require slskdN with social federation enabled.'
+              )}
           {administrator && (
-            <Link to="/admin/soulseek">
+            <Link className="btn btn-tonal btn-sm" to="/admin/soulseek">
               {t('lumen.collectors.openSettings', 'Open Soulseek Settings')}
             </Link>
           )}
-        </p>
+          <Link className="btn btn-tonal btn-sm" to="/music">
+            {t('lumen.collectors.backToMusic', 'Back to Music')}
+          </Link>
+        </div>
       )}
       {feed.data?.available &&
         (feed.data.results.length ? (

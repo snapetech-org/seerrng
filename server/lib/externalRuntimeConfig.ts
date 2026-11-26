@@ -30,6 +30,7 @@ export type ExternalRuntimeConfig = Pick<
   | 'sonarr'
   | 'sportarr'
   | 'lidarr'
+  | 'aurral'
   | 'readarr'
   | 'audiobookshelf'
   | 'navidrome'
@@ -209,6 +210,10 @@ const validate = (value: unknown): ExternalRuntimeConfig => {
         ? []
         : normalizeServarrServices(root.sportarr, 'sportarr'),
     lidarr: normalizeServarrServices(root.lidarr, 'lidarr'),
+    aurral:
+      root.aurral === undefined
+        ? []
+        : normalizeServarrServices(root.aurral, 'aurral'),
     readarr: normalizeServarrServices(root.readarr, 'readarr'),
     audiobookshelf: normalizeAudiobookshelf(root.audiobookshelf),
     navidrome: normalizeNavidrome(root.navidrome),
@@ -264,6 +269,7 @@ const loadFromSettingsFile = (): ExternalRuntimeConfig | undefined => {
       sonarr: settings.sonarr ?? [],
       sportarr: settings.sportarr ?? [],
       lidarr: settings.lidarr ?? [],
+      aurral: settings.aurral ?? [],
       readarr: settings.readarr ?? [],
       audiobookshelf: settings.audiobookshelf ?? null,
       navidrome: settings.navidrome ?? null,

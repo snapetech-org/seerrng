@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../api';
+import { api, type MusicServiceSummary } from '../api';
 import { useAuth } from '../auth';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { ServiceNote } from '../components/extra';
 import { friendlyError } from '../errors';
+import { hasAurralMusicService, type TrackRequestStatus } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { songKey, unmarkSongs } from '../musicState';
 
 const pageSize = 100;
 type Action = 'approve' | 'decline' | 'cancel';
@@ -40,7 +42,10 @@ export default function TrackRequests() {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
   const working = useRef(false);
-  const service = useApi<{ configured: boolean }>('/soulseek/status');
+  const service = useApi<TrackRequestStatus>('/soulseek/status');
+  const musicServices = useApi<MusicServiceSummary[]>(
+    user ? '/service/music' : null
+  );
   const scope = canViewAll && showAll ? 'all' : 'mine';
   const list = useApi<{
     results: TrackRequest[];
@@ -49,15 +54,27 @@ export default function TrackRequests() {
     service.data?.configured
       ? `/soulseek/track-requests?scope=${scope}&filter=${active ? 'active' : 'all'}&take=${pageSize}&skip=${skip}`
       : null,
-    { currentPathOnly: true }
+    // this list is never cached: keep it on screen while it refreshes
+    { currentPathOnly: true, keepDuringRefresh: true }
   );
   const reload = list.reload;
+  const refreshList = list.revalidate;
   const page = list.data?.pageInfo;
   useEffect(() => {
     if (!service.data?.configured) return;
-    const timer = window.setInterval(reload, 60_000);
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') refreshList();
+    }, 60_000);
     return () => window.clearInterval(timer);
-  }, [reload, service.data?.configured]);
+  }, [refreshList, service.data?.configured]);
+  const statusLabel = (status: TrackRequest['status']) =>
+    t(`lumen.trackRequests.status.${status}`, status);
+  const actionLabel = (action: Action) =>
+    action === 'approve'
+      ? t('lumen.trackRequests.approve', 'Approve')
+      : action === 'decline'
+        ? t('lumen.trackRequests.decline', 'Decline')
+        : t('lumen.trackRequests.cancelRequest', 'Cancel Request');
 
   function allowed(track: TrackRequest, action: Action) {
     const owner = track.requestedBy?.id === user?.id;
@@ -80,6 +97,9 @@ export default function TrackRequests() {
     try {
       if (action === 'cancel') await api(path, { method: 'DELETE' });
       else await api(`${path}/${action}`, { method: 'POST' });
+      // a cancelled or declined song can be asked for again
+      if (action !== 'approve')
+        unmarkSongs([songKey(track.artist, track.title)]);
       succeeded = true;
     } catch (error) {
       setFailure(
@@ -95,7 +115,7 @@ export default function TrackRequests() {
       if (succeeded) setConfirmation(undefined);
       setBusy(false);
       working.current = false;
-      reload();
+      refreshList();
     }
   }
 
@@ -127,10 +147,15 @@ export default function TrackRequests() {
       />
       {service.data?.configured === false && (
         <p className="note">
-          {t(
-            'lumen.trackRequests.unconfigured',
-            'Soulseek track requests are unavailable until an administrator connects slskdN.'
-          )}
+          {hasAurralMusicService(musicServices.data, service.data)
+            ? t(
+                'lumen.trackRequests.unavailableAurral',
+                'Track requests are unavailable until an administrator enables them in Aurral.'
+              )
+            : t(
+                'lumen.trackRequests.unconfigured',
+                'Soulseek track requests are unavailable until an administrator connects slskdN.'
+              )}
         </p>
       )}
       {service.data?.configured && (
@@ -245,11 +270,7 @@ export default function TrackRequests() {
                   <div>
                     <b>{track.title}</b>
                     <small>
-                      {track.artist} ·{' '}
-                      {t(
-                        `lumen.trackRequests.status.${track.status}`,
-                        track.status
-                      )}
+                      {track.artist} · {statusLabel(track.status)}
                     </small>
                     {scope === 'all' && track.requestedBy && (
                       <small>
@@ -284,14 +305,7 @@ export default function TrackRequests() {
                           disabled={busy}
                           onClick={() => setConfirmation({ track, action })}
                         >
-                          {action === 'approve'
-                            ? t('lumen.trackRequests.approve', 'Approve')
-                            : action === 'decline'
-                              ? t('lumen.trackRequests.decline', 'Decline')
-                              : t(
-                                  'lumen.trackRequests.cancelRequest',
-                                  'Cancel Request'
-                                )}
+                          {actionLabel(action)}
                         </button>
                       ))}
                   </div>
@@ -304,21 +318,10 @@ export default function TrackRequests() {
       {confirmation && (
         <ConfirmSheet
           title={t('lumen.trackRequests.confirmTitle', 'Confirm {action}?', {
-            action:
-              confirmation.action === 'approve'
-                ? t('lumen.trackRequests.approve', 'Approve')
-                : confirmation.action === 'decline'
-                  ? t('lumen.trackRequests.decline', 'Decline')
-                  : t('lumen.trackRequests.cancelRequest', 'Cancel Request'),
+            action: actionLabel(confirmation.action),
           })}
           body={confirmation.track.title}
-          confirm={
-            confirmation.action === 'approve'
-              ? t('lumen.trackRequests.approve', 'Approve')
-              : confirmation.action === 'decline'
-                ? t('lumen.trackRequests.decline', 'Decline')
-                : t('lumen.trackRequests.cancelRequest', 'Cancel Request')
-          }
+          confirm={actionLabel(confirmation.action)}
           cancel={t('lumen.trackRequests.goBack', 'Go Back')}
           busy={busy}
           onConfirm={() => void apply()}

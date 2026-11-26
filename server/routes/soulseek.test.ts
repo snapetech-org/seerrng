@@ -254,6 +254,46 @@ describe('Soulseek routes', () => {
     assert.equal(stored.status, 'completed');
   });
 
+  it('lists every open requested song for everyone who may request, without who asked', async () => {
+    const repository = getRepository(TrackRequest);
+    await repository.save([
+      new TrackRequest({
+        requestedById: admin.id,
+        status: 'pending',
+        artist: 'Band',
+        title: 'Open Song',
+        recordingMbid: RELEASE,
+      }),
+      new TrackRequest({
+        requestedById: admin.id,
+        status: 'failed',
+        artist: 'Band',
+        title: 'Failed Song',
+      }),
+    ]);
+    // the friend sees the admin's open request too (de-identified)
+    const res = await as(friend).get('/soulseek/track-requests/keys');
+    assert.equal(res.status, 200);
+    assert.ok(
+      res.body.active.some(
+        (entry: { artist: string; title: string; recordingMbid?: string }) =>
+          entry.title === 'Open Song' && entry.recordingMbid === RELEASE
+      )
+    );
+    assert.ok(
+      !res.body.active.some(
+        (entry: { title: string }) => entry.title === 'Failed Song'
+      )
+    );
+    assert.ok(
+      res.body.active.every(
+        (entry: Record<string, unknown>) =>
+          !('requestedBy' in entry) && !('id' in entry)
+      )
+    );
+    assert.equal(res.body.truncated, false);
+  });
+
   it('starts manager requests immediately and cancels them in slskdN', async () => {
     const created = await as(admin).post('/soulseek/track-requests', {
       tracks: [{ artist: 'Band', title: 'Single' }],

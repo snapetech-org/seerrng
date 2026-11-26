@@ -68,6 +68,15 @@ export class TrackRequest {
   @Column({ type: 'varchar', length: 64, nullable: true })
   public wishlistItemId?: string | null;
 
+  @Column({ type: 'varchar', length: 16, default: 'slskdn' })
+  public backendType: 'slskdn' | 'aurral';
+
+  @Column({ type: 'varchar', length: 128, nullable: true })
+  public externalRequestId?: string | null;
+
+  @Column({ type: 'integer', nullable: true })
+  public serverId?: number | null;
+
   @Column({ type: 'integer', default: 0 })
   public searchCount: number;
 

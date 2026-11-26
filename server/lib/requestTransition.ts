@@ -62,19 +62,29 @@ export const validateExternalServiceConfiguration = (
   }
 
   if (requestType === MediaType.MUSIC) {
+    const musicServices = [...settings.lidarr, ...settings.aurral];
     if (serverId === undefined || serverId === null) {
-      if (!settings.lidarr.some((lidarr) => lidarr.isDefault)) {
+      const hasDefault = musicServices.some((service) => service.isDefault);
+      const hasSingleFallbackAurral =
+        !hasDefault &&
+        settings.lidarr.length === 0 &&
+        settings.aurral.length > 0;
+      if (!hasDefault && !hasSingleFallbackAurral) {
         throw new ServiceConfigurationError(
-          'No default Lidarr server is configured for music requests.'
+          settings.aurral.length > 0
+            ? 'No default music server is configured for music requests.'
+            : 'No default Lidarr server is configured for music requests.'
         );
       }
 
       return;
     }
 
-    if (!settings.lidarr.some((lidarr) => lidarr.id === serverId)) {
+    if (!musicServices.some((service) => service.id === serverId)) {
       throw new ServiceConfigurationError(
-        'The selected Lidarr server no longer exists.'
+        settings.aurral.length > 0
+          ? 'The selected music server no longer exists.'
+          : 'The selected Lidarr server no longer exists.'
       );
     }
   }

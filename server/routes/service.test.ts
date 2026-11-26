@@ -1483,6 +1483,61 @@ describe('Lidarr settings routes', () => {
     ]);
   });
 
+  it('gives music service summaries only the public Aurral address', async () => {
+    const settings = getSettings();
+    const previousAurral = settings.aurral;
+    settings.lidarr = [];
+    settings.aurral = [
+      {
+        id: 0,
+        name: 'Aurral',
+        hostname: '192.168.1.20',
+        port: 3001,
+        useSsl: false,
+        externalUrl: 'https://music.example.com/',
+        apiKey: 'secret-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+      {
+        id: 1,
+        name: 'Aurral FLAC',
+        hostname: 'aurral.internal',
+        port: 3002,
+        useSsl: false,
+        externalUrl: 'javascript:alert(1)',
+        apiKey: 'other-secret',
+        isDefault: false,
+        syncEnabled: true,
+      },
+    ];
+    try {
+      const res = await request(createApp(Permission.REQUEST)).get(
+        '/service/music'
+      );
+      assert.strictEqual(res.status, 200);
+      assert.deepStrictEqual(res.body, [
+        {
+          id: 0,
+          name: 'Aurral',
+          isDefault: true,
+          backendType: 'aurral',
+          externalUrl: 'https://music.example.com',
+        },
+        {
+          id: 1,
+          name: 'Aurral FLAC',
+          isDefault: false,
+          backendType: 'aurral',
+          musicQuality: 'flac',
+        },
+      ]);
+      assert.doesNotMatch(JSON.stringify(res.body), /secret|192\.168|internal/);
+    } finally {
+      settings.aurral = previousAurral;
+    }
+  });
+
   it('hides Lidarr operational details from users without service detail permissions', async () => {
     getSettings().lidarr = [
       makeLidarr({

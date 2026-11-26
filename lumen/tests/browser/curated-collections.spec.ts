@@ -202,6 +202,7 @@ test('series and album details reach their curated collections', async ({
   ]);
   await tvSheet.getByRole('button', { name: 'Close' }).click();
   await page.goto(testAppPath(`/music/${album}`));
+  await page.locator('#view').getByText('More', { exact: true }).click();
   await page.getByRole('link', { name: 'View Discography' }).click();
   await expect(
     page.getByRole('heading', { name: 'Fixture Discography' })
