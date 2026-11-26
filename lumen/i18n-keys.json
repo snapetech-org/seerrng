@@ -6575,5 +6575,10 @@
   "lumen.music.getPlaylistTitleOne",
   "lumen.music.getPlaylistTitle",
   "lumen.music.getPlaylistSongsBody",
-  "lumen.music.getThem"
+  "lumen.music.getThem",
+  "lumen.music.recommended",
+  "lumen.music.because",
+  "lumen.music.becauseYouListen",
+  "lumen.music.playlistsToExplore",
+  "lumen.music.playlistGenre"
 ]

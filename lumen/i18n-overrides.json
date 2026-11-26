@@ -10856,7 +10856,13 @@
     "lumen.music.getPlaylistTitleOne": "Obtenir 1 morceau ?",
     "lumen.music.getPlaylistTitle": "Obtenir {count} morceaux ?",
     "lumen.music.getPlaylistSongsBody": "Aurral télécharge les morceaux un par un. Suivez leur progression dans Activité.",
-    "lumen.music.getThem": "Les obtenir"
+    "lumen.music.getThem": "Les obtenir",
+    "lumen.music.recommended": "Recommandé pour vous",
+    "lumen.music.because": "Parce que vous avez {artist}",
+    "lumen.music.becauseYouListen": "Parce que vous écoutez {artist}",
+    "lumen.music.trendingArtists": "Artistes tendance",
+    "lumen.music.playlistsToExplore": "Playlists à découvrir",
+    "lumen.music.playlistGenre": "Genre de playlist"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16392,6 +16398,12 @@
     "lumen.music.getPlaylistTitleOne": "تنزيل أغنية واحدة؟",
     "lumen.music.getPlaylistTitle": "تنزيل {count} أغنية؟",
     "lumen.music.getPlaylistSongsBody": "ينزّل Aurral الأغاني واحدة تلو الأخرى. يمكنك متابعة تقدمها في النشاط.",
-    "lumen.music.getThem": "تنزيلها"
+    "lumen.music.getThem": "تنزيلها",
+    "lumen.music.recommended": "مقترحة لك",
+    "lumen.music.because": "لأن لديك {artist}",
+    "lumen.music.becauseYouListen": "لأنك تستمع إلى {artist}",
+    "lumen.music.trendingArtists": "الفنانون الرائجون",
+    "lumen.music.playlistsToExplore": "قوائم تشغيل لاستكشافها",
+    "lumen.music.playlistGenre": "نوع قائمة التشغيل"
   }
 }

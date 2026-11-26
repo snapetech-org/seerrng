@@ -7665,6 +7665,7 @@ export const localeData = [
       'lumen.music.songs': 'الأغاني',
       'lumen.music.topResult': 'أفضل نتيجة',
       'lumen.music.topSongs': 'أشهر الأغاني',
+      'lumen.music.trendingArtists': 'الفنانون الرائجون',
       'lumen.music.trendingSongs': 'الأغاني الرائجة',
       'lumen.music.type.album': 'ألبوم',
       'lumen.music.type.artist': 'فنان',
@@ -7931,6 +7932,11 @@ export const localeData = [
       'lumen.music.getPlaylistSongsBody':
         'ينزّل Aurral الأغاني واحدة تلو الأخرى. يمكنك متابعة تقدمها في النشاط.',
       'lumen.music.getThem': 'تنزيلها',
+      'lumen.music.recommended': 'مقترحة لك',
+      'lumen.music.because': 'لأن لديك {artist}',
+      'lumen.music.becauseYouListen': 'لأنك تستمع إلى {artist}',
+      'lumen.music.playlistsToExplore': 'قوائم تشغيل لاستكشافها',
+      'lumen.music.playlistGenre': 'نوع قائمة التشغيل',
     },
   },
   {
@@ -33651,6 +33657,7 @@ export const localeData = [
       'lumen.music.songs': 'Chansons',
       'lumen.music.topResult': 'Meilleur résultat',
       'lumen.music.topSongs': 'Meilleures chansons',
+      'lumen.music.trendingArtists': 'Artistes tendance',
       'lumen.music.trendingSongs': 'Chansons tendance',
       'lumen.music.type.album': 'Album',
       'lumen.music.type.artist': 'Artiste',
@@ -33925,6 +33932,11 @@ export const localeData = [
       'lumen.music.getPlaylistSongsBody':
         'Aurral télécharge les morceaux un par un. Suivez leur progression dans Activité.',
       'lumen.music.getThem': 'Les obtenir',
+      'lumen.music.recommended': 'Recommandé pour vous',
+      'lumen.music.because': 'Parce que vous avez {artist}',
+      'lumen.music.becauseYouListen': 'Parce que vous écoutez {artist}',
+      'lumen.music.playlistsToExplore': 'Playlists à découvrir',
+      'lumen.music.playlistGenre': 'Genre de playlist',
     },
   },
   {

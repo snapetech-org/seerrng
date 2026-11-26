@@ -11916,3 +11916,21 @@ retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-playlist-i18n-20261126/`.
 
 release-note: `release-notes/lumen-music-playlist-localization.md`
+
+### Music recommendations and playlist discovery (2026-11-26)
+
+Recommendation, artist-affinity, trending-artist, and playlist-discovery
+headings and labels now use French and Arabic. The artist recommendations and
+playlist shelf continue to use their existing API data and navigation.
+Coverage checks the added keys and renders both sections in the saved-locale
+browser flow.
+
+Baseline and candidate search/discovery cases passed for French and Arabic at
+desktop, iPhone, Android, and tablet sizes. The pre-change baseline retains the
+previously localized Music search labels and compares the newly added headings
+against their English fallbacks. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artist-discovery-i18n-20261126/`.
+Remaining MusicHome artist-request and release-explanation messages remain
+under audit.
+
+release-note: `release-notes/lumen-music-artist-discovery-localization.md`

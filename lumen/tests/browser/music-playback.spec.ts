@@ -263,7 +263,14 @@ async function mockMusic(page: Page, seen: Seen, locale = 'en') {
               matchPercent: 90,
             },
           ],
-          trending: [],
+          trending: [
+            {
+              mbid: 'bbbbbbbb-1111-2222-3333-444444444444',
+              name: 'Rising Artist',
+              image: null,
+              label: 'Top',
+            },
+          ],
         },
       });
     if (path === '/music/discover/playlists')
@@ -951,32 +958,15 @@ for (const [
       })
     );
     await page.goto(testAppPath('/music?q=Missing%20query'));
-    await expect(
-      page.getByPlaceholder(
-        baseline ? 'Search songs, albums, and artists…' : searchPlaceholder
-      )
-    ).toHaveAttribute(
+    await expect(page.getByPlaceholder(searchPlaceholder)).toHaveAttribute(
       'placeholder',
-      baseline ? 'Search songs, albums, and artists…' : searchPlaceholder
+      searchPlaceholder
     );
     await expect(
-      page.getByRole('tablist', {
-        name: baseline ? 'Search results' : searchListLabel,
-      })
+      page.getByRole('tablist', { name: searchListLabel })
     ).toBeVisible();
-    await expect(
-      page.getByText(
-        baseline ? 'Nothing found for “Missing query”' : noResults,
-        { exact: true }
-      )
-    ).toBeVisible();
-    await expect(
-      page.getByText(
-        baseline
-          ? 'Check the spelling, or try just the artist or the song name.'
-          : noResultsHelp
-      )
-    ).toBeVisible();
+    await expect(page.getByText(noResults, { exact: true })).toBeVisible();
+    await expect(page.getByText(noResultsHelp)).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth
@@ -988,18 +978,54 @@ for (const [
     });
 
     await page.goto(testAppPath('/music'));
-    for (const [baselineLabel, translatedLabel] of [
-      ['Trending songs', trendingSongsLabel],
-      ['Your genres', genresLabel],
-      ['Made for you in Aurral', madeForYouLabel],
-      ['Browse catalog', browseCatalogLabel],
+    for (const [baselineLabel, translatedLabel, changedThisBatch] of [
+      ['Trending songs', trendingSongsLabel, false],
+      ['Your genres', genresLabel, false],
+      ['Made for you in Aurral', madeForYouLabel, false],
+      ['Browse catalog', browseCatalogLabel, false],
+      [
+        'Recommended for you',
+        locale === 'fr' ? 'Recommandé pour vous' : 'مقترحة لك',
+        true,
+      ],
+      [
+        'Trending artists',
+        locale === 'fr' ? 'Artistes tendance' : 'الفنانون الرائجون',
+        true,
+      ],
+      [
+        'Playlists to explore',
+        locale === 'fr' ? 'Playlists à découvrir' : 'قوائم تشغيل لاستكشافها',
+        true,
+      ],
     ]) {
       await expect(
-        page.getByText(baseline ? baselineLabel : translatedLabel, {
-          exact: true,
-        })
+        page.getByText(
+          baseline && changedThisBatch ? baselineLabel : translatedLabel,
+          {
+            exact: true,
+          }
+        )
       ).toBeVisible();
     }
+    await expect(
+      page.getByRole('group', {
+        name: baseline
+          ? 'Playlist genre'
+          : locale === 'fr'
+            ? 'Genre de playlist'
+            : 'نوع قائمة التشغيل',
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Because you have Owned Artist'
+          : locale === 'fr'
+            ? 'Parce que vous avez Owned Artist'
+            : 'لأن لديك Owned Artist'
+      )
+    ).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth

@@ -267,6 +267,23 @@ test('Lumen playlist actions are registered and translated', () => {
   }
 });
 
+test('Lumen artist discovery labels are registered and translated', () => {
+  const discoveryKeys = [
+    'lumen.music.recommended',
+    'lumen.music.because',
+    'lumen.music.becauseYouListen',
+    'lumen.music.trendingArtists',
+    'lumen.music.playlistsToExplore',
+    'lumen.music.playlistGenre',
+  ];
+  for (const key of discoveryKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
 test('Lumen MusicHome library and download activity labels are translated', async () => {
   const source = await readFile(
     resolve(root, 'src/components/MusicHome.tsx'),
