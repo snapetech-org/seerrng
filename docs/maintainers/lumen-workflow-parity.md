@@ -11380,3 +11380,24 @@ Retained browser results are under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/embedded-mounted-qa-f8f57fce/`.
 
 release-note: none
+
+### Software and game Swipe verification in the embedded mount (2026-11-26)
+
+The historical software-acquisition initiative memory said software/game Swipe
+was not implemented. Current Lumen source has Retro, Modern, and PC-game decks,
+provider-specific targets, filtered catalog browsing, title search with cursor
+retention, and submission through the software request API. Rechecking the
+production Lumen bundle through SeerrNG's compiled `mountLumenFrontend`
+middleware at `/lumen/` passed all 12 focused software Swipe browser cases
+across desktop, iPhone, Android, and tablet, covering PC variant selection,
+search and pagination, category filters, and exact request targets.
+
+This confirms the client workflow in fixture-backed responses; it does not
+verify live QuestarrNG/ROMarrNG acquisition, provider authorization, or
+native-matched visuals. The stale Hindsight claim was corrected with this
+source and test evidence. The broader software/game parity audit remains open.
+
+Results are retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/embedded-mounted-qa-f8f57fce/`.
+
+release-note: none
