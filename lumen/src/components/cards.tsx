@@ -721,6 +721,9 @@ export function BookCard({ b }: { b: BookResult }) {
   const states = useBookStates();
   const format = audio ? 'audiobook' : 'ebook';
   const library = useOwnedBooks(format);
+  const formatLabel = audio
+    ? t('lumen.cards.audiobook', 'audiobook')
+    : t('lumen.cards.ebook', 'ebook');
   const known = states?.get(b.id)?.[format];
   const media = bookMediaWithLibrary(b, format, library);
   const libraryStatus = statusOf(media, true);
@@ -766,7 +769,12 @@ export function BookCard({ b }: { b: BookResult }) {
       );
       markRequested();
       dropBookStates();
-      toast(`Requested ${b.title} · ${audio ? 'audiobook' : 'ebook'}`);
+      toast(
+        t('lumen.cards.bookRequested', 'Requested {title} · {format}', {
+          title: b.title,
+          format: formatLabel,
+        })
+      );
     } catch (e) {
       toast(
         friendlyError(e, t('lumen.error.requestFailed', 'Request failed'), t)
@@ -799,8 +807,16 @@ export function BookCard({ b }: { b: BookResult }) {
             <TouchQuick
               label={
                 ownershipUnknown
-                  ? `Request ${b.title} anyway; library status is unknown`
-                  : `Request ${b.title} (${audio ? 'audiobook' : 'ebook'})`
+                  ? t(
+                      'lumen.cards.requestBookAnywayLabel',
+                      'Request {title} anyway; library status is unknown',
+                      { title: b.title }
+                    )
+                  : t(
+                      'lumen.cards.requestBookFormatLabel',
+                      'Request {title} ({format})',
+                      { title: b.title, format: formatLabel }
+                    )
               }
               onClick={request}
               busy={busy}
@@ -835,7 +851,9 @@ export function BookCard({ b }: { b: BookResult }) {
                       aria-hidden="true"
                     >
                       <Icon name={audio ? 'play' : 'book'} size="sm" />
-                      {audio ? 'Listen' : 'Read'}
+                      {audio
+                        ? t('lumen.cards.listen', 'Listen')
+                        : t('lumen.cards.read', 'Read')}
                     </Link>
                     {audio && prefs.narratorChoice && (
                       <Link
@@ -863,10 +881,10 @@ export function BookCard({ b }: { b: BookResult }) {
                   <button className="qbtn go" disabled={busy} onClick={request}>
                     <Icon name="plus" size="sm" />
                     {ownershipUnknown
-                      ? 'Request anyway'
-                      : audio
-                        ? 'Request audiobook'
-                        : 'Request ebook'}
+                      ? t('lumen.cards.requestAnyway', 'Request anyway')
+                      : t('lumen.cards.requestFormat', 'Request {format}', {
+                          format: formatLabel,
+                        })}
                   </button>
                 ) : (
                   <Link
@@ -876,7 +894,7 @@ export function BookCard({ b }: { b: BookResult }) {
                     aria-hidden="true"
                   >
                     <Icon name="headphones" size="sm" />
-                    Choose narrator
+                    {t('lumen.cards.chooseNarrator', 'Choose narrator')}
                   </Link>
                 )}
               </div>
@@ -895,7 +913,7 @@ export function BookCard({ b }: { b: BookResult }) {
         {b.title}
       </Link>
       <div className="m">
-        {b.author || (audio ? 'Audiobook' : 'Ebook')}
+        {b.author || formatLabel}
         {b.firstPublishYear ? ' · ' + b.firstPublishYear : ''}
       </div>
     </div>

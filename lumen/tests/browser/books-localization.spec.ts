@@ -143,3 +143,82 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(page.getByText(text.audioNote)).toBeVisible();
   });
 }
+
+test('book cards localize format and request actions', async ({
+  page,
+}, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route(/\/imageproxy\//, (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#e05"/></svg>',
+    })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: {
+          id: 1,
+          displayName: 'Fixture',
+          permissions: 34359738368,
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({
+        json: {
+          locale: 'fr',
+          lumenPreferences: { hoverRequest: true, narratorChoice: false },
+        },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          initialized: true,
+          ebookServiceEnabled: true,
+          enabledMediaCategories: { ebook: true },
+        },
+      });
+    if (path === '/book/library')
+      return route.fulfill({
+        json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+      });
+    if (path === '/discover/books')
+      return route.fulfill({
+        json: {
+          page: 1,
+          totalPages: 1,
+          totalResults: 1,
+          results: [
+            {
+              id: 'hc:card-format',
+              title: 'Card Format',
+              mediaType: 'book',
+              bookFormat: 'ebook',
+              provider: 'hardcover',
+              author: null,
+              posterPath: '/cover.jpg',
+            },
+          ],
+        },
+      });
+    return route.fulfill({
+      json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
+    });
+  });
+  await page.goto('/books?sort=trending');
+  const card = page.locator('.poster.book').filter({ hasText: 'Card Format' });
+  await expect(card.locator('.m')).toContainText('livre numérique');
+  if (['iphone', 'android'].includes(info.project.name)) {
+    await expect(card.locator('.tq')).toHaveAccessibleName(
+      /Demander Card Format \(livre numérique\)/
+    );
+    return;
+  }
+  await card.hover();
+  await expect(card.locator('.qbtn.go')).toHaveText('Demander livre numérique');
+});

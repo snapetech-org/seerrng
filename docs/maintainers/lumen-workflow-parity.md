@@ -11746,6 +11746,20 @@ and live provider metadata remain unverified within the broader visual audit.
 
 release-note: `release-notes/lumen-localized-card-labels.md`
 
+### Book-card format and request labels follow the saved locale (2026-11-26)
+
+Book poster cards now localize their ebook and audiobook fallback labels, read
+and listen actions, narrator choice, request buttons, touch labels, and request
+success toast in English, French, and Arabic. Format-specific request state and
+library eligibility are unchanged.
+
+Locale catalog tests and a rendered French Books discovery fixture verify the
+format label and request action across desktop, iPhone, Android, and tablet.
+The candidate states are verified; matched native/Lumen screenshots and live
+Bookshelf provider responses remain part of the broader parity audit.
+
+release-note: `release-notes/lumen-book-card-localization.md`
+
 The Discover featured rail uses the same native localized movie and series
 labels as poster cards. A French browser regression checks the featured series
 metadata in desktop, iPhone, Android, and tablet projects. The candidate text
