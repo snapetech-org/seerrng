@@ -11652,3 +11652,19 @@ row without horizontal overflow. Matched native/Lumen screenshot review remains
 open for the broader detail-layout audit.
 
 release-note: `release-notes/lumen-comicvine-source-link.md`
+
+### Music album details preserve provider identity (2026-11-26)
+
+Native album details include the MusicBrainz release-group link, artist type,
+and a linked artist origin. Lumen now exposes the same facts in its existing
+Album Details panel. Release-group links require a valid MusicBrainz UUID, and
+origin searches encode the provider's area string. Labels reuse the native
+English, French, and Arabic messages.
+
+Browser coverage checks the release-group URL, an origin containing reserved
+characters, and rejection of an invalid release-group ID across desktop,
+iPhone, Android, and tablet. English, French, and Arabic catalog labels match
+the native message values. Candidate desktop and phone renders were inspected;
+matched native/Lumen comparison remains open for the broader detail audit.
+
+release-note: `release-notes/lumen-music-provider-details.md`

@@ -6322,5 +6322,8 @@
   "components.BookDetails.Layout.openLibrary",
   "components.BookDetails.Layout.pages",
   "components.BookDetails.Layout.publisher",
-  "components.ComicDetails.viewOnComicVine"
+  "components.ComicDetails.viewOnComicVine",
+  "components.MusicDetails.Layout.artistType",
+  "components.MusicDetails.Layout.musicBrainz",
+  "components.MusicDetails.Layout.origin"
 ]

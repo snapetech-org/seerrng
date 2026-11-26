@@ -146,6 +146,8 @@ const GENRE_WORDS: Record<string, string> = {
   edm: 'EDM',
   uk: 'UK',
 };
+
+const MUSICBRAINZ_UUID = /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/i;
 const genreLabel = (tag: string) =>
   GENRE_WORDS[tag.toLowerCase()] ??
   tag.replace(
@@ -2960,6 +2962,23 @@ function AlbumDetailPage() {
                 <Facts
                   rows={[
                     [
+                      t(
+                        'components.MusicDetails.Layout.musicBrainz',
+                        'MusicBrainz'
+                      ),
+                      MUSICBRAINZ_UUID.test(a.id) ? (
+                        <a
+                          href={`https://musicbrainz.org/release-group/${a.id}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {a.id}
+                        </a>
+                      ) : (
+                        ''
+                      ),
+                    ],
+                    [
                       t('lumen.music.fact.artist', 'Artist'),
                       <Link
                         key="a"
@@ -2974,7 +2993,27 @@ function AlbumDetailPage() {
                     ],
                     [t('lumen.music.fact.released', 'Released'), a.releaseDate],
                     [t('lumen.music.fact.label', 'Label'), a.recordLabel],
-                    [t('lumen.music.fact.from', 'From'), a.artist.area],
+                    [
+                      t(
+                        'components.MusicDetails.Layout.artistType',
+                        'Artist Type'
+                      ),
+                      a.artist.type,
+                    ],
+                    [
+                      t('components.MusicDetails.Layout.origin', 'Origin'),
+                      a.artist.area ? (
+                        <a
+                          href={`https://musicbrainz.org/search?${new URLSearchParams({ query: a.artist.area, type: 'area', method: 'indexed' })}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {a.artist.area}
+                        </a>
+                      ) : (
+                        ''
+                      ),
+                    ],
                     [t('lumen.music.fact.type', 'Type'), a.type],
                   ]}
                 />

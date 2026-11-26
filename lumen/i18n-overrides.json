@@ -5135,7 +5135,10 @@
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "Pages",
     "components.BookDetails.Layout.publisher": "Publisher",
-    "components.ComicDetails.viewOnComicVine": "View on ComicVine"
+    "components.ComicDetails.viewOnComicVine": "View on ComicVine",
+    "components.MusicDetails.Layout.artistType": "Artist Type",
+    "components.MusicDetails.Layout.musicBrainz": "MusicBrainz",
+    "components.MusicDetails.Layout.origin": "Origin"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10393,7 +10396,10 @@
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "Pages",
     "components.BookDetails.Layout.publisher": "Éditeur",
-    "components.ComicDetails.viewOnComicVine": "Vue sur ComicVine"
+    "components.ComicDetails.viewOnComicVine": "Vue sur ComicVine",
+    "components.MusicDetails.Layout.artistType": "Type d'artiste",
+    "components.MusicDetails.Layout.musicBrainz": "MusicBrainz",
+    "components.MusicDetails.Layout.origin": "Origine"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -15655,6 +15661,9 @@
     "components.BookDetails.Layout.openLibrary": "Open Library",
     "components.BookDetails.Layout.pages": "الصفحة",
     "components.BookDetails.Layout.publisher": "الناشر",
-    "components.ComicDetails.viewOnComicVine": "عرض على ComicVine"
+    "components.ComicDetails.viewOnComicVine": "عرض على ComicVine",
+    "components.MusicDetails.Layout.artistType": "نوع الفنان",
+    "components.MusicDetails.Layout.musicBrainz": "MusicBrainz",
+    "components.MusicDetails.Layout.origin": "المنشأ"
   }
 }

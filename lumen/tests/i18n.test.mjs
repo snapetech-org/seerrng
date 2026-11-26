@@ -17,6 +17,8 @@ const keys = [
   'components.UserProfile.UserSettings.menuClientTokens',
 ];
 const lumenKeys = [
+  'components.MusicDetails.Layout.artistType',
+  'components.MusicDetails.Layout.origin',
   'lumen.tv.selectEntireSeries',
   'lumen.tv.fact.firstAirDate',
   'lumen.tv.fact.seriesType',
@@ -181,5 +183,28 @@ test('Lumen includes the localized native user-list menu label', async () => {
       catalog['components.Layout.Sidebar.users'],
       english['components.Layout.Sidebar.users']
     );
+  }
+});
+
+test('Lumen music details reuse the native English, French, and Arabic labels', async () => {
+  const keys = JSON.parse(
+    await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+  );
+  const english = JSON.parse(
+    await readFile(resolve(root, '../src/i18n/locale/en.json'), 'utf8')
+  );
+  for (const name of ['artistType', 'musicBrainz', 'origin']) {
+    const key = `components.MusicDetails.Layout.${name}`;
+    assert.ok(keys.includes(key), `${key} is part of Lumen's message catalog`);
+    assert.equal(overrides.en[key], english[key]);
+    for (const locale of ['fr', 'ar']) {
+      const native = JSON.parse(
+        await readFile(
+          resolve(root, `../src/i18n/locale/${locale}.json`),
+          'utf8'
+        )
+      );
+      assert.equal(overrides[locale][key], native[key]);
+    }
   }
 });

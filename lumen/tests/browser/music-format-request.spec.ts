@@ -22,6 +22,9 @@ async function fixture(
     users?: unknown[];
     locale?: string;
     trackArtists?: { name: string; mbid: string }[];
+    albumId?: string;
+    artistType?: string;
+    artistArea?: string;
   } = {},
   route = '/music/42'
 ) {
@@ -107,9 +110,14 @@ async function fixture(
     if (path === '/music/42')
       return route.fulfill({
         json: {
-          id: '42',
+          id: options.albumId ?? '42',
           title: 'Fixture Album',
-          artist: { id: 'fixture-artist', name: 'Fixture Artist' },
+          artist: {
+            id: 'fixture-artist',
+            name: 'Fixture Artist',
+            type: options.artistType,
+            area: options.artistArea,
+          },
           tags: {
             releaseGroup: [
               { tag: 'Progressive rock', count: 12 },
@@ -182,6 +190,48 @@ async function fixture(
   ).toBeVisible();
   return writes;
 }
+
+test('music album details show the MusicBrainz identity and artist facts', async ({
+  page,
+}, info) => {
+  const albumId = '397b4ce9-89a1-41f8-9599-68983ee4a767';
+  await fixture(page, {
+    albumId,
+    artistType: 'Person',
+    artistArea: 'Québec & Canada',
+  });
+  await page.locator('summary', { hasText: 'Album Details' }).click();
+  const facts = page.locator('.facts2');
+  await expect(facts.getByRole('link', { name: albumId })).toHaveAttribute(
+    'href',
+    `https://musicbrainz.org/release-group/${albumId}`
+  );
+  const origin = facts.getByRole('link', { name: 'Québec & Canada' });
+  await expect(origin).toHaveAttribute(
+    'href',
+    'https://musicbrainz.org/search?query=Qu%C3%A9bec+%26+Canada&type=area&method=indexed'
+  );
+  await expect(facts).toContainText('Person');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth
+    )
+  ).toBe(true);
+  await page.screenshot({
+    path: info.outputPath('music-provider-details.png'),
+    fullPage: true,
+  });
+});
+
+test('music album details do not create a MusicBrainz link from an invalid ID', async ({
+  page,
+}) => {
+  await fixture(page, { albumId: 'https://attacker.example/album' });
+  await page.locator('summary', { hasText: 'Album Details' }).click();
+  await expect(
+    page.locator('.facts2').getByRole('link', { name: /MusicBrainz/i })
+  ).toHaveCount(0);
+});
 
 test('music details link to the request discography workflow with exact identity', async ({
   page,
