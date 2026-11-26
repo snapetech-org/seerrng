@@ -1784,6 +1784,7 @@ export const apiMessages: Record<
   m77ad82b54d77134af41e:
     'Could not store the image. Check SeerrNG application storage.',
   m77b012b2afb9a6971475: 'seasonRequests must be an array.',
+  m77cf72bb4653c4385674: 'Album lookup timed out.',
   m77daa7c9d23678327c1d: 'Missing media identifier',
   m77dbb592bfc8e274c449:
     'Library availability changed or could not be verified. Refresh and review the current status.',

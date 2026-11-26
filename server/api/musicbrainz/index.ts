@@ -1,4 +1,5 @@
 import ExternalAPI from '@server/api/externalapi';
+import type { LbMedium } from '@server/api/listenbrainz/interfaces';
 import { MUSIC_PRIMARY_TYPES } from '@server/constants/musicReleaseTypes';
 import cacheManager from '@server/lib/cache';
 import {
@@ -947,6 +948,91 @@ class MusicBrainz extends ExternalAPI {
               : []
           )
       );
+  }
+
+  /**
+   * One release's songs in ListenBrainz's medium shape (recording ids,
+   * lengths, artist credits), for album pages ListenBrainz has no data for.
+   */
+  public async getReleaseMediums({
+    releaseId,
+  }: {
+    releaseId: string;
+  }): Promise<LbMedium[]> {
+    const id = normalizeMusicBrainzId(releaseId);
+    if (!isValidMusicBrainzResourceId(id)) {
+      throw new Error('Invalid MusicBrainz release ID');
+    }
+    const data = await this.get<{ media?: Record<string, unknown>[] }>(
+      `/release/${encodeURIComponent(id)}`,
+      { params: { inc: 'recordings artist-credits', fmt: 'json' } },
+      43200
+    );
+    return (Array.isArray(data?.media) ? data.media : [])
+      .slice(0, 20)
+      .flatMap((medium, mediumIndex): LbMedium[] => {
+        if (!isRecord(medium) || !Array.isArray(medium.tracks)) return [];
+        const tracks = medium.tracks
+          .slice(0, 200)
+          .flatMap((track: unknown): LbMedium['tracks'] => {
+            if (!isRecord(track)) return [];
+            const recording = isRecord(track.recording) ? track.recording : {};
+            const recordingId = normalizeMusicBrainzId(
+              typeof recording.id === 'string' ? recording.id : ''
+            );
+            const title = boundText(track.title ?? recording.title, 300);
+            if (!title) return [];
+            const credits = (
+              Array.isArray(track['artist-credit'])
+                ? track['artist-credit']
+                : Array.isArray(recording['artist-credit'])
+                  ? recording['artist-credit']
+                  : []
+            )
+              .slice(0, 10)
+              .flatMap((credit: unknown) => {
+                if (!isRecord(credit) || !isRecord(credit.artist)) return [];
+                const artistId = normalizeMusicBrainzId(
+                  typeof credit.artist.id === 'string' ? credit.artist.id : ''
+                );
+                if (!isValidMusicBrainzResourceId(artistId)) return [];
+                return [
+                  {
+                    artist_mbid: artistId,
+                    artist_credit_name: boundText(
+                      credit.name ?? credit.artist.name,
+                      512
+                    ),
+                    join_phrase: boundText(credit.joinphrase, 64),
+                  },
+                ];
+              });
+            return [
+              {
+                artist_mbids: credits.map((credit) => credit.artist_mbid),
+                artists: credits,
+                length: Number(track.length ?? recording.length) || 0,
+                name: title,
+                position: Number(track.position) || 0,
+                recording_mbid: isValidMusicBrainzResourceId(recordingId)
+                  ? recordingId
+                  : '',
+                total_listen_count: 0,
+                total_user_count: 0,
+              },
+            ];
+          });
+        return tracks.length
+          ? [
+              {
+                format: boundText(medium.format, 48),
+                name: boundText(medium.title, 300),
+                position: Number(medium.position) || mediumIndex + 1,
+                tracks,
+              },
+            ]
+          : [];
+      });
   }
 
   public async getArtistWikipediaExtract({

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { afterEach, before, describe, it, mock } from 'node:test';
+import { afterEach, before, beforeEach, describe, it, mock } from 'node:test';
 
 import AurralAPI from '@server/api/aurral';
 import CoverArtArchive from '@server/api/coverartarchive';
@@ -23,6 +23,7 @@ import { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
 import { MAX_MUSICBRAINZ_BATCH_IDS } from '@server/lib/externalIds';
 import { resetOwnedSongIndexes } from '@server/lib/musicOwnedSongs';
+import { resetMusicReadCache } from '@server/lib/musicReadCache';
 import { clearRequestAllTracklistCache } from '@server/lib/musicRequestAllPlan';
 import { getSettings } from '@server/lib/settings';
 import { checkUser } from '@server/middleware/auth';
@@ -36,6 +37,7 @@ import authRoutes from './auth';
 import musicRoutes, {
   MAX_ALBUM_TRACKS,
   collectAlbumTrackArtists,
+  getAlbumDetails,
 } from './music';
 
 let app: Express;
@@ -212,7 +214,143 @@ function mockAlbumEnrichment(
   };
 }
 
+describe('getAlbumDetails MusicBrainz fallback', () => {
+  it('lists the songs of the first MusicBrainz release when ListenBrainz has no album data', async () => {
+    const listenbrainz = {
+      getAlbum: async () => {
+        throw new Error('Request failed with status code 404');
+      },
+    } as unknown as ListenBrainzAPI;
+    const releaseIds: string[] = [];
+    const musicbrainz = {
+      getReleaseGroupDetails: async () => ({
+        id: 'abcdefab-0000-4000-8000-000000000001',
+        title: 'New Album',
+        'primary-type': 'Album',
+        'artist-credit': [
+          {
+            name: 'Artist',
+            artist: {
+              id: 'abcdefab-0000-4000-8000-0000000000aa',
+              name: 'Artist',
+            },
+          },
+        ],
+        releases: [{ id: 'abcdefab-0000-4000-8000-0000000000cc' }],
+      }),
+      getReleaseMediums: async ({ releaseId }: { releaseId: string }) => {
+        releaseIds.push(releaseId);
+        return [
+          {
+            format: 'Digital Media',
+            name: '',
+            position: 1,
+            tracks: [
+              {
+                artist_mbids: [],
+                artists: [],
+                length: 180000,
+                name: 'First Song',
+                position: 1,
+                recording_mbid: 'abcdefab-0000-4000-8000-0000000000dd',
+                total_listen_count: 0,
+                total_user_count: 0,
+              },
+            ],
+          },
+        ];
+      },
+    } as unknown as MusicBrainz;
+
+    const album = await getAlbumDetails(
+      'abcdefab-0000-4000-8000-000000000001',
+      listenbrainz,
+      musicbrainz
+    );
+
+    assert.deepStrictEqual(releaseIds, [
+      'abcdefab-0000-4000-8000-0000000000cc',
+    ]);
+    assert.strictEqual(album.mediums[0]?.tracks[0]?.name, 'First Song');
+    assert.strictEqual(
+      album.recordings_release_mbid,
+      'abcdefab-0000-4000-8000-0000000000cc'
+    );
+  });
+
+  it('asks MusicBrainz only when ListenBrainz fails when not asked alongside', async () => {
+    let musicBrainzCalls = 0;
+    const musicbrainz = {
+      getReleaseGroupDetails: async () => {
+        musicBrainzCalls += 1;
+        return {
+          id: 'abcdefab-0000-4000-8000-000000000001',
+          title: 'MB Title',
+          releases: [],
+        };
+      },
+    } as unknown as MusicBrainz;
+    const known = await getAlbumDetails(
+      'abcdefab-0000-4000-8000-000000000001',
+      { getAlbum: async () => albumDetails } as unknown as ListenBrainzAPI,
+      musicbrainz,
+      { askMusicBrainzAlongside: false }
+    );
+    assert.strictEqual(known, albumDetails);
+    assert.strictEqual(musicBrainzCalls, 0);
+
+    const unknown = await getAlbumDetails(
+      'abcdefab-0000-4000-8000-000000000001',
+      {
+        getAlbum: async () => {
+          throw new Error('Request failed with status code 404');
+        },
+      } as unknown as ListenBrainzAPI,
+      musicbrainz,
+      { askMusicBrainzAlongside: false }
+    );
+    assert.strictEqual(
+      unknown.release_group_metadata.release_group.name,
+      'MB Title'
+    );
+    assert.strictEqual(musicBrainzCalls, 1);
+  });
+
+  it('still answers without songs when the release lookup fails', async () => {
+    const album = await getAlbumDetails(
+      'abcdefab-0000-4000-8000-000000000001',
+      {
+        getAlbum: async () => {
+          throw new Error('Request failed with status code 404');
+        },
+      } as unknown as ListenBrainzAPI,
+      {
+        getReleaseGroupDetails: async () => ({
+          id: 'abcdefab-0000-4000-8000-000000000001',
+          title: 'New Album',
+          releases: [{ id: 'abcdefab-0000-4000-8000-0000000000cc' }],
+        }),
+        getReleaseMediums: async () => {
+          throw new Error('MusicBrainz 503');
+        },
+      } as unknown as MusicBrainz
+    );
+    assert.strictEqual(
+      album.release_group_metadata.release_group.name,
+      'New Album'
+    );
+    assert.deepStrictEqual(album.mediums, []);
+  });
+});
+
 describe('GET /music/:id artist lists', () => {
+  // the album lookup asks MusicBrainz alongside ListenBrainz
+  beforeEach(() => {
+    mock.method(MusicBrainz.prototype, 'getReleaseGroupDetails', async () => {
+      throw new Error('MusicBrainz unavailable in tests');
+    });
+  });
+
   it('rejects malformed album IDs before artist discography provider lookup', async () => {
     const getAlbum = mock.method(ListenBrainzAPI.prototype, 'getAlbum');
 
@@ -331,6 +469,109 @@ describe('GET /music/:id artist lists', () => {
       artists.map((artist) => artist.artist_mbid),
       ['lower-score', 'higher-score']
     );
+  });
+  it('finds the artist through MusicBrainz when ListenBrainz has no album data', async () => {
+    mock.method(ListenBrainzAPI.prototype, 'getAlbum', async () => {
+      throw new Error(
+        '[ListenBrainz] Failed to fetch album details: Request failed with status code 404'
+      );
+    });
+    mock.method(
+      MusicBrainz.prototype,
+      'getReleaseGroupDetails',
+      async () =>
+        ({
+          id: 'abcdefab-0000-4000-8000-000000000001',
+          title: 'MusicBrainz Album',
+          'primary-type': 'Album',
+          'artist-credit': [
+            {
+              name: 'MusicBrainz Artist',
+              artist: {
+                id: 'abcdefab-0000-4000-8000-0000000000aa',
+                name: 'MusicBrainz Artist',
+              },
+            },
+          ],
+          releases: [],
+        }) as unknown as Awaited<
+          ReturnType<MusicBrainz['getReleaseGroupDetails']>
+        >
+    );
+    const getArtist = mock.method(
+      ListenBrainzAPI.prototype,
+      'getArtist',
+      async () => ({
+        similarArtists: {
+          artists: [
+            {
+              artist_mbid: 'abcdefab-0000-4000-8000-0000000000bb',
+              name: 'Similar',
+              score: 5,
+              type: 'Group',
+            },
+          ],
+        },
+      })
+    );
+    mock.method(TheAudioDb.prototype, 'batchGetArtistImages', async () => ({}));
+
+    const agent = await login();
+    const res = await agent.get(
+      '/music/abcdefab-0000-4000-8000-000000000001/artist-similar'
+    );
+
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(
+      getArtist.mock.calls[0]?.arguments[0],
+      'abcdefab-0000-4000-8000-0000000000aa'
+    );
+    assert.deepStrictEqual(
+      res.body.results.map((artist: { name: string }) => artist.name),
+      ['Similar']
+    );
+  });
+
+  it('answers an empty similar-artists row and a 404 discography for an artist ListenBrainz does not know', async () => {
+    mock.method(
+      ListenBrainzAPI.prototype,
+      'getAlbum',
+      async () => albumDetails
+    );
+    mock.method(ListenBrainzAPI.prototype, 'getArtist', async () => {
+      throw new Error(
+        '[ListenBrainz] Failed to fetch artist: Request failed with status code 404'
+      );
+    });
+
+    const agent = await login();
+    const similar = await agent.get(
+      '/music/abcdefab-0000-4000-8000-000000000001/artist-similar'
+    );
+    assert.strictEqual(similar.status, 200);
+    assert.deepStrictEqual(similar.body.results, []);
+
+    const discography = await agent.get(
+      '/music/abcdefab-0000-4000-8000-000000000001/artist-discography'
+    );
+    assert.strictEqual(discography.status, 404);
+  });
+
+  it('answers 404 for album sub-pages when neither provider knows the album', async () => {
+    mock.method(ListenBrainzAPI.prototype, 'getAlbum', async () => {
+      throw new Error('Request failed with status code 404');
+    });
+    mock.method(MusicBrainz.prototype, 'getReleaseGroupDetails', async () => {
+      throw new Error('Request failed with status code 404');
+    });
+
+    const agent = await login();
+    for (const path of ['artist', 'artist-discography', 'artist-similar']) {
+      const res = await agent.get(
+        `/music/abcdefab-0000-4000-8000-000000000001/${path}`
+      );
+      assert.strictEqual(res.status, 404, path);
+    }
   });
 });
 
@@ -928,6 +1169,7 @@ describe('Aurral music endpoints', () => {
     });
     // nor the library's song pages (the owned-song index)
     resetOwnedSongIndexes();
+    resetMusicReadCache();
     mock.method(AurralAPI.prototype, 'getLibraryAlbumPage', async () => ({
       kind: 'albums' as const,
       page: 1,
@@ -1599,6 +1841,84 @@ describe('Aurral music endpoints', () => {
       );
       assert.strictEqual(byTitle.get('Persian')?.albumRequested, true);
       assert.strictEqual(byTitle.get('Elsewhere')?.albumRequested, undefined);
+    });
+
+    it('fills songs from Deezer and albums from MusicBrainz when Aurral search fails', async (t) => {
+      configureAurral(t);
+      mock.method(AurralAPI.prototype, 'getArtistDetails', async () => null);
+      mock.method(AurralAPI.prototype, 'getArtistImageUrl', async () => null);
+      const artistMbid = '33333333-3333-4333-8333-333333333333';
+      const albumMbid = '44444444-4444-4444-8444-444444444444';
+      mock.method(AurralAPI.prototype, 'searchUnified', async () => {
+        throw new Error('timeout of 10000ms exceeded');
+      });
+      const aurralAlbums = mock.method(
+        AurralAPI.prototype,
+        'searchAlbums',
+        async () => []
+      );
+      mock.method(AurralAPI.prototype, 'searchLibrary', async () => ({
+        artists: [],
+        albums: [],
+        tracks: [],
+      }));
+      mock.method(DeezerAPI.prototype, 'searchArtists', async () => [
+        {
+          id: 9,
+          name: 'Hozier',
+          pictureXl: 'https://cdn-images.dzcdn.net/images/artist/h.jpg',
+          nbFan: 900000,
+        },
+      ]);
+      mock.method(MusicBrainz.prototype, 'searchArtist', async () => [
+        {
+          id: artistMbid,
+          name: 'Hozier',
+          score: 100,
+          media_type: 'artist' as const,
+          type: 'Person' as const,
+          'sort-name': 'Hozier',
+          'type-id': '',
+        },
+      ]);
+      mock.method(DeezerAPI.prototype, 'searchTracks', async () => [
+        { id: 77, title: 'Too Sweet', artistName: 'Hozier', rank: 900000 },
+      ]);
+      mock.method(
+        MusicBrainz.prototype,
+        'searchAlbum',
+        async () =>
+          [
+            {
+              id: albumMbid,
+              title: 'Unreal Unearth',
+              'primary-type': 'Album',
+              'first-release-date': '2023-08-18',
+              'artist-credit': [
+                { name: 'Hozier', artist: { id: artistMbid, name: 'Hozier' } },
+              ],
+            },
+          ] as unknown as Awaited<ReturnType<MusicBrainz['searchAlbum']>>
+      );
+
+      const agent = await login();
+      const res = await agent.get('/music/search').query({ q: 'hozier' });
+
+      assert.strictEqual(res.status, 200);
+      assert.strictEqual(res.body.degraded, true);
+      // Aurral just failed: no second Aurral call waiting out its timeout
+      assert.strictEqual(aurralAlbums.mock.callCount(), 0);
+      const song = (res.body.tracks as Record<string, unknown>[]).find(
+        (track) => track.title === 'Too Sweet'
+      );
+      assert.ok(song, 'Deezer song in the results');
+      assert.strictEqual(song.previewDeezerId, '77');
+      assert.strictEqual(song.artistMbid, artistMbid);
+      const album = (res.body.albums as Record<string, unknown>[]).find(
+        (entry) => entry.mbid === albumMbid
+      );
+      assert.ok(album, 'MusicBrainz album in the results');
+      assert.strictEqual(album.artistName, 'Hozier');
     });
 
     it('runs Deezer artist and Aurral album fallbacks when degraded and keeps results with mbid first', async (t) => {

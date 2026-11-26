@@ -15,6 +15,7 @@ import {
   hasPendingAurralTrackMetadata,
   nextAurralTrackStatus,
   releaseTrackRequestClaim,
+  retryFailedAurralDispatches,
   startTrackSearch,
   syncTrackRequests,
 } from '@server/lib/soulseek/trackRequests';
@@ -471,6 +472,164 @@ describe('Track request routing: Aurral vs slskdN', () => {
       (await repo.findOneByOrFail({ id: goodWish.id })).status,
       'completed'
     );
+  });
+
+  it('sends an auto-approved song again after its hand-off to Aurral failed, keeping its album hints', async () => {
+    getSettings().aurral = [
+      {
+        id: 41,
+        name: 'Aurral',
+        hostname: 'aurral.local',
+        port: 3001,
+        useSsl: false,
+        apiKey: 'aurral-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+    ];
+    const user = await getRepository(User).save(
+      new User({
+        avatar: '',
+        email: 'track-retry@example.com',
+        username: 'trackretry',
+        permissions: Permission.REQUEST | Permission.AUTO_APPROVE,
+        plexId: 2041,
+      })
+    );
+    let calls = 0;
+    const requestTrack = mock.method(
+      AurralAPI.prototype,
+      'requestTrack',
+      async () => {
+        calls += 1;
+        if (calls === 1) throw new Error('timeout of 10000ms exceeded');
+        return { success: true, queued: true, jobId: 'aurral-retry-1' };
+      }
+    );
+    mock.method(AurralAPI.prototype, 'getActivity', async () => []);
+
+    const [created] = await createTrackRequests(user, [
+      {
+        artist: 'Ariana Grande',
+        title: 'hate that i made you love me',
+        albumMbid: 'abcdefab-0000-4000-8000-000000000041',
+        albumName: 'hate that i made you love me',
+      },
+    ]);
+    assert.strictEqual(created.status, 'pending');
+    assert.match(created.lastError ?? '', /timeout/);
+
+    // too soon: left for the next run
+    assert.strictEqual(await retryFailedAurralDispatches(new Date()), 0);
+
+    const later = new Date(Date.now() + 3 * 60_000);
+    assert.strictEqual(await retryFailedAurralDispatches(later), 1);
+    const saved = await getRepository(TrackRequest).findOneByOrFail({
+      id: created.id,
+    });
+    assert.strictEqual(saved.status, 'searching');
+    assert.strictEqual(saved.externalRequestId, 'aurral-retry-1');
+    assert.strictEqual(
+      requestTrack.mock.calls[1]?.arguments[0]?.albumMbid,
+      'abcdefab-0000-4000-8000-000000000041'
+    );
+  });
+
+  it('takes a job Aurral queued despite a timed-out hand-off instead of sending the song twice', async () => {
+    getSettings().aurral = [
+      {
+        id: 43,
+        name: 'Aurral',
+        hostname: 'aurral.local',
+        port: 3001,
+        useSsl: false,
+        apiKey: 'aurral-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+    ];
+    const user = await getRepository(User).save(
+      new User({
+        avatar: '',
+        email: 'track-queued@example.com',
+        username: 'trackqueued',
+        permissions: Permission.REQUEST | Permission.AUTO_APPROVE,
+        plexId: 2043,
+      })
+    );
+    const requestTrack = mock.method(
+      AurralAPI.prototype,
+      'requestTrack',
+      async () => {
+        throw new Error('timeout of 30000ms exceeded');
+      }
+    );
+    const [created] = await createTrackRequests(user, [
+      { artist: 'Tate McRae', title: 'Housewife' },
+    ]);
+    assert.strictEqual(created.status, 'pending');
+    mock.method(AurralAPI.prototype, 'getActivity', async () => [
+      {
+        id: 'req-1',
+        jobId: 'job-housewife',
+        status: 'processing',
+        statusLabel: 'Downloading',
+        artistName: 'Tate McRae',
+        trackName: 'Housewife',
+        requestedAt: new Date().toISOString(),
+      },
+    ]);
+
+    assert.strictEqual(
+      await retryFailedAurralDispatches(new Date(Date.now() + 3 * 60_000)),
+      1
+    );
+    // the first (timed-out) hand-off only: nothing sent again
+    assert.strictEqual(requestTrack.mock.callCount(), 1);
+    const saved = await getRepository(TrackRequest).findOneByOrFail({
+      id: created.id,
+    });
+    assert.strictEqual(saved.status, 'searching');
+    assert.strictEqual(saved.externalRequestId, 'job-housewife');
+    assert.strictEqual(saved.lastError, null);
+  });
+
+  it('leaves pending requests that wait for a manager alone', async () => {
+    getSettings().aurral = [
+      {
+        id: 42,
+        name: 'Aurral',
+        hostname: 'aurral.local',
+        port: 3001,
+        useSsl: false,
+        apiKey: 'aurral-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+    ];
+    const user = await getRepository(User).save(
+      new User({
+        avatar: '',
+        email: 'track-waits@example.com',
+        username: 'trackwaits',
+        permissions: Permission.REQUEST,
+        plexId: 2042,
+      })
+    );
+    const requestTrack = mock.method(
+      AurralAPI.prototype,
+      'requestTrack',
+      async () => ({ success: true, queued: true, jobId: 'never' })
+    );
+    const [created] = await createTrackRequests(user, [
+      { artist: 'Artist', title: 'Waiting Song' },
+    ]);
+    assert.strictEqual(created.status, 'pending');
+    assert.strictEqual(
+      await retryFailedAurralDispatches(new Date(Date.now() + 3 * 60_000)),
+      0
+    );
+    assert.strictEqual(requestTrack.mock.callCount(), 0);
   });
 
   it('does not take the result of an older Aurral job for the same song', () => {

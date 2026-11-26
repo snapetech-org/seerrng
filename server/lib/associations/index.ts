@@ -1,5 +1,6 @@
 import ListenBrainzAPI from '@server/api/listenbrainz';
 import type { LbSimilarArtistResponse } from '@server/api/listenbrainz/interfaces';
+import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI, {
   type OpenLibraryAuthorWork,
 } from '@server/api/openlibrary';
@@ -16,6 +17,7 @@ import {
   normalizeMusicBrainzId,
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
+import { getAlbumDetails } from '@server/lib/musicAlbumDetails';
 import { getSettings } from '@server/lib/settings';
 import { scoreTmdbResult } from '@server/lib/tmdbRank';
 import logger from '@server/logger';
@@ -494,7 +496,12 @@ const buildForAlbum = async (
 ): Promise<AssociationGraph> => {
   const listenbrainz = new ListenBrainzAPI();
   const normalizedAlbumId = normalizeMusicBrainzId(mbAlbumId);
-  const album = await listenbrainz.getAlbum(normalizedAlbumId);
+  const album = await getAlbumDetails(
+    normalizedAlbumId,
+    listenbrainz,
+    new MusicBrainz(),
+    { askMusicBrainzAlongside: false }
+  );
   const rootArtist = album.release_group_metadata?.artist?.artists?.[0];
   const rootTitle =
     album.release_group_metadata?.release_group?.name ?? 'Album';

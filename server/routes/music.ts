@@ -15,10 +15,12 @@ import AurralAPI, {
   type AurralResolvedLink,
 } from '@server/api/aurral';
 import CoverArtArchive from '@server/api/coverartarchive';
-import DeezerAPI, { type DeezerArtistResult } from '@server/api/deezer';
+import DeezerAPI, {
+  type DeezerArtistResult,
+  type DeezerTrackResult,
+} from '@server/api/deezer';
 import Discogs from '@server/api/discogs';
 import ListenBrainzAPI from '@server/api/listenbrainz';
-import type { LbAlbumDetails } from '@server/api/listenbrainz/interfaces';
 import MusicBrainz, { escapeMusicBrainzQuery } from '@server/api/musicbrainz';
 import type {
   MbAlbumDetails,
@@ -61,6 +63,11 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
 import {
+  AlbumDetailsNotFoundError,
+  getAlbumDetails,
+  mapMusicBrainzReleaseGroupToListenBrainzAlbum,
+} from '@server/lib/musicAlbumDetails';
+import {
   getOwnedAlbums,
   getOwnedSongKeys,
   isOwnedArtist,
@@ -83,6 +90,12 @@ import {
   getMusicQualityStatuses,
 } from '@server/lib/musicQualityAvailability';
 import {
+  cachedMusicCover,
+  cachedMusicRead,
+  invalidateMusicReads,
+  type MusicReadOptions,
+} from '@server/lib/musicReadCache';
+import {
   buildRequestAllPlan,
   classifyArtistReleaseGroups,
   collapseRedundantAlbumResults,
@@ -96,6 +109,7 @@ import {
   type RequestAllPlanItem,
 } from '@server/lib/musicRequestAllPlan';
 import {
+  albumPopularityKey,
   applyTrackPopularity,
   fillTrackArtistMbids,
   filterLibraryHits,
@@ -120,6 +134,7 @@ import {
   selectTopResult,
   sortAlbumsForSearch,
   sortArtistsForSearch,
+  stripEditionWords,
   stripMusicSearchFiller,
   stripTrackPopularity,
   type DominantTrackArtist,
@@ -161,6 +176,63 @@ import rateLimit from 'express-rate-limit';
 import { In } from 'typeorm';
 
 const musicRoutes = Router();
+
+// the album lookup moved to lib; tests and callers still import it from here
+export { getAlbumDetails };
+
+// Library and activity reads are shared for a few seconds (see musicReadCache);
+// anything that changes the library or the queue drops those copies.
+musicRoutes.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.on('finish', () => {
+      if (res.statusCode < 400) invalidateMusicReads('library:', 'activity:');
+    });
+  }
+  next();
+});
+
+// the queue moves every few seconds: a copy under 20 s old answers at once
+// (the tab polls every 10 s) while a new one is read; an older one waits
+// briefly for the new read, so a busy Aurral never blanks the Activity tab
+const ACTIVITY_READ: MusicReadOptions = {
+  ttlMs: 5_000,
+  revalidateMs: 20_000,
+  maxStaleMs: 30 * 60_000,
+  waitMs: 1_500,
+};
+// charts and recommendations are the same for everyone and slow to build
+// (the trending chart searches Aurral for each album's MBID): 15 minutes
+// fresh, then served at once while a new copy is built
+const DISCOVER_READ: MusicReadOptions = {
+  ttlMs: 15 * 60_000,
+  revalidateMs: 12 * 60 * 60_000,
+  maxStaleMs: 48 * 60 * 60_000,
+  waitMs: 2_000,
+};
+// covers rarely change: an hour fresh, then served while a new copy is read
+const MAX_CACHED_COVER_BYTES = 512 * 1024;
+const COVER_READ: MusicReadOptions = {
+  ttlMs: 60 * 60_000,
+  revalidateMs: 7 * 24 * 60 * 60_000,
+  maxStaleMs: 7 * 24 * 60 * 60_000,
+  // small covers only (at most ~100 MB for the 200 kept), and no "no cover"
+  // answers: a newly added album gets its cover on the next view
+  store: (value) => {
+    const buffer = (value as { buffer?: { length?: number } } | null)?.buffer;
+    return (
+      typeof buffer?.length === 'number' &&
+      buffer.length <= MAX_CACHED_COVER_BYTES
+    );
+  },
+};
+// library pages change when a download finishes: a copy up to 5 minutes old
+// answers at once while a new one is read
+const LIBRARY_READ: MusicReadOptions = {
+  ttlMs: 30_000,
+  revalidateMs: 5 * 60_000,
+  maxStaleMs: 24 * 60 * 60_000,
+  waitMs: 1_500,
+};
 const discogsRatings = new Discogs();
 // MusicBrainz allows about one request per second per client. The limiter
 // lives on each instance, so routes share one instance instead of creating a
@@ -203,11 +275,9 @@ const musicSearchRateLimit = rateLimit({
     req.user ? `user:${req.user.id}` : getRateLimitKey(req),
 });
 
-class AlbumDetailsNotFoundError extends Error {
-  constructor(message = 'Album not found') {
-    super(message);
-  }
-}
+// ListenBrainz answers 404 for artists and albums it has no data for
+const isNotFoundError = (error: unknown) =>
+  error instanceof Error && /status code 404/.test(error.message);
 
 const MUSICBRAINZ_UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -291,134 +361,6 @@ export const collectAlbumTrackArtists = (
     artistId,
     artistName,
   }));
-};
-
-const mapMusicBrainzReleaseGroupToListenBrainzAlbum = (
-  album: MbAlbumDetails
-): LbAlbumDetails => {
-  const primaryArtist = album['artist-credit']?.[0]?.artist;
-  const firstReleaseId = album.releases?.[0]?.id ?? '';
-
-  return {
-    caa_id: 0,
-    caa_release_mbid: firstReleaseId,
-    listening_stats: {
-      artist_mbids: primaryArtist?.id ? [primaryArtist.id] : [],
-      artist_name:
-        album['artist-credit']?.[0]?.name ?? primaryArtist?.name ?? '',
-      caa_id: 0,
-      caa_release_mbid: firstReleaseId,
-      from_ts: 0,
-      last_updated: 0,
-      listeners: [],
-      release_group_mbid: album.id,
-      release_group_name: album.title,
-      stats_range: '',
-      to_ts: 0,
-      total_listen_count: 0,
-      total_user_count: 0,
-    },
-    mediums: [],
-    recordings_release_mbid: '',
-    release_group_mbid: album.id,
-    release_group_metadata: {
-      artist: {
-        artist_credit_id: 0,
-        name: album['artist-credit']?.[0]?.name ?? primaryArtist?.name ?? '',
-        artists: primaryArtist
-          ? [
-              {
-                area: '',
-                artist_mbid: primaryArtist.id,
-                begin_year: 0,
-                join_phrase: '',
-                name: primaryArtist.name,
-                rels: {},
-                type: '',
-              },
-            ]
-          : [],
-      },
-      release: {
-        caa_id: 0,
-        caa_release_mbid: firstReleaseId,
-        date: album['first-release-date'] ?? '',
-        name: album.title,
-        rels: [],
-        type: album['primary-type'] ?? 'Album',
-      },
-      release_group: {
-        caa_id: 0,
-        caa_release_mbid: '',
-        date: album['first-release-date'] ?? '',
-        name: album.title,
-        rels: [],
-        type: album['primary-type'] ?? 'Album',
-      },
-      tag: {
-        artist: [],
-        release_group: (album.tags ?? []).map((tag) => ({
-          count: tag.count,
-          genre_mbid: '',
-          tag: tag.name,
-        })),
-      },
-    },
-    type: album['primary-type'] ?? 'Album',
-    secondaryTypes: album['secondary-types'] ?? [],
-  };
-};
-
-export const getAlbumDetails = async (
-  mbId: string,
-  listenbrainz: ListenBrainzAPI,
-  musicbrainz: MusicBrainz
-) => {
-  // Both providers are asked at once: the MusicBrainz answer is needed either
-  // way (the taxonomy below, or the fallback), and waiting for ListenBrainz
-  // first only adds its round trip to every cold album page.
-  const releaseGroupLookup = musicbrainz.getReleaseGroupDetails({
-    releaseGroupId: mbId,
-  });
-  // read below on both paths; never an unhandled rejection meanwhile
-  releaseGroupLookup.catch(() => undefined);
-  try {
-    const details = await listenbrainz.getAlbum(mbId);
-    // ListenBrainz's type alone omits release-group secondary types.
-    // Keep the richer track data, but use the same taxonomy as collections.
-    const releaseGroup = await releaseGroupLookup.catch(() => null);
-    return releaseGroup
-      ? {
-          ...details,
-          type: releaseGroup['primary-type'] ?? details.type,
-          secondaryTypes: releaseGroup['secondary-types'] ?? [],
-        }
-      : details;
-  } catch (error) {
-    logger.warn('ListenBrainz album details unavailable; using MusicBrainz', {
-      label: 'Music API',
-      errorMessage: error instanceof Error ? error.message : 'Unknown error',
-      mbId,
-    });
-
-    let album: MbAlbumDetails;
-    try {
-      album = await releaseGroupLookup;
-    } catch (musicBrainzError) {
-      const errorMessage =
-        musicBrainzError instanceof Error
-          ? musicBrainzError.message
-          : 'Unknown error';
-
-      if (errorMessage.includes('status code 404')) {
-        throw new AlbumDetailsNotFoundError();
-      }
-
-      throw musicBrainzError;
-    }
-
-    return mapMusicBrainzReleaseGroupToListenBrainzAlbum(album);
-  }
 };
 
 const parseBoundedIntegerParam = (
@@ -998,6 +940,50 @@ const pickBestRecordingRelease = (
   return [...releases].sort((a, b) => scoreRelease(b) - scoreRelease(a))[0];
 };
 
+/** Deezer songs for a search Aurral could not answer (no MBIDs). */
+const mapDeezerFallbackTracks = (
+  results: DeezerTrackResult[]
+): AurralNormalizedTrack[] =>
+  results.map((result) => ({
+    title: result.title,
+    artistName: result.artistName,
+    artistMbid: null,
+    albumTitle: null,
+    albumMbid: null,
+    durationMs: null,
+    coverUrl: result.coverUrl ?? null,
+    previewDeezerId: String(result.id),
+    inLibrary: false,
+    ...(typeof result.rank === 'number' ? { popularity: result.rank } : {}),
+  }));
+
+/** MusicBrainz release groups for a search Aurral could not answer. */
+const mapMusicBrainzFallbackAlbums = (
+  results: MbAlbumDetails[]
+): AurralNormalizedAlbum[] =>
+  results.flatMap((album): AurralNormalizedAlbum[] => {
+    const mbid = normalizeMusicBrainzId(album.id);
+    if (!isValidMusicBrainzResourceId(mbid) || !album.title) return [];
+    const credit = album['artist-credit']?.[0];
+    const rawArtistId = credit?.artist?.id
+      ? normalizeMusicBrainzId(credit.artist.id)
+      : '';
+    return [
+      {
+        mbid,
+        title: album.title,
+        artistName: credit?.name || credit?.artist?.name || '',
+        artistMbid: isValidMusicBrainzResourceId(rawArtistId)
+          ? rawArtistId
+          : null,
+        primaryType: album['primary-type'] || 'Album',
+        releaseDate: album['first-release-date'] || null,
+        coverUrl: `https://coverartarchive.org/release-group/${encodeURIComponent(mbid)}/front-250`,
+        inLibrary: false,
+      },
+    ];
+  });
+
 const mapRecordingFallbackTracks = (
   recordings: MbRecordingDetails[]
 ): AurralNormalizedTrack[] =>
@@ -1080,11 +1066,13 @@ const executeMusicCatalogSearch = async ({
 
   // A failing Aurral search (network, timeout, 5xx, 429) must not fail the
   // whole search: answer as degraded so the Deezer / MusicBrainz fallbacks run.
+  let primaryFailed = false;
   const [primary, secondary] = await Promise.all([
     withShortTimeout(
       aurral.searchUnified(trimmed, limit),
       SEARCH_PRIMARY_TIMEOUT_MS
     ).catch((error: unknown) => {
+      primaryFailed = true;
       logger.warn('Aurral unified music search failed; using fallbacks', {
         label: 'Music API',
         errorMessage: error instanceof Error ? error.message : String(error),
@@ -1113,29 +1101,65 @@ const executeMusicCatalogSearch = async ({
 
   const needArtistFallback = degraded || artists.length === 0;
   const needAlbumFallback = degraded || albums.length === 0;
+  const needTrackFallback = degraded || tracks.length === 0;
 
-  if (needArtistFallback || needAlbumFallback) {
+  if (needArtistFallback || needAlbumFallback || needTrackFallback) {
     const artistFallbackQuery = parsed.artist ?? (parsed.cleanQuery || trimmed);
     const albumFallbackQuery = parsed.cleanQuery || trimmed;
 
-    const [fallbackArtists, fallbackAlbums] = await Promise.all([
-      needArtistFallback
-        ? withShortTimeout(deezer.searchArtists(artistFallbackQuery, 5))
-            .then((items) => mapDeezerFallbackArtists(items, musicbrainz))
-            .catch(() => [])
-        : Promise.resolve([]),
-      needAlbumFallback
-        ? withShortTimeout(
-            aurral.searchAlbums(albumFallbackQuery, limit)
-          ).catch(() => [])
-        : Promise.resolve([]),
-    ]);
+    // Deezer answers in well under a second even while Aurral is busy
+    const [fallbackArtists, fallbackAlbums, fallbackTracks] = await Promise.all(
+      [
+        needArtistFallback
+          ? withShortTimeout(deezer.searchArtists(artistFallbackQuery, 5))
+              .then((items) => mapDeezerFallbackArtists(items, musicbrainz))
+              .catch(() => [])
+          : Promise.resolve([]),
+        !needAlbumFallback
+          ? Promise.resolve([])
+          : primaryFailed
+            ? // Aurral just failed: asking it again only waits out another
+              // timeout, so albums come from MusicBrainz
+              withShortTimeout(
+                musicbrainz.searchAlbum({
+                  query: escapeMusicBrainzQuery(albumFallbackQuery),
+                  limit: Math.min(limit, 10),
+                })
+              )
+                .then(mapMusicBrainzFallbackAlbums)
+                .catch(() => [])
+            : withShortTimeout(
+                aurral.searchAlbums(albumFallbackQuery, limit)
+              ).catch(() => []),
+        needTrackFallback
+          ? withShortTimeout(deezer.searchTracks(albumFallbackQuery, 10))
+              .then(mapDeezerFallbackTracks)
+              .catch(() => [])
+          : Promise.resolve([]),
+      ]
+    );
 
     if (fallbackArtists.length > 0) {
       artists = mergeArtists(artists, fallbackArtists);
     }
     if (fallbackAlbums.length > 0) {
       albums = mergeAlbums(albums, fallbackAlbums);
+    }
+    if (fallbackTracks.length > 0) {
+      // the song's artist page link, when that artist is among the results
+      const artistIds = new Map(
+        artists
+          .filter((artist) => artist.mbid)
+          .map((artist) => [normalizeMusicSearchText(artist.name), artist.mbid])
+      );
+      tracks = [
+        ...tracks,
+        ...fallbackTracks.map((track) => ({
+          ...track,
+          artistMbid:
+            artistIds.get(normalizeMusicSearchText(track.artistName)) ?? null,
+        })),
+      ];
     }
   }
 
@@ -1372,13 +1396,48 @@ musicRoutes.get('/search', musicSearchRateLimit, async (req, res, next) => {
       ...enrichAurralTrack(track, mediaMap),
       inLibrary: true,
     }));
+    // several albums with exactly the searched title: Deezer's album search
+    // (cached) says which one people mean
+    const albumTitleQuery = stripEditionWords(
+      catalog.parsed.cleanQuery || effectiveQuery
+    );
+    const sameTitleAlbums = catalog.albums.filter(
+      (album) =>
+        albumTitleQuery && stripEditionWords(album.title) === albumTitleQuery
+    );
+    const albumPopularity = new Map<string, number>();
+    if (
+      sameTitleAlbums.length >= 2 &&
+      !(catalog.parsed.artist && catalog.parsed.title)
+    ) {
+      const deezerAlbums = await withShortTimeout(
+        Promise.resolve().then(() => deezer.searchAlbums(effectiveQuery, 10)),
+        REFINE_LOOKUP_TIMEOUT_MS
+      ).catch(() => []);
+      deezerAlbums.forEach((album, position) => {
+        const key = albumPopularityKey(album.artistName, album.title);
+        if (!albumPopularity.has(key)) albumPopularity.set(key, position);
+      });
+    }
     const enrichedCatalogAlbums = sortAlbumsForSearch(
       catalog.albums.map((album) =>
         enrichAurralAlbum(album, mediaMap, req.user, ownedAlbums)
       ),
       effectiveQuery,
-      catalog.parsed
+      catalog.parsed,
+      albumPopularity
     );
+    const leadAlbum = enrichedCatalogAlbums[0];
+    const popularAlbum =
+      leadAlbum &&
+      leadAlbum.mbid &&
+      leadAlbum.primaryType === 'Album' &&
+      stripEditionWords(leadAlbum.title) === albumTitleQuery &&
+      albumPopularity.get(
+        albumPopularityKey(leadAlbum.artistName, leadAlbum.title)
+      ) === 0
+        ? leadAlbum
+        : null;
     const enrichedCatalogArtists = sortArtistsForSearch(
       catalog.artists,
       effectiveQuery,
@@ -1465,6 +1524,7 @@ musicRoutes.get('/search', musicSearchRateLimit, async (req, res, next) => {
       albums: enrichedCatalogAlbums,
       tracks: rankedTracks,
       upstreamTop: catalog.upstreamTop,
+      popularAlbum,
     });
     const selectedTop: AurralNormalizedTopResult | null =
       promotedArtist &&
@@ -1716,19 +1776,74 @@ musicRoutes.get('/search', musicSearchRateLimit, async (req, res, next) => {
   }
 });
 
+// The trending chart for everyone: chart albums get their MBIDs through Aurral
+// searches, so it is built once and shared (see DISCOVER_READ).
+const readTrendingChart = (aurral: MusicProvider) =>
+  cachedMusicRead(
+    `discover:${ownedSongServerKey()}:trending`,
+    DISCOVER_READ,
+    async () => {
+      const chart = await aurral.getTrending();
+      return {
+        ...chart,
+        albums: (await resolveChartAlbumIds(aurral, chart.albums)).filter(
+          (album) => !isFillerAlbum(album)
+        ),
+      };
+    }
+  );
+
+/**
+ * Reads the shared music answers once after a start, so the first person on
+ * the music page after an update does not wait for a cold chart (about 9 s
+ * while Aurral is busy) or library page. Aurral only; never throws.
+ */
+export const warmMusicReads = async (): Promise<void> => {
+  try {
+    const server = getDefaultAurralServer(getSettings().aurral);
+    if (!server?.hostname || !server.apiKey) return;
+    const aurral = new AurralAPI({
+      url: AurralAPI.buildUrl(server),
+      apiKey: server.apiKey,
+    });
+    const key = ownedSongServerKey();
+    // one at a time: a warm-up must not add a burst to a busy Aurral
+    const steps: (() => Promise<unknown>)[] = [
+      () => loadOwnedSongKeys(aurral, { firstBuildWaitMs: 60_000 }),
+      () => loadOwnedAlbums(aurral, { firstBuildWaitMs: 60_000 }),
+      () =>
+        cachedMusicRead(`library:${key}:overview`, LIBRARY_READ, () =>
+          aurral.getLibraryPage('albums', 'newest', 1, 12)
+        ),
+      () => readTrendingChart(aurral),
+      () =>
+        cachedMusicRead(`discover:${key}:recommended`, DISCOVER_READ, () =>
+          aurral.getDiscoverRecommended()
+        ),
+      () =>
+        cachedMusicRead(`discover:${key}:playlists`, DISCOVER_READ, () =>
+          aurral.getDiscoverPlaylists()
+        ),
+    ];
+    for (const step of steps) await step().catch(() => undefined);
+  } catch (error) {
+    logger.debug('Music warm-up skipped', {
+      label: 'Music API',
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
 musicRoutes.get('/discover/trending', async (req, res, next) => {
   const aurral = requireAurralMusicContext(req, res);
   if (!aurral) return;
 
   try {
     const [trending, ownedKeys, ownedAlbums] = await Promise.all([
-      aurral.getTrending(),
+      readTrendingChart(aurral),
       loadOwnedSongKeys(aurral),
       loadOwnedAlbums(aurral),
     ]);
-    trending.albums = (
-      await resolveChartAlbumIds(aurral, trending.albums)
-    ).filter((album) => !isFillerAlbum(album));
     const mediaMap = await loadRelatedMusicMediaMap(
       [
         ...trending.albums.map((album) => album.mbid),
@@ -2014,7 +2129,11 @@ musicRoutes.get('/discover/recommended', async (req, res, next) => {
 
   try {
     const [result, ownedAlbums] = await Promise.all([
-      aurral.getDiscoverRecommended(),
+      cachedMusicRead(
+        `discover:${ownedSongServerKey()}:recommended`,
+        DISCOVER_READ,
+        () => aurral.getDiscoverRecommended()
+      ),
       loadOwnedAlbums(aurral),
     ]);
     return res.status(200).json({
@@ -2039,7 +2158,11 @@ musicRoutes.get('/discover/playlists', async (req, res, next) => {
   if (!aurral) return;
 
   try {
-    const result = await aurral.getDiscoverPlaylists();
+    const result = await cachedMusicRead(
+      `discover:${ownedSongServerKey()}:playlists`,
+      DISCOVER_READ,
+      () => aurral.getDiscoverPlaylists()
+    );
     return res.status(200).json(result);
   } catch (error) {
     logger.warn('Aurral playlist discovery failed', {
@@ -2203,7 +2326,11 @@ musicRoutes.get(
     }
 
     try {
-      const artwork = await aurral.getLibraryArtwork(kind, id);
+      const artwork = await cachedMusicCover(
+        `cover:${ownedSongServerKey()}:${kind}:${id}`,
+        COVER_READ,
+        () => aurral.getLibraryArtwork(kind, id)
+      );
       if (!artwork) {
         return res.status(404).json({ message: 'Artwork not found.' });
       }
@@ -2281,12 +2408,24 @@ musicRoutes.get('/library', async (req, res, next) => {
   }
 
   try {
-    const libraryPage = await aurral.getLibraryPage(
-      kind,
-      sort,
-      parsedPage.value,
-      parsedPageSize.value,
-      parsedQuery.value?.trim() || undefined
+    const filter = parsedQuery.value?.trim() || undefined;
+    const libraryPage = await cachedMusicRead(
+      `library:${ownedSongServerKey()}:${JSON.stringify([
+        kind,
+        sort,
+        parsedPage.value,
+        parsedPageSize.value,
+        filter ?? '',
+      ])}`,
+      LIBRARY_READ,
+      () =>
+        aurral.getLibraryPage(
+          kind,
+          sort,
+          parsedPage.value,
+          parsedPageSize.value,
+          filter
+        )
     );
     return res.status(200).json(libraryPage);
   } catch (error) {
@@ -2307,7 +2446,9 @@ musicRoutes.get('/activity', async (req, res, next) => {
 
   try {
     const [items, ownedKeys] = await Promise.all([
-      aurral.getActivity(),
+      cachedMusicRead(`activity:${ownedSongServerKey()}`, ACTIVITY_READ, () =>
+        aurral.getActivity()
+      ),
       loadOwnedSongKeys(aurral).catch(() => null),
     ]);
     const activeItems = items
@@ -2375,7 +2516,11 @@ musicRoutes.get('/library-overview', async (req, res, next) => {
   if (!aurral) return;
 
   try {
-    const library = await aurral.getLibraryPage('albums', 'newest', 1, 12);
+    const library = await cachedMusicRead(
+      `library:${ownedSongServerKey()}:overview`,
+      LIBRARY_READ,
+      () => aurral.getLibraryPage('albums', 'newest', 1, 12)
+    );
     return res.status(200).json({
       totalAlbums: library.total,
       recentlyAdded: library.items,
@@ -4004,7 +4149,15 @@ musicRoutes.get('/:id/artist', async (req, res, next) => {
     const theAudioDb = new TheAudioDb();
     const metadataArtistRepository = getRepository(MetadataArtist);
 
-    const albumData = await listenbrainzApi.getAlbum(mbId);
+    // the album page's own lookup: ListenBrainz, else MusicBrainz (ListenBrainz
+    // answers 404 for albums it has no listens for)
+    const albumData = await getAlbumDetails(
+      mbId,
+      listenbrainzApi,
+      getSharedMusicBrainz(),
+      // only the artist is needed: no extra MusicBrainz calls
+      { askMusicBrainzAlongside: false, withSongs: false }
+    );
     const artistData = albumData?.release_group_metadata?.artist?.artists?.[0];
     const artistId = artistData?.artist_mbid
       ? normalizeMusicBrainzId(artistData.artist_mbid)
@@ -4066,6 +4219,9 @@ musicRoutes.get('/:id/artist', async (req, res, next) => {
       },
     });
   } catch (error) {
+    if (error instanceof AlbumDetailsNotFoundError) {
+      return res.status(404).json({ status: 404, message: 'Album not found' });
+    }
     logger.error('Something went wrong retrieving artist details', {
       label: 'Music API',
       errorMessage: error.message,
@@ -4097,7 +4253,15 @@ musicRoutes.get('/:id/artist-discography', async (req, res, next) => {
     }
     const isSlider = parsedSlider.value ?? false;
 
-    const albumData = await listenbrainzApi.getAlbum(mbId);
+    // the album page's own lookup: ListenBrainz, else MusicBrainz (ListenBrainz
+    // answers 404 for albums it has no listens for)
+    const albumData = await getAlbumDetails(
+      mbId,
+      listenbrainzApi,
+      getSharedMusicBrainz(),
+      // only the artist is needed: no extra MusicBrainz calls
+      { askMusicBrainzAlongside: false, withSongs: false }
+    );
     const artistData = albumData?.release_group_metadata?.artist?.artists?.[0];
     const artistId = artistData?.artist_mbid
       ? normalizeMusicBrainzId(artistData.artist_mbid)
@@ -4111,7 +4275,12 @@ musicRoutes.get('/:id/artist-discography', async (req, res, next) => {
       });
     }
 
-    const artistDetails = await listenbrainzApi.getArtist(artistId);
+    const artistDetails = await listenbrainzApi
+      .getArtist(artistId)
+      .catch((error: unknown) => {
+        if (isNotFoundError(error)) return null;
+        throw error;
+      });
 
     if (!artistDetails) {
       return res.status(404).json({ status: 404, message: 'Artist not found' });
@@ -4186,6 +4355,9 @@ musicRoutes.get('/:id/artist-discography', async (req, res, next) => {
       results: transformedReleaseGroups,
     });
   } catch (error) {
+    if (error instanceof AlbumDetailsNotFoundError) {
+      return res.status(404).json({ status: 404, message: 'Album not found' });
+    }
     logger.error('Something went wrong retrieving artist discography', {
       label: 'Music API',
       errorMessage: error.message,
@@ -4217,7 +4389,15 @@ musicRoutes.get('/:id/artist-similar', async (req, res, next) => {
     const page = parsePositiveInt(req.query.page, 1, MAX_PAGE);
     const pageSize = parsePositiveInt(req.query.pageSize, 20, 50);
 
-    const albumData = await listenbrainzApi.getAlbum(mbId);
+    // the album page's own lookup: ListenBrainz, else MusicBrainz (ListenBrainz
+    // answers 404 for albums it has no listens for)
+    const albumData = await getAlbumDetails(
+      mbId,
+      listenbrainzApi,
+      getSharedMusicBrainz(),
+      // only the artist is needed: no extra MusicBrainz calls
+      { askMusicBrainzAlongside: false, withSongs: false }
+    );
     const artistData = albumData?.release_group_metadata?.artist?.artists?.[0];
     const artistId = artistData?.artist_mbid
       ? normalizeMusicBrainzId(artistData.artist_mbid)
@@ -4231,10 +4411,18 @@ musicRoutes.get('/:id/artist-similar', async (req, res, next) => {
       });
     }
 
-    const artistDetails = await listenbrainzApi.getArtist(artistId);
+    // an artist ListenBrainz doesn't know has no similar artists: an empty row
+    const artistDetails = await listenbrainzApi
+      .getArtist(artistId)
+      .catch((error: unknown) => {
+        if (isNotFoundError(error)) return null;
+        throw error;
+      });
 
     if (!artistDetails) {
-      return res.status(404).json({ status: 404, message: 'Artist not found' });
+      return res
+        .status(200)
+        .json({ page, totalPages: 1, totalResults: 0, results: [] });
     }
 
     const allSimilarArtists = [
@@ -4360,6 +4548,9 @@ musicRoutes.get('/:id/artist-similar', async (req, res, next) => {
       results: transformedSimilarArtists,
     });
   } catch (error) {
+    if (error instanceof AlbumDetailsNotFoundError) {
+      return res.status(404).json({ status: 404, message: 'Album not found' });
+    }
     logger.error('Something went wrong retrieving similar artists', {
       label: 'Music API',
       errorMessage: error.message,

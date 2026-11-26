@@ -9,6 +9,7 @@ import { getRepository } from '@server/datasource';
 import type { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
+import { resetMusicReadCache } from '@server/lib/musicReadCache';
 import { clearRequestAllTracklistCache } from '@server/lib/musicRequestAllPlan';
 import { Permission, hasPermission } from '@server/lib/permissions';
 import type * as settingsModule from '@server/lib/settings';
@@ -114,6 +115,7 @@ let lidarrArtists: Record<string, unknown>[] = [];
 
 describe('music routes on a Lidarr install', () => {
   beforeEach(() => {
+    resetMusicReadCache();
     cacheManager.getCache('lidarr').flush();
     cacheManager.getCache('aurral').flush();
     clearRequestAllTracklistCache();

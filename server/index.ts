@@ -68,6 +68,7 @@ import {
 } from '@server/routes/auth';
 import avatarproxy from '@server/routes/avatarproxy';
 import imageproxy from '@server/routes/imageproxy';
+import { warmMusicReads } from '@server/routes/music';
 import {
   appDataPath,
   appDataPermissions,
@@ -377,6 +378,10 @@ Promise.resolve()
       }
       if (totalUsers > 0 && !isE2eTest) {
         startJobs();
+        // the music pages' shared answers, read once in the background
+        setTimeout(() => {
+          void warmMusicReads();
+        }, 20_000).unref();
       } else if (isE2eTest) {
         logger.info('Skipping scheduled jobs in E2E test mode', {
           label: 'Server',

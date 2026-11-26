@@ -12,13 +12,18 @@ import {
 import { getSettings } from '@server/lib/settings';
 import { getDefaultAurralServer } from '@server/lib/soulseek/trackRequests';
 import logger from '@server/logger';
+import { appDataPath } from '@server/utils/appDataVolume';
+import { createHash, randomUUID } from 'node:crypto';
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 
 /**
  * Songs in the music library by normalised artist + title, so a song owned on
  * a compilation shows as owned on its single, in charts and in playlists.
  *
  * One index per Aurral server: a full read of the library's tracks (paged,
- * at most every FULL_REFRESH_MS, in the background once there is an index),
+ * at most every FULL_REFRESH_MS, in the background once there is an index,
+ * one page at a time with a pause so Aurral keeps answering everyone else),
  * plus the newest page at most every DELTA_REFRESH_MS so a song that just
  * finished downloading flips to owned within a minute. A failed read never
  * marks anything: without an index nothing is marked; a partial read only
@@ -26,11 +31,20 @@ import logger from '@server/logger';
  */
 
 export const OWNED_SONGS_DELTA_REFRESH_MS = 60_000;
-export const OWNED_SONGS_FULL_REFRESH_MS = 15 * 60_000;
+// A full read is heavy for Aurral (each 100-song page is about 1 MB and blocks
+// its process for up to seconds; 35k songs is ~350 pages). New songs arrive
+// through the minute-by-minute newest-page delta, so the full read only has to
+// catch removals and edits.
+export const OWNED_SONGS_FULL_REFRESH_MS = 6 * 60 * 60_000;
 const PAGE_SIZE = 100;
 const MAX_PAGES = 500;
 const MAX_KEYS = 100_000;
-const PAGE_CONCURRENCY = 4;
+// the first read (nothing to answer with yet) goes faster than a refresh
+const FIRST_BUILD_CONCURRENCY = 2;
+const REFRESH_CONCURRENCY = 1;
+const REFRESH_PAGE_PAUSE_MS = 250;
+// a saved index older than this is not used after a restart
+const SAVED_INDEX_MAX_AGE_MS = 24 * 60 * 60_000;
 // how long a page view waits for the first index or a newest-songs refresh
 const FIRST_BUILD_WAIT_MS = 1_500;
 /** How long a caller that must not guess (Get all) waits for a first build. */
@@ -85,11 +99,143 @@ interface OwnedSongIndex {
   keys: Set<string>;
   builtAt: number;
   deltaAt: number;
+  // keys the newest-page check added, and when: a full read that started
+  // before them keeps them when it replaces this index
+  recent?: Map<string, number>;
+  // false when a page failed: the next index keeps this one's keys
+  complete?: boolean;
 }
 
 const indexes = new Map<string, OwnedSongIndex>();
 const builds = new Map<string, Promise<OwnedSongIndex | null>>();
 const deltas = new Map<string, Promise<void>>();
+
+const pause = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, ms).unref?.();
+  });
+
+/**
+ * Reads pages 2..pages with a few workers (one for a refresh, with a pause
+ * between pages). A failed page only leaves its entries out.
+ */
+const readPages = async (
+  pages: number,
+  refresh: boolean,
+  readPage: (page: number) => Promise<void>,
+  stop: () => boolean = () => false
+): Promise<number> => {
+  const rest = Array.from({ length: Math.max(0, pages - 1) }, (_, i) => i + 2);
+  let next = 0;
+  let failed = 0;
+  const worker = async () => {
+    while (next < rest.length && !stop()) {
+      const page = rest[next++];
+      try {
+        await readPage(page);
+      } catch {
+        // a missing page only leaves its entries unmarked (the replaced
+        // index's entries are kept, see startBuild)
+        failed += 1;
+      }
+      if (refresh && next < rest.length) await pause(REFRESH_PAGE_PAUSE_MS);
+    }
+  };
+  await Promise.all(
+    Array.from(
+      { length: refresh ? REFRESH_CONCURRENCY : FIRST_BUILD_CONCURRENCY },
+      worker
+    )
+  );
+  return failed;
+};
+
+// Saved indexes: a restart (every update) otherwise re-reads the whole
+// library and leaves owned badges off until that finishes.
+type SavedIndexKind = 'songs' | 'albums';
+
+const savedIndexFile = (kind: SavedIndexKind, serverKey: string) =>
+  path.join(
+    appDataPath(),
+    'cache',
+    `music-owned-${kind}-${createHash('sha256')
+      .update(serverKey)
+      .digest('hex')
+      .slice(0, 16)}.json`
+  );
+
+// tests read and write no files
+const persistIndexes = () => process.env.NODE_ENV !== 'test';
+
+const saveIndex = async (
+  kind: SavedIndexKind,
+  serverKey: string,
+  data: { builtAt: number; [field: string]: unknown }
+) => {
+  if (!persistIndexes()) return;
+  const file = savedIndexFile(kind, serverKey);
+  const temporary = `${file}.${randomUUID()}.tmp`;
+  try {
+    await mkdir(path.dirname(file), { recursive: true, mode: 0o700 });
+    await writeFile(temporary, JSON.stringify(data), { mode: 0o600 });
+    await rename(temporary, file);
+  } catch (error) {
+    await rm(temporary, { force: true }).catch(() => undefined);
+    logger.debug('Unable to save the owned music index', {
+      label: 'Music API',
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+const loadIndex = async (
+  kind: SavedIndexKind,
+  serverKey: string
+): Promise<Record<string, unknown> | null> => {
+  if (!persistIndexes()) return null;
+  try {
+    const saved = JSON.parse(
+      await readFile(savedIndexFile(kind, serverKey), 'utf8')
+    ) as Record<string, unknown> | null;
+    const builtAt = saved?.builtAt;
+    if (
+      typeof builtAt !== 'number' ||
+      !Number.isFinite(builtAt) ||
+      Date.now() - builtAt > SAVED_INDEX_MAX_AGE_MS ||
+      builtAt > Date.now() + 60_000
+    )
+      return null;
+    return saved;
+  } catch {
+    return null;
+  }
+};
+
+// one disk read per server and kind after a start
+const restored = new Map<string, Promise<void>>();
+const restoreOnce = (key: string, restore: () => Promise<void>) => {
+  let done = restored.get(key);
+  if (!done) {
+    done = restore().catch(() => undefined);
+    restored.set(key, done);
+  }
+  return done;
+};
+
+const restoreSongIndex = (serverKey: string) =>
+  restoreOnce(`songs:${serverKey}`, async () => {
+    const saved = await loadIndex('songs', serverKey);
+    if (!saved || !Array.isArray(saved.keys) || indexes.has(serverKey)) return;
+    const keys = new Set<string>();
+    for (const key of saved.keys.slice(0, MAX_KEYS))
+      if (typeof key === 'string' && key.length <= 1024) keys.add(key);
+    // deltaAt 0: the newest page is read on the next view
+    indexes.set(serverKey, {
+      keys,
+      builtAt: saved.builtAt as number,
+      deltaAt: 0,
+    });
+  });
 
 const addEntries = (keys: Set<string>, entries: AurralLibraryTrackEntry[]) => {
   for (const entry of entries) {
@@ -114,38 +260,54 @@ const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
 };
 
 const buildIndex = async (
-  aurral: MusicProvider
+  aurral: MusicProvider,
+  refresh: boolean
 ): Promise<OwnedSongIndex | null> => {
   const first = await aurral.getLibraryTrackPage(1, PAGE_SIZE, 'name');
   const keys = new Set<string>();
   addEntries(keys, first.items);
   const pages = Math.min(MAX_PAGES, Math.ceil(first.total / PAGE_SIZE));
-  const rest = Array.from({ length: Math.max(0, pages - 1) }, (_, i) => i + 2);
-  let next = 0;
-  const worker = async () => {
-    while (next < rest.length && keys.size < MAX_KEYS) {
-      const page = rest[next++];
-      try {
-        addEntries(
-          keys,
-          (await aurral.getLibraryTrackPage(page, PAGE_SIZE, 'name')).items
-        );
-      } catch {
-        // a missing page only leaves its songs unmarked
-      }
-    }
-  };
-  await Promise.all(Array.from({ length: PAGE_CONCURRENCY }, worker));
+  const failed = await readPages(
+    pages,
+    refresh,
+    async (page) =>
+      addEntries(
+        keys,
+        (await aurral.getLibraryTrackPage(page, PAGE_SIZE, 'name')).items
+      ),
+    () => keys.size >= MAX_KEYS
+  );
   const now = Date.now();
-  return { keys, builtAt: now, deltaAt: now };
+  return { keys, builtAt: now, deltaAt: now, complete: failed === 0 };
 };
 
 const startBuild = (serverKey: string, aurral: MusicProvider) => {
   const running = builds.get(serverKey);
   if (running) return running;
-  const build = buildIndex(aurral)
+  const startedAt = Date.now();
+  const build = buildIndex(aurral, indexes.has(serverKey))
     .then((index) => {
-      if (index) indexes.set(serverKey, index);
+      if (index) {
+        // A refresh takes minutes: songs the newest-page check added while it
+        // ran stay, and so does everything when a page could not be read.
+        const previous = indexes.get(serverKey);
+        if (previous) {
+          const keep = index.complete
+            ? [...(previous.recent ?? [])]
+                .filter(([, addedAt]) => addedAt >= startedAt)
+                .map(([key]) => key)
+            : previous.keys;
+          for (const key of keep) {
+            if (index.keys.size >= MAX_KEYS) break;
+            index.keys.add(key);
+          }
+        }
+        indexes.set(serverKey, index);
+        void saveIndex('songs', serverKey, {
+          builtAt: index.builtAt,
+          keys: [...index.keys],
+        });
+      }
       return index;
     })
     .catch((error: unknown) => {
@@ -170,8 +332,16 @@ const refreshDelta = (
   const delta = aurral
     .getLibraryTrackPage(1, PAGE_SIZE, 'newest')
     .then((page) => {
-      addEntries(index.keys, page.items);
-      index.deltaAt = Date.now();
+      const now = Date.now();
+      const recent = (index.recent ??= new Map());
+      for (const entry of page.items) {
+        for (const key of ownedSongKeysFor(entry.artistName, entry.title)) {
+          if (index.keys.has(key) || index.keys.size >= MAX_KEYS) continue;
+          index.keys.add(key);
+          recent.set(key, now);
+        }
+      }
+      index.deltaAt = now;
     })
     .catch(() => {
       // try again soon, not on every page view
@@ -193,6 +363,7 @@ export const getOwnedSongKeys = async (
   { firstBuildWaitMs = FIRST_BUILD_WAIT_MS }: OwnedIndexOptions = {}
 ): Promise<ReadonlySet<string> | null> => {
   try {
+    if (!indexes.has(serverKey)) await restoreSongIndex(serverKey);
     const now = Date.now();
     // An old index keeps answering while a new one is read: dropping it made
     // every page after a quiet half hour think the library was empty.
@@ -268,6 +439,9 @@ interface OwnedAlbumIndex {
   artistNames: Set<string>;
   builtAt: number;
   deltaAt: number;
+  // entries the newest-page check set, and when (see OwnedSongIndex.recent)
+  recent?: Map<string, number>;
+  complete?: boolean;
 }
 
 const ALBUM_PAGE_SIZE = 60;
@@ -327,7 +501,8 @@ const better = (
 const addAlbumEntries = (
   index: OwnedAlbumIndex,
   entries: AurralLibraryAlbumEntry[],
-  replace: boolean
+  replace: boolean,
+  touched?: (key: string) => void
 ) => {
   for (const entry of entries) {
     if (index.byId.size + index.byName.size >= MAX_ALBUMS) return;
@@ -348,20 +523,24 @@ const addAlbumEntries = (
           id,
           replace ? counts : better(index.byId.get(id), counts)
         );
+        touched?.(`id:${id}`);
       }
     } else {
       const key = ownedSongKey(entry.artistName, entry.title);
-      if (key)
+      if (key) {
         index.byName.set(
           key,
           replace ? counts : better(index.byName.get(key), counts)
         );
+        touched?.(`name:${key}`);
+      }
     }
   }
 };
 
 const buildAlbumIndex = async (
-  aurral: MusicProvider
+  aurral: MusicProvider,
+  refresh: boolean
 ): Promise<OwnedAlbumIndex | null> => {
   const first = await aurral.getLibraryAlbumPage(1, ALBUM_PAGE_SIZE, 'album');
   const index: OwnedAlbumIndex = {
@@ -376,36 +555,95 @@ const buildAlbumIndex = async (
     MAX_ALBUM_PAGES,
     Math.ceil(first.total / ALBUM_PAGE_SIZE)
   );
-  const rest = Array.from({ length: Math.max(0, pages - 1) }, (_, i) => i + 2);
-  let next = 0;
-  const worker = async () => {
-    while (next < rest.length) {
-      const page = rest[next++];
-      try {
-        addAlbumEntries(
-          index,
-          (await aurral.getLibraryAlbumPage(page, ALBUM_PAGE_SIZE, 'album'))
-            .items,
-          false
-        );
-      } catch {
-        // a missing page only leaves its albums unmarked
-      }
-    }
-  };
-  await Promise.all(Array.from({ length: PAGE_CONCURRENCY }, worker));
+  const failed = await readPages(pages, refresh, async (page) =>
+    addAlbumEntries(
+      index,
+      (await aurral.getLibraryAlbumPage(page, ALBUM_PAGE_SIZE, 'album')).items,
+      false
+    )
+  );
+  index.complete = failed === 0;
   const now = Date.now();
   index.builtAt = now;
   index.deltaAt = now;
   return index;
 };
 
+const savedCounts = (value: unknown): Map<string, OwnedAlbumCounts> => {
+  const counts = new Map<string, OwnedAlbumCounts>();
+  if (!Array.isArray(value)) return counts;
+  for (const pair of value.slice(0, MAX_ALBUMS)) {
+    if (!Array.isArray(pair) || typeof pair[0] !== 'string') continue;
+    const entry = pair[1] as Partial<OwnedAlbumCounts> | null;
+    const trackCount = Number(entry?.trackCount);
+    const availableTrackCount = Number(entry?.availableTrackCount);
+    if (
+      !Number.isSafeInteger(trackCount) ||
+      !Number.isSafeInteger(availableTrackCount)
+    )
+      continue;
+    counts.set(pair[0], { trackCount, availableTrackCount });
+  }
+  return counts;
+};
+
+const restoreAlbumIndex = (serverKey: string) =>
+  restoreOnce(`albums:${serverKey}`, async () => {
+    const saved = await loadIndex('albums', serverKey);
+    if (!saved || albumIndexes.has(serverKey)) return;
+    const artistNames = new Set<string>();
+    if (Array.isArray(saved.artistNames))
+      for (const name of saved.artistNames.slice(0, MAX_ALBUMS))
+        if (typeof name === 'string') artistNames.add(name);
+    albumIndexes.set(serverKey, {
+      byId: savedCounts(saved.byId),
+      byName: savedCounts(saved.byName),
+      artistNames,
+      builtAt: saved.builtAt as number,
+      deltaAt: 0,
+    });
+  });
+
 const startAlbumBuild = (serverKey: string, aurral: MusicProvider) => {
   const running = albumBuilds.get(serverKey);
   if (running) return running;
-  const build = buildAlbumIndex(aurral)
+  const startedAt = Date.now();
+  const build = buildAlbumIndex(aurral, albumIndexes.has(serverKey))
     .then((index) => {
-      if (index) albumIndexes.set(serverKey, index);
+      if (index) {
+        // as for songs: newest-page updates made while the read ran stay, and
+        // a read with a failed page keeps the old entries it could not see
+        const previous = albumIndexes.get(serverKey);
+        if (previous) {
+          const recent = new Set(
+            [...(previous.recent ?? [])]
+              .filter(([, at]) => at >= startedAt)
+              .map(([key]) => key)
+          );
+          for (const [map, from, to] of [
+            ['id', previous.byId, index.byId],
+            ['name', previous.byName, index.byName],
+          ] as const) {
+            for (const [key, counts] of from) {
+              if (
+                recent.has(`${map}:${key}`) ||
+                (!index.complete && !to.has(key))
+              )
+                to.set(key, counts);
+            }
+          }
+          if (!index.complete)
+            for (const name of previous.artistNames)
+              index.artistNames.add(name);
+        }
+        albumIndexes.set(serverKey, index);
+        void saveIndex('albums', serverKey, {
+          builtAt: index.builtAt,
+          byId: [...index.byId],
+          byName: [...index.byName],
+          artistNames: [...index.artistNames],
+        });
+      }
       return index;
     })
     .catch((error: unknown) => {
@@ -431,8 +669,12 @@ const refreshAlbumDelta = (
     .getLibraryAlbumPage(1, ALBUM_PAGE_SIZE, 'newest')
     .then((page) => {
       // the newest albums are the ones still filling up: take their counts as is
-      addAlbumEntries(index, page.items, true);
-      index.deltaAt = Date.now();
+      const now = Date.now();
+      const touched = new Map<string, number>();
+      addAlbumEntries(index, page.items, true, (key) => touched.set(key, now));
+      index.recent ??= new Map();
+      for (const [key, at] of touched) index.recent.set(key, at);
+      index.deltaAt = now;
     })
     .catch(() => {
       index.deltaAt =
@@ -453,6 +695,7 @@ export const getOwnedAlbums = async (
   { firstBuildWaitMs = FIRST_BUILD_WAIT_MS }: OwnedIndexOptions = {}
 ): Promise<OwnedAlbumLookup | null> => {
   try {
+    if (!albumIndexes.has(serverKey)) await restoreAlbumIndex(serverKey);
     const now = Date.now();
     // kept while a new one is read, as for songs
     let index = albumIndexes.get(serverKey);
@@ -575,4 +818,5 @@ export const resetOwnedSongIndexes = () => {
   albumIndexes.clear();
   albumBuilds.clear();
   albumDeltas.clear();
+  restored.clear();
 };

@@ -595,8 +595,13 @@ export const albumArt = (
   artist?: string | null,
   title?: string | null
 ): string | undefined => {
+  // CAA hands out archive.org thumbnail links, which 404 for a while after
+  // an upload: those go through the album-art route too
   const fromCaa =
-    !coverUrl || /^https:\/\/coverartarchive\.org\//.test(coverUrl);
+    !coverUrl ||
+    /^https:\/\/(?:coverartarchive\.org|archive\.org\/download\/mbid-|ia\d+\.us\.archive\.org\/)/.test(
+      coverUrl
+    );
   if (!fromCaa || !mbid || !/^[0-9a-f-]{36}$/i.test(mbid))
     return coverUrl ?? undefined;
   const query = new URLSearchParams();

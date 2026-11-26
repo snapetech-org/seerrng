@@ -7,11 +7,12 @@ import Media from '@server/entity/Media';
 import type { User } from '@server/entity/User';
 import cacheManager from '@server/lib/cache';
 import { hydrateMediaSummaryRelations } from '@server/lib/mediaSummaryHydration';
+import { resetMusicReadCache } from '@server/lib/musicReadCache';
 import { clearRequestAllTracklistCache } from '@server/lib/musicRequestAllPlan';
 import { Permission, hasPermission } from '@server/lib/permissions';
 import type * as settingsModule from '@server/lib/settings';
 import { getSettings } from '@server/lib/settings';
-import musicRoutes from '@server/routes/music';
+import musicRoutes, { warmMusicReads } from '@server/routes/music';
 import axios, { type AxiosResponse } from 'axios';
 import express, { type Express } from 'express';
 import * as OpenApiValidator from 'express-openapi-validator';
@@ -108,6 +109,7 @@ const configureDefaultAurral = () => {
 
 describe('music Aurral proxy routes', () => {
   beforeEach(() => {
+    resetMusicReadCache();
     cacheManager.getCache('aurral').flush();
     // the track lists that decide which singles an album covers
     clearRequestAllTracklistCache();
@@ -117,6 +119,8 @@ describe('music Aurral proxy routes', () => {
     vi.spyOn(MusicBrainz.prototype, 'getReleaseGroupDetails').mockRejectedValue(
       new Error('Request failed with status code 404')
     );
+    // album fallback when Aurral's search fails
+    vi.spyOn(MusicBrainz.prototype, 'searchAlbum').mockResolvedValue([]);
     vi.mocked(hydrateMediaSummaryRelations).mockResolvedValue([]);
     vi.mocked(getRepository).mockReturnValue({
       find: vi.fn().mockResolvedValue([]),
@@ -787,6 +791,7 @@ describe('music Aurral proxy routes', () => {
       expect.objectContaining({ responseType: 'arraybuffer' })
     );
 
+    resetMusicReadCache();
     requestSpy.mockResolvedValueOnce({
       status: 200,
       headers: { 'content-type': 'image/jpeg; charset=binary' },
@@ -800,6 +805,7 @@ describe('music Aurral proxy routes', () => {
     expect(artistArt.headers['content-type']).toMatch(/^image\/jpeg/);
     expect(artistArt.body.equals(jpegBytes)).toBe(true);
 
+    resetMusicReadCache();
     requestSpy.mockResolvedValueOnce({
       status: 200,
       headers: { 'content-type': 'text/html' },
@@ -811,6 +817,7 @@ describe('music Aurral proxy routes', () => {
     expect(nonImage.status).toBe(404);
     expect(nonImage.body).toEqual({ message: 'Artwork not found.' });
 
+    resetMusicReadCache();
     requestSpy.mockResolvedValueOnce({
       status: 404,
       headers: {},
@@ -833,6 +840,7 @@ describe('music Aurral proxy routes', () => {
       expect(res.status, badUrl).toBe(400);
     }
 
+    resetMusicReadCache();
     requestSpy.mockRejectedValueOnce(new Error('Aurral unreachable'));
     const failed = await request(app).get(
       '/api/v1/music/library-art/albums/271'
@@ -912,7 +920,15 @@ describe('music Aurral proxy routes', () => {
     expect(getSpy).toHaveBeenNthCalledWith(
       1,
       '/api/library',
-      { params: { kind: 'albums', page: 2, pageSize: 20, sort: 'artist' } },
+      {
+        params: {
+          kind: 'albums',
+          page: 2,
+          pageSize: 20,
+          sort: 'artist',
+          compact: 'true',
+        },
+      },
       0
     );
     expect(albumsRes.body).toEqual({
@@ -956,7 +972,15 @@ describe('music Aurral proxy routes', () => {
     expect(getSpy).toHaveBeenNthCalledWith(
       2,
       '/api/library',
-      { params: { kind: 'artists', page: 1, pageSize: 30, sort: 'newest' } },
+      {
+        params: {
+          kind: 'artists',
+          page: 1,
+          pageSize: 30,
+          sort: 'newest',
+          compact: 'true',
+        },
+      },
       0
     );
     expect(artistsRes.body).toEqual({
@@ -1103,6 +1127,13 @@ describe('music Aurral proxy routes', () => {
     });
     expect(res.body.failedTotal).toBe(2);
 
+    // a busy or failing Aurral answers from the last read while it is recent
+    getSpy.mockRejectedValueOnce(new Error('Aurral requests failed'));
+    const fromCopy = await request(app).get('/api/v1/music/activity');
+    expect(fromCopy.status).toBe(200);
+    expect(fromCopy.body.failedTotal).toBe(2);
+
+    resetMusicReadCache();
     getSpy.mockRejectedValueOnce(new Error('Aurral requests failed'));
     const failed = await request(app).get('/api/v1/music/activity');
     expect(failed.status).toBe(502);
@@ -1145,6 +1176,7 @@ describe('music Aurral proxy routes', () => {
           pageSize: 30,
           sort: 'newest',
           query: 'In Rainbows',
+          compact: 'true',
         },
       },
       0
@@ -1153,7 +1185,15 @@ describe('music Aurral proxy routes', () => {
     await request(app).get('/api/v1/music/library?kind=albums&q=');
     expect(getSpy).toHaveBeenLastCalledWith(
       '/api/library',
-      { params: { kind: 'albums', page: 1, pageSize: 30, sort: 'newest' } },
+      {
+        params: {
+          kind: 'albums',
+          page: 1,
+          pageSize: 30,
+          sort: 'newest',
+          compact: 'true',
+        },
+      },
       0
     );
     const tooLong = await request(app).get(
@@ -1359,6 +1399,52 @@ describe('music Aurral proxy routes', () => {
     expect(
       other.body.albums.map((album: { mbid: string }) => album.mbid)
     ).toEqual(plainOrder);
+  });
+
+  it('warms the shared music answers so the first page view does not ask Aurral again', async () => {
+    configureDefaultAurral();
+    const emptyPage = {
+      kind: 'albums' as const,
+      page: 1,
+      pageSize: 12,
+      total: 0,
+      hasMore: false,
+      items: [],
+    };
+    vi.spyOn(AurralAPI.prototype, 'getLibraryTrackPage').mockResolvedValue({
+      page: 1,
+      total: 0,
+      hasMore: false,
+      items: [],
+    } as unknown as Awaited<ReturnType<AurralAPI['getLibraryTrackPage']>>);
+    vi.spyOn(AurralAPI.prototype, 'getLibraryPage').mockResolvedValue(
+      emptyPage as unknown as Awaited<ReturnType<AurralAPI['getLibraryPage']>>
+    );
+    const recommended = vi
+      .spyOn(AurralAPI.prototype, 'getDiscoverRecommended')
+      .mockResolvedValue({
+        recommendations: [],
+        trending: [],
+      } as unknown as Awaited<ReturnType<AurralAPI['getDiscoverRecommended']>>);
+    const trending = vi
+      .spyOn(AurralAPI.prototype, 'getTrending')
+      .mockResolvedValue({
+        artists: [],
+        albums: [],
+        tracks: [],
+      } as unknown as Awaited<ReturnType<AurralAPI['getTrending']>>);
+    vi.spyOn(AurralAPI.prototype, 'getDiscoverPlaylists').mockResolvedValue({
+      categories: [],
+    } as unknown as Awaited<ReturnType<AurralAPI['getDiscoverPlaylists']>>);
+
+    await warmMusicReads();
+    expect(trending).toHaveBeenCalledTimes(1);
+    expect(recommended).toHaveBeenCalledTimes(1);
+
+    const app = createTestApp(createMockUser(Permission.REQUEST_MUSIC));
+    const res = await request(app).get('/api/v1/music/discover/recommended');
+    expect(res.status).toBe(200);
+    expect(recommended).toHaveBeenCalledTimes(1);
   });
 
   it('normalizes recommended artists, playlists, and playlist details with caching and 404/400/502 handling', async () => {
@@ -1574,6 +1660,12 @@ describe('music Aurral proxy routes', () => {
     }
 
     getSpy.mockRejectedValue(new Error('Aurral error'));
+    // a recent copy answers a failing Aurral; without one the route fails
+    const fromCopy = await request(app).get(
+      '/api/v1/music/discover/recommended'
+    );
+    expect(fromCopy.status).toBe(200);
+    resetMusicReadCache();
     for (const url of [
       '/api/v1/music/discover/recommended',
       '/api/v1/music/discover/playlists',
@@ -1703,6 +1795,11 @@ describe('music Aurral proxy routes', () => {
     });
 
     libraryPage.mockRejectedValue(new Error('Aurral down'));
+    const fromCopy = await request(app).get('/api/v1/music/library-overview');
+    expect(fromCopy.status).toBe(200);
+    expect(fromCopy.body.totalAlbums).toBe(42);
+
+    resetMusicReadCache();
     const allFailed = await request(app).get('/api/v1/music/library-overview');
     expect(allFailed.status).toBe(502);
     expect(allFailed.body).toEqual({

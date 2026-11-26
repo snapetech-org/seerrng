@@ -4,6 +4,7 @@ import path from 'node:path';
 import { afterEach, before, describe, it, mock } from 'node:test';
 
 import AurralAPI from '@server/api/aurral';
+import DeezerAPI from '@server/api/deezer';
 import ExternalAPI from '@server/api/externalapi';
 import PushoverAPI from '@server/api/pushover';
 import TheMovieDb from '@server/api/themoviedb';
@@ -390,6 +391,8 @@ describe('Authenticated metadata resource boundaries', () => {
       top: null,
       degraded: false,
     }));
+    // a search without songs asks Deezer for them
+    mock.method(DeezerAPI.prototype, 'searchTracks', async () => []);
     mock.method(AurralAPI.prototype, 'searchLibrary', async () => ({
       artists: [],
       albums: [],

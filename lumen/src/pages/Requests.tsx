@@ -29,6 +29,7 @@ import {
   canViewAllRequests,
   Pill,
 } from '../components/detail';
+import { songArt } from '../components/MusicSections';
 import { RequestEditSheet } from '../components/requestEdit';
 import RequestEpisodeQueueSheet, {
   canEditEpisodeQueue,
@@ -1231,6 +1232,8 @@ function trackRequestRow(tr: TrackRequestItem): Row {
   return {
     r,
     title: tr.title,
+    // the song's cover by artist and title (song requests carry no album id)
+    art: songArt(tr.artist, tr.title),
     cover: true,
     href: '/track-requests',
     sub: ['Track', tr.artist].filter(Boolean).join(' · '),

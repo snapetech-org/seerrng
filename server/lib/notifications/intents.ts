@@ -1,5 +1,6 @@
 import ComicVineAPI from '@server/api/comicvine';
 import ListenBrainzAPI from '@server/api/listenbrainz/index';
+import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary/index';
 import TheMovieDb from '@server/api/themoviedb/index';
 import { IssueStatus, IssueType, IssueTypeName } from '@server/constants/issue';
@@ -22,6 +23,7 @@ import {
 } from '@server/lib/externalIds';
 import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
+import { getAlbumDetails } from '@server/lib/musicAlbumDetails';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import { isSportarrLeagueExternalId } from '@server/lib/sportarrIdentity';
@@ -63,8 +65,11 @@ const getMediaDetails = async (
     };
   }
   if (media.mediaType === MediaType.MUSIC && media.mbId) {
-    const album = await new ListenBrainzAPI().getAlbum(
-      normalizeMusicBrainzId(media.mbId)
+    const album = await getAlbumDetails(
+      normalizeMusicBrainzId(media.mbId),
+      new ListenBrainzAPI(),
+      new MusicBrainz(),
+      { askMusicBrainzAlongside: false }
     );
     const releaseGroup = album.release_group_metadata.release_group;
     return {
@@ -308,7 +313,12 @@ export const buildMediaRequestNotificationPayload = async (
   }
   if (entity.type === MediaType.MUSIC && media.mbId) {
     const mbId = normalizeMusicBrainzId(media.mbId);
-    const album = await new ListenBrainzAPI().getAlbum(mbId);
+    const album = await getAlbumDetails(
+      mbId,
+      new ListenBrainzAPI(),
+      new MusicBrainz(),
+      { askMusicBrainzAlongside: false }
+    );
     const releaseGroup = album.release_group_metadata.release_group;
     const artist = album.release_group_metadata.artist;
     const releaseYear = releaseGroup.date?.slice(0, 4);

@@ -531,6 +531,10 @@ const MAX_PREVIEW_BYTES = 5 * 1024 * 1024;
 const MAX_ARTWORK_BYTES = 10 * 1024 * 1024;
 const PREVIEW_DOWNLOAD_TIMEOUT_MS = 15_000;
 const SEARCH_TIMEOUT_MS = 3_000;
+// Asking for a song or an album: a busy Aurral often takes longer than the
+// 10 s default and still queues the job, so a short timeout reported a
+// failure for a request that went through.
+const REQUEST_TIMEOUT_MS = 30_000;
 const SEARCH_CACHE_TTL_SECONDS = 60;
 const SEARCH_AUX_CACHE_TTL_SECONDS = 600;
 const DISCOVERY_CACHE_TTL_SECONDS = 900;
@@ -1406,13 +1410,17 @@ class AurralAPI extends ExternalAPI {
   public async requestAlbum(
     payload: AurralRequestAlbumPayload
   ): Promise<AurralRequestAlbumResult> {
-    const response = await this.post<unknown>('/api/library/albums/request', {
-      albumMbid: payload.albumMbid,
-      albumName: payload.albumName,
-      artistMbid: payload.artistMbid,
-      artistName: payload.artistName,
-      ...(payload.releaseMbid ? { releaseMbid: payload.releaseMbid } : {}),
-    });
+    const response = await this.post<unknown>(
+      '/api/library/albums/request',
+      {
+        albumMbid: payload.albumMbid,
+        albumName: payload.albumName,
+        artistMbid: payload.artistMbid,
+        artistName: payload.artistName,
+        ...(payload.releaseMbid ? { releaseMbid: payload.releaseMbid } : {}),
+      },
+      { timeout: REQUEST_TIMEOUT_MS }
+    );
 
     if (!isRecord(response) || !isRecord(response.album)) {
       throw new Error('Aurral returned an invalid album request response.');
@@ -1580,30 +1588,34 @@ class AurralAPI extends ExternalAPI {
   public async requestTrack(
     payload: AurralRequestTrackPayload
   ): Promise<AurralRequestTrackResult> {
-    const response = await this.post<unknown>('/api/library/downloads/track', {
-      artistName: payload.artistName,
-      trackName: payload.trackName,
-      ...(payload.albumName ? { albumName: payload.albumName } : {}),
-      ...(payload.artistMbid ? { artistMbid: payload.artistMbid } : {}),
-      ...(payload.albumMbid ? { albumMbid: payload.albumMbid } : {}),
-      ...(payload.releaseMbid ? { releaseMbid: payload.releaseMbid } : {}),
-      ...(payload.trackMbid ? { trackMbid: payload.trackMbid } : {}),
-      ...(typeof payload.durationMs === 'number' &&
-      Number.isFinite(payload.durationMs) &&
-      payload.durationMs > 0
-        ? { durationMs: Math.round(payload.durationMs) }
-        : {}),
-      ...(typeof payload.trackNumber === 'number' &&
-      Number.isSafeInteger(payload.trackNumber) &&
-      payload.trackNumber > 0
-        ? { trackNumber: payload.trackNumber }
-        : {}),
-      ...(typeof payload.discNumber === 'number' &&
-      Number.isSafeInteger(payload.discNumber) &&
-      payload.discNumber > 0
-        ? { discNumber: payload.discNumber }
-        : {}),
-    });
+    const response = await this.post<unknown>(
+      '/api/library/downloads/track',
+      {
+        artistName: payload.artistName,
+        trackName: payload.trackName,
+        ...(payload.albumName ? { albumName: payload.albumName } : {}),
+        ...(payload.artistMbid ? { artistMbid: payload.artistMbid } : {}),
+        ...(payload.albumMbid ? { albumMbid: payload.albumMbid } : {}),
+        ...(payload.releaseMbid ? { releaseMbid: payload.releaseMbid } : {}),
+        ...(payload.trackMbid ? { trackMbid: payload.trackMbid } : {}),
+        ...(typeof payload.durationMs === 'number' &&
+        Number.isFinite(payload.durationMs) &&
+        payload.durationMs > 0
+          ? { durationMs: Math.round(payload.durationMs) }
+          : {}),
+        ...(typeof payload.trackNumber === 'number' &&
+        Number.isSafeInteger(payload.trackNumber) &&
+        payload.trackNumber > 0
+          ? { trackNumber: payload.trackNumber }
+          : {}),
+        ...(typeof payload.discNumber === 'number' &&
+        Number.isSafeInteger(payload.discNumber) &&
+        payload.discNumber > 0
+          ? { discNumber: payload.discNumber }
+          : {}),
+      },
+      { timeout: REQUEST_TIMEOUT_MS }
+    );
 
     if (!isRecord(response)) {
       throw new Error('Aurral returned an invalid track request response.');
@@ -1771,6 +1783,9 @@ class AurralAPI extends ExternalAPI {
           sort,
           // Aurral matches album, artist and song names
           ...(filter ? { query: filter } : {}),
+          // the page comes back as albums/artists only (no duplicate `items`
+          // list, no genre stats): about half the JSON for Aurral to write
+          compact: 'true',
         },
       },
       0
@@ -1853,6 +1868,8 @@ class AurralAPI extends ExternalAPI {
           pageSize: size,
           sort,
           availableOnly: 'true',
+          // without the duplicate `items` list and the genre stats
+          compact: 'true',
         },
       },
       0

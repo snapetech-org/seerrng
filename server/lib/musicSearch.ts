@@ -768,6 +768,17 @@ export const scoreTrack = (
         normArtist.includes(normCleanQuery))
     ) {
       artistBoost = 50;
+    } else if (normArtist.length >= 3) {
+      // "too sweet hozier" / "hozier too sweet": the query is this song's
+      // artist plus exactly its title, so it beats an upload titled with the
+      // whole query ("Too sweet hozier" by someone else). A title that only
+      // contains an artist's name ("dancing queen") boosts nothing.
+      const rest = normCleanQuery.startsWith(`${normArtist} `)
+        ? normCleanQuery.slice(normArtist.length + 1).trim()
+        : normCleanQuery.endsWith(` ${normArtist}`)
+          ? normCleanQuery.slice(0, -normArtist.length - 1).trim()
+          : '';
+      if (rest && rest === normBaseTitle) artistBoost = 70;
     }
   }
 
@@ -942,10 +953,16 @@ export const sortArtistsForSearch = (
     .map((entry) => entry.artist);
 };
 
+/** Key for matching an album across catalogs: artist + title without edition words. */
+export const albumPopularityKey = (artistName: string, title: string) =>
+  `${musicMatchKey(artistName)}|${stripEditionWords(title)}`;
+
 export const sortAlbumsForSearch = (
   albums: AurralNormalizedAlbum[],
   query: string,
-  parsed: MusicQueryParseDetails
+  parsed: MusicQueryParseDetails,
+  // Deezer's album search order (0 = first) for a title several albums share
+  popularity?: ReadonlyMap<string, number>
 ): AurralNormalizedAlbum[] => {
   const strippedQuery = stripEditionWords(parsed.cleanQuery || query);
   const yearPrefix = parsed.year !== null ? String(parsed.year) : null;
@@ -973,6 +990,12 @@ export const sortAlbumsForSearch = (
       // "Taylor Swift 1989": an album titled with the year.
       const yearTitle =
         yearPrefix && stripEditionWords(album.title) === yearPrefix ? 1 : 0;
+      // "abbey road": among albums with the title, the one Deezer lists first
+      // (The Beatles) leads, not a single that happens to share it
+      const rank = exactTitle
+        ? popularity?.get(albumPopularityKey(album.artistName, album.title))
+        : undefined;
+      const popular = rank === undefined ? 0 : Math.max(0, 60 - rank * 10);
       return {
         album,
         index,
@@ -981,6 +1004,7 @@ export const sortAlbumsForSearch = (
           yearTitle * 130 +
           exactTitle * 120 +
           hasMbid * 100 +
+          popular +
           yearMatch * 20 +
           editionMatch * 8 +
           typeMatch * 5,
@@ -1061,6 +1085,10 @@ export const mergeAlbums = (
   return result;
 };
 
+// Deezer track rank (0 to 1,000,000) above which a song beats a same-titled
+// album ("hello": Adele's song, not an album called Hello)
+export const FAMOUS_SONG_RANK = 400_000;
+
 export const selectTopResult = ({
   query,
   parsed,
@@ -1068,6 +1096,7 @@ export const selectTopResult = ({
   albums,
   tracks,
   upstreamTop,
+  popularAlbum = null,
 }: {
   query: string;
   parsed: MusicQueryParseDetails;
@@ -1075,6 +1104,8 @@ export const selectTopResult = ({
   albums: AurralNormalizedAlbum[];
   tracks: AurralNormalizedTrack[];
   upstreamTop: AurralNormalizedTopResult | null;
+  /** The full album Deezer lists first for exactly this title, if any. */
+  popularAlbum?: AurralNormalizedAlbum | null;
 }): AurralNormalizedTopResult | null => {
   const cleanNorm = musicMatchKey(parsed.cleanQuery || query);
   const parsedArtistNorm = parsed.artist
@@ -1135,6 +1166,11 @@ export const selectTopResult = ({
             (b.track.popularity ?? 0) - (a.track.popularity ?? 0) ||
             a.index - b.index
         );
+      // "abbey road": many songs carry the title but none is famous, and the
+      // album people mean is the one Deezer lists first
+      if (popularAlbum && (best.track.popularity ?? 0) < FAMOUS_SONG_RANK) {
+        return { type: 'album', ...popularAlbum };
+      }
       return { type: 'track', ...best.track };
     }
   }
