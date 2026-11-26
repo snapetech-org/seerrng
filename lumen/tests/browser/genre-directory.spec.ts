@@ -86,6 +86,11 @@ for (const directory of [
       'src',
       '/imageproxy/tmdb/t/p/w780/fallback.jpg'
     );
+    await expect
+      .poll(() =>
+        genreImage.evaluate((image: HTMLImageElement) => image.naturalWidth)
+      )
+      .toBeGreaterThan(0);
     await expect(
       page
         .getByRole('link', { name: `Browse ${directory.otherGenre.name}` })

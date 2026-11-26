@@ -85,6 +85,13 @@ test('Discover genre shelf recovers the next image after artwork fails', async (
     'src',
     '/imageproxy/tmdb/t/p/w780/fallback.jpg'
   );
+  await expect
+    .poll(() =>
+      tile
+        .locator('img')
+        .evaluate((image: HTMLImageElement) => image.naturalWidth)
+    )
+    .toBeGreaterThan(0);
   if (['desktop', 'iphone'].includes(testInfo.project.name))
     await page.screenshot({
       path: testInfo.outputPath('discover-genres.png'),
