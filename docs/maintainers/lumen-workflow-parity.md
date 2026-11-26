@@ -10914,3 +10914,20 @@ behavior remain fixture-backed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
 release-note: `release-notes/fixed-lumen-self-settings-bundled-routing.md`
+
+### Navigation and administration directory acceptance (2026-11-25)
+
+The full Lumen navigation and administrator-directory browser specs pass in
+both standalone production preview and the compiled Express `/lumen/` mount:
+87 passed, five viewport-specific skips, and no failures in each deployment.
+The matrix covers localized navigation landmarks and badges, the phone More
+menu and dismissal behavior, permission-scoped issue and Following counts,
+administrator entry points, the 41 unique administration destinations,
+invalid permission-mask denial, the classic-interface escape, and About/release
+history navigation. The five skips are the three mobile-tab behaviors on the
+desktop project and the compact-phone filter behavior on desktop and tablet.
+API responses are fixture-backed; live authorization and provider behavior
+remain unverified. Screenshots from the bundled run are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/navigation-mounted-results/`.
+
+release-note: none
