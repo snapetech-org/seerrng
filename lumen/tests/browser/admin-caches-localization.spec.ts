@@ -27,6 +27,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       dnsStatsDescription:
         'These statistics are aggregated across all DNS cache entries.',
       dns: 'DNS Cache',
+      cacheMaxEntries: 'Maximum Entries',
       apiFlush: 'Flush Cache',
       noApiCaches: 'No API caches.',
       apiSuccess: 'Flushed TMDB.',
@@ -49,6 +50,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       dnsStatsDescription:
         'Ces statistiques sont agrégées pour toutes les entrées du cache DNS.',
       dns: 'Cache DNS',
+      cacheMaxEntries: 'Nombre maximal d’entrées',
       apiFlush: 'Vider le cache',
       noApiCaches: 'Aucun cache API.',
       apiSuccess: 'Cache TMDB vidé.',
@@ -70,6 +72,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
       dnsStatsDescription:
         'هذه الإحصاءات مجمّعة من جميع إدخالات ذاكرة DNS المؤقتة.',
       dns: 'ذاكرة تخزين DNS المؤقتة',
+      cacheMaxEntries: 'الحد الأقصى للإدخالات',
       apiFlush: 'محو الملفات المؤقتة',
       noApiCaches: 'لا توجد ذاكرات API مؤقتة.',
       apiSuccess: 'تم مسح TMDB.',
@@ -94,6 +97,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
         dnsStatsDescription:
           'These statistics are aggregated across all DNS cache entries.',
         dns: 'DNS Cache',
+        cacheMaxEntries: 'cacheMaxEntries',
         apiFlush: 'Flush Cache',
         noApiCaches: 'No API caches.',
         apiSuccess: 'Flushed TMDB.',
@@ -157,6 +161,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
           dnsCache: {
             stats: {
               size: 1,
+              cacheMaxEntries: 256,
               hits: 10,
               misses: 2,
               failures: 0,
@@ -170,7 +175,7 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
                     activeAddress: '192.0.2.1',
                     hits: 10,
                     misses: 2,
-                    age: 3000,
+                    age: 3600000,
                   },
                 },
           },
@@ -195,6 +200,16 @@ test('system caches follow the saved locale and confirm DNS flush readback', asy
     page.getByRole('heading', { name: labels.dns, exact: true })
   ).toBeVisible();
   if (!baseline) {
+    await expect(
+      page.getByText(labels.cacheMaxEntries, { exact: true })
+    ).toBeVisible();
+    await expect(page.getByText('256', { exact: true })).toBeVisible();
+    const age = new Intl.RelativeTimeFormat(locale, {
+      numeric: 'auto',
+    }).format(-1, 'hour');
+    await expect(
+      page.locator('.set').filter({ hasText: 'cache.example' })
+    ).toContainText(age);
     for (const description of [
       labels.apiDescription,
       labels.imageDescription,

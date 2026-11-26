@@ -10497,6 +10497,18 @@ also reviewed. The captures are retained at
 The runs use mocked cache responses; live cache contents and production
 administrator authorization remain covered by their existing server routes.
 
+### DNS cache capacity and entry age (2026-11-26)
+
+The DNS cache stats now include the native `cacheMaxEntries` capacity value.
+Individual DNS entries show a localized relative age (seconds through days),
+instead of an unhelpful seconds-only count for long-lived entries. The browser
+fixture verifies the capacity and one-hour age in English, French, and Arabic
+across desktop, iPhone, Android, and tablet (12 cases). Candidate captures at
+1440px and 390px were inspected; no matched native capture was available for
+this specific state. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/admin-caches-dns-parity/captures-final/`.
+The run uses mocked DNS data; live cache values remain unverified.
+
 ### Missing movie and TV overview metadata (2026-11-25)
 
 Native movie and series details show a localized “Overview unavailable” value

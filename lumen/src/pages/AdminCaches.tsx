@@ -33,12 +33,38 @@ interface CacheResponse {
 
 const dnsMetrics = {
   size: 'lumen.adminCaches.metric.size',
+  cacheMaxEntries: 'lumen.adminCaches.metric.cacheMaxEntries',
   hits: 'cachehits',
   misses: 'dnscachemisses',
   failures: 'failures',
   ipv4Fallbacks: 'ipv4Fallbacks',
   hitRate: 'hitRate',
 };
+
+function formatAge(milliseconds: number, locale: string) {
+  const seconds = Math.max(0, milliseconds) / 1000;
+  const magnitude = seconds;
+  const unit: Intl.RelativeTimeFormatUnit =
+    magnitude < 60
+      ? 'second'
+      : magnitude < 3600
+        ? 'minute'
+        : magnitude < 86400
+          ? 'hour'
+          : 'day';
+  const divisor =
+    unit === 'second'
+      ? 1
+      : unit === 'minute'
+        ? 60
+        : unit === 'hour'
+          ? 3600
+          : 86400;
+  return new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(
+    -Math.round(seconds / divisor),
+    unit
+  );
+}
 
 interface Selection {
   kind: 'api' | 'dns';
@@ -294,12 +320,7 @@ export default function AdminCaches() {
                     <div>
                       <b>{hostname}</b>
                       <small>
-                        {entry.activeAddress} ·{' '}
-                        {t('lumen.adminCaches.secondsOld', '{count}s old', {
-                          count: Math.floor(entry.age / 1000).toLocaleString(
-                            locale
-                          ),
-                        })}
+                        {entry.activeAddress} · {formatAge(entry.age, locale)}
                       </small>
                       <small>
                         {entry.hits.toLocaleString(locale)}{' '}
