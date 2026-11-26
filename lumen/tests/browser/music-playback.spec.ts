@@ -873,6 +873,112 @@ for (const [
   });
 }
 
+for (const [
+  locale,
+  searchPlaceholder,
+  noResults,
+  noResultsHelp,
+  searchListLabel,
+  trendingSongsLabel,
+  genresLabel,
+  madeForYouLabel,
+  browseCatalogLabel,
+] of [
+  [
+    'fr',
+    'Rechercher des chansons, albums et artistes…',
+    'Aucun résultat pour « Missing query »',
+    'Vérifiez l’orthographe ou recherchez uniquement l’artiste ou la chanson.',
+    'Résultats de recherche',
+    'Chansons tendance',
+    'Vos genres musicaux',
+    'Pour vous sur Aurral',
+    'Parcourir le catalogue',
+  ],
+  [
+    'ar',
+    'ابحث عن الأغاني والألبومات والفنانين…',
+    'لم يتم العثور على نتائج لـ «Missing query»',
+    'تحقق من الإملاء أو جرّب البحث باسم الفنان أو الأغنية فقط.',
+    'نتائج البحث',
+    'الأغاني الرائجة',
+    'أنواعك الموسيقية',
+    'مخصص لك على Aurral',
+    'تصفح الفهرس',
+  ],
+] as const) {
+  test(`music search and discovery use the saved ${locale} locale`, async ({
+    page,
+  }, testInfo) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.route('**/api/v1/music/search?**', (route) =>
+      route.fulfill({
+        json: { artists: [], albums: [], tracks: [], top: null },
+      })
+    );
+    await page.goto(testAppPath('/music?q=Missing%20query'));
+    await expect(
+      page.getByPlaceholder(
+        baseline ? 'Search songs, albums, and artists…' : searchPlaceholder
+      )
+    ).toHaveAttribute(
+      'placeholder',
+      baseline ? 'Search songs, albums, and artists…' : searchPlaceholder
+    );
+    await expect(
+      page.getByRole('tablist', {
+        name: baseline ? 'Search results' : searchListLabel,
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline ? 'Nothing found for “Missing query”' : noResults,
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Check the spelling, or try just the artist or the song name.'
+          : noResultsHelp
+      )
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath('music-search-empty.png'),
+      fullPage: false,
+    });
+
+    await page.goto(testAppPath('/music'));
+    for (const [baselineLabel, translatedLabel] of [
+      ['Trending songs', trendingSongsLabel],
+      ['Your genres', genresLabel],
+      ['Made for you in Aurral', madeForYouLabel],
+      ['Browse catalog', browseCatalogLabel],
+    ]) {
+      await expect(
+        page.getByText(baseline ? baselineLabel : translatedLabel, {
+          exact: true,
+        })
+      ).toBeVisible();
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath('music-discovery.png'),
+      fullPage: false,
+    });
+  });
+}
+
 test('a playlist page gets every missing song in one go', async ({ page }) => {
   const seen: Seen = { previews: [], saved: [], trackRequests: [] };
   await mockMusic(page, seen);

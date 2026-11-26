@@ -11866,3 +11866,22 @@ not exercised. Remaining Music discovery, request-summary, and playlist labels
 continue under audit.
 
 release-note: `release-notes/lumen-music-library-activity-localization.md`
+
+### Music search, discovery, and request labels (2026-11-26)
+
+Lumen’s Music page now registers and translates all 58 literal `lumen.music.*`
+message keys used by `Music.tsx` in French and Arabic. Coverage includes search
+empty states, discovery headings, playlist links, catalog labels, track request
+feedback, and the duplicate-edition confirmation. Search, discovery, and
+request behavior is unchanged. An AST-based catalog test checks every Music
+page key for registry membership and both locale overrides.
+
+Search-empty and discovery states were compared before and after at desktop,
+iPhone, Android, and tablet viewports. The browser cases verify saved-locale
+labels and document-width overflow. Screenshots are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-page-i18n-20261126/`.
+Fixtures do not contact Aurral or exercise a live playlist import. MusicHome,
+MusicSections, Podcast, and other non-Music translation gaps remain under
+review.
+
+release-note: `release-notes/lumen-music-page-localization.md`

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { test } from 'node:test';
+import ts from 'typescript';
 
 const root = resolve(import.meta.dirname, '..');
 const overrides = JSON.parse(
@@ -161,6 +162,37 @@ test('Lumen music playback and preview labels are translated in French and Arabi
   }
   for (const locale of ['fr', 'ar']) {
     for (const key of musicKeys) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
+test('all Lumen Music page labels are registered and translated', async () => {
+  const source = await readFile(resolve(root, 'src/pages/Music.tsx'), 'utf8');
+  const sourceFile = ts.createSourceFile(
+    'Music.tsx',
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  );
+  const musicKeys = new Set();
+  const visit = (node) => {
+    if (
+      ts.isCallExpression(node) &&
+      node.arguments.length >= 1 &&
+      ts.isStringLiteral(node.arguments[0]) &&
+      node.arguments[0].text.startsWith('lumen.music.')
+    ) {
+      musicKeys.add(node.arguments[0].text);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  assert.ok(musicKeys.size > 0, 'Music page message keys exist');
+  for (const key of musicKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
       assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
     }
   }
