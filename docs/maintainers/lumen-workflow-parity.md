@@ -11901,3 +11901,18 @@ specific empty and request states remains to be captured alongside the next
 MusicHome discovery batch.
 
 release-note: `release-notes/lumen-music-sections-localization.md`
+
+### Music playlist request workflow (2026-11-26)
+
+Lumen’s playlist page now translates playlist source attribution, library and
+on-the-way filters, Aurral playback, missing-song requests, and the confirmation
+copy in French and Arabic. Request submission and Aurral behavior are unchanged.
+An explicit key audit covers all 16 playlist actions added in this batch.
+
+The candidate playlist and confirmation states were compared with the prior
+English-fallback baseline in both locales at desktop, iPhone, Android, and
+tablet sizes. All 8 baseline and 8 candidate browser cases passed. Evidence is
+retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-playlist-i18n-20261126/`.
+
+release-note: `release-notes/lumen-music-playlist-localization.md`

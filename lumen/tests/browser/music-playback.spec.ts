@@ -1032,6 +1032,70 @@ test('a playlist page gets every missing song in one go', async ({ page }) => {
   });
 });
 
+for (const [locale, filter, getMissing, confirmTitle, confirmBody, confirm] of [
+  [
+    'fr',
+    'Absents de la bibliothèque',
+    'Obtenir le morceau manquant',
+    'Obtenir 1 morceau ?',
+    'Aurral télécharge les morceaux un par un. Suivez leur progression dans Activité.',
+    'Les obtenir',
+  ],
+  [
+    'ar',
+    'غير موجودة في المكتبة',
+    'تنزيل الأغنية المتبقية',
+    'تنزيل أغنية واحدة؟',
+    'ينزّل Aurral الأغاني واحدة تلو الأخرى. يمكنك متابعة تقدمها في النشاط.',
+    'تنزيلها',
+  ],
+] as const) {
+  test(`playlist request actions use the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.goto(testAppPath('/music/playlist/deezer/123'));
+    const filters = page.getByRole('group', {
+      name: baseline
+        ? 'Show songs'
+        : locale === 'fr'
+          ? 'Afficher les morceaux'
+          : 'عرض الأغاني',
+    });
+    await expect(filters).toBeVisible();
+    await expect(
+      filters.getByRole('button', {
+        name: baseline ? 'Not in library' : filter,
+      })
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath(`music-playlist-${locale}.png`),
+      fullPage: false,
+    });
+
+    await page
+      .getByRole('button', {
+        name: baseline ? 'Get the missing song' : getMissing,
+      })
+      .click();
+    const confirmDialog = page.getByRole('alertdialog', {
+      name: baseline ? 'Get 1 song?' : confirmTitle,
+    });
+    await expect(confirmDialog).toBeVisible();
+    await expect(
+      confirmDialog.getByText(
+        baseline
+          ? 'Aurral downloads each song one after another. You can follow them in Activity.'
+          : confirmBody
+      )
+    ).toBeVisible();
+    await confirmDialog
+      .getByRole('button', { name: baseline ? 'Get them' : confirm })
+      .click();
+  });
+}
+
 test('previews of playlist songs use the Deezer clip id', async ({ page }) => {
   const seen: Seen = { previews: [], saved: [] };
   await mockMusic(page, seen);

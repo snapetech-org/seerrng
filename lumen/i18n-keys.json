@@ -6559,5 +6559,21 @@
   "lumen.common.cancel",
   "lumen.music.readMore",
   "lumen.music.unfollow",
-  "lumen.music.follow"
+  "lumen.music.follow",
+  "lumen.music.fromPlaylist",
+  "lumen.music.fromAMix",
+  "lumen.music.playlistRequested",
+  "lumen.music.playlistRequestFailed",
+  "lumen.music.playlistUnavailable",
+  "lumen.music.getAllSongs",
+  "lumen.music.getMissingSong",
+  "lumen.music.playInAurral",
+  "lumen.music.playlistFilter",
+  "lumen.music.notInLibrary",
+  "lumen.music.onTheWay",
+  "lumen.music.showMoreSongs",
+  "lumen.music.getPlaylistTitleOne",
+  "lumen.music.getPlaylistTitle",
+  "lumen.music.getPlaylistSongsBody",
+  "lumen.music.getThem"
 ]

@@ -10840,7 +10840,23 @@
     "lumen.common.cancel": "Annuler",
     "lumen.music.readMore": "Lire la suite",
     "lumen.music.unfollow": "Ne plus suivre",
-    "lumen.music.follow": "Suivre"
+    "lumen.music.follow": "Suivre",
+    "lumen.music.fromPlaylist": "De {name}",
+    "lumen.music.fromAMix": "D’un mix",
+    "lumen.music.playlistRequested": "Téléchargement de {count} morceaux",
+    "lumen.music.playlistRequestFailed": "Impossible de demander ces morceaux.",
+    "lumen.music.playlistUnavailable": "Impossible de charger cette playlist",
+    "lumen.music.getAllSongs": "Obtenir les {count} morceaux",
+    "lumen.music.getMissingSong": "Obtenir le morceau manquant",
+    "lumen.music.playInAurral": "Lire dans Aurral",
+    "lumen.music.playlistFilter": "Afficher les morceaux",
+    "lumen.music.notInLibrary": "Absents de la bibliothèque",
+    "lumen.music.onTheWay": "En cours",
+    "lumen.music.showMoreSongs": "Afficher {count} de plus",
+    "lumen.music.getPlaylistTitleOne": "Obtenir 1 morceau ?",
+    "lumen.music.getPlaylistTitle": "Obtenir {count} morceaux ?",
+    "lumen.music.getPlaylistSongsBody": "Aurral télécharge les morceaux un par un. Suivez leur progression dans Activité.",
+    "lumen.music.getThem": "Les obtenir"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16360,6 +16376,22 @@
     "lumen.common.cancel": "إلغاء",
     "lumen.music.readMore": "اقرأ المزيد",
     "lumen.music.unfollow": "إلغاء المتابعة",
-    "lumen.music.follow": "متابعة"
+    "lumen.music.follow": "متابعة",
+    "lumen.music.fromPlaylist": "من {name}",
+    "lumen.music.fromAMix": "من قائمة مزيج",
+    "lumen.music.playlistRequested": "جارٍ تنزيل {count} أغنية",
+    "lumen.music.playlistRequestFailed": "تعذر طلب هذه الأغاني.",
+    "lumen.music.playlistUnavailable": "تعذر تحميل قائمة التشغيل هذه",
+    "lumen.music.getAllSongs": "تنزيل الأغاني كلها ({count})",
+    "lumen.music.getMissingSong": "تنزيل الأغنية المتبقية",
+    "lumen.music.playInAurral": "التشغيل في Aurral",
+    "lumen.music.playlistFilter": "عرض الأغاني",
+    "lumen.music.notInLibrary": "غير موجودة في المكتبة",
+    "lumen.music.onTheWay": "في الطريق",
+    "lumen.music.showMoreSongs": "عرض {count} أخرى",
+    "lumen.music.getPlaylistTitleOne": "تنزيل أغنية واحدة؟",
+    "lumen.music.getPlaylistTitle": "تنزيل {count} أغنية؟",
+    "lumen.music.getPlaylistSongsBody": "ينزّل Aurral الأغاني واحدة تلو الأخرى. يمكنك متابعة تقدمها في النشاط.",
+    "lumen.music.getThem": "تنزيلها"
   }
 }

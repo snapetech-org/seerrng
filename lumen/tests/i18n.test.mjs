@@ -240,6 +240,33 @@ test('Music sections and podcast actions are registered and translated', async (
   }
 });
 
+test('Lumen playlist actions are registered and translated', () => {
+  const playlistKeys = [
+    'lumen.music.fromPlaylist',
+    'lumen.music.fromAMix',
+    'lumen.music.playlistRequested',
+    'lumen.music.playlistRequestFailed',
+    'lumen.music.playlistUnavailable',
+    'lumen.music.getAllSongs',
+    'lumen.music.getMissingSong',
+    'lumen.music.playInAurral',
+    'lumen.music.playlistFilter',
+    'lumen.music.notInLibrary',
+    'lumen.music.onTheWay',
+    'lumen.music.showMoreSongs',
+    'lumen.music.getPlaylistTitleOne',
+    'lumen.music.getPlaylistTitle',
+    'lumen.music.getPlaylistSongsBody',
+    'lumen.music.getThem',
+  ];
+  for (const key of playlistKeys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
 test('Lumen MusicHome library and download activity labels are translated', async () => {
   const source = await readFile(
     resolve(root, 'src/components/MusicHome.tsx'),
