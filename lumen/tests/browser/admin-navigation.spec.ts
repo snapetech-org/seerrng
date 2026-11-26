@@ -163,6 +163,7 @@ for (const locale of [
     serverWarning:
       'Déconnectez-vous depuis Vous, puis reconnectez-vous avec votre compte Jellyfin ou Emby pour rétablir la disponibilité et la lecture de votre bibliothèque.',
     openYou: 'Ouvrir Vous',
+    aurralServices: 'Services Aurral',
   },
   {
     tag: 'ar',
@@ -187,6 +188,7 @@ for (const locale of [
     serverWarning:
       'سجّل الخروج من صفحة «أنت»، ثم سجّل الدخول مجددًا باستخدام حساب Jellyfin أو Emby لاستعادة مكتبتك وإمكانية التشغيل.',
     openYou: 'فتح صفحة «أنت»',
+    aurralServices: 'خدمات Aurral',
   },
 ]) {
   test(`administrator directory uses ${locale.tag} messages on You and Administration`, async ({
@@ -247,6 +249,29 @@ for (const locale of [
     ).toBeLessThanOrEqual(page.viewportSize()!.width);
 
     await page.goto(testAppPath('/admin'));
+    const captureDir = process.env.LUMEN_I18N_CAPTURE_DIR;
+    const aurralLabel =
+      process.env.LUMEN_I18N_CAPTURE_ONLY === '1'
+        ? 'Aurral Services'
+        : locale.aurralServices;
+    const aurralLink = page.getByRole('link', {
+      name: `${locale.tag === 'fr' ? 'Ouvrir' : 'فتح'} ${aurralLabel}`,
+      exact: true,
+    });
+    await expect(aurralLink).toBeVisible();
+    if (captureDir && ['desktop', 'iphone'].includes(info.project.name)) {
+      const { mkdir } = await import('node:fs/promises');
+      const { join } = await import('node:path');
+      await mkdir(captureDir, { recursive: true });
+      await page.screenshot({
+        path: join(
+          captureDir,
+          `admin-home-${locale.tag}-${info.project.name}.png`
+        ),
+        fullPage: true,
+      });
+    }
+    if (process.env.LUMEN_I18N_CAPTURE_ONLY === '1') return;
     await expect(page.getByLabel(locale.search, { exact: true })).toBeVisible();
     await expect(
       page.getByRole('link', { name: locale.all, exact: true })

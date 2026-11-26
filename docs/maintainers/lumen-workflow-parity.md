@@ -12006,3 +12006,17 @@ This does not establish visual parity for other routes or validate live Aurral,
 Spotify, or provider behavior.
 
 release-note: `release-notes/lumen-literal-message-localization.md`
+
+### Dynamic administration destination labels (2026-11-26)
+
+The Lumen Admin dashboard maps service names to message keys at runtime, so
+those labels are not ordinary literal `t()` calls. An AST regression check now
+audits the map itself for registry and French/Arabic coverage. This found and
+closed the remaining Aurral Services translation gap. The Administration
+directory browser flow now checks the localized direct link. Same-state
+English-fallback and candidate screenshots were compared at desktop and phone
+sizes in French and Arabic; the destination list retains its existing layout.
+Evidence is in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/`.
+
+release-note: `release-notes/lumen-admin-destination-localization.md`

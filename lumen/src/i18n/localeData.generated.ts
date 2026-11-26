@@ -7642,6 +7642,7 @@ export const localeData = [
       'lumen.videoRating.loadFailed': 'تعذر تحميل التقييمات.',
       'lumen.manageVideo.downloadClient': 'العميل: {name}',
       'lumen.manageVideo.liveSeeds': 'عدد البذور: {count}',
+      'lumen.admin.dest.aurral': 'خدمات Aurral',
       'lumen.collectors.unavailableSocial':
         'تتطلب اختيارات هواة الجمع تفعيل الاتحاد الاجتماعي.',
       'lumen.music.all': 'الكل',
@@ -33729,6 +33730,7 @@ export const localeData = [
       'lumen.videoRating.loadFailed': 'Impossible de charger les évaluations.',
       'lumen.manageVideo.downloadClient': 'Client : {name}',
       'lumen.manageVideo.liveSeeds': 'Nombre de graines : {count}',
+      'lumen.admin.dest.aurral': 'Services Aurral',
       'lumen.collectors.unavailableSocial':
         'Les sélections des collectionneurs nécessitent l’activation de la fédération sociale.',
       'lumen.music.all': 'Tout',

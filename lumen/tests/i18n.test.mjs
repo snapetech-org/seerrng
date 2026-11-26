@@ -447,6 +447,51 @@ test('all literal Lumen messages are registered and translated', async () => {
   }
 });
 
+test('Lumen administration destination map labels have locale coverage', async () => {
+  const source = await readFile(
+    resolve(root, 'src/pages/AdminHome.tsx'),
+    'utf8'
+  );
+  const ast = ts.createSourceFile(
+    'AdminHome.tsx',
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  );
+  let destinationMap;
+  const visit = (node) => {
+    if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.name.text === 'destinationMessages' &&
+      node.initializer &&
+      ts.isObjectLiteralExpression(node.initializer)
+    )
+      destinationMap = node.initializer;
+    ts.forEachChild(node, visit);
+  };
+  visit(ast);
+  assert.ok(destinationMap, 'administration destination map exists');
+  const keys = destinationMap.properties
+    .filter(
+      (property) =>
+        ts.isPropertyAssignment(property) &&
+        ts.isStringLiteral(property.initializer) &&
+        property.initializer.text.startsWith('lumen.admin.dest.')
+    )
+    .map((property) => property.initializer.text);
+  assert.ok(keys.length > 0, 'destination labels use locale keys');
+  for (const key of keys) {
+    assert.ok(lumenKeyRegistry.includes(key), `registered destination: ${key}`);
+    for (const locale of ['fr', 'ar'])
+      assert.ok(
+        overrides[locale]?.[key],
+        `${locale} destination exists: ${key}`
+      );
+  }
+});
+
 test('Lumen MusicHome library and download activity labels are translated', async () => {
   const source = await readFile(
     resolve(root, 'src/components/MusicHome.tsx'),

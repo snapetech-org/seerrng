@@ -10937,7 +10937,8 @@
     "lumen.request.couldNotRequestTitle": "Impossible de demander {title}.",
     "lumen.request.failed": "Échec de la demande",
     "lumen.songIdentify.unavailableAurral": "L’identification des chansons est indisponible tant qu’un administrateur n’a pas activé les demandes de pistes dans Aurral.",
-    "lumen.trackRequests.unavailableAurral": "Les demandes de pistes sont indisponibles tant qu’un administrateur ne les a pas activées dans Aurral."
+    "lumen.trackRequests.unavailableAurral": "Les demandes de pistes sont indisponibles tant qu’un administrateur ne les a pas activées dans Aurral.",
+    "lumen.admin.dest.aurral": "Services Aurral"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16554,6 +16555,7 @@
     "lumen.request.couldNotRequestTitle": "تعذّر طلب {title}.",
     "lumen.request.failed": "فشل الطلب",
     "lumen.songIdentify.unavailableAurral": "التعرّف على الأغاني غير متاح إلى أن يفعّل المسؤول طلبات المقاطع في Aurral.",
-    "lumen.trackRequests.unavailableAurral": "طلبات المقاطع غير متاحة إلى أن يفعّلها المسؤول في Aurral."
+    "lumen.trackRequests.unavailableAurral": "طلبات المقاطع غير متاحة إلى أن يفعّلها المسؤول في Aurral.",
+    "lumen.admin.dest.aurral": "خدمات Aurral"
   }
 }
