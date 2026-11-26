@@ -593,6 +593,75 @@ test('visible Lumen account, administration, game-library, and metadata labels a
   }
 });
 
+test('dynamically generated game-library filter keys exist in every shipped locale', async () => {
+  const dynamicValues = new Map();
+  for (const file of ['src/pages/GameLibrary.tsx', 'src/extras.ts']) {
+    const source = await readFile(resolve(root, file), 'utf8');
+    const ast = ts.createSourceFile(
+      file,
+      source,
+      ts.ScriptTarget.Latest,
+      true,
+      file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+    );
+    function visit(node) {
+      if (
+        ts.isVariableDeclaration(node) &&
+        (node.name.getText(ast) === 'GAME_LABEL' ||
+          node.name.getText(ast) === 'PROGRESS') &&
+        node.initializer &&
+        ts.isObjectLiteralExpression(node.initializer)
+      ) {
+        for (const property of node.initializer.properties) {
+          if (
+            ts.isPropertyAssignment(property) &&
+            ts.isStringLiteral(property.initializer)
+          ) {
+            dynamicValues.set(
+              property.initializer.text,
+              node.name.getText(ast)
+            );
+          }
+        }
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(ast);
+  }
+  assert.equal(
+    dynamicValues.size,
+    9,
+    'all game categories and progress states are enumerated'
+  );
+
+  const generatedKey = (value) =>
+    `lumen.gameLibrary.${value
+      .replace(/[^a-zA-Z0-9]+/g, ' ')
+      .trim()
+      .split(/ +/)
+      .map((part, index) =>
+        index ? part[0].toUpperCase() + part.slice(1) : part.toLowerCase()
+      )
+      .join('')}`;
+  for (const value of dynamicValues.keys()) {
+    const key = generatedKey(value);
+    assert.ok(lumenKeyRegistry.includes(key), `registered dynamic key: ${key}`);
+    for (const locale of ['en', 'fr', 'ar']) {
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale}: ${key}`
+      );
+      if (locale !== 'en')
+        assert.notEqual(
+          overrides[locale][key],
+          overrides.en[key],
+          `${locale}: ${key} is translated`
+        );
+    }
+  }
+});
+
 test('Lumen includes the localized native user-list menu label', async () => {
   const keys = JSON.parse(
     await readFile(resolve(root, 'i18n-keys.json'), 'utf8')

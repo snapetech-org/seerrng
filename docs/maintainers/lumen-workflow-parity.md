@@ -12020,3 +12020,15 @@ Evidence is in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/`.
 
 release-note: `release-notes/lumen-admin-destination-localization.md`
+
+### Dynamic My Games filter localization guard (2026-11-26)
+
+The source-wide literal-key audit does not see keys assembled from option
+labels. My Games derives message keys at runtime for its six progress states and
+three game categories. The i18n test now extracts those source values and checks
+that their generated keys are registered and translated in English, French,
+and Arabic. The browser locale flow also verifies every rendered progress and
+category option in all three locales. This closes the dynamic My Games label
+gap only; other runtime-composed translation keys remain under audit.
+
+release-note: none

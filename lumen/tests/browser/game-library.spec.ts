@@ -331,28 +331,65 @@ test('My Games follows the selected Lumen locale', async ({
       title: 'My Games',
       private: 'Private Library',
       type: 'Game Type',
+      allProgress: 'All Progress',
+      allTypes: 'All Types',
       add: 'Add a Game',
       titleField: 'Game Title',
       progress: 'Progress',
       save: 'Add Game',
+      progressOptions: [
+        'Backlog',
+        'Playing',
+        'Played',
+        'Completed',
+        'Paused',
+        'Dropped',
+      ],
+      gameTypeOptions: ['PC games', 'Retro consoles', 'Modern consoles'],
     },
     fr: {
       title: 'Mes jeux',
       private: 'Bibliothèque privée',
       type: 'Type de jeu',
+      allProgress: 'Toute progression',
+      allTypes: 'Tous les types',
       add: 'Ajouter un jeu',
       titleField: 'Titre du jeu',
       progress: 'Progression',
       save: 'Ajouter le jeu',
+      progressOptions: [
+        'À faire',
+        'En cours',
+        'Joué',
+        'Terminé',
+        'En pause',
+        'Abandonné',
+      ],
+      gameTypeOptions: ['Jeux PC', 'Consoles rétro', 'Consoles modernes'],
     },
     ar: {
       title: 'ألعابي',
       private: 'المكتبة الخاصة',
       type: 'نوع اللعبة',
+      allProgress: 'كل التقدم',
+      allTypes: 'كل الأنواع',
       add: 'أضف لعبة',
       titleField: 'عنوان اللعبة',
       progress: 'التقدم',
       save: 'إضافة اللعبة',
+      progressOptions: [
+        'قائمة الانتظار',
+        'قيد اللعب',
+        'تم لعبها',
+        'مكتملة',
+        'متوقفة مؤقتًا',
+        'متروكة',
+      ],
+      gameTypeOptions: [
+        'ألعاب الكمبيوتر',
+        'أجهزة ألعاب قديمة',
+        'أجهزة ألعاب حديثة',
+      ],
     },
   } as const;
   await page.route('https://**/*', (route) => route.abort());
@@ -381,6 +418,12 @@ test('My Games follows the selected Lumen locale', async ({
   await expect(
     page.getByText(labels[locale].type, { exact: true })
   ).toBeVisible();
+  await expect(
+    page.getByLabel(labels[locale].progress).locator('option')
+  ).toHaveText([labels[locale].allProgress, ...labels[locale].progressOptions]);
+  await expect(
+    page.getByLabel(labels[locale].type).locator('option')
+  ).toHaveText([labels[locale].allTypes, ...labels[locale].gameTypeOptions]);
   await expect(page.locator('html')).toHaveAttribute('lang', locale);
   await expect(page.locator('html')).toHaveAttribute(
     'dir',
