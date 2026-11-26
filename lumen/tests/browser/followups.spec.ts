@@ -94,6 +94,91 @@ test('the search field fills its bar so a tap anywhere in it types', async ({
   await expect(page.locator('#sq')).toBeFocused();
 });
 
+test('the slash shortcut focuses search without interrupting editing or dialogs', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.goto('/');
+  const search = page.locator('#tq');
+  await expect(page.locator('#view')).toBeVisible();
+
+  const shortcutState = await page.evaluate(() => {
+    const event = new KeyboardEvent('keydown', {
+      key: '/',
+      bubbles: true,
+      cancelable: true,
+    });
+    document.body.dispatchEvent(event);
+    return {
+      prevented: event.defaultPrevented,
+      modal: document.querySelector('[aria-modal="true"]')?.outerHTML,
+      searchPresent: !!document.querySelector('#tq'),
+    };
+  });
+  expect(shortcutState, JSON.stringify(shortcutState)).toMatchObject({
+    prevented: true,
+    modal: undefined,
+    searchPresent: true,
+  });
+  if (page.viewportSize()!.width < 1040) {
+    await expect(page).toHaveURL(/\/search$/);
+    await expect(page.locator('#sq')).toBeFocused();
+  } else {
+    await expect(search).toBeFocused();
+  }
+
+  const editorShortcutWasPrevented = await page.evaluate(() => {
+    const editor = document.createElement('div');
+    editor.id = 'shortcut-editor';
+    editor.contentEditable = 'true';
+    editor.textContent = 'Draft';
+    document.body.append(editor);
+    editor.focus();
+    const event = new KeyboardEvent('keydown', {
+      key: '/',
+      bubbles: true,
+      cancelable: true,
+    });
+    editor.dispatchEvent(event);
+    return event.defaultPrevented;
+  });
+  expect(editorShortcutWasPrevented).toBe(false);
+  await expect(page.locator('#shortcut-editor')).toBeFocused();
+
+  const modifierWasPrevented = await page.evaluate(() => {
+    const event = new KeyboardEvent('keydown', {
+      key: '/',
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    document.dispatchEvent(event);
+    return event.defaultPrevented;
+  });
+  expect(modifierWasPrevented).toBe(false);
+  await expect(page.locator('#shortcut-editor')).toBeFocused();
+
+  await page.evaluate(() => {
+    const dialog = document.createElement('div');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.tabIndex = -1;
+    document.body.append(dialog);
+    dialog.focus();
+  });
+  const dialogShortcutWasPrevented = await page.evaluate(() => {
+    const event = new KeyboardEvent('keydown', {
+      key: '/',
+      bubbles: true,
+      cancelable: true,
+    });
+    document.dispatchEvent(event);
+    return event.defaultPrevented;
+  });
+  expect(dialogShortcutWasPrevented).toBe(false);
+  await expect(page.locator('[role="dialog"]')).toBeFocused();
+});
+
 test('the Lumen settings checkbox has a 44px touch target and stays keyboard friendly', async ({
   page,
 }) => {

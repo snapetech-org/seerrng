@@ -11612,3 +11612,15 @@ the enabled baseline and disabled candidate state. Evidence is retained at
 The search and import API responses are fixtures.
 
 release-note: `release-notes/lumen-download-search-guard.md`
+
+### Search shortcut respects editing and mobile layout (2026-11-26)
+
+The global `/` shortcut now follows native search behavior without interrupting
+text entry: it ignores editable controls, modified or already-handled events,
+and open modal dialogs. On desktop it focuses the visible global search field;
+on phone and tablet widths, where that field is hidden, it opens Search and
+focuses the visible Search field instead. Browser regressions pass on desktop,
+iPhone, Android, and tablet for both focus destinations and the protected
+editing, modifier, and modal states.
+
+release-note: `release-notes/lumen-search-shortcut.md`

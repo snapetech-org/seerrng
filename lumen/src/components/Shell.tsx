@@ -632,18 +632,28 @@ export default function Shell({ children }: { children: ReactNode }) {
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if (
-        e.key === '/' &&
-        !/INPUT|TEXTAREA|SELECT/.test(
-          (document.activeElement as HTMLElement)?.tagName
-        )
-      ) {
-        e.preventDefault();
-        q.current?.focus();
-      }
+        e.key !== '/' ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        e.defaultPrevented ||
+        document.querySelector('[aria-modal="true"]')
+      )
+        return;
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.closest('input, textarea, select, [role="textbox"]'))
+      )
+        return;
+      e.preventDefault();
+      if (q.current?.getClientRects().length) q.current.focus();
+      else nav('/search');
     };
     document.addEventListener('keydown', k);
     return () => document.removeEventListener('keydown', k);
-  }, []);
+  }, [nav]);
 
   return (
     <>
