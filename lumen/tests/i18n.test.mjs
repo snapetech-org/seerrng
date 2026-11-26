@@ -187,17 +187,20 @@ test('Lumen includes the localized native user-list menu label', async () => {
   }
 });
 
-test('Lumen series cards reuse the native localized media-type label', async () => {
+test('Lumen title cards reuse native localized media-type labels', async () => {
   const keys = JSON.parse(
     await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
   );
-  const key = 'components.Search.series';
-  assert.ok(keys.includes(key));
+  const keysUnderTest = [
+    'components.Search.series',
+    'components.Requests.movie',
+  ];
+  for (const key of keysUnderTest) assert.ok(keys.includes(key));
   for (const locale of ['en', 'fr', 'ar']) {
     const native = JSON.parse(
       await readFile(resolve(root, `../src/i18n/locale/${locale}.json`), 'utf8')
     );
-    assert.equal(typeof native[key], 'string');
+    for (const key of keysUnderTest) assert.equal(typeof native[key], 'string');
   }
 });
 

@@ -922,7 +922,9 @@ export function FeatCard({
   const [done, setDone] = useState('');
   const mm = [
     yearOf(it),
-    tv ? 'Series' : 'Movie',
+    tv
+      ? t('components.Search.series', 'Series')
+      : t('components.Requests.movie', 'Movie'),
     it.voteAverage ? '★ ' + it.voteAverage.toFixed(1) : '',
   ]
     .filter(Boolean)

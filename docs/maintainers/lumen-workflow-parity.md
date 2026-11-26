@@ -11745,3 +11745,11 @@ The candidate browser state is verified, while a matched native/Lumen capture
 and live provider metadata remain unverified within the broader visual audit.
 
 release-note: `release-notes/lumen-localized-card-labels.md`
+
+The Discover featured rail uses the same native localized movie and series
+labels as poster cards. A French browser regression checks the featured series
+metadata in desktop, iPhone, Android, and tablet projects. The candidate text
+is verified; matched native/Lumen screenshots remain part of the open visual
+audit.
+
+release-note: `release-notes/lumen-localized-card-labels.md`

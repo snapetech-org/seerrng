@@ -150,6 +150,35 @@ test('Discover feature card meta is not cut off on narrow screens', async ({
   }
 });
 
+test('Discover feature card localizes its series type', async ({ page }) => {
+  await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
+  await page.route('**/api/v1/user/1/settings/main', (r) =>
+    r.fulfill({ json: { locale: 'fr' } })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname.slice(
+      '/api/v1'.length
+    );
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'test', permissions: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { applicationTitle: 'SeerrNG', movie4kEnabled: false },
+      });
+    if (/^\/discover\/(trending|movies|tv)$/.test(path))
+      return route.fulfill({ json: paged([tv]) });
+    if (path.startsWith('/discover/genreslider/'))
+      return route.fulfill({ json: [] });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'fr' } });
+    return route.fulfill({ json: paged([]) });
+  });
+  await page.goto('/');
+  await expect(page.locator('.feat .mm').first()).toContainText('Séries');
+});
+
 test('movie and series genre directories open the matching filtered browse', async ({
   page,
 }) => {
