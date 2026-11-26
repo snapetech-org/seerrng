@@ -7674,6 +7674,98 @@ export const localeData = [
       'lumen.music.discover': 'اكتشف',
       'lumen.music.activity': 'النشاط',
       'lumen.podcasts.openAbs': 'فتح Audiobookshelf',
+      'lumen.podcasts.inLibrary': 'في قائمة البودكاست لديك',
+      'lumen.podcasts.episodeCount': '{count} حلقة',
+      'lumen.podcasts.followingShort': 'تتابعه',
+      'lumen.podcasts.downloadedShort': 'تم تنزيل {count}',
+      'lumen.podcasts.keepTyping': 'تابع الكتابة للبحث عن البودكاست.',
+      'lumen.podcasts.tryAnother': 'جرّب اسمًا أو موضوعًا آخر.',
+      'lumen.podcasts.moreShows': 'المزيد من البرامج',
+      'lumen.podcasts.shows': 'البرامج',
+      'lumen.podcasts.openShow': 'فتح البرنامج',
+      'lumen.podcasts.openShowInAbs': 'فتح {title} في Audiobookshelf',
+      'lumen.podcasts.empty': 'لا توجد برامج بودكاست بعد',
+      'lumen.podcasts.emptyHelp2':
+        'ابحث عن برنامج في صفحة الاكتشاف أو ابدأ البحث. تُنزّل الحلقات الجديدة تلقائيًا عند متابعة البرنامج.',
+      'lumen.podcasts.filterShows': 'تصفية البرامج',
+      'lumen.podcasts.sortAdded': 'الأحدث إضافةً',
+      'lumen.podcasts.sortTitle': 'العنوان',
+      'lumen.podcasts.noShowMatch': 'لا يطابق أي من برامجك هذا البحث.',
+      'lumen.podcasts.nothingDownloading': 'لا توجد تنزيلات الآن',
+      'lumen.podcasts.nothingDownloadingHelp':
+        'تظهر هنا الحلقات التي تطلبها والحلقات الجديدة من البرامج التي تتابعها أثناء تنزيلها.',
+      'lumen.podcasts.downloadingCount': 'جارٍ تنزيل {count}',
+      'lumen.podcasts.played': 'تم الاستماع',
+      'lumen.podcasts.moreFailed': 'تعذر تحميل المزيد من الحلقات.',
+      'lumen.podcasts.alreadyHaveAll': 'لديك كل الحلقات بالفعل',
+      'lumen.podcasts.queued': 'جارٍ تنزيل {count} حلقة',
+      'lumen.podcasts.getAllFailed': 'تعذر تنزيل الحلقات.',
+      'lumen.podcasts.notInFeed': 'لم تعد هذه الحلقة في الموجز',
+      'lumen.podcasts.alreadyHave': 'لديك هذه الحلقة بالفعل',
+      'lumen.podcasts.queuedOne': 'جارٍ تنزيل حلقة واحدة',
+      'lumen.podcasts.getFailed': 'تعذر تنزيل هذه الحلقة.',
+      'lumen.podcasts.removePlayedOn':
+        'ستُحذف الحلقات التي تم الاستماع إليها بعد توفر 4 حلقات أحدث، ما لم يكن أحدهم لا يزال يستمع إليها.',
+      'lumen.podcasts.removePlayedOff': 'ستبقى الحلقات التي تم الاستماع إليها',
+      'lumen.podcasts.autoFailed': 'تعذر تغيير هذا الإعداد.',
+      'lumen.podcasts.removedShowToast': 'تمت إزالة {title}',
+      'lumen.podcasts.unfollowedToast': 'توقفت عن متابعة {title}',
+      'lumen.podcasts.removedFromShowsToast': 'تمت إزالة {title}',
+      'lumen.podcasts.removeFailed': 'تعذرت إزالة البرنامج.',
+      'lumen.podcasts.back': 'العودة إلى البودكاست',
+      'lumen.podcasts.oneDownloaded': 'تم تنزيل حلقة واحدة',
+      'lumen.podcasts.downloadedCount': 'تم تنزيل {count} حلقة',
+      'lumen.podcasts.listen': 'الاستماع في Audiobookshelf',
+      'lumen.podcasts.following': 'تتابعه',
+      'lumen.podcasts.removeFromShows': 'إزالة من برامجي',
+      'lumen.podcasts.followHelpOn':
+        'تُنزل الحلقات الجديدة عند صدورها. اضغط على «تتابعه» لإيقاف ذلك.',
+      'lumen.podcasts.followHelpOff':
+        'تابع البرنامج لتنزيل حلقاته الجديدة عند صدورها.',
+      'lumen.podcasts.removePlayed': 'إزالة الحلقات التي تم الاستماع إليها',
+      'lumen.podcasts.removePlayedHelp':
+        'تُحذف الحلقات التي انتهى الاستماع إليها بعد توفر 4 حلقات أحدث. وتبقى الحلقات التي لم ينتهِ أحد من الاستماع إليها أو لا يزال يستمع إليها.',
+      'lumen.podcasts.episodes': 'الحلقات',
+      'lumen.podcasts.noEpisodes':
+        'لم يتم تنزيل أي حلقات بعد. اختر بعضها أدناه.',
+      'lumen.podcasts.moreEpisodes': 'المزيد من الحلقات للتنزيل',
+      'lumen.podcasts.getLatest': 'تنزيل أحدث {count}',
+      'lumen.podcasts.getAll': 'تنزيل الكل ({count})',
+      'lumen.podcasts.removePlayedTitle':
+        'إزالة الحلقات المستمع إليها من {title}؟',
+      'lumen.podcasts.removePlayedBody':
+        'تُحذف الحلقات التي انتهى الاستماع إليها من Audiobookshelf بعد توفر 4 حلقات أحدث، ما لم يكن شخص آخر لا يزال يستمع إليها. ويمكن تنزيل الحلقات المحذوفة مجددًا من القائمة أدناه.',
+      'lumen.podcasts.turnOn': 'تشغيل',
+      'lumen.podcasts.getAllTitle': 'تنزيل {count} حلقة؟',
+      'lumen.podcasts.getAllBody':
+        'سيتم تنزيل كل حلقات {title} غير الموجودة حاليًا إلى Audiobookshelf من الأقدم إلى الأحدث. قد يستغرق البرنامج الطويل وقتًا ومساحة كبيرين.',
+      'lumen.podcasts.getAllConfirm': 'تنزيل الكل',
+      'lumen.podcasts.unfollowTitle': 'إيقاف متابعة {title}؟',
+      'lumen.podcasts.unfollowLastBody':
+        'لا يتابع أي شخص آخر هذا البرنامج، لذا ستتم إزالته مع حلقاته المنزلة من Audiobookshelf للجميع.',
+      'lumen.podcasts.unfollowSharedBody':
+        'سيُزال البرنامج من قائمتك. لا يزال الآخرون يتابعونه، لذا سيبقى في Audiobookshelf.',
+      'lumen.podcasts.unfollowRemove': 'إلغاء المتابعة والإزالة',
+      'lumen.podcasts.removeFromShowsTitle': 'إزالة {title} من برامجك؟',
+      'lumen.podcasts.removeLastBody':
+        'لا يملك أي شخص آخر هذا البرنامج، لذا ستتم إزالته مع حلقاته المنزلة من Audiobookshelf للجميع.',
+      'lumen.podcasts.removeSharedBody':
+        'لا يزال الآخرون يملكونه، لذا سيبقى في Audiobookshelf.',
+      'lumen.podcasts.removeConfirm': 'إزالة',
+      'lumen.podcasts.noFeed': 'رابط البودكاست هذا غير موجود.',
+      'lumen.podcasts.notInLibraryAskAdmin':
+        'هذا البرنامج غير موجود في قائمة البودكاست لديك بعد. اطلب من مسؤول إدارة البودكاست إضافته.',
+      'lumen.podcasts.feedFailed': 'تعذر تحميل هذا البودكاست.',
+      'lumen.podcasts.addedNoDownloads':
+        'تمت إضافة {title}، لكن تعذر بدء تنزيل حلقاته. حاول مجددًا من صفحته.',
+      'lumen.podcasts.followedNoDownloads':
+        'أصبحت تتابع {title}، لكن تعذر بدء تنزيل حلقاته الأولى. اخترها من القائمة.',
+      'lumen.podcasts.notInYourPodcasts': 'ليس في قائمة البودكاست لديك',
+      'lumen.podcasts.cannotSubscribe': 'اطلب من المسؤول إضافة هذا البودكاست',
+      'lumen.podcasts.getAllEpisodes': 'تنزيل كل الحلقات',
+      'lumen.podcasts.latestEpisodes': 'أحدث الحلقات',
+      'lumen.podcasts.getAllPreviewBody':
+        'ستتم إضافة البرنامج وتنزيل جميع حلقاته إلى Audiobookshelf. لن تُنزّل الحلقات الجديدة إلا عند متابعة البرنامج. قد يستغرق البرنامج الطويل وقتًا ومساحة كبيرين.',
     },
   },
   {
@@ -19851,6 +19943,97 @@ export const localeData = [
       'lumen.music.discover': 'Discover',
       'lumen.music.activity': 'Activity',
       'lumen.podcasts.openAbs': 'Open Audiobookshelf',
+      'lumen.podcasts.inLibrary': 'In your podcasts',
+      'lumen.podcasts.episodeCount': '{count} episodes',
+      'lumen.podcasts.followingShort': 'Following',
+      'lumen.podcasts.downloadedShort': '{count} downloaded',
+      'lumen.podcasts.keepTyping': 'Keep typing to search podcasts.',
+      'lumen.podcasts.tryAnother': 'Try another name or topic.',
+      'lumen.podcasts.moreShows': 'More shows',
+      'lumen.podcasts.shows': 'Shows',
+      'lumen.podcasts.openShow': 'Open show',
+      'lumen.podcasts.openShowInAbs': 'Open {title} in Audiobookshelf',
+      'lumen.podcasts.empty': 'No podcasts yet',
+      'lumen.podcasts.emptyHelp2':
+        'Find a show on Discover or search for one. Following downloads new episodes automatically.',
+      'lumen.podcasts.filterShows': 'Filter your shows',
+      'lumen.podcasts.sortAdded': 'Recently added',
+      'lumen.podcasts.sortTitle': 'Title',
+      'lumen.podcasts.noShowMatch': 'None of your shows match that.',
+      'lumen.podcasts.nothingDownloading': 'Nothing downloading',
+      'lumen.podcasts.nothingDownloadingHelp':
+        'Episodes you get, and new ones from shows you follow, show up here while they download.',
+      'lumen.podcasts.downloadingCount': 'Downloading {count}',
+      'lumen.podcasts.played': 'Played',
+      'lumen.podcasts.moreFailed': 'Could not load more episodes.',
+      'lumen.podcasts.alreadyHaveAll': 'You already have every episode',
+      'lumen.podcasts.queued': 'Downloading {count} episodes',
+      'lumen.podcasts.getAllFailed': 'Could not download the episodes.',
+      'lumen.podcasts.notInFeed': 'That episode is no longer in the feed',
+      'lumen.podcasts.alreadyHave': 'You already have that episode',
+      'lumen.podcasts.queuedOne': 'Downloading 1 episode',
+      'lumen.podcasts.getFailed': 'Could not download that episode.',
+      'lumen.podcasts.removePlayedOn':
+        'Played episodes will be removed once 4 newer ones are in, unless someone is still listening',
+      'lumen.podcasts.removePlayedOff': 'Played episodes will stay',
+      'lumen.podcasts.autoFailed': 'Could not change that setting.',
+      'lumen.podcasts.removedShowToast': 'Removed {title}',
+      'lumen.podcasts.unfollowedToast': 'Stopped following {title}',
+      'lumen.podcasts.removedFromShowsToast': 'Removed {title}',
+      'lumen.podcasts.removeFailed': 'Could not remove the show.',
+      'lumen.podcasts.back': 'Back to podcasts',
+      'lumen.podcasts.oneDownloaded': '1 episode downloaded',
+      'lumen.podcasts.downloadedCount': '{count} episodes downloaded',
+      'lumen.podcasts.listen': 'Listen in Audiobookshelf',
+      'lumen.podcasts.following': 'Following',
+      'lumen.podcasts.removeFromShows': 'Remove from my shows',
+      'lumen.podcasts.followHelpOn':
+        'New episodes download on their own as they come out. Tap Following to stop.',
+      'lumen.podcasts.followHelpOff':
+        'Follow to download new episodes as they come out.',
+      'lumen.podcasts.removePlayed': 'Remove played episodes',
+      'lumen.podcasts.removePlayedHelp':
+        'Episodes someone finished are deleted once 4 newer ones are in. Episodes nobody finished, or someone is still listening to, stay.',
+      'lumen.podcasts.episodes': 'Episodes',
+      'lumen.podcasts.noEpisodes':
+        'No episodes downloaded yet. Pick some below.',
+      'lumen.podcasts.moreEpisodes': 'More episodes to get',
+      'lumen.podcasts.getLatest': 'Get the latest {count}',
+      'lumen.podcasts.getAll': 'Get all {count}',
+      'lumen.podcasts.removePlayedTitle': 'Remove played episodes of {title}?',
+      'lumen.podcasts.removePlayedBody':
+        'Episodes someone finished are deleted from Audiobookshelf once 4 newer episodes are in, unless someone else is still listening to them. Deleted episodes can be downloaded again from the list below.',
+      'lumen.podcasts.turnOn': 'Turn on',
+      'lumen.podcasts.getAllTitle': 'Get all {count} episodes?',
+      'lumen.podcasts.getAllBody':
+        'Every episode of {title} that is not in yet downloads to Audiobookshelf, oldest last. A big show can take a while and a lot of space.',
+      'lumen.podcasts.getAllConfirm': 'Get all',
+      'lumen.podcasts.unfollowTitle': 'Stop following {title}?',
+      'lumen.podcasts.unfollowLastBody':
+        'Nobody else follows this show, so it is removed from Audiobookshelf, with its downloaded episodes, for everyone.',
+      'lumen.podcasts.unfollowSharedBody':
+        'It leaves your shows. Others still follow it, so it stays in Audiobookshelf.',
+      'lumen.podcasts.unfollowRemove': 'Unfollow and remove',
+      'lumen.podcasts.removeFromShowsTitle': 'Remove {title} from your shows?',
+      'lumen.podcasts.removeLastBody':
+        'Nobody else has this show, so it is removed from Audiobookshelf, with its downloaded episodes, for everyone.',
+      'lumen.podcasts.removeSharedBody':
+        'Others still have it, so it stays in Audiobookshelf.',
+      'lumen.podcasts.removeConfirm': 'Remove',
+      'lumen.podcasts.noFeed': 'That podcast link is missing.',
+      'lumen.podcasts.notInLibraryAskAdmin':
+        'This show is not in your podcasts yet. Someone who manages podcasts can follow it for you.',
+      'lumen.podcasts.feedFailed': 'That podcast could not be loaded.',
+      'lumen.podcasts.addedNoDownloads':
+        '{title} is in, but its episodes could not start downloading. Try again from its page.',
+      'lumen.podcasts.followedNoDownloads':
+        'Following {title}, but its first episodes could not start downloading. Pick them from the list.',
+      'lumen.podcasts.notInYourPodcasts': 'Not in your podcasts',
+      'lumen.podcasts.cannotSubscribe': 'Ask an admin to add this podcast',
+      'lumen.podcasts.getAllEpisodes': 'Get all episodes',
+      'lumen.podcasts.latestEpisodes': 'Latest episodes',
+      'lumen.podcasts.getAllPreviewBody':
+        'The show is added and every episode downloads to Audiobookshelf. New episodes only download if you follow it. A big show can take a while and a lot of space.',
     },
   },
   {
@@ -33237,6 +33420,101 @@ export const localeData = [
       'lumen.music.discover': 'Découvrir',
       'lumen.music.activity': 'Activité',
       'lumen.podcasts.openAbs': 'Ouvrir Audiobookshelf',
+      'lumen.podcasts.inLibrary': 'Dans vos podcasts',
+      'lumen.podcasts.episodeCount': '{count} épisodes',
+      'lumen.podcasts.followingShort': 'Suivi',
+      'lumen.podcasts.downloadedShort': '{count} téléchargés',
+      'lumen.podcasts.keepTyping':
+        'Continuez à saisir pour rechercher des podcasts.',
+      'lumen.podcasts.tryAnother': 'Essayez un autre nom ou sujet.',
+      'lumen.podcasts.moreShows': 'Autres émissions',
+      'lumen.podcasts.shows': 'Émissions',
+      'lumen.podcasts.openShow': 'Ouvrir l’émission',
+      'lumen.podcasts.openShowInAbs': 'Ouvrir {title} dans Audiobookshelf',
+      'lumen.podcasts.empty': 'Aucun podcast pour le moment',
+      'lumen.podcasts.emptyHelp2':
+        'Trouvez une émission dans Découvrir ou recherchez-en une. Les nouveaux épisodes sont téléchargés automatiquement lorsque vous suivez une émission.',
+      'lumen.podcasts.filterShows': 'Filtrer vos émissions',
+      'lumen.podcasts.sortAdded': 'Ajout récent',
+      'lumen.podcasts.sortTitle': 'Titre',
+      'lumen.podcasts.noShowMatch': 'Aucune de vos émissions ne correspond.',
+      'lumen.podcasts.nothingDownloading': 'Aucun téléchargement en cours',
+      'lumen.podcasts.nothingDownloadingHelp':
+        'Les épisodes que vous récupérez et les nouveautés des émissions suivies apparaissent ici pendant leur téléchargement.',
+      'lumen.podcasts.downloadingCount': '{count} en téléchargement',
+      'lumen.podcasts.played': 'Écouté',
+      'lumen.podcasts.moreFailed': 'Impossible de charger d’autres épisodes.',
+      'lumen.podcasts.alreadyHaveAll': 'Vous avez déjà tous les épisodes',
+      'lumen.podcasts.queued': 'Téléchargement de {count} épisodes',
+      'lumen.podcasts.getAllFailed': 'Impossible de télécharger les épisodes.',
+      'lumen.podcasts.notInFeed': 'Cet épisode n’est plus dans le flux',
+      'lumen.podcasts.alreadyHave': 'Vous avez déjà cet épisode',
+      'lumen.podcasts.queuedOne': 'Téléchargement de 1 épisode',
+      'lumen.podcasts.getFailed': 'Impossible de télécharger cet épisode.',
+      'lumen.podcasts.removePlayedOn':
+        'Les épisodes écoutés seront supprimés lorsque 4 épisodes plus récents seront disponibles, sauf si quelqu’un est encore en train de les écouter.',
+      'lumen.podcasts.removePlayedOff': 'Les épisodes écoutés seront conservés',
+      'lumen.podcasts.autoFailed': 'Impossible de modifier ce paramètre.',
+      'lumen.podcasts.removedShowToast': '{title} a été supprimé',
+      'lumen.podcasts.unfollowedToast': 'Vous ne suivez plus {title}',
+      'lumen.podcasts.removedFromShowsToast': '{title} a été retiré',
+      'lumen.podcasts.removeFailed': 'Impossible de retirer cette émission.',
+      'lumen.podcasts.back': 'Retour aux podcasts',
+      'lumen.podcasts.oneDownloaded': '1 épisode téléchargé',
+      'lumen.podcasts.downloadedCount': '{count} épisodes téléchargés',
+      'lumen.podcasts.listen': 'Écouter dans Audiobookshelf',
+      'lumen.podcasts.following': 'Suivi',
+      'lumen.podcasts.removeFromShows': 'Retirer de mes émissions',
+      'lumen.podcasts.followHelpOn':
+        'Les nouveaux épisodes sont téléchargés dès leur sortie. Touchez Suivi pour arrêter.',
+      'lumen.podcasts.followHelpOff':
+        'Suivez cette émission pour télécharger ses nouveaux épisodes à leur sortie.',
+      'lumen.podcasts.removePlayed': 'Supprimer les épisodes écoutés',
+      'lumen.podcasts.removePlayedHelp':
+        'Les épisodes terminés sont supprimés lorsque 4 épisodes plus récents sont disponibles. Les épisodes non terminés, ou encore écoutés par quelqu’un, sont conservés.',
+      'lumen.podcasts.episodes': 'Épisodes',
+      'lumen.podcasts.noEpisodes':
+        'Aucun épisode téléchargé. Choisissez-en ci-dessous.',
+      'lumen.podcasts.moreEpisodes': 'Autres épisodes à récupérer',
+      'lumen.podcasts.getLatest': 'Récupérer les {count} plus récents',
+      'lumen.podcasts.getAll': 'Récupérer les {count}',
+      'lumen.podcasts.removePlayedTitle':
+        'Supprimer les épisodes écoutés de {title} ?',
+      'lumen.podcasts.removePlayedBody':
+        'Les épisodes terminés sont supprimés d’Audiobookshelf lorsque 4 nouveaux épisodes sont disponibles, sauf si quelqu’un d’autre les écoute encore. Vous pourrez les télécharger à nouveau depuis la liste ci-dessous.',
+      'lumen.podcasts.turnOn': 'Activer',
+      'lumen.podcasts.getAllTitle': 'Récupérer les {count} épisodes ?',
+      'lumen.podcasts.getAllBody':
+        'Tous les épisodes de {title} qui ne sont pas encore présents seront téléchargés dans Audiobookshelf, des plus anciens aux plus récents. Une longue émission peut prendre du temps et beaucoup d’espace.',
+      'lumen.podcasts.getAllConfirm': 'Tout récupérer',
+      'lumen.podcasts.unfollowTitle': 'Ne plus suivre {title} ?',
+      'lumen.podcasts.unfollowLastBody':
+        'Personne d’autre ne suit cette émission. Elle et ses épisodes téléchargés seront donc supprimés d’Audiobookshelf pour tout le monde.',
+      'lumen.podcasts.unfollowSharedBody':
+        'Cette émission sera retirée de vos émissions. D’autres personnes la suivent encore, elle reste donc dans Audiobookshelf.',
+      'lumen.podcasts.unfollowRemove': 'Ne plus suivre et supprimer',
+      'lumen.podcasts.removeFromShowsTitle':
+        'Retirer {title} de vos émissions ?',
+      'lumen.podcasts.removeLastBody':
+        'Personne d’autre n’a cette émission. Elle et ses épisodes téléchargés seront donc supprimés d’Audiobookshelf pour tout le monde.',
+      'lumen.podcasts.removeSharedBody':
+        'D’autres personnes l’ont encore, elle reste donc dans Audiobookshelf.',
+      'lumen.podcasts.removeConfirm': 'Retirer',
+      'lumen.podcasts.noFeed': 'Le lien de ce podcast est manquant.',
+      'lumen.podcasts.notInLibraryAskAdmin':
+        'Cette émission n’est pas encore dans vos podcasts. Demandez à une personne qui gère les podcasts de l’ajouter.',
+      'lumen.podcasts.feedFailed': 'Impossible de charger ce podcast.',
+      'lumen.podcasts.addedNoDownloads':
+        '{title} a été ajouté, mais ses épisodes n’ont pas pu être téléchargés. Réessayez depuis sa page.',
+      'lumen.podcasts.followedNoDownloads':
+        'Vous suivez {title}, mais ses premiers épisodes n’ont pas pu être téléchargés. Choisissez-les dans la liste.',
+      'lumen.podcasts.notInYourPodcasts': 'Absent de vos podcasts',
+      'lumen.podcasts.cannotSubscribe':
+        'Demandez à un administrateur d’ajouter ce podcast',
+      'lumen.podcasts.getAllEpisodes': 'Récupérer tous les épisodes',
+      'lumen.podcasts.latestEpisodes': 'Derniers épisodes',
+      'lumen.podcasts.getAllPreviewBody':
+        'L’émission sera ajoutée et tous ses épisodes seront téléchargés dans Audiobookshelf. Les nouveaux épisodes ne seront téléchargés que si vous la suivez. Une longue émission peut prendre du temps et beaucoup d’espace.',
     },
   },
   {

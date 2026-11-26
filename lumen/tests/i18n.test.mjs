@@ -266,36 +266,24 @@ test('Lumen movie release labels reuse native translations', async () => {
   }
 });
 
-test('Podcast discovery and subscription labels are translated in French and Arabic', () => {
-  const keys = [
-    'lumen.podcasts.title',
-    'lumen.music.discover',
-    'lumen.music.activity',
-    'lumen.podcasts.openAbs',
-    'lumen.podcasts.searchPlaceholder2',
-    'lumen.podcasts.sections',
-    'lumen.podcasts.categories',
-    'lumen.podcasts.allCategories',
-    'lumen.podcasts.topPodcasts',
-    'lumen.podcasts.topInGenre',
-    'lumen.podcasts.becauseGenre',
-    'lumen.podcasts.welcomeTitle',
-    'lumen.podcasts.welcomeBody',
-    'lumen.podcasts.inYourPodcasts',
-    'lumen.podcasts.newEpisodes',
-    'lumen.podcasts.yourShows',
-    'lumen.podcasts.downloads',
-    'lumen.podcasts.downloadingNow',
-    'lumen.podcasts.waiting',
-    'lumen.podcasts.unavailable',
-    'lumen.podcasts.notSetUp',
-    'lumen.podcasts.notSetUpHelp',
-    'lumen.podcasts.followTitle',
-    'lumen.podcasts.subscribeBody',
-    'lumen.podcasts.followHelpPreview',
-    'lumen.podcasts.followedToast',
-    'lumen.podcasts.followFailed',
-  ];
+test('All Podcasts source messages are translated in French and Arabic', async () => {
+  const registered = JSON.parse(
+    await readFile(resolve(root, 'i18n-keys.json'), 'utf8')
+  );
+  const keys = new Set(
+    registered.filter((key) => key.startsWith('lumen.podcasts.'))
+  );
+  assert.ok(
+    keys.size >= 99,
+    `Expected all podcast messages, found ${keys.size}`
+  );
+  keys.add('lumen.music.discover');
+  keys.add('lumen.music.activity');
+  keys.add('lumen.podcasts.openAbs');
+  assert.ok(
+    keys.size >= 99,
+    `Expected a full Podcasts source scan, found ${keys.size}`
+  );
   for (const locale of ['fr', 'ar']) {
     for (const key of keys) {
       assert.equal(

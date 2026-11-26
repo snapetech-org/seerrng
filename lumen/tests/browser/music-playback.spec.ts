@@ -1933,6 +1933,10 @@ for (const [
   expectedTop,
   discoverTab,
   openLibrary,
+  expectedNews,
+  expectedComedy,
+  expectedMoreHeading,
+  expectedEpisodeCount,
 ] of [
   [
     'fr',
@@ -1941,6 +1945,10 @@ for (const [
     'Meilleurs podcasts',
     'Découvrir',
     'Ouvrir Audiobookshelf',
+    'Actualités',
+    'Comédie',
+    'Plus d’émissions Actualités',
+    'Fixture Charts · 300 épisodes',
   ],
   [
     'ar',
@@ -1949,6 +1957,10 @@ for (const [
     'أفضل البودكاست',
     'اكتشف',
     'فتح Audiobookshelf',
+    'الأخبار',
+    'كوميديا',
+    'المزيد من برامج الأخبار',
+    'Fixture Charts · 300 حلقة',
   ],
 ] as const) {
   test(`podcast discovery uses the saved ${locale} locale`, async ({
@@ -1966,6 +1978,16 @@ for (const [
     ).toBeVisible();
     await expect(
       page.getByRole('group', { name: expectedCategories })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: expectedNews })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: expectedComedy })
+    ).toBeVisible();
+    await expect(page.getByText(expectedEpisodeCount).first()).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: expectedMoreHeading })
     ).toBeVisible();
     await expect(page.getByRole('tab', { name: discoverTab })).toBeVisible();
     await expect(page.getByRole('link', { name: openLibrary })).toBeVisible();
