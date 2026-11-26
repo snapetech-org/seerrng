@@ -7374,6 +7374,16 @@ captures show the partial-load warning, enabled loaded episodes, and usable
 submit action without clipping or horizontal overflow. The reported
 real-provider failure remains unverified against the reporter's server.
 
+The reporter's screenshot warning text matches the native
+`src/components/RequestModal/RequestSeasonEpisodeTree.tsx`
+`loadErrorHint`; it is not emitted by Lumen's current `TvEpisodeRequestSheet`,
+which uses `lumen.tvEpisodeRequest.loadFailurePartialBody` when loaded seasons
+remain available. Native uses the generic hint when its request tree cannot
+offer a selectable episode. This identifies the screenshot's interface and
+state, but does not identify why that server returned no selectable season
+metadata. The current full Lumen suite passes against the production Express
+mount; its provider responses are fixture-backed.
+
 A follow-up diagnosis found another failure path shared by native and Lumen:
 the season endpoint first fetches full series metadata to identify anime and
 select its provider. If that lookup fails, the entire batch previously returned
