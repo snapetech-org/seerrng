@@ -100,8 +100,9 @@ Each follower is recorded on the show in Audiobookshelf as a tag
   URLs (`/api/v1/podcast/proxy/...`) for shows SeerrNG adds: the feed it
   refreshes on its schedule, the cover and every episode it downloads. The
   feed it reads is rebuilt by SeerrNG and lists no other addresses. Proxy URLs
-  are signed with a key derived from the session secret; changing that secret
-  breaks the feed URLs of shows already added.
+  are signed with `podcastProxySecret`, generated once in `settings.json`;
+  keep it when restoring or moving settings, or shows already added stop
+  updating.
 - Shows added in Audiobookshelf directly (not through SeerrNG) keep their own
   feed addresses and are fetched by Audiobookshelf itself.
 

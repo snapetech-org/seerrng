@@ -1,4 +1,5 @@
 import {
+  fetchPublicFeedText,
   loadPublicPodcastFeed,
   PodcastFeedError,
 } from '@server/lib/podcastFeed';
@@ -7,6 +8,7 @@ import {
   decodeMediaTarget,
   MAX_PROXY_TARGET_LENGTH,
   openPublicMedia,
+  podcastUserAgent,
   proxyBaseUrl,
   renderProxiedFeedXml,
   verifyProxyTarget,
@@ -26,7 +28,8 @@ const podcastProxyRoutes = Router();
 
 // a podcast episode can be long; anything past this is not one
 const MAX_MEDIA_BYTES = 4 * 1024 * 1024 * 1024;
-const RANGE = /^bytes=\d{0,15}-\d{0,15}$/;
+// one range with at least one number ("bytes=-" is not a range)
+const RANGE = /^bytes=(?:\d{1,15}-\d{0,15}|-\d{1,15})$/;
 const PASSED_HEADERS = [
   'content-length',
   'content-range',
@@ -42,8 +45,9 @@ const notFound = (res: Response) =>
 const proxyContext = () => {
   const settings = getSettings();
   const base = proxyBaseUrl();
-  if (!settings.audiobookshelf || !base || !settings.sessionSecret) return null;
-  return { secret: settings.sessionSecret, base };
+  if (!settings.audiobookshelf || !base || !settings.podcastProxySecret)
+    return null;
+  return { secret: settings.podcastProxySecret, base };
 };
 
 const sendFeedError = (res: Response, error: unknown) => {
@@ -74,7 +78,10 @@ podcastProxyRoutes.get('/feed', async (req, res) => {
     return notFound(res);
   }
   try {
-    const feed = await loadPublicPodcastFeed(target);
+    const userAgent = podcastUserAgent(req.headers['user-agent']);
+    const feed = await loadPublicPodcastFeed(target, (url) =>
+      fetchPublicFeedText(url, userAgent)
+    );
     const xml = renderProxiedFeedXml(
       feed,
       createProxyUrls(context.base, context.secret)
@@ -105,9 +112,26 @@ podcastProxyRoutes.get('/media/:signature/:target/:name', async (req, res) => {
 
   let upstream: Awaited<ReturnType<typeof openPublicMedia>>;
   try {
-    upstream = await openPublicMedia(target, range);
+    upstream = await openPublicMedia(target, {
+      range,
+      userAgent: podcastUserAgent(req.headers['user-agent']),
+    });
   } catch (error) {
     return sendFeedError(res, error);
+  }
+
+  // an episode the host removed is not found, not a proxy failure
+  if (upstream.status === 404 || upstream.status === 410) {
+    upstream.data.destroy();
+    return notFound(res);
+  }
+  if (upstream.status === 416) {
+    upstream.data.destroy();
+    const contentRange = upstream.headers['content-range'];
+    if (typeof contentRange === 'string') {
+      res.set('Content-Range', contentRange);
+    }
+    return res.status(416).end();
   }
 
   const type = String(upstream.headers['content-type'] ?? '')
@@ -126,6 +150,12 @@ podcastProxyRoutes.get('/media/:signature/:target/:name', async (req, res) => {
   }
   res.set('Cache-Control', 'no-store');
   res.set('X-Content-Type-Options', 'nosniff');
+
+  // a HEAD asks for the headers only: do not pull the file
+  if (req.method === 'HEAD') {
+    upstream.data.destroy();
+    return res.end();
+  }
 
   let sent = 0;
   const stream = upstream.data;

@@ -968,6 +968,8 @@ export const defaultDiscoveryIntegrations =
 export interface AllSettings {
   clientId: string;
   sessionSecret?: string;
+  // signs podcast proxy URLs Audiobookshelf stores (generated once)
+  podcastProxySecret?: string;
   vapidPublic: string;
   vapidPrivate: string;
   main: MainSettings;
@@ -2047,6 +2049,10 @@ class Settings {
     return this.data.sessionSecret!;
   }
 
+  get podcastProxySecret(): string {
+    return this.data.podcastProxySecret ?? '';
+  }
+
   get vapidPublic(): string {
     return this.data.vapidPublic;
   }
@@ -2146,6 +2152,10 @@ class Settings {
         }
         if (!this.data.sessionSecret) {
           this.data.sessionSecret = randomBytes(32).toString('hex');
+          change = true;
+        }
+        if (!this.data.podcastProxySecret) {
+          this.data.podcastProxySecret = randomBytes(32).toString('hex');
           change = true;
         }
         if (!this.data.vapidPublic || !this.data.vapidPrivate) {

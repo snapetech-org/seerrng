@@ -2,6 +2,8 @@ import axios from 'axios';
 import assert from 'node:assert/strict';
 import nodeDns from 'node:dns';
 import dns from 'node:dns/promises';
+import { once } from 'node:events';
+import { createServer } from 'node:http';
 import { syncBuiltinESMExports } from 'node:module';
 import { afterEach, describe, it, mock } from 'node:test';
 import xml2js from 'xml2js';
@@ -13,6 +15,7 @@ import {
 import {
   createProxyUrls,
   decodeMediaTarget,
+  MAX_MEDIA_REDIRECTS,
   openPublicMedia,
   originalFeedUrl,
   originalMediaUrl,
@@ -248,6 +251,11 @@ describe('podcast files are read by SeerrNG on a pinned connection', () => {
     );
     assert.equal(configs[0]?.proxy, false);
     assert.equal(configs[0]?.responseType, 'stream');
+    // podtrac -> pdst.fm -> ... -> CDN chains take six or seven hops
+    assert.ok(Number(configs[0]?.maxRedirects) >= 20);
+    // a deadline for the answer, no socket timeout while the file flows
+    assert.equal(configs[0]?.timeout, undefined);
+    assert.ok(configs[0]?.signal instanceof AbortSignal);
   });
 
   it('streams the file when the connection really is public', async () => {
@@ -258,6 +266,66 @@ describe('podcast files are read by SeerrNG on a pinned connection', () => {
     connectThroughLookup();
     const media = await openPublicMedia('https://cdn.example.test/one.mp3');
     assert.equal(media.status, 200);
+  });
+
+  it('keeps the range on a cross-origin redirect and drops credentials', async () => {
+    mock.method(dns, 'lookup', async () => [
+      { address: '93.184.216.34', family: 4 },
+    ]);
+    answerSocketLookup('93.184.216.34');
+    const configs = connectThroughLookup();
+    await openPublicMedia('https://cdn.example.test/one.mp3', {
+      range: 'bytes=100-199',
+    });
+    const beforeRedirect = configs[0]?.beforeRedirect as (
+      options: Record<string, unknown>,
+      response: unknown,
+      request: { url: string }
+    ) => void;
+    const options = {
+      href: 'https://audio.other.example.test/one.mp3',
+      protocol: 'https:',
+      hostname: 'audio.other.example.test',
+      headers: { Range: 'bytes=100-199', Authorization: 'secret' },
+    };
+    beforeRedirect(options, undefined, {
+      url: 'https://cdn.example.test/one.mp3',
+    });
+    assert.deepEqual(options.headers, { Range: 'bytes=100-199' });
+  });
+
+  it('follows a 12-hop redirect chain within the limit it uses', async () => {
+    // a local server that redirects to itself eleven times, then answers
+    let hops = 0;
+    const server = createServer((req, res) => {
+      const left = Number(
+        new URL(req.url ?? '/', 'http://x').searchParams.get('left')
+      );
+      if (left > 0) {
+        hops += 1;
+        res.writeHead(302, { Location: `/hop?left=${left - 1}` });
+        res.end();
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'audio/mpeg' });
+      res.end('audio');
+    });
+    server.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    const { port } = server.address() as { port: number };
+    try {
+      // openPublicMedia's own limit, with plain loopback in place of the
+      // pinned public lookup (which refuses 127.0.0.1 by design)
+      const response = await axios.get(`http://127.0.0.1:${port}/hop?left=12`, {
+        maxRedirects: MAX_MEDIA_REDIRECTS,
+        responseType: 'text',
+      });
+      assert.equal(response.data, 'audio');
+      assert.equal(hops, 12);
+      assert.ok(MAX_MEDIA_REDIRECTS >= 20);
+    } finally {
+      server.close();
+    }
   });
 
   it('refuses private addresses before connecting', async () => {

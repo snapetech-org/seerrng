@@ -1,5 +1,9 @@
-import { PodcastFeedError } from '@server/lib/podcastFeed';
+import {
+  DEFAULT_PODCAST_USER_AGENT,
+  PodcastFeedError,
+} from '@server/lib/podcastFeed';
 import { getSettings } from '@server/lib/settings';
+import logger from '@server/logger';
 import {
   createSafeHttpRequestOptions,
   isSafeHttpUrl,
@@ -110,7 +114,7 @@ export const createProxyUrls = (
 /** Proxy URLs for this server, or an error when no address is set. */
 export const settingsProxyUrls = (): PodcastProxyUrls => {
   const base = proxyBaseUrl();
-  const secret = getSettings().sessionSecret;
+  const secret = getSettings().podcastProxySecret;
   if (!base || !secret) throw new PodcastProxyUnavailableError();
   return createProxyUrls(base, secret);
 };
@@ -276,8 +280,29 @@ export const renderProxiedFeedXml = (
   });
 };
 
-const MEDIA_TIMEOUT_MS = 30_000;
-const MAX_MEDIA_REDIRECTS = 5;
+// how long the remote host may take to answer; once the file is flowing
+// there is no timeout, so a slow reader (Audiobookshelf's ffmpeg step, a
+// busy disk) that pauses the stream does not cut a long episode short
+const MEDIA_HEADERS_TIMEOUT_MS = 30_000;
+// statuses passed on: the file, part of it, gone (404/410), a bad range
+const PASSED_STATUSES = new Set([200, 206, 404, 410, 416]);
+
+/**
+ * Audiobookshelf retries a refused download as "audiobookshelf (+...; like
+ * iTMS)" because some hosts and trackers only serve iTunes-like clients, so
+ * its own agent is passed on. Anything else gets SeerrNG's.
+ */
+export const podcastUserAgent = (caller: unknown): string =>
+  typeof caller === 'string' &&
+  caller.length <= 256 &&
+  /^audiobookshelf\b/i.test(caller)
+    ? caller
+    : DEFAULT_PODCAST_USER_AGENT;
+// Tracking chains stack ad-tech hops (podtrac -> pdst.fm -> pscrb.fm ->
+// vpixl -> ... -> the CDN): a fifth of Apple's top 200 shows need 6 or
+// more, the longest 9 (2026-11). Browsers allow 20. Every hop is checked
+// at the socket, so the limit only bounds latency.
+export const MAX_MEDIA_REDIRECTS = 20;
 
 export interface PublicMedia {
   status: number;
@@ -292,7 +317,10 @@ export interface PublicMedia {
  */
 export const openPublicMedia = async (
   url: string,
-  range?: string
+  {
+    range,
+    userAgent = DEFAULT_PODCAST_USER_AGENT,
+  }: { range?: string; userAgent?: string } = {}
 ): Promise<PublicMedia> => {
   if (!isValidHttpUrl(url)) {
     throw new PodcastFeedError(
@@ -304,19 +332,34 @@ export const openPublicMedia = async (
   if (!(await isSafeHttpUrl(url))) {
     throw new PodcastFeedError('That file is on a private address.', 'unsafe');
   }
+  const headersDeadline = new AbortController();
+  const timer = setTimeout(
+    () => headersDeadline.abort(),
+    MEDIA_HEADERS_TIMEOUT_MS
+  );
+  const safeRequest = createSafeHttpRequestOptions(false, true, true, true);
   try {
     const response = await axios.get<Readable>(url, {
       responseType: 'stream',
-      timeout: MEDIA_TIMEOUT_MS,
+      signal: headersDeadline.signal,
       maxRedirects: MAX_MEDIA_REDIRECTS,
       decompress: false,
       headers: {
         Accept: '*/*',
-        'User-Agent': 'SeerrNG-Podcasts/1.0',
+        'User-Agent': userAgent,
         ...(range ? { Range: range } : {}),
       },
-      validateStatus: (status) => status === 200 || status === 206,
-      ...createSafeHttpRequestOptions(false, true, true, true),
+      validateStatus: (status) => PASSED_STATUSES.has(status),
+      ...safeRequest,
+      // Cross-origin redirects drop all but a few headers. A range names
+      // bytes of the file, not a credential, and tracking chains cross
+      // origins on every hop, so it is put back on each one.
+      beforeRedirect: (options, response, request) => {
+        safeRequest.beforeRedirect(options, response, request);
+        if (range && options.headers && typeof options.headers === 'object') {
+          (options.headers as Record<string, unknown>).Range = range;
+        }
+      },
     });
     return {
       status: response.status,
@@ -331,6 +374,17 @@ export const openPublicMedia = async (
         'unsafe'
       );
     }
+    const status = (error as { response?: { status?: unknown } })?.response
+      ?.status;
+    logger.warn('Podcast proxy could not read a file', {
+      label: 'Podcast Proxy',
+      host: new URL(url).hostname,
+      errorCode: typeof code === 'string' ? code : undefined,
+      upstreamStatus: typeof status === 'number' ? status : undefined,
+      errorMessage: error instanceof Error ? error.message : String(error),
+    });
     throw new PodcastFeedError('The file could not be read.', 'unreachable');
+  } finally {
+    clearTimeout(timer);
   }
 };
