@@ -9347,6 +9347,12 @@ show the selected-add-on summary. Fixture coverage does not verify live library
 ownership or request submission. Captures are retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-baseline-20261126/`
 and `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-candidate-20261126/`.
+The focused locale and ownership suite also passes all 12 executions against a
+fresh production bundle served through SeerrNG's `mountLumenFrontend` at
+`/lumen/`, confirming the component and generated translations in the bundled
+deployment. That mounted run also uses mocked API responses. Its bundle,
+Playwright report, and captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-mounted-20261126/`.
 
 release-note: `release-notes/improve-lumen-game-content-requests.md`
 
