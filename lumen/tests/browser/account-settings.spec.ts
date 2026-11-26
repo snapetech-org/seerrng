@@ -267,6 +267,10 @@ test('regular accounts do not load user maturity controls', async ({
   await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
   await expect(page.locator('#maturity-controls')).toHaveCount(0);
   expect(maturityReads).toBe(0);
+  await page.goto(appPath('/settings/maturity?from=native'));
+  await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
+  await expect(page.locator('#maturity-controls')).toHaveCount(0);
+  expect(maturityReads).toBe(0);
 });
 
 for (const locale of [
