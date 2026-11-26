@@ -152,6 +152,9 @@ test('signing in does not ask for the public settings again', async ({
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: { loginStyle: 'form' } })
   );
+  await page.route('**/api/v1/lumen/configuration', (route) =>
+    route.fulfill({ json: { loginStyle: 'form' } })
+  );
   await page.route('**/api/v1/settings/public', (route) => {
     counts['/settings/public'] = (counts['/settings/public'] || 0) + 1;
     return route.fulfill({

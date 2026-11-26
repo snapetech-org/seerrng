@@ -11086,3 +11086,34 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mount-aware-regression-verified/`.
 
 release-note: none
+
+### Music metadata and mounted regression follow-up (2026-11-26)
+
+The album detail used the registered `oneSong` fallback without locale entries,
+and play counts used the separate `playCount` key even though only the related
+`plays` key was translated. Both keys now have English, French, and Arabic
+overrides. French and Arabic album/artist detail browser cases pass across
+desktop, iPhone, Android, and tablet. A matched 1440×900 French album capture
+shows the translated count in the existing metadata row without changing its
+layout; the old and new captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+Classic software request bookmarks now preserve `filter=downloading` as the
+software status filter. The bundled mounted bookmark case passes across the
+four browser projects.
+
+A grouped mounted run of ten affected browser specs completed with 1,274
+passes, 42 expected viewport skips, and 24 failures across six app cases. The
+failures came from fixtures selecting the Lidarr/Aurral service route for tests
+of the legacy MusicBrainz route and three Provider Discovery expectations
+omitting `/lumen`. After aligning those fixtures, all six cases pass in a
+focused 24-case rerun across the four projects. This is targeted regression
+evidence; the ten-spec group has not yet been rerun after those corrections,
+and does not establish full Lumen parity, live provider behavior, or native
+matched visual acceptance. The music capture compares the Lumen metadata before
+and after the localization correction only.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: `release-notes/fixed-lumen-music-and-bookmark-labels.md`

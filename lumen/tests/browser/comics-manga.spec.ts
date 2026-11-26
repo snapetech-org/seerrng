@@ -247,6 +247,7 @@ async function fixtures(
   await page.route('**/api/v1/**', (r) => {
     const url = new URL(r.request().url());
     const path = url.pathname.slice(7);
+    if (path === '/lumen/configuration') return r.fulfill({ json: config });
     if (path === '/auth/me')
       return r.fulfill({
         json: { id: 1, displayName: 'reader', permissions },
@@ -955,7 +956,10 @@ test('hovering a card offers Request and Choose edition', async ({
   await expect(go).toBeVisible();
   await expect(
     card.getByRole('link', { name: 'Choose edition' })
-  ).toHaveAttribute('href', '/comic/al-105778#editions');
+  ).toHaveAttribute(
+    'href',
+    `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}/comic/al-105778#editions`
+  );
   await go.click();
   const sheet = page.getByRole('alertdialog', { name: 'Request Comic' });
   await expect(sheet).toBeVisible();

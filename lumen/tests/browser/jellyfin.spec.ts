@@ -69,6 +69,8 @@ async function fixtures(
         jellyfinExternalHost: 'https://jf.example.com',
         enabledMediaCategories: {},
       };
+    } else if (path === '/lumen/configuration') {
+      body = opts.config || {};
     } else if (/^\/discover\/(trending|movies|tv)(\/upcoming)?$/.test(path))
       body = paged(path === '/discover/tv' ? [] : [movie]);
     else if (path === '/movie/101')

@@ -31,6 +31,8 @@ test('Coming Soon localizes its feed and preserves movie request submission', as
     const path = new URL(request.url()).pathname
       .replace(/^\/lumen(?=\/)/, '')
       .replace(/^\/api\/v1/, '');
+    if (path === '/lumen/configuration')
+      return route.fulfill({ json: { defaults: { requestOptions: false } } });
     if (path === '/auth/me')
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (path === '/user/1/settings/main')
@@ -100,7 +102,10 @@ test('Coming Soon localizes its feed and preserves movie request submission', as
     name: text('Release Calendar', 'Calendrier des sorties', 'تقويم الإصدارات'),
   });
   if (candidate) {
-    await expect(calendarLink).toHaveAttribute('href', '/calendar');
+    await expect(calendarLink).toHaveAttribute(
+      'href',
+      `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}/calendar`
+    );
   } else {
     await expect(calendarLink).toHaveCount(0);
   }

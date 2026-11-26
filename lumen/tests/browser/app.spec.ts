@@ -214,6 +214,28 @@ async function fixtures(page: Page) {
         mediaInfo: current === 'owner' ? available : { status: 1 },
       };
     } else if (path === '/service/radarr') body = [];
+    else if (path === '/service/music')
+      body = [
+        {
+          id: 1,
+          name: 'Fixture Music Service',
+          isDefault: true,
+          backendType: 'lidarr',
+          musicQuality: 'flac',
+        },
+      ];
+    else if (path === '/music/discover/recommended')
+      body = { recommendations: [], trending: [] };
+    else if (path === '/music/discover/playlists') body = { items: [] };
+    else if (path === '/music/discover/trending') body = { items: [] };
+    else if (path === '/music/discover/genres') body = [];
+    else if (path.startsWith('/music/library'))
+      body = { items: [], page: 1, pageSize: 36, pages: 0, total: 0 };
+    else if (path === '/music/library-overview') body = {};
+    else if (path === '/music/activity')
+      body = { active: [], queued: [], recent: [], failed: [], queuedTotal: 0 };
+    else if (path.startsWith('/music/track-requests'))
+      body = { items: [], results: [], requests: [], keys: [] };
     else if (path === '/resolve/capabilities') body = { enabled: true };
     else {
       unknown.push(`${request.method()} ${path}`);
@@ -1427,6 +1449,7 @@ test('music cards preserve format-specific status badges', async ({ page }) => {
     })
   );
   await page.goto(testAppPath('/music'));
+  await page.locator('details.music-catalog > summary').click();
   const album = page.locator('.poster').filter({
     has: page.getByRole('link', { name: 'Dual Format Album', exact: true }),
   });
@@ -5810,6 +5833,9 @@ test('Music discovery localizes provider failure and empty recovery states', asy
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/service/music', (route) =>
+    route.fulfill({ json: [] })
+  );
   const locale = ['fr', 'ar'].includes(process.env.LUMEN_MUSIC_LOCALE ?? '')
     ? (process.env.LUMEN_MUSIC_LOCALE as 'fr' | 'ar')
     : 'en';
@@ -5871,7 +5897,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       discography: 'View Discography',
       tracks: 'Tracks',
       plays: '1K plays',
-      trackCount: '1 track',
+      trackCount: '1 song',
       artist: 'Artist',
       released: 'Released',
       label: 'Label',
@@ -5887,6 +5913,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'Similar Artists',
       blocklist: 'Add to Blocklist',
       blocklistQuestion: 'Add to the Blocklist?',
+      cancel: 'Cancel',
       editionCompare: 'Compare Editions',
       missingTracks: 'Missing tracks: Bonus Track',
       extraTracks: 'Additional tracks: Bonus Track, Demo',
@@ -5903,7 +5930,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       discography: 'Voir la discographie',
       tracks: 'Pistes',
       plays: '1K écoutes',
-      trackCount: '1 piste',
+      trackCount: '1 chanson',
       artist: 'Artiste',
       released: 'Date de sortie',
       label: 'Label',
@@ -5919,6 +5946,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'Artistes similaires',
       blocklist: 'Ajouter à la liste de blocage',
       blocklistQuestion: 'Ajouter à la liste de blocage ?',
+      cancel: 'Annuler',
       editionCompare: 'Comparer les éditions',
       missingTracks: 'Pistes manquantes : Bonus Track',
       extraTracks: 'Pistes supplémentaires : Bonus Track, Demo',
@@ -5935,7 +5963,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       discography: 'عرض تسجيلات الفنان',
       tracks: 'المقاطع',
       plays: '1K استماع',
-      trackCount: '1 مقطع',
+      trackCount: 'أغنية واحدة',
       artist: 'الفنان',
       released: 'تاريخ الإصدار',
       label: 'شركة الإنتاج',
@@ -5951,6 +5979,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       similarArtists: 'فنانون مشابهون',
       blocklist: 'إضافة إلى قائمة الحظر',
       blocklistQuestion: 'إضافة إلى قائمة الحظر؟',
+      cancel: 'إلغاء',
       editionCompare: 'مقارنة الإصدارات',
       missingTracks: 'مقاطع مفقودة: Bonus Track',
       extraTracks: 'مقاطع إضافية: Bonus Track, Demo',
@@ -5966,6 +5995,9 @@ test('Music album and artist details localize their controls and metadata', asyn
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
   let musicPermissions = 268435474;
+  await page.route('**/api/v1/service/music', (route) =>
+    route.fulfill({ json: [] })
+  );
   await page.route('**/api/v1/user/1/settings/main', (route) =>
     route.fulfill({ json: { locale, enabledMediaCategories: { music: true } } })
   );
@@ -6141,6 +6173,7 @@ test('Music album and artist details localize their controls and metadata', asyn
     page.locator('h1').getByText('Fixture Album', { exact: true })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: copy.request })).toBeVisible();
+  await page.locator('details.music-more > summary').click();
   await expect(page.getByRole('link', { name: copy.search })).toBeVisible();
   await expect(
     page.getByRole('link', { name: copy.associations })
@@ -6153,8 +6186,9 @@ test('Music album and artist details localize their controls and metadata', asyn
   );
   await page
     .getByRole('alertdialog')
-    .getByRole('button', { name: 'Cancel' })
+    .getByRole('button', { name: copy.cancel })
     .click();
+  await page.locator('details.music-more > summary').click();
   await expect(
     page.getByRole('link', { name: copy.discography })
   ).toBeVisible();
@@ -6217,9 +6251,10 @@ test('Music album and artist details localize their controls and metadata', asyn
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
   if (process.env.LUMEN_MUSIC_DETAIL_CAPTURE) {
+    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({
       path: `${process.env.LUMEN_MUSIC_DETAIL_CAPTURE}-album-${locale}-${test.info().project.name}.png`,
-      fullPage: true,
+      fullPage: process.env.LUMEN_MUSIC_DETAIL_CAPTURE_VIEWPORT !== '1',
     });
   }
 
@@ -6288,6 +6323,9 @@ test('artist detail groups secondary release types and loads the rest of a relea
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/service/music', (route) =>
+    route.fulfill({ json: [] })
+  );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
       json: { musicEnabled: true, enabledMediaCategories: { music: true } },
@@ -6406,6 +6444,9 @@ test('configured music shelves preserve genre and yearly chart in Music', async 
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/service/music', (route) =>
+    route.fulfill({ json: [] })
+  );
   await page.route('**/api/v1/settings/public', (route) =>
     route.fulfill({
       json: {
@@ -6848,6 +6889,9 @@ test('music and Open Library book details open Associations with exact identity'
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/service/music', (route) =>
+    route.fulfill({ json: [] })
+  );
   const album = '397b4ce9-89a1-41f8-9599-68983ee4a767';
   const artist = '934ebb1e-9e64-4a2d-abc2-8aea39d7b50c';
   await page.route('**/api/v1/settings/public', (route) =>
@@ -7406,7 +7450,10 @@ test('Provider Discovery filters unmatched rows and opens a bookmarked MDBList f
   );
   await expect(
     page.getByRole('link', { name: 'Matched Fixture' })
-  ).toHaveAttribute('href', new URL('./movie/101', baseURL).pathname);
+  ).toHaveAttribute(
+    'href',
+    testAppPath(new URL('./movie/101', baseURL).pathname)
+  );
   expect(requests[0].get('list')).toBe('viewer/fixture');
   await expect(page.getByText(/Curated match/)).toBeVisible();
   await expect(page.getByText(/Matched by catalog ID/)).toBeVisible();

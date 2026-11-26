@@ -36,6 +36,10 @@ async function fixtures(
     const own = opts.api?.(path, url, route);
     if (own === true) return;
     if (own !== undefined) return route.fulfill({ json: own });
+    if (path === '/lumen/configuration') {
+      if (opts.config) return opts.config(route);
+      return route.fulfill({ json: {} });
+    }
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'fam', permissions: opts.permissions ?? 2 },

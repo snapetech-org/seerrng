@@ -1,5 +1,7 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 // Review fixes on the pages: 4K for series without admin rights, light download polling,
 // safe focus in confirmations, toasts outside the inert app, local dates, games while the
 // catalogues are checked, owned audiobooks, comic editions, Not yet paging and retries.
@@ -41,6 +43,7 @@ async function fixtures(
     const custom = await handle(path, url, route);
     if (custom === 'handled') return;
     if (custom !== undefined) return route.fulfill(custom as Fulfill);
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
     if (path === '/auth/me')
       return route.fulfill({
         json: { id: 1, displayName: 'fam', permissions },
@@ -513,6 +516,9 @@ test.describe('phones', () => {
     await page.route('**/lumen-config.json', (r) =>
       r.fulfill({ json: { audiobookshelfUrl: 'https://abs.example.org' } })
     );
+    await page.route('**/api/v1/lumen/configuration', (r) =>
+      r.fulfill({ json: { audiobookshelfUrl: 'https://abs.example.org' } })
+    );
     await page.goto(`/book/${encodeURIComponent(bookId)}?f=audio`);
     await page.getByRole('radio', { name: /Ann Voice/ }).click();
     await expect(
@@ -939,10 +945,11 @@ test('the magazine search box follows ?q= on Back and Forward', async ({
   await page.goto('/magazines?q=time');
   const box = page.getByPlaceholder('Search magazines…');
   await expect(box).toHaveValue('time');
-  await page.evaluate(() => {
-    history.pushState(history.state, '', '/magazines?q=news');
+  const newsPath = `${testMount}/magazines?q=news`;
+  await page.evaluate((path) => {
+    history.pushState(history.state, '', path);
     dispatchEvent(new PopStateEvent('popstate'));
-  });
+  }, newsPath);
   await expect(box).toHaveValue('news');
   await page.goBack();
   await expect(box).toHaveValue('time');
