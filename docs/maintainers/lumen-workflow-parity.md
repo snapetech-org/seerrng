@@ -11544,5 +11544,9 @@ rendered against the same fixture state at 390x844, 834x1112, and 1440x900; the
 heading is clear at all three sizes, and no horizontal overflow was present.
 The same mounted Movie detail fixture was rendered at those sizes: its hero
 remains full-bleed, with no first-page heading for the spacing rule to change.
+The standalone Collector Picks browser fixture now returns the signed-in
+account's enabled music category and asserts the heading/Back geometry; the
+focused production-preview browser case passes on desktop, iPhone, Android,
+and tablet.
 
 release-note: `release-notes/lumen-mobile-detail-heading-clearance.md`

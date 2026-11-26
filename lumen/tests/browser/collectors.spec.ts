@@ -26,6 +26,10 @@ test('music discovery opens trusted collector picks and follows the matched arti
         return route.fulfill({
           json: { id: 1, displayName: 'test', permissions: 2 },
         });
+      case '/user/1/settings/main':
+        return route.fulfill({
+          json: { enabledMediaCategories: { music: true } },
+        });
       case '/settings/public':
         return route.fulfill({
           json: { musicEnabled: true, enabledMediaCategories: { music: true } },
@@ -122,6 +126,16 @@ test('music discovery opens trusted collector picks and follows the matched arti
   await expect(
     page.getByRole('heading', { name: 'Collector Picks' })
   ).toBeVisible();
+  const back = page.locator('.dback');
+  if (await back.isVisible()) {
+    const backBox = await back.boundingBox();
+    const headingBox = await page
+      .getByRole('heading', { name: 'Collector Picks' })
+      .boundingBox();
+    expect(backBox).not.toBeNull();
+    expect(headingBox).not.toBeNull();
+    expect(headingBox!.y).toBeGreaterThanOrEqual(backBox!.y + backBox!.height);
+  }
   await expect(
     page.getByText(
       'Releases being shared by collectors you follow. Each one shows why it appeared.'
