@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 test('Game Finder pages with the submitted filters and saves, runs and deletes searches', async ({
   page,
   baseURL,
@@ -157,7 +159,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
   await page.getByRole('button', { name: copy.show }).click();
   await expect(page.getByRole('link', { name: 'First Game' })).toHaveAttribute(
     'href',
-    new URL('./game/game/21', baseURL).pathname
+    `${mount}${new URL('./game/game/21', baseURL).pathname}`
   );
   await page.getByLabel(copy.keywords).fill('different draft');
   await page.getByRole('button', { name: copy.loadMore }).click();

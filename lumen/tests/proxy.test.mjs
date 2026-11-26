@@ -245,12 +245,19 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/settings/logs?page=0', '/admin/logs'],
       [
         '/settings/main?settingsSearchTarget=spotifyClientId',
-        '/admin/general#spotifyClientId',
+        '/admin/general?settingsSearchTarget=spotifyClientId#spotifyClientId',
       ],
-      ['/settings/main?settingsSearchTarget=apiKey', '/admin/general#apiKey'],
+      [
+        '/settings/main?settingsSearchTarget=apiKey',
+        '/admin/general?settingsSearchTarget=apiKey#apiKey',
+      ],
       [
         '/settings/main?settingsSearchTarget=enable4k',
-        '/admin/general#enable4k',
+        '/admin/requests?settingsSearchTarget=enable4k#enable4k',
+      ],
+      [
+        '/settings/main?settingsSearch=4K&settingsSearchTarget=enable4k',
+        '/admin/requests?settingsSearch=4K&settingsSearchTarget=enable4k#enable4k',
       ],
       ['/settings/main', '/admin/general'],
       ['/settings/users/', '/admin/general#default-request-quotas'],
@@ -273,7 +280,14 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ],
       ['/settings/plex', '/admin/media-libraries'],
       ['/settings/jellyfin/', '/admin/media-libraries'],
-      ['/settings/services?settingsSearchTarget=prowlarr', '/admin/prowlarr'],
+      [
+        '/settings/services?settingsSearchTarget=prowlarr',
+        '/admin/prowlarr?settingsSearchTarget=prowlarr',
+      ],
+      [
+        '/settings/services?settingsSearch=Indexers&settingsSearchTarget=prowlarr',
+        '/admin/prowlarr?settingsSearch=Indexers&settingsSearchTarget=prowlarr',
+      ],
       ...[
         ['prowlarr-settings-title', 'prowlarr'],
         ['download-clients-settings-title', 'download-clients'],
@@ -286,10 +300,13 @@ async function check(settings, clientIp, scheme, headers = {}) {
         ['reader-settings-title', 'reader-delivery'],
         ['readmeabook-settings-title', 'readmeabook'],
         ['steamApiKey', 'software-acquisition#steam-library-import'],
-      ].map(([searchTarget, service]) => [
-        `/settings/services?settingsSearchTarget=${searchTarget}`,
-        `/admin/${service}`,
-      ]),
+      ].map(([searchTarget, service]) => {
+        const [servicePath, fragment] = service.split('#');
+        return [
+          `/settings/services?settingsSearchTarget=${searchTarget}`,
+          `/admin/${servicePath}?settingsSearchTarget=${searchTarget}${fragment ? `#${fragment}` : ''}`,
+        ];
+      }),
     ]) {
       const response = await fetch(base + path, { redirect: 'manual' });
       assert.equal(response.status, 302, path);

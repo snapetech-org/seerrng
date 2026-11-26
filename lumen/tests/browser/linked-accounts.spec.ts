@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appUrl = (path: string, baseURL: string | undefined) =>
+  new URL(`${mount}${path.startsWith('/') ? path : `/${path}`}`, baseURL);
+
 test('failed unlink stays in the confirmation sheet for retry', async ({
   page,
 }) => {
@@ -208,8 +212,10 @@ test('OIDC linking validates the round trip and consumes the callback once', asy
     if (path === '/user/2/settings/password')
       return route.fulfill({ json: { hasPassword: true } });
     if (path === '/auth/oidc/login/fixture') {
-      const callbackPath = new URL('./me/account/linked-accounts', baseURL)
-        .pathname;
+      const callbackPath = appUrl(
+        'me/account/linked-accounts',
+        baseURL
+      ).pathname;
       expect(url.searchParams.get('returnUrl')).toBe(callbackPath);
       const provider = new URL('/fixture-oidc', url);
       provider.search = new URLSearchParams({
@@ -462,7 +468,7 @@ test('Trakt returns to Linked Accounts and completes once', async ({
   baseURL,
 }) => {
   const base = '/integrations/discovery';
-  const linkedAccountsUrl = new URL('./me/account/linked-accounts', baseURL);
+  const linkedAccountsUrl = appUrl('me/account/linked-accounts', baseURL);
   const frontend = linkedAccountsUrl.pathname.startsWith('/lumen/')
     ? 'bundled'
     : 'standalone';

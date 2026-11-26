@@ -1048,6 +1048,26 @@ export const mountLumenFrontend = (
     } else {
       return next();
     }
+    const settingsSearch = req.query.settingsSearch;
+    const settingsSearchTarget = req.query.settingsSearchTarget;
+    if (
+      typeof settingsSearch === 'string' ||
+      typeof settingsSearchTarget === 'string'
+    ) {
+      const target =
+        typeof settingsSearchTarget === 'string' &&
+        /^[A-Za-z0-9_-]{1,64}$/.test(settingsSearchTarget)
+          ? settingsSearchTarget
+          : undefined;
+      const search =
+        typeof settingsSearch === 'string'
+          ? settingsSearch.trim().slice(0, 200)
+          : '';
+      const url = new URL(destination, 'http://localhost');
+      if (search) url.searchParams.set('settingsSearch', search);
+      if (target) url.searchParams.set('settingsSearchTarget', target);
+      destination = `${url.pathname}${url.search}${url.hash}`;
+    }
     return res
       .set('Cache-Control', 'no-store')
       .redirect(302, `/lumen${destination}`);

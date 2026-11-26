@@ -291,24 +291,24 @@ server {
     return 302 /admin/media-libraries;
   }
   location ~ ^/settings/services/?$ {
-    if ($arg_settingsSearchTarget ~ ^prowlarr(-|$)) { return 302 /admin/prowlarr; }
-    if ($arg_settingsSearchTarget = download-clients-interval) { return 302 "/admin/download-clients#download-clients-interval"; }
-    if ($arg_settingsSearchTarget ~ ^download-clients-) { return 302 /admin/download-clients; }
-    if ($arg_settingsSearchTarget ~ ^slskdn-) { return 302 /admin/soulseek; }
-    if ($arg_settingsSearchTarget ~ ^tunerr-) { return 302 /admin/tunerr; }
-    if ($arg_settingsSearchTarget ~ ^reader-) { return 302 /admin/reader-delivery; }
-    if ($arg_settingsSearchTarget ~ ^readmeabook-) { return 302 /admin/readmeabook; }
-    if ($arg_settingsSearchTarget = steamApiKey) { return 302 "/admin/software-acquisition#steam-library-import"; }
+    if ($arg_settingsSearchTarget ~ ^prowlarr(-|$)) { return 302 /admin/prowlarr$is_args$args; }
+    if ($arg_settingsSearchTarget = download-clients-interval) { return 302 "/admin/download-clients$is_args$args#download-clients-interval"; }
+    if ($arg_settingsSearchTarget ~ ^download-clients-) { return 302 /admin/download-clients$is_args$args; }
+    if ($arg_settingsSearchTarget ~ ^slskdn-) { return 302 /admin/soulseek$is_args$args; }
+    if ($arg_settingsSearchTarget ~ ^tunerr-) { return 302 /admin/tunerr$is_args$args; }
+    if ($arg_settingsSearchTarget ~ ^reader-) { return 302 /admin/reader-delivery$is_args$args; }
+    if ($arg_settingsSearchTarget ~ ^readmeabook-) { return 302 /admin/readmeabook$is_args$args; }
+    if ($arg_settingsSearchTarget = steamApiKey) { return 302 "/admin/software-acquisition$is_args$args#steam-library-import"; }
     if ($arg_serviceCategory ~ ^(tv-movies|audiobooks-books|music|tools-other)$) {
-      return 302 /admin?serviceCategory=$arg_serviceCategory;
+      return 302 /admin$is_args$args;
     }
-    return 302 /admin;
+    return 302 /admin$is_args$args;
   }
   location ~ ^/settings/main/?$ {
-    if ($arg_settingsSearchTarget = enable4k) { return 302 "/admin/general#enable4k"; }
-    if ($arg_settingsSearchTarget = apiKey) { return 302 "/admin/general#apiKey"; }
-    if ($arg_settingsSearchTarget = spotifyClientId) { return 302 "/admin/general#spotifyClientId"; }
-    return 302 /admin/general;
+    if ($arg_settingsSearchTarget = enable4k) { return 302 "/admin/requests$is_args$args#enable4k"; }
+    if ($arg_settingsSearchTarget = apiKey) { return 302 "/admin/general$is_args$args#apiKey"; }
+    if ($arg_settingsSearchTarget = spotifyClientId) { return 302 "/admin/general$is_args$args#spotifyClientId"; }
+    return 302 /admin/general$is_args$args;
   }
   location ~ ^/settings/users/?$ {
     return 302 "/admin/general#default-request-quotas";

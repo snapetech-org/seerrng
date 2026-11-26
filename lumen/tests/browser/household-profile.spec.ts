@@ -5,6 +5,8 @@ const appPath = (path: string) => `${mount}${path}`;
 
 const appHref = (path: string, baseURL: string | undefined) => {
   const url = new URL(path, baseURL);
+  if (mount && !url.pathname.startsWith(`${mount}/`))
+    url.pathname = `${mount}${url.pathname}`;
   return url.pathname + url.search + url.hash;
 };
 

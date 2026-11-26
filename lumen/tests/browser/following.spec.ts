@@ -1,5 +1,14 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+const appHref = (path: string, baseURL: string | undefined) => {
+  const url = new URL(path, baseURL);
+  if (mount && !url.pathname.startsWith(`${mount}/`))
+    url.pathname = `${mount}${url.pathname}`;
+  return url.pathname + url.search + url.hash;
+};
+
 const baseline = process.env.LUMEN_FOLLOW_BASELINE === '1';
 
 function apiPath(url: string) {
@@ -119,7 +128,7 @@ test('household users can open Following and manage their own updates', async ({
   ).toBeVisible();
   await expect(page.getByRole('link', { name: 'A New Film' })).toHaveAttribute(
     'href',
-    new URL('./movie/10', baseURL).pathname
+    appHref('movie/10', baseURL)
   );
   await expect(
     page.getByRole('heading', { name: 'New for You', exact: true })
@@ -146,7 +155,7 @@ test('household users can open Following and manage their own updates', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'New Story Expansion' })
-  ).toHaveAttribute('href', new URL('./game/game/42', baseURL).pathname);
+  ).toHaveAttribute('href', appHref('game/game/42', baseURL));
   await expect(
     page.getByText('New content for Fixture Game: New Story Expansion.')
   ).toBeVisible();
@@ -155,15 +164,12 @@ test('household users can open Following and manage their own updates', async ({
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Translation Patch 2', exact: true })
-  ).toHaveAttribute(
-    'href',
-    new URL('./patches/translation', baseURL).pathname + '?version=v2'
-  );
+  ).toHaveAttribute('href', appHref('patches/translation?version=v2', baseURL));
   await expect(
     page.getByRole('link', { name: 'Next Volume Announced', exact: true })
   ).toHaveAttribute(
     'href',
-    new URL('./search', baseURL).pathname + '?q=Fixture%20Novel%20Volume%204'
+    appHref('search?q=Fixture%20Novel%20Volume%204', baseURL)
   );
   await page.getByRole('button', { name: 'Mark Seen: A New Film' }).click();
   await expect(
@@ -171,7 +177,7 @@ test('household users can open Following and manage their own updates', async ({
   ).toHaveCount(0);
   await expect(
     page.getByRole('link', { name: 'Example Director' })
-  ).toHaveAttribute('href', new URL('./person/77', baseURL).pathname);
+  ).toHaveAttribute('href', appHref('person/77', baseURL));
   const notification = page.getByRole('checkbox', { name: 'Notify Me' });
   await expect(notification).toBeChecked();
   await notification.click();
@@ -185,7 +191,7 @@ test('household users can open Following and manage their own updates', async ({
   await page
     .getByRole('link', { name: 'Translation Patch 2', exact: true })
     .click();
-  await expect(page).toHaveURL('./patches/translation?version=v2');
+  await expect(page).toHaveURL(appPath('/patches/translation?version=v2'));
   await expect.poll(() => patchSeen).toBe(true);
 });
 
@@ -738,13 +744,13 @@ test('switching franchise titles keeps the follow identity and state separate', 
     page.getByRole('link', { name: 'Fixture Novel' })
   ).toHaveAttribute(
     'href',
-    new URL('./search', baseURL).pathname + '?q=Fixture+Novel+Volume+3'
+    appHref('search?q=Fixture+Novel+Volume+3', baseURL)
   );
   await expect(
     page.getByRole('link', { name: 'Mapped Volume' })
   ).toHaveAttribute(
     'href',
-    new URL('./book/bookshelf%3A1%3AaGM6MjYwNDY4', baseURL).pathname
+    appHref('book/bookshelf%3A1%3AaGM6MjYwNDY4', baseURL)
   );
   const follow = page.getByRole('button', { name: 'Follow', exact: true });
   const following = page.getByRole('button', {
@@ -840,7 +846,7 @@ for (const [type, catalogId, href] of [
     await page.getByRole('button', { name: 'Save Relationship' }).click();
     await expect(
       page.getByRole('link', { name: 'Fixture Volume' })
-    ).toHaveAttribute('href', new URL('.' + href, baseURL).pathname);
+    ).toHaveAttribute('href', appPath(new URL('.' + href, baseURL).pathname));
   });
 }
 
@@ -905,7 +911,7 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
   await page
     .getByRole('link', { name: 'Explore Franchise: Fixture Anime' })
     .click();
-  await expect(page).toHaveURL('./franchise/anime/713');
+  await expect(page).toHaveURL(appPath('/franchise/anime/713'));
   await expect(
     page.getByRole('heading', { name: 'Franchise for Fixture Anime' })
   ).toBeVisible();

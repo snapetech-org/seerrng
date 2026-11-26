@@ -11155,3 +11155,28 @@ maturity-settings bookmark. This route-only change does not alter rendered
 layout. Live authorization remains enforced by the existing account APIs.
 
 release-note: `release-notes/fixed-lumen-account-settings-bookmarks.md`
+
+### Mounted workflow qualification and settings search bookmarks (2026-11-26)
+
+Classic administrator settings redirects preserve bounded `settingsSearch` and
+`settingsSearchTarget` values when opening Lumen. This fixes the real Prowlarr
+bookmark regression where the destination page and fragment were correct but
+the requested Indexers search context disappeared. Express coverage checks
+service and general-settings search redirects for both root and `/lumen` paths.
+
+A full production-bundle mounted browser run covered 5,804 executions across
+desktop, iPhone, Android, and tablet: 5,566 passed, 164 expected skips, and 74
+failed. The failures de-duplicate to one product regression (the dropped
+Prowlarr search context), 17 fixture assertions that expected root-relative
+links instead of `/lumen` paths, and two Android TV recovery cases that hit the
+test timeout during the long parallel run. The path expectations now use
+mount-aware helpers. The two recovery cases passed when
+rerun serially against the same mounted build. After the fixes, 128 focused
+mounted settings, Following, household, and linked-account browser cases passed
+across all four projects, as did the four Game Finder mounted cases, all eight
+TV recovery cases, both server middleware tests, and all ten standalone proxy
+and container tests. The one-hour full matrix has not been rerun. Fixture-backed
+results do not establish live provider behavior or full Lumen/native visual
+parity.
+
+release-note: `release-notes/fixed-lumen-mounted-bookmarks.md`

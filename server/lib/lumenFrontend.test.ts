@@ -145,13 +145,13 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       }
       for (const target of ['spotifyClientId', 'apiKey', 'enable4k']) {
         const response = await request(app).get(
-          `${prefix}/settings/main?settingsSearchTarget=${target}`
+          `${prefix}/settings/main?settingsSearch=API&settingsSearchTarget=${target}`
         );
         assert.equal(
           response.headers.location,
           target === 'enable4k'
-            ? '/lumen/admin/requests#enable4k'
-            : `/lumen/admin/general#${target}`
+            ? `/lumen/admin/requests?settingsSearch=API&settingsSearchTarget=${target}#enable4k`
+            : `/lumen/admin/general?settingsSearch=API&settingsSearchTarget=${target}#${target}`
         );
         assert.equal(response.headers['cache-control'], 'no-store');
       }
@@ -189,10 +189,23 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       assert.equal(bookmark.headers.location, '/lumen/admin/media-libraries');
       assert.equal(bookmark.headers['cache-control'], 'no-store');
     }
-    const legacyProwlarr = await request(app).get(
-      '/lumen/settings/services?settingsSearchTarget=prowlarr'
+    for (const prefix of ['', '/lumen']) {
+      const legacyProwlarr = await request(app).get(
+        `${prefix}/settings/services?settingsSearch=Indexers&settingsSearchTarget=prowlarr`
+      );
+      assert.equal(legacyProwlarr.status, 302);
+      assert.equal(
+        legacyProwlarr.headers.location,
+        '/lumen/admin/prowlarr?settingsSearch=Indexers&settingsSearchTarget=prowlarr'
+      );
+    }
+    const invalidSearchTarget = await request(app).get(
+      `/settings/services?settingsSearch=${'x'.repeat(250)}&settingsSearchTarget=prowlarr%2F..`
     );
-    assert.equal(legacyProwlarr.headers.location, '/lumen/admin/prowlarr');
+    assert.equal(
+      invalidSearchTarget.headers.location,
+      `/lumen/admin?settingsSearch=${'x'.repeat(200)}`
+    );
     for (const [target, service] of [
       ['download-clients-settings-title', 'download-clients'],
       [
@@ -209,7 +222,11 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
         `/lumen/settings/services?settingsSearchTarget=${target}`
       );
       assert.equal(bookmark.status, 302);
-      assert.equal(bookmark.headers.location, `/lumen/admin/${service}`);
+      const [servicePath, fragment] = service.split('#');
+      assert.equal(
+        bookmark.headers.location,
+        `/lumen/admin/${servicePath}?settingsSearchTarget=${target}${fragment ? `#${fragment}` : ''}`
+      );
     }
     const musicServices = await request(app).get(
       '/lumen/settings/services?serviceCategory=music'
@@ -322,7 +339,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['/settings/network', '/lumen/admin/network'],
       [
         '/settings/services?settingsSearchTarget=prowlarr',
-        '/lumen/admin/prowlarr',
+        '/lumen/admin/prowlarr?settingsSearchTarget=prowlarr',
       ],
       ['/settings/notifications/webhook', '/lumen/admin/notifications/webhook'],
       ['/settings/plex', '/lumen/admin/media-libraries'],

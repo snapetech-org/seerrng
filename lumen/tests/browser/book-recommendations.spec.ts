@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`recommendation feeds preserve behavior in ${locale}`, async ({
     page,
@@ -147,7 +149,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       .getByRole('combobox', { name: copy.format, exact: true })
       .selectOption('audiobook');
     await page.getByRole('button', { name: copy.open }).click();
-    await expect(page).toHaveURL('./book/OL42W?f=audio');
+    await expect(page).toHaveURL(
+      new URL(`${mount}/book/OL42W?f=audio`, page.url()).href
+    );
     await expect(
       page.getByRole('heading', { name: 'Matched Fixture Audiobook' })
     ).toBeVisible();
