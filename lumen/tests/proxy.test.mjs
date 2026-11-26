@@ -150,16 +150,29 @@ async function check(settings, clientIp, scheme, headers = {}) {
       ['/users/19/', '/household/19'],
       ['/profile/', '/household/me'],
       ['/profile/settings/', '/me/account'],
+      ['/profile/settings/?from=native', '/me/account?from=native'],
       ['/profile/settings/permissions', '/me/account#account-permissions'],
       ['/profile/settings/password/', '/me/account#password'],
+      [
+        '/profile/settings/password?from=native',
+        '/me/account?from=native#password',
+      ],
       ['/profile/advanced-theme/', '/me/account#advanced-theme'],
       [
         '/profile/settings/episode-queue/',
         '/me/account/tv-requests#episode-queue',
       ],
       [
+        '/profile/settings/episode-queue?from=native',
+        '/me/account/tv-requests?from=native#episode-queue',
+      ],
+      [
         '/profile/settings/notifications/webpush',
         '/me/account/notifications#notification-webpush',
+      ],
+      [
+        '/profile/settings/notifications/webpush?from=native',
+        '/me/account/notifications?from=native#notification-webpush',
       ],
       ['/profile/watchlist/?page=2', '/watchlist?page=2'],
       ['/users/19/watchlist/?page=2', '/watchlist/user/19?page=2'],

@@ -11191,3 +11191,15 @@ classic bookmark lands on the matching controls. Route contract coverage
 asserts the same destination in the server middleware and container proxy.
 
 release-note: `release-notes/fixed-lumen-users-settings-bookmark.md`
+
+### Standalone self-service bookmark query preservation (2026-11-26)
+
+Standalone Nginx now preserves query parameters for Classic account-setting
+bookmarks, including password, Episode Queue, notification-channel, and base
+settings routes. This matches the bundled Express redirect and Lumen's client
+route behavior; fragments remain attached after the query string. Proxy tests
+assert representative redirect targets with query context. This verifies
+navigation context only and does not establish live account authorization or
+provider persistence.
+
+release-note: `release-notes/fixed-lumen-self-service-bookmark-context.md`

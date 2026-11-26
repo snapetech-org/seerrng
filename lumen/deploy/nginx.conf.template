@@ -160,31 +160,31 @@ server {
     return 302 /household/me;
   }
   location ~ ^/profile/advanced-theme/?$ {
-    return 302 "/me/account#advanced-theme";
+    return 302 "/me/account$is_args$args#advanced-theme";
   }
   location ~ ^/profile/settings/tv-request-access/?$ {
-    return 302 /me/account/tv-requests;
+    return 302 /me/account/tv-requests$is_args$args;
   }
   location ~ ^/profile/settings/episode-queue/?$ {
-    return 302 "/me/account/tv-requests#episode-queue";
+    return 302 "/me/account/tv-requests$is_args$args#episode-queue";
   }
   location ~ ^/profile/settings/linked-accounts/?$ {
-    return 302 /me/account/linked-accounts;
+    return 302 /me/account/linked-accounts$is_args$args;
   }
   location ~ ^/profile/settings/client-tokens/?$ {
-    return 302 /me/account/client-tokens;
+    return 302 /me/account/client-tokens$is_args$args;
   }
   location ~ ^/profile/settings/notifications/(email|telegram|discord|pushbullet|pushover|webpush)/?$ {
-    return 302 "/me/account/notifications#notification-$1";
+    return 302 "/me/account/notifications$is_args$args#notification-$1";
   }
   location ~ ^/profile/settings/permissions/?$ {
-    return 302 "/me/account#account-permissions";
+    return 302 "/me/account$is_args$args#account-permissions";
   }
   location ~ ^/profile/settings/password/?$ {
-    return 302 "/me/account#password";
+    return 302 "/me/account$is_args$args#password";
   }
   location ~ ^/profile/settings(/main)?/?$ {
-    return 302 /me/account;
+    return 302 /me/account$is_args$args;
   }
   location ~ ^/profile/watchlist/?$ {
     return 302 /watchlist$is_args$args;
