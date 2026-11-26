@@ -45,6 +45,7 @@ interface Approval {
   id: number;
   title: string;
   author?: string;
+  status?: string;
   user: { username?: string; email?: string } | null;
 }
 
@@ -57,6 +58,19 @@ function ReadMeABookOperations() {
   const pending = useRef(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [confirmation, setConfirmation] = useState<{
+    id: number;
+    action: 'approve' | 'deny';
+  } | null>(null);
+
+  async function confirmDecision(id: number) {
+    const current = await api<Approval[]>(approvalsPath, { cache: 'no-store' });
+    if (!Array.isArray(current) || current.some((item) => item.id === id))
+      throw new Error('The approval queue still contains this request.');
+    setConfirmation(null);
+    approvals.reload();
+    dashboard.refresh();
+  }
 
   async function decide(id: number, action: 'approve' | 'deny') {
     if (pending.current) return;
@@ -64,20 +78,38 @@ function ReadMeABookOperations() {
     setBusy(true);
     setError('');
     const generation = sessionGeneration();
+    let mutationConfirmed = confirmation?.id === id;
     try {
-      await api(`${approvalsPath}/${id}/${action}`, { method: 'POST' });
+      if (!mutationConfirmed) {
+        const result = await api<Approval>(`${approvalsPath}/${id}/${action}`, {
+          method: 'POST',
+        });
+        if (generation !== sessionGeneration()) return;
+        mutationConfirmed = true;
+        setConfirmation({ id, action });
+        if (
+          result.id !== id ||
+          !result.status ||
+          result.status === 'awaiting_approval'
+        )
+          throw new Error('The server did not confirm the request update.');
+      }
       if (generation !== sessionGeneration()) return;
-      approvals.reload();
-      dashboard.refresh();
+      await confirmDecision(id);
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
-          failure instanceof ApiError
-            ? failure.message
-            : t(
-                'lumen.requestService.approvalFailed',
-                'Could not update the audiobook request.'
+          mutationConfirmed
+            ? t(
+                'lumen.requestService.approvalConfirmFailed',
+                'Could not confirm this audiobook request update. Check its status before retrying.'
               )
+            : failure instanceof ApiError
+              ? failure.message
+              : t(
+                  'lumen.requestService.approvalFailed',
+                  'Could not update the audiobook request.'
+                )
         );
     } finally {
       pending.current = false;
@@ -136,32 +168,50 @@ function ReadMeABookOperations() {
                 </small>
               </span>
               <div className="toolbar">
-                <button
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                  disabled={busy}
-                  aria-label={t(
-                    'lumen.requestService.approveTitle',
-                    'Approve {title}',
-                    { title }
-                  )}
-                  onClick={() => void decide(id, 'approve')}
-                >
-                  {t('lumen.requestService.approve', 'Approve')}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-quiet btn-sm"
-                  disabled={busy}
-                  aria-label={t(
-                    'lumen.requestService.denyTitle',
-                    'Deny {title}',
-                    { title }
-                  )}
-                  onClick={() => void decide(id, 'deny')}
-                >
-                  {t('lumen.requestService.deny', 'Deny')}
-                </button>
+                {confirmation?.id === id ? (
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    disabled={busy}
+                    aria-label={t(
+                      'lumen.requestService.checkApprovalTitle',
+                      'Check status for {title}',
+                      { title }
+                    )}
+                    onClick={() => void decide(id, confirmation.action)}
+                  >
+                    {t('lumen.requestService.checkStatus', 'Check Status')}
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      disabled={busy}
+                      aria-label={t(
+                        'lumen.requestService.approveTitle',
+                        'Approve {title}',
+                        { title }
+                      )}
+                      onClick={() => void decide(id, 'approve')}
+                    >
+                      {t('lumen.requestService.approve', 'Approve')}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-quiet btn-sm"
+                      disabled={busy}
+                      aria-label={t(
+                        'lumen.requestService.denyTitle',
+                        'Deny {title}',
+                        { title }
+                      )}
+                      onClick={() => void decide(id, 'deny')}
+                    >
+                      {t('lumen.requestService.deny', 'Deny')}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           ))}

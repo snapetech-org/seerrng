@@ -11203,3 +11203,15 @@ navigation context only and does not establish live account authorization or
 provider persistence.
 
 release-note: `release-notes/fixed-lumen-self-service-bookmark-context.md`
+
+### ReadMeABook approval result confirmation (2026-11-26)
+
+The Lumen administrator queue now checks the mutation response and confirms
+that the request is absent from a fresh pending-approvals read before treating
+approval or denial as complete. If the read is stale or fails, the item remains
+available through a Check Status control that repeats only the read; it does not
+submit the decision again. Browser coverage models a stale first read followed
+by confirmed removal and asserts that only one decision POST occurs. Fixture
+coverage does not establish live ReadMeABook service behavior.
+
+release-note: `release-notes/fixed-lumen-readmeabook-approval-confirmation.md`

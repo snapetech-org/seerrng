@@ -5269,6 +5269,8 @@ export const localeData = [
       'lumen.requestMapping.title': 'ربط مواسم المسلسل',
       'lumen.requestMapping.tmdbSeason': 'TMDB م{season}',
       'lumen.requestMapping.tmdbSeasonAccessible': 'موسم TMDB {season}',
+      'lumen.requestService.approvalConfirmFailed':
+        'تعذر تأكيد تحديث طلب الكتاب الصوتي. تحقق من حالته قبل إعادة المحاولة.',
       'lumen.requestService.approvalFailed': 'تعذر تحديث طلب الكتاب الصوتي.',
       'lumen.requestService.approvalLoadError':
         'تعذر تحميل موافقات الكتب الصوتية',
@@ -5276,6 +5278,8 @@ export const localeData = [
       'lumen.requestService.approvals': 'طلبات الكتب الصوتية بانتظار الموافقة',
       'lumen.requestService.approve': 'موافقة',
       'lumen.requestService.approveTitle': 'الموافقة على {title}',
+      'lumen.requestService.checkApprovalTitle': 'التحقق من حالة {title}',
+      'lumen.requestService.checkStatus': 'التحقق من الحالة',
       'lumen.requestService.available': 'متاح',
       'lumen.requestService.credentialsRequired':
         'يتطلب الاتصال المفعّل اسم مضيف و{credential}.',
@@ -17224,6 +17228,8 @@ export const localeData = [
       'lumen.requestMapping.title': 'Map TV Seasons',
       'lumen.requestMapping.tmdbSeason': 'TMDB S{season}',
       'lumen.requestMapping.tmdbSeasonAccessible': 'TMDB Season {season}',
+      'lumen.requestService.approvalConfirmFailed':
+        'Could not confirm this audiobook request update. Check its status before retrying.',
       'lumen.requestService.approvalFailed':
         'Could not update the audiobook request.',
       'lumen.requestService.approvalLoadError':
@@ -17232,6 +17238,8 @@ export const localeData = [
       'lumen.requestService.approvals': 'Audiobook Requests Awaiting Approval',
       'lumen.requestService.approve': 'Approve',
       'lumen.requestService.approveTitle': 'Approve {title}',
+      'lumen.requestService.checkApprovalTitle': 'Check status for {title}',
+      'lumen.requestService.checkStatus': 'Check Status',
       'lumen.requestService.available': 'available',
       'lumen.requestService.credentialsRequired':
         'An enabled connection requires a hostname and {credential}.',
@@ -30344,6 +30352,8 @@ export const localeData = [
       'lumen.requestMapping.title': 'Associer les saisons TV',
       'lumen.requestMapping.tmdbSeason': 'TMDB S{season}',
       'lumen.requestMapping.tmdbSeasonAccessible': 'Saison TMDB {season}',
+      'lumen.requestService.approvalConfirmFailed':
+        'Impossible de confirmer la mise à jour de cette demande de livre audio. Vérifiez son état avant de réessayer.',
       'lumen.requestService.approvalFailed':
         'Impossible de mettre à jour la demande de livre audio.',
       'lumen.requestService.approvalLoadError':
@@ -30353,6 +30363,8 @@ export const localeData = [
         'Demandes de livres audio en attente d’approbation',
       'lumen.requestService.approve': 'Approuver',
       'lumen.requestService.approveTitle': 'Approuver {title}',
+      'lumen.requestService.checkApprovalTitle': 'Vérifier l’état de {title}',
+      'lumen.requestService.checkStatus': 'Vérifier l’état',
       'lumen.requestService.available': 'disponible',
       'lumen.requestService.credentialsRequired':
         'Une connexion activée nécessite un nom d’hôte et {credential}.',
