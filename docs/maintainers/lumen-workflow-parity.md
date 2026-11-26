@@ -11095,6 +11095,19 @@ Evidence is retained at
 
 release-note: none
 
+### Requalify the prior mounted-suite failure slice (2026-11-26)
+
+Rebuilt the production server and Lumen assets from current `main`, then reran
+the 18 test cases that accounted for all 66 unexpected results in the prior
+full mounted-suite report. The focused run against the compiled Express
+`/lumen/` mount completed with 69 passes, three skips, and no failures across
+desktop, iPhone, Android, and tablet. The three skips remain explicit in the
+browser runner; this targeted requalification does not replace a fresh full
+mounted-suite run. Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mounted-failure-triage-current/`.
+
+release-note: none
+
 ### Music metadata and mounted regression follow-up (2026-11-26)
 
 The album detail used the registered `oneSong` fallback without locale entries,
