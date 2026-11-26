@@ -56,6 +56,15 @@ test('shell navigation landmarks and request badges follow the account locale', 
       });
     if (path === '/user/1/settings/main')
       return route.fulfill({ json: { locale } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          audiobookServiceEnabled: true,
+          readmeabookEnabled: true,
+        },
+      });
     if (path === '/request/count')
       return route.fulfill({ json: { pending: 4 } });
     return route.fulfill({ json: {} });
@@ -114,6 +123,121 @@ test('shell navigation landmarks and request badges follow the account locale', 
     await expect(menu).not.toHaveAttribute('data-mobile-open', 'true');
   }
 });
+
+for (const configuration of [
+  {
+    name: 'ebook service only',
+    booksEnabled: true,
+    ebookServiceEnabled: true,
+    audiobookServiceEnabled: false,
+    readmeabookEnabled: false,
+    visible: ['Books'],
+    hidden: ['Audiobooks'],
+  },
+  {
+    name: 'audiobook service only',
+    booksEnabled: true,
+    ebookServiceEnabled: false,
+    audiobookServiceEnabled: true,
+    readmeabookEnabled: false,
+    visible: ['Audiobooks'],
+    hidden: ['Books'],
+  },
+  {
+    name: 'ReadMeABook service only',
+    booksEnabled: true,
+    ebookServiceEnabled: false,
+    audiobookServiceEnabled: false,
+    readmeabookEnabled: true,
+    visible: ['Audiobooks'],
+    hidden: ['Books'],
+  },
+  {
+    name: 'legacy server without format flags',
+    booksEnabled: true,
+    visible: ['Books', 'Audiobooks'],
+    hidden: [],
+  },
+  {
+    name: 'no book services',
+    booksEnabled: false,
+    ebookServiceEnabled: false,
+    audiobookServiceEnabled: false,
+    readmeabookEnabled: false,
+    visible: [],
+    hidden: ['Books', 'Audiobooks'],
+  },
+]) {
+  test(`book navigation follows configured formats (${configuration.name})`, async ({
+    page,
+  }) => {
+    await page.route('**/api/v1/**', async (route) => {
+      const path = new URL(route.request().url()).pathname
+        .replace(/^\/lumen/, '')
+        .replace(/^\/api\/v1/, '');
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: {
+            id: 1,
+            permissions: 2,
+            userType: 1,
+            displayName: 'Administrator',
+          },
+        });
+      if (path === '/user/1/settings/main')
+        return route.fulfill({ json: { enabledMediaCategories: {} } });
+      if (path === '/settings/public') {
+        const publicSettings = Object.fromEntries(
+          Object.entries(configuration).filter(
+            ([key]) => !['name', 'visible', 'hidden'].includes(key)
+          )
+        );
+        return route.fulfill({
+          json: {
+            ...publicSettings,
+            enabledMediaCategories: { ebook: true, audiobook: true },
+          },
+        });
+      }
+      return route.fulfill({ json: {} });
+    });
+
+    const publicSettingsLoaded = page.waitForResponse((response) =>
+      new URL(response.url()).pathname.endsWith('/api/v1/settings/public')
+    );
+    await page.goto(appPath('/me'));
+    await publicSettingsLoaded;
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+        )
+    );
+    const menu = page.locator('.side');
+    if ((page.viewportSize()?.width ?? 0) < 1040)
+      await page
+        .locator('.tabbar [aria-controls="mobile-primary-navigation"]')
+        .click();
+    for (const label of configuration.visible)
+      await expect(
+        menu.getByRole('link', { name: label, exact: true })
+      ).toBeVisible();
+    for (const label of configuration.hidden)
+      await expect(
+        menu.getByRole('link', { name: label, exact: true })
+      ).toHaveCount(0);
+    const captureDir = process.env.LUMEN_BOOK_MENU_CAPTURE_DIR;
+    if (
+      captureDir &&
+      configuration.visible.length > 0 &&
+      ['desktop', 'iphone'].includes(test.info().project.name)
+    )
+      await page.screenshot({
+        path: `${captureDir}/${configuration.name.replaceAll(' ', '-')}-${test.info().project.name}.png`,
+        fullPage: true,
+      });
+  });
+}
 
 test('open issue count appears only for issue managers', async ({ page }) => {
   const permission = Number(process.env.LUMEN_TEST_ISSUE_PERMISSION ?? 1048576);

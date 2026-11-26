@@ -10509,6 +10509,23 @@ this specific state. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/admin-caches-dns-parity/captures-final/`.
 The run uses mocked DNS data; live cache values remain unverified.
 
+### Format-aware book navigation (2026-11-26)
+
+Lumen's Books and Audiobooks menu entries now follow SeerrNG's configured
+ebook, audiobook, and ReadMeABook services independently, along with the
+server-wide and per-account category switches. Previously both entries could
+appear whenever the book category was enabled, even if only one format service
+was configured. Older server responses without per-format service flags retain
+the existing `booksEnabled` fallback. Regression fixtures cover ebook-only,
+audiobook-only, ReadMeABook-only, no book service, and legacy settings across
+desktop, iPhone, Android, and tablet (20 cases). Matched pre-fix and candidate
+Lumen captures at 1440×900 and 390×844 show only the available format in the
+candidate. The native `isBookFormatEnabled` service gate is the behavior
+reference; a rendered native screenshot for the same service fixtures was not
+available, so native-matched visual acceptance remains unverified. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/book-menu-service-parity/`.
+
 ### Missing movie and TV overview metadata (2026-11-25)
 
 Native movie and series details show a localized “Overview unavailable” value

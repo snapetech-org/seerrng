@@ -138,13 +138,31 @@ export default function Shell({ children }: { children: ReactNode }) {
     '/books': 'ebook',
     '/audiobooks': 'audiobook',
   };
+  const bookFormatServiceEnabled = (format: 'ebook' | 'audiobook') => {
+    const settings = swipeSettings.data;
+    if (!settings) return false;
+    if (format === 'ebook')
+      return settings.ebookServiceEnabled ?? settings.booksEnabled;
+    if (
+      settings.readmeabookEnabled !== undefined ||
+      settings.audiobookServiceEnabled !== undefined
+    )
+      return (
+        settings.readmeabookEnabled === true ||
+        settings.audiobookServiceEnabled === true
+      );
+    return settings.booksEnabled;
+  };
   const categoryVisible = (h: string) => {
     const key = navCategory[h];
-    return (
+    const format =
+      h === '/books' ? 'ebook' : h === '/audiobooks' ? 'audiobook' : undefined;
+    const serviceVisible = !format || bookFormatServiceEnabled(format);
+    const categoryEnabled =
       !key ||
       (swipeSettings.data?.enabledMediaCategories?.[key] !== false &&
-        personalCategories.data?.enabledMediaCategories?.[key] !== false)
-    );
+        personalCategories.data?.enabledMediaCategories?.[key] !== false);
+    return serviceVisible && categoryEnabled;
   };
   const loc = useLocation();
   const [moreOpen, setMoreOpen] = useState(false);

@@ -194,6 +194,7 @@ export interface PublicSettings {
   booksEnabled: boolean;
   ebookServiceEnabled: boolean;
   audiobookServiceEnabled: boolean;
+  readmeabookEnabled?: boolean;
   enabledMediaCategories?: Record<string, boolean>;
   adultEnabled?: boolean;
   ageGate?: { defaultRestricted?: boolean };
