@@ -11401,3 +11401,19 @@ Results are retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/embedded-mounted-qa-f8f57fce/`.
 
 release-note: none
+
+### Embedded Discover and Search localization verification (2026-11-26)
+
+The mounted production Lumen bundle passed the Discover and Search localization
+suites: 16 cases across desktop, iPhone, Android, and tablet, including the
+Discover shell and shelves, Trending filters/recovery, administrator row
+controls, search scopes/results/sorting, and pagination. The Lumen locale
+catalog suite also passed all three structural checks for account,
+administration, game-library, and metadata labels. These fixture-backed checks
+verify selected English/French/Arabic UI flows, not complete linguistic review
+or native-matched visual parity.
+
+The task-owned embedded mount was stopped after these checks; browser output
+used the repository's ignored `lumen/test-results/` directory.
+
+release-note: none
