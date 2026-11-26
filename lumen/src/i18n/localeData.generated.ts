@@ -3438,6 +3438,7 @@ export const localeData = [
       'lumen.cards.titleViewOnHover':
         'إظهار عناوين الملصقات عند المرور أو التركيز',
       'lumen.cards.outOn': 'الصدور في {date}',
+      'lumen.cards.requestEarly': 'اطلب مبكرًا',
       'lumen.category.adminHelp':
         'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.',
       'lumen.category.backDiscover': 'العودة إلى الاستكشاف',
@@ -15495,6 +15496,7 @@ export const localeData = [
       'lumen.cards.titleViewAlways': 'Always show poster titles',
       'lumen.cards.titleViewOnHover': 'Show poster titles on hover or focus',
       'lumen.cards.outOn': 'Out {date}',
+      'lumen.cards.requestEarly': 'Request early',
       'lumen.category.adminHelp':
         'An admin can enable it in SeerrNG under Settings › General › Media categories.',
       'lumen.category.backDiscover': 'Back to Discover',
@@ -28476,6 +28478,7 @@ export const localeData = [
       'lumen.cards.titleViewOnHover':
         'Afficher les titres au survol ou au focus',
       'lumen.cards.outOn': 'Sortie le {date}',
+      'lumen.cards.requestEarly': 'Demander avant la sortie',
       'lumen.category.adminHelp':
         'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
       'lumen.category.backDiscover': 'Retour à Découvrir',

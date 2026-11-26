@@ -48,6 +48,7 @@ const lumenKeys = [
   'lumen.quickRequest.requestAnyway',
   'lumen.cards.preferenceDescription',
   'lumen.cards.outOn',
+  'lumen.cards.requestEarly',
   'lumen.requestEdit.title',
   'lumen.requestEdit.askedBy',
   'lumen.requestEdit.seasons',

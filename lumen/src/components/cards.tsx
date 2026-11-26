@@ -607,7 +607,9 @@ export function TitleCard({
           onClick={request}
         >
           <Icon name="plus" size="sm" />
-          {unreleased ? 'Request early' : 'Request'}
+          {unreleased
+            ? t('lumen.cards.requestEarly', 'Request early')
+            : t('components.Common.FormatRequestControl.request', 'Request')}
         </button>
         {tv && (
           <Link

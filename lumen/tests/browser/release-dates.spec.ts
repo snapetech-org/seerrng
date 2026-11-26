@@ -153,6 +153,7 @@ test('series cards localize their type and upcoming quick details', async ({
   await expect(card.locator('.qm')).toContainText(
     `Sortie le 11 mars ${nextYear}`
   );
+  await expect(card.locator('.qbtn.go')).toHaveText('Demander avant la sortie');
 });
 
 test('the phone request bar keeps its button on screen and the title readable', async ({

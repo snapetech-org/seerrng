@@ -11752,4 +11752,8 @@ metadata in desktop, iPhone, Android, and tablet projects. The candidate text
 is verified; matched native/Lumen screenshots remain part of the open visual
 audit.
 
+The standard poster card's early-request action also follows the saved locale.
+The focused browser case checks the French action text when the card is hovered
+on desktop and tablet; mobile projects skip this hover-only assertion.
+
 release-note: `release-notes/lumen-localized-card-labels.md`

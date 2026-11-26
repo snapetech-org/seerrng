@@ -2459,6 +2459,7 @@
   "components.Search.series",
   "components.Requests.movie",
   "lumen.cards.outOn",
+  "lumen.cards.requestEarly",
   "lumen.category.adminHelp",
   "lumen.category.backDiscover",
   "lumen.category.disabledForAccount",
