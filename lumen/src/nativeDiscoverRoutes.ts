@@ -34,10 +34,11 @@ export function nativeDiscoverDestination(
   else if (path === '/discover/games') destination = '/games/discovery';
   else if (path === '/discover/patches') destination = '/patches';
   else if (path === '/discover/audiobooks') destination = '/audiobooks';
-  else if (path === '/discover/books')
+  else if (path === '/discover/books') {
     destination =
       params.get('format') === 'audiobook' ? '/audiobooks' : '/books';
-  else if (path.startsWith('/discover/list/')) {
+    params.delete('format');
+  } else if (path.startsWith('/discover/list/')) {
     const id = path.slice('/discover/list/'.length);
     if (isId(id)) destination = `/list/${id}`;
   } else if (path === '/discover/movies/upcoming') {
@@ -100,6 +101,11 @@ export function nativeDiscoverDestination(
   }
 
   if (!destination) destination = '/';
+  if (
+    (destination === '/movies' || destination === '/series') &&
+    params.get('show') === 'plex'
+  )
+    params.set('show', 'have');
   const query = params.toString();
   return `${destination}${query ? `?${query}` : ''}${hash}`;
 }

@@ -77,18 +77,18 @@ test('administrator navigation matches the account role', async ({
 }, testInfo) => {
   test.setTimeout(120_000);
   await signIn(page, false);
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(
     page.getByRole('link', { name: 'SeerrNG Administration', exact: true })
   ).toHaveCount(0);
   for (const path of adminRoutes) {
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     await expect(page).toHaveURL(/\/me$/);
   }
 
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await signIn(page, true);
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   const adminEntry =
     testInfo.project.name === 'desktop'
       ? page.getByRole('link', {
@@ -97,7 +97,7 @@ test('administrator navigation matches the account role', async ({
         })
       : page.getByRole('link', { name: 'Open SeerrNG Administration' });
   await expect(adminEntry).toHaveAttribute('href', testAppPath('/admin'));
-  await page.goto('/admin');
+  await page.goto(testAppPath('/admin'));
   const primaryNavigation = page.locator('#mobile-primary-navigation');
   await expect
     .poll(() =>
@@ -113,7 +113,7 @@ test('administrator navigation matches the account role', async ({
     primaryNavigation.locator(`a[href="${testAppPath('/admin/users')}"]`)
   ).toHaveCount(1);
   for (const path of adminRoutes) {
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     await expect(page).toHaveURL(
       new RegExp(`${testAppPath(path).replaceAll('/', '\\/')}$`)
     );
