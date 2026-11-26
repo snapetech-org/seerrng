@@ -6580,5 +6580,22 @@
   "lumen.music.because",
   "lumen.music.becauseYouListen",
   "lumen.music.playlistsToExplore",
-  "lumen.music.playlistGenre"
+  "lumen.music.playlistGenre",
+  "lumen.music.since",
+  "lumen.music.releaseCount",
+  "lumen.music.ownedAlbumsPartly",
+  "lumen.music.getMissingReleases",
+  "lumen.music.getAllReleasesTitle",
+  "lumen.music.getAllPlanBody",
+  "lumen.music.aurralOneAfterAnother",
+  "lumen.music.oneAlbum",
+  "lumen.music.albumCount",
+  "lumen.music.oneSingleOrEp",
+  "lumen.music.singlesEpsCount",
+  "lumen.music.albumsAndSmaller",
+  "lumen.music.followingToast",
+  "lumen.music.followingHelp",
+  "lumen.music.followHelp2",
+  "lumen.music.ownedAlbums",
+  "lumen.music.followingLabel"
 ]

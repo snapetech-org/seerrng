@@ -1184,6 +1184,112 @@ test('an artist page follows the artist and gets every missing release, singles 
   ).toHaveCount(0);
 });
 
+for (const [
+  locale,
+  albumsOwned,
+  getMissing,
+  title,
+  summary,
+  aurral,
+  followHelp,
+] of [
+  [
+    'fr',
+    'Albums dans votre bibliothèque : 1 sur 3',
+    'Demander les 3 sorties manquantes',
+    'Demander toutes les sorties de Fixture Band ?',
+    '2 albums et 1 single ou EP de Fixture Band seront demandés.',
+    'Aurral les téléchargera une par une.',
+    'Suivez cet artiste pour télécharger automatiquement ses nouveaux albums et singles.',
+  ],
+  [
+    'ar',
+    'الألبومات في مكتبتك: 1 من 3',
+    'طلب الإصدارات المتبقية (3)',
+    'طلب جميع إصدارات Fixture Band؟',
+    'سيتم طلب 2 ألبومات وأغنية منفردة أو EP واحدة للفنان Fixture Band.',
+    'سيحمّلها Aurral واحدة تلو الأخرى.',
+    'تابع الفنان لتنزيل ألبوماته وأغانيه الجديدة تلقائيًا.',
+  ],
+] as const) {
+  test(`artist request and follow flow uses the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    const seen: Seen = {
+      previews: [],
+      saved: [],
+      albumRequests: [],
+      follows: [],
+    };
+    await mockMusic(page, seen, locale);
+    await page.goto(testAppPath(`/artist/${ARTIST_MBID}`));
+    await expect(
+      page.getByText(baseline ? 'You have 1 of 3 albums' : albumsOwned, {
+        exact: true,
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Follow to get new albums and singles automatically when they come out.'
+          : followHelp
+      )
+    ).toBeVisible();
+    await page.screenshot({
+      path: info.outputPath(`music-artist-${locale}.png`),
+      fullPage: false,
+    });
+
+    await page
+      .getByRole('button', { name: locale === 'fr' ? 'Suivre' : 'متابعة' })
+      .click();
+    await expect.poll(() => seen.follows?.length).toBe(1);
+    await expect(
+      page.getByRole('button', {
+        name: baseline ? 'Following' : locale === 'fr' ? 'Suivi' : 'تتابع',
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        baseline
+          ? 'Following Fixture Band: new releases will download'
+          : locale === 'fr'
+            ? 'Vous suivez Fixture Band : ses nouveautés seront téléchargées'
+            : 'تتابع Fixture Band؛ ستُنزل إصداراته الجديدة تلقائيًا'
+      )
+    ).toBeVisible();
+
+    await page
+      .getByRole('button', {
+        name: baseline ? 'Get the 3 missing releases' : getMissing,
+      })
+      .click();
+    const dialog = page.getByRole('alertdialog', {
+      name: baseline ? 'Get all releases by Fixture Band?' : title,
+    });
+    await expect(
+      dialog.getByText(
+        baseline
+          ? '2 albums and 1 single or EP by Fixture Band will be requested.'
+          : summary,
+        { exact: false }
+      )
+    ).toBeVisible();
+    await expect(
+      dialog.getByText(
+        baseline ? 'Aurral downloads them one after another.' : aurral
+      )
+    ).toBeVisible();
+    await dialog
+      .getByRole('button', {
+        name: locale === 'ar' ? 'تنزيلها' : 'Les obtenir',
+      })
+      .click();
+    await expect.poll(() => seen.albumRequests?.length).toBe(3);
+  });
+}
+
 test('getting every release keeps going when one fails and says how many failed', async ({
   page,
 }) => {

@@ -11934,3 +11934,20 @@ Remaining MusicHome artist-request and release-explanation messages remain
 under audit.
 
 release-note: `release-notes/lumen-music-artist-discovery-localization.md`
+
+### Artist follow and request-all flow (2026-11-26)
+
+The artist page now translates release totals and partial library ownership,
+follow guidance and feedback, bulk-request controls, and the request-plan
+confirmation in French and Arabic. The same artist follow action and sequential
+album/single dispatch remain in place. Browser coverage follows an artist,
+checks the resulting feedback, reviews the server-generated request plan, and
+submits all eligible releases.
+
+Baseline and candidate suites passed all 8 locale/viewport cases. Screenshots
+are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artist-request-i18n-20261126/`.
+Artist recovery errors, release exclusions, and the remaining MusicHome
+feedback strings are still under audit.
+
+release-note: `release-notes/lumen-music-artist-request-localization.md`
