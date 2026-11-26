@@ -227,6 +227,9 @@ test('user managers can open and confirm their own maturity controls', async ({
   await page.goto(appPath('/users/2/settings/maturity?from=native'));
   await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
   await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG-13');
+  await page.goto(appPath('/settings/maturity?from=native'));
+  await expect(page).toHaveURL(/\/me\/account\?from=native#maturity-controls$/);
+  await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG-13');
 });
 
 test('regular accounts do not load user maturity controls', async ({

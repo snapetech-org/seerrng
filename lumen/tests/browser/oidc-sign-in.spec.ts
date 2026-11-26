@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+
 test('OIDC signs in and restores the requested route with search and hash', async ({
   page,
 }) => {
   const state = 'synthetic-login-state-1234';
-  const destination = '/requests?fixture=1#requests';
+  const destination = `${mount}/requests?fixture=1#requests`;
   let signedIn = false;
   let callbacks = 0;
   await page.route('https://**/*', (route) => route.abort());
@@ -34,11 +36,11 @@ test('OIDC signs in and restores the requested route with search and hash', asyn
         },
       });
     if (path === '/auth/oidc/login/fixture') {
-      expect(url.searchParams.get('returnUrl')).toBe('/login');
+      expect(url.searchParams.get('returnUrl')).toBe(`${mount}/login`);
       expect(url.searchParams.get('returnTo')).toBe(destination);
       const provider = new URL('/fixture-oidc', url);
       provider.search = new URLSearchParams({
-        redirect_uri: new URL('/login', url).href,
+        redirect_uri: new URL(`${mount}/login`, url).href,
         state,
       }).toString();
       return route.fulfill({ json: { redirectUrl: provider.href } });

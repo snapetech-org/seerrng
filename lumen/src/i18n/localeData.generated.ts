@@ -4770,6 +4770,8 @@ export const localeData = [
       'lumen.music.sort.yearAscending': 'هذا العام (تصاعديًا)',
       'lumen.music.subtitle': 'اطلب ألبومًا لإضافته إلى مكتبتك الموسيقية.',
       'lumen.music.title': 'الموسيقى',
+      'lumen.music.oneSong': 'أغنية واحدة',
+      'lumen.music.playCount': '{count} استماع',
       'lumen.music.trackCountMany': '{count} مقاطع',
       'lumen.music.trackCountOne': '{count} مقطع',
       'lumen.music.trackRequests': 'طلبات المقاطع',
@@ -16718,6 +16720,8 @@ export const localeData = [
       'lumen.music.subtitle':
         'Request an album and it lands in your music library.',
       'lumen.music.title': 'Music',
+      'lumen.music.oneSong': '1 song',
+      'lumen.music.playCount': '{count} plays',
       'lumen.music.trackCountMany': '{count} tracks',
       'lumen.music.trackCountOne': '{count} track',
       'lumen.music.trackRequests': 'Track Requests',
@@ -29788,6 +29792,8 @@ export const localeData = [
       'lumen.music.subtitle':
         'Demandez un album pour l’ajouter à votre bibliothèque musicale.',
       'lumen.music.title': 'Musique',
+      'lumen.music.oneSong': '1 chanson',
+      'lumen.music.playCount': '{count} écoutes',
       'lumen.music.trackCountMany': '{count} pistes',
       'lumen.music.trackCountOne': '{count} piste',
       'lumen.music.trackRequests': 'Demandes de titres',

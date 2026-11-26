@@ -11086,3 +11086,51 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/mount-aware-regression-verified/`.
 
 release-note: none
+
+### Music metadata and mounted regression follow-up (2026-11-26)
+
+The album detail used the registered `oneSong` fallback without locale entries,
+and play counts used the separate `playCount` key even though only the related
+`plays` key was translated. Both keys now have English, French, and Arabic
+overrides. French and Arabic album/artist detail browser cases pass across
+desktop, iPhone, Android, and tablet. A matched 1440×900 French album capture
+shows the translated count in the existing metadata row without changing its
+layout; the old and new captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+Classic software request bookmarks now preserve `filter=downloading` as the
+software status filter. The bundled mounted bookmark case passes across the
+four browser projects.
+
+A grouped mounted run of ten affected browser specs completed with 1,274
+passes, 42 expected viewport skips, and 24 failures across six app cases. The
+failures came from fixtures selecting the Lidarr/Aurral service route for tests
+of the legacy MusicBrainz route and three Provider Discovery expectations
+omitting `/lumen`. After aligning those fixtures, all six cases pass in a
+focused 24-case rerun across the four projects. This is targeted regression
+evidence; the ten-spec group has not yet been rerun after those corrections,
+and does not establish full Lumen parity, live provider behavior, or native
+matched visual acceptance. The music capture compares the Lumen metadata before
+and after the localization correction only.
+
+Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: `release-notes/fixed-lumen-music-and-bookmark-labels.md`
+
+### Direct account settings bookmarks (2026-11-26)
+
+Legacy `/settings/*` account bookmarks now open the matching Lumen account
+section for password, permissions, maturity controls, client tokens, linked
+accounts, TV request access, and Episode Queue. The route preserves supported
+query context and places it before the destination fragment. Bundled Express
+middleware and standalone Lumen route handling use the same destinations; the
+existing permission checks still decide which account controls are available.
+
+The Express middleware test passes all seven destinations for both root and
+`/lumen` bookmarks, including query preservation. The production Lumen browser
+test passes on desktop, iPhone, Android, and tablet for a manager's own
+maturity-settings bookmark. This route-only change does not alter rendered
+layout. Live authorization remains enforced by the existing account APIs.
+
+release-note: `release-notes/fixed-lumen-account-settings-bookmarks.md`

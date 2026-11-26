@@ -3621,6 +3621,8 @@
   "lumen.music.sort.yearAscending",
   "lumen.music.subtitle",
   "lumen.music.title",
+  "lumen.music.oneSong",
+  "lumen.music.playCount",
   "lumen.music.trackCountMany",
   "lumen.music.trackCountOne",
   "lumen.music.trackRequests",

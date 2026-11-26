@@ -1473,6 +1473,9 @@ async function loadSoftwareRequests(
 
 function normalizeClassicRequestFilters(params: URLSearchParams) {
   const next = new URLSearchParams(params);
+  const softwareMediaType = ['game', 'retro', 'modern'].includes(
+    next.get('mediaType') ?? ''
+  );
   for (const [classic, lumen] of [
     ['filter', 'show'],
     ['userId', 'requestedBy'],
@@ -1483,7 +1486,9 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
     // so a bookmark never silently loses a filter.
     const supported =
       classic !== 'filter' ||
-      EVERYONE_FILTERS.some(([option]) => option === value);
+      EVERYONE_FILTERS.some(([option]) => option === value) ||
+      (softwareMediaType &&
+        SOFTWARE_STATUSES.some(([option]) => option === value));
     if (
       value &&
       !next.has(lumen) &&
@@ -1492,6 +1497,10 @@ function normalizeClassicRequestFilters(params: URLSearchParams) {
     )
       next.set(lumen, value);
     if (supported) next.delete(classic);
+  }
+  if (!softwareMediaType && next.get('filter') === 'downloading') {
+    if (!next.has('show')) next.set('show', 'processing');
+    next.delete('filter');
   }
   const type = next.get('mediaType');
   if (type === 'audiobook') {

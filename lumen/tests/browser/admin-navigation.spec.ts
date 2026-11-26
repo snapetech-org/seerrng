@@ -130,12 +130,12 @@ test('administration directory exposes every settings destination once', async (
   await page.goto(testAppPath('/admin'));
   const directory = page.locator('.admin-groups');
   const links = directory.locator('a.go');
-  await expect(links).toHaveCount(41);
+  await expect(links).toHaveCount(42);
   const destinations = await links.evaluateAll((items) =>
     items.map((item) => (item as HTMLAnchorElement).getAttribute('href'))
   );
   expect(destinations).not.toContain(null);
-  expect(new Set(destinations).size).toBe(41);
+  expect(new Set(destinations).size).toBe(42);
   await expect(directory.locator('section')).toHaveCount(9);
 });
 
