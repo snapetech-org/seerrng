@@ -801,6 +801,12 @@ provider-limit response that must not expose a partial collection list. These
 fixture-backed checks do not establish live media-server behavior or a
 state-matched native visual comparison; both remain open.
 
+The accompanying TV detail localization and behavior specs pass 64 runs across
+the same four viewports. They cover English/French/Arabic season selection,
+request-option and server-read failures, overview fallback, and episode
+playback authorization. Playback and provider data are fixture-backed, and the
+screens do not compare matched native states.
+
 These optional desktop links and Discover chips now use locale message IDs
 instead of the English labels stored in the catalog metadata. English, French,
 and Arabic fixtures verify all six translated labels and their destinations at
