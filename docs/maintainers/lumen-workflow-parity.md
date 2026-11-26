@@ -11538,9 +11538,11 @@ Matched native and mounted-Lumen captures of Collector Picks exposed a mobile
 collision: the shared floating Back control covered the page heading on phone
 and tablet. The shared mobile detail layout now reserves vertical space above
 the first page heading while preserving the existing desktop layout and
-full-bleed media detail hero. The browser regression checks that the heading
-starts below the visible Back control. Candidate screenshots were rendered
-against the same fixture state at 390x844, 834x1112, and 1440x900; the heading
-is clear at all three sizes, and no horizontal overflow was present.
+full-bleed media detail hero. The mounted-browser comparison checks that the
+heading starts below the visible Back control. Candidate screenshots were
+rendered against the same fixture state at 390x844, 834x1112, and 1440x900; the
+heading is clear at all three sizes, and no horizontal overflow was present.
+The same mounted Movie detail fixture was rendered at those sizes: its hero
+remains full-bleed, with no first-page heading for the spacing rule to change.
 
 release-note: `release-notes/lumen-mobile-detail-heading-clearance.md`
