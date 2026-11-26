@@ -11754,7 +11754,8 @@ success toast in English, French, and Arabic. Format-specific request state and
 library eligibility are unchanged.
 
 Locale catalog tests and a rendered French Books discovery fixture verify the
-format label and request action across desktop, iPhone, Android, and tablet.
+format label and both the normal and unknown-library request actions across
+desktop, iPhone, Android, and tablet.
 The candidate states are verified; matched native/Lumen screenshots and live
 Bookshelf provider responses remain part of the broader parity audit.
 

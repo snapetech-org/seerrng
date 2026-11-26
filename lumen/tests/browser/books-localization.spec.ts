@@ -192,7 +192,7 @@ test('book cards localize format and request actions', async ({
         json: {
           page: 1,
           totalPages: 1,
-          totalResults: 1,
+          totalResults: 2,
           results: [
             {
               id: 'hc:card-format',
@@ -200,6 +200,15 @@ test('book cards localize format and request actions', async ({
               mediaType: 'book',
               bookFormat: 'ebook',
               provider: 'hardcover',
+              author: null,
+              posterPath: '/cover.jpg',
+            },
+            {
+              id: 'OL900002W',
+              title: 'Unknown Card',
+              mediaType: 'book',
+              bookFormat: 'ebook',
+              provider: 'openlibrary',
               author: null,
               posterPath: '/cover.jpg',
             },
@@ -213,12 +222,20 @@ test('book cards localize format and request actions', async ({
   await page.goto('/books?sort=trending');
   const card = page.locator('.poster.book').filter({ hasText: 'Card Format' });
   await expect(card.locator('.m')).toContainText('livre numérique');
+  const unknown = page
+    .locator('.poster.book')
+    .filter({ hasText: 'Unknown Card' });
   if (['iphone', 'android'].includes(info.project.name)) {
     await expect(card.locator('.tq')).toHaveAccessibleName(
       /Demander Card Format \(livre numérique\)/
+    );
+    await expect(unknown.locator('.tq')).toHaveAccessibleName(
+      /Demander Unknown Card quand même ; état de la bibliothèque inconnu/
     );
     return;
   }
   await card.hover();
   await expect(card.locator('.qbtn.go')).toHaveText('Demander livre numérique');
+  await unknown.hover();
+  await expect(unknown.locator('.qbtn.go')).toHaveText('Demander quand même');
 });
