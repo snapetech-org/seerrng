@@ -172,3 +172,70 @@ test('download clients test and save with the existing credential', async ({
     expect((write.clients as unknown[])[0]).not.toHaveProperty('password');
   }
 });
+
+test('rTorrent keeps its HTTP basic-auth username when settings are saved', async ({
+  page,
+}, info) => {
+  let saved = {
+    pollIntervalSeconds: 3,
+    clients: [
+      {
+        id: 12,
+        name: 'Torrent bridge',
+        type: 'rtorrent',
+        hostname: 'torrent.internal',
+        port: 80,
+        useSsl: false,
+        enabled: true,
+        baseUrl: '',
+        username: 'reader',
+        passwordConfigured: true,
+        password: '[REDACTED]',
+      },
+    ],
+  };
+  let savedPayload: Record<string, unknown> | undefined;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.replace(/^\/lumen(?=\/)/, '');
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path.endsWith('/settings/download-clients/status'))
+      return route.fulfill({ json: { clients: [{ clientId: 12, ok: true }] } });
+    if (path !== '/api/v1/settings/download-clients')
+      return route.fulfill({ json: {} });
+    if (request.method() === 'PUT') {
+      savedPayload = request.postDataJSON();
+      saved = {
+        ...savedPayload,
+        clients: savedPayload.clients.map((client: object) => ({
+          ...client,
+          passwordConfigured: true,
+          password: '[REDACTED]',
+        })),
+      } as typeof saved;
+    }
+    return route.fulfill({ json: saved });
+  });
+
+  await page.goto(appPath('/admin/download-clients'));
+  const client = page.locator('details').filter({ hasText: 'Torrent bridge' });
+  await client.locator('summary').click();
+  await expect(page.getByLabel('Username')).toHaveValue('reader');
+  await page.screenshot({
+    path: info.outputPath('rtorrent-username-field.png'),
+    fullPage: true,
+  });
+  await page.getByLabel('Username').fill('updated-reader');
+  await page.getByRole('button', { name: 'Save Changes' }).click();
+  await expect(page.getByText('Download client settings saved.')).toBeVisible();
+  expect(savedPayload).toMatchObject({
+    clients: [{ id: 12, type: 'rtorrent', username: 'updated-reader' }],
+  });
+});

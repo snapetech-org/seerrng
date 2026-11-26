@@ -10683,6 +10683,22 @@ this verifies directory reachability and mount-relative navigation, not live
 administrator authorization or the workflows behind each destination. The
 broader settings form and matched-native visual audits remain open.
 
+### rTorrent download-client credentials (2026-11-26)
+
+Native Settings supports HTTP Basic Auth usernames for qBittorrent,
+Transmission, and rTorrent. Lumen previously exposed and saved usernames only
+for qBittorrent and Transmission, silently dropping a configured rTorrent
+username during edits. Lumen now displays the username for rTorrent and keeps
+it in the save payload. A browser regression starts with a saved rTorrent
+username, edits it, and confirms the persisted-readback workflow; the focused
+download-client browser spec passes on desktop, iPhone, Android, and tablet.
+The production Lumen build also passes. Candidate captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/rtorrent-username-parity/`.
+This closes this field-level parity gap; broader admin workflow and matched
+native visual audits remain open.
+
+release-note: `release-notes/fixed-lumen-rtorrent-username.md`
+
 ### Express entry and frontend-choice regression check (2026-11-25)
 
 The Express mount and frontend-choice migration regressions pass together: five

@@ -191,7 +191,9 @@ function Editor({
               ? `/${client.baseUrl.trim().replace(/^\/+|\/+$/g, '')}`
               : '',
             username:
-              client.type === 'qbittorrent' || client.type === 'transmission'
+              client.type === 'qbittorrent' ||
+              client.type === 'transmission' ||
+              client.type === 'rtorrent'
                 ? client.username
                 : '',
             passwordConfigured: client.clearPassword
@@ -332,7 +334,9 @@ function Editor({
                 ? t('lumen.adminDownloadClients.apiToken', 'API Token')
                 : t('lumen.adminDownloadClients.password', 'Password');
           const usesUsername =
-            type === 'qbittorrent' || type === 'transmission';
+            type === 'qbittorrent' ||
+            type === 'transmission' ||
+            type === 'rtorrent';
           const status = health.data?.clients?.find(
             ({ clientId }) => clientId === client.id
           );
