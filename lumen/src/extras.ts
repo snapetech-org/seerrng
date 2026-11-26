@@ -781,6 +781,7 @@ type Edition = {
 };
 type GameContentCatalog = {
   available: boolean;
+  base?: { igdbId: number; title: string; owned: boolean; status?: string };
   editions?: Edition[];
   addons?: Content[];
 };

@@ -1,0 +1,1 @@
+Lumen's game content picker now shows whether the base game is already in your library and summarizes the base game, add-ons, or edition selected for a request. This makes ownership and the request's intended content clear before submission.

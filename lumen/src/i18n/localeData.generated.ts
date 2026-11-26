@@ -7321,6 +7321,17 @@ export const localeData = [
       'lumen.gameContent.itemsMissing': 'ينقص مكتبتك {count} من العناصر',
       'lumen.gameContent.editionContentsUnknown':
         'محتوى هذا الإصدار غير معروف.',
+      'lumen.gameContent.baseOwned': 'لديك اللعبة الأساسية بالفعل.',
+      'lumen.gameContent.baseNotOwned':
+        'اللعبة الأساسية غير موجودة في مكتبتك بعد.',
+      'lumen.gameContent.requestSummary': 'محتوى هذا الطلب',
+      'lumen.gameContent.summaryBase': 'طلب اللعبة الأساسية.',
+      'lumen.gameContent.summaryAddons':
+        'طلب اللعبة الأساسية عند الحاجة، بالإضافة إلى: {titles}.',
+      'lumen.gameContent.summaryChooseAddons':
+        'اختر إضافة واحدة على الأقل، أو انتقل إلى اللعبة الأساسية.',
+      'lumen.gameContent.summaryEdition':
+        'طلب {title} والمحتوى الذي ينقصك منه.',
       'lumen.cards.preferenceDescription':
         'اعرض العناوين أسفل ملصقات الأفلام والمسلسلات والموسيقى والكتب. يمكنك اختيار إعداد مستقل لكل نوع من إعدادات الحساب.',
       'lumen.requestEdit.title': 'تعديل الطلب لـ {title}',
@@ -19324,6 +19335,17 @@ export const localeData = [
         '{count} items missing from your library',
       'lumen.gameContent.editionContentsUnknown':
         'Edition contents are unknown.',
+      'lumen.gameContent.baseOwned': 'You already have the base game.',
+      'lumen.gameContent.baseNotOwned':
+        'The base game is not in your library yet.',
+      'lumen.gameContent.requestSummary': 'What this request gets',
+      'lumen.gameContent.summaryBase': 'Request the base game.',
+      'lumen.gameContent.summaryAddons':
+        'Request the base game if needed, plus: {titles}.',
+      'lumen.gameContent.summaryChooseAddons':
+        'Choose at least one add-on, or switch to the base game.',
+      'lumen.gameContent.summaryEdition':
+        'Request {title} and its missing content.',
       'lumen.cards.preferenceDescription':
         'Show titles under posters for movies, series, music and books. Account Settings has a choice per type.',
       'lumen.requestEdit.title': 'Change request for {title}',
@@ -32593,6 +32615,17 @@ export const localeData = [
         '{count} éléments manquent dans votre bibliothèque',
       'lumen.gameContent.editionContentsUnknown':
         'Le contenu de cette édition est inconnu.',
+      'lumen.gameContent.baseOwned': 'Vous avez déjà le jeu de base.',
+      'lumen.gameContent.baseNotOwned':
+        'Vous n’avez pas encore le jeu de base dans votre bibliothèque.',
+      'lumen.gameContent.requestSummary': 'Contenu de cette demande',
+      'lumen.gameContent.summaryBase': 'Demander le jeu de base.',
+      'lumen.gameContent.summaryAddons':
+        'Demander le jeu de base si nécessaire, ainsi que : {titles}.',
+      'lumen.gameContent.summaryChooseAddons':
+        'Choisissez au moins une extension ou sélectionnez le jeu de base.',
+      'lumen.gameContent.summaryEdition':
+        'Demander {title} et son contenu manquant.',
       'lumen.cards.preferenceDescription':
         'Afficher les titres sous les affiches de films, séries, musique et livres. Les paramètres du compte permettent de choisir pour chaque type.',
       'lumen.requestEdit.title': 'Modifier la demande pour {title}',

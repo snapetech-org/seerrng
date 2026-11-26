@@ -42,6 +42,7 @@ for (const locale of ['en', 'fr', 'ar'])
         return route.fulfill({
           json: {
             available: true,
+            base: { igdbId: 42, title: 'Owned PC Game', owned: true },
             editions: [
               {
                 igdbId: 51,
@@ -73,26 +74,59 @@ for (const locale of ['en', 'fr', 'ar'])
       en: {
         content: 'Content to Request',
         unknown: 'Edition contents are unknown.',
+        baseOwned: 'You already have the base game.',
+        summary: 'What this request gets',
+        editionSummary: 'Request Deluxe Edition and its missing content.',
+        addonSummary: 'Request the base game if needed, plus: New Expansion.',
       },
       fr: {
         content: 'Contenu à demander',
         unknown: 'Le contenu de cette édition est inconnu.',
+        baseOwned: 'Vous avez déjà le jeu de base.',
+        summary: 'Contenu de cette demande',
+        editionSummary: 'Demander Deluxe Edition et son contenu manquant.',
+        addonSummary:
+          'Demander le jeu de base si nécessaire, ainsi que : New Expansion.',
       },
       ar: {
         content: 'المحتوى المطلوب',
         unknown: 'محتوى هذا الإصدار غير معروف.',
+        baseOwned: 'لديك اللعبة الأساسية بالفعل.',
+        summary: 'محتوى هذا الطلب',
+        editionSummary: 'طلب Deluxe Edition والمحتوى الذي ينقصك منه.',
+        addonSummary:
+          'طلب اللعبة الأساسية عند الحاجة، بالإضافة إلى: New Expansion.',
       },
     }[locale]!;
     const content = page.getByRole('combobox', { name: labels.content });
     await expect(content).toBeVisible();
+    await expect(page.getByText(labels.baseOwned)).toBeVisible();
     await content.selectOption('edition');
     await expect(page.getByText(labels.unknown)).toBeVisible();
-    await expect(
-      page.getByRole('radio', { name: 'Deluxe Edition' })
-    ).toBeVisible();
+    await expect(page.getByText(labels.summary)).toBeVisible();
     if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
       await page.screenshot({
-        path: `${captureDir}/${locale}/game-content-${info.project.name}.png`,
+        path: `${captureDir}/${locale}/game-content-edition-unselected-${info.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+    await page.getByRole('radio', { name: 'Deluxe Edition' }).check();
+    await expect(page.getByText(labels.editionSummary)).toBeVisible();
+    await content.selectOption('missing-selected');
+    const ownedAddon = page.getByRole('checkbox', { name: /Owned Add-on/ });
+    await expect(ownedAddon).toBeDisabled();
+    await page.getByRole('checkbox', { name: /New Expansion/ }).check();
+    await expect(page.getByText(labels.addonSummary)).toBeVisible();
+    if (captureDir && info.project.name === 'iphone') {
+      await page.getByText(labels.baseOwned).scrollIntoViewIfNeeded();
+      await page.screenshot({
+        path: `${captureDir}/${locale}/game-content-selected-addon-iphone-viewport.png`,
+        animations: 'disabled',
+      });
+    }
+    if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: `${captureDir}/${locale}/game-content-selected-addon-${info.project.name}.png`,
         fullPage: true,
         animations: 'disabled',
       });

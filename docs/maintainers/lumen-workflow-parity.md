@@ -9329,6 +9329,27 @@ French without changing picker geometry; the Arabic desktop and phone candidate
 renders were inspected for direction and overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-localization-20261124/`.
 
+### Game content ownership and request summary (2026-11-26)
+
+The Lumen picker now displays the base game's library ownership and a live
+summary of the request choice: base game, selected add-ons, or the selected
+edition. Empty add-on selection is explained before submission. This matches
+the relevant native picker cues without changing the selected IDs or request
+payload. New labels are translated in English, French, and Arabic.
+
+Twelve browser cases pass across desktop, iPhone, Android, and tablet. They
+cover base ownership, unknown edition contents, selecting an edition, disabled
+already-owned add-ons, and the updated summary after choosing an add-on. At
+1440px desktop, baseline and candidate captures were compared in the same
+unselected-edition state; the addition uses the existing page text and note
+owners, with no geometry regression. Candidate desktop and iPhone captures also
+show the selected-add-on summary. Fixture coverage does not verify live library
+ownership or request submission. Captures are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-baseline-20261126/`
+and `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-content-candidate-20261126/`.
+
+release-note: `release-notes/improve-lumen-game-content-requests.md`
+
 ### Account card-title preference localization
 
 The shared Appearance switch now uses the localized Title View label and a

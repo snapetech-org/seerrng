@@ -34,6 +34,31 @@ export default function GameContentPicker({
     ? catalog.data.editions
     : [];
   const addons = Array.isArray(catalog.data.addons) ? catalog.data.addons : [];
+  const selectedEdition = editions.find(
+    (edition) => edition.igdbId === editionId
+  );
+  const selectedAddons = addons.filter((addon) =>
+    addonIds.includes(addon.igdbId)
+  );
+  const requestSummary =
+    mode === 'edition' && selectedEdition
+      ? t(
+          'lumen.gameContent.summaryEdition',
+          'Request {title} and its missing content.',
+          { title: selectedEdition.title }
+        )
+      : mode === 'missing-selected' && selectedAddons.length
+        ? t(
+            'lumen.gameContent.summaryAddons',
+            'Request the base game if needed, plus: {titles}.',
+            { titles: selectedAddons.map((addon) => addon.title).join(', ') }
+          )
+        : mode === 'missing-selected'
+          ? t(
+              'lumen.gameContent.summaryChooseAddons',
+              'Choose at least one add-on, or switch to the base game.'
+            )
+          : t('lumen.gameContent.summaryBase', 'Request the base game.');
   if (!editions.length && !addons.length) return null;
   function changeMode(next: Mode) {
     setMode(next);
@@ -43,6 +68,19 @@ export default function GameContentPicker({
   }
   return (
     <Section title={t('lumen.gameContent.title')}>
+      {catalog.data.base && (
+        <p className="note" role="status">
+          {catalog.data.base.owned
+            ? t(
+                'lumen.gameContent.baseOwned',
+                'You already have the base game.'
+              )
+            : t(
+                'lumen.gameContent.baseNotOwned',
+                'The base game is not in your library yet.'
+              )}
+        </p>
+      )}
       <div className="toolbar">
         <label className="sel">
           <span className="lbl">{t('lumen.gameContent.contentToRequest')}</span>
@@ -159,6 +197,12 @@ export default function GameContentPicker({
           ))}
         </ul>
       )}
+      <p className="note" role="status">
+        <strong>
+          {t('lumen.gameContent.requestSummary', 'What this request gets')}:
+        </strong>{' '}
+        {requestSummary}
+      </p>
     </Section>
   );
 }
