@@ -6816,6 +6816,26 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Account controls and native user bookmarks under the bundled mount (2026-11-25)
+
+The account settings and native user-route compatibility specs pass 148 cases
+across desktop, iPhone, Android, and tablet against the compiled Express
+`/lumen/` mount. This covers profile and password recovery, self maturity and
+notification bookmarks, user permission gates, account preferences and themes,
+and preservation of legacy request filters through the native `/users/:id`
+entry route. The browser harness was adjusted to let native bookmark paths
+reach SeerrNG's real compatibility middleware. The request test now enters at
+`/users/19/requests` and verifies the middleware's mapped Lumen URL and
+requester scope. The locale check inspects labels in the primary-navigation
+DOM because mobile hides that navigation until the More menu opens; it does not
+assume that a hidden link is accessible while the menu is closed.
+
+Responses are fixture-backed, and this does not verify a live server or
+provider integration. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/account-user-mount-qualified/`.
+
+release-note: none
+
 ### Mounted account bookmark and book-action fixture corrections (2026-11-25)
 
 The bundled `/lumen/profile` middleware now leaves mounted profile bookmarks to

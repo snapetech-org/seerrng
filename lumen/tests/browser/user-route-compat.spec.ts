@@ -40,9 +40,7 @@ test('native user request bookmark preserves filters and enforces the path user'
 }) => {
   await authenticate(page, 16384);
   await page.goto(
-    appPath(
-      '/users/19/requests?filter=all&mediaType=movie&userId=99&requestedBy=7'
-    )
+    '/users/19/requests?filter=all&mediaType=movie&userId=99&requestedBy=7'
   );
   await expect(page).toHaveURL(
     new RegExp(`^https?://[^/]+${mount}/requests\\?.*$`)
