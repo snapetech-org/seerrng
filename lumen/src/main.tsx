@@ -306,15 +306,22 @@ function NativeSettingsBookmark() {
     const destinations: Record<string, string> = {
       about: '/admin/about',
       categories: '/admin/categories',
+      'client-tokens': '/me/account/client-tokens',
       discovery: '/admin/discovery',
+      'episode-queue': '/me/account/tv-requests#episode-queue',
       jellyfin: '/admin/media-libraries',
       jobs: '/admin/jobs',
+      'linked-accounts': '/me/account/linked-accounts',
       'library-migration': '/admin/library-migration',
       logs: '/admin/logs',
+      maturity: '/me/account#maturity-controls',
       main: '/admin/general',
       metadata: '/admin/metadata',
       network: '/admin/network',
+      password: '/me/account#password',
+      permissions: '/me/account#account-permissions',
       plex: '/admin/media-libraries',
+      'tv-request-access': '/me/account/tv-requests',
       users: '/admin/users',
     };
     destination = destinations[page] ?? '/admin';
@@ -322,7 +329,11 @@ function NativeSettingsBookmark() {
     if (searchTarget === 'apiKey') destination = '/admin/general';
   }
 
-  return <Navigate to={`${destination}${search}${hash}`} replace />;
+  const [path, destinationHash] = destination.split('#');
+  const anchor = destinationHash ?? hash.slice(1);
+  return (
+    <Navigate to={`${path}${search}${anchor ? `#${anchor}` : ''}`} replace />
+  );
 }
 
 function ProfileSettingsBookmark() {

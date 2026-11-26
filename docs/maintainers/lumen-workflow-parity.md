@@ -11117,3 +11117,20 @@ Evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
 release-note: `release-notes/fixed-lumen-music-and-bookmark-labels.md`
+
+### Direct account settings bookmarks (2026-11-26)
+
+Legacy `/settings/*` account bookmarks now open the matching Lumen account
+section for password, permissions, maturity controls, client tokens, linked
+accounts, TV request access, and Episode Queue. The route preserves supported
+query context and places it before the destination fragment. Bundled Express
+middleware and standalone Lumen route handling use the same destinations; the
+existing permission checks still decide which account controls are available.
+
+The Express middleware test passes all seven destinations for both root and
+`/lumen` bookmarks, including query preservation. The production Lumen browser
+test passes on desktop, iPhone, Android, and tablet for a manager's own
+maturity-settings bookmark. This route-only change does not alter rendered
+layout. Live authorization remains enforced by the existing account APIs.
+
+release-note: `release-notes/fixed-lumen-account-settings-bookmarks.md`

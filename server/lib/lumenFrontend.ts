@@ -958,6 +958,34 @@ export const mountLumenFrontend = (
     }
     const pathname = prefixed ? req.path.slice('/lumen'.length) : req.path;
     const section = pathname.replace(/^\/settings\/?|\/$/g, '');
+    const accountBookmarks: Record<string, string> = {
+      password: '/me/account#password',
+      permissions: '/me/account#account-permissions',
+      maturity: '/me/account#maturity-controls',
+      'client-tokens': '/me/account/client-tokens',
+      'linked-accounts': '/me/account/linked-accounts',
+      'tv-request-access': '/me/account/tv-requests',
+      'episode-queue': '/me/account/tv-requests#episode-queue',
+    };
+    const accountDestination = accountBookmarks[section];
+    if (accountDestination) {
+      const [accountPath, accountHash] = accountDestination.split('#');
+      const query = new URLSearchParams();
+      for (const [key, value] of Object.entries(req.query)) {
+        if (
+          /^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(key) &&
+          typeof value === 'string' &&
+          value.length <= 512
+        ) {
+          query.append(key, value);
+        }
+      }
+      const suffix = query.size ? `?${query.toString()}` : '';
+      const hash = accountHash ? `#${accountHash}` : '';
+      return res
+        .set('Cache-Control', 'no-store')
+        .redirect(302, `/lumen${accountPath}${suffix}${hash}`);
+    }
     let destination: string;
     if (
       /^notifications(?:\/(email|telegram|pushbullet|pushover|gotify|ntfy|apprise|discord|slack|webhook|webpush))?$/.test(
