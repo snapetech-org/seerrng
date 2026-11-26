@@ -312,7 +312,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 532,
+          "line": 541,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Provide 1 to 20 valid season numbers.'",
@@ -13921,7 +13921,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 864,
+          "line": 873,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve similar series.'",
@@ -22330,7 +22330,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 900,
+          "line": 909,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Rotten Tomatoes ratings not found.'",
@@ -40621,7 +40621,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 719,
+          "line": 728,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40629,7 +40629,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 796,
+          "line": 805,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40637,7 +40637,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 874,
+          "line": 883,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40645,7 +40645,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 889,
+          "line": 898,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40653,7 +40653,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 924,
+          "line": 933,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -40661,7 +40661,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 937,
+          "line": 946,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Series not found.'",
@@ -42452,7 +42452,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 516,
+          "line": 525,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -42460,7 +42460,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 547,
+          "line": 556,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -42468,7 +42468,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 632,
+          "line": 641,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -42476,7 +42476,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 643,
+          "line": 652,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Season not found.'",
@@ -48528,7 +48528,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 959,
+          "line": 968,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -52570,7 +52570,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 959,
+          "line": 968,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "providerFailed\n          ? 'Rating providers are temporarily unavailable.'\n          : 'No ratings found.'",
@@ -60766,7 +60766,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 787,
+          "line": 796,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series recommendations.'",
@@ -62034,7 +62034,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 623,
+          "line": 632,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve season.'",
@@ -62042,7 +62042,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 710,
+          "line": 719,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve season.'",
@@ -67380,7 +67380,7 @@
       "callsites": [
         {
           "path": "server/routes/tv.ts",
-          "line": 913,
+          "line": 922,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series ratings.'",
@@ -67388,7 +67388,7 @@
         },
         {
           "path": "server/routes/tv.ts",
-          "line": 978,
+          "line": 987,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve series ratings.'",
@@ -93622,7 +93622,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 482,
+      "line": 490,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93631,7 +93631,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 482,
+      "line": 490,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93640,7 +93640,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 504,
+      "line": 513,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93649,7 +93649,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 504,
+      "line": 513,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93658,7 +93658,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 540,
+      "line": 549,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -93667,7 +93667,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 573,
+      "line": 582,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93676,7 +93676,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 573,
+      "line": 582,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93685,7 +93685,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 606,
+      "line": 615,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93694,7 +93694,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 606,
+      "line": 615,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93703,7 +93703,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 621,
+      "line": 630,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93712,7 +93712,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 621,
+      "line": 630,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -93721,7 +93721,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 636,
+      "line": 645,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -93730,19 +93730,10 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 704,
+      "line": 713,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/tv.ts",
-      "line": 723,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "parsedLanguage.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -93751,25 +93742,25 @@
       "line": 732,
       "kind": "authored-message-field",
       "field": "message",
+      "expression": "parsedLanguage.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/tv.ts",
+      "line": 741,
+      "kind": "authored-message-field",
+      "field": "message",
       "expression": "parsedShuffleSeed.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 782,
+      "line": 791,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
-      "source": "{value0}",
-      "reason": "dynamic/provider/user value"
-    },
-    {
-      "path": "server/routes/tv.ts",
-      "line": 800,
-      "kind": "authored-message-field",
-      "field": "message",
-      "expression": "parsedLanguage.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
@@ -93778,13 +93769,22 @@
       "line": 809,
       "kind": "authored-message-field",
       "field": "message",
+      "expression": "parsedLanguage.error",
+      "source": "{value0}",
+      "reason": "dynamic/provider/user value"
+    },
+    {
+      "path": "server/routes/tv.ts",
+      "line": 818,
+      "kind": "authored-message-field",
+      "field": "message",
       "expression": "parsedShuffleSeed.error",
       "source": "{value0}",
       "reason": "dynamic/provider/user value"
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 859,
+      "line": 868,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -93793,7 +93793,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 908,
+      "line": 917,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -93802,7 +93802,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 973,
+      "line": 982,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
@@ -93811,7 +93811,7 @@
     },
     {
       "path": "server/routes/tv.ts",
-      "line": 973,
+      "line": 982,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : String(e)",
