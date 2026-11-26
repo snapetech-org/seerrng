@@ -59,7 +59,8 @@ interface BookRating {
 function ratingLabel(
   rating: BookRating | null,
   book: BookDetails,
-  t: ReturnType<typeof useLumenLocale>['t']
+  t: ReturnType<typeof useLumenLocale>['t'],
+  locale: string
 ) {
   const valid = (score: unknown, count: number): score is number =>
     typeof score === 'number' &&
@@ -79,7 +80,7 @@ function ratingLabel(
     const source = library
       ? t('lumen.bookDetail.openLibrary', 'Open Library')
       : 'Bookshelf';
-    const label = `${score.toFixed(1)}/5 · ${source}`;
+    const label = `${new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(score)}/5 · ${source}`;
     const work = rating.workId ?? book.id;
     return library && /^OL[0-9]+W$/.test(work) ? (
       <a href={`https://openlibrary.org/works/${work}`}>{label}</a>
@@ -88,7 +89,7 @@ function ratingLabel(
     );
   }
   if (book.provider === 'bookshelf' && valid(localScore, localCount))
-    return `${localScore.toFixed(1)}/5 · Bookshelf`;
+    return `${new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(localScore)}/5 · Bookshelf`;
 }
 
 const english = (e: Edition) =>
@@ -630,7 +631,7 @@ export default function BookDetail() {
             ? `${series.title}${series.position ? ' #' + series.position : ''}`
             : '',
           b.firstPublishYear,
-          ratingLabel(ratings.data, b, t),
+          ratingLabel(ratings.data, b, t, locale),
           audio && longest
             ? t('lumen.bookDetail.listenDuration', '{duration} listen', {
                 duration: fmtHrs(longest),

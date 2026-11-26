@@ -183,9 +183,10 @@ const emptyFilters = {
   language: '',
 };
 
-const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
-const languageLabel = (code: string) =>
-  /^[a-z]{2,3}$/i.test(code) ? (languageNames.of(code) ?? code) : code;
+const languageLabel = (code: string, locale: string) =>
+  /^[a-z]{2,3}$/i.test(code)
+    ? (new Intl.DisplayNames([locale], { type: 'language' }).of(code) ?? code)
+    : code;
 
 function hasTrackedFormat(book: BookResult, format: 'ebook' | 'audiobook') {
   const status = bookMediaForFormat(book.mediaInfo, format)?.status;
@@ -197,7 +198,7 @@ function hasTrackedFormat(book: BookResult, format: 'ebook' | 'audiobook') {
 }
 
 function SeriesBooks({ books }: { books: BookResult[] }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const [filters, setFilters] = useState(emptyFilters);
   const { format, year, subject, rating, language } = filters;
   const filtered = books.filter((book) => {
@@ -293,13 +294,17 @@ function SeriesBooks({ books }: { books: BookResult[] }) {
       t('lumen.bookGrouping.minimumRating', 'Minimum Rating'),
       Array.from({ length: 9 }, (_, index) => {
         const score = (1 + index * 0.5).toFixed(1);
-        return [score, `${score}+`];
+        const label = new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }).format(Number(score));
+        return [score, `${label}+`];
       }),
     ],
     [
       'language',
       t('lumen.bookGrouping.language', 'Language'),
-      languages.map((code) => [code, languageLabel(code)]),
+      languages.map((code) => [code, languageLabel(code, locale)]),
     ],
   ];
   return (

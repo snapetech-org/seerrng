@@ -528,7 +528,13 @@ export function TitleCard({
           date: shortDate(date, true, locale),
         })
       : yearOf(it),
-    it.voteAverage ? '★ ' + it.voteAverage.toFixed(1) : '',
+    it.voteAverage
+      ? '★ ' +
+        new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }).format(it.voteAverage)
+      : '',
   ]
     .filter(Boolean)
     .join(' · ');
@@ -941,7 +947,7 @@ export function FeatCard({
   eyebrow: string;
   lazy?: boolean;
 }) {
-  const { t } = useLumenLocale();
+  const { t, locale } = useLumenLocale();
   const serverName = useMediaServerName();
   const tv = it.mediaType === 'tv';
   const availability = useVideoAvailability();
@@ -957,7 +963,13 @@ export function FeatCard({
     tv
       ? t('components.Search.series', 'Series')
       : t('components.Requests.movie', 'Movie'),
-    it.voteAverage ? '★ ' + it.voteAverage.toFixed(1) : '',
+    it.voteAverage
+      ? '★ ' +
+        new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }).format(it.voteAverage)
+      : '',
   ]
     .filter(Boolean)
     .join(' · ');

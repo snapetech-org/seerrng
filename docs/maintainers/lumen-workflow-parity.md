@@ -12093,3 +12093,15 @@ the phone pair was reviewed as well. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/compact-play-count/`.
 
 release-note: `release-notes/lumen-compact-play-count-formatting.md`
+
+### Saved-locale decimal score and book filter labels (2026-11-26)
+
+Movie and TV title-card scores and BookShelf book ratings now format decimal
+digits with the saved locale. Book-series minimum-rating labels localize their
+decimal punctuation, and language filter names use that locale's language
+display names. The production build and all 80 Lumen Node tests pass; the saved
+French movie rating regression passes on desktop and iPhone. Matched native
+visuals and live BookShelf language-name fixtures are still outstanding, so this
+display item is not fully accepted yet.
+
+release-note: `release-notes/lumen-localized-score-and-book-filter-labels.md`
