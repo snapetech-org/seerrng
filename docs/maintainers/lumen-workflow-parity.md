@@ -12155,3 +12155,16 @@ both locales; alignment and surfaces are unchanged. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-route-chunk-loading-20261126/`.
 
 release-note: `release-notes/lumen-route-loading-localization.md`
+
+### Episode Queue loading localization (2026-11-26)
+
+The TV Request Settings route now uses the existing locale-aware Persius
+loading message while the account's Episode Queue settings are pending. A
+delayed-response browser fixture verifies French and Arabic loading text and
+Arabic right-to-left direction on desktop and iPhone. Matched French desktop
+baseline/candidate and Arabic iPhone candidate captures show unchanged layout;
+the baseline exposes the English loading text and the candidate uses the saved
+locale. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-queue-loading-20261126/`.
+
+release-note: `release-notes/lumen-episode-queue-loading-localization.md`

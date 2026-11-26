@@ -12,6 +12,52 @@ async function captureSettings(page: Page, info: TestInfo, locale: string) {
   });
 }
 
+for (const { locale, expected } of [
+  { locale: 'fr', expected: 'Chargement…' },
+  { locale: 'ar', expected: 'جارٍ التحميل…' },
+]) {
+  test(`Episode Queue loading follows the saved ${locale} locale`, async ({
+    page,
+  }, info) => {
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', async (route) => {
+      const path = new URL(route.request().url()).pathname.slice(
+        '/api/v1'.length
+      );
+      if (path === '/auth/me')
+        return route.fulfill({
+          json: { id: 2, displayName: 'Viewer', permissions: 0, userType: 2 },
+        });
+      if (path === '/user/2/settings/main')
+        return route.fulfill({ json: { locale } });
+      if (path === '/user/2/settings/tv-season-watch-gate')
+        return route.fulfill({
+          json: { status: 'off', globallyEnabled: false },
+        });
+      if (path === '/user/2/settings/episode-queue') {
+        await new Promise((resolve) => setTimeout(resolve, 1_500));
+        return route.fulfill({ json: { defaultEpisodeCount: 2 } });
+      }
+      return route.fulfill({ json: {} });
+    });
+
+    await page.goto('/me/account/tv-requests');
+    const loading = page.getByRole('status').filter({ hasText: expected });
+    await expect(loading).toBeVisible();
+    if (locale === 'ar')
+      await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+    if (
+      process.env.LUMEN_VISUAL_CAPTURE_DIR &&
+      ['desktop', 'iphone'].includes(info.project.name)
+    ) {
+      await page.screenshot({
+        path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/episode-queue-loading-${locale}-${info.project.name}.png`,
+        fullPage: true,
+      });
+    }
+  });
+}
+
 test('TV request settings localize the policy and keep viewer controls read-only', async ({
   page,
 }, info) => {

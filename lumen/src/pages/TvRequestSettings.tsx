@@ -509,7 +509,7 @@ function RequestSettings({
         />
         {!queue.data && !queue.error && (
           <p className="note" role="status">
-            Loading Episode Queue…
+            {t('components.Persius.loading', 'Loading…')}
           </p>
         )}
         {queue.data && (
