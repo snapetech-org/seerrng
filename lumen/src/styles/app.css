@@ -1260,6 +1260,9 @@ a.person:hover {
   .dacts.pc {
     display: none;
   }
+  body.is-detail .view > .ph .ph-row {
+    padding-top: calc(52px + env(safe-area-inset-top));
+  }
   .actionbar:has(> .sel) {
     gap: 6px;
   }

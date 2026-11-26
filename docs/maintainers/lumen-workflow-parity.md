@@ -11531,3 +11531,16 @@ therefore remains unverified against the running provider. Do not claim the
 reported large-show failure is fixed or closed based on the fixture tests.
 
 release-note: none
+
+### Mobile page headings clear the floating Back control (2026-11-26)
+
+Matched native and mounted-Lumen captures of Collector Picks exposed a mobile
+collision: the shared floating Back control covered the page heading on phone
+and tablet. The shared mobile detail layout now reserves vertical space above
+the first page heading while preserving the existing desktop layout and
+full-bleed media detail hero. The browser regression checks that the heading
+starts below the visible Back control. Candidate screenshots were rendered
+against the same fixture state at 390x844, 834x1112, and 1440x900; the heading
+is clear at all three sizes, and no horizontal overflow was present.
+
+release-note: `release-notes/lumen-mobile-detail-heading-clearance.md`
