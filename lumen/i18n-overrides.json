@@ -5327,7 +5327,14 @@
     "lumen.music.moreByArtist": "More by {name}",
     "lumen.music.more": "More",
     "lumen.music.getting": "Getting…",
-    "lumen.music.getSong": "Get song"
+    "lumen.music.getSong": "Get song",
+    "lumen.admin.home.general": "General",
+    "lumen.admin.home.requestsDiscovery": "Requests and Discovery",
+    "lumen.admin.home.mediaServersReaders": "Media Servers and Readers",
+    "lumen.admin.home.indexersDownloads": "Indexers and Downloads",
+    "lumen.admin.home.booksAudiobooksComics": "Books, Audiobooks and Comics",
+    "lumen.admin.home.softwareGames": "Software and Games",
+    "lumen.admin.home.system": "System"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10944,7 +10951,14 @@
     "lumen.request.failed": "Échec de la demande",
     "lumen.songIdentify.unavailableAurral": "L’identification des chansons est indisponible tant qu’un administrateur n’a pas activé les demandes de pistes dans Aurral.",
     "lumen.trackRequests.unavailableAurral": "Les demandes de pistes sont indisponibles tant qu’un administrateur ne les a pas activées dans Aurral.",
-    "lumen.admin.dest.aurral": "Services Aurral"
+    "lumen.admin.dest.aurral": "Services Aurral",
+    "lumen.admin.home.general": "Général",
+    "lumen.admin.home.requestsDiscovery": "Demandes et découverte",
+    "lumen.admin.home.mediaServersReaders": "Serveurs multimédias et liseuses",
+    "lumen.admin.home.indexersDownloads": "Indexeurs et téléchargements",
+    "lumen.admin.home.booksAudiobooksComics": "Livres, livres audio et bandes dessinées",
+    "lumen.admin.home.softwareGames": "Logiciels et jeux",
+    "lumen.admin.home.system": "Système"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16565,6 +16579,13 @@
     "lumen.request.failed": "فشل الطلب",
     "lumen.songIdentify.unavailableAurral": "التعرّف على الأغاني غير متاح إلى أن يفعّل المسؤول طلبات المقاطع في Aurral.",
     "lumen.trackRequests.unavailableAurral": "طلبات المقاطع غير متاحة إلى أن يفعّلها المسؤول في Aurral.",
-    "lumen.admin.dest.aurral": "خدمات Aurral"
+    "lumen.admin.dest.aurral": "خدمات Aurral",
+    "lumen.admin.home.general": "عام",
+    "lumen.admin.home.requestsDiscovery": "الطلبات والاستكشاف",
+    "lumen.admin.home.mediaServersReaders": "خوادم الوسائط وأجهزة القراءة",
+    "lumen.admin.home.indexersDownloads": "الفهارس والتنزيلات",
+    "lumen.admin.home.booksAudiobooksComics": "الكتب والكتب الصوتية والقصص المصورة",
+    "lumen.admin.home.softwareGames": "البرامج والألعاب",
+    "lumen.admin.home.system": "النظام"
   }
 }

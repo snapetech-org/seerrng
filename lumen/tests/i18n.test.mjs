@@ -693,6 +693,35 @@ test('dynamic Podcast navigation and search labels exist in every shipped locale
   }
 });
 
+test('Administration home group keys are registered and translated', async () => {
+  const source = await readFile(
+    resolve(root, 'src/pages/AdminHome.tsx'),
+    'utf8'
+  );
+  const keys = [
+    'lumen.admin.home.general',
+    'lumen.admin.home.requestsDiscovery',
+    'lumen.admin.home.mediaServersReaders',
+    'lumen.admin.home.indexersDownloads',
+    'lumen.admin.group.tvMovies',
+    'lumen.admin.home.booksAudiobooksComics',
+    'lumen.admin.group.music',
+    'lumen.admin.home.softwareGames',
+    'lumen.admin.home.system',
+  ];
+  for (const key of keys) {
+    assert.ok(source.includes(key), `Administration home maps ${key}`);
+    assert.ok(lumenKeyRegistry.includes(key), `registered key: ${key}`);
+    for (const locale of ['en', 'fr', 'ar']) {
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale}: ${key}`
+      );
+    }
+  }
+});
+
 test('Lumen includes the localized native user-list menu label', async () => {
   const keys = JSON.parse(
     await readFile(resolve(root, 'i18n-keys.json'), 'utf8')

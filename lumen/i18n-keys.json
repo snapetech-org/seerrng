@@ -6653,5 +6653,12 @@
   "lumen.servarr.musicAndTracks",
   "lumen.nav.podcasts",
   "lumen.shell.searchPodcasts",
-  "lumen.shell.searchSongs"
+  "lumen.shell.searchSongs",
+  "lumen.admin.home.general",
+  "lumen.admin.home.requestsDiscovery",
+  "lumen.admin.home.mediaServersReaders",
+  "lumen.admin.home.indexersDownloads",
+  "lumen.admin.home.booksAudiobooksComics",
+  "lumen.admin.home.softwareGames",
+  "lumen.admin.home.system"
 ]

@@ -221,6 +221,18 @@ const homeGroups = [
   ],
 ] as const;
 
+const homeGroupMessages: Record<(typeof homeGroups)[number][0], string> = {
+  general: 'lumen.admin.home.general',
+  requests: 'lumen.admin.home.requestsDiscovery',
+  servers: 'lumen.admin.home.mediaServersReaders',
+  downloads: 'lumen.admin.home.indexersDownloads',
+  'tv-movies': 'lumen.admin.group.tvMovies',
+  books: 'lumen.admin.home.booksAudiobooksComics',
+  music: 'lumen.admin.group.music',
+  software: 'lumen.admin.home.softwareGames',
+  system: 'lumen.admin.home.system',
+};
+
 const shortcuts = [
   ['4K Requests', '/admin/requests#enable4k', '4k uhd ultra hd'],
   ['Application API Key', '/admin/general#apiKey', 'apikey token'],
@@ -327,7 +339,7 @@ export function AdminGroups() {
   return (
     <div className="admin-groups">
       {homeGroups.map(([key, label, paths]) => (
-        <Section key={key} title={t(`lumen.admin.home.${key}`, label)}>
+        <Section key={key} title={t(homeGroupMessages[key], label)}>
           <AdminLinks paths={paths} />
         </Section>
       ))}

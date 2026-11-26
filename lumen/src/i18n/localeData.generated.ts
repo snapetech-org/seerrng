@@ -8036,6 +8036,14 @@ export const localeData = [
       'lumen.nav.podcasts': 'البودكاست',
       'lumen.shell.searchPodcasts': 'ابحث عن البودكاست…',
       'lumen.shell.searchSongs': 'ابحث عن الأغاني والألبومات والفنانين…',
+      'lumen.admin.home.general': 'عام',
+      'lumen.admin.home.requestsDiscovery': 'الطلبات والاستكشاف',
+      'lumen.admin.home.mediaServersReaders': 'خوادم الوسائط وأجهزة القراءة',
+      'lumen.admin.home.indexersDownloads': 'الفهارس والتنزيلات',
+      'lumen.admin.home.booksAudiobooksComics':
+        'الكتب والكتب الصوتية والقصص المصورة',
+      'lumen.admin.home.softwareGames': 'البرامج والألعاب',
+      'lumen.admin.home.system': 'النظام',
     },
   },
   {
@@ -20382,6 +20390,13 @@ export const localeData = [
       'lumen.nav.podcasts': 'Podcasts',
       'lumen.shell.searchPodcasts': 'Search podcasts…',
       'lumen.shell.searchSongs': 'Search songs, albums and artists…',
+      'lumen.admin.home.general': 'General',
+      'lumen.admin.home.requestsDiscovery': 'Requests and Discovery',
+      'lumen.admin.home.mediaServersReaders': 'Media Servers and Readers',
+      'lumen.admin.home.indexersDownloads': 'Indexers and Downloads',
+      'lumen.admin.home.booksAudiobooksComics': 'Books, Audiobooks and Comics',
+      'lumen.admin.home.softwareGames': 'Software and Games',
+      'lumen.admin.home.system': 'System',
     },
   },
   {
@@ -34146,6 +34161,15 @@ export const localeData = [
       'lumen.nav.podcasts': 'Podcasts',
       'lumen.shell.searchPodcasts': 'Rechercher des podcasts…',
       'lumen.shell.searchSongs': 'Rechercher des chansons, albums et artistes…',
+      'lumen.admin.home.general': 'Général',
+      'lumen.admin.home.requestsDiscovery': 'Demandes et découverte',
+      'lumen.admin.home.mediaServersReaders':
+        'Serveurs multimédias et liseuses',
+      'lumen.admin.home.indexersDownloads': 'Indexeurs et téléchargements',
+      'lumen.admin.home.booksAudiobooksComics':
+        'Livres, livres audio et bandes dessinées',
+      'lumen.admin.home.softwareGames': 'Logiciels et jeux',
+      'lumen.admin.home.system': 'Système',
     },
   },
   {

@@ -12045,3 +12045,22 @@ Arabic. This closes these shared shell labels only; other runtime-composed keys
 remain under audit.
 
 release-note: `release-notes/lumen-podcast-shell-localization.md`
+
+### Administration home group localization (2026-11-26)
+
+The Administration home generated section keys from group IDs using an
+unregistered `lumen.admin.home.*` prefix. Section headings therefore fell back
+to English in French and Arabic. The page now uses an explicit, typed mapping
+to registered messages, with locale entries for every heading. A source guard
+checks registry and locale coverage, and the administrator directory browser
+flow verifies all nine headings in French and Arabic across desktop, iPhone,
+Android, and tablet.
+
+Matched baseline and candidate captures were reviewed at desktop and iPhone
+sizes for both locales. The labels now follow the selected locale without
+changing the page layout or clipping text. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/admin-home-dynamic-localization/`.
+This closes the Administration home headings only; other runtime-composed keys
+remain under audit.
+
+release-note: `release-notes/lumen-admin-home-localization.md`

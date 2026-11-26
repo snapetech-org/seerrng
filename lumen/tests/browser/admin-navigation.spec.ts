@@ -153,6 +153,17 @@ for (const locale of [
     all: 'Tous les paramètres et outils',
     group: 'Télévision et films',
     groupHeading: 'Télévision et films',
+    homeGroups: [
+      'Général',
+      'Demandes et découverte',
+      'Serveurs multimédias et liseuses',
+      'Indexeurs et téléchargements',
+      'Télévision et films',
+      'Livres, livres audio et bandes dessinées',
+      'Musique',
+      'Logiciels et jeux',
+      'Système',
+    ],
     homeSearch: 'Rechercher des films, séries, livres et mangas…',
     back: 'Retour',
     profile: 'Profil',
@@ -178,6 +189,17 @@ for (const locale of [
     all: 'كل الإعدادات والأدوات',
     group: 'التلفزيون والأفلام',
     groupHeading: 'التلفزيون والأفلام',
+    homeGroups: [
+      'عام',
+      'الطلبات والاستكشاف',
+      'خوادم الوسائط وأجهزة القراءة',
+      'الفهارس والتنزيلات',
+      'التلفزيون والأفلام',
+      'الكتب والكتب الصوتية والقصص المصورة',
+      'الموسيقى',
+      'البرامج والألعاب',
+      'النظام',
+    ],
     homeSearch: 'ابحث عن الأفلام والمسلسلات والكتب والمانغا…',
     back: 'عودة',
     profile: 'ملف التعريف',
@@ -250,6 +272,7 @@ for (const locale of [
 
     await page.goto(testAppPath('/admin'));
     const captureDir = process.env.LUMEN_I18N_CAPTURE_DIR;
+    const baselineCapture = process.env.LUMEN_CAPTURE_BASELINE === '1';
     const aurralLabel =
       process.env.LUMEN_I18N_CAPTURE_ONLY === '1'
         ? 'Aurral Services'
@@ -259,6 +282,23 @@ for (const locale of [
       exact: true,
     });
     await expect(aurralLink).toBeVisible();
+    const homeGroupHeadings = baselineCapture
+      ? [
+          'General',
+          'Requests and Discovery',
+          'Media Servers and Readers',
+          'Indexers and Downloads',
+          'TV and Movies',
+          'Books, Audiobooks and Comics',
+          'Music',
+          'Software and Games',
+          'System',
+        ]
+      : locale.homeGroups;
+    for (const heading of homeGroupHeadings)
+      await expect(
+        page.getByRole('heading', { name: heading, exact: true })
+      ).toBeVisible();
     if (captureDir && ['desktop', 'iphone'].includes(info.project.name)) {
       const { mkdir } = await import('node:fs/promises');
       const { join } = await import('node:path');
@@ -271,6 +311,7 @@ for (const locale of [
         fullPage: true,
       });
     }
+    if (baselineCapture) return;
     if (process.env.LUMEN_I18N_CAPTURE_ONLY === '1') return;
     await expect(page.getByLabel(locale.search, { exact: true })).toBeVisible();
     await expect(
