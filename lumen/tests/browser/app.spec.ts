@@ -8320,6 +8320,84 @@ test('Track Requests scopes the queue and confirms manager approval and cancella
   expect(cancelled).toBe(true);
 });
 
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`Requests localizes track cancellation in ${locale}`, async ({
+    page,
+  }, info) => {
+    await fixtures(page);
+    await page.route('**/api/v1/settings/public', (route) =>
+      route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          trackRequestsEnabled: true,
+          enabledMediaCategories: { music: true },
+        },
+      })
+    );
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({ json: { locale } })
+    );
+    let cancelled = false;
+    await page.route('**/api/v1/soulseek/status', (route) =>
+      route.fulfill({ json: { configured: true } })
+    );
+    await page.route('**/api/v1/soulseek/track-requests**', (route) => {
+      if (route.request().method() === 'DELETE') {
+        cancelled = true;
+        return route.fulfill({ json: { status: 'cancelled' } });
+      }
+      return route.fulfill({
+        json: {
+          results: cancelled
+            ? []
+            : [
+                {
+                  id: 7,
+                  title: 'Example Track',
+                  artist: 'Example Artist',
+                  status: 'searching',
+                  searchCount: 1,
+                  lastMatchCount: 0,
+                  createdAt: '2026-11-26T12:00:00.000Z',
+                  requestedBy: { id: 1, displayName: 'owner' },
+                },
+              ],
+        },
+      });
+    });
+    const copy = {
+      en: {
+        cancel: 'Cancel',
+        confirm: 'Cancel request',
+        toast: 'Request cancelled',
+      },
+      fr: {
+        cancel: 'Annuler',
+        confirm: 'Annuler la demande',
+        toast: 'Demande annulée',
+      },
+      ar: { cancel: 'إلغاء', confirm: 'إلغاء الطلب', toast: 'تم إلغاء الطلب' },
+    } as const;
+    await page.goto(testAppPath('/requests?tab=all'));
+    const row = page.locator('.rq').filter({ hasText: 'Example Track' });
+    await expect(row).toBeVisible();
+    if (process.env.LUMEN_TRACK_ACTION_CAPTURE)
+      await page.screenshot({
+        path: `${process.env.LUMEN_TRACK_ACTION_CAPTURE}-${locale}-${info.project.name}.png`,
+        fullPage: true,
+      });
+    await row.getByRole('button', { name: copy[locale].cancel }).click();
+    await page
+      .getByRole('alertdialog')
+      .getByRole('button', { name: copy[locale].confirm })
+      .click();
+    await expect(
+      page.getByRole('status').filter({ hasText: copy[locale].toast })
+    ).toHaveText(copy[locale].toast);
+    expect(cancelled).toBe(true);
+  });
+}
+
 test('Song identification polls and requests the exact recording', async ({
   page,
 }) => {

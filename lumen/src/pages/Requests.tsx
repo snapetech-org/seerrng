@@ -2139,10 +2139,25 @@ export default function Requests() {
       await api(`/soulseek/track-requests/${trackId}/${how}`, {
         method: 'POST',
       });
-      toast(how === 'approve' ? 'Request approved' : 'Request declined');
+      toast(
+        t(
+          how === 'approve'
+            ? 'lumen.requests.actions.approvedToast'
+            : 'lumen.requests.actions.declinedToast',
+          how === 'approve' ? 'Request approved' : 'Request declined'
+        )
+      );
       setTick((t) => t + 1);
     } catch (e) {
-      toast(friendlyError(e, 'Couldn’t update the request'));
+      toast(
+        friendlyError(
+          e,
+          t(
+            'lumen.requests.actions.updateFailed',
+            'Couldn’t update the request'
+          )
+        )
+      );
     } finally {
       mutationInFlight.current = false;
       setActing(null);
@@ -2154,7 +2169,7 @@ export default function Requests() {
     setActing(-(TRACK_REQUEST_ID_OFFSET + trackId));
     try {
       await api(`/soulseek/track-requests/${trackId}`, { method: 'DELETE' });
-      toast('Request cancelled');
+      toast(t('lumen.requests.actions.cancelledToast', 'Request cancelled'));
       setRows(
         (list) => list && list.filter((x) => x.trackRequest?.id !== trackId)
       );
@@ -2163,7 +2178,12 @@ export default function Requests() {
       );
       setTick((t) => t + 1);
     } catch (e) {
-      toast(friendlyError(e, 'Couldn’t cancel'));
+      toast(
+        friendlyError(
+          e,
+          t('lumen.requests.actions.cancelFailed', 'Couldn’t cancel')
+        )
+      );
     } finally {
       mutationInFlight.current = false;
       setActing(null);
@@ -2261,7 +2281,7 @@ export default function Requests() {
                 })
               }
             >
-              Cancel
+              {t('lumen.requests.actions.cancel', 'Cancel')}
             </button>
           )}
         </>

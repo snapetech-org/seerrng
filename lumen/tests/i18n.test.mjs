@@ -593,6 +593,36 @@ test('visible Lumen account, administration, game-library, and metadata labels a
   }
 });
 
+test('request management track actions use localized button, result, and failure messages', async () => {
+  const source = await readFile(
+    resolve(root, 'src/pages/Requests.tsx'),
+    'utf8'
+  );
+  const keys = [
+    'lumen.requests.actions.cancel',
+    'lumen.requests.actions.approvedToast',
+    'lumen.requests.actions.declinedToast',
+    'lumen.requests.actions.cancelledToast',
+    'lumen.requests.actions.updateFailed',
+    'lumen.requests.actions.cancelFailed',
+  ];
+  for (const key of keys) {
+    assert.ok(source.includes(key), `request management references ${key}`);
+    for (const locale of ['en', 'fr', 'ar']) {
+      assert.equal(
+        typeof overrides[locale][key],
+        'string',
+        `${locale} message exists for ${key}`
+      );
+    }
+  }
+  assert.doesNotMatch(
+    source,
+    /toast\(how === 'approve' \? 'Request approved' : 'Request declined'\)/
+  );
+  assert.doesNotMatch(source, /toast\('Request cancelled'\)/);
+});
+
 test('dynamically generated game-library filter keys exist in every shipped locale', async () => {
   const dynamicValues = new Map();
   for (const file of ['src/pages/GameLibrary.tsx', 'src/extras.ts']) {

@@ -12193,3 +12193,19 @@ locale. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-queue-loading-20261126/`.
 
 release-note: `release-notes/lumen-episode-queue-loading-localization.md`
+
+### Request-management track action localization (2026-11-26)
+
+The request list's track-request cancellation button was hard-coded in English,
+and its track approval, decline, cancellation, and failure notifications bypassed
+Lumen's locale system. These controls now use the existing English, French, and
+Arabic messages. A source regression guard verifies the message references and
+catalog coverage. The mocked cancellation flow passes on desktop and iPhone in
+all three locales, including the localized confirmation and success toast.
+Matched English and French desktop/iPhone captures were inspected; the French
+button changes to “Annuler” without disturbing the row layout. This closes the
+track-request action copy gap on Request management only; other request and
+detail displays remain under parity review. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/request-action-localization/`.
+
+release-note: `release-notes/lumen-request-action-localization.md`
