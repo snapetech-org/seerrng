@@ -792,6 +792,15 @@ their providers answer. Four browser cases verify exact destinations and no
 horizontal overflow at desktop, iPhone, Android and tablet widths. Live
 provider content and native-matched visuals remain open.
 
+### TV media-server collection panel requalification (2026-11-26)
+
+The production Lumen build and TV media-server collection browser spec were
+re-run from the current `main` source. All eight runs pass across desktop,
+iPhone, Android and tablet, covering a selected collection mutation and the
+provider-limit response that must not expose a partial collection list. These
+fixture-backed checks do not establish live media-server behavior or a
+state-matched native visual comparison; both remain open.
+
 These optional desktop links and Discover chips now use locale message IDs
 instead of the English labels stored in the catalog metadata. English, French,
 and Arabic fixtures verify all six translated labels and their destinations at
