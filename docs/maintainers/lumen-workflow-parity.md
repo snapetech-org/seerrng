@@ -10608,7 +10608,7 @@ and client workflow only; live server authorization and provider mutations
 remain unverified. Results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/manage-sheet-embedded-results-final/`.
 
-### Large-series episode request recovery recheck (2026-11-25)
+### Large-series episode request recovery recheck (2026-11-26)
 
 The earlier large-show episode-load failure remains covered by Lumen's bounded
 five-season metadata batches and independent failed-batch recovery. A fresh
@@ -10617,9 +10617,10 @@ Android, and tablet: 330-episode selection, transient season-batch retry with
 selection preservation, retry limited to failed seasons, deep-linked episode
 selection, continued selection while a later batch loads, and cancellation of
 remaining metadata requests when the picker closes. The selected payload
-contains only chosen episode identities. These fixtures verify client behavior;
-production-mounted execution passes 12 cases as recorded below. Live provider
-latency remains open.
+contains only chosen episode identities. The 12-case large-series suite was
+rechecked on 2026-11-26 and passes across desktop, iPhone, Android, and tablet.
+These fixtures verify client behavior; production-mounted execution passes 12
+cases as recorded below. Live provider latency remains open.
 
 ### Large-series request recovery in the production Lumen mount (2026-11-25)
 
