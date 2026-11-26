@@ -49,31 +49,51 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ],
       (_req, res) => res.send('Native interface')
     );
-    for (const page of [
-      'jobs',
-      'logs',
-      'about',
-      'categories',
-      'network',
-      'discovery',
-      'metadata',
-      'library-migration',
-      'prowlarr',
-    ]) {
-      const response = await request(app).get(`/lumen/settings/${page}/`);
-      assert.equal(response.status, 302);
-      assert.equal(response.headers.location, `/lumen/admin/${page}`);
-      assert.equal(response.headers['cache-control'], 'no-store');
+    for (const [bookmark, destination] of [
+      ['/settings', '/admin/general'],
+      ['/settings/main', '/admin/general'],
+      ['/settings/about', '/admin/about'],
+      ['/settings/categories', '/admin/categories'],
+      ['/settings/discovery', '/admin/discovery'],
+      ['/settings/jobs', '/admin/jobs'],
+      ['/settings/library-migration', '/admin/library-migration'],
+      ['/settings/logs', '/admin/logs'],
+      ['/settings/metadata', '/admin/metadata'],
+      ['/settings/network', '/admin/network'],
+      ['/settings/plex', '/admin/media-libraries'],
+      ['/settings/jellyfin', '/admin/media-libraries'],
+      ['/settings/prowlarr', '/admin/prowlarr'],
+      ['/settings/services', '/admin'],
+      ['/settings/users', '/admin/users'],
+      ['/settings/notifications', '/admin/notifications'],
+      ...[
+        'apprise',
+        'discord',
+        'email',
+        'gotify',
+        'ntfy',
+        'pushbullet',
+        'pushover',
+        'slack',
+        'telegram',
+        'webhook',
+        'webpush',
+      ].map((channel) => [
+        `/settings/notifications/${channel}`,
+        `/admin/notifications/${channel}`,
+      ]),
+    ] as const) {
+      for (const prefix of ['', '/lumen']) {
+        const response = await request(app).get(`${prefix}${bookmark}`);
+        assert.equal(response.status, 302, bookmark);
+        assert.equal(
+          response.headers.location,
+          `/lumen${destination}`,
+          bookmark
+        );
+        assert.equal(response.headers['cache-control'], 'no-store');
+      }
     }
-    const notificationSettings = await request(app).get(
-      '/lumen/settings/notifications/webhook/'
-    );
-    assert.equal(notificationSettings.status, 302);
-    assert.equal(
-      notificationSettings.headers.location,
-      '/lumen/admin/notifications/webhook'
-    );
-    assert.equal(notificationSettings.headers['cache-control'], 'no-store');
     for (const [bookmark, destination] of [
       ['/discover/movies?libraryView=missing', '/movies?show=not'],
       [

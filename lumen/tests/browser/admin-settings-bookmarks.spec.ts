@@ -63,12 +63,10 @@ test('native administrator settings bookmarks open their Lumen destinations', as
     ],
   ] as const;
 
-  await page.goto(appPath('/settings'));
   for (const [source, destination] of cases) {
-    await page.evaluate((path) => {
-      window.history.pushState({}, '', path);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    }, appPath(source));
+    // Load each Classic bookmark as a fresh document so the router's initial
+    // route handling is covered, not only an in-app history transition.
+    await page.goto(appPath(source));
     await expect(page).toHaveURL(
       new URL(appPath(destination), page.url()).href
     );
