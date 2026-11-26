@@ -31,6 +31,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`book details use ${locale} labels and preserve narrator selection`, async ({
     page,
   }, testInfo) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -74,6 +75,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
             authorId: 'author-1',
             posterPath: null,
             description: 'A test description.',
+            provider: 'bookshelf',
+            ratingsAverage: 4.2,
+            ratingsCount: 17,
           },
         });
       if (path === '/editions/book')
@@ -101,6 +105,15 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       locale === 'ar' ? 'rtl' : 'ltr'
     );
     await expect(page.getByText(labels[locale].ebook).first()).toBeVisible();
+    const localizedScore = baseline
+      ? '4.2'
+      : new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }).format(4.2);
+    await expect(
+      page.getByText(`${localizedScore}/5 · Bookshelf`, { exact: true })
+    ).toBeVisible();
     const retryFollow = page.getByRole('button', {
       name: labels[locale].retryFollow,
     });

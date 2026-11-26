@@ -28,6 +28,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`book author and series pages follow ${locale}`, async ({
     page,
   }, info) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -65,7 +66,8 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
                 title: 'Fixture Book',
                 mediaType: 'book',
                 firstPublishYear: 2020,
-                languages: ['eng'],
+                languages: ['eng', 'fra'],
+                ratingsAverage: 4.2,
               },
             ],
           },
@@ -105,6 +107,40 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await expect(
       page.getByRole('heading', { name: labels[locale].books })
     ).toBeVisible();
+    const languageNames = new Intl.DisplayNames([baseline ? 'en' : locale], {
+      type: 'language',
+    });
+    const filters = page.getByRole('group', { name: labels[locale].filters });
+    const language = filters.getByRole('combobox').nth(4);
+    await expect(
+      language.getByRole('option', {
+        name: languageNames.of('eng')!,
+        exact: true,
+      })
+    ).toBeAttached();
+    await language.selectOption('fra');
+    await expect(language).toHaveValue('fra');
+    await page.screenshot({
+      path: info.outputPath(`series-language-${locale}.png`),
+    });
+    const ratingLabel = baseline
+      ? '4.5'
+      : new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }).format(4.5);
+    const minimumRating = filters.getByRole('combobox').nth(3);
+    await expect(
+      minimumRating.getByRole('option', {
+        name: `${ratingLabel}+`,
+        exact: true,
+      })
+    ).toBeAttached();
+    await minimumRating.selectOption('4.5');
+    await expect(minimumRating).toHaveValue('4.5');
+    await page.screenshot({
+      path: info.outputPath(`series-rating-${locale}.png`),
+    });
     await expect(page.locator('html')).toHaveAttribute(
       'dir',
       locale === 'ar' ? 'rtl' : 'ltr'

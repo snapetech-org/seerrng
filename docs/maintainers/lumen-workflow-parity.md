@@ -12103,9 +12103,13 @@ display names. The production build and all 80 Lumen Node tests pass. French
 movie detail and title-card score regressions pass on desktop and iPhone. The
 title-card baseline/candidate screenshots were reviewed at both sizes and show
 the decimal comma with unchanged layout. BookShelf rating and book-filter
-locale fixtures and matched screenshots are still outstanding, so this display
-item is not fully accepted yet. Evidence is retained at
-`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/score-cards/`.
+locale fixtures now cover English, French, and Arabic on desktop and iPhone.
+Matched pre-change/candidate screenshots for French detail and filter states
+were reviewed; the rating changes to a decimal comma, the language label changes
+from `French` to `français`, and the existing layout remains usable. These are
+fixture-backed client checks, not a live BookShelf provider test. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-closeout-20261126/locale-number-format/`.
 
 release-note: `release-notes/lumen-localized-score-and-book-filter-labels.md`
 
