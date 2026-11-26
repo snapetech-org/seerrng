@@ -6816,6 +6816,24 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Large-series episode selection and recovery requalification (2026-11-25)
+
+The reported long-series request path was requalified at the current frontend
+head in standalone production preview and the compiled Express `/lumen/` mount.
+Each deployment passes 24 cases across desktop, iPhone, Android, and tablet.
+The cases exercise 330-episode/fifteen-season selection, bounded five-season
+metadata batches, transient batch retry without losing selection, retry of
+only failed seasons, selecting loaded seasons while the final batch is still
+pending, cancellation on close, and exact deep-linked episode submission.
+No product defect reproduced, so no UI change was made. Fixtures do not confirm
+live TMDB/SeerrNG response behavior or provider timing. Results and browser
+artifacts are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/large-series-current-standalone/`
+and
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/large-series-current-mounted/`.
+
+release-note: none
+
 ### Lumen catalog and request fixture contract refresh (2026-11-25)
 
 Hosted browser evidence exposed stale selectors in the comic catalogue,
