@@ -11572,3 +11572,25 @@ the existing native iPhone capture; the action is visible without scrolling.
 The check covers fixture behavior and geometry, not live catalog results.
 
 release-note: `release-notes/lumen-mobile-discovery-reset.md`
+
+### Manager download rows retain release and episode identity (2026-11-26)
+
+The native manager identifies each queued download with its release title for
+administrators and with the safe series/season/episode context for other
+request managers. Lumen's download rows previously showed only quality,
+status, and progress, which made concurrent episode downloads indistinguishable.
+Lumen now renders the admin-only title when the API provides it and otherwise
+uses the title and episode numbers that remain after the server's non-admin
+redaction. English, French, and Arabic labels are covered; non-admin fixtures
+assert that private release names remain absent.
+
+The focused production-preview manager workflow passes 24 cases across desktop,
+iPhone, Android, and tablet, including movie fallback, TV episode context,
+administrator titles, and the existing library, request, and playback checks.
+The existing desktop baseline and new desktop/iPhone candidate manager captures
+were inspected; the extra metadata fits the existing download rows without
+horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-manager-download-titles-20261126/`.
+API and provider data are fixture-backed.
+
+release-note: `release-notes/lumen-manager-download-titles.md`

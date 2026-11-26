@@ -4876,6 +4876,8 @@ export const localeData = [
       'lumen.manageVideo.unknownUser': 'مستخدم غير معروف',
       'lumen.manageVideo.openRequests': 'فتح الطلبات المطابقة',
       'lumen.manageVideo.downloads': 'التنزيلات',
+      'lumen.manageVideo.episodeDownloadTitle':
+        '{title}: الموسم {seasonNumber} الحلقة {episodeNumber}',
       'lumen.manageVideo.services': 'الخدمات',
       'lumen.manageVideo.openService': 'فتح في {service}',
       'lumen.manageVideo.library': 'المكتبة التي تم التحقق منها',
@@ -16843,6 +16845,8 @@ export const localeData = [
       'lumen.manageVideo.unknownUser': 'Unknown user',
       'lumen.manageVideo.openRequests': 'Open matching requests',
       'lumen.manageVideo.downloads': 'Downloads',
+      'lumen.manageVideo.episodeDownloadTitle':
+        '{title}: Season {seasonNumber} Episode {episodeNumber}',
       'lumen.manageVideo.services': 'Services',
       'lumen.manageVideo.openService': 'Open in {service}',
       'lumen.manageVideo.library': 'Verified library',
@@ -29943,6 +29947,8 @@ export const localeData = [
       'lumen.manageVideo.unknownUser': 'Utilisateur inconnu',
       'lumen.manageVideo.openRequests': 'Ouvrir les demandes correspondantes',
       'lumen.manageVideo.downloads': 'Téléchargements',
+      'lumen.manageVideo.episodeDownloadTitle':
+        '{title} : saison {seasonNumber}, épisode {episodeNumber}',
       'lumen.manageVideo.services': 'Services',
       'lumen.manageVideo.openService': 'Ouvrir dans {service}',
       'lumen.manageVideo.library': 'Bibliothèque vérifiée',

@@ -3717,6 +3717,7 @@
   "lumen.manageVideo.unknownUser",
   "lumen.manageVideo.openRequests",
   "lumen.manageVideo.downloads",
+  "lumen.manageVideo.episodeDownloadTitle",
   "lumen.manageVideo.services",
   "lumen.manageVideo.openService",
   "lumen.manageVideo.library",

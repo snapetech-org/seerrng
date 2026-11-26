@@ -129,6 +129,10 @@ async function setup(
             downloadStatus: [
               {
                 downloadId: 'hd-download',
+                title: permissions & 2 ? 'Private.Release.Name-GROUP' : '',
+                ...(kind === 'tv'
+                  ? { episode: { seasonNumber: 2, episodeNumber: 3 } }
+                  : {}),
                 size: 100,
                 sizeLeft: 25,
                 status: 'Downloading',
@@ -332,6 +336,9 @@ for (const kind of ['movie', 'tv'] as const) {
     await expect(dialog.getByText('#61 · Approved')).toBeVisible();
     await expect(dialog.getByText('Requester')).toBeVisible();
     await expect(dialog.getByText('HD · Downloading')).toBeVisible();
+    await expect(
+      dialog.getByText('Private.Release.Name-GROUP', { exact: false })
+    ).toBeVisible();
     await expect(
       dialog.getByRole('heading', { name: 'Playback history' })
     ).toBeVisible();
@@ -663,6 +670,12 @@ test('manager downloads show safe live progress and client details', async ({
         ? 'عدد البذور: 3'
         : 'Seeds: 3';
   await expect(dialog.getByText(clientLabel)).toBeVisible();
+  await expect(
+    dialog.locator('.card-list .sub').getByText('Fixture Movie')
+  ).toBeVisible();
+  await expect(
+    dialog.locator('.card-list .sub').getByText('Private.Release.Name-GROUP')
+  ).toHaveCount(0);
   await expect(dialog.getByText(seedsLabel)).toBeVisible();
   expect(
     await page.evaluate(
@@ -685,6 +698,38 @@ test('manager downloads show safe live progress and client details', async ({
   expect(source).toContain(encodeURIComponent(liveToken));
   expect(source).not.toContain('hd-download');
 });
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`TV manager download labels preserve episode context and release-name privacy in ${locale}`, async ({
+    page,
+  }) => {
+    await setup(page, 16, 'tv', [], 1, false, false, locale);
+    const manageLabel =
+      locale === 'fr' ? 'Gérer' : locale === 'ar' ? 'إدارة' : 'Manage';
+    const titleLabel =
+      locale === 'fr'
+        ? 'Gérer Fixture Series'
+        : locale === 'ar'
+          ? 'إدارة Fixture Series'
+          : 'Manage Fixture Series';
+    const episodeLabel =
+      locale === 'fr'
+        ? 'Fixture Series : saison 2, épisode 3'
+        : locale === 'ar'
+          ? 'Fixture Series: الموسم 2 الحلقة 3'
+          : 'Fixture Series: Season 2 Episode 3';
+    await page.getByRole('button', { name: manageLabel, exact: true }).click();
+    const dialog = page.getByRole('dialog', { name: titleLabel });
+    await expect(
+      dialog.locator('.card-list .sub').getByText(episodeLabel, {
+        exact: false,
+      })
+    ).toBeVisible();
+    await expect(
+      dialog.locator('.card-list .sub').getByText('Private.Release.Name-GROUP')
+    ).toHaveCount(0);
+  });
+}
 
 test('title manager exposes permission-scoped blocklist and issue actions', async ({
   page,

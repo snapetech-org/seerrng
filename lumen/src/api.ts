@@ -1114,6 +1114,8 @@ export interface EditionList {
 }
 export interface DownloadItem {
   percent?: number;
+  title?: string;
+  episode?: { seasonNumber: number; episodeNumber: number };
   liveDownloadToken?: string;
   downloadId?: string;
   size: number;

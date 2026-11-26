@@ -740,6 +740,22 @@ export function ManageVideoSheet({
                                 item.estimatedCompletionTime
                               ).toISOString()
                             : undefined;
+                      const downloadTitle =
+                        admin && item.title
+                          ? item.title
+                          : item.episode &&
+                              Number.isSafeInteger(item.episode.seasonNumber) &&
+                              Number.isSafeInteger(item.episode.episodeNumber)
+                            ? t(
+                                'lumen.manageVideo.episodeDownloadTitle',
+                                '{title}: Season {seasonNumber} Episode {episodeNumber}',
+                                {
+                                  title,
+                                  seasonNumber: item.episode.seasonNumber,
+                                  episodeNumber: item.episode.episodeNumber,
+                                }
+                              )
+                            : title;
                       return (
                         <li key={`${quality}-${item.downloadId ?? index}`}>
                           <b>
@@ -747,6 +763,9 @@ export function ManageVideoSheet({
                             {item.status ||
                               t('lumen.manageVideo.processing', 'Processing')}
                           </b>
+                          {downloadTitle && (
+                            <span className="sub"> · {downloadTitle}</span>
+                          )}
                           {typeof percent === 'number' &&
                             Number.isFinite(percent) &&
                             percent >= 0 &&
