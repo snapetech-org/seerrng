@@ -17,7 +17,7 @@ interface MusicAvailabilityRequest {
 interface MusicAvailabilityService {
   id: number;
   name: string;
-  activeProfileName: string;
+  activeProfileName?: string;
 }
 
 export interface AvailableMusicService {
@@ -80,7 +80,7 @@ export const getAvailableMusicServices = (
   for (const request of requests) {
     for (const target of request.serviceTargets ?? []) {
       if (
-        target.serviceType === 'lidarr' &&
+        (target.serviceType === 'lidarr' || target.serviceType === 'aurral') &&
         target.format === 'music' &&
         target.status === MediaStatus.AVAILABLE
       ) {
@@ -155,7 +155,9 @@ export const getMusicQualityStatuses = (
     }
 
     const explicitTargets = (request.serviceTargets ?? []).filter(
-      (target) => target.serviceType === 'lidarr' && target.format === 'music'
+      (target) =>
+        (target.serviceType === 'lidarr' || target.serviceType === 'aurral') &&
+        target.format === 'music'
     );
     const targets =
       explicitTargets.length > 0

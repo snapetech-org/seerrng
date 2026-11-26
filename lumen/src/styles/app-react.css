@@ -479,6 +479,29 @@
   align-items: center;
   padding: 11px 14px;
 }
+.trow.trow--actions {
+  grid-template-columns: 34px minmax(0, 1fr) auto auto;
+}
+.trow > span {
+  min-width: 0;
+}
+.trow-act {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+@media (max-width: 560px) {
+  .trow.trow--actions {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 6px 10px;
+  }
+  .trow-act {
+    grid-column: 2 / -1;
+    justify-content: flex-start;
+    justify-self: start;
+  }
+}
 .trow + .trow {
   border-top: 1px solid var(--line);
 }
@@ -635,4 +658,1419 @@
   color: var(--accent-ink);
   display: grid;
   place-items: center;
+}
+
+/* ---------- Music search and discovery ---------- */
+/* round artist art on artist cards and the top-result card */
+.music-artist-card .art,
+.top-hit .art.music-artist-art {
+  border-radius: 50%;
+}
+.music-artist-card {
+  text-align: center;
+}
+/* square artwork in a track row's leading column */
+.trow .trow-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--surface-3);
+}
+.trow .trow-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.trow small.music-song-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music-song-meta a {
+  color: inherit;
+}
+.music-song-meta a:hover {
+  text-decoration: underline;
+}
+
+/* Music: Play hand-off, previews and the music home */
+.song-acts {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.btn-icon:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.btn-icon:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.preview-btn.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--surface);
+}
+.preview-btn[aria-busy='true'] {
+  animation: preview-pulse 1s ease-in-out infinite;
+}
+@keyframes preview-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+.trow--missing > span:nth-child(2) b {
+  color: var(--ink-2);
+}
+.preview-bar {
+  position: sticky;
+  bottom: 16px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 10px 14px 10px 10px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.35);
+}
+.preview-art {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+.preview-art img,
+.music-tile-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.preview-meta {
+  min-width: 0;
+  width: min(260px, 30vw);
+}
+.preview-meta b,
+.preview-meta small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.preview-meta small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+.preview-time {
+  color: var(--ink-3);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.preview-track,
+.music-owned-bar,
+.music-dl-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--surface-3);
+  overflow: hidden;
+  display: block;
+}
+.preview-track > i,
+.music-owned-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+}
+/* the floating tab bar and the album action bar show up to 1039px: sit above them */
+@media (max-width: 1039px) {
+  .preview-bar {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 760px) {
+  .preview-time {
+    display: none;
+  }
+  /* phones: the title takes the free room and progress runs along the bottom edge */
+  .preview-meta {
+    flex: 1;
+    width: auto;
+  }
+  .preview-bar .preview-track {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 5px;
+    height: 3px;
+  }
+}
+.play-opens {
+  margin-left: auto;
+}
+.play-picker .set[aria-disabled='true'] {
+  opacity: 0.6;
+}
+.badge-soon {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  background: var(--surface-3);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+/* the music sections read as real tabs: left aligned, the open one underlined */
+.seg.music-home-tabs {
+  display: flex;
+  align-self: stretch;
+  gap: 28px;
+  padding: 0;
+  margin: 4px 0 8px;
+  border-radius: 0;
+  background: none;
+  box-shadow: inset 0 -1px var(--line);
+  overflow-x: auto;
+}
+.seg.music-home-tabs button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 2px;
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-3);
+  background: none;
+  box-shadow: none;
+}
+.seg.music-home-tabs button:hover {
+  color: var(--ink);
+}
+.seg.music-home-tabs button[aria-selected='true'] {
+  color: var(--ink);
+  background: none;
+  box-shadow: inset 0 -3px var(--accent);
+}
+.seg.music-home-tabs .n {
+  padding: 1px 8px;
+  border-radius: var(--r-full);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 12px;
+}
+.music-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 10px;
+}
+.music-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding-right: 12px;
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.music-tile-art {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex: none;
+  overflow: hidden;
+}
+.music-tile-text {
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+.music-tile-text b,
+.music-tile-text small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music-tile-text small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+.music-tile-play {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+.music-tile-play:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+  filter: brightness(1.08);
+}
+.music-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+  gap: 28px;
+  align-items: start;
+}
+.music-main,
+.music-aside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (max-width: 1000px) {
+  .music-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.music-side-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+.play-picker .set {
+  flex-wrap: nowrap;
+}
+.music-side-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.music-side-head .n {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-soft-ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+.music-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.music-stat-n {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+.music-stat small,
+.music-side-empty {
+  color: var(--ink-3);
+}
+.music-dl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.music-dl li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.music-dl b,
+.music-dl small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music-dl small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+.music-dl-bar {
+  flex: none;
+  height: 4px;
+  position: relative;
+}
+/* Aurral reports what is downloading but not how far along it is */
+.music-dl-bar > i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;
+  background: var(--accent);
+  border-radius: inherit;
+  animation: music-dl-slide 1.6s ease-in-out infinite;
+}
+@keyframes music-dl-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(290%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-dl-bar > i {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+.music-owned {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 12px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.music-owned > b {
+  flex: none;
+  font-size: 14px;
+}
+.music-mixes {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  color: inherit;
+  text-decoration: none;
+}
+.music-mixes b,
+.music-mixes small {
+  display: block;
+}
+.music-mixes small {
+  color: var(--ink-3);
+  margin-top: 3px;
+}
+.music-catalog > summary {
+  font-size: 18px;
+  font-weight: 700;
+}
+/* small artwork: just the music glyph, no title text */
+:is(.music-tile-art, .preview-art, .pod-ep-art) .nocover {
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+:is(.music-tile-art, .preview-art, .pod-ep-art) .nocover::before,
+:is(.music-tile-art, .preview-art, .pod-ep-art) .nocover::after {
+  content: none;
+}
+:is(.music-tile-art, .preview-art, .pod-ep-art) .nocover svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Music, round 2 */
+@media (min-width: 1040px) {
+  /* the top bar searches music here */
+  .music-page-search {
+    display: none;
+  }
+}
+.music-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: var(--sq);
+  flex: none;
+  text-align: center;
+  min-width: 0;
+}
+.music-circle-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.music-circle-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.music-circle-art .nocover::before,
+.music-circle-art .nocover::after {
+  content: none;
+}
+.music-circle-art .nocover {
+  align-items: center;
+  justify-content: center;
+}
+.music-circle-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+  font-weight: 650;
+  text-decoration: none;
+}
+.music-circle small {
+  max-width: 100%;
+  color: var(--ink-3);
+  font-size: 12px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.music-cat-chips {
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+.music-lib-bar {
+  align-items: center;
+}
+.music-lib-count {
+  color: var(--ink-3);
+  font-size: 13px;
+  margin-left: auto;
+}
+.music-lib-filter {
+  flex: 1 1 200px;
+  max-width: 320px;
+}
+.music-lib-filter input {
+  width: 100%;
+}
+/* a cover that failed to load stays in the page but out of sight */
+.poster .art img[hidden] {
+  display: none;
+}
+.music-act {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.music-act.card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+.music-act-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+}
+.music-act.compact .music-act-row {
+  padding: 8px 0;
+}
+.music-act-row + .music-act-row {
+  border-top: 1px solid var(--line);
+}
+.music-act-pos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.music-act-row[data-status='completed'] .music-act-pos {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.music-act-spin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  animation: music-spin 0.9s linear infinite;
+}
+@keyframes music-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-act-spin {
+    animation: none;
+    border-color: var(--accent);
+  }
+}
+.music-act-text {
+  min-width: 0;
+}
+.music-act-text b,
+.music-act-text small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music-act-text small {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+/* why it failed: may be long, so it wraps instead of being cut off */
+.music-act-text small.music-act-reason {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.music-act-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: 0 28px;
+  align-items: start;
+}
+.music-pl-head {
+  display: flex;
+  gap: 28px;
+  align-items: flex-end;
+  margin: 8px 0 24px;
+  flex-wrap: wrap;
+}
+.music-pl-art {
+  position: relative;
+  width: min(240px, 60vw);
+  aspect-ratio: 1;
+  flex: none;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.35);
+  background: var(--surface-2);
+}
+.music-pl-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.music-pl-meta {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.music-pl-meta h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.05;
+}
+.music-pl-sub,
+.music-pl-desc {
+  color: var(--ink-3);
+  margin: 0;
+}
+.music-pl-meta .acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+@media (max-width: 700px) {
+  .music-tiles > .music-tile:nth-child(n + 5) {
+    display: none;
+  }
+}
+.music-artist-acts {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.music-artist-genres {
+  margin-top: 4px;
+}
+.music-artist-bio {
+  white-space: pre-line;
+  max-width: 75ch;
+}
+.music-album-get {
+  display: contents;
+}
+.music-album-get .btn {
+  width: auto;
+}
+@media (max-width: 1039px) {
+  /* phones and tablets get it in the sticky action bar */
+  .music-album-get {
+    display: none;
+  }
+}
+/* the preview sits on the song's artwork */
+.trow .trow-thumb .preview-btn {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: inherit;
+  background: rgb(0 0 0 / 0.38);
+  color: #fff;
+  opacity: 0.9;
+  transition:
+    opacity 0.12s,
+    background 0.12s;
+}
+.trow:hover .trow-thumb .preview-btn {
+  background: rgb(0 0 0 / 0.6);
+}
+.trow:hover .trow-thumb .preview-btn,
+.trow .trow-thumb .preview-btn:focus-visible,
+.trow .trow-thumb .preview-btn.on,
+.trow .trow-thumb .preview-btn[aria-busy='true'] {
+  opacity: 1;
+}
+.trow .trow-thumb .preview-btn.on {
+  background: rgb(0 0 0 / 0.65);
+  color: #fff;
+}
+.music-owned-btn {
+  background: var(--ok-soft);
+  color: var(--ok);
+  border: 0;
+}
+.music-owned-btn:hover {
+  filter: brightness(1.08);
+}
+.music-statusline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: -4px 0 4px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.music-statusline:empty {
+  display: none;
+}
+.music-statusline button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  padding: 4px 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.music-statusline button:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.music-follow-help {
+  margin: -6px 0 8px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+/* "Show N other editions and singles" at the end of the discography */
+.music-hidden-releases {
+  margin: 8px 0 16px;
+}
+/* an album page whose songs are on another release */
+.music-covered-by {
+  margin: 0 0 10px;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+.music-artist-bio.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* songs you do not have yet are quieter than the ones you have */
+.trow--missing > span:nth-child(2) b,
+.trow--missing > .tn {
+  opacity: 0.62;
+}
+.trow--missing .btn-tonal,
+.trow--missing .btn-quiet {
+  font-weight: 600;
+}
+/* phones: compact music header, one-line song rows */
+@media (max-width: 700px) {
+  .music-page-search ~ * {
+    margin-top: 0;
+  }
+  .trow.trow--actions {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+  .trow.trow--actions .song-acts {
+    gap: 6px;
+  }
+  .trow.trow--actions .song-acts .preview-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+  }
+  /* small icons keep a finger-sized tap area (40px) around them */
+  .trow.trow--actions .song-acts .preview-btn::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+  }
+  .trow .trow-thumb {
+    overflow: visible;
+  }
+  .trow .trow-thumb > img,
+  .trow .trow-thumb > .nocover {
+    border-radius: inherit;
+    overflow: hidden;
+  }
+  .trow .trow-thumb .preview-btn::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+  }
+  .trow.trow--actions > .tl {
+    display: none;
+  }
+  .trow.trow--actions > .trow-act {
+    grid-column: auto;
+    justify-self: end;
+  }
+}
+@media (max-width: 700px) {
+  /* phones: shortcuts scroll in one row instead of stacking */
+  .chips.music-head-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .chips.music-head-chips .play-opens {
+    margin-left: 0;
+  }
+}
+.music-recent-label {
+  align-self: center;
+  color: var(--ink-3);
+  font-size: 13px;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+/* round artist photo with initials when there is no picture */
+.music-circle-art {
+  display: grid;
+  place-items: center;
+}
+.music-avatar-initials {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  background: linear-gradient(135deg, var(--surface-3), var(--surface-2));
+}
+.top-hit.music-top-artist {
+  grid-template-columns: 112px minmax(0, 1fr);
+}
+.music-top-artist-art {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface-3);
+}
+.music-top-artist-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.top-hit.music-top-artist h3 a::after {
+  content: none;
+}
+.n.music-tab-busy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.n.music-tab-busy .music-act-spin {
+  width: 10px;
+  height: 10px;
+}
+/* album page: admin tools live behind "More" */
+.music-more {
+  position: relative;
+}
+.music-more > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.music-more > summary::-webkit-details-marker {
+  display: none;
+}
+.music-more-menu {
+  position: absolute;
+  /* above the phone action bar (55), below the floating back button (60) */
+  z-index: 58;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  gap: 4px;
+  min-width: 200px;
+  max-width: calc(100vw - 32px);
+  padding: 8px;
+  border-radius: var(--r-md, 12px);
+  background: var(--surface-2);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 12px 32px rgb(0 0 0 / 0.4);
+}
+/* fitMoreMenu flips it leftward when opening rightward would leave the screen */
+.music-more.flip .music-more-menu {
+  left: auto;
+  right: 0;
+}
+.music-more-menu > .btn {
+  justify-content: flex-start;
+  width: 100%;
+}
+.music-import-url {
+  width: min(640px, 100%);
+  min-height: 44px;
+}
+/* artist circles inside a grid (library artists) fill their cell */
+.sqg.grid > .music-circle {
+  width: auto;
+}
+/* tabs on the left, page tools on the right, one row */
+.music-tabbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 18px;
+}
+.music-tabbar > .seg.music-home-tabs {
+  box-shadow: none;
+  align-self: flex-end;
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+.music-tabbar > .chips.music-head-chips {
+  margin: 0 0 8px;
+  flex-wrap: nowrap;
+  /* never wider than the page, so on a phone the row scrolls instead of the page */
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+/* podcasts */
+.music-pod-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.music-pod-search {
+  flex: 1 1 320px;
+  max-width: 560px;
+}
+.music-eps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.music-ep {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+}
+.music-ep + .music-ep {
+  border-top: 1px solid var(--line);
+}
+.music-ep-main b {
+  display: block;
+  font-size: 15px;
+}
+.music-ep-main small {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.music-ep-desc {
+  margin: 6px 0 0;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+.music-ep-desc.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.music-ep-more {
+  margin-top: 4px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* the artist's bio: two quiet lines under the name, opens in place */
+.music-artist-about {
+  max-width: 75ch;
+  margin-bottom: 4px;
+}
+.music-artist-about .music-artist-bio {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.linklike {
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--accent, var(--ink));
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.linklike:hover {
+  text-decoration: underline;
+}
+/* Following turns into Unfollow under the pointer, so stopping is discoverable */
+.music-following .when-hover {
+  display: none;
+}
+@media (hover: hover) {
+  .music-following:not(.fresh):hover .when-idle {
+    display: none;
+  }
+  .music-following:not(.fresh):hover .when-hover {
+    display: inline;
+  }
+}
+/* the album's More menu sits on the same line as the other buttons */
+.music-more {
+  display: inline-flex;
+}
+/* beats the generic .btn + details spacing rule, which pushed More 12px down */
+.dstatus.dstatus > details.music-more.music-more {
+  margin: 0;
+}
+.music-more > summary.btn {
+  display: inline-flex;
+}
+
+/* podcasts: new episodes carry their show's artwork */
+.pod-latest .music-ep {
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+}
+.pod-ep-art {
+  position: relative;
+  display: block;
+  flex: none;
+  font-size: 10px;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.pod-ep-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pod-latest small a {
+  color: inherit;
+}
+.pod-latest small a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.pod-welcome {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 20px;
+  padding: 18px 20px;
+  border-radius: var(--r-lg, 16px);
+  background: var(--surface-2);
+}
+.pod-welcome span {
+  color: var(--ink-2);
+}
+.pod-genres {
+  margin-bottom: 16px;
+}
+/* phones: the genre list scrolls in one row instead of filling the screen */
+@media (max-width: 700px) {
+  .chips.wrap.pod-genres {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .chips.wrap.pod-genres > * {
+    flex: none;
+  }
+}
+.pod-shows-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.pod-filter {
+  width: min(360px, 100%);
+}
+@media (max-width: 640px) {
+  .pod-latest .music-ep {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+  .pod-latest .music-ep-act {
+    grid-column: 2;
+  }
+  .pod-ep-art {
+    width: 44px;
+    height: 44px;
+  }
+}
+/* the preview on a song's artwork: a clear white play badge, not a faint glyph */
+.trow .trow-thumb .preview-btn svg {
+  box-sizing: content-box;
+  width: 12px;
+  height: 12px;
+  padding: 5px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
+}
+.trow .trow-thumb .preview-btn.on svg {
+  background: var(--accent, #fff);
+  color: #fff;
+}
+/* the top result's artwork holds its own placeholder: without this a missing cover
+   filled the whole card and hid the title */
+.top-hit .art {
+  position: relative;
+}
+.top-hit .art .nocover {
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+.top-hit .art .nocover::before,
+.top-hit .art .nocover::after {
+  content: none;
+}
+.top-hit .art .nocover svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* Import Playlist: the link field is wide enough to read a pasted link */
+.sel.music-import-field {
+  display: flex;
+  width: min(720px, 100%);
+  min-height: 48px;
+}
+.sel.music-import-field .music-import-url {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+.sel.music-import-field:focus-within {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* a failed request offers Try again beside its status */
+.music-req-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* a card's title and artist line are links too, styled as text */
+.poster .t a,
+.poster .m a {
+  color: inherit;
+  text-decoration: none;
+}
+.poster .t a:hover,
+.poster .m a:hover {
+  text-decoration: underline;
+}
+
+/* podcasts: the played-episode cleanup switch and the Played tag */
+.pod-cleanup {
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  margin: 4px 0 12px;
+}
+.pod-cleanup small {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+.pod-switch {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--surface-3);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: background 0.15s;
+}
+.pod-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  transition: transform 0.15s;
+}
+.pod-switch.on {
+  background: var(--accent);
+}
+.pod-switch.on::after {
+  background: #fff;
+  transform: translateX(12px);
+}
+.pod-played {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  color: var(--ok);
+  font-weight: 600;
+}
+.music-ep.played .music-ep-main b {
+  color: var(--ink-2);
+}
+
+/* ---------- Search results: the top result sits beside the first songs ---------- */
+@media (min-width: 1000px) {
+  .music-search-lead.two {
+    display: grid;
+    grid-template-columns: minmax(300px, 2fr) 3fr;
+    column-gap: 24px;
+    align-items: stretch;
+  }
+  .music-search-lead.two > section {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .music-search-lead.two > section > .top-hit {
+    flex: 1;
+  }
+}
+/* ---------- Charts: numbered rows, two halves side by side on wide screens ---------- */
+.trow.trow--actions.trow--ranked {
+  grid-template-columns: 20px 34px minmax(0, 1fr) auto auto;
+}
+.trow.trow--ranked > .tn {
+  text-align: center;
+  font-weight: 700;
+}
+.tlist-2col {
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 1000px) {
+  .tlist-2col {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+}
+@media (max-width: 700px) {
+  .trow.trow--actions.trow--ranked {
+    grid-template-columns: 18px 24px minmax(0, 1fr) auto;
+  }
+  /* on a phone the two halves read as one list */
+  .tlist-2col {
+    gap: 0;
+  }
+  .tlist-2col > .card:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 0;
+  }
+  .tlist-2col > .card:last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+/* ---------- Genre tiles ---------- */
+.genre-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.genre-tile {
+  height: 64px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 750;
+  font-size: 15px;
+  text-align: left;
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--tile-hue, 220) 52% var(--tile-l, 40%)),
+    hsl(calc(var(--tile-hue, 220) + 35) 58% 25%)
+  );
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
+}
+/* no brightening on hover: white text keeps its 4.5:1 contrast */
+.genre-tile:hover {
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.35);
+}
+.genre-tile:active {
+  transform: scale(0.98);
+}
+.genre-tile:focus-visible,
+.genre-tile[aria-pressed='true'] {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.genre-picked {
+  margin-top: 18px;
+  scroll-margin: 90px 0;
+}
+.genre-picked > h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+@media (max-width: 560px) {
+  .genre-tiles {
+    grid-template-columns: 1fr 1fr;
+  }
+  .genre-tile {
+    height: 56px;
+  }
+}
+/* ---------- Recent searches on Discover ---------- */
+.chips.music-recent-row {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 18px;
+}
+.chips.music-recent-row > * {
+  flex: none;
+}
+.chip.music-recent-clear {
+  background: none;
+  border-color: transparent;
+  color: var(--ink-3);
+}
+.chip.music-recent-clear:hover {
+  color: var(--ink);
+}
+/* ---------- Podcast chart: each cover shows its place ---------- */
+/* a tab's panel adds no box of its own: the page grid spaces its sections */
+.music-tabpanel {
+  display: contents;
+}
+
+/* podcast descriptions keep the feed's paragraph breaks */
+.music-ep-desc:not(.clamp) {
+  white-space: pre-line;
+}
+/* top result: a long button wraps inside the card instead of leaving it */
+.top-hit .acts .btn {
+  max-width: 100%;
+}
+@media (max-width: 560px) {
+  .top-hit .acts .btn {
+    white-space: normal;
+    text-align: center;
+  }
+}
+/* Activity: the two column headings sit level whether or not one has a button */
+.music-act-cols .sec-head {
+  min-height: 40px;
+}
+
+.pod-get-many {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }

@@ -45,6 +45,7 @@ export interface PublicSettingsResponse {
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   musicEnabled: boolean;
+  trackRequestsEnabled?: boolean;
   booksEnabled: boolean;
   ebookServiceEnabled: boolean;
   audiobookServiceEnabled: boolean;

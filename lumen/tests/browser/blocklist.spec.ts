@@ -313,11 +313,21 @@ test('detail Blocklist actions send the canonical identity for every supported m
     blocked = false;
     const before = writes.length;
     await page.goto(testAppPath(item.route));
+    // the album page keeps its admin tools behind "More"
+    if (item.mediaType === 'music')
+      await page.locator('#view').getByText('More', { exact: true }).click();
     await page.getByRole('button', { name: 'Add to Blocklist' }).click();
     await page
       .getByRole('alertdialog')
       .getByRole('button', { name: 'Add to Blocklist' })
       .click();
+    if (
+      item.mediaType === 'music' &&
+      !(await page
+        .locator('details.music-more')
+        .evaluate((menu) => (menu as HTMLDetailsElement).open))
+    )
+      await page.locator('#view').getByText('More', { exact: true }).click();
     await expect(
       page.getByRole('button', { name: 'Remove from Blocklist' })
     ).toBeVisible();

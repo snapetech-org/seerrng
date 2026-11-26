@@ -358,9 +358,17 @@ export const sanitizeMusicBrainzRecording = (
         )
     : [];
 
+  const length =
+    typeof value.length === 'number' &&
+    Number.isSafeInteger(value.length) &&
+    value.length > 0
+      ? value.length
+      : undefined;
+
   return {
     id,
     title,
+    ...(length !== undefined ? { length } : {}),
     score:
       typeof value.score === 'number' && Number.isFinite(value.score)
         ? value.score

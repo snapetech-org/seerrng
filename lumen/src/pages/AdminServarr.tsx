@@ -12,6 +12,7 @@ type Provider =
   | 'radarr'
   | 'sonarr'
   | 'lidarr'
+  | 'aurral'
   | 'whisparr'
   | 'readarr'
   | 'lazylibrarian'
@@ -23,6 +24,7 @@ const names = {
   radarr: 'Radarr',
   sonarr: 'Sonarr',
   lidarr: 'Lidarr',
+  aurral: 'Aurral',
   whisparr: 'Whisparr',
   readarr: 'Book and Audiobook',
   lazylibrarian: 'LazyLibrarian',
@@ -35,6 +37,7 @@ const ports = {
   radarr: 7878,
   sonarr: 8989,
   lidarr: 8686,
+  aurral: 3001,
   whisparr: 6969,
   readarr: 8787,
   lazylibrarian: 5299,
@@ -170,6 +173,7 @@ function ServiceForm({
   const name = t(`lumen.servarr.provider.${provider}`, names[provider]);
   const isSportarr = provider === 'sportarr';
   const isSonarr = provider === 'sonarr';
+  const isAurral = provider === 'aurral';
   const video = isSonarr || provider === 'radarr';
   const isBook = provider === 'readarr';
   const isLazyLibrarian = provider === 'lazylibrarian';
@@ -187,7 +191,7 @@ function ServiceForm({
   );
   const backend = draft.backend ?? 'readarr';
   const managed = isBook && backend !== 'readarr';
-  const usesProfiles = !managed && !collector;
+  const usesProfiles = !managed && !collector && !isAurral;
   const bookorbit = backend === 'bookorbit';
   let mappings: Record<string, number> | undefined;
   if (backend === 'bindery') {
@@ -375,82 +379,90 @@ function ServiceForm({
         const updated = await api<Service>(path, {
           method: editingId === undefined ? 'POST' : 'PUT',
           body: JSON.stringify(
-            collector
+            isAurral
               ? {
                   ...connection,
                   name: draft.name,
                   externalUrl: draft.externalUrl,
-                  tags: draft.tags ?? [],
-                  rootFolder: comicCollector
-                    ? draft.rootFolder?.trim() || undefined
-                    : undefined,
                   isDefault: draft.isDefault ?? false,
                   syncEnabled: draft.syncEnabled ?? false,
-                  preventSearch: draft.preventSearch ?? false,
                 }
-              : {
-                  ...draft,
-                  ...(isSonarr
-                    ? {
-                        seriesType: draft.seriesType ?? 'standard',
-                        animeSeriesType: draft.animeSeriesType ?? 'anime',
-                        monitorNewItems: draft.monitorNewItems ?? 'all',
-                        activeAnimeProfileName:
-                          draft.activeAnimeProfileId === undefined
-                            ? undefined
-                            : (options?.profiles.find(
-                                ({ id }) => id === draft.activeAnimeProfileId
-                              )?.name ?? draft.activeAnimeProfileName),
-                      }
-                    : provider === 'radarr'
+              : collector
+                ? {
+                    ...connection,
+                    name: draft.name,
+                    externalUrl: draft.externalUrl,
+                    tags: draft.tags ?? [],
+                    rootFolder: comicCollector
+                      ? draft.rootFolder?.trim() || undefined
+                      : undefined,
+                    isDefault: draft.isDefault ?? false,
+                    syncEnabled: draft.syncEnabled ?? false,
+                    preventSearch: draft.preventSearch ?? false,
+                  }
+                : {
+                    ...draft,
+                    ...(isSonarr
                       ? {
-                          minimumAvailability:
-                            draft.minimumAvailability ?? 'released',
+                          seriesType: draft.seriesType ?? 'standard',
+                          animeSeriesType: draft.animeSeriesType ?? 'anime',
+                          monitorNewItems: draft.monitorNewItems ?? 'all',
+                          activeAnimeProfileName:
+                            draft.activeAnimeProfileId === undefined
+                              ? undefined
+                              : (options?.profiles.find(
+                                  ({ id }) => id === draft.activeAnimeProfileId
+                                )?.name ?? draft.activeAnimeProfileName),
                         }
-                      : {
-                          is4k: false,
-                          ...(hasMetadata
+                      : provider === 'radarr'
+                        ? {
+                            minimumAvailability:
+                              draft.minimumAvailability ?? 'released',
+                          }
+                        : {
+                            is4k: false,
+                            ...(hasMetadata
+                              ? {
+                                  activeMetadataProfileId:
+                                    draft.activeMetadataProfileId,
+                                  activeMetadataProfileName:
+                                    options?.metadataProfiles?.find(
+                                      ({ id }) =>
+                                        id === draft.activeMetadataProfileId
+                                    )?.name ?? draft.activeMetadataProfileName,
+                                }
+                              : {}),
+                          }),
+                    apiKey: key,
+                    activeProfileName: managed
+                      ? bookorbit
+                        ? 'BookOrbit managed'
+                        : 'Bindery managed'
+                      : (options?.profiles.find(
+                          ({ id }) => id === draft.activeProfileId
+                        )?.name ?? draft.activeProfileName),
+                    ...(isBook
+                      ? { backend, serviceType: draft.serviceType ?? 'ebook' }
+                      : {}),
+                    ...(managed
+                      ? {
+                          activeProfileId: 0,
+                          activeMetadataProfileId: 0,
+                          activeMetadataProfileName: bookorbit
+                            ? 'BookOrbit managed'
+                            : 'Bindery managed',
+                          activeDirectory: '/',
+                          preventSearch: true,
+                          tagRequests: false,
+                          ...(bookorbit
                             ? {
-                                activeMetadataProfileId:
-                                  draft.activeMetadataProfileId,
-                                activeMetadataProfileName:
-                                  options?.metadataProfiles?.find(
-                                    ({ id }) =>
-                                      id === draft.activeMetadataProfileId
-                                  )?.name ?? draft.activeMetadataProfileName,
+                                bookorbitUsername:
+                                  draft.bookorbitUsername?.trim(),
                               }
-                            : {}),
-                        }),
-                  apiKey: key,
-                  activeProfileName: managed
-                    ? bookorbit
-                      ? 'BookOrbit managed'
-                      : 'Bindery managed'
-                    : (options?.profiles.find(
-                        ({ id }) => id === draft.activeProfileId
-                      )?.name ?? draft.activeProfileName),
-                  ...(isBook
-                    ? { backend, serviceType: draft.serviceType ?? 'ebook' }
-                    : {}),
-                  ...(managed
-                    ? {
-                        activeProfileId: 0,
-                        activeMetadataProfileId: 0,
-                        activeMetadataProfileName: bookorbit
-                          ? 'BookOrbit managed'
-                          : 'Bindery managed',
-                        activeDirectory: '/',
-                        preventSearch: true,
-                        tagRequests: false,
-                        ...(bookorbit
-                          ? {
-                              bookorbitUsername:
-                                draft.bookorbitUsername?.trim(),
-                            }
-                          : { binderyUserMappings: mappings }),
-                      }
-                    : {}),
-                }
+                            : { binderyUserMappings: mappings }),
+                        }
+                      : {}),
+                  }
           ),
         });
         if (generation !== sessionGeneration()) return;
@@ -676,27 +688,36 @@ function ServiceForm({
             .filter(([field]) =>
               isSportarr
                 ? field === 'useSsl' || field === 'isDefault'
-                : video ||
-                  (field !== 'is4k' &&
-                    field !== 'requestButtonAnimeOnly' &&
-                    (!(isBook || collector) || field !== 'tagRequests') &&
-                    (!(managed || provider === 'backissue') ||
-                      field !== 'preventSearch'))
+                : isAurral
+                  ? field === 'useSsl' ||
+                    field === 'isDefault' ||
+                    field === 'syncEnabled'
+                  : video ||
+                    (field !== 'is4k' &&
+                      field !== 'requestButtonAnimeOnly' &&
+                      (!(isBook || collector) || field !== 'tagRequests') &&
+                      (!(managed || provider === 'backissue') ||
+                        field !== 'preventSearch'))
             )
             .map(([field, label]) => (
               <label className="set cfg-row" key={field}>
                 <span>
-                  {collector && field === 'syncEnabled'
+                  {isAurral && field === 'syncEnabled'
                     ? t(
-                        'lumen.servarr.enableLibraryScan',
-                        'Enable Library Scan'
+                        'lumen.servarr.keepAvailabilityInSync',
+                        'Keep Availability in Sync'
                       )
-                    : collector && field === 'preventSearch'
+                    : collector && field === 'syncEnabled'
                       ? t(
-                          'lumen.servarr.searchOnApproval',
-                          'Search on Approval'
+                          'lumen.servarr.enableLibraryScan',
+                          'Enable Library Scan'
                         )
-                      : t(`lumen.servarr.flag.${field}`, label)}
+                      : collector && field === 'preventSearch'
+                        ? t(
+                            'lumen.servarr.searchOnApproval',
+                            'Search on Approval'
+                          )
+                        : t(`lumen.servarr.flag.${field}`, label)}
                 </span>
                 <input
                   type="checkbox"
@@ -825,7 +846,7 @@ function ServiceForm({
               </select>
             </label>
           ) : null}
-          {!collector && !isSportarr && (
+          {!collector && !isSportarr && !isAurral && (
             <label className="set cfg-row">
               <span>
                 {t('lumen.servarr.downloadQueueSize', 'Download Queue Size')}
@@ -863,6 +884,13 @@ function ServiceForm({
               'lumen.servarr.lazyLibrarianApiKeyHelp',
               'Use a write-enabled API key from LazyLibrarian under Config → Interface.'
             )}
+          </p>
+        )}
+        {isAurral && (
+          <p className="note">
+            Use a per-user Aurral API key (Settings → Profile → API access) so
+            requests are attributed properly; an admin key returns 403 on
+            user-data actions.
           </p>
         )}
         <div className="toolbar">
@@ -1346,9 +1374,11 @@ export default function AdminServarr({
                 <span>
                   <b>{service.name}</b>
                   <small>
-                    {service.is4k
-                      ? '4K'
-                      : t('lumen.servarr.standard', 'Standard')}
+                    {provider === 'aurral'
+                      ? t('lumen.servarr.musicAndTracks', 'Music & Tracks')
+                      : service.is4k
+                        ? '4K'
+                        : t('lumen.servarr.standard', 'Standard')}
                     {service.isDefault
                       ? ` · ${t('lumen.servarr.default', 'Default')}`
                       : ''}

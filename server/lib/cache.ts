@@ -38,7 +38,10 @@ export type AvailableCacheIds =
   | 'simkl'
   | 'personallibrary'
   | 'mediaavailability'
-  | 'mdblist';
+  | 'mdblist'
+  | 'aurral'
+  | 'deezer'
+  | 'podcastcharts';
 
 const DEFAULT_TTL = 300;
 const DEFAULT_CHECK_PERIOD = 120;
@@ -434,6 +437,8 @@ class CacheManager {
       checkPeriod: 60 * 30,
     }),
     listenbrainz: new Cache('listenbrainz', 'ListenBrainz API', {
+      staleMaxAge: DEFAULT_STALE_MAX_AGE_SECONDS,
+      persist: true,
       stdTtl: 21600,
       checkPeriod: 60 * 30,
     }),
@@ -485,6 +490,23 @@ class CacheManager {
     associations: new Cache('associations', 'Cross-Medium Associations', {
       stdTtl: 43200,
       checkPeriod: 60 * 30,
+    }),
+    aurral: new Cache('aurral', 'Aurral', {
+      stdTtl: 60,
+      checkPeriod: 60 * 5,
+    }),
+    deezer: new Cache('deezer', 'Deezer API', {
+      stdTtl: 600,
+      checkPeriod: 60 * 5,
+      maxKeys: 500,
+    }),
+    // public chart lists: kept across restarts, and served while Apple is slow
+    podcastcharts: new Cache('podcastcharts', 'Apple Podcasts charts', {
+      staleMaxAge: DEFAULT_STALE_MAX_AGE_SECONDS,
+      persist: true,
+      stdTtl: 6 * 60 * 60,
+      checkPeriod: 60 * 5,
+      maxKeys: 250,
     }),
   };
 

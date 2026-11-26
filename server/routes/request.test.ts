@@ -9037,6 +9037,90 @@ describe('POST /request/bulk', () => {
     assert.strictEqual(await getRepository(MediaRequest).count(), 2);
   });
 
+  it('answers 404, not 500, for a music id MusicBrainz does not know', async (t) => {
+    const settings = getSettings();
+    settings.lidarr = [createLidarrSettings(10)];
+    const notFound = () =>
+      Object.assign(new Error('Request failed with status code 404'), {
+        response: { status: 404 },
+      });
+    const getAlbumMock = mock.method(
+      ListenBrainzAPI.prototype,
+      'getAlbum',
+      async () => {
+        throw notFound();
+      }
+    );
+    const getReleaseGroupDetailsMock = mock.method(
+      MusicBrainz.prototype,
+      'getReleaseGroupDetails',
+      async () => {
+        throw notFound();
+      }
+    );
+    const getReleaseGroupMock = mock.method(
+      MusicBrainz.prototype,
+      'getReleaseGroup',
+      async () => {
+        // MusicBrainz answers 400 for some well-formed ids it rejects, and
+        // wraps the axios error, keeping it as the cause
+        throw new Error('[MusicBrainz] Failed to fetch release group', {
+          cause: Object.assign(
+            new Error('Request failed with status code 400'),
+            { response: { status: 400 } }
+          ),
+        });
+      }
+    );
+    t.after(() => {
+      getAlbumMock.mock.restore();
+      getReleaseGroupDetailsMock.mock.restore();
+      getReleaseGroupMock.mock.restore();
+      settings.lidarr = [];
+    });
+
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const res = await agent.post('/request').send({
+      mediaType: MediaType.MUSIC,
+      mediaId: '00000000-0000-0000-0000-000000000000',
+    });
+
+    assert.strictEqual(res.status, 404);
+    assert.match(res.body.message, /not found on MusicBrainz/);
+    assert.strictEqual(await getRepository(MediaRequest).count(), 0);
+  });
+
+  it('still answers 500 when MusicBrainz is down during a music request', async (t) => {
+    const settings = getSettings();
+    settings.lidarr = [createLidarrSettings(10)];
+    const unavailable = () =>
+      Object.assign(new Error('Request failed with status code 503'), {
+        response: { status: 503 },
+      });
+    const mocks = [
+      mock.method(ListenBrainzAPI.prototype, 'getAlbum', async () => {
+        throw unavailable();
+      }),
+      mock.method(MusicBrainz.prototype, 'getReleaseGroupDetails', async () => {
+        throw unavailable();
+      }),
+      mock.method(MusicBrainz.prototype, 'getReleaseGroup', async () => {
+        throw unavailable();
+      }),
+    ];
+    t.after(() => {
+      for (const m of mocks) m.mock.restore();
+      settings.lidarr = [];
+    });
+
+    const agent = await loginAs('friend@seerr.dev', 'test1234');
+    const res = await agent.post('/request').send({
+      mediaType: MediaType.MUSIC,
+      mediaId: '11111111-1111-1111-1111-111111111111',
+    });
+    assert.strictEqual(res.status, 500);
+  });
+
   it('dedupes repeated music bulk items before requesting metadata', async (t) => {
     const settings = getSettings();
     settings.lidarr = [createLidarrSettings(10)];

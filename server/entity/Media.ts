@@ -1,4 +1,5 @@
 import AudiobookshelfAPI from '@server/api/audiobookshelf';
+import AurralAPI from '@server/api/aurral';
 import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import MylarAPI from '@server/api/comics/mylar';
@@ -417,6 +418,9 @@ class Media {
   public comicServiceType?: 'mylar' | 'kapowarr' | 'backissue' | null;
 
   @Column({ nullable: true, type: 'varchar' })
+  public musicServiceType?: 'lidarr' | 'aurral' | null;
+
+  @Column({ nullable: true, type: 'varchar' })
   public ratingKey?: string | null;
 
   @Column({ nullable: true, type: 'varchar' })
@@ -488,6 +492,7 @@ class Media {
     this.externalServiceId = null;
     this.externalServiceSlug = null;
     this.comicServiceType = null;
+    this.musicServiceType = null;
     if (!preserveMediaServerKeys) {
       this.ratingKey = null;
       this.hasPlexAudiobookFile = undefined;
@@ -628,7 +633,19 @@ class Media {
     }
 
     if (this.mediaType === MediaType.MUSIC) {
-      if (this.serviceId !== null && this.externalServiceSlug !== null) {
+      if (this.musicServiceType === 'aurral' && this.serviceId !== null) {
+        const settings = getSettings();
+        const server = settings.aurral.find(
+          (aurral) => aurral.id === this.serviceId
+        );
+        if (server) {
+          const slug = this.mbId ?? this.externalServiceSlug;
+          const albumPath = slug ? `/album/${slug}` : '/';
+          this.serviceUrl = server.externalUrl
+            ? `${server.externalUrl}${albumPath}`
+            : AurralAPI.buildUrl(server, albumPath);
+        }
+      } else if (this.serviceId !== null && this.externalServiceSlug !== null) {
         const settings = getSettings();
         const server = settings.lidarr.find(
           (lidarr) => lidarr.id === this.serviceId

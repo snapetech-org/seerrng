@@ -35,7 +35,7 @@ import {
 } from '@server/constants/media';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
-import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
+import type { MusicServiceOption } from '@server/interfaces/api/serviceInterfaces';
 import type { QuotaResponse } from '@server/interfaces/api/userInterfaces';
 import { Permission, hasAutoApprovePermission } from '@server/lib/permissions';
 import type { MusicDetails } from '@server/models/Music';
@@ -59,10 +59,10 @@ const messages = defineMessages('components.RequestModal.Music', {
   requestfrom: "{username}'s request is pending approval.",
   requesterror: 'Something went wrong while submitting the request.',
   backendRequestFailed:
-    'The request was submitted, but Lidarr rejected it while processing.',
+    'The request was submitted, but the music service rejected it while processing.',
   editerror: 'Something went wrong while editing the request.',
   noLidarrServer:
-    'No Lidarr service is configured. Music requests are unavailable.',
+    'No music acquisition service is configured. Music requests are unavailable.',
   mediaAndFormat: 'Media & Format',
   releaseDate: 'Release Date',
   runtime: 'Runtime',
@@ -115,17 +115,21 @@ const MusicRequestModal = ({
       revalidateOnMount: true,
     }
   );
-  const { data: musicServices } = useSWR<ServiceCommonServer[]>(
-    '/api/v1/service/lidarr'
+  const { data: musicServices } = useSWR<MusicServiceOption[]>(
+    '/api/v1/service/music'
   );
   const selectedService = musicServices?.find(
     (server) => server.id === requestOverrides?.server
   );
   const fallbackService = musicServices?.find((server) => server.isDefault);
+  const resolvedService =
+    selectedService ?? fallbackService ?? musicServices?.[0];
+  const selectedBackendType =
+    resolvedService?.backendType === 'aurral' ? 'aurral' : 'lidarr';
   const selectedDestination = createRequestDestination(
-    'lidarr',
+    selectedBackendType,
     'music',
-    selectedService ?? fallbackService,
+    resolvedService,
     requestOverrides
   );
   const selectedDestinationAvailable =
@@ -188,11 +192,15 @@ const MusicRequestModal = ({
       const overrideParams = requestOverrides
         ? {
             serverId: requestOverrides.server,
-            profileId: requestOverrides.profile,
-            metadataProfileId: requestOverrides.metadataProfile,
-            rootFolder: requestOverrides.folder,
             userId: requestOverrides.user?.id,
-            tags: requestOverrides.tags,
+            ...(selectedBackendType === 'lidarr'
+              ? {
+                  profileId: requestOverrides.profile,
+                  metadataProfileId: requestOverrides.metadataProfile,
+                  rootFolder: requestOverrides.folder,
+                  tags: requestOverrides.tags,
+                }
+              : {}),
           }
         : {};
       const response = await axios.post<MediaRequest>('/api/v1/request', {
@@ -254,6 +262,7 @@ const MusicRequestModal = ({
     normalizedMbId,
     onComplete,
     requestOverrides,
+    selectedBackendType,
     selectedDestinationCovered,
   ]);
 
@@ -328,11 +337,15 @@ const MusicRequestModal = ({
       await axios.put(`/api/v1/request/${editRequest?.id}`, {
         mediaType: MediaType.MUSIC,
         serverId: requestOverrides?.server,
-        profileId: requestOverrides?.profile,
-        metadataProfileId: requestOverrides?.metadataProfile,
-        rootFolder: requestOverrides?.folder,
         userId: requestOverrides?.user?.id,
-        tags: requestOverrides?.tags,
+        ...(selectedBackendType === 'lidarr'
+          ? {
+              profileId: requestOverrides?.profile,
+              metadataProfileId: requestOverrides?.metadataProfile,
+              rootFolder: requestOverrides?.folder,
+              tags: requestOverrides?.tags,
+            }
+          : {}),
       });
 
       if (alsoApproveRequest) {

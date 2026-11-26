@@ -1,3 +1,4 @@
+import AurralAPI from '@server/api/aurral';
 import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import type { QueueItem, ServarrHistoryItem } from '@server/api/servarr/base';
@@ -124,6 +125,8 @@ export class DownloadTracker {
   private sonarrHistory: Record<number, ServarrHistoryItem[]> = {};
   private lidarrServers: Record<number, DownloadingItem[]> = {};
   private lidarrHistory: Record<number, ServarrHistoryItem[]> = {};
+  private aurralServers: Record<number, DownloadingItem[]> = {};
+  private aurralHistory: Record<number, ServarrHistoryItem[]> = {};
   private readarrServers: Record<number, DownloadingItem[]> = {};
   private kapowarrServers: Record<number, DownloadingItem[]> = {};
   private backissueServers: Record<number, DownloadingItem[]> = {};
@@ -262,13 +265,12 @@ export class DownloadTracker {
     serverId: number,
     externalServiceId: number
   ): DownloadingItem[] {
-    if (!this.lidarrServers[serverId]) {
-      return [];
-    }
+    const items = [
+      ...(this.lidarrServers[serverId] ?? []),
+      ...(this.aurralServers[serverId] ?? []),
+    ];
 
-    return this.lidarrServers[serverId].filter(
-      (item) => item.externalId === externalServiceId
-    );
+    return items.filter((item) => item.externalId === externalServiceId);
   }
 
   private getHistoryEvidence(
@@ -374,12 +376,21 @@ export class DownloadTracker {
     externalServiceId: number,
     since: Date
   ): ServarrHistoryEvidence | undefined {
-    return this.getHistoryEvidence(
-      this.lidarrHistory,
-      'albumId',
-      serverId,
-      externalServiceId,
-      since
+    return (
+      this.getHistoryEvidence(
+        this.lidarrHistory,
+        'albumId',
+        serverId,
+        externalServiceId,
+        since
+      ) ??
+      this.getHistoryEvidence(
+        this.aurralHistory,
+        'albumId',
+        serverId,
+        externalServiceId,
+        since
+      )
     );
   }
 
@@ -446,6 +457,7 @@ export class DownloadTracker {
       this.updateWhisparrDownloads(),
       this.updateSonarrDownloads(),
       this.updateLidarrDownloads(),
+      this.updateAurralDownloads(),
       this.updateReadarrDownloads(),
       this.updateKapowarrDownloads(),
       this.updateBackIssueDownloads(),
@@ -919,6 +931,122 @@ export class DownloadTracker {
         } catch (error) {
           logger.error(
             `Unable to get queue from Lidarr server: ${server.name}`,
+            {
+              errorMessage:
+                error instanceof Error ? error.message : String(error),
+              label: 'Download Tracker',
+            }
+          );
+        }
+      }
+    );
+  }
+
+  private async updateAurralDownloads() {
+    const settings = getExternalRuntimeConfig();
+
+    const filteredServers = uniqWith(
+      settings.aurral
+        .filter((server) => server.syncEnabled)
+        .slice(0, MAX_SERVARR_INSTANCES_PER_TYPE),
+      (left, right) =>
+        left.hostname === right.hostname &&
+        left.port === right.port &&
+        left.baseUrl === right.baseUrl
+    );
+
+    await mapWithConcurrency(
+      filteredServers,
+      DOWNLOAD_TRACKER_SERVER_CONCURRENCY,
+      async (server) => {
+        const aurral = new AurralAPI({
+          apiKey: server.apiKey,
+          url: AurralAPI.buildUrl(server),
+        });
+        const matchingServers = settings.aurral.filter(
+          (candidate) =>
+            candidate.syncEnabled &&
+            candidate.id !== server.id &&
+            candidate.hostname === server.hostname &&
+            candidate.port === server.port &&
+            candidate.baseUrl === server.baseUrl
+        );
+
+        try {
+          const activity = await this.runWithCurrentServarrDownloadServer(
+            'aurral',
+            server,
+            () => aurral.getActivity()
+          );
+          if (!activity) {
+            delete this.aurralServers[server.id];
+            delete this.aurralHistory[server.id];
+            return;
+          }
+
+          const activeItems: DownloadingItem[] = [];
+          const historyItems: ServarrHistoryItem[] = [];
+
+          for (const item of activity) {
+            const albumId = item.libraryAlbumId ?? item.albumId;
+            if (!albumId || albumId <= 0) {
+              continue;
+            }
+            const normalizedStatus = item.status.trim().toLowerCase();
+            if (
+              normalizedStatus === 'downloading' ||
+              normalizedStatus === 'queued' ||
+              normalizedStatus === 'pending' ||
+              normalizedStatus === 'running' ||
+              item.inQueue === true
+            ) {
+              activeItems.push({
+                externalId: albumId,
+                estimatedCompletionTime: new Date(Number.NaN),
+                mediaType: MediaType.MUSIC,
+                size: 0,
+                sizeLeft: 0,
+                status:
+                  normalizedStatus === 'queued' ||
+                  normalizedStatus === 'pending'
+                    ? 'queued'
+                    : 'downloading',
+                timeLeft: 'unknown',
+                title: item.title ?? item.albumName ?? 'Aurral download',
+                downloadId: item.jobId ?? item.id,
+              });
+            } else if (
+              normalizedStatus === 'failed' ||
+              normalizedStatus === 'error' ||
+              normalizedStatus === 'blocked' ||
+              normalizedStatus === 'cancelled' ||
+              normalizedStatus === 'completed' ||
+              normalizedStatus === 'imported'
+            ) {
+              historyItems.push({
+                id: 0,
+                albumId,
+                eventType:
+                  normalizedStatus === 'completed' ||
+                  normalizedStatus === 'imported'
+                    ? 'imported'
+                    : 'failed',
+                date:
+                  item.completedAt ??
+                  item.requestedAt ??
+                  new Date().toISOString(),
+                downloadId: item.jobId ?? item.id,
+              });
+            }
+          }
+
+          for (const candidate of [server, ...matchingServers]) {
+            this.aurralServers[candidate.id] = activeItems;
+            this.aurralHistory[candidate.id] = historyItems;
+          }
+        } catch (error) {
+          logger.error(
+            `Unable to get activity from Aurral server: ${server.name}`,
             {
               errorMessage:
                 error instanceof Error ? error.message : String(error),

@@ -35,6 +35,7 @@ import {
   canUseRequestAccess,
   useShareAvailable,
 } from './detail';
+import { MusicPreviewBar } from './MusicPlayback';
 
 // scroll position of each history entry, for Back
 const scrollSpots = new Map<string, number>();
@@ -304,7 +305,7 @@ export default function Shell({ children }: { children: ReactNode }) {
   const nav = useNavigate();
   const q = useRef<HTMLInputElement>(null);
   const detail =
-    /^\/(movie|tv|book|music|artist|comic|magazine|game|sportarr|adult|collection)\/./.test(
+    /^\/(movie|tv|book|music|artist|podcasts|comic|magazine|game|sportarr|adult|collection)\/./.test(
       loc.pathname
     );
   // the top search stays in the section you're in (Audiobooks searches audiobooks), like the phone pages
@@ -326,7 +327,14 @@ export default function Shell({ children }: { children: ReactNode }) {
               ? 'ebook'
               : path === '/comics' || path.startsWith('/comic/')
                 ? 'comic'
-                : 'all';
+                : path === '/music' ||
+                    path.startsWith('/music/') ||
+                    path.startsWith('/artist/') ||
+                    path.startsWith('/collections/music/')
+                  ? 'music'
+                  : path === '/podcasts' || path.startsWith('/podcasts/')
+                    ? 'podcast'
+                    : 'all';
   const comics = extras.list.some((e) => e.key === 'comic');
   const searchMessages: Record<string, [string, string]> = {
     movie: ['lumen.shell.searchMovies', 'Search movies…'],
@@ -334,6 +342,8 @@ export default function Shell({ children }: { children: ReactNode }) {
     audio: ['lumen.shell.searchAudio', 'Search audiobooks and narrators…'],
     ebook: ['lumen.shell.searchBooks', 'Search books and authors…'],
     comic: ['lumen.shell.searchComics', 'Search comics and manga…'],
+    music: ['lumen.shell.searchSongs', 'Search songs, albums and artists…'],
+    podcast: ['lumen.shell.searchPodcasts', 'Search podcasts…'],
   };
   const placeholder = searchMessages[scope]
     ? t(...searchMessages[scope])
@@ -351,11 +361,34 @@ export default function Shell({ children }: { children: ReactNode }) {
           )
         : t('lumen.shell.searchVideo', 'Search movies and series…');
   const [term, setTerm] = useState('');
+  // what this box last wrote to the address: on Music, only other changes (a recent-search
+  // chip, the Music link, Back) replace the text being typed
+  const typed = useRef<string | null>(null);
+  const musicTyping = useRef(0);
+  useEffect(() => () => window.clearTimeout(musicTyping.current), []);
+  const urlTerm =
+    path === '/search' || path === '/music' || path === '/podcasts'
+      ? params.get('q') || ''
+      : '';
+  const syncedTerm = path === '/music' ? urlTerm : null;
   useEffect(() => {
-    setTerm(path === '/search' ? params.get('q') || '' : '');
+    if (
+      path === '/music' &&
+      typed.current !== null &&
+      urlTerm.trim() === typed.current.trim()
+    )
+      return;
+    window.clearTimeout(musicTyping.current);
+    typed.current = null;
+    setTerm(urlTerm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [path]);
+  }, [path, syncedTerm]);
   const searchUrl = (v: string) => {
+    // Music searches in place: songs, albums and artists with Play and Get
+    if (scope === 'music')
+      return '/music' + (v ? '?' + new URLSearchParams({ q: v }) : '');
+    if (scope === 'podcast')
+      return '/podcasts' + (v ? '?' + new URLSearchParams({ q: v }) : '');
     const u = new URLSearchParams();
     if (v) u.set('q', v);
     if (scope !== 'all') u.set('f', scope);
@@ -955,14 +988,26 @@ export default function Shell({ children }: { children: ReactNode }) {
                   enterKeyHint="search"
                   value={term}
                   onChange={(e) => {
-                    setTerm(e.target.value);
+                    const value = e.target.value;
+                    setTerm(value);
+                    // music searches ask three catalogs: wait for a pause in typing
+                    if (path === '/music') {
+                      window.clearTimeout(musicTyping.current);
+                      musicTyping.current = window.setTimeout(() => {
+                        typed.current = value;
+                        nav(searchUrl(value), { replace: true });
+                      }, 300);
+                    }
                     // already on Search: results follow as you type, keeping the section filter
-                    if (path === '/search')
-                      nav(searchUrl(e.target.value), { replace: true });
+                    else if (path === '/search' || path === '/podcasts')
+                      nav(searchUrl(value), { replace: true });
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter')
-                      nav(searchUrl(e.currentTarget.value));
+                    if (e.key !== 'Enter') return;
+                    const value = e.currentTarget.value;
+                    window.clearTimeout(musicTyping.current);
+                    if (path === '/music') typed.current = value;
+                    nav(searchUrl(value));
                   }}
                 />
                 <kbd>/</kbd>
@@ -984,6 +1029,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             <VideoAvailabilityProvider key={loc.pathname}>
               {children}
             </VideoAvailabilityProvider>
+            <MusicPreviewBar />
           </main>
         </div>
       </div>

@@ -2,15 +2,16 @@
 // adult. Each one only shows up when the SeerrNG admin has turned it on; the server checks again
 // on every call, so a hidden page that someone opens by URL just explains it's off.
 import { useEffect, useState } from 'react';
-import { api, ApiError, type MediaInfo } from './api';
+import { api, ApiError, type MediaInfo, type MusicServiceSummary } from './api';
 import { isAdministrator, useAuth } from './auth';
 import { useApi, type PublicSettings } from './hooks';
 import type { IconName } from './icons';
 import { services } from './mediaServer';
+import { markAlbumRequested } from './musicState';
 import { onSessionReset, sessionUserId } from './sessionState';
 
 export type Extra =
-  'music' | 'comic' | 'magazine' | 'game' | 'sports' | 'adult';
+  'music' | 'podcast' | 'comic' | 'magazine' | 'game' | 'sports' | 'adult';
 // games cover three SeerrNG categories: PC games, retro consoles and modern consoles
 export type GameCategory = 'game' | 'retro' | 'modern';
 
@@ -27,6 +28,13 @@ export const EXTRAS: {
     icon: 'music',
     label: 'Music',
     message: 'components.Layout.Sidebar.browsemusic',
+  },
+  {
+    key: 'podcast',
+    path: '/podcasts',
+    icon: 'mic',
+    label: 'Podcasts',
+    message: 'lumen.nav.podcasts',
   },
   {
     key: 'comic',
@@ -73,6 +81,7 @@ export const GAME_LABEL: Record<GameCategory, string> = {
 // A category can be on with nothing behind it (Sports on, no Sportarr). One cheap call per
 // category tells whether its catalogue answers; the menus leave out the ones that don't.
 const PROBE: Partial<Record<Extra, string>> = {
+  podcast: '/podcast/status',
   comic: '/discover/comics',
   magazine: '/discover/magazines?catalog=tracked',
   sports: '/discover/sports',
@@ -127,8 +136,13 @@ const probe = (path: string, configured = false) => {
   if (!probes.has(cachePath)) {
     const pending: ProbeEntry = {
       at: now,
-      result: api<{ comicVineConfigured?: boolean }>(path)
-        .then((d) => d?.comicVineConfigured !== false)
+      result: api<{ comicVineConfigured?: boolean; configured?: boolean }>(path)
+        // podcasts answer { configured } (an Audiobookshelf podcast library exists)
+        .then((d) =>
+          path === '/podcast/status'
+            ? d?.configured === true
+            : d?.comicVineConfigured !== false
+        )
         // Unknown configuration can also report 503. Explicit configured catalogs
         // use their own cache namespace so old negative probes cannot hide recovery.
         .catch(
@@ -196,6 +210,8 @@ export function useExtras() {
   // the category must be on in SeerrNG *and* have its service connected
   const connected: Record<Extra, boolean> = {
     music: svc.music,
+    // no SeerrNG category: shown when Audiobookshelf has a podcast library (probed)
+    podcast: true,
     comic: svc.comics,
     magazine: svc.magazines,
     // consoles can come from ROMarrNG alone; each category is checked below
@@ -209,7 +225,9 @@ export function useExtras() {
       ? games.length > 0
       : k === 'adult'
         ? !!on.adult && !!pub?.adultEnabled
-        : !!on[k]);
+        : k === 'podcast'
+          ? true
+          : !!on[k]);
   const [working, setWorking] = useState<Set<Extra> | null>(null);
   // the game categories whose catalogue answers (PC games need QuestarrNG, consoles may not)
   const [gamesWorking, setGamesWorking] = useState<GameCategory[] | null>(null);
@@ -283,7 +301,9 @@ export const requestExtra = (
   mediaType: Exclude<Extra, 'game'>,
   mediaId: string | number,
   serverId?: number,
-  rootFolder?: string
+  rootFolder?: string,
+  // music: ask even when the songs will already come from another release
+  options: { force?: boolean } = {}
 ) =>
   api('/request', {
     method: 'POST',
@@ -292,7 +312,12 @@ export const requestExtra = (
       mediaId,
       ...(serverId !== undefined ? { serverId } : {}),
       ...(rootFolder ? { rootFolder } : {}),
+      ...(options.force ? { force: true } : {}),
     }),
+  }).then((result) => {
+    // every card, the top result and the album page show this album as asked for
+    if (mediaType === 'music') markAlbumRequested(String(mediaId));
+    return result;
   });
 
 // ---- music (MusicBrainz release groups, requested through Lidarr) ----
@@ -309,6 +334,11 @@ export interface Album {
   availableQualities?: ('MP3' | 'FLAC')[];
   qualityStatuses?: { quality: 'MP3' | 'FLAC'; status: number }[];
   mediaInfo?: MediaInfo;
+  // the music library's own state of this album (all or part of its songs)
+  inLibrary?: boolean;
+  partial?: boolean;
+  libraryTrackCount?: number;
+  libraryAvailableTrackCount?: number;
 }
 export interface AlbumDetails {
   onUserWatchlist?: boolean;
@@ -327,6 +357,7 @@ export interface AlbumDetails {
     name: string;
     position: number;
     length?: number;
+    recordingMbid?: string;
     totalListenCount?: number;
     artists?: { name: string; mbid: string }[];
   }[];
@@ -339,9 +370,75 @@ export interface AlbumDetails {
   recordLabel?: string;
   artistThumb?: string;
   artistBackdrop?: string;
+  trackAvailability?: {
+    mp3?: string[];
+    flac?: string[];
+    // songs of this release owned on another one (same artist and title)
+    elsewhere?: string[];
+  };
+  // the music library's own count of this album's songs (the Library tab's)
+  libraryAlbum?: {
+    status: 'owned' | 'partial';
+    trackCount: number;
+    availableTrackCount: number;
+  };
+  // a single whose songs are on an album (or another edition): where they are
+  redundant?: {
+    code: 'sameAlbum' | 'covered';
+    reason: string;
+    coveredBy: { mbid: string; title: string };
+  };
   mediaInfo?: MediaInfo;
   availableServices?: { serverId: number; quality: string }[];
 }
+
+export interface TrackRequestStatus {
+  configured: boolean;
+  slskdnConfigured?: boolean;
+  aurralConfigured?: boolean;
+  backend?: 'aurral' | 'slskdn' | null;
+  canRequest: boolean;
+}
+
+export interface TrackRequestItem {
+  id: number;
+  status:
+    'pending' | 'searching' | 'completed' | 'failed' | 'declined' | 'cancelled';
+  backendType?: 'slskdn' | 'aurral';
+  artist: string;
+  title: string;
+  recordingMbid?: string | null;
+  source?: string;
+  searchCount: number;
+  lastMatchCount: number;
+  lastError?: string | null;
+  lastErrorMessageKey?: string | null;
+  createdAt: string;
+  updatedAt?: string;
+  requestedBy?: { id: number; displayName: string };
+}
+
+export const hasAurralMusicService = (
+  services?: MusicServiceSummary[] | null,
+  trackStatus?: TrackRequestStatus | null
+) =>
+  Boolean(
+    trackStatus?.aurralConfigured ||
+    // an unexpected answer (not a list) must not take the music page down
+    (Array.isArray(services) &&
+      services.some((service) => service?.backendType === 'aurral'))
+  );
+/**
+ * The Lumen music pages (Discover, search, artist, library, activity) work
+ * with Aurral or Lidarr; the server answers them from whichever is set up.
+ */
+export const hasMusicPagesService = (
+  services?: MusicServiceSummary[] | null,
+  trackStatus?: TrackRequestStatus | null
+) =>
+  hasAurralMusicService(services, trackStatus) ||
+  (Array.isArray(services) &&
+    services.some((service) => service?.backendType === 'lidarr'));
 export interface ArtistDetails {
   artist: {
     id?: string;
@@ -361,12 +458,98 @@ export interface ArtistDetails {
   releaseGroups: Album[];
   typeCounts?: Record<string, number>;
 }
+
+export interface AurralArtist {
+  mbid: string | null;
+  name: string;
+  image: string | null;
+  inLibrary: boolean;
+}
+
+export interface AurralAlbum {
+  mbid: string | null;
+  title: string;
+  artistName: string;
+  artistMbid: string | null;
+  primaryType: string;
+  releaseDate: string | null;
+  coverUrl: string | null;
+  inLibrary: boolean;
+  mediaInfo?: MediaInfo;
+  // part of its songs are in the library, with the library's own counts
+  partial?: boolean;
+  libraryTrackCount?: number;
+  libraryAvailableTrackCount?: number;
+}
+
+export interface AurralTrack {
+  title: string;
+  artistName: string;
+  artistMbid: string | null;
+  albumTitle: string | null;
+  albumMbid: string | null;
+  durationMs: number | null;
+  coverUrl: string | null;
+  inLibrary: boolean;
+  // its album is requested or downloading: the song is on its way too
+  albumRequested?: boolean;
+}
+
+export type AurralTopResult =
+  | ({ type: 'artist' } & AurralArtist)
+  | ({ type: 'album' } & AurralAlbum)
+  | ({ type: 'track' } & AurralTrack)
+  | null;
+
+export interface AurralSearchResponse {
+  artists: AurralArtist[];
+  albums: AurralAlbum[];
+  tracks: AurralTrack[];
+  top: AurralTopResult;
+  // artist/album catalog was unavailable; songs may still be shown
+  degraded?: boolean;
+  // the person's own library, searched first
+  library?: {
+    artists?: AurralArtist[];
+    albums?: AurralAlbum[];
+    tracks?: AurralTrack[];
+  } | null;
+  // a pasted Spotify/Apple Music/YouTube Music/TIDAL/Deezer link, resolved
+  link?: {
+    type?: 'track' | 'album' | 'artist' | 'playlist';
+    provider?: string | null;
+    id?: string | null;
+    mbid?: string | null;
+    title?: string | null;
+    artistName?: string | null;
+    albumMbid?: string | null;
+  } | null;
+  // the query actually used when the original found nothing
+  correctedQuery?: string | null;
+}
+
+export interface AurralTrendingResponse {
+  artists: AurralArtist[];
+  albums: AurralAlbum[];
+  tracks: AurralTrack[];
+}
+
+export interface AurralGenresResponse {
+  tags: string[];
+}
+
+export interface AurralGenreResponse {
+  tag: string;
+  artists: AurralArtist[];
+}
 export const artistOf = (a: Pick<Album, 'artist-credit'>) =>
   a['artist-credit']?.map((c) => c.name).join(', ') || '';
-export const fmtTrack = (ms?: number) =>
-  ms
-    ? `${Math.floor(ms / 60000)}:${String(Math.round((ms % 60000) / 1000)).padStart(2, '0')}`
-    : '';
+export const fmtTrack = (ms?: number) => {
+  if (!ms) return '';
+  // round the whole length first: 3:59.6 is 4:00, never 3:60
+  const seconds = Math.round(ms / 1000);
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+};
 
 // ---- comics (ComicVine volumes) and magazines (LazyLibrarian or Google Books) ----
 export interface Comic {

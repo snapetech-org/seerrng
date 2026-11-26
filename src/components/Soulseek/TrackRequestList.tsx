@@ -33,7 +33,7 @@ interface TrackRequestView {
 const messages = defineMessages('components.Soulseek.TrackRequestList', {
   title: 'Track Requests',
   notConfigured:
-    'Soulseek track requests are not set up. An administrator can connect slskdN in Settings → Services.',
+    'Track requests are not set up. An administrator can connect Aurral or slskdN in Settings → Services.',
   empty: 'No Track Requests Yet',
   emptyHelp:
     'Import a playlist from Requests, or identify a song, to request tracks that have no album match.',

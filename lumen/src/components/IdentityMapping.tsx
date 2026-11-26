@@ -3,6 +3,7 @@ import { api, type Paged, type TitleResult } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { apiQueryString } from '../searchParams';
 import { ServiceNote } from './extra';
 import { useToast } from './toast';
 
@@ -43,7 +44,7 @@ export default function IdentityMapping({
   const toast = useToast();
   const search = useApi<Paged<TitleResult>>(
     open && matches
-      ? `/search?${new URLSearchParams({ query: matches.term, type: matches.type, page: '1' })}`
+      ? `/search?${apiQueryString(new URLSearchParams({ query: matches.term, type: matches.type, page: '1' }))}`
       : null,
     { currentPathOnly: true }
   );

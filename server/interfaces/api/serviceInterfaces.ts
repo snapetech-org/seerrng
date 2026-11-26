@@ -11,6 +11,7 @@ export interface ServiceCommonServer {
   is4k: boolean;
   isAlt?: boolean;
   isDefault: boolean;
+  backendType?: 'lidarr' | 'aurral';
   activeProfileId?: number;
   musicQuality?: 'mp3' | 'flac';
   activeMetadataProfileId?: number;
@@ -50,6 +51,16 @@ export interface ComicServiceOption {
   name: string;
   isDefault: boolean;
   backendType: 'mylar' | 'kapowarr' | 'backissue';
+}
+
+export interface MusicServiceOption {
+  id: number;
+  name: string;
+  isDefault: boolean;
+  backendType: 'lidarr' | 'aurral';
+  musicQuality?: 'mp3' | 'flac';
+  /** Browser address of the music app (Aurral), for Play links. */
+  externalUrl?: string;
 }
 
 export interface MagazineServiceOption {

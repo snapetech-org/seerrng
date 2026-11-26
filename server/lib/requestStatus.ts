@@ -24,6 +24,7 @@ import { getExternalRuntimeConfig } from '@server/lib/externalRuntimeConfig';
 import { isMagazineRequestFileAvailable } from '@server/lib/magazineAvailability';
 import { hydrateMediaRequestRelations } from '@server/lib/mediaRequestHydration';
 import {
+  getRequestedAurralAlbumStatus,
   getRequestedMusicSearchTime,
   reconcileRequestedMusicAvailability,
 } from '@server/lib/musicAvailability';
@@ -104,6 +105,10 @@ export type RequestStatusMessageKey =
   | 'waitingForBinderyApproval'
   | 'preparingBookshelfSearch'
   | 'preparingBookServiceAcquisition'
+  | 'aurralSearching'
+  | 'aurralDownloading'
+  | 'aurralImporting'
+  | 'aurralFailed'
   | 'requestRetried'
   | 'approvedForProcessing';
 
@@ -203,6 +208,7 @@ type RequestMediaLike = {
   audiobookLibraryServiceId?: number | null;
   audiobookLibraryItemId?: string | null;
   comicServiceType?: 'mylar' | 'kapowarr' | 'backissue' | null;
+  musicServiceType?: 'lidarr' | 'aurral' | null;
   seasons?: {
     seasonNumber: number;
     status: MediaStatus;
@@ -326,7 +332,9 @@ const getTarget = (
 const getMusicTarget = (
   request: RequestLike
 ): MediaRequestServiceTarget | undefined => {
-  const savedTarget = getTarget(request, 'lidarr', 'music');
+  const savedTarget =
+    getTarget(request, 'aurral', 'music') ??
+    getTarget(request, 'lidarr', 'music');
   if (savedTarget) {
     return savedTarget;
   }
@@ -339,7 +347,8 @@ const getMusicTarget = (
     request.media.serviceId != null &&
     request.media.externalServiceId != null
     ? {
-        serviceType: 'lidarr',
+        serviceType:
+          request.media.musicServiceType === 'aurral' ? 'aurral' : 'lidarr',
         format: 'music',
         serverId: request.media.serviceId,
         externalServiceId: request.media.externalServiceId,
@@ -828,7 +837,9 @@ const getServiceName = (request: RequestLike): string | null => {
     );
   } else if (request.type === MediaType.MUSIC) {
     const target = getMusicTarget(request);
-    add(settings.lidarr.find((server) => server.id === target?.serverId)?.name);
+    const musicServices =
+      target?.serviceType === 'aurral' ? settings.aurral : settings.lidarr;
+    add(musicServices.find((server) => server.id === target?.serverId)?.name);
   } else if (request.type === MediaType.COMIC) {
     const target = getComicRequestTarget(request.media, request);
     const comicServices =
@@ -1035,6 +1046,13 @@ const REQUEST_STATUS_MESSAGE_KEYS = new Map<string, RequestStatusMessageKey>([
     'The connected book service is handling acquisition for this title. SeerrNG will update availability when the book appears in its library.',
     'preparingBookServiceAcquisition',
   ],
+  ['Aurral is searching for this album.', 'aurralSearching'],
+  ['Aurral is downloading this album.', 'aurralDownloading'],
+  ['Aurral is importing tracks for this album.', 'aurralImporting'],
+  [
+    'Aurral could not download this album. Check activity in Aurral and retry when ready.',
+    'aurralFailed',
+  ],
   [
     'The request was retried and is waiting to be dispatched.',
     'requestRetried',
@@ -1073,10 +1091,28 @@ const getStageFromRequest = (
     };
   }
   if (request.status === MediaRequestStatus.FAILED) {
+    const failedMusicTarget =
+      request.type === MediaType.MUSIC ? getMusicTarget(request) : undefined;
+    const failedAurralStatus =
+      failedMusicTarget?.serviceType === 'aurral' &&
+      failedMusicTarget.externalServiceId != null
+        ? getRequestedAurralAlbumStatus(
+            failedMusicTarget.serverId,
+            failedMusicTarget.externalServiceId
+          )
+        : undefined;
     return {
       stage: RequestStatusStage.FAILED,
       queueFailure: false,
       downloads: [],
+      ...(failedAurralStatus === 'blocked' ||
+      failedAurralStatus === 'cancelled' ||
+      failedAurralStatus === 'failed'
+        ? {
+            message:
+              'Aurral could not download this album. Check activity in Aurral and retry when ready.',
+          }
+        : {}),
     };
   }
 
@@ -1194,23 +1230,72 @@ const getStageFromRequest = (
     };
   }
 
-  if (
-    request.type === MediaType.MUSIC &&
-    hasRequestedServiceLink(request) &&
-    options.latestEvent &&
-    (options.latestEvent.stage === RequestStatusStage.DOWNLOADING ||
-      options.latestEvent.stage === RequestStatusStage.IMPORTING ||
-      options.latestEvent.stage === RequestStatusStage.LIBRARY)
-  ) {
-    return {
-      stage: RequestStatusStage.IMPORTING,
-      queueFailure: false,
-      downloads,
-    };
-  }
-
   if (request.type === MediaType.MUSIC && hasRequestedServiceLink(request)) {
     const musicTarget = getMusicTarget(request);
+    if (musicTarget?.serviceType === 'aurral') {
+      const aurralStatus =
+        musicTarget.externalServiceId != null
+          ? getRequestedAurralAlbumStatus(
+              musicTarget.serverId,
+              musicTarget.externalServiceId
+            )
+          : undefined;
+      if (aurralStatus === 'complete') {
+        return {
+          stage: RequestStatusStage.AVAILABLE,
+          queueFailure: false,
+          downloads,
+        };
+      }
+      if (aurralStatus === 'downloading') {
+        return {
+          stage: RequestStatusStage.DOWNLOADING,
+          queueFailure: false,
+          downloads,
+          message: 'Aurral is downloading this album.',
+        };
+      }
+      if (aurralStatus === 'partial') {
+        return {
+          stage: RequestStatusStage.IMPORTING,
+          queueFailure: false,
+          downloads,
+          message:
+            'Aurral has some of the tracks for this album. The rest may not be available yet.',
+        };
+      }
+      if (
+        aurralStatus === 'blocked' ||
+        aurralStatus === 'cancelled' ||
+        aurralStatus === 'failed'
+      ) {
+        return {
+          stage: RequestStatusStage.FAILED,
+          queueFailure: true,
+          downloads,
+          message:
+            'Aurral could not download this album. Check activity in Aurral and retry when ready.',
+        };
+      }
+      return {
+        stage: RequestStatusStage.SEARCHING,
+        queueFailure: false,
+        downloads,
+        message: 'Aurral is searching for this album.',
+      };
+    }
+    if (
+      options.latestEvent &&
+      (options.latestEvent.stage === RequestStatusStage.DOWNLOADING ||
+        options.latestEvent.stage === RequestStatusStage.IMPORTING ||
+        options.latestEvent.stage === RequestStatusStage.LIBRARY)
+    ) {
+      return {
+        stage: RequestStatusStage.IMPORTING,
+        queueFailure: false,
+        downloads,
+      };
+    }
     const searchTime =
       options.musicSearchTime === undefined
         ? musicTarget?.externalServiceId != null

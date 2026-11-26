@@ -6,6 +6,7 @@ export type RequestServiceType =
   | 'sonarr'
   | 'sportarr'
   | 'lidarr'
+  | 'aurral'
   | 'readarr'
   | 'mylar'
   | 'kapowarr'

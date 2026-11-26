@@ -2,6 +2,7 @@ import SelectionCircle from '@app/components/Common/SelectionCircle';
 import Tooltip from '@app/components/Common/Tooltip';
 import defineMessages from '@app/utils/defineMessages';
 import {
+  ArrowDownTrayIcon,
   CheckCircleIcon,
   ServerStackIcon,
   XCircleIcon,
@@ -19,6 +20,8 @@ const messages = defineMessages('components.MediaDetails.AlbumTrackList', {
   selection: 'Select items to play',
   includedInAlbumRequest: 'Included in the album request',
   availabilityLegend: 'Green check: available. Red X: not available.',
+  requestTrack: 'Request track',
+  requestedTrack: 'Track requested',
 });
 
 interface AlbumTrackListProps {
@@ -29,6 +32,9 @@ interface AlbumTrackListProps {
   selectedItemIds?: string[];
   onSelectionChange?: (itemIds: string[]) => void;
   albumRequest?: boolean;
+  onRequestTrack?: (track: MusicDetails['tracks'][number]) => void;
+  requestingTrackIds?: string[];
+  requestedTrackIds?: string[];
 }
 
 const AlbumTrackList = ({
@@ -39,6 +45,9 @@ const AlbumTrackList = ({
   selectedItemIds = [],
   onSelectionChange,
   albumRequest = false,
+  onRequestTrack,
+  requestingTrackIds = [],
+  requestedTrackIds = [],
 }: AlbumTrackListProps) => {
   const intl = useIntl();
   const notAvailable = intl.formatMessage(messages.notAvailable);
@@ -239,7 +248,44 @@ const AlbumTrackList = ({
                           {formatRuntime(track.length)}
                         </span>
                         {!albumRequest && (
-                          <AvailabilityIcon available={available} />
+                          <span className="media-availability-cell inline-flex items-center gap-1">
+                            <AvailabilityIcon available={available} />
+                            {!available &&
+                              onRequestTrack &&
+                              Boolean(track.name) && (
+                                <Tooltip
+                                  content={intl.formatMessage(
+                                    requestedTrackIds.includes(
+                                      track.recordingMbid || track.name
+                                    )
+                                      ? messages.requestedTrack
+                                      : messages.requestTrack
+                                  )}
+                                >
+                                  <button
+                                    type="button"
+                                    disabled={
+                                      requestingTrackIds.includes(
+                                        track.recordingMbid || track.name
+                                      ) ||
+                                      requestedTrackIds.includes(
+                                        track.recordingMbid || track.name
+                                      )
+                                    }
+                                    onClick={() => onRequestTrack(track)}
+                                    aria-label={intl.formatMessage(
+                                      messages.requestTrack
+                                    )}
+                                    className="inline-flex items-center justify-center transition hover:text-white disabled:opacity-50"
+                                  >
+                                    <ArrowDownTrayIcon
+                                      className="h-4 w-4"
+                                      aria-hidden
+                                    />
+                                  </button>
+                                </Tooltip>
+                              )}
+                          </span>
                         )}
                       </div>
                     );

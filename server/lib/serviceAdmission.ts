@@ -1,6 +1,7 @@
 import requestAdmissionCoordinator from '@server/lib/requestAdmission';
 import {
   getSettings,
+  type AurralSettings,
   type BackIssueSettings,
   type DVRSettings,
   type KapowarrSettings,
@@ -20,6 +21,7 @@ export type ServarrServiceType =
   | 'sonarr'
   | 'sportarr'
   | 'lidarr'
+  | 'aurral'
   | 'readarr'
   | 'mylar'
   | 'kapowarr'
@@ -30,6 +32,7 @@ export type ServarrDownloadServiceType =
   | 'radarr'
   | 'sonarr'
   | 'lidarr'
+  | 'aurral'
   | 'readarr'
   | 'kapowarr'
   | 'backissue'
@@ -39,6 +42,7 @@ export interface ServarrServiceSettingsByType {
   sonarr: SonarrSettings;
   sportarr: SportarrSettings;
   lidarr: LidarrSettings;
+  aurral: AurralSettings;
   readarr: ReadarrSettings;
   mylar: MylarSettings;
   kapowarr: KapowarrSettings;
@@ -172,6 +176,13 @@ export const runWithComicServiceCollectionMutationAdmission = <Result>(
     runWithServarrServiceCollectionMutationAdmission('kapowarr', () =>
       runWithServarrServiceCollectionMutationAdmission('backissue', callback)
     )
+  );
+
+export const runWithMusicServiceCollectionMutationAdmission = <Result>(
+  callback: () => Promise<Result>
+): Promise<Result> =>
+  runWithServarrServiceCollectionMutationAdmission('lidarr', () =>
+    runWithServarrServiceCollectionMutationAdmission('aurral', callback)
   );
 
 export const runWithServarrServiceMutationAdmission = <Result>(

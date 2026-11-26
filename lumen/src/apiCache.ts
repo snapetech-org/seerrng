@@ -25,7 +25,7 @@ const SAVE_DELAY_MS = 400;
 export const RECHECK_MS = 15_000;
 // these change as people use the site: always asked again (still shown at once meanwhile)
 const ALWAYS_CHECK =
-  /^\/(request|auth|user\/\d+\/quota|settings\/public|live-tv\/status|comic\/work\/)/;
+  /^\/(request|music\/track-requests|music\/library|podcast\/library|auth|user\/\d+\/quota|settings\/public|live-tv\/status|comic\/work\/)/;
 // These answers depend on current account category and maturity policies.
 // Never serve cached person details, watchlists, or personal library data after those settings tighten.
 const NEVER_CACHE =

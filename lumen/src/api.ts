@@ -24,11 +24,29 @@ export class ApiError extends Error {
     public reason?: string,
     public retryAt?: number,
     public testResults?: unknown,
-    public allowOverride = false
+    public allowOverride = false,
+    // the parsed JSON error body, when there was one
+    public body?: unknown
   ) {
     super(message);
   }
 }
+
+// encodeURIComponent leaves ! ' ( ) * alone, and SeerrNG's request validator rejects them
+// in a query string ("p*rnstar" failed), so the query part gets them percent-encoded too.
+export const strictQuery = (path: string) => {
+  const at = path.indexOf('?');
+  if (at < 0) return path;
+  return (
+    path.slice(0, at + 1) +
+    path
+      .slice(at + 1)
+      .replace(
+        /[!'()*]/g,
+        (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+      )
+  );
+};
 
 export async function api<T>(
   path: string,
@@ -38,7 +56,7 @@ export async function api<T>(
   }: RequestInit & { invalidateCache?: boolean } = {},
   response: 'json' | 'empty' = 'json'
 ): Promise<T> {
-  const res = await fetch('/api/v1' + path, {
+  const res = await fetch('/api/v1' + strictQuery(path), {
     credentials: 'same-origin',
     // SeerrNG marks detail responses cacheable for 5 minutes (stale for 30), which would hide
     // a request someone just made. Revalidate every time; unchanged answers come back as 304.
@@ -57,8 +75,10 @@ export async function api<T>(
     let reason: string | undefined;
     let testResults: unknown;
     let allowOverride = false;
+    let body: unknown;
     try {
       const b = await res.json();
+      body = b;
       msg = b.message || b.error || msg;
       testResults = b.tests;
       allowOverride = b.allowOverride === true;
@@ -91,7 +111,8 @@ export async function api<T>(
       reason,
       retryAt,
       testResults,
-      allowOverride
+      allowOverride,
+      body
     );
   }
   // a request or other change: saved answers may now be out of date
@@ -151,6 +172,8 @@ export interface MediaInfo {
   availableEbookServiceIds?: number[] | null;
   availableAudiobookServiceIds?: number[] | null;
   ratingKey?: string | null;
+  serviceId?: number | null;
+  musicServiceType?: 'lidarr' | 'aurral' | null;
   externalServiceId?: number | null;
   audiobookExternalServiceId?: number | null;
   audiobookLibraryServiceId?: number | null;
@@ -459,7 +482,7 @@ export function proxiedArtPath(raw: string, host: string): string | undefined {
   return u.pathname.slice(1) || undefined;
 }
 const LOCAL_ART_ROUTE =
-  /^(?:\/imageproxy\/.+|\/api\/v1\/(?:(?:sportarr|magazine)\/cover\/[^/]+\/[^/]+|(?:movie|tv|author|adult)\/[^/]+\/cover|book-series\/covers\/image))$/;
+  /^(?:\/imageproxy\/.+|\/api\/v1\/(?:(?:sportarr|magazine)\/cover\/[^/]+\/[^/]+|(?:movie|tv|author|adult)\/[^/]+\/cover|book-series\/covers\/image|music\/library-art\/(?:albums|artists)\/\d{1,10}|music\/artist-image\/[0-9a-fA-F-]{36}|music\/album-art\/[0-9a-fA-F-]{36}|music\/song-art|podcast\/cover\/[A-Za-z0-9_-]{1,64}))$/;
 
 function localArt(raw: string) {
   const path = raw.split(/[?#]/, 1)[0];
@@ -768,6 +791,57 @@ export const audiobookshelfLink = (
     }
   }
   return url.href;
+};
+
+export interface MusicServiceSummary {
+  id: number;
+  name: string;
+  isDefault: boolean;
+  backendType: 'lidarr' | 'aurral';
+  musicQuality?: 'mp3' | 'flac';
+  externalUrl?: string;
+  hostname?: string;
+  port?: number;
+  useSsl?: boolean;
+  urlBase?: string;
+}
+
+export const aurralAlbumLink = (
+  media: MediaInfo | undefined,
+  services?: MusicServiceSummary[] | null
+): string | null => {
+  if (!media || media.musicServiceType !== 'aurral') return null;
+  const albumId = media.externalServiceId;
+  if (
+    typeof albumId !== 'number' ||
+    !Number.isSafeInteger(albumId) ||
+    albumId <= 0
+  )
+    return null;
+  const aurral =
+    (media.serviceId != null
+      ? services?.find(
+          (service) =>
+            service.backendType === 'aurral' && service.id === media.serviceId
+        )
+      : undefined) ??
+    services?.find((service) => service.backendType === 'aurral');
+  const candidate =
+    aurral?.externalUrl ||
+    (aurral?.hostname
+      ? /^https?:\/\//i.test(aurral.hostname)
+        ? aurral.hostname
+        : `${aurral.useSsl ? 'https' : 'http'}://${aurral.hostname}${aurral.port ? `:${aurral.port}` : ''}${aurral.urlBase ? `/${aurral.urlBase.replace(/^\/+|\/+$/g, '')}` : ''}`
+      : undefined) ||
+    media.serviceUrl;
+  const base = candidate ? readerServiceUrl(candidate) : null;
+  if (!base) return null;
+  base.search = '';
+  base.hash = '';
+  const root =
+    candidate === media.serviceUrl ? '' : base.pathname.replace(/\/+$/, '');
+  base.pathname = `${root}/library/albums/${albumId}`;
+  return base.href;
 };
 export const bookMediaForFormat = (
   media: MediaInfo | undefined,

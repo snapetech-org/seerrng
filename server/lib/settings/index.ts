@@ -439,6 +439,19 @@ export interface LidarrSettings extends DVRSettings {
   activeMetadataProfileName?: string;
 }
 
+export interface AurralSettings {
+  id: number;
+  name: string;
+  hostname: string;
+  port: number;
+  useSsl: boolean;
+  baseUrl?: string;
+  externalUrl?: string;
+  apiKey: string;
+  isDefault: boolean;
+  syncEnabled: boolean;
+}
+
 export interface ReadarrSettings extends DVRSettings {
   /** Explicit administrator-owned SeerrNG user ID to Bindery user ID links. */
   binderyUserMappings?: Record<string, number>;
@@ -465,6 +478,11 @@ export interface NavidromeSettings {
   syncEnabled: boolean;
 }
 
+export interface PodcastFollowersSettings {
+  links: Record<string, string>;
+  pendingDeletes: string[];
+}
+
 export interface AudiobookshelfSettings {
   id: number;
   name: string;
@@ -474,6 +492,9 @@ export interface AudiobookshelfSettings {
   useSsl: boolean;
   baseUrl?: string;
   externalUrl?: string;
+  // how Audiobookshelf reaches SeerrNG's podcast proxy (default: the
+  // application URL)
+  proxyUrl?: string;
   libraryId: string;
   libraryName: string;
   syncEnabled: boolean;
@@ -690,6 +711,7 @@ interface FullPublicSettings extends PublicSettings {
   movie4kEnabled: boolean;
   series4kEnabled: boolean;
   musicEnabled: boolean;
+  trackRequestsEnabled: boolean;
   booksEnabled: boolean;
   ebookServiceEnabled: boolean;
   audiobookServiceEnabled: boolean;
@@ -899,6 +921,7 @@ export type JobId =
   | 'radarr-scan'
   | 'sonarr-scan'
   | 'lidarr-scan'
+  | 'aurral-scan'
   | 'readarr-scan'
   | 'navidrome-scan'
   | 'readarr-request-retry'
@@ -924,6 +947,7 @@ export type JobId =
   | 'external-request-list-sync'
   | 'reader-delivery-kobo-sync'
   | 'follow-sync'
+  | 'podcast-cleanup'
   | 'process-blocklisted-tags';
 
 export interface DiscoveryIntegrationsSettings {
@@ -956,8 +980,14 @@ export interface AllSettings {
   sonarr: SonarrSettings[];
   sportarr: SportarrSettings[];
   lidarr: LidarrSettings[];
+  aurral: AurralSettings[];
   readarr: ReadarrSettings[];
   audiobookshelf?: AudiobookshelfSettings | null;
+  // podcasts whose played episodes are removed once newer ones are in
+  podcastCleanup?: { itemIds: string[] };
+  // who follows which show: SeerrNG user id -> Audiobookshelf user id, and
+  // shows whose last follower left but could not be removed yet
+  podcastFollowers?: PodcastFollowersSettings;
   navidrome?: NavidromeSettings | null;
   jellystat?: JellystatSettings | null;
   kavita?: KavitaSettings | null;
@@ -1106,6 +1136,7 @@ class Settings {
       sonarr: [],
       sportarr: [],
       lidarr: [],
+      aurral: [],
       readarr: [],
       audiobookshelf: null,
       navidrome: null,
@@ -1300,6 +1331,9 @@ class Settings {
         'follow-sync': {
           schedule: '0 */30 * * * *',
         },
+        'podcast-cleanup': {
+          schedule: '0 20 * * * *',
+        },
         'plex-refresh-token': {
           schedule: '0 0 5 * * *',
         },
@@ -1310,6 +1344,9 @@ class Settings {
           schedule: '0 30 4 * * *',
         },
         'lidarr-scan': {
+          schedule: '0 30 4 * * *',
+        },
+        'aurral-scan': {
           schedule: '0 30 4 * * *',
         },
         'readarr-scan': {
@@ -1652,12 +1689,55 @@ class Settings {
     this.data.lidarr = data;
   }
 
+  get aurral(): AurralSettings[] {
+    return this.data.aurral;
+  }
+
+  set aurral(data: AurralSettings[]) {
+    this.data.aurral = data;
+  }
+
   get readarr(): ReadarrSettings[] {
     return this.data.readarr;
   }
 
   set readarr(data: ReadarrSettings[]) {
     this.data.readarr = data;
+  }
+
+  get podcastCleanup(): { itemIds: string[] } {
+    const ids = this.data.podcastCleanup?.itemIds;
+    return { itemIds: Array.isArray(ids) ? [...ids] : [] };
+  }
+
+  set podcastCleanup(data: { itemIds: string[] }) {
+    this.data.podcastCleanup = { itemIds: [...new Set(data.itemIds)] };
+  }
+
+  get podcastFollowers(): PodcastFollowersSettings {
+    const stored = this.data.podcastFollowers;
+    const links: Record<string, string> = {};
+    if (stored?.links && typeof stored.links === 'object') {
+      for (const [userId, absUserId] of Object.entries(stored.links)) {
+        if (typeof absUserId === 'string' && absUserId) {
+          links[userId] = absUserId;
+        }
+      }
+    }
+    const pending = stored?.pendingDeletes;
+    return {
+      links,
+      pendingDeletes: Array.isArray(pending)
+        ? pending.filter((id): id is string => typeof id === 'string')
+        : [],
+    };
+  }
+
+  set podcastFollowers(data: PodcastFollowersSettings) {
+    this.data.podcastFollowers = {
+      links: { ...data.links },
+      pendingDeletes: [...new Set(data.pendingDeletes)],
+    };
   }
 
   get audiobookshelf(): AudiobookshelfSettings | null {
@@ -1853,7 +1933,13 @@ class Settings {
         (sonarr) =>
           this.data.main.enable4k !== false && sonarr.is4k && sonarr.isDefault
       ),
-      musicEnabled: this.data.lidarr.length > 0,
+      musicEnabled: this.data.lidarr.length > 0 || this.data.aurral.length > 0,
+      trackRequestsEnabled:
+        Boolean(
+          this.data.slskdn.enabled &&
+          this.data.slskdn.hostname &&
+          this.data.slskdn.apiKey
+        ) || this.data.aurral.length > 0,
       booksEnabled: this.data.readarr.length > 0,
       ebookServiceEnabled: this.data.readarr.some((service) =>
         readarrServiceSupportsFormat(service, 'ebook')
@@ -2197,6 +2283,7 @@ class Settings {
       sonarr: [],
       sportarr: [],
       lidarr: [],
+      aurral: [],
       readarr: [],
       audiobookshelf: null,
       navidrome: null,
@@ -2390,6 +2477,9 @@ class Settings {
         'follow-sync': {
           schedule: '0 */30 * * * *',
         },
+        'podcast-cleanup': {
+          schedule: '0 20 * * * *',
+        },
         'plex-refresh-token': {
           schedule: '0 0 5 * * *',
         },
@@ -2400,6 +2490,9 @@ class Settings {
           schedule: '0 30 4 * * *',
         },
         'lidarr-scan': {
+          schedule: '0 30 4 * * *',
+        },
+        'aurral-scan': {
           schedule: '0 30 4 * * *',
         },
         'readarr-scan': {

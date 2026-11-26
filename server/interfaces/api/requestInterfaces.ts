@@ -85,6 +85,8 @@ export type MediaRequestBody = {
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
   bypassStreamingRequestPolicy?: boolean;
+  /** Music: request a release even when its songs will already come. */
+  force?: boolean;
 };
 
 export type BulkMediaRequestItem = {

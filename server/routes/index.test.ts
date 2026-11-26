@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import { afterEach, before, describe, it, mock } from 'node:test';
 
+import AurralAPI from '@server/api/aurral';
 import ExternalAPI from '@server/api/externalapi';
 import PushoverAPI from '@server/api/pushover';
 import TheMovieDb from '@server/api/themoviedb';
@@ -34,6 +35,7 @@ import router, {
   getCommitUpdateStatus,
   getReleaseUpdateStatus,
 } from './index';
+import { MUSIC_SEARCH_RATE_LIMIT } from './music';
 
 let app: Express;
 
@@ -210,6 +212,213 @@ describe('Authenticated metadata resource boundaries', () => {
       assert.strictEqual(limited.status, 429);
     } finally {
       settings.main.enabledMediaCategories = previousCategories;
+      if (previousNodeEnv === undefined) {
+        delete environment.NODE_ENV;
+      } else {
+        environment.NODE_ENV = previousNodeEnv;
+      }
+    }
+  });
+
+  it('exempts music art, artist-image, preview, activity, and library-overview from the 60/min metadata limiter', async () => {
+    const agent = await loginAs('demo@seerr.dev');
+    const settings = getSettings();
+    const previousAurral = settings.aurral;
+    // the owned-songs index reads the library: keep it off the network
+    mock.method(AurralAPI.prototype, 'getLibraryAlbumPage', async () => ({
+      kind: 'albums' as const,
+      page: 1,
+      pageSize: 60,
+      total: 0,
+      hasMore: false,
+      items: [],
+    }));
+    mock.method(AurralAPI.prototype, 'getLibraryTrackPage', async () => ({
+      page: 1,
+      total: 0,
+      hasMore: false,
+      items: [],
+    }));
+    settings.aurral = [
+      {
+        id: 1,
+        name: 'Aurral',
+        hostname: 'aurral.local',
+        port: 3001,
+        useSsl: false,
+        apiKey: 'aurral-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+    ];
+    mock.method(AurralAPI.prototype, 'getLibraryArtwork', async () => ({
+      buffer: Buffer.from('png'),
+      contentType: 'image/png',
+    }));
+    mock.method(
+      AurralAPI.prototype,
+      'getArtistImageUrl',
+      async () => 'https://coverartarchive.org/release/123/front.jpg'
+    );
+    mock.method(AurralAPI.prototype, 'getDeezerPreviewClip', async () =>
+      Buffer.from('mp3')
+    );
+    mock.method(AurralAPI.prototype, 'getActivity', async () => []);
+    mock.method(AurralAPI.prototype, 'getLibraryPage', async () => ({
+      kind: 'albums' as const,
+      page: 1,
+      pageSize: 12,
+      total: 0,
+      hasMore: false,
+      items: [],
+    }));
+    mock.method(AurralAPI.prototype, 'getTrending', async () => ({
+      artists: [],
+      albums: [],
+      tracks: [],
+    }));
+
+    const environment = process.env as Record<string, string | undefined>;
+    const previousNodeEnv = environment.NODE_ENV;
+    environment.NODE_ENV = 'production';
+
+    try {
+      for (let index = 0; index < 100; index++) {
+        const response = await agent.get('/api/v1/music/library-art/albums/1');
+        assert.strictEqual(response.status, 200);
+      }
+
+      const artistImage = await agent.get(
+        '/api/v1/music/artist-image/11111111-1111-4111-8111-111111111111'
+      );
+      const preview = await agent.get('/api/v1/music/preview?deezerId=123');
+      const activity = await agent.get('/api/v1/music/activity');
+      const overview = await agent.get('/api/v1/music/library-overview');
+
+      assert.strictEqual(artistImage.status, 302);
+      assert.strictEqual(preview.status, 200);
+      assert.strictEqual(activity.status, 200);
+      assert.strictEqual(overview.status, 200);
+
+      for (let index = 0; index < EXTERNAL_METADATA_RATE_LIMIT.limit; index++) {
+        const response = await agent.get('/api/v1/music/discover/trending');
+        assert.strictEqual(response.status, 200);
+      }
+
+      const limited = await agent.get('/api/v1/music/discover/trending');
+      assert.strictEqual(limited.status, 429);
+    } finally {
+      settings.aurral = previousAurral;
+      if (previousNodeEnv === undefined) {
+        delete environment.NODE_ENV;
+      } else {
+        environment.NODE_ENV = previousNodeEnv;
+      }
+    }
+  });
+
+  it('exempts /music/search from the 60/min metadata limiter and applies a 120/min per-user limiter', async () => {
+    assert.deepStrictEqual(MUSIC_SEARCH_RATE_LIMIT, {
+      windowMs: 60 * 1000,
+      limit: 120,
+    });
+
+    const agent = await loginAs('friend@seerr.dev');
+    const settings = getSettings();
+    const previousAurral = settings.aurral;
+    // the owned-songs index reads the library: keep it off the network
+    mock.method(AurralAPI.prototype, 'getLibraryAlbumPage', async () => ({
+      kind: 'albums' as const,
+      page: 1,
+      pageSize: 60,
+      total: 0,
+      hasMore: false,
+      items: [],
+    }));
+    mock.method(AurralAPI.prototype, 'getLibraryTrackPage', async () => ({
+      page: 1,
+      total: 0,
+      hasMore: false,
+      items: [],
+    }));
+    settings.aurral = [
+      {
+        id: 1,
+        name: 'Aurral',
+        hostname: 'aurral.local',
+        port: 3001,
+        useSsl: false,
+        apiKey: 'aurral-key',
+        isDefault: true,
+        syncEnabled: true,
+      },
+    ];
+    mock.method(AurralAPI.prototype, 'getArtistDetails', async () => null);
+    mock.method(AurralAPI.prototype, 'getArtistImageUrl', async () => null);
+    mock.method(
+      AurralAPI.prototype,
+      'getLibraryArtistReleaseGroups',
+      async () => ({ owned: new Set<string>(), partial: new Set<string>() })
+    );
+    mock.method(AurralAPI.prototype, 'searchLibrary', async () => ({
+      artists: [],
+      albums: [],
+      tracks: [],
+    }));
+    mock.method(AurralAPI.prototype, 'searchUnified', async () => ({
+      artists: [
+        {
+          mbid: '11111111-1111-4111-8111-111111111111',
+          name: 'Test Artist',
+          image: null,
+          inLibrary: false,
+        },
+      ],
+      albums: [
+        {
+          mbid: '22222222-2222-4222-8222-222222222222',
+          title: 'Test Album',
+          artistName: 'Test Artist',
+          artistMbid: null,
+          primaryType: 'Album',
+          releaseDate: null,
+          coverUrl: null,
+          inLibrary: false,
+        },
+      ],
+      tracks: [],
+      top: null,
+      degraded: false,
+    }));
+    mock.method(AurralAPI.prototype, 'searchLibrary', async () => ({
+      artists: [],
+      albums: [],
+      tracks: [],
+    }));
+    mock.method(AurralAPI.prototype, 'getTrending', async () => ({
+      artists: [],
+      albums: [],
+      tracks: [],
+    }));
+
+    const environment = process.env as Record<string, string | undefined>;
+    const previousNodeEnv = environment.NODE_ENV;
+    environment.NODE_ENV = 'production';
+
+    try {
+      for (let index = 0; index < MUSIC_SEARCH_RATE_LIMIT.limit; index++) {
+        const response = await agent.get('/api/v1/music/search?q=test');
+        assert.strictEqual(response.status, 200);
+      }
+
+      const searchLimited = await agent.get('/api/v1/music/search?q=test');
+      assert.strictEqual(searchLimited.status, 429);
+
+      // The shared 60/min externalMetadataRateLimit bucket must still be untouched.
+      const trending = await agent.get('/api/v1/music/discover/trending');
+      assert.strictEqual(trending.status, 200);
+    } finally {
+      settings.aurral = previousAurral;
       if (previousNodeEnv === undefined) {
         delete environment.NODE_ENV;
       } else {

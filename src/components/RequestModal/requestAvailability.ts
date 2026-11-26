@@ -94,7 +94,10 @@ export const isVideoQualityAvailable = (
 export const createRequestDestination = (
   serviceType: RequestDestination['serviceType'],
   format: RequestDestination['format'],
-  service: ServiceCommonServer | null | undefined,
+  service:
+    | (Pick<ServiceCommonServer, 'id'> & Partial<ServiceCommonServer>)
+    | null
+    | undefined,
   overrides: RequestOverrides | null | undefined,
   defaultRootFolder?: string | null
 ): RequestDestination | null => {

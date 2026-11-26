@@ -11,6 +11,7 @@ const jobMessages = defineMessages('components.Settings.SettingsJobsCache', {
   'radarr-scan': 'Radarr Scan',
   'sonarr-scan': 'Sonarr Scan',
   'lidarr-scan': 'Lidarr Scan',
+  'aurral-scan': 'Aurral Scan',
   'readarr-scan': 'Bookshelf Scan',
   'navidrome-scan': 'Navidrome Scan',
   'readarr-request-retry': 'Bookshelf Request Retry',
@@ -36,6 +37,7 @@ const jobMessages = defineMessages('components.Settings.SettingsJobsCache', {
   'external-request-list-sync': 'External Request List Sync',
   'reader-delivery-kobo-sync': 'BookOrbit Kobo Collection Sync',
   'follow-sync': 'Followed Interests Sync',
+  'podcast-cleanup': 'Podcast Played Episode Cleanup',
   'process-blocklisted-tags': 'Process Blocklist Rules',
 } satisfies Record<JobId, string>);
 

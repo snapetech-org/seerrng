@@ -1,3 +1,4 @@
+import AurralAPI from '@server/api/aurral';
 import LidarrAPI from '@server/api/servarr/lidarr';
 import {
   isValidMusicBrainzResourceId,
@@ -5,18 +6,21 @@ import {
 } from '@server/lib/externalIds';
 import { getMusicQualityFromLabels } from '@server/lib/musicQuality';
 import { runWithServarrServiceSnapshot } from '@server/lib/serviceAdmission';
-import type { LidarrSettings } from '@server/lib/settings';
+import type { AurralSettings, LidarrSettings } from '@server/lib/settings';
 
 export type MusicTrackQuality = 'mp3' | 'flac';
 
 export interface MusicTrackAvailability {
   mp3?: string[];
   flac?: string[];
+  /** Recording MBIDs owned on another release (same artist and title). */
+  elsewhere?: string[];
 }
 
-const getQuality = (
-  service: Pick<LidarrSettings, 'activeProfileName' | 'name'>
-): MusicTrackQuality | undefined =>
+const getQuality = (service: {
+  activeProfileName?: string;
+  name: string;
+}): MusicTrackQuality | undefined =>
   getMusicQualityFromLabels(service.activeProfileName, service.name);
 
 export type MusicTrackAvailabilityLoader = (
@@ -52,22 +56,66 @@ const loadAvailableRecordings: MusicTrackAvailabilityLoader = async (
     ];
   });
 
+const loadAvailableAurralRecordings = async (
+  mbId: string,
+  service: AurralSettings
+): Promise<string[]> =>
+  runWithServarrServiceSnapshot('aurral', service, async (currentService) => {
+    const api = new AurralAPI({
+      apiKey: currentService.apiKey,
+      url: AurralAPI.buildUrl(currentService),
+    });
+    const lookup = await api.lookupAlbums([mbId]);
+    const entry =
+      lookup[mbId] ??
+      lookup[mbId.toLowerCase()] ??
+      Object.values(lookup).find((item) => item != null);
+    if (!entry?.inLibrary || !Array.isArray(entry.ownedTrackMbids)) {
+      return [];
+    }
+    return [
+      ...new Set(
+        entry.ownedTrackMbids
+          .map(normalizeMusicBrainzId)
+          .filter(isValidMusicBrainzResourceId)
+      ),
+    ];
+  });
+
 export const getMusicTrackAvailability = async (
   albumMbId: string,
   services: LidarrSettings[],
+  aurralServicesOrLoader:
+    AurralSettings[] | MusicTrackAvailabilityLoader = loadAvailableRecordings,
   loadRecordings: MusicTrackAvailabilityLoader = loadAvailableRecordings
 ): Promise<MusicTrackAvailability> => {
+  const aurralServices = Array.isArray(aurralServicesOrLoader)
+    ? aurralServicesOrLoader
+    : [];
+  const lidarrLoader =
+    typeof aurralServicesOrLoader === 'function'
+      ? aurralServicesOrLoader
+      : loadRecordings;
+
   const mbId = normalizeMusicBrainzId(albumMbId);
-  const candidates = services.flatMap((service) => {
+  const lidarrCandidates = services.flatMap((service) => {
     const quality = getQuality(service);
-    return quality ? [{ quality, service }] : [];
+    return quality ? [{ quality, service, kind: 'lidarr' as const }] : [];
   });
-  const results = await Promise.allSettled(
-    candidates.map(async ({ quality, service }) => ({
+  const aurralCandidates = aurralServices.flatMap((service) => {
+    const quality = getQuality(service) ?? ('flac' as const);
+    return [{ quality, service, kind: 'aurral' as const }];
+  });
+  const results = await Promise.allSettled([
+    ...lidarrCandidates.map(async ({ quality, service }) => ({
       quality,
-      recordingIds: await loadRecordings(mbId, service),
-    }))
-  );
+      recordingIds: await lidarrLoader(mbId, service),
+    })),
+    ...aurralCandidates.map(async ({ quality, service }) => ({
+      quality,
+      recordingIds: await loadAvailableAurralRecordings(mbId, service),
+    })),
+  ]);
   const availability: MusicTrackAvailability = {};
 
   for (const result of results) {

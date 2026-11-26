@@ -188,6 +188,8 @@ export interface PublicSettings {
   trackEpisodeAvailability?: boolean;
   tvSeasonWatchGateEnabled?: boolean;
   series4kEnabled: boolean;
+  musicEnabled?: boolean;
+  trackRequestsEnabled?: boolean;
   partialRequestsEnabled: boolean;
   booksEnabled: boolean;
   ebookServiceEnabled: boolean;

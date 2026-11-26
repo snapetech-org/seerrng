@@ -1,9 +1,12 @@
+import AurralAPI from '@server/api/aurral';
 import BinderyAPI, { type BinderyBook } from '@server/api/bindery';
 import BookOrbitAPI, { type BookOrbitFormat } from '@server/api/bookorbit';
 import BackIssueAPI from '@server/api/comics/backissue';
 import KapowarrAPI from '@server/api/comics/kapowarr';
 import MylarAPI from '@server/api/comics/mylar';
 import LazyLibrarianAPI from '@server/api/lazylibrarian';
+import ListenBrainzAPI from '@server/api/listenbrainz';
+import MusicBrainz from '@server/api/musicbrainz';
 import OpenLibraryAPI from '@server/api/openlibrary';
 import type { LidarrAlbumOptions } from '@server/api/servarr/lidarr';
 import LidarrAPI from '@server/api/servarr/lidarr';
@@ -83,7 +86,10 @@ import { isMangaComicVineVolume } from '@server/lib/mangaVolume';
 import { runMediaEntityMutation } from '@server/lib/mediaMutation';
 import { upsertMissingBookMetadata } from '@server/lib/mediaSearchMetadata';
 import { upsertMediaServiceStatus } from '@server/lib/mediaServiceStatus';
-import { getLidarrAlbumMediaStatus } from '@server/lib/musicAvailability';
+import {
+  getLidarrAlbumMediaStatus,
+  resolveAurralRequestTargetStatus,
+} from '@server/lib/musicAvailability';
 import notificationManager, { Notification } from '@server/lib/notifications';
 import requestDispatchManager, {
   type RequestDispatchOutcome,
@@ -159,6 +165,7 @@ export const READARR_MAX_LOOKUP_RESULTS = 50;
 export const READARR_LOOKUP_HYDRATION_CONCURRENCY = 5;
 const activeReadarrDispatches = new Map<number, Promise<number | undefined>>();
 const activeComicDispatches = new Map<number, Promise<number | undefined>>();
+const activeAurralDispatches = new Map<number, Promise<number | undefined>>();
 const activeMagazineDispatches = new Map<number, Promise<number | undefined>>();
 const activeSportarrDispatches = new Map<number, Promise<number | undefined>>();
 
@@ -215,11 +222,64 @@ const getRequestDispatchServiceSelection = (
     return { serviceType: 'sonarr', serviceIds: uniqueIds([selected?.id]) };
   }
   if (request.type === MediaType.MUSIC) {
-    const selected =
+    const savedTarget = request.serviceTargets?.find(
+      (target) =>
+        (target.serviceType === 'aurral' || target.serviceType === 'lidarr') &&
+        target.format === 'music'
+    );
+    if (savedTarget) {
+      return {
+        serviceType: savedTarget.serviceType === 'aurral' ? 'aurral' : 'lidarr',
+        serviceIds: uniqueIds([savedTarget.serverId]),
+      };
+    }
+    const requestedServerId =
       request.serverId !== null && request.serverId >= 0
-        ? settings.lidarr.find(({ id }) => id === request.serverId)
-        : settings.lidarr.find(({ isDefault }) => isDefault);
-    return { serviceType: 'lidarr', serviceIds: uniqueIds([selected?.id]) };
+        ? request.serverId
+        : undefined;
+    const requestedLidarr =
+      requestedServerId !== undefined
+        ? settings.lidarr.find(({ id }) => id === requestedServerId)
+        : undefined;
+    if (requestedLidarr) {
+      return {
+        serviceType: 'lidarr',
+        serviceIds: uniqueIds([requestedLidarr.id]),
+      };
+    }
+    const requestedAurral =
+      requestedServerId !== undefined
+        ? settings.aurral.find(({ id }) => id === requestedServerId)
+        : undefined;
+    if (requestedAurral) {
+      return {
+        serviceType: 'aurral',
+        serviceIds: uniqueIds([requestedAurral.id]),
+      };
+    }
+    const defaultAurral = settings.aurral.find(({ isDefault }) => isDefault);
+    if (defaultAurral) {
+      return {
+        serviceType: 'aurral',
+        serviceIds: uniqueIds([defaultAurral.id]),
+      };
+    }
+    const defaultLidarr = settings.lidarr.find(({ isDefault }) => isDefault);
+    if (defaultLidarr) {
+      return {
+        serviceType: 'lidarr',
+        serviceIds: uniqueIds([defaultLidarr.id]),
+      };
+    }
+    const fallbackAurral =
+      settings.lidarr.length === 0 ? settings.aurral[0] : undefined;
+    if (fallbackAurral) {
+      return {
+        serviceType: 'aurral',
+        serviceIds: uniqueIds([fallbackAurral.id]),
+      };
+    }
+    return { serviceType: 'lidarr', serviceIds: [] };
   }
   if (request.type === MediaType.COMIC) {
     const requestedMylar =
@@ -1393,7 +1453,10 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
             request?.type === MediaType.COMIC ||
             request?.type === MediaType.MAGAZINE ||
             request?.type === MediaType.ADULT ||
-            request?.type === MediaType.SPORTS) &&
+            request?.type === MediaType.SPORTS ||
+            (request?.type === MediaType.MUSIC &&
+              getRequestDispatchServiceSelection(request).serviceType ===
+                'aurral')) &&
           request.status === MediaRequestStatus.FAILED;
         if (
           !request ||
@@ -1486,6 +1549,23 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
       return { delivered };
     }
     if (request.type === MediaType.MUSIC) {
+      const musicSelection = getRequestDispatchServiceSelection(request);
+      if (musicSelection.serviceType === 'aurral') {
+        const retryAfterMs = await this.sendToAurral(request);
+        if (retryAfterMs !== undefined) {
+          return { delivered: false, retryAfterMs };
+        }
+        const updatedMusicRequest = await getRepository(MediaRequest).findOne({
+          where: { id: request.id },
+          relations: { media: true },
+        });
+        return {
+          delivered:
+            !updatedMusicRequest ||
+            updatedMusicRequest.status !== MediaRequestStatus.FAILED,
+        };
+      }
+
       const delivered = await this.sendToLidarr(request);
       const updatedMusicRequest = await getRepository(MediaRequest).findOne({
         where: { id: request.id },
@@ -1563,6 +1643,38 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
     return {
       delivered: !updated || updated.status !== MediaRequestStatus.APPROVED,
     };
+  }
+
+  /**
+   * True when an update leaves the request's status alone and the music
+   * service (Aurral or Lidarr) already has the album. Saving such a request
+   * (the status poll does, to record the album's progress) must not send the
+   * album again: every resend makes the service search for the missing songs
+   * once more, and a send that records a different status than the poll
+   * would loop. Retries and approvals change the status, so they still go.
+   */
+  private isBookkeepingUpdateOfDeliveredMusicRequest(
+    entity: MediaRequest,
+    event: UpdateEvent<MediaRequest>
+  ): boolean {
+    if (
+      entity.type !== MediaType.MUSIC ||
+      entity.status !== MediaRequestStatus.APPROVED
+    ) {
+      return false;
+    }
+    const statusChanged = (event.updatedColumns ?? []).some(
+      (column) => column.propertyName === 'status'
+    );
+    if (statusChanged) {
+      return false;
+    }
+    return (entity.serviceTargets ?? []).some(
+      (target) =>
+        (target.serviceType === 'aurral' || target.serviceType === 'lidarr') &&
+        target.externalServiceId !== undefined &&
+        target.externalServiceId !== null
+    );
   }
 
   private async enqueueRequestDispatch(
@@ -2625,6 +2737,259 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         );
       }
       return true;
+    }
+  }
+
+  public async sendToAurral(entity: MediaRequest): Promise<number | undefined> {
+    if (entity.type !== MediaType.MUSIC) {
+      return;
+    }
+
+    if (
+      entity.status !== MediaRequestStatus.APPROVED &&
+      entity.status !== MediaRequestStatus.FAILED
+    ) {
+      return;
+    }
+
+    const activeDispatch = activeAurralDispatches.get(entity.id);
+    if (activeDispatch) {
+      return activeDispatch;
+    }
+
+    const dispatch = this.dispatchAurralRequest(entity);
+    const trackedDispatch = dispatch.finally(() => {
+      if (activeAurralDispatches.get(entity.id) === trackedDispatch) {
+        activeAurralDispatches.delete(entity.id);
+      }
+    });
+    activeAurralDispatches.set(entity.id, trackedDispatch);
+
+    return trackedDispatch;
+  }
+
+  private async dispatchAurralRequest(
+    entity: MediaRequest
+  ): Promise<number | undefined> {
+    try {
+      const mediaRepository = getRepository(Media);
+      const requestRepository = getRepository(MediaRequest);
+      const settings = getExternalRuntimeConfig();
+      const selection = getRequestDispatchServiceSelection(entity);
+      const aurralSettings =
+        settings.aurral.find(({ id }) => id === selection.serviceIds[0]) ??
+        settings.aurral.find(({ isDefault }) => isDefault) ??
+        settings.aurral[0];
+
+      if (!aurralSettings) {
+        throw new Error('No default Aurral server configured.');
+      }
+
+      const media = await mediaRepository.findOne({
+        where: { id: entity.media.id },
+        relations: { searchMetadata: true },
+      });
+
+      if (!media?.mbId) {
+        throw new Error('Music media data not found or missing mbId');
+      }
+
+      const existingTarget = entity.serviceTargets?.find(
+        (target) =>
+          target.serviceType === 'aurral' &&
+          target.format === 'music' &&
+          target.serverId === aurralSettings.id
+      );
+      if (
+        existingTarget?.status === MediaStatus.AVAILABLE ||
+        (media.status === MediaStatus.AVAILABLE &&
+          media.serviceId === aurralSettings.id &&
+          media.musicServiceType === 'aurral')
+      ) {
+        logger.warn(
+          'Music already exists in Aurral, marking request as COMPLETED',
+          {
+            label: 'Media Request',
+            requestId: entity.id,
+            mediaId: entity.media.id,
+          }
+        );
+
+        entity.status = MediaRequestStatus.COMPLETED;
+        await requestRepository.save(entity);
+        return;
+      }
+
+      const mediaMbId = normalizeMusicBrainzId(media.mbId);
+      const listenbrainz = new ListenBrainzAPI();
+      const musicbrainz = new MusicBrainz();
+
+      let albumName = '';
+      let artistName = '';
+      let artistMbid = '';
+      let releaseMbid = entity.variantKey?.trim() || undefined;
+
+      try {
+        const lbAlbum = await listenbrainz.getAlbum(mediaMbId);
+        const primaryArtist =
+          lbAlbum.release_group_metadata?.artist?.artists?.[0];
+        albumName = lbAlbum.release_group_metadata?.release_group?.name ?? '';
+        artistName =
+          primaryArtist?.name ??
+          lbAlbum.release_group_metadata?.artist?.name ??
+          '';
+        artistMbid = primaryArtist?.artist_mbid
+          ? normalizeMusicBrainzId(primaryArtist.artist_mbid)
+          : '';
+        if (!releaseMbid) {
+          releaseMbid =
+            lbAlbum.recordings_release_mbid ||
+            lbAlbum.release_group_metadata?.release?.caa_release_mbid ||
+            undefined;
+        }
+      } catch {
+        // Fallback to MusicBrainz below.
+      }
+
+      if (!albumName || !artistName || !artistMbid) {
+        const rg = await musicbrainz.getReleaseGroupDetails({
+          releaseGroupId: mediaMbId,
+        });
+        const primaryCredit = rg['artist-credit']?.[0];
+        albumName = albumName || rg.title || '';
+        artistName =
+          artistName ||
+          primaryCredit?.name ||
+          primaryCredit?.artist?.name ||
+          '';
+        artistMbid =
+          artistMbid ||
+          (primaryCredit?.artist?.id
+            ? normalizeMusicBrainzId(primaryCredit.artist.id)
+            : '');
+        if (!releaseMbid) {
+          releaseMbid = rg.releases?.[0]?.id;
+        }
+      }
+
+      if (!albumName) {
+        albumName = media.searchMetadata?.title ?? '';
+      }
+      if (!artistName) {
+        artistName = media.searchMetadata?.artist ?? '';
+      }
+      if (!albumName || !artistName || !artistMbid) {
+        throw new Error(
+          `Missing album/artist metadata to send music request ${mediaMbId} to Aurral.`
+        );
+      }
+
+      const aurral = new AurralAPI({
+        apiKey: aurralSettings.apiKey,
+        url: AurralAPI.buildUrl(aurralSettings),
+      });
+
+      const result = await aurral.requestAlbum({
+        albumMbid: mediaMbId,
+        albumName,
+        artistMbid,
+        artistName,
+        ...(releaseMbid ? { releaseMbid } : {}),
+      });
+
+      // The status poll records the same value for the same album state
+      // (one shared rule): if the two disagreed each would keep rewriting the
+      // other's value, and every rewrite sent the album again.
+      const nextStatus = resolveAurralRequestTargetStatus(
+        { status: result.status },
+        media.status
+      );
+
+      media.externalServiceId = result.album.id;
+      media.externalServiceSlug = mediaMbId;
+      media.serviceId = aurralSettings.id;
+      media.musicServiceType = 'aurral';
+      media.status = nextStatus;
+      if (nextStatus === MediaStatus.AVAILABLE) {
+        media.availableMusicServiceIds = [
+          ...new Set([
+            ...(media.availableMusicServiceIds ?? []),
+            aurralSettings.id,
+          ]),
+        ];
+      }
+      await mediaRepository.save(media);
+
+      await saveRequestServiceTarget(entity, {
+        serviceType: 'aurral',
+        format: 'music',
+        serverId: aurralSettings.id,
+        profileId: null,
+        metadataProfileId: null,
+        rootFolder: null,
+        tags: null,
+        externalServiceId: result.album.id,
+        externalServiceSlug: mediaMbId,
+        status: nextStatus,
+      });
+
+      if (nextStatus === MediaStatus.AVAILABLE) {
+        entity.status = MediaRequestStatus.COMPLETED;
+      } else {
+        entity.status = MediaRequestStatus.APPROVED;
+        entity.failureReason = null;
+      }
+      await requestRepository.save(entity);
+
+      logger.info('Sent request to Aurral', {
+        label: 'Media Request',
+        requestId: entity.id,
+        mediaId: entity.media.id,
+        aurralAlbumId: result.album.id,
+      });
+      return;
+    } catch (e) {
+      if (isTransientExternalError(e)) {
+        const providerRetryDelay = getRetryAfterMs(e);
+        return providerRetryDelay === undefined
+          ? 0
+          : clampReadarrProviderRetryDelay(providerRetryDelay);
+      }
+
+      const wasAlreadyFailed = entity.status === MediaRequestStatus.FAILED;
+      const requestRepository = getRepository(MediaRequest);
+      const mediaRepository = getRepository(Media);
+      const media = await mediaRepository.findOne({
+        where: { id: entity.media.id },
+      });
+
+      if (!wasAlreadyFailed) {
+        entity.status = MediaRequestStatus.FAILED;
+        // say why, like the other services do, instead of a bare "Failed"
+        entity.failureReason = MediaRequestFailureReason.DISPATCH_FAILED;
+        await requestRepository.save(entity);
+      }
+
+      logger.warn(
+        'Something went wrong sending album request to Aurral; retaining the failed request in the durable dispatch queue.',
+        {
+          label: 'Media Request',
+          requestId: entity.id,
+          mediaId: entity.media.id,
+          retryAfterMs: READARR_FAILED_RETRY_DELAY_MS,
+          errorMessage: e instanceof Error ? e.message : String(e),
+        }
+      );
+
+      if (media && !wasAlreadyFailed) {
+        await MediaRequest.sendNotification(
+          entity,
+          media,
+          Notification.MEDIA_FAILED
+        );
+      }
+
+      return READARR_FAILED_RETRY_DELAY_MS;
     }
   }
 
@@ -4992,6 +5357,14 @@ export class MediaRequestSubscriber implements EntitySubscriberInterface<MediaRe
         event.manager as EntityManager,
         updatedRequest.media.id
       );
+    }
+    if (
+      this.isBookkeepingUpdateOfDeliveredMusicRequest(
+        event.entity as MediaRequest,
+        event
+      )
+    ) {
+      return;
     }
     await this.enqueueRequestDispatch(event.entity as MediaRequest, event);
 

@@ -14,9 +14,13 @@ import {
   TrackRequestError,
   canRequestTracks,
   cancelTrackRequest,
+  claimPendingTrackRequest,
   createTrackRequests,
   declineTrackRequest,
+  isAurralTrackRequestsConfigured,
   isSlskdnConfigured,
+  isTrackRequestsConfigured,
+  releaseTrackRequestClaim,
   startTrackSearch,
   type TrackInput,
 } from '@server/lib/soulseek/trackRequests';
@@ -35,6 +39,7 @@ const songIdOwners = new Map<string, number>();
 const MAX_TRACKED_SONGID_RUNS = 2_000;
 
 const soulseekRoutes = Router();
+export const trackRequestRoutes = Router();
 
 const sendAppMessageError = (
   res: Response,
@@ -73,6 +78,7 @@ const sendError = (res: Response, error: unknown) => {
 export const trackRequestView = (request: TrackRequest) => ({
   id: request.id,
   status: request.status,
+  backendType: request.backendType ?? 'slskdn',
   artist: request.artist,
   title: request.title,
   recordingMbid: request.recordingMbid ?? undefined,
@@ -94,13 +100,28 @@ export const trackRequestView = (request: TrackRequest) => ({
 const text = (value: unknown, max: number) =>
   typeof value === 'string' ? value.trim().slice(0, max) : '';
 
+const optionalMbid = (value: unknown) =>
+  typeof value === 'string' && MBID_PATTERN.test(value.trim())
+    ? value.trim().toLowerCase()
+    : undefined;
+
+const optionalPositiveInt = (value: unknown) =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value > 0
+    ? value
+    : undefined;
+
 export const parseTrackInputs = (
   body: unknown
 ): TrackInput[] | { error: string } => {
-  const tracks =
-    body && typeof body === 'object' && !Array.isArray(body)
-      ? (body as { tracks?: unknown }).tracks
-      : undefined;
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { error: 'Add at least one track.' };
+  }
+  const bodyRecord = body as Record<string, unknown>;
+  // The OpenAPI contract requires `tracks`; a bare { artist, title } body
+  // never reaches this handler, so only the array form is read.
+  const tracks = Array.isArray(bodyRecord.tracks)
+    ? bodyRecord.tracks
+    : undefined;
   if (!Array.isArray(tracks) || tracks.length === 0) {
     return { error: 'Add at least one track.' };
   }
@@ -118,30 +139,116 @@ export const parseTrackInputs = (
     if (!artist || !title) {
       return { error: 'Each track needs an artist and title.' };
     }
-    const recordingMbid =
-      typeof value.recordingMbid === 'string' &&
-      MBID_PATTERN.test(value.recordingMbid)
-        ? value.recordingMbid.toLowerCase()
-        : undefined;
-    const source = ['playlist', 'songid', 'manual'].includes(
+    const recordingMbid = optionalMbid(value.recordingMbid);
+    const albumMbid = optionalMbid(value.albumMbid);
+    const artistMbid = optionalMbid(value.artistMbid);
+    const releaseMbid = optionalMbid(value.releaseMbid);
+    const albumName = text(value.albumName, 255) || undefined;
+    const durationMs = optionalPositiveInt(value.durationMs);
+    const trackNumber = optionalPositiveInt(value.trackNumber);
+    const discNumber = optionalPositiveInt(value.discNumber);
+    const source = ['playlist', 'songid', 'manual', 'album'].includes(
       String(value.source)
     )
       ? String(value.source)
       : 'manual';
-    parsed.push({ artist, title, recordingMbid, source });
+    parsed.push({
+      artist,
+      title,
+      recordingMbid,
+      ...(albumMbid !== undefined ? { albumMbid } : {}),
+      ...(albumName !== undefined ? { albumName } : {}),
+      ...(artistMbid !== undefined ? { artistMbid } : {}),
+      ...(releaseMbid !== undefined ? { releaseMbid } : {}),
+      ...(durationMs !== undefined ? { durationMs } : {}),
+      ...(trackNumber !== undefined ? { trackNumber } : {}),
+      ...(discNumber !== undefined ? { discNumber } : {}),
+      source,
+    });
   }
   return parsed;
 };
 
 soulseekRoutes.get('/status', async (req, res) => {
-  const configured = isSlskdnConfigured();
+  const configured = isTrackRequestsConfigured();
+  const slskdnConfigured = isSlskdnConfigured();
+  const aurralConfigured = isAurralTrackRequestsConfigured();
   return res.status(200).json({
     configured,
+    slskdnConfigured,
+    aurralConfigured,
+    backend: aurralConfigured ? 'aurral' : slskdnConfigured ? 'slskdn' : null,
     canRequest: req.user ? canRequestTracks(req.user) : false,
   });
 });
 
-soulseekRoutes.get('/track-requests', async (req, res) => {
+trackRequestRoutes.get('/status', async (req, res) => {
+  const configured = isTrackRequestsConfigured();
+  const slskdnConfigured = isSlskdnConfigured();
+  const aurralConfigured = isAurralTrackRequestsConfigured();
+  return res.status(200).json({
+    configured,
+    slskdnConfigured,
+    aurralConfigured,
+    backend: aurralConfigured ? 'aurral' : slskdnConfigured ? 'slskdn' : null,
+    canRequest: req.user ? canRequestTracks(req.user) : false,
+  });
+});
+
+/**
+ * Every song with an open request (anyone's), plus ones that finished in the
+ * last few minutes, without who asked: song lists show "Requested" for them
+ * instead of offering Get again. For everyone who may request songs.
+ */
+export const REQUESTED_SONG_KEYS_LIMIT = 5_000;
+const RECENTLY_COMPLETED_MS = 10 * 60_000;
+trackRequestRoutes.get('/keys', async (req, res) => {
+  const user = req.user!;
+  if (!canRequestTracks(user)) {
+    return res
+      .status(403)
+      .json({ message: 'You do not have permission to request songs.' });
+  }
+  // a query builder: no eager requester join, only the song columns
+  const songs = () =>
+    getRepository(TrackRequest)
+      .createQueryBuilder('request')
+      .select([
+        'request.id',
+        'request.artist',
+        'request.title',
+        'request.recordingMbid',
+      ]);
+  const [active, recent] = await Promise.all([
+    songs()
+      .where('request.status IN (:...statuses)', {
+        statuses: ACTIVE_TRACK_STATUSES,
+      })
+      .orderBy('request.createdAt', 'DESC')
+      .take(REQUESTED_SONG_KEYS_LIMIT)
+      .getMany(),
+    songs()
+      .where('request.status = :status', { status: 'completed' })
+      .andWhere('request.updatedAt >= :since', {
+        since: new Date(Date.now() - RECENTLY_COMPLETED_MS),
+      })
+      .orderBy('request.updatedAt', 'DESC')
+      .take(500)
+      .getMany(),
+  ]);
+  const view = (request: TrackRequest) => ({
+    artist: request.artist,
+    title: request.title,
+    ...(request.recordingMbid ? { recordingMbid: request.recordingMbid } : {}),
+  });
+  return res.status(200).json({
+    active: active.map(view),
+    completed: recent.map(view),
+    truncated: active.length >= REQUESTED_SONG_KEYS_LIMIT,
+  });
+});
+
+trackRequestRoutes.get('/', async (req, res) => {
   const user = req.user!;
   const canViewAll = user.hasPermission(
     [Permission.MANAGE_REQUESTS, Permission.REQUEST_VIEW],
@@ -172,7 +279,7 @@ soulseekRoutes.get('/track-requests', async (req, res) => {
   });
 });
 
-soulseekRoutes.post('/track-requests', async (req, res) => {
+trackRequestRoutes.post('/', async (req, res) => {
   const user = req.user!;
   if (!canRequestTracks(user)) {
     return res
@@ -197,7 +304,7 @@ const loadTrackRequest = async (rawId: string) => {
   return getRepository(TrackRequest).findOne({ where: { id } });
 };
 
-soulseekRoutes.post('/track-requests/:id/approve', async (req, res) => {
+trackRequestRoutes.post('/:id/approve', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
     return sendAppMessageError(
       res,
@@ -214,7 +321,12 @@ soulseekRoutes.post('/track-requests/:id/approve', async (req, res) => {
       'Request not found.',
       'm6eecd04f35f139c66100'
     );
-  if (request.status !== 'pending') {
+  // The claim is a conditional update, so two approvals at once (double
+  // click, two managers) dispatch the request only once.
+  if (
+    request.status !== 'pending' ||
+    !(await claimPendingTrackRequest(request.id))
+  ) {
     return sendAppMessageError(
       res,
       409,
@@ -227,11 +339,12 @@ soulseekRoutes.post('/track-requests/:id/approve', async (req, res) => {
       .status(200)
       .json(trackRequestView(await startTrackSearch(request, req.user)));
   } catch (error) {
+    await releaseTrackRequestClaim(request.id).catch(() => undefined);
     return sendError(res, error);
   }
 });
 
-soulseekRoutes.post('/track-requests/:id/decline', async (req, res) => {
+trackRequestRoutes.post('/:id/decline', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {
     return sendAppMessageError(
       res,
@@ -257,7 +370,7 @@ soulseekRoutes.post('/track-requests/:id/decline', async (req, res) => {
   }
 });
 
-soulseekRoutes.delete('/track-requests/:id', async (req, res) => {
+trackRequestRoutes.delete('/:id', async (req, res) => {
   const user = req.user!;
   const request = await loadTrackRequest(req.params.id);
   if (!request)
@@ -286,6 +399,8 @@ soulseekRoutes.delete('/track-requests/:id', async (req, res) => {
     return sendError(res, error);
   }
 });
+
+soulseekRoutes.use('/track-requests', trackRequestRoutes);
 
 soulseekRoutes.get('/albums/:releaseGroupId/issues', async (req, res) => {
   if (!req.user?.hasPermission(Permission.MANAGE_REQUESTS)) {

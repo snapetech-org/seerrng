@@ -11,6 +11,7 @@ import { MusicEditionCompare } from '@app/components/EditionCompare';
 import IssueBlock from '@app/components/IssueBlock';
 import MusicDetailsLayout from '@app/components/MusicDetails/MusicDetailsLayout';
 import AlbumLibraryHealthButton from '@app/components/Soulseek/AlbumLibraryHealthButton';
+import useSettings from '@app/hooks/useSettings';
 import useTitleBlocklist from '@app/hooks/useTitleBlocklist';
 import useToasts from '@app/hooks/useToasts';
 import { getQueryParamString } from '@app/hooks/useUpdateQueryParams';
@@ -41,7 +42,7 @@ import {
 import { UserType } from '@server/constants/user';
 import type { MediaRequest } from '@server/entity/MediaRequest';
 import type { NonFunctionProperties } from '@server/interfaces/api/common';
-import type { ServiceCommonServer } from '@server/interfaces/api/serviceInterfaces';
+import type { MusicServiceOption } from '@server/interfaces/api/serviceInterfaces';
 import type {
   MusicDetails as MusicDetailsType,
   MusicRatingResponse,
@@ -88,12 +89,17 @@ const messages = defineMessages('components.MusicDetails', {
   mp3ServiceUnavailable: 'No MP3 music service is configured.',
   flacServiceUnavailable: 'No FLAC music service is configured.',
   blocklisted: 'This title is blocklisted.',
+  requestAlbum: 'Request Album',
+  trackRequestQueued: 'Requested track <strong>{title}</strong>.',
+  trackRequestOwned: '<strong>{title}</strong> is already owned.',
+  trackRequestError: 'Could not request this track.',
 });
 
 const MusicDetails = () => {
   const router = useRouter();
   const intl = useIntl();
   const { addToast } = useToasts();
+  const { currentSettings } = useSettings();
   const { user, hasPermission } = useUser();
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [editRequest, setEditRequest] =
@@ -105,6 +111,8 @@ const MusicDetails = () => {
   const [isBlocklisting, setIsBlocklisting] = useState(false);
   const [isWatchlistUpdating, setIsWatchlistUpdating] = useState(false);
   const [toggleWatchlist, setToggleWatchlist] = useState(true);
+  const [requestingTrackIds, setRequestingTrackIds] = useState<string[]>([]);
+  const [requestedTrackIds, setRequestedTrackIds] = useState<string[]>([]);
   const musicId = getQueryParamString(router.query.musicId);
   const normalizedRouteMusicId = musicId
     ? normalizeMusicBrainzId(musicId)
@@ -129,8 +137,8 @@ const MusicDetails = () => {
       refreshWhenOffline: false,
     }
   );
-  const { data: musicServices } = useSWR<ServiceCommonServer[]>(
-    '/api/v1/service/lidarr'
+  const { data: musicServices } = useSWR<MusicServiceOption[]>(
+    '/api/v1/service/music'
   );
 
   useEffect(() => {
@@ -216,7 +224,9 @@ const MusicDetails = () => {
           targets.length === 0 ||
           targets.some(
             (target) =>
-              target.serviceType === 'lidarr' && target.serverId === service.id
+              (target.serviceType === 'lidarr' ||
+                target.serviceType === 'aurral') &&
+              target.serverId === service.id
           )
         );
       });
@@ -483,6 +493,92 @@ const MusicDetails = () => {
     </>
   );
 
+  const hasQualitySpecificServices = musicRequestOptions.some(
+    (option) => !option.disabled || availableForOption(option.id)
+  );
+  function availableForOption(format: 'mp3' | 'flac') {
+    const service = musicServices?.find((candidate) =>
+      isMusicServiceForQuality(candidate, format)
+    );
+    return Boolean(
+      service &&
+      data?.availableServices?.some(
+        (candidate) => candidate.serverId === service.id
+      )
+    );
+  }
+  const fallbackMusicService =
+    musicServices?.find((candidate) => candidate.isDefault) ??
+    musicServices?.[0];
+  const fallbackServiceRequested =
+    !!fallbackMusicService &&
+    activeMusicRequests.some((request) => {
+      const targets = request.serviceTargets ?? [];
+      return (
+        targets.length === 0 ||
+        targets.some(
+          (target) =>
+            (target.serviceType === 'lidarr' ||
+              target.serviceType === 'aurral') &&
+            target.serverId === fallbackMusicService.id
+        )
+      );
+    });
+  const handleRequestTrack = async (
+    track: MusicDetailsType['tracks'][number]
+  ) => {
+    const key = track.recordingMbid || track.name;
+    if (!key || requestingTrackIds.includes(key)) {
+      return;
+    }
+    setRequestingTrackIds((current) => [...current, key]);
+    try {
+      const response = await axios.post<{
+        results?: { status?: string }[];
+      }>('/api/v1/music/track-requests', {
+        track: {
+          title: track.name,
+          artist: data.artist.name,
+          source: 'album',
+          recordingMbid: track.recordingMbid || undefined,
+          albumMbid: albumId,
+          albumName: data.title,
+          artistMbid: artistId || undefined,
+          durationMs: track.length > 0 ? track.length : undefined,
+          trackNumber: track.position > 0 ? track.position : undefined,
+        },
+      });
+      setRequestedTrackIds((current) =>
+        current.includes(key) ? current : [...current, key]
+      );
+      const alreadyOwned = response.data?.results?.[0]?.status === 'completed';
+      addToast(
+        <span>
+          {intl.formatMessage(
+            alreadyOwned
+              ? messages.trackRequestOwned
+              : messages.trackRequestQueued,
+            {
+              title: track.name,
+              strong: (msg: React.ReactNode) => (
+                <strong key="strong">{msg}</strong>
+              ),
+            }
+          )}
+        </span>,
+        { appearance: 'success', autoDismiss: true }
+      );
+    } catch {
+      addToast(intl.formatMessage(messages.trackRequestError), {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      setRequestingTrackIds((current) =>
+        current.filter((item) => item !== key)
+      );
+    }
+  };
   const requestAction = (
     <>
       {activeMusicRequest && (
@@ -499,9 +595,30 @@ const MusicDetails = () => {
           <span>{intl.formatMessage(messages.viewrequest)}</span>
         </Button>
       )}
-      {canShowRequest && musicRequestOptions.length > 0 && (
+      {canShowRequest && hasQualitySpecificServices && (
         <FormatRequestControl options={musicRequestOptions} />
       )}
+      {canShowRequest &&
+        !hasQualitySpecificServices &&
+        fallbackMusicService && (
+          <Button
+            buttonType="primary"
+            buttonSize="sm"
+            disabled={
+              data.mediaInfo?.status === MediaStatus.BLOCKLISTED ||
+              data.mediaInfo?.status === MediaStatus.AVAILABLE ||
+              (!canChooseAlternateTarget && fallbackServiceRequested)
+            }
+            onClick={() => {
+              setEditRequest(undefined);
+              setRequestServerId(fallbackMusicService.id);
+              setShowRequestModal(true);
+            }}
+          >
+            <ArrowDownTrayIcon />
+            <span>{intl.formatMessage(messages.requestAlbum)}</span>
+          </Button>
+        )}
     </>
   );
 
@@ -632,6 +749,13 @@ const MusicDetails = () => {
         catalogActions={catalogActions}
         playbackActions={playbackActions}
         ratingData={ratingData}
+        onRequestTrack={
+          currentSettings.trackRequestsEnabled && canRequest
+            ? (track) => void handleRequestTrack(track)
+            : undefined
+        }
+        requestingTrackIds={requestingTrackIds}
+        requestedTrackIds={requestedTrackIds}
         additionalContent={
           <>
             {additionalContent}

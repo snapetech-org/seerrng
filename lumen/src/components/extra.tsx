@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   artUrl,
@@ -19,6 +19,7 @@ import {
   QualityStatusGlyphs,
   StatLabel,
   statusOf,
+  TouchQuick,
   useCardTitleMode,
   type QualityStatus,
   type Stat,
@@ -136,9 +137,13 @@ export function ExtraCard({
   pct,
   titleKind,
   watchlist,
+  quick,
+  metaHref,
   statusBadges,
 }: {
   href: string;
+  // the meta line (an album's artist) opens its own page
+  metaHref?: string;
   img?: string;
   title: string;
   meta?: string;
@@ -149,24 +154,69 @@ export function ExtraCard({
   titleKind?: CardTitleKind;
   watchlist?: { mediaType: ManagedMediaType; id: string | number };
   pct?: number; // a download progress bar along the bottom of the art
+  // a one-tap request on the cover (Get album), shown while nothing is owned or asked for
+  quick?: { label: string; action: string; run: () => Promise<unknown> };
   statusBadges?: QualityStatus[];
 }) {
   const titleMode = useCardTitleMode(titleKind);
   const safeImage = artUrl(img);
+  const [imageFailed, setImageFailed] = useState(false);
+  const [quickState, setQuickState] = useState<'idle' | 'busy' | 'done'>(
+    'idle'
+  );
+  const shownStat: Stat =
+    quickState === 'done'
+      ? { k: 'wait', word: 'Requested', ico: 'clock' }
+      : stat || null;
+  const quickBusy = useRef(false);
+  const toast = useToast();
+  const { t } = useLumenLocale();
+  const { prefs } = usePrefs();
+  const runQuick = async () => {
+    if (!quick || quickBusy.current || quickState === 'done') return;
+    quickBusy.current = true;
+    setQuickState('busy');
+    try {
+      await quick.run();
+      setQuickState('done');
+    } catch (error) {
+      setQuickState('idle');
+      toast(
+        friendlyError(
+          error,
+          t(
+            'lumen.request.couldNotRequestTitle',
+            'Could not request {title}.',
+            {
+              title,
+            }
+          )
+        )
+      );
+    } finally {
+      quickBusy.current = false;
+    }
+  };
+  const showQuick =
+    Boolean(quick) && prefs.hoverRequest && !stat && quickState !== 'done';
   return (
     <div
       className={`poster ${shape || ''}`}
       data-title-mode={safeImage ? titleMode : undefined}
     >
       <div className="art">
-        {safeImage ? (
+        {/* a cover that fails to load stays in place, hidden, under the icon */}
+        {safeImage && (
           <img
             loading="lazy"
             src={safeImage}
             referrerPolicy="no-referrer"
             alt=""
+            hidden={imageFailed}
+            onError={() => setImageFailed(true)}
           />
-        ) : (
+        )}
+        {(!safeImage || imageFailed) && (
           <span className="art-ph">
             <Icon name={icon} />
           </span>
@@ -174,7 +224,7 @@ export function ExtraCard({
         {statusBadges?.length ? (
           <QualityStatusGlyphs statuses={statusBadges} />
         ) : (
-          <Glyph s={stat || null} />
+          <Glyph s={shownStat} />
         )}
         {pct != null && (
           <span className="bar" aria-hidden="true">
@@ -182,6 +232,29 @@ export function ExtraCard({
           </span>
         )}
         <Link className="hit" to={href} aria-label={title} />
+        {showQuick && quick && (
+          <TouchQuick
+            label={quick.label}
+            onClick={runQuick}
+            busy={quickState === 'busy'}
+          />
+        )}
+        {showQuick && quick && !watchlist && (
+          <div className="qa">
+            <div className="qb">
+              <button
+                type="button"
+                className="qbtn go"
+                disabled={quickState === 'busy'}
+                onClick={() => void runQuick()}
+                aria-label={quick.label}
+              >
+                <Icon name="plus" size="sm" />
+                {quick.action}
+              </button>
+            </div>
+          </div>
+        )}
         {watchlist && (
           <WatchlistButton
             mediaType={watchlist.mediaType}
@@ -194,6 +267,18 @@ export function ExtraCard({
         {watchlist && (
           <div className="qa">
             <div className="qb watchlist-row">
+              {showQuick && quick && (
+                <button
+                  type="button"
+                  className="qbtn go"
+                  disabled={quickState === 'busy'}
+                  onClick={() => void runQuick()}
+                  aria-label={quick.label}
+                >
+                  <Icon name="plus" size="sm" />
+                  {quick.action}
+                </button>
+              )}
               <WatchlistButton
                 mediaType={watchlist.mediaType}
                 detail={{ id: watchlist.id, title }}
@@ -204,8 +289,20 @@ export function ExtraCard({
           </div>
         )}
       </div>
-      <div className="t">{title}</div>
-      {meta && <div className="m">{meta}</div>}
+      <div className="t">
+        {/* the art's link already names the card for screen readers */}
+        <Link to={href} tabIndex={-1} aria-hidden="true">
+          {title}
+        </Link>
+      </div>
+      {meta &&
+        (metaHref ? (
+          <div className="m">
+            <Link to={metaHref}>{meta}</Link>
+          </div>
+        ) : (
+          <div className="m">{meta}</div>
+        ))}
       {note && <div className="m2">{note}</div>}
     </div>
   );
@@ -253,6 +350,7 @@ export function ExtraSearch({
       <input
         type="search"
         placeholder={placeholder}
+        aria-label={placeholder}
         value={value}
         autoComplete="off"
         autoCapitalize="none"
@@ -272,14 +370,17 @@ export function RequestButton({
   label,
   request,
   className = 'btn btn-primary',
+  onError,
 }: {
   stat: Stat;
   label?: string;
   request: () => Promise<unknown>;
   className?: string;
+  // answers true when it handled the failure itself (no toast)
+  onError?: (error: unknown) => boolean;
 }) {
-  const { t } = useLumenLocale();
   const toast = useToast();
+  const { t } = useLumenLocale();
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   if (stat?.k === 'ok')
@@ -303,16 +404,17 @@ export function RequestButton({
       setDone(true);
       toast(t('lumen.common.requestSubmitted', 'Request submitted.'));
     } catch (e) {
-      toast(
-        friendlyError(
-          e,
-          t(
-            'lumen.common.requestFailed',
-            'The request could not be submitted.'
-          ),
-          t
-        )
-      );
+      if (!onError?.(e))
+        toast(
+          friendlyError(
+            e,
+            t(
+              'lumen.common.requestFailed',
+              'The request could not be submitted.'
+            ),
+            t
+          )
+        );
     } finally {
       setBusy(false);
     }
@@ -354,6 +456,7 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
   if (x.enabled(k)) return <>{children}</>;
   const label = {
     music: 'Music',
+    podcast: 'Podcasts',
     comic: 'Comics/Manga',
     magazine: 'Magazines',
     game: 'Games',

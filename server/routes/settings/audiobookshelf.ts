@@ -61,6 +61,14 @@ const parseConnection = (
   if (externalUrl.value && !isValidHttpUrl(externalUrl.value)) {
     return { error: 'External URL must be a valid HTTP or HTTPS URL.' };
   }
+  const proxyUrl = parseOptionalBoundedString(record.proxyUrl, {
+    fieldName: 'proxyUrl',
+    maxLength: 512,
+  });
+  if ('error' in proxyUrl) return proxyUrl;
+  if (proxyUrl.value?.trim() && !isValidHttpUrl(proxyUrl.value.trim())) {
+    return { error: 'Proxy URL must be a valid HTTP or HTTPS URL.' };
+  }
   if (
     record.syncEnabled !== undefined &&
     typeof record.syncEnabled !== 'boolean'
@@ -76,6 +84,7 @@ const parseConnection = (
       libraryId: libraryId.value.trim(),
       libraryName: libraryName.value.trim(),
       externalUrl: externalUrl.value?.trim() || undefined,
+      proxyUrl: proxyUrl.value?.trim().replace(/\/+$/, '') || undefined,
       syncEnabled: record.syncEnabled !== false,
     },
   };
