@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 const paged = (results: unknown[] = []) => ({
   page: 1,
   totalPages: 1,
@@ -240,7 +243,7 @@ test('an unlinked account offers recovery without attempting a write', async ({
   ).toBeDisabled();
   await expect(
     page.getByRole('link', { name: 'Link Plex Account' })
-  ).toHaveAttribute('href', '/me/account/linked-accounts');
+  ).toHaveAttribute('href', testAppPath('/me/account/linked-accounts'));
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth

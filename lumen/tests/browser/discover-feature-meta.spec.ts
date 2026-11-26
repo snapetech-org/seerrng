@@ -1,5 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen';
+
 async function openMoreFilters(page: Page) {
   const details = page.locator('details.more-filters');
   if (!(await details.evaluate((el) => (el as HTMLDetailsElement).open)))
@@ -77,7 +79,9 @@ test('disabled Discover rows do not fetch catalog data', async ({
   ])
     await expect(page.getByRole('heading', { name: title })).toHaveCount(0);
   await expect(page.locator('.navchips')).toBeVisible();
-  expect(configReads).toEqual(['/lumen-config.json']);
+  expect(configReads).toEqual([
+    testMount ? '/lumen/configuration' : '/lumen-config.json',
+  ]);
   expect(catalogReads).toEqual([]);
   if (process.env.LUMEN_CAPTURE_DISABLED_DISCOVER)
     await page.screenshot({

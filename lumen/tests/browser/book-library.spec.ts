@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 const ebookId = 'bookshelf:7:aGM6MTIzNDU';
 const audioId = 'bookshelf:42:aGM6MTIzNDU';
 const ownedId = 'bookshelf:93:aGM6OTg3NjU';
@@ -147,7 +150,7 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
   ).toHaveCount(1);
   await expect(
     libraryRow.getByRole('link', { name: 'See all' })
-  ).toHaveAttribute('href', '/books?show=have');
+  ).toHaveAttribute('href', testAppPath('/books?show=have'));
 
   await page.goto('/audiobooks');
   await expect(
@@ -541,6 +544,8 @@ async function fixtures(
     const req = route.request();
     const url = new URL(req.url());
     const path = url.pathname.slice(7);
+    if (path === '/lumen/configuration')
+      return route.fulfill({ json: opts.config || {} });
     requests.push({
       path,
       query: url.search,
@@ -642,7 +647,9 @@ for (const format of ['ebook', 'audiobook'] as const) {
     await expect(native).toBeVisible();
     await expect(native).toHaveAttribute(
       'href',
-      `/book/${encodeURIComponent(format === 'ebook' ? ebookId : audioId)}${format === 'audiobook' ? '?f=audio&' : '?'}lookupTitle=Native+${format}`
+      testAppPath(
+        `/book/${encodeURIComponent(format === 'ebook' ? ebookId : audioId)}${format === 'audiobook' ? '?f=audio&' : '?'}lookupTitle=Native+${format}`
+      )
     );
     await page.getByRole('button', { name: 'In library', exact: true }).click();
     await expect(
@@ -676,7 +683,7 @@ test('native ebook search works without a companion and retains its service-owne
   await expect(native).toBeVisible();
   await expect(native).toHaveAttribute(
     'href',
-    `/book/${encodeURIComponent(ebookId)}?lookupTitle=Native+ebook`
+    testAppPath(`/book/${encodeURIComponent(ebookId)}?lookupTitle=Native+ebook`)
   );
   await native.locator('..').hover();
   const quick = page.getByRole('button', {
@@ -1014,7 +1021,7 @@ test('audiobook search offers books the audiobook catalogue has not seen yet', a
   await expect(card).toHaveClass(/sq/);
   await expect(card.locator('a.hit')).toHaveAttribute(
     'href',
-    '/book/OL123W?f=audio'
+    testAppPath('/book/OL123W?f=audio')
   );
   expect(asked).toEqual(['audiobook']);
   await expect(page.getByText('Ebook-only manager record')).toHaveCount(0);

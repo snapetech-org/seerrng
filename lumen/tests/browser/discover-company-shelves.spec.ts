@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const testAppPath = (path: string) =>
+  `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
+
 const paged = { page: 1, totalPages: 1, totalResults: 0, results: [] };
 
 test('Lumen renders saved Studios and Networks on desktop and mobile', async ({
@@ -81,10 +84,10 @@ test('Lumen renders saved Studios and Networks on desktop and mobile', async ({
   await expect(page.getByRole('heading', { name: 'Networks' })).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Browse movies from A24' })
-  ).toHaveAttribute('href', '/movies?studio=41077');
+  ).toHaveAttribute('href', testAppPath('/movies?studio=41077'));
   await expect(
     page.getByRole('link', { name: 'Browse series from Netflix' })
-  ).toHaveAttribute('href', '/series?network=213');
+  ).toHaveAttribute('href', testAppPath('/series?network=213'));
   if (process.env.LUMEN_CAPTURE_DISCOVER_COMPANIES)
     await page.screenshot({
       path: info.outputPath('discover-companies-after-desktop.png'),

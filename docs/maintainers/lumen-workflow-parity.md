@@ -10993,3 +10993,26 @@ remain unverified. Screenshots from the bundled run are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/navigation-mounted-results/`.
 
 release-note: none
+
+### Core user workflows under the bundled mount (2026-11-25)
+
+A selected 35-spec core workflow matrix passes through the compiled Express
+`/lumen/` mount: 848 passed, 12 expected viewport skips, and no failures across
+desktop, iPhone, Android, and tablet. Coverage includes account and language
+settings, first-run and initialized setup, Discover shelves and filters, movie,
+TV, book, game, and software details, request permissions and recovery, book
+and audiobook library search/inventory, media-server sign-in and saved-item
+actions, playback, and responsive Requests views.
+
+The initial mount run's 40 failures were test fixture assumptions: native-root
+hrefs, the companion configuration endpoint, and embedded Audiobookshelf
+configuration. The affected cases pass 40/40 in both mounted and standalone
+focused runs. A subsequent full run had one intermittent Android shell-language
+assertion; it passed three repeated mounted and three repeated standalone
+Android runs, and the complete corrected matrix then passed 848 cases. The
+result is fixture-backed and does not prove live provider handoffs, live server
+authorization, published-image behavior, or native-matched visual acceptance.
+Results are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/core-user-workflows-mounted-final-rerun/`.
+
+release-note: none
