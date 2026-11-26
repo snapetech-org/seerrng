@@ -994,6 +994,58 @@ test('native season dialog selects all, latest and none and retains future-seaso
   await expect(dialog).toHaveCount(0);
 });
 
+test('native request modal allows a full-season request when episode metadata fails', async ({
+  page,
+  baseURL,
+}) => {
+  await login(page, baseURL!, 'persiusNG', 'friend@seerr.dev');
+  await fixtures(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  let submittedRequest: Record<string, unknown> | undefined;
+  await page.route('**/api/v1/request', async (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
+    submittedRequest = route.request().postDataJSON();
+    await route.fulfill({ json: { media: { status: 1, status4k: 1 } } });
+  });
+  await page.route('**/api/v1/tv/1396/seasons?*', (route) =>
+    route.fulfill({ status: 503, json: { message: 'Provider unavailable' } })
+  );
+  await navigate(page, '/discover/tv');
+  const card = page.locator('[data-testid="title-card"]').first();
+  await card.locator('[data-poster-region="frame"]').hover();
+  await card.getByRole('button', { name: /Request/ }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByText('Episodes Could Not Be Loaded')).toBeVisible();
+  const fallback = dialog.getByTestId('request-full-season-fallback');
+  const seasonChoices = fallback.locator('input[type="checkbox"]');
+  await expect(seasonChoices).toHaveCount(10);
+  await expect(seasonChoices.first()).toBeChecked();
+  for (let index = 1; index < 10; index++)
+    await seasonChoices.nth(index).uncheck();
+  await expect(
+    dialog.getByRole('button', { name: 'Request', exact: true })
+  ).toBeEnabled();
+  await capture(page, {
+    path: `${screenshotRoot}/request-season-fallback-1440.png`,
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(dialog).toBeVisible();
+  await capture(page, {
+    path: `${screenshotRoot}/request-season-fallback-390.png`,
+  });
+  await dialog.getByRole('button', { name: 'Request', exact: true }).click();
+  await expect
+    .poll(() => submittedRequest)
+    .toMatchObject({
+      mediaId: 1396,
+      mediaType: 'tv',
+      seasons: [1],
+      seasonRequests: [{ seasonNumber: 1 }],
+    });
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+});
+
 for (const theme of ['seerrOrig', 'seerrNGJ']) {
   test(`existing interfaces: ${theme} shared consumers at desktop and phone`, async ({
     page,

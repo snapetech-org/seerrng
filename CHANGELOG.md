@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### User-facing changes
+
+#### Fixed
+
+- **TV requests:** Users can now request entire seasons when episode details fail to load, while keeping any loaded episode selections. Lumen and native themes both offer retry and per-season fallback controls.
+
 ## [3.72.40](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.40) - 2026-11-20
 
 ### User-facing changes

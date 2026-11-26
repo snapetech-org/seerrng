@@ -60,6 +60,7 @@ const setup = async (
   options: {
     selectionMode?: 'multiple' | 'single-episode';
     visibleSeasons?: TvDetails['seasons'];
+    disabledSeasons?: number[];
   } = {}
 ) => {
   const dom = new JSDOM('<div id="root"></div>');
@@ -80,6 +81,7 @@ const setup = async (
           tvId={24}
           seasons={options.visibleSeasons ?? seasons}
           selections={selection}
+          disabledSeasons={options.disabledSeasons}
           disabledEpisodes={blocked}
           availableEpisodesBySeason={{ 1: [2] }}
           selectionMode={options.selectionMode}
@@ -106,12 +108,69 @@ const setup = async (
   const click = async (label: string) => {
     await act(async () => button(label).click());
   };
+  const checkSeason = async (number: number) => {
+    const input = [
+      ...document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'),
+    ].find((candidate) =>
+      candidate
+        .closest('label')
+        ?.textContent?.includes(`Season ${String(number).padStart(2, '0')}`)
+    );
+    if (!input) throw new Error(`Missing full-season fallback ${number}`);
+    await act(async () => input.click());
+  };
   const close = async () => {
     await act(async () => root.unmount());
     dom.window.close();
   };
-  return { changed, ready, loading, render, button, click, close };
+  return { changed, ready, loading, render, button, click, checkSeason, close };
 };
+
+it('allows an explicit full-season request when every episode metadata batch fails', async () => {
+  const ui = await setup([]);
+  try {
+    swr.get
+      .mockRejectedValueOnce(new Error('Provider timeout'))
+      .mockRejectedValueOnce(new Error('Provider timeout'));
+    expect(await swr.fetcher!()).toEqual([]);
+    swr.data = [];
+    swr.isValidating = false;
+    await ui.render();
+
+    expect(document.body.textContent).toContain('Episodes Could Not Be Loaded');
+    expect(document.body.textContent).toContain(
+      'Request a full season without episode details'
+    );
+    expect(ui.ready).toHaveBeenLastCalledWith(false);
+    expect(ui.changed).not.toHaveBeenCalled();
+
+    await ui.checkSeason(1);
+    expect(ui.changed).toHaveBeenLastCalledWith([{ seasonNumber: 1 }]);
+    expect(ui.ready).toHaveBeenLastCalledWith(true);
+  } finally {
+    await ui.close();
+  }
+});
+
+it('does not offer a full-season fallback for a disabled season', async () => {
+  const ui = await setup([], {}, { disabledSeasons: [1] });
+  try {
+    swr.get
+      .mockRejectedValueOnce(new Error('Provider timeout'))
+      .mockRejectedValueOnce(new Error('Provider timeout'));
+    expect(await swr.fetcher!()).toEqual([]);
+    swr.data = [];
+    swr.isValidating = false;
+    await ui.render();
+
+    expect(
+      document.querySelector('[data-testid="request-full-season-fallback"]')
+    ).toBeNull();
+    expect(ui.ready).toHaveBeenLastCalledWith(false);
+  } finally {
+    await ui.close();
+  }
+});
 
 it('uses the actual shared tree to change whole-season selection into episode-number payloads and clear/all', async () => {
   swr.data = metadata;

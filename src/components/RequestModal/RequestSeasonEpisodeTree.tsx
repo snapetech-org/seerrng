@@ -34,11 +34,15 @@ const messages = defineMessages('components.RequestModal.RequestTree', {
   noSeasons: 'No Seasons Available',
   loadError: 'Episodes Could Not Be Loaded',
   loadErrorHint:
-    'Your request selection is preserved. Load all season information before changing it.',
+    'Your request selection is preserved. Retry for episode details, or choose a season below to request it in full.',
+  fullSeasonFallbackTitle: 'Request a full season without episode details',
+  fullSeasonFallbackHint:
+    'Choose a season to request every episode in it. This option is available when episode details could not be loaded.',
+  episodeCount: '{count} episodes',
   partialQueueHint:
     'Choose a starting episode from a loaded season, or retry the seasons that failed to load.',
   partialSelectionHint:
-    'Choose episodes from loaded seasons to request those seasons now, or retry to include seasons that failed to load. Changing the selection drops any unloaded seasons.',
+    'Choose episodes from loaded seasons, or choose an unloaded season to request it in full. Retry to select individual episodes in seasons that failed to load.',
   retryTooltip:
     'Fetch the seasons and episodes again without changing your request selection.',
 });
@@ -195,11 +199,31 @@ const RequestSeasonEpisodeTree = ({
           ))
       );
     });
+  const seasonsWithoutMetadata = treeData.filter(
+    (season) =>
+      season.seasonNumber > 0 &&
+      !disabledSeasons.includes(season.seasonNumber) &&
+      !data?.some((loaded) => loaded.seasonNumber === season.seasonNumber)
+  );
+  const fullSeasonFallbackReady =
+    selectionMode === 'multiple' &&
+    !isValidating &&
+    seasonsWithoutMetadata.some((season) =>
+      selections.some(
+        (selection) =>
+          selection.seasonNumber === season.seasonNumber &&
+          selection.episodeNumbers === undefined
+      )
+    );
   const canChoose =
     complete ||
     singleEpisodeId !== undefined ||
     (selectionMode === 'multiple' && partialMetadataAvailable);
-  const ready = complete || hasSelectedStart || hasLoadedSelection;
+  const ready =
+    complete ||
+    hasSelectedStart ||
+    hasLoadedSelection ||
+    fullSeasonFallbackReady;
   useEffect(() => {
     onLoadingChange?.(isValidating);
   }, [isValidating, onLoadingChange]);
@@ -303,9 +327,61 @@ const RequestSeasonEpisodeTree = ({
             />
           )}
           {feedback}
-          {afterSeasonSelection}
         </>
       )}
+      {selectionMode === 'multiple' &&
+        !complete &&
+        !isValidating &&
+        seasonsWithoutMetadata.length > 0 && (
+          <fieldset
+            className="setlist"
+            data-testid="request-full-season-fallback"
+          >
+            <legend className="card-subheading">
+              {intl.formatMessage(messages.fullSeasonFallbackTitle)}
+            </legend>
+            <p className="note">
+              {intl.formatMessage(messages.fullSeasonFallbackHint)}
+            </p>
+            {seasonsWithoutMetadata.map((season) => {
+              const checked = selections.some(
+                (selection) =>
+                  selection.seasonNumber === season.seasonNumber &&
+                  selection.episodeNumbers === undefined
+              );
+              return (
+                <label className="set cfg-row" key={season.seasonNumber}>
+                  <span>
+                    {season.name}
+                    <small>
+                      {intl.formatMessage(messages.episodeCount, {
+                        count: season.episodeCount ?? 0,
+                      })}
+                    </small>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={(event) => {
+                      const next = selections.filter(
+                        (selection) =>
+                          selection.seasonNumber !== season.seasonNumber
+                      );
+                      if (event.target.checked)
+                        next.push({ seasonNumber: season.seasonNumber });
+                      onSelectionsChange(
+                        next.sort((a, b) => a.seasonNumber - b.seasonNumber)
+                      );
+                    }}
+                  />
+                </label>
+              );
+            })}
+          </fieldset>
+        )}
+      {(persius || upstream) &&
+        selectionMode === 'multiple' &&
+        afterSeasonSelection}
       {(!(persius || upstream) || selectionMode !== 'multiple') && feedback}
       <OptionalDisclosure
         enabled={(persius || upstream) && selectionMode === 'multiple'}
@@ -322,10 +398,17 @@ const RequestSeasonEpisodeTree = ({
           onSelectionChange={(ids) => {
             if (canChoose) {
               const preservedSelections = partialMetadataAvailable
-                ? selections.filter((selection) =>
-                    data?.some(
-                      (season) => season.seasonNumber === selection.seasonNumber
-                    )
+                ? selections.filter(
+                    (selection) =>
+                      data?.some(
+                        (season) =>
+                          season.seasonNumber === selection.seasonNumber
+                      ) ||
+                      (selection.episodeNumbers === undefined &&
+                        seasonsWithoutMetadata.some(
+                          (season) =>
+                            season.seasonNumber === selection.seasonNumber
+                        ))
                   )
                 : selections;
               onSelectionsChange(

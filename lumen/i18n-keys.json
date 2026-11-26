@@ -4731,6 +4731,8 @@
   "lumen.tvEpisodeRequest.loadFailure",
   "lumen.tvEpisodeRequest.loadFailureBody",
   "lumen.tvEpisodeRequest.loadFailurePartialBody",
+  "lumen.tvEpisodeRequest.fullSeasonFallbackTitle",
+  "lumen.tvEpisodeRequest.fullSeasonFallbackHint",
   "lumen.tvEpisodeRequest.loading",
   "lumen.tvEpisodeRequest.open",
   "lumen.tvEpisodeRequest.requestAnyway",

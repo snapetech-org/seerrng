@@ -7482,6 +7482,31 @@ Evidence is retained at
 This does not resolve a provider outage where no season metadata is returned;
 the screenshot's live-provider cause remains unverified.
 
+### Full-season recovery when all episode metadata fails
+
+The native request modal and Lumen episode sheet now offer a per-season
+whole-season fallback when a season's episode details remain unavailable. The
+choice uses SeerrNG's existing season-only request payload. Previously, users
+could retry, but a complete metadata failure left no usable episode selection
+in Lumen; the native request could preserve selected seasons but offered no
+clear recovery control. The fallback excludes Specials and leaves loaded
+episode selections intact. In Lumen, changing individual episode selections
+clears the whole-season choice for that season.
+
+Focused native tests and TV route tests pass (20 tests). Lumen's production
+build and the four browser viewport cases pass; they verify a failed 12-season
+metadata load, selecting a season, and the exact season-only request payload.
+The native full-app browser regression passes against the development server
+and verifies the submitted season-only payload. Candidate screens were
+inspected at native 1440 × 900 and 390 × 844, and Lumen desktop and iPhone
+viewports. Captures and logs are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-full-season-fallback-20261126/`.
+The local Next production build did not complete: page-data optimization
+reported many existing routes without a valid default component. The native
+browser check therefore used the working development server; hosted validation
+remains required. No live provider instance was available, so this resolves the
+unusable recovery flow but does not establish the reporter's live outage cause.
+
 Closing Lumen's large-series episode picker now aborts the in-flight season
 batch and prevents queued batches and retries from starting. Previously, the
 component stopped rendering after dismissal but continued fetching every

@@ -2223,7 +2223,7 @@
     "lumen.tvEpisodeRequest.approvalAnyway": "Request Approval Anyway",
     "lumen.tvEpisodeRequest.requestAnyway": "Request Anyway",
     "lumen.tvEpisodeRequest.requestApproval": "Request Approval",
-    "lumen.tvEpisodeRequest.submit": "Request Selected Episodes",
+    "lumen.tvEpisodeRequest.submit": "Request Selected Items",
     "lumen.tvEpisodeRequest.close": "Close",
     "lumen.detail.loadingServers": "Loading servers…",
     "lumen.detail.noServer": "No {service} server to choose; SeerrNG uses its defaults.",
@@ -5335,7 +5335,9 @@
     "lumen.admin.home.indexersDownloads": "Indexers and Downloads",
     "lumen.admin.home.booksAudiobooksComics": "Books, Audiobooks and Comics",
     "lumen.admin.home.softwareGames": "Software and Games",
-    "lumen.admin.home.system": "System"
+    "lumen.admin.home.system": "System",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "Request full seasons without episode details",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Select a season to request it in full. Retry above to select individual episodes."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -7721,7 +7723,7 @@
     "lumen.tvEpisodeRequest.approvalAnyway": "Demander une approbation quand même",
     "lumen.tvEpisodeRequest.requestAnyway": "Demander quand même",
     "lumen.tvEpisodeRequest.requestApproval": "Demander une approbation",
-    "lumen.tvEpisodeRequest.submit": "Demander les épisodes sélectionnés",
+    "lumen.tvEpisodeRequest.submit": "Demander les éléments sélectionnés",
     "lumen.tvEpisodeRequest.close": "Fermer",
     "lumen.detail.loadingServers": "Chargement des serveurs…",
     "lumen.detail.noServer": "Aucun serveur {service} à choisir ; SeerrNG utilise ses paramètres par défaut.",
@@ -10960,7 +10962,9 @@
     "lumen.admin.home.indexersDownloads": "Indexeurs et téléchargements",
     "lumen.admin.home.booksAudiobooksComics": "Livres, livres audio et bandes dessinées",
     "lumen.admin.home.softwareGames": "Logiciels et jeux",
-    "lumen.admin.home.system": "Système"
+    "lumen.admin.home.system": "Système",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "Demander des saisons complètes sans détails des épisodes",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "Choisissez une saison pour la demander en entier. Réessayez ci-dessus pour sélectionner les épisodes individuellement."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -13350,7 +13354,7 @@
     "lumen.tvEpisodeRequest.approvalAnyway": "طلب الموافقة على أي حال",
     "lumen.tvEpisodeRequest.requestAnyway": "الطلب على أي حال",
     "lumen.tvEpisodeRequest.requestApproval": "طلب الموافقة",
-    "lumen.tvEpisodeRequest.submit": "طلب الحلقات المحددة",
+    "lumen.tvEpisodeRequest.submit": "طلب العناصر المحددة",
     "lumen.tvEpisodeRequest.close": "إغلاق",
     "lumen.detail.loadingServers": "جارٍ تحميل الخوادم…",
     "lumen.detail.noServer": "لا يوجد خادم {service} للاختيار؛ يستخدم SeerrNG الإعدادات الافتراضية.",
@@ -16589,6 +16593,8 @@
     "lumen.admin.home.indexersDownloads": "الفهارس والتنزيلات",
     "lumen.admin.home.booksAudiobooksComics": "الكتب والكتب الصوتية والقصص المصورة",
     "lumen.admin.home.softwareGames": "البرامج والألعاب",
-    "lumen.admin.home.system": "النظام"
+    "lumen.admin.home.system": "النظام",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackTitle": "طلب مواسم كاملة دون تفاصيل الحلقات",
+    "lumen.tvEpisodeRequest.fullSeasonFallbackHint": "اختر موسمًا لطلبه كاملًا. أعد المحاولة أعلاه لتحديد الحلقات بشكل فردي."
   }
 }

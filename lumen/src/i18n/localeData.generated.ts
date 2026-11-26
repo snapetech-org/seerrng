@@ -6010,6 +6010,10 @@ export const localeData = [
         'تعذر تحميل بعض تفاصيل المواسم.',
       'lumen.tvEpisodeRequest.loadFailurePartialBody':
         'لا تزال تفاصيل بعض المواسم غير متاحة. تبقى حلقات المواسم المحمّلة معروضة؛ أعد المحاولة لتحميل التفاصيل الناقصة.',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackTitle':
+        'طلب مواسم كاملة دون تفاصيل الحلقات',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackHint':
+        'اختر موسمًا لطلبه كاملًا. أعد المحاولة أعلاه لتحديد الحلقات بشكل فردي.',
       'lumen.tvEpisodeRequest.loading': 'جارٍ تحميل الحلقات…',
       'lumen.tvEpisodeRequest.open': 'طلب الحلقات',
       'lumen.tvEpisodeRequest.requestAnyway': 'الطلب على أي حال',
@@ -6026,7 +6030,7 @@ export const localeData = [
         'تحديد كل الحلقات القابلة للطلب في {season}',
       'lumen.tvEpisodeRequest.selected': 'المحدد: {count}',
       'lumen.tvEpisodeRequest.specials': 'الحلقات الخاصة',
-      'lumen.tvEpisodeRequest.submit': 'طلب الحلقات المحددة',
+      'lumen.tvEpisodeRequest.submit': 'طلب العناصر المحددة',
       'lumen.tvEpisodeRequest.title': 'طلب الحلقات',
       'lumen.tvEpisodeRequest.title4k': 'طلب الحلقات بدقة 4K',
       'lumen.tvRequests.episodeAhead.few': '{count} حلقات قادمة',
@@ -18467,6 +18471,10 @@ export const localeData = [
         'Some season details could not be loaded.',
       'lumen.tvEpisodeRequest.loadFailurePartialBody':
         'Some season details remain unavailable. Episodes from loaded seasons are still shown; retry to load the missing details.',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackTitle':
+        'Request full seasons without episode details',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackHint':
+        'Select a season to request it in full. Retry above to select individual episodes.',
       'lumen.tvEpisodeRequest.loading': 'Loading episodes…',
       'lumen.tvEpisodeRequest.open': 'Request Episodes',
       'lumen.tvEpisodeRequest.requestAnyway': 'Request Anyway',
@@ -18483,7 +18491,7 @@ export const localeData = [
         'Select all requestable episodes in {season}',
       'lumen.tvEpisodeRequest.selected': 'Selected: {count}',
       'lumen.tvEpisodeRequest.specials': 'Specials',
-      'lumen.tvEpisodeRequest.submit': 'Request Selected Episodes',
+      'lumen.tvEpisodeRequest.submit': 'Request Selected Items',
       'lumen.tvEpisodeRequest.title': 'Request Episodes',
       'lumen.tvEpisodeRequest.title4k': 'Request Episodes in 4K',
       'lumen.tvRequests.episodeAhead.one': '{count} episode ahead',
@@ -31950,6 +31958,10 @@ export const localeData = [
         'Certaines informations de saison n’ont pas pu être chargées.',
       'lumen.tvEpisodeRequest.loadFailurePartialBody':
         'Les détails de certaines saisons restent indisponibles. Les épisodes des saisons chargées restent affichés ; réessayez pour charger les détails manquants.',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackTitle':
+        'Demander des saisons complètes sans détails des épisodes',
+      'lumen.tvEpisodeRequest.fullSeasonFallbackHint':
+        'Choisissez une saison pour la demander en entier. Réessayez ci-dessus pour sélectionner les épisodes individuellement.',
       'lumen.tvEpisodeRequest.loading': 'Chargement des épisodes…',
       'lumen.tvEpisodeRequest.open': 'Demander des épisodes',
       'lumen.tvEpisodeRequest.requestAnyway': 'Demander quand même',
@@ -31967,7 +31979,7 @@ export const localeData = [
         'Sélectionner tous les épisodes pouvant être demandés de {season}',
       'lumen.tvEpisodeRequest.selected': 'Sélection : {count}',
       'lumen.tvEpisodeRequest.specials': 'Épisodes spéciaux',
-      'lumen.tvEpisodeRequest.submit': 'Demander les épisodes sélectionnés',
+      'lumen.tvEpisodeRequest.submit': 'Demander les éléments sélectionnés',
       'lumen.tvEpisodeRequest.title': 'Demander des épisodes',
       'lumen.tvEpisodeRequest.title4k': 'Demander des épisodes en 4K',
       'lumen.tvRequests.episodeAhead.one': '{count} épisode à venir',

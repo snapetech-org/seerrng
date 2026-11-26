@@ -809,6 +809,81 @@ test('large-series episode metadata uses small bounded batches and preserves dee
   ]);
 });
 
+test('requests a full season when every episode metadata batch fails', async ({
+  page,
+}, info) => {
+  const posts: RecordedPost[] = [];
+  const largeSeriesSeasons = Array.from({ length: 12 }, (_, index) => ({
+    seasonNumber: index + 1,
+    episodeCount: 20,
+    name: `Season ${index + 1}`,
+  }));
+  await show(
+    page,
+    {},
+    posts,
+    32,
+    undefined,
+    { partialRequestsEnabled: true },
+    largeSeriesSeasons
+  );
+  await page.goto(appPath('/tv/84773'));
+  const batchQueries: string[] = [];
+  await page.route('**/api/v1/tv/84773/seasons?*', async (route) => {
+    batchQueries.push(
+      new URL(route.request().url()).searchParams.get('seasonNumbers') ?? ''
+    );
+    await route.fulfill({ status: 503, body: 'provider unavailable' });
+  });
+  await page
+    .getByRole('button', { name: 'Request Episodes', exact: true })
+    .click();
+  const sheet = page.getByRole('dialog', { name: 'Request Episodes' });
+  await expect(sheet.getByText('Could not load episodes')).toBeVisible();
+  await expect(
+    sheet.getByText('Request full seasons without episode details')
+  ).toBeVisible();
+  expect(batchQueries).toEqual([
+    '1,2,3,4,5',
+    '1,2,3,4,5',
+    '6,7,8,9,10',
+    '6,7,8,9,10',
+    '11,12',
+    '11,12',
+  ]);
+  const seasonChoice = sheet.getByRole('checkbox', {
+    name: 'Season 1 20 episodes',
+    exact: true,
+  });
+  await seasonChoice.check();
+  await expect(
+    sheet.getByRole('button', { name: 'Request Selected Items' })
+  ).toBeEnabled();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath(
+        `tv-request-full-season-fallback-${info.project.name}.png`
+      ),
+      fullPage: false,
+    });
+  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
+  await expect(
+    page.getByText('Episodes requested for The Rings of Power')
+  ).toBeVisible();
+  expect(posts).toEqual([
+    {
+      path: '/request',
+      body: {
+        mediaType: 'tv',
+        mediaId: 84773,
+        is4k: false,
+        seasons: [1],
+        seasonRequests: [{ seasonNumber: 1 }],
+      },
+    },
+  ]);
+});
+
 test('loaded episodes remain selectable while the final large-series batch is pending', async ({
   page,
 }) => {

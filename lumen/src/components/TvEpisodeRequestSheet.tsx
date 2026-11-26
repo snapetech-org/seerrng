@@ -72,6 +72,9 @@ export default function TvEpisodeRequestSheet({
           : []
       )
   );
+  const [fullSeasonSelections, setFullSeasonSelections] = useState(
+    () => new Set<number>()
+  );
   const [openSeasons, setOpenSeasons] = useState(
     () => new Set(initialSeason === undefined ? [] : [initialSeason])
   );
@@ -196,6 +199,7 @@ export default function TvEpisodeRequestSheet({
     allSelectableEpisodes.length > 0 &&
     selectedSelectableCount === allSelectableEpisodes.length;
   const selectAll = () => {
+    setFullSeasonSelections(new Set());
     if (allSelectable) {
       setPicked(new Map());
       return;
@@ -220,6 +224,12 @@ export default function TvEpisodeRequestSheet({
       latestSelectableSeasonNumber
     );
     if (episodeNumbers.length)
+      setFullSeasonSelections((previous) => {
+        const next = new Set(previous);
+        next.delete(latestSelectableSeasonNumber);
+        return next;
+      });
+    if (episodeNumbers.length)
       setPicked(
         new Map([[latestSelectableSeasonNumber, new Set(episodeNumbers)]])
       );
@@ -236,17 +246,25 @@ export default function TvEpisodeRequestSheet({
       else next.set(seasonNumber, new Set(episodeNumbers));
       return next;
     });
+    setFullSeasonSelections((previous) => {
+      const next = new Set(previous);
+      next.delete(seasonNumber);
+      return next;
+    });
   };
-  const selections = seasons.flatMap(({ seasonNumber }) => {
-    const episodeNumbers = (episodesBySeason.get(seasonNumber) ?? [])
-      .filter(
-        (episode) =>
-          eligible(seasonNumber, episode) &&
-          picked.get(seasonNumber)?.has(episode.episodeNumber)
-      )
-      .map(({ episodeNumber }) => episodeNumber);
-    return episodeNumbers.length ? [{ seasonNumber, episodeNumbers }] : [];
-  });
+  const selections: SeasonRequestSelection[] = seasons.flatMap(
+    ({ seasonNumber }) => {
+      if (fullSeasonSelections.has(seasonNumber)) return [{ seasonNumber }];
+      const episodeNumbers = (episodesBySeason.get(seasonNumber) ?? [])
+        .filter(
+          (episode) =>
+            eligible(seasonNumber, episode) &&
+            picked.get(seasonNumber)?.has(episode.episodeNumber)
+        )
+        .map(({ episodeNumber }) => episodeNumber);
+      return episodeNumbers.length ? [{ seasonNumber, episodeNumbers }] : [];
+    }
+  );
   return createPortal(
     <div className="sheet-wrap open">
       <div className="sheet-scrim" aria-hidden="true" onClick={close} />
@@ -344,15 +362,18 @@ export default function TvEpisodeRequestSheet({
             <button
               className="btn btn-quiet btn-sm"
               type="button"
-              disabled={busy || !picked.size}
-              onClick={() => setPicked(new Map())}
+              disabled={busy || (!picked.size && !fullSeasonSelections.size)}
+              onClick={() => {
+                setPicked(new Map());
+                setFullSeasonSelections(new Set());
+              }}
             >
               {t('lumen.tvEpisodeRequest.clearSelection', 'Clear Selection')}
             </button>
             <span role="status">
               {t('lumen.tvEpisodeRequest.selected', 'Selected: {count}', {
                 count: selections.reduce(
-                  (total, item) => total + (item.episodeNumbers?.length ?? 0),
+                  (total, item) => total + (item.episodeNumbers?.length ?? 1),
                   0
                 ),
               })}
@@ -380,6 +401,69 @@ export default function TvEpisodeRequestSheet({
             }
             retry={() => setRetryCount((count) => count + 1)}
           />
+          {loadError && regularSeasonCount > 0 && (
+            <fieldset
+              className="setlist"
+              data-testid="request-full-season-fallback"
+            >
+              <legend className="card-subheading">
+                {t(
+                  'lumen.tvEpisodeRequest.fullSeasonFallbackTitle',
+                  'Request full seasons without episode details'
+                )}
+              </legend>
+              <p className="note">
+                {t(
+                  'lumen.tvEpisodeRequest.fullSeasonFallbackHint',
+                  'Select a season to request it in full. Retry above to select individual episodes.'
+                )}
+              </p>
+              {seasons
+                .filter(
+                  ({ seasonNumber }) =>
+                    seasonNumber > 0 &&
+                    (!episodesBySeason.has(seasonNumber) ||
+                      fullSeasonSelections.has(seasonNumber))
+                )
+                .map((season) => (
+                  <label className="set cfg-row" key={season.seasonNumber}>
+                    <span>
+                      {season.name ||
+                        t(
+                          'lumen.tvEpisodeRequest.seasonNumber',
+                          'Season {number}',
+                          {
+                            number: season.seasonNumber,
+                          }
+                        )}
+                      <small>
+                        {t(
+                          'lumen.tvEpisodeRequest.episodeCount',
+                          '{count} episodes',
+                          {
+                            count: season.episodeCount ?? 0,
+                          }
+                        )}
+                      </small>
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={fullSeasonSelections.has(season.seasonNumber)}
+                      disabled={busy || !!streamingOverride}
+                      onChange={(event) =>
+                        setFullSeasonSelections((previous) => {
+                          const next = new Set(previous);
+                          if (event.target.checked)
+                            next.add(season.seasonNumber);
+                          else next.delete(season.seasonNumber);
+                          return next;
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+            </fieldset>
+          )}
           {loading && (
             <p className="note" role="status">
               {t('lumen.tvEpisodeRequest.loading', 'Loading episodes…')}
@@ -511,6 +595,11 @@ export default function TvEpisodeRequestSheet({
                                   next.set(seasonNumber, seasonPicks);
                                 else next.delete(seasonNumber);
                                 setPicked(next);
+                                setFullSeasonSelections((previous) => {
+                                  const nextFull = new Set(previous);
+                                  nextFull.delete(seasonNumber);
+                                  return nextFull;
+                                });
                               }}
                             />
                           </label>
