@@ -802,6 +802,77 @@ test('Activity lists downloads in order with why each one is there', async ({
   );
 });
 
+for (const [
+  locale,
+  sortLabel,
+  filterPlaceholder,
+  artistsLabel,
+  activityLabels,
+] of [
+  [
+    'fr',
+    'Trier',
+    'Album, artiste ou chanson',
+    'Artistes',
+    ['En cours de téléchargement', 'À suivre (2)', 'Téléchargés récemment'],
+  ],
+  [
+    'ar',
+    'ترتيب',
+    'الألبوم أو الفنان أو الأغنية',
+    'الفنانون',
+    ['قيد التنزيل الآن', 'التالي (2)', 'تم تنزيلها مؤخرًا'],
+  ],
+] as const) {
+  test(`music library and activity use the saved ${locale} locale`, async ({
+    page,
+  }, testInfo) => {
+    const baseline = process.env.LUMEN_CAPTURE_BASELINE === '1';
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.goto(testAppPath('/music?tab=library'));
+    await expect(
+      page.getByText(baseline ? 'Sort' : sortLabel, { exact: true })
+    ).toBeVisible();
+    await expect(
+      page.getByPlaceholder(
+        baseline ? 'Album, artist or song' : filterPlaceholder
+      )
+    ).toBeVisible();
+    await page
+      .getByRole('button', { name: baseline ? 'Artists' : artistsLabel })
+      .click();
+    await expect(
+      page.getByRole('button', { name: baseline ? 'Artists' : artistsLabel })
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath('music-library.png'),
+      fullPage: false,
+    });
+
+    await page.goto(testAppPath('/music?tab=activity'));
+    const expectedActivity = baseline
+      ? ['Downloading now', 'Up next (2)', 'Recently downloaded']
+      : activityLabels;
+    for (const label of expectedActivity) {
+      await expect(page.getByText(label, { exact: true })).toBeVisible();
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    ).toBe(true);
+    await page.screenshot({
+      path: testInfo.outputPath('music-activity.png'),
+      fullPage: false,
+    });
+  });
+}
+
 test('a playlist page gets every missing song in one go', async ({ page }) => {
   const seen: Seen = { previews: [], saved: [], trackRequests: [] };
   await mockMusic(page, seen);

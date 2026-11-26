@@ -11848,3 +11848,21 @@ These fixtures verify client rendering, not live Aurral/Plex handoff. Other
 Music catalog and library labels remain under audit.
 
 release-note: `release-notes/lumen-music-playback-localization.md`
+
+### Music library and download activity localization (2026-11-26)
+
+The Music library sort and filter controls, album and artist totals, library
+empty/error states, Aurral action, and download activity headings and states now
+have French and Arabic overrides. The underlying sort, filter, queue, and
+download behavior is unchanged. MusicHome coverage checks all 33 touched
+message keys for registry and locale entries.
+
+The library and activity views were captured before and after the locale change
+at desktop, iPhone, Android, and tablet viewports. Browser checks verify both
+language states and page-width overflow. Evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-home-i18n-20261126/`.
+These checks cover client-rendered states with fixtures; live Aurral behavior is
+not exercised. Remaining Music discovery, request-summary, and playlist labels
+continue under audit.
+
+release-note: `release-notes/lumen-music-library-activity-localization.md`

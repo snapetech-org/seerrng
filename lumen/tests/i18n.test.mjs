@@ -166,6 +166,60 @@ test('Lumen music playback and preview labels are translated in French and Arabi
   }
 });
 
+test('Lumen MusicHome library and download activity labels are translated', async () => {
+  const source = await readFile(
+    resolve(root, 'src/components/MusicHome.tsx'),
+    'utf8'
+  );
+  const sourceKeys = new Set(
+    [...source.matchAll(/['\"](lumen\.music\.[^'\"]+)['\"]/g)].map(
+      ([, key]) => key
+    )
+  );
+  const musicHomeKeys = [
+    'lumen.music.downloaded',
+    'lumen.music.requestStatus.failed',
+    'lumen.music.queued',
+    'lumen.music.yourRequest',
+    'lumen.music.sort.artist',
+    'lumen.music.sort.album',
+    'lumen.music.sort.released',
+    'lumen.music.sort.plays',
+    'lumen.music.artists',
+    'lumen.music.sortBy',
+    'lumen.music.libraryFilter',
+    'lumen.music.libraryFilterAlbums',
+    'lumen.music.libraryFilterArtists',
+    'lumen.music.albumTotal',
+    'lumen.music.artistTotal',
+    'lumen.music.openInAurral',
+    'lumen.music.libraryUnavailable',
+    'lumen.music.libraryNoMatch',
+    'lumen.music.libraryEmpty',
+    'lumen.music.activityUnavailable',
+    'lumen.music.downloadingNow',
+    'lumen.music.nothingDownloading',
+    'lumen.music.upNext',
+    'lumen.music.queueEmpty',
+    'lumen.music.moreQueued',
+    'lumen.music.failedDownloads',
+    'lumen.music.recentlyDownloaded',
+    'lumen.music.showAllCount',
+    'lumen.music.nothingYet',
+    'lumen.music.playlist',
+    'lumen.music.ownedOfTotal',
+    'lumen.music.songsOwned',
+    'lumen.music.libraryMoreFailed',
+  ];
+  for (const key of musicHomeKeys) {
+    assert.ok(sourceKeys.has(key), `MusicHome uses message key: ${key}`);
+    assert.ok(lumenKeyRegistry.includes(key), `registered message key: ${key}`);
+    for (const locale of ['fr', 'ar']) {
+      assert.ok(overrides[locale][key], `${locale} translation exists: ${key}`);
+    }
+  }
+});
+
 test('TV detail fact labels use their English, French, and Arabic values', () => {
   const expected = {
     'lumen.tv.fact.firstAirDate': {
