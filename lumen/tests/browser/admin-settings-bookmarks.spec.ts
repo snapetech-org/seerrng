@@ -36,7 +36,11 @@ test('native administrator settings bookmarks open their Lumen destinations', as
     ['/settings/jellyfin', '/admin/media-libraries'],
     ['/settings/prowlarr', '/admin/prowlarr'],
     ['/settings/services', '/admin'],
-    ['/settings/users', '/admin/users'],
+    ['/settings/users', '/admin/requests#default-request-quotas'],
+    [
+      '/settings/users?settingsSearch=4K',
+      '/admin/requests?settingsSearch=4K#default-request-quotas',
+    ],
     ['/settings/notifications/apprise', '/admin/notifications/apprise'],
     ['/settings/notifications/discord', '/admin/notifications/discord'],
     ['/settings/notifications/email', '/admin/notifications/email'],
@@ -70,6 +74,10 @@ test('native administrator settings bookmarks open their Lumen destinations', as
     await expect(page).toHaveURL(
       new URL(appPath(destination), page.url()).href
     );
+    if (source.startsWith('/settings/users'))
+      await expect(
+        page.getByRole('heading', { name: 'Request Defaults' })
+      ).toBeVisible();
   }
 });
 

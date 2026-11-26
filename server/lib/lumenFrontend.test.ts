@@ -64,7 +64,7 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       ['/settings/jellyfin', '/admin/media-libraries'],
       ['/settings/prowlarr', '/admin/prowlarr'],
       ['/settings/services', '/admin'],
-      ['/settings/users', '/admin/users'],
+      ['/settings/users', '/admin/requests#default-request-quotas'],
       ['/settings/notifications', '/admin/notifications'],
       ...[
         'apprise',
@@ -157,7 +157,10 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       }
     }
     const userDefaults = await request(app).get('/lumen/settings/users/');
-    assert.equal(userDefaults.headers.location, '/lumen/admin/users');
+    assert.equal(
+      userDefaults.headers.location,
+      '/lumen/admin/requests#default-request-quotas'
+    );
     const services = await request(app).get('/lumen/settings/services/');
     assert.equal(services.status, 302);
     assert.equal(services.headers.location, '/lumen/admin');

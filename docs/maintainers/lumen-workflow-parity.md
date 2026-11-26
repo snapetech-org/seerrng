@@ -11180,3 +11180,14 @@ results do not establish live provider behavior or full Lumen/native visual
 parity.
 
 release-note: `release-notes/fixed-lumen-mounted-bookmarks.md`
+
+### Classic Users settings bookmark destination (2026-11-26)
+
+Native `/settings/users` contains default request quotas and permissions. Lumen
+keeps those controls on `/admin/requests`; `/admin/users` is the separate user
+directory. The bundled redirect, standalone React bookmark, and companion
+Nginx redirect now all open `/admin/requests#default-request-quotas` so the
+classic bookmark lands on the matching controls. Route contract coverage
+asserts the same destination in the server middleware and container proxy.
+
+release-note: `release-notes/fixed-lumen-users-settings-bookmark.md`

@@ -311,7 +311,7 @@ server {
     return 302 /admin/general$is_args$args;
   }
   location ~ ^/settings/users/?$ {
-    return 302 "/admin/general#default-request-quotas";
+    return 302 "/admin/requests$is_args$args#default-request-quotas";
   }
   location ~ ^/settings/?$ {
     return 302 /admin/general;

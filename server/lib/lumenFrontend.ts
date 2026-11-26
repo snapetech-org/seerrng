@@ -1022,7 +1022,7 @@ export const mountLumenFrontend = (
           ? `/admin?serviceCategory=${category}`
           : '/admin';
     } else if (section === 'users') {
-      destination = '/admin/users';
+      destination = '/admin/requests#default-request-quotas';
     } else if (section === 'logs') {
       const page = req.query.page;
       destination =

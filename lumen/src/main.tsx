@@ -322,7 +322,7 @@ function NativeSettingsBookmark() {
       permissions: '/me/account#account-permissions',
       plex: '/admin/media-libraries',
       'tv-request-access': '/me/account/tv-requests',
-      users: '/admin/users',
+      users: '/admin/requests#default-request-quotas',
     };
     destination = destinations[page] ?? '/admin';
     if (searchTarget === 'enable4k') destination = '/admin/requests';
