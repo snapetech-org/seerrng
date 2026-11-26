@@ -92,6 +92,7 @@ export function DownloadActionSheet({
 
   const target = preview?.target;
   const canImport =
+    !searching &&
     !!target &&
     Number.isSafeInteger(target.id) &&
     target.id > 0 &&
@@ -136,7 +137,7 @@ export function DownloadActionSheet({
   }
 
   async function apply() {
-    if (writing.current || (importing && !canImport)) return;
+    if (writing.current || searching || (importing && !canImport)) return;
     writing.current = true;
     setBusy(true);
     const session = sessionGeneration();
@@ -388,7 +389,7 @@ export function DownloadActionSheet({
             <button
               type="button"
               className="btn btn-primary"
-              disabled={busy || (importing && !canImport)}
+              disabled={busy || searching || (importing && !canImport)}
               onClick={() => void apply()}
             >
               {importing ? t('downloads.import') : t('downloads.confirm')}

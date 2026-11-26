@@ -11594,3 +11594,21 @@ horizontal overflow. Evidence is retained at
 API and provider data are fixture-backed.
 
 release-note: `release-notes/lumen-manager-download-titles.md`
+
+### Download Inbox search protects the pending import target (2026-11-26)
+
+Native SeerrNG disables intervention actions while searching for library
+matches. Lumen previously left Import enabled during a second search, even
+though the selected target and eligible-file preview still referred to the
+prior match. Lumen now disables Import during the search and guards the submit
+handler too; the current target and file selection remain visible so the user
+can review or replace them after results arrive.
+
+All 20 Download Inbox browser cases pass across desktop, iPhone, Android, and
+tablet, including a delayed-search regression that proves no import mutation is
+sent while new matches are pending. Matched desktop and iPhone captures show
+the enabled baseline and disabled candidate state. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-download-search-20261126/`.
+The search and import API responses are fixtures.
+
+release-note: `release-notes/lumen-download-search-guard.md`

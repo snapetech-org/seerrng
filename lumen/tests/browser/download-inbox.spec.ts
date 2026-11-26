@@ -219,6 +219,136 @@ test('manual import sends the chosen target and only eligible files, while rejec
   });
 });
 
+test('manual import cannot submit an old match while a new library search is pending', async ({
+  page,
+}, info) => {
+  let releaseSearch!: () => void;
+  let notifySearchStarted!: () => void;
+  const searchStarted = new Promise<void>((resolve) => {
+    notifySearchStarted = resolve;
+  });
+  const pendingSearch = new Promise<void>((resolve) => {
+    releaseSearch = resolve;
+  });
+  let targetSearches = 0;
+  const posts: string[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.slice('/api/v1'.length);
+    if (request.method() === 'POST') {
+      posts.push(path);
+      return route.fulfill({ json: { id: 7, state: 'importing' } });
+    }
+    if (path === '/downloads/interventions')
+      return route.fulfill({
+        json: {
+          total: 1,
+          partialSources: [],
+          truncated: false,
+          results: [
+            {
+              id: 7,
+              title: 'Example Release',
+              serviceName: 'Movies',
+              serviceType: 'radarr',
+              state: 'active',
+              warnings: [],
+              manualImportCapable: true,
+            },
+          ],
+        },
+      });
+    if (path === '/downloads/interventions/7/targets') {
+      targetSearches++;
+      if (targetSearches === 2) {
+        notifySearchStarted();
+        await pendingSearch;
+      }
+      const target =
+        targetSearches === 1
+          ? { id: 3, title: 'Matched Movie' }
+          : { id: 4, title: 'Alternate Movie' };
+      return route.fulfill({ json: [target] });
+    }
+    if (path === '/downloads/interventions/7/preview') {
+      const matched = url.searchParams.get('targetId') === '3';
+      return route.fulfill({
+        json: {
+          target: matched ? { id: 3, title: 'Matched Movie' } : null,
+          fingerprint: 'a'.repeat(64),
+          candidates: [
+            {
+              id: 14,
+              name: 'Movie.mkv',
+              size: 102400,
+              eligible: matched,
+              rejections: [],
+            },
+          ],
+        },
+      });
+    }
+    return route.fulfill({
+      json:
+        path === '/auth/me'
+          ? { id: 1, displayName: 'Operator', permissions: 8796093022208 }
+          : {},
+    });
+  });
+
+  await page.goto(appPath('/downloads'));
+  await page.getByRole('button', { name: 'Preview files' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Preview files' });
+  await sheet.getByRole('button', { name: 'Search' }).click();
+  await sheet
+    .getByRole('button', { name: 'Choose a library match Matched Movie' })
+    .click();
+  await sheet.getByRole('checkbox', { name: 'Select Movie.mkv' }).check();
+  await sheet
+    .getByRole('searchbox', { name: 'Movie, series, album, or book' })
+    .fill('Alternate Movie');
+  await sheet.getByRole('button', { name: 'Search' }).click();
+  await searchStarted;
+  try {
+    const submit = sheet.getByRole('button', {
+      name: 'Import selected files',
+    });
+    await expect(submit).toBeDisabled();
+    expect(posts).toEqual([]);
+    const captureDir = process.env.LUMEN_DOWNLOAD_SEARCH_CAPTURE_DIR;
+    if (captureDir && ['desktop', 'iphone'].includes(info.project.name)) {
+      await sheet.screenshot({
+        path: `${captureDir}/import-pending-candidate-${info.project.name}.png`,
+      });
+      await submit.evaluate((button) => {
+        (button as HTMLButtonElement).disabled = false;
+      });
+      await sheet.screenshot({
+        path: `${captureDir}/import-pending-baseline-${info.project.name}.png`,
+      });
+      await submit.evaluate((button) => {
+        (button as HTMLButtonElement).disabled = true;
+      });
+      await expect(submit).toBeDisabled();
+    }
+  } finally {
+    releaseSearch();
+  }
+  await expect(
+    sheet.getByRole('button', {
+      name: 'Choose a library match Alternate Movie',
+    })
+  ).toBeVisible();
+  await expect(sheet.getByText('Selected match: Matched Movie')).toBeVisible();
+  await expect(
+    sheet.getByRole('button', { name: 'Import selected files' })
+  ).toBeEnabled();
+  await sheet.getByRole('button', { name: 'Cancel' }).click();
+  expect(posts).toEqual([]);
+});
+
 test('Download Inbox follows the saved locale at desktop and phone sizes', async ({
   page,
 }, info) => {
