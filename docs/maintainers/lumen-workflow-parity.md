@@ -10894,3 +10894,23 @@ full bundled acceptance remains open. Results are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
 
 release-note: none
+
+### Bundled self-user settings bookmark routing (2026-11-26)
+
+The Express `/lumen/users/:id/settings/*` middleware no longer unconditionally
+redirects into delegated administration. It now lets Lumen's authenticated
+route determine whether the path user ID is the signed-in user: self bookmarks
+open the matching account settings section, while managed-user bookmarks retain
+their permission-gated administration destination. The native-root bookmark
+redirect remains intact.
+
+The server middleware test confirms maturity, TV-access, and notification
+bookmarks serve the bundled Lumen application. The full Account Settings browser
+spec passes 108 cases across desktop, iPhone, Android, and tablet against the
+compiled `/lumen/` mount, including self maturity bookmarks for an authorized
+manager and an ordinary account that must not load those controls. The focused
+server middleware suite also passes (2 tests). API authorization and provider
+behavior remain fixture-backed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-rollout-20261125/`.
+
+release-note: `release-notes/fixed-lumen-self-settings-bundled-routing.md`

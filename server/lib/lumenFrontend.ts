@@ -924,8 +924,7 @@ export const mountLumenFrontend = (
   });
   server.get(/^\/lumen\/users\//, (req, res, next) => {
     const pathname = req.path.slice('/lumen'.length);
-    const destination =
-      managedUserSettingsPath(pathname) ?? workflowDeepLink(req, pathname);
+    const destination = workflowDeepLink(req, pathname);
     if (!destination) return next();
     return res.set('Cache-Control', 'no-store').redirect(302, destination);
   });

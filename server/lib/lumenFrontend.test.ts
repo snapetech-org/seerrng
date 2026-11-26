@@ -205,28 +205,15 @@ test('selected frontend, explicit native access, and setup stay reachable', asyn
       assert.equal(response.headers.location, `/lumen${destination}`);
       assert.equal(response.headers['cache-control'], 'no-store');
     }
-    const userSettings = await request(app).get(
-      '/lumen/users/19/settings/maturity'
-    );
-    assert.equal(userSettings.status, 302);
-    assert.equal(
-      userSettings.headers.location,
-      '/lumen/admin/users/19/maturity'
-    );
-    const tvAccess = await request(app).get(
-      '/lumen/users/19/settings/tv-request-access'
-    );
-    assert.equal(
-      tvAccess.headers.location,
-      '/lumen/admin/users/19/tv-request-access'
-    );
-    const notifications = await request(app).get(
-      '/lumen/users/19/settings/notifications/telegram'
-    );
-    assert.equal(
-      notifications.headers.location,
-      '/lumen/admin/users/19/notifications#notification-telegram'
-    );
+    for (const userSettings of [
+      '/lumen/users/19/settings/maturity',
+      '/lumen/users/19/settings/tv-request-access',
+      '/lumen/users/19/settings/notifications/telegram',
+    ]) {
+      const response = await request(app).get(userSettings);
+      assert.equal(response.status, 200);
+      assert.match(response.text, /<html>Lumen<\/html>/);
+    }
     const shareFallback = await request(app).post('/lumen/share-target');
     assert.equal(shareFallback.status, 303);
     assert.equal(
