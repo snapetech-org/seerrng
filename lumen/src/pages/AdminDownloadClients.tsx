@@ -148,6 +148,7 @@ function Editor({
     setBusy(true);
     setFeedback(undefined);
     const generation = sessionGeneration();
+    let writeAcknowledged = false;
     try {
       if (client) {
         const result = await api<{ version?: string }>(endpoint + '/test', {
@@ -176,6 +177,7 @@ function Editor({
             clients: clients.map(payload),
           }),
         });
+        writeAcknowledged = true;
         if (generation !== sessionGeneration()) return;
         const readback = await api<Settings>(endpoint);
         if (generation !== sessionGeneration()) return;
@@ -217,8 +219,8 @@ function Editor({
         if (!matches(result) || !matches(readback)) {
           setFeedback({
             text: t(
-              'lumen.adminDownloadClients.saveFailure',
-              'Could not update download client settings.'
+              'lumen.adminDownloadClients.confirmFailure',
+              'Could not confirm the saved download client settings.'
             ),
             error: true,
           });
@@ -237,8 +239,12 @@ function Editor({
     } catch (failure) {
       if (generation === sessionGeneration())
         setFeedback({
-          text:
-            failure instanceof ApiError
+          text: writeAcknowledged
+            ? t(
+                'lumen.adminDownloadClients.confirmFailure',
+                'Could not confirm the saved download client settings.'
+              )
+            : failure instanceof ApiError
               ? failure.message
               : t(
                   'lumen.adminDownloadClients.saveFailure',

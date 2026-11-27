@@ -1357,6 +1357,7 @@
   "lumen.adminDownloadClients.removeSavedCredential",
   "lumen.adminDownloadClients.saveChanges",
   "lumen.adminDownloadClients.saveFailure",
+  "lumen.adminDownloadClients.confirmFailure",
   "lumen.adminDownloadClients.savedCredential",
   "lumen.adminDownloadClients.sectionTitle",
   "lumen.adminDownloadClients.settingsSaved",

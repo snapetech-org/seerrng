@@ -2200,6 +2200,8 @@ export const messages = {
   'lumen.adminDownloadClients.saveChanges': 'Save Changes',
   'lumen.adminDownloadClients.saveFailure':
     'Could not update download client settings.',
+  'lumen.adminDownloadClients.confirmFailure':
+    'Could not confirm the saved download client settings.',
   'lumen.adminDownloadClients.savedCredential': 'Saved credential',
   'lumen.adminDownloadClients.sectionTitle': 'Live Download Progress',
   'lumen.adminDownloadClients.settingsSaved': 'Download client settings saved.',

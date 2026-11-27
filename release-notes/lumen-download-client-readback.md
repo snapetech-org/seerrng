@@ -1,0 +1,1 @@
+Lumen Download Client Settings now distinguishes a rejected save from a saved change whose follow-up read cannot confirm persistence. It keeps the edited settings available for retry and reports the uncertain confirmation state.

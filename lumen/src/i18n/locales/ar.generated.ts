@@ -2176,6 +2176,8 @@ export const messages = {
     'إزالة بيانات الاعتماد المحفوظة',
   'lumen.adminDownloadClients.saveChanges': 'حفظ التغييرات',
   'lumen.adminDownloadClients.saveFailure': 'تعذر تحديث إعدادات عميل التنزيل.',
+  'lumen.adminDownloadClients.confirmFailure':
+    'تعذر تأكيد حفظ إعدادات عميل التنزيل.',
   'lumen.adminDownloadClients.savedCredential': 'بيانات اعتماد محفوظة',
   'lumen.adminDownloadClients.sectionTitle': 'تقدم التنزيل المباشر',
   'lumen.adminDownloadClients.settingsSaved': 'تم حفظ إعدادات عميل التنزيل.',

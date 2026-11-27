@@ -16,7 +16,7 @@ const labels = {
     apiKey: 'API Key',
     test: 'Test Client',
     connected: 'Connected to Usenet (fixture).',
-    saveFailure: 'Could not update download client settings.',
+    confirmFailure: 'Could not confirm the saved download client settings.',
     saved: 'Download client settings saved.',
     save: 'Save Changes',
     lastCheck: 'Last check passed.',
@@ -29,8 +29,8 @@ const labels = {
     apiKey: 'Clé API',
     test: 'Tester le client',
     connected: 'Connecté à Usenet (fixture).',
-    saveFailure:
-      'Impossible de mettre à jour les paramètres du client de téléchargement.',
+    confirmFailure:
+      'Impossible de confirmer l’enregistrement des paramètres du client de téléchargement.',
     saved: 'Paramètres du client de téléchargement enregistrés.',
     save: 'Enregistrer les modifications',
     lastCheck: 'La dernière vérification a réussi.',
@@ -43,7 +43,7 @@ const labels = {
     apiKey: 'مفتاح API',
     test: 'اختبار العميل',
     connected: 'تم الاتصال بـ Usenet (fixture).',
-    saveFailure: 'تعذر تحديث إعدادات عميل التنزيل.',
+    confirmFailure: 'تعذر تأكيد حفظ إعدادات عميل التنزيل.',
     saved: 'تم حفظ إعدادات عميل التنزيل.',
     save: 'حفظ التغييرات',
     lastCheck: 'نجح آخر فحص.',
@@ -73,7 +73,7 @@ test('download clients test and save with the existing credential', async ({
       },
     ],
   };
-  let staleReadback: typeof saved | undefined;
+  let failReadback = false;
   let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -95,17 +95,19 @@ test('download clients test and save with the existing credential', async ({
     }
     if (path !== endpoint) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
-      if (staleReadback) {
-        const stale = staleReadback;
-        staleReadback = undefined;
-        return route.fulfill({ json: stale });
+      if (failReadback) {
+        failReadback = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Unavailable' },
+        });
       }
       return route.fulfill({ json: saved });
     }
     if (request.method() === 'PUT') {
       const body = request.postDataJSON();
       writes.push(body);
-      if (saveCount === 0) staleReadback = saved;
+      if (saveCount === 0) failReadback = true;
       saved = {
         ...body,
         clients: body.clients.map((row: object) => ({
@@ -150,9 +152,9 @@ test('download clients test and save with the existing credential', async ({
   });
   await page.getByRole('button', { name: text.save }).click();
   await expect(page.getByText(text.saved, { exact: true })).toHaveCount(0);
-  await expect(page.getByText(text.saveFailure)).toBeVisible();
+  await expect(page.getByText(text.confirmFailure)).toBeVisible();
   await expect(page.getByLabel(text.interval)).toHaveValue('8');
-  await page.getByText(text.saveFailure).scrollIntoViewIfNeeded();
+  await page.getByText(text.confirmFailure).scrollIntoViewIfNeeded();
   await page.screenshot({
     path: info.outputPath('readback-failure.png'),
   });

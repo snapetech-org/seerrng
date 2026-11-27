@@ -2346,6 +2346,8 @@ export const messages = {
   'lumen.adminDownloadClients.saveChanges': 'Enregistrer les modifications',
   'lumen.adminDownloadClients.saveFailure':
     'Impossible de mettre à jour les paramètres du client de téléchargement.',
+  'lumen.adminDownloadClients.confirmFailure':
+    'Impossible de confirmer l’enregistrement des paramètres du client de téléchargement.',
   'lumen.adminDownloadClients.savedCredential': 'Identifiant enregistré',
   'lumen.adminDownloadClients.sectionTitle':
     'Progression des téléchargements en direct',

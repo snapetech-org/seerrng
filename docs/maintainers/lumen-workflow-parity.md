@@ -1,3 +1,25 @@
+### Distinguish download-client saves from failed readback (2026-11-27)
+
+Download Client Settings previously used the ordinary save-failure feedback
+when an acknowledged update could not be confirmed by readback. It now reports
+that confirmation is unavailable and keeps the edited interval and client fields
+for retry. A successful response whose fields do not match the requested values
+is also reported as unconfirmed. Confirmation copy is localized in English,
+French, and Arabic.
+
+The focused workflow passes 12/12 across the three locales and desktop, iPhone,
+Android, and tablet projects. It simulates a successful update followed by a 503
+readback, verifies the form retains the draft and keeps the redacted credential
+out of the payload, then retries and confirms persistence. Standalone Lumen and
+bundled Lumen production builds pass; i18n checks pass. Matched baseline and
+candidate screenshots at desktop and iPhone show the feedback text change while
+controls remain in place; the French desktop/phone and Arabic phone states were
+also inspected. Fixture API responses do not verify live download-client
+connectivity or saved persistence. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-download-clients-readback-20261127/`.
+
+release-note: `release-notes/lumen-download-client-readback.md`
+
 ### Distinguish notification saves from failed readback (2026-11-27)
 
 Instance notification settings previously displayed the ordinary save-failure
