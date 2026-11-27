@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   api,
+  ApiError,
   type DownloadItem,
   type LibraryRemovalPlan,
   type MediaInfo,
@@ -9,6 +10,7 @@ import {
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { canManageIssues, canReadIssues } from '../issuePermissions';
 import { ConfirmSheet } from './ConfirmSheet';
 import { canManageRequests } from './detail';
 import { ServiceNote } from './extra';
@@ -85,6 +87,8 @@ export function ManageMediaSheet({
   const { user } = useAuth();
   const toast = useToast();
   const admin = isAdministrator(user?.permissions);
+  const mayReadIssues = canReadIssues(user?.permissions);
+  const mayManageIssues = canManageIssues(user?.permissions);
   const kindLabel = mediaKindLabel(mediaType, t);
   const titleLabel = mediaTitle(mediaType, t);
   const library = useApi<LibraryRemovalPlan>(
@@ -97,6 +101,11 @@ export function ManageMediaSheet({
   const [requestToDelete, setRequestToDelete] = useState<number>();
   const [deletingRequest, setDeletingRequest] = useState(false);
   const [requestFailure, setRequestFailure] = useState<string>();
+  const [issueAction, setIssueAction] = useState<{
+    action: 'close' | 'delete';
+    ids: number[];
+  }>();
+  const [issueActionFailure, setIssueActionFailure] = useState<string>();
   const requests = (media?.requests ?? []).filter(
     (request) => request.status !== 3
   );
@@ -212,6 +221,62 @@ export function ManageMediaSheet({
     }
   };
 
+  const confirmIssueAction = async () => {
+    if (!issueAction || busy || !mayManageIssues) return;
+    const ids = [...new Set(issueAction.ids)].filter(
+      (id) => Number.isSafeInteger(id) && id > 0
+    );
+    if (!ids.length) return;
+    setBusy(true);
+    setIssueActionFailure(undefined);
+    const remaining: number[] = [];
+    try {
+      for (const id of ids) {
+        try {
+          await api(
+            `/issue/${id}${issueAction.action === 'close' ? '/resolved' : ''}`,
+            { method: issueAction.action === 'close' ? 'POST' : 'DELETE' },
+            'empty'
+          );
+        } catch {
+          try {
+            const current = await api<{ id: number; status: number }>(
+              `/issue/${id}`
+            );
+            if (issueAction.action === 'delete' || current.status !== 2)
+              remaining.push(id);
+          } catch (readError) {
+            if (!(readError instanceof ApiError && readError.status === 404))
+              remaining.push(id);
+            else if (issueAction.action === 'close') continue;
+          }
+        }
+      }
+      onUpdated();
+      if (remaining.length) {
+        setIssueAction({ ...issueAction, ids: remaining });
+        setIssueActionFailure(
+          t(
+            'lumen.manageVideo.issueActionFailed',
+            'Some issues may already have changed. Refresh the title and review the remaining issues.'
+          )
+        );
+        return;
+      }
+      setIssueAction(undefined);
+      toast(
+        issueAction.action === 'close'
+          ? t(
+              'lumen.manageVideo.issuesClosed',
+              'Open issues marked as resolved.'
+            )
+          : t('lumen.manageVideo.issuesDeleted', 'All issues were deleted.')
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (removing)
     return (
       <ConfirmSheet
@@ -314,6 +379,84 @@ export function ManageMediaSheet({
                 <p className="note">
                   {t('lumen.manageBook.noRequests', 'No active requests.')}
                 </p>
+              )}
+            </section>
+          )}
+          {mayReadIssues && (
+            <section className="card" aria-labelledby="manage-media-issues">
+              <h4 id="manage-media-issues">
+                {t('lumen.manageVideo.issues', 'Issues')} ·{' '}
+                {(media?.issues ?? []).length}
+              </h4>
+              {media?.issues?.length ? (
+                <ul className="card-list">
+                  {media.issues.map((issue) => (
+                    <li key={issue.id}>
+                      <Link to={`/issues/${issue.id}`} onClick={onClose}>
+                        {t(
+                          'lumen.manageVideo.issueLink',
+                          'Issue #{id} · {status}',
+                          {
+                            id: issue.id,
+                            status:
+                              issue.status === 2
+                                ? t('lumen.manageVideo.resolved', 'Resolved')
+                                : t('lumen.manageVideo.openIssue', 'Open'),
+                          }
+                        )}
+                      </Link>
+                      {issue.comments?.[0]?.message && (
+                        <details className="adv">
+                          <summary>
+                            {t('lumen.issues.viewDetails', 'View Details')}
+                          </summary>
+                          <p className="note">{issue.comments[0].message}</p>
+                        </details>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="note">
+                  {t(
+                    'lumen.manageVideo.noIssues',
+                    'There are no issues for this title.'
+                  )}
+                </p>
+              )}
+              {mayManageIssues && !!media?.issues?.length && (
+                <div className="toolbar">
+                  {!!media.issues.some((issue) => issue.status !== 2) && (
+                    <button
+                      className="btn btn-quiet btn-sm"
+                      disabled={busy}
+                      onClick={() => {
+                        setIssueActionFailure(undefined);
+                        setIssueAction({
+                          action: 'close',
+                          ids: media
+                            .issues!.filter((issue) => issue.status !== 2)
+                            .map((issue) => issue.id),
+                        });
+                      }}
+                    >
+                      {t('lumen.manageVideo.closeIssues', 'Close open issues')}
+                    </button>
+                  )}
+                  <button
+                    className="btn btn-danger btn-sm"
+                    disabled={busy}
+                    onClick={() => {
+                      setIssueActionFailure(undefined);
+                      setIssueAction({
+                        action: 'delete',
+                        ids: media.issues!.map((issue) => issue.id),
+                      });
+                    }}
+                  >
+                    {t('lumen.manageVideo.deleteIssues', 'Delete all issues')}
+                  </button>
+                </div>
               )}
             </section>
           )}
@@ -456,6 +599,45 @@ export function ManageMediaSheet({
           {requestFailure && (
             <p className="note" role="alert">
               {requestFailure}
+            </p>
+          )}
+        </ConfirmSheet>
+      )}
+      {issueAction && (
+        <ConfirmSheet
+          title={
+            issueAction.action === 'close'
+              ? t('lumen.manageVideo.closeIssuesConfirm', 'Close open issues?')
+              : t('lumen.manageVideo.deleteIssuesConfirm', 'Delete all issues?')
+          }
+          body={
+            issueAction.action === 'close'
+              ? t(
+                  'lumen.manageVideo.closeIssuesBody',
+                  'Open issues for this title will be marked resolved and their history retained.'
+                )
+              : t(
+                  'lumen.manageVideo.deleteIssuesBody',
+                  'All issues and comments for this title will be permanently deleted.'
+                )
+          }
+          confirm={
+            issueAction.action === 'close'
+              ? t('lumen.manageVideo.closeIssues', 'Close open issues')
+              : t('lumen.manageVideo.deleteIssues', 'Delete all issues')
+          }
+          busy={busy}
+          onConfirm={() => void confirmIssueAction()}
+          onClose={() => {
+            if (!busy) {
+              setIssueAction(undefined);
+              setIssueActionFailure(undefined);
+            }
+          }}
+        >
+          {issueActionFailure && (
+            <p className="note" role="alert">
+              {issueActionFailure}
             </p>
           )}
         </ConfirmSheet>

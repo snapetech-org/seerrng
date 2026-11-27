@@ -7,6 +7,9 @@ async function openBookManager(page: Page, permissions: number) {
   const libraryReads: string[] = [];
   let requestDeleteAttempts = 0;
   let requestDeleted = false;
+  let issueStatus = 1;
+  let issueDeleted = false;
+  let issueCloseAttempts = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -63,9 +66,37 @@ async function openBookManager(page: Page, permissions: number) {
                     requestedBy: { id: 1, displayName: 'reader' },
                   },
                 ],
+            issues: issueDeleted
+              ? []
+              : [
+                  {
+                    id: 91,
+                    status: issueStatus,
+                    issueType: 1,
+                    comments: [{ message: 'Missing pages in this edition.' }],
+                  },
+                ],
           },
         },
       });
+    if (path === '/issue/91' && request.method() === 'GET')
+      return issueDeleted
+        ? route.fulfill({ status: 404, json: { message: 'Issue not found.' } })
+        : route.fulfill({ json: { id: 91, status: issueStatus } });
+    if (path === '/issue/91/resolved' && request.method() === 'POST') {
+      issueCloseAttempts++;
+      if (issueCloseAttempts === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary issue service failure' },
+        });
+      issueStatus = 2;
+      return route.fulfill({ status: 204, body: '' });
+    }
+    if (path === '/issue/91' && request.method() === 'DELETE') {
+      issueDeleted = true;
+      return route.fulfill({ status: 204, body: '' });
+    }
     if (path === '/request/77/status' && request.method() === 'DELETE') {
       requestDeleteAttempts++;
       if (requestDeleteAttempts === 1)
@@ -215,4 +246,79 @@ test('book manager and library plan stay hidden without management access', asyn
     0
   );
   expect(libraryReads).toEqual([]);
+});
+
+test('cross-media manager reviews and resolves or deletes issues with permission checks', async ({
+  page,
+}) => {
+  await openBookManager(page, 2);
+  await page.getByRole('button', { name: 'Manage Book' }).click();
+  let sheet = page.getByRole('dialog', { name: 'Manage Book' });
+  const capture = process.env.LUMEN_MANAGE_ISSUE_CAPTURE;
+  if (capture && ['desktop', 'iphone'].includes(test.info().project.name)) {
+    await mkdir(dirname(capture), { recursive: true });
+    const section = sheet.getByRole('region', { name: /Issues/ });
+    await page.waitForTimeout(400);
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}-candidate.png`,
+      fullPage: false,
+    });
+    await section.screenshot({
+      path: `${capture}-${test.info().project.name}-candidate-section.png`,
+    });
+    await section.evaluate((element) => element.remove());
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}-baseline.png`,
+      fullPage: false,
+    });
+    await page.reload();
+    await page.getByRole('button', { name: 'Manage Book' }).click();
+    sheet = page.getByRole('dialog', { name: 'Manage Book' });
+  }
+  const issues = sheet.getByRole('region', { name: /Issues/ });
+  await expect(
+    issues.getByRole('link', { name: 'Issue #91 · Open' })
+  ).toHaveAttribute('href', '/issues/91');
+  await issues.getByText('View Details').click();
+  await expect(
+    issues.getByText('Missing pages in this edition.')
+  ).toBeVisible();
+  await issues.getByRole('button', { name: 'Close open issues' }).click();
+  const closeConfirm = page.getByRole('alertdialog', {
+    name: 'Close open issues?',
+  });
+  await closeConfirm.getByRole('button', { name: 'Close open issues' }).click();
+  await expect(closeConfirm.getByRole('alert')).toHaveText(
+    'Some issues may already have changed. Refresh the title and review the remaining issues.'
+  );
+  await expect(closeConfirm).toBeVisible();
+  if (capture && ['desktop', 'iphone'].includes(test.info().project.name)) {
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}-retry-error.png`,
+      fullPage: false,
+    });
+  }
+  await closeConfirm.getByRole('button', { name: 'Close open issues' }).click();
+  await expect(closeConfirm).toHaveCount(0);
+  await expect(
+    issues.getByRole('link', { name: 'Issue #91 · Resolved' })
+  ).toBeVisible();
+  await issues.getByRole('button', { name: 'Delete all issues' }).click();
+  const deleteConfirm = page.getByRole('alertdialog', {
+    name: 'Delete all issues?',
+  });
+  await deleteConfirm
+    .getByRole('button', { name: 'Delete all issues' })
+    .click();
+  await expect(deleteConfirm).toHaveCount(0);
+  await expect(
+    issues.getByText('There are no issues for this title.')
+  ).toBeVisible();
+
+  await openBookManager(page, 16);
+  await page.getByRole('button', { name: 'Manage Book' }).click();
+  const requestManagerSheet = page.getByRole('dialog', { name: 'Manage Book' });
+  await expect(
+    requestManagerSheet.getByRole('region', { name: /Issues/ })
+  ).toHaveCount(0);
 });

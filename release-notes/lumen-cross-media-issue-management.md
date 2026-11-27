@@ -1,0 +1,1 @@
+Lumen's contextual management sheet for Books, Music, Comics, and Magazines now includes permission-aware issue summaries and links, plus confirmed close-all and delete-all actions for issue managers. Partial failures keep only unresolved issues available for retry.

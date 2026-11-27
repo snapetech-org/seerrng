@@ -12318,8 +12318,12 @@ confirmation. Book-specific ebook and audiobook statuses and service links are
 preserved. Managers without administrator access do not read or see library
 removal controls.
 
-The sheet does not replace media-specific issue, blocklist, or cancellation
-surfaces; those remain in their current Lumen workflows. Request managers can
+The sheet does not replace media-specific issue discussions or Blocklist
+browsing; those remain in their current Lumen workflows. It now summarizes and
+links existing issue reports for accounts with issue-read permission, and
+issue managers can close open reports or delete all reports after confirmation.
+Partial failures re-read each affected issue and keep only unresolved operations
+in the retry dialog, avoiding repeated successful deletions. Request managers can
 also delete a request entry directly from the sheet after reviewing a separate
 confirmation. Failed deletion keeps that confirmation open with retry feedback;
 success refreshes the detail and removes the request row. A fixture forces a
@@ -12347,3 +12351,21 @@ detail so the removed request no longer appears. The existing server permission
 check and `DELETE /request/:id/status` operation remain authoritative.
 
 release-note: `release-notes/lumen-cross-media-request-deletion.md`
+
+### Cross-media issue management
+
+The contextual management sheet for Books, Music, Comics, and Magazines now
+shows issue reports only to users with issue-read access and links each report
+to its permission-checked discussion. Issue managers can close all open reports
+or delete all reports after confirmation. If a batch partially fails, Lumen
+reads each issue back and offers retry only for work that remains; a lost
+response after a successful deletion does not repeat that deletion. The existing
+server permission checks remain authoritative.
+
+Fixtures verify denied issue visibility for request-only managers, discussion
+links and summaries for administrators, close failure and retry, successful
+resolution readback, and report deletion. The issue section and retry dialog
+were inspected at desktop and iPhone sizes. Live authorization and database
+behavior remain unverified.
+
+release-note: `release-notes/lumen-cross-media-issue-management.md`
