@@ -265,6 +265,13 @@ export default function TvEpisodeRequestSheet({
       return episodeNumbers.length ? [{ seasonNumber, episodeNumbers }] : [];
     }
   );
+  const visibleSeasons = seasons.filter(
+    ({ seasonNumber }) =>
+      !loadError ||
+      seasonNumber === 0 ||
+      (episodesBySeason.has(seasonNumber) &&
+        !fullSeasonSelections.has(seasonNumber))
+  );
   return createPortal(
     <div className="sheet-wrap open">
       <div className="sheet-scrim" aria-hidden="true" onClick={close} />
@@ -470,7 +477,7 @@ export default function TvEpisodeRequestSheet({
             </p>
           )}
           <div className="setlist">
-            {seasons.map((item) => {
+            {visibleSeasons.map((item) => {
               const seasonNumber = item.seasonNumber;
               const episodes = episodesBySeason.get(seasonNumber) ?? [];
               const label =

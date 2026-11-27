@@ -1,5 +1,27 @@
 # Lumen workflow parity
 
+### Keep the large-series fallback list free of duplicate seasons (2026-11-27)
+
+When episode metadata fails, the request sheet already offers a full-season
+fallback for unavailable seasons. It also showed those same unavailable seasons
+again as empty, non-selectable episode disclosures. Lumen now renders one row
+for each unavailable season in the fallback list, while keeping loaded episode
+seasons in the regular disclosure list and preserving retry and request payload
+behavior.
+
+The focused browser regression passes 4/4 across desktop, iPhone, Android, and
+tablet. It asserts the failed-metadata state has no duplicate episode rows and
+that selecting two full seasons submits the expected season-only payload. The
+12-case large-series batching, retry, selection-preservation, and cancellation
+suite also passes across the same viewports. The production build passes.
+Matched before/after failure-state captures at desktop and iPhone sizes show the
+duplicate list removed and the sticky request actions still visible. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-large-series-current-main-20261127/`.
+The API and provider failures are fixtures; live provider behavior remains
+unverified.
+
+release-note: `release-notes/lumen-large-series-fallback-list.md`
+
 ### Localize TV media-server saved-item controls (2026-11-27)
 
 The TV detail media-server disclosure now localizes the Watchlist and Favorites

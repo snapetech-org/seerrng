@@ -1100,6 +1100,7 @@ test('requests a full season when every episode metadata batch fails', async ({
   await expect(
     sheet.getByText('Request full seasons without episode details')
   ).toBeVisible();
+  await expect(sheet.locator('.setlist details')).toHaveCount(0);
   expect(batchQueries).toEqual([
     '1,2,3,4,5',
     '1,2,3,4,5',
