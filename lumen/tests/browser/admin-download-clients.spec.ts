@@ -239,3 +239,105 @@ test('rTorrent keeps its HTTP basic-auth username when settings are saved', asyn
     clients: [{ id: 12, type: 'rtorrent', username: 'updated-reader' }],
   });
 });
+
+test('download client health refreshes every 15 seconds while the page is visible', async ({
+  page,
+}, info) => {
+  let statusReads = 0;
+  const settings = {
+    pollIntervalSeconds: 3,
+    clients: [
+      {
+        id: 7,
+        name: 'Usenet',
+        type: 'sabnzbd',
+        hostname: 'sab.internal',
+        port: 8080,
+        useSsl: false,
+        enabled: true,
+        baseUrl: '',
+        username: '',
+        passwordConfigured: true,
+        password: '[REDACTED]',
+      },
+    ],
+  };
+
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.replace(/^\/lumen(?=\/)/, '');
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/api/v1/settings/download-clients/status') {
+      statusReads += 1;
+      return route.fulfill({
+        json: { clients: [{ clientId: 7, ok: statusReads === 1 }] },
+      });
+    }
+    if (path === '/api/v1/settings/download-clients')
+      return route.fulfill({ json: settings });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/admin/download-clients'));
+  await page
+    .locator('details')
+    .filter({ hasText: 'Usenet' })
+    .locator('summary')
+    .click();
+  await expect(
+    page.getByText('Last check passed.', { exact: true })
+  ).toBeVisible();
+  expect(statusReads).toBe(1);
+  expect(await page.evaluate(() => document.visibilityState)).toBe('visible');
+  const firstReadAt = Date.now();
+  await expect.poll(() => statusReads, { timeout: 18_000 }).toBe(2);
+  expect(Date.now() - firstReadAt).toBeGreaterThanOrEqual(14_500);
+  await expect(
+    page.getByText('Last check failed.', { exact: true })
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+  if (['desktop', 'iphone'].includes(info.project.name)) {
+    await page.screenshot({
+      path: info.outputPath('health-refresh-failed.png'),
+      fullPage: true,
+    });
+  }
+});
+
+test('download client health is not requested when no clients are configured', async ({
+  page,
+}) => {
+  let statusReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname.replace(/^\/lumen(?=\/)/, '');
+    if (path.endsWith('/auth/me'))
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path.endsWith('/user/1/settings/main'))
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/api/v1/settings/download-clients/status') {
+      statusReads += 1;
+      return route.fulfill({ json: { clients: [] } });
+    }
+    if (path === '/api/v1/settings/download-clients')
+      return route.fulfill({ json: { pollIntervalSeconds: 3, clients: [] } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/admin/download-clients'));
+  await expect(page.getByText('No download clients configured.')).toBeVisible();
+  expect(statusReads).toBe(0);
+});

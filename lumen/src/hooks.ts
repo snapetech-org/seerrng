@@ -130,15 +130,16 @@ export function useApi<T>(
 
 export function useVisibleMediaRefresh(
   active: boolean,
-  revalidate: () => void
+  revalidate: () => void,
+  intervalMs = 30_000
 ) {
   useEffect(() => {
     if (!active) return;
     const timer = window.setInterval(() => {
       if (document.visibilityState === 'visible') revalidate();
-    }, 30_000);
+    }, intervalMs);
     return () => window.clearInterval(timer);
-  }, [active, revalidate]);
+  }, [active, intervalMs, revalidate]);
 }
 
 // one call for everyone asking for the same path at once; the answer is saved

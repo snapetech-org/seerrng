@@ -4,7 +4,7 @@ import { api, ApiError } from '../api';
 import { Section } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { SavedConnectionHost } from '../components/SavedConnectionHost';
-import { useApi } from '../hooks';
+import { useApi, useVisibleMediaRefresh } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { sessionGeneration } from '../sessionState';
 
@@ -89,9 +89,11 @@ function Editor({
   const [busy, setBusy] = useState(false);
   const [profile, setProfile] = useState('both');
   const [feedback, setFeedback] = useState<{ text: string; error?: boolean }>();
+  const healthPath = clients.length ? endpoint + '/status' : null;
   const health = useApi<{ clients: { clientId: number; ok: boolean }[] }>(
-    endpoint + '/status'
+    healthPath
   );
+  useVisibleMediaRefresh(Boolean(healthPath), health.revalidate, 15_000);
   const nextRow = useRef(initial.clients.length);
   const pending = useRef(false);
   const dirty =
@@ -224,7 +226,7 @@ function Editor({
         }
         setSaved(readback);
         reset(readback);
-        health.refresh();
+        health.revalidate();
         setFeedback({
           text: t(
             'lumen.adminDownloadClients.settingsSaved',
