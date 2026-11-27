@@ -3026,6 +3026,14 @@ test('Everyone shows more on request and filters by status', async ({
 }) => {
   await fixtures(page, { permissions: 2 });
   await requestRoutes(page);
+  await page.route(/\/api\/v1\/request\/status\/users(?:\?|$)/, (route) =>
+    route.fulfill({
+      json: {
+        results: [{ id: 5, displayName: 'Sam' }],
+        pageInfo: { page: 1, pages: 1, results: 1 },
+      },
+    })
+  );
   const asked: string[] = [];
   const many = Array.from({ length: 45 }, (_, i) => ({
     ...waitingRequest,
@@ -3061,11 +3069,25 @@ test('Everyone shows more on request and filters by status', async ({
   await expect(filters.getByRole('button', { name: /Waiting/ })).toContainText(
     '1'
   );
+  await expect(
+    page.getByRole('button', { name: 'Retry Loading Users' })
+  ).toHaveCount(0);
+  await expect(page.getByLabel('Requester')).toContainText('Sam');
+  const capture = process.env.LUMEN_REQUEST_FILTER_CAPTURE;
+  if (capture) {
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   await filters.getByRole('button', { name: /Failed/ }).click();
   await expect(page).toHaveURL(/show=failed/);
   await expect(page.getByText('Nothing here')).toBeVisible();
   // pages of at most 15 keep SeerrNG's per-response availability check complete
   expect(asked).toContain('failed:0:15');
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(test.info().project.use.viewport?.width ?? 1440);
 });
 
 test('a temporary configured game probe failure keeps that platform and Retry reachable', async ({

@@ -2857,6 +2857,28 @@ Standalone Chrome at 1440 × 1000 showed a partially available series
 downloading in Incomplete and confirmed the Unavailable and Completed
 responses against fixtures. Mobile, bundled and native comparison remain open.
 
+### Household request filter responsive qualification (2026-11-27)
+
+The Everyone request-filter workflow now has viewport-width assertions in its
+browser fixture and a deterministic requester-user response. This prevents a
+generic fixture 404 from hiding the filter controls behind a false “Retry
+Loading Users” state. The status, requester, media type, date, search, and sort
+controls remain reachable at desktop, tablet, Android, and iPhone widths, and
+the page does not overflow horizontally.
+
+The focused fixture passes 4/4 in both standalone preview and the production
+Express `/lumen/` mount. Native's request filters were rendered with all four
+disclosure groups open; the native baseline passes at desktop and phone sizes.
+The captures show native's grouped “More filters” control and Lumen's visible
+status chips and filter toolbar. Both retain the available request controls,
+with no horizontal overflow. Native used its seeded request fixture while
+Lumen used the deterministic Everyone fixture, so this is a menu/layout
+comparison rather than a pixel-matched row comparison. Screenshots are retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-requests-parity-20261127/`.
+Live request data and authorization remain outside this fixture check.
+
+release-note: none
+
 ### Focused request progress increment
 
 Request History shows the current service, download percentage and size,

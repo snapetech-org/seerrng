@@ -1222,6 +1222,43 @@ test('native request tabs keep owner scope and expose the existing management fl
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
+for (const viewport of [
+  { name: 'desktop', width: 1440, height: 900 },
+  { name: 'phone', width: 390, height: 844 },
+]) {
+  test(`native request filters fit ${viewport.name}`, async ({
+    page,
+    baseURL,
+  }) => {
+    await page.setViewportSize(viewport);
+    await login(page, baseURL!);
+    await fixtures(page);
+    await navigate(page, '/requests?userId=1');
+    await expect(page.locator('.persius-request')).toHaveCount(7);
+    await page
+      .getByRole('button', { name: 'More filters', exact: true })
+      .click();
+    for (const label of [
+      'Task Filters',
+      'Media Filters',
+      'Filters',
+      'Sort By',
+    ]) {
+      await page.getByRole('button', { name: label, exact: true }).click();
+    }
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth)
+    ).toBeLessThanOrEqual(viewport.width);
+    const capture = process.env.SEERRNG_REQUEST_FILTER_CAPTURE;
+    if (capture) {
+      await page.screenshot({
+        path: `${capture}-${viewport.name}.png`,
+        fullPage: true,
+      });
+    }
+  });
+}
+
 test('theme picker changes the loaded CSS, supports light mode and recovers from failed saves', async ({
   page,
   baseURL,
