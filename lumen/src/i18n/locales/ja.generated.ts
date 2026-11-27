@@ -1781,4 +1781,28 @@ export const messages = {
   'components.TvDetails.Layout.director': '監督',
   'components.TvDetails.Layout.writers': 'ライター',
   'components.MovieSummaryCard.screenplay': '脚本',
+  'components.Setup.defaultsTitle': '新規ユーザーのデフォルトを設定',
+  'components.Setup.defaultsDescription':
+    'ユーザーが参加した際にリクエストできる内容を選択してください。リクエストは引き続き承認とクォータのルールに従います。',
+  'components.Setup.defaultsTip':
+    'これらのデフォルトは後で設定で変更したり、個別のユーザーを調整したりできます。',
+  'components.Setup.requestAccess': '新規ユーザーのメディアリクエストを許可',
+  'components.Setup.requestAccessDescription':
+    '有効化したカテゴリ内のアイテムをリクエストするアクセス権を新規ユーザーに付与します。',
+  'components.Setup.enable4k': '4Kリクエストオプションを有効化',
+  'components.Setup.enable4kDescription':
+    'SeerrNG全体で4Kリクエストを利用可能にします。映画・テレビの下に、個別の4K Radarr または Sonarr 宛先を追加してください。',
+  'components.Setup.request4k': '新規ユーザーの4Kリクエストを許可',
+  'components.Setup.request4kDescription':
+    'これは新規ユーザーのデフォルト権限です。リクエストアクセスと4Kオプションの有効化が必要です。',
+  'components.Setup.partialRequests': 'テレビシーズン部分リクエストを許可',
+  'components.Setup.partialRequestsDescription':
+    'ユーザーが全シーズンではなく選択したエピソードのみをリクエストできるようにします。これは全員に適用されます。',
+  'components.Setup.defaultsLoadError':
+    'ユーザーのデフォルトを読み込めませんでした。',
+  'components.Setup.defaultsSaveError':
+    'ユーザーのデフォルトを保存できませんでした。もう一度お試しください。',
+  'components.Setup.skipDefaults': '今はスキップ',
+  'components.Setup.saveDefaults': 'デフォルトを保存して続行',
+  'components.Setup.savingDefaults': '保存中…',
 } as const;

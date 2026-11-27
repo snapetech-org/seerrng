@@ -1778,6 +1778,29 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Director',
   'components.TvDetails.Layout.writers': 'Writers',
   'components.MovieSummaryCard.screenplay': 'Screenplay',
+  'components.Setup.defaultsTitle': 'Set defaults for new users',
+  'components.Setup.defaultsDescription':
+    'Choose what people can request when they join. Requests still follow your approval and quota rules.',
+  'components.Setup.defaultsTip':
+    'You can change these defaults or adjust individual users later in Settings.',
+  'components.Setup.requestAccess': 'Allow new users to request media',
+  'components.Setup.requestAccessDescription':
+    'Give new users access to request items in the categories you enable.',
+  'components.Setup.enable4k': 'Enable 4K request options',
+  'components.Setup.enable4kDescription':
+    'Make 4K requests available throughout SeerrNG. Add separate 4K Radarr or Sonarr destinations under Movies & TV.',
+  'components.Setup.request4k': 'Allow new users to request in 4K',
+  'components.Setup.request4kDescription':
+    'This is a default permission for new users. It needs request access and 4K options enabled.',
+  'components.Setup.partialRequests': 'Allow partial TV season requests',
+  'components.Setup.partialRequestsDescription':
+    'Let users request selected episodes instead of a full season. This applies to everyone.',
+  'components.Setup.defaultsLoadError': 'User defaults could not be loaded.',
+  'components.Setup.defaultsSaveError':
+    'User defaults could not be saved. Try again.',
+  'components.Setup.skipDefaults': 'Skip for now',
+  'components.Setup.saveDefaults': 'Save defaults and continue',
+  'components.Setup.savingDefaults': 'Saving…',
   'lumen.account.administratorAccess': 'This account has administrator access.',
   'lumen.account.backToSettings': 'Back to Account Settings',
   'lumen.account.backToYou': 'Back to You',
@@ -7880,4 +7903,5 @@ export const messages = {
   'lumen.manageMedia.requestDeleteFailed':
     'Unable to delete this request entry.',
   'lumen.bookRecommendations.seriesPart': '{series} #{position}',
+  'lumen.setup.step.defaults': 'Defaults for New Users',
 } as const;

@@ -1812,4 +1812,28 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Regisseur',
   'components.TvDetails.Layout.writers': 'Autoren',
   'components.MovieSummaryCard.screenplay': 'Drehbuch',
+  'components.Setup.defaultsTitle': 'Standardwerte für neue Benutzer festlegen',
+  'components.Setup.defaultsDescription':
+    'Wählen Sie aus, was Benutzer anfordern können, wenn sie beitreten. Anfragen unterliegen weiterhin Ihren Genehmigungs- und Kontingentregeln.',
+  'components.Setup.defaultsTip':
+    'Sie können diese Standardwerte oder einzelne Benutzer später in den Einstellungen ändern.',
+  'components.Setup.requestAccess': 'Neuen Benutzern Medienanfragen erlauben',
+  'components.Setup.requestAccessDescription':
+    'Gewähre neuen Benutzern Zugriff auf die Anfrage von Elementen in den von dir aktivierten Kategorien.',
+  'components.Setup.enable4k': '4K-Anforderungsoptionen aktivieren',
+  'components.Setup.enable4kDescription':
+    'Machen Sie 4K-Anforderungen in SeerrNG verfügbar. Fügen Sie separate 4K-Ziele für Radarr oder Sonarr unter Filme & TV hinzu.',
+  'components.Setup.request4k': 'Neuen Benutzern 4K-Anfragen erlauben',
+  'components.Setup.request4kDescription':
+    'Dies ist eine Standardberechtigung für neue Benutzer. Es müssen die Optionen für Zugriffsanfragen und 4K aktiviert sein.',
+  'components.Setup.partialRequests': 'Teilweise TV-Serienanfragen erlauben',
+  'components.Setup.partialRequestsDescription':
+    'Erlaube Benutzern, ausgewählte Episoden anstelle einer ganzen Staffel anzufordern. Dies gilt für alle.',
+  'components.Setup.defaultsLoadError':
+    'Benutzerstandardwerte konnten nicht geladen werden.',
+  'components.Setup.defaultsSaveError':
+    'Benutzerstandardwerte konnten nicht gespeichert werden. Versuchen Sie es erneut.',
+  'components.Setup.skipDefaults': 'Jetzt überspringen',
+  'components.Setup.saveDefaults': 'Standards speichern und fortfahren',
+  'components.Setup.savingDefaults': 'Wird gespeichert…',
 } as const;

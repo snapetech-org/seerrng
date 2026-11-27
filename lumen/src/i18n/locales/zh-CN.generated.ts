@@ -1652,4 +1652,26 @@ export const messages = {
   'components.TvDetails.Layout.director': '导演',
   'components.TvDetails.Layout.writers': '作家',
   'components.MovieSummaryCard.screenplay': '剧本',
+  'components.Setup.defaultsTitle': '为新用户设置默认值',
+  'components.Setup.defaultsDescription':
+    '选择用户加入时允许请求的内容。请求仍需遵循您的审批和配额规则。',
+  'components.Setup.defaultsTip':
+    '您可以稍后在设置中更改这些默认值或调整个别用户的设置。',
+  'components.Setup.requestAccess': '允许新用户请求媒体',
+  'components.Setup.requestAccessDescription':
+    '授予新用户在您启用的类别中请求项目的权限。',
+  'components.Setup.enable4k': '启用 4K 请求选项',
+  'components.Setup.enable4kDescription':
+    '在 SeerrNG 中启用 4K 请求。请在“电影与电视”下添加单独的 4K Radarr 或 Sonarr 目标。',
+  'components.Setup.request4k': '允许新用户请求 4K 内容',
+  'components.Setup.request4kDescription':
+    '这是新用户的默认权限。需要启用请求权限和 4K 选项。',
+  'components.Setup.partialRequests': '允许部分电视季请求',
+  'components.Setup.partialRequestsDescription':
+    '允许用户请求选定的剧集，而不是整季。此设置适用于所有用户。',
+  'components.Setup.defaultsLoadError': '无法加载用户默认设置。',
+  'components.Setup.defaultsSaveError': '无法保存用户默认设置。请重试。',
+  'components.Setup.skipDefaults': '暂时跳过',
+  'components.Setup.saveDefaults': '保存默认设置并继续',
+  'components.Setup.savingDefaults': '正在保存…',
 } as const;

@@ -24,6 +24,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@app': fileURLToPath(new URL('../src', import.meta.url)),
+      '@server': fileURLToPath(new URL('../server', import.meta.url)),
     },
   },
   server: {

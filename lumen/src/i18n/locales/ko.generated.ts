@@ -1730,4 +1730,27 @@ export const messages = {
   'components.TvDetails.Layout.director': '감독',
   'components.TvDetails.Layout.writers': '작가',
   'components.MovieSummaryCard.screenplay': '각본',
+  'components.Setup.defaultsTitle': '새 사용자를 위한 기본값 설정',
+  'components.Setup.defaultsDescription':
+    '사용자가 가입할 때 요청할 수 있는 항목을 선택하세요. 요청은 여전히 승인 및 할당량 규칙을 따릅니다.',
+  'components.Setup.defaultsTip':
+    '이 기본값은 나중에 설정에서 변경하거나 개별 사용자를 조정할 수 있습니다.',
+  'components.Setup.requestAccess': '새 사용자의 미디어 요청 허용',
+  'components.Setup.requestAccessDescription':
+    '활성화한 카테고리에서 새 사용자가 항목을 요청할 수 있는 액세스 권한을 부여합니다.',
+  'components.Setup.enable4k': '4K 요청 옵션 활성화',
+  'components.Setup.enable4kDescription':
+    'SeerrNG 전체에서 4K 요청을 사용할 수 있게 합니다. 영화 & TV에서 별도의 4K Radarr 또는 Sonarr 대상 위치를 추가하세요.',
+  'components.Setup.request4k': '새 사용자의 4K 요청 허용',
+  'components.Setup.request4kDescription':
+    '이것은 새 사용자의 기본 권한입니다. 요청 액세스 권한과 4K 옵션이 활성화되어 있어야 합니다.',
+  'components.Setup.partialRequests': '일부 TV 시즌 요청 허용',
+  'components.Setup.partialRequestsDescription':
+    '사용자가 전체 시즌 대신 선택된 에피소드를 요청할 수 있도록 합니다. 이는 모든 사용자에게 적용됩니다.',
+  'components.Setup.defaultsLoadError': '사용자 기본값을 불러올 수 없습니다.',
+  'components.Setup.defaultsSaveError':
+    '사용자 기본값을 저장할 수 없습니다. 다시 시도해 주세요.',
+  'components.Setup.skipDefaults': '지금은 건너뛰기',
+  'components.Setup.saveDefaults': '기본값 저장 및 계속',
+  'components.Setup.savingDefaults': '저장 중…',
 } as const;

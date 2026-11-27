@@ -1736,6 +1736,29 @@ export const messages = {
   'components.TvDetails.Layout.director': 'مخرج',
   'components.TvDetails.Layout.writers': 'كاتبون',
   'components.MovieSummaryCard.screenplay': 'سيناريو',
+  'components.Setup.defaultsTitle': 'تعيين القيم الافتراضية للمستخدمين الجدد',
+  'components.Setup.defaultsDescription':
+    'اختر ما يمكن للمستخدمين طلبه عند انضمامهم. لا تزال الطلبات تخضع لقواعد الموافقة والحصة الخاصة بك.',
+  'components.Setup.defaultsTip':
+    'يمكنك تغيير هذه القيم الافتراضية أو تعديل إعدادات المستخدمين الفرديين لاحقًا من الإعدادات.',
+  'components.Setup.requestAccess': 'السماح للمستخدمين الجدد بطلب الوسائط',
+  'components.Setup.requestAccessDescription':
+    'امنح المستخدمين الجدد صلاحية طلب العناصر في الفئات التي تم تفعيلها.',
+  'components.Setup.enable4k': 'تفعيل خيارات طلب 4K',
+  'components.Setup.enable4kDescription':
+    'اجعل طلبات 4K متاحة في جميع أنحاء SeerrNG. أضف وجهات 4K منفصلة لـ Radarr أو Sonarr تحت قسم الأفلام والبرامج التلفزيونية.',
+  'components.Setup.request4k': 'السماح للمستخدمين الجدد بالطلب بدقة 4K',
+  'components.Setup.request4kDescription':
+    'هذا إذن افتراضي للمستخدمين الجدد. يتطلب تفعيل إذن الطلب وخيارات 4K.',
+  'components.Setup.partialRequests': 'السماح بطلبات مواسم التلفزيون الجزئية',
+  'components.Setup.partialRequestsDescription':
+    'يسمح للمستخدمين بطلب حلقات محددة بدلاً من الموسم الكامل. هذا ينطبق على الجميع.',
+  'components.Setup.defaultsLoadError': 'تعذر تحميل القيم الافتراضية للمستخدم.',
+  'components.Setup.defaultsSaveError':
+    'تعذر حفظ القيم الافتراضية للمستخدم. حاول مرة أخرى.',
+  'components.Setup.skipDefaults': 'تخطي الآن',
+  'components.Setup.saveDefaults': 'حفظ الإعدادات الافتراضية والمتابعة',
+  'components.Setup.savingDefaults': 'جارٍ الحفظ…',
   'components.IssueDetails.allepisodes': 'جميع الحلقات',
   'components.Layout.Sidebar.comingSoon': 'قريبًا',
   'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
@@ -7971,4 +7994,5 @@ export const messages = {
   'lumen.manageMedia.requestDeleted': 'تم حذف سجل الطلب.',
   'lumen.manageMedia.requestDeleteFailed': 'تعذر حذف سجل الطلب.',
   'lumen.bookRecommendations.seriesPart': '{series}، رقم {position}',
+  'lumen.setup.step.defaults': 'الإعدادات الافتراضية للمستخدمين الجدد',
 } as const;

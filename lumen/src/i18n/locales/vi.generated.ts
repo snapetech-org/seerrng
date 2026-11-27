@@ -1772,4 +1772,31 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Đạo diễn',
   'components.TvDetails.Layout.writers': 'Tác giả',
   'components.MovieSummaryCard.screenplay': 'Kịch bản',
+  'components.Setup.defaultsTitle': 'Đặt mặc định cho người dùng mới',
+  'components.Setup.defaultsDescription':
+    'Chọn những gì người dùng có thể yêu cầu khi tham gia. Các yêu cầu vẫn tuân theo quy tắc phê duyệt và hạn mức của bạn.',
+  'components.Setup.defaultsTip':
+    'Bạn có thể thay đổi các cài đặt mặc định này hoặc điều chỉnh cho từng người dùng sau trong Cài đặt.',
+  'components.Setup.requestAccess':
+    'Cho phép người dùng mới yêu cầu phương tiện',
+  'components.Setup.requestAccessDescription':
+    'Cấp cho người dùng mới quyền truy cập để yêu cầu các mục trong các danh mục bạn đã bật.',
+  'components.Setup.enable4k': 'Bật tùy chọn yêu cầu 4K',
+  'components.Setup.enable4kDescription':
+    'Cho phép yêu cầu 4K trên toàn bộ SeerrNG. Thêm các đích 4K riêng biệt cho Radarr hoặc Sonarr dưới mục Phim & Truyền hình.',
+  'components.Setup.request4k':
+    'Cho phép người dùng mới yêu cầu ở độ phân giải 4K',
+  'components.Setup.request4kDescription':
+    'Đây là quyền mặc định cho người dùng mới. Cần có quyền truy cập yêu cầu và tùy chọn 4K được bật.',
+  'components.Setup.partialRequests':
+    'Cho phép yêu cầu một phần mùa phim truyền hình',
+  'components.Setup.partialRequestsDescription':
+    'Cho phép người dùng yêu cầu các tập được chọn thay vì cả mùa. Điều này áp dụng cho tất cả mọi người.',
+  'components.Setup.defaultsLoadError':
+    'Không thể tải cài đặt mặc định của người dùng.',
+  'components.Setup.defaultsSaveError':
+    'Không thể lưu cài đặt mặc định của người dùng. Hãy thử lại.',
+  'components.Setup.skipDefaults': 'Bỏ qua cho bây giờ',
+  'components.Setup.saveDefaults': 'Lưu mặc định và tiếp tục',
+  'components.Setup.savingDefaults': 'Đang lưu…',
 } as const;

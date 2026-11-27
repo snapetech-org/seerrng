@@ -1840,6 +1840,35 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Réalisateur',
   'components.TvDetails.Layout.writers': 'Auteurs',
   'components.MovieSummaryCard.screenplay': 'Scénario',
+  'components.Setup.defaultsTitle':
+    'Définir les valeurs par défaut pour les nouveaux utilisateurs',
+  'components.Setup.defaultsDescription':
+    "Choisissez ce que les utilisateurs peuvent demander lors de leur inscription. Les demandes restent soumises à vos règles d'approbation et de quota.",
+  'components.Setup.defaultsTip':
+    'Vous pouvez modifier ces valeurs par défaut ou ajuster les utilisateurs individuels plus tard dans les Paramètres.',
+  'components.Setup.requestAccess':
+    'Autoriser les nouveaux utilisateurs à demander des médias',
+  'components.Setup.requestAccessDescription':
+    "Donnez aux nouveaux utilisateurs l'accès pour demander des éléments dans les catégories que vous activez.",
+  'components.Setup.enable4k': 'Activer les options de demande 4K',
+  'components.Setup.enable4kDescription':
+    'Rendre les demandes 4K disponibles dans tout SeerrNG. Ajoutez des destinations 4K séparées pour Radarr ou Sonarr sous Films & TV.',
+  'components.Setup.request4k':
+    'Autoriser les nouveaux utilisateurs à demander en 4K',
+  'components.Setup.request4kDescription':
+    "C'est une autorisation par défaut pour les nouveaux utilisateurs. Elle nécessite l'accès aux demandes et les options 4K activées.",
+  'components.Setup.partialRequests':
+    'Autoriser les demandes partielles de saisons TV',
+  'components.Setup.partialRequestsDescription':
+    "Permet aux utilisateurs de demander des épisodes sélectionnés au lieu d'une saison complète. Cela s'applique à tout le monde.",
+  'components.Setup.defaultsLoadError':
+    'Impossible de charger les valeurs par défaut des utilisateurs.',
+  'components.Setup.defaultsSaveError':
+    "Impossible d'enregistrer les valeurs par défaut des utilisateurs. Réessayez.",
+  'components.Setup.skipDefaults': "Passer pour l'instant",
+  'components.Setup.saveDefaults':
+    'Enregistrer les valeurs par défaut et continuer',
+  'components.Setup.savingDefaults': 'Enregistrement…',
   'components.IssueDetails.allepisodes': 'Tous les épisodes',
   'components.Layout.Sidebar.comingSoon': 'À venir',
   'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -8661,4 +8690,5 @@ export const messages = {
   'lumen.manageMedia.requestDeleteFailed':
     'Impossible de supprimer cette demande.',
   'lumen.bookRecommendations.seriesPart': '{series} nº {position}',
+  'lumen.setup.step.defaults': 'Valeurs par défaut des nouveaux utilisateurs',
 } as const;

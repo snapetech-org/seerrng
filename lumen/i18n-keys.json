@@ -6780,5 +6780,22 @@
   "components.MediaDetails.MetadataAttribution.wikidataTitle",
   "components.TvDetails.Layout.director",
   "components.TvDetails.Layout.writers",
-  "components.MovieSummaryCard.screenplay"
+  "components.MovieSummaryCard.screenplay",
+  "components.Setup.defaultsTitle",
+  "components.Setup.defaultsDescription",
+  "components.Setup.defaultsTip",
+  "components.Setup.requestAccess",
+  "components.Setup.requestAccessDescription",
+  "components.Setup.enable4k",
+  "components.Setup.enable4kDescription",
+  "components.Setup.request4k",
+  "components.Setup.request4kDescription",
+  "components.Setup.partialRequests",
+  "components.Setup.partialRequestsDescription",
+  "components.Setup.defaultsLoadError",
+  "components.Setup.defaultsSaveError",
+  "components.Setup.skipDefaults",
+  "components.Setup.saveDefaults",
+  "components.Setup.savingDefaults",
+  "lumen.setup.step.defaults"
 ]

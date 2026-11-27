@@ -1816,4 +1816,30 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Diretor',
   'components.TvDetails.Layout.writers': 'Escritores',
   'components.MovieSummaryCard.screenplay': 'Roteiro',
+  'components.Setup.defaultsTitle': 'Definir padrões para novos usuários',
+  'components.Setup.defaultsDescription':
+    'Escolha o que as pessoas podem solicitar ao se juntarem. As solicitações ainda seguem suas regras de aprovação e cota.',
+  'components.Setup.defaultsTip':
+    'Você pode alterar esses padrões ou ajustar usuários individuais depois nas Configurações.',
+  'components.Setup.requestAccess':
+    'Permitir que novos usuários solicitem mídia',
+  'components.Setup.requestAccessDescription':
+    'Dê aos novos usuários acesso para solicitar itens nas categorias que você habilitar.',
+  'components.Setup.enable4k': 'Ativar opções de solicitação 4K',
+  'components.Setup.enable4kDescription':
+    'Tornar solicitações 4K disponíveis em todo o SeerrNG. Adicione destinos 4K separados de Radarr ou Sonarr em Filmes e TV.',
+  'components.Setup.request4k': 'Permitir que novos usuários solicitem em 4K',
+  'components.Setup.request4kDescription':
+    'Esta é uma permissão padrão para novos usuários. Requer acesso de solicitação e opções 4K habilitadas.',
+  'components.Setup.partialRequests':
+    'Permitir solicitações parciais de temporadas de TV',
+  'components.Setup.partialRequestsDescription':
+    'Permita que os usuários solicitem episódios selecionados em vez de uma temporada completa. Isso se aplica a todos.',
+  'components.Setup.defaultsLoadError':
+    'Não foi possível carregar os padrões do usuário.',
+  'components.Setup.defaultsSaveError':
+    'Não foi possível salvar os padrões do usuário. Tente novamente.',
+  'components.Setup.skipDefaults': 'Pular por enquanto',
+  'components.Setup.saveDefaults': 'Salvar padrões e continuar',
+  'components.Setup.savingDefaults': 'Salvando…',
 } as const;

@@ -5,6 +5,27 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Guided setup defaults (2026-11-27)
+
+Lumen's guided setup now includes the native defaults step for new users: request
+access, global 4K options, the default 4K request permission, and partial TV
+season requests. The panel reuses native permission-mask logic, writes only the
+three relevant settings, and requires both a successful mutation response and a
+matching fresh readback before advancing. The 4K permission is disabled unless
+request access and global 4K are enabled. Administrators may explicitly skip
+the step; unsaved changes block setup navigation and completion until saved or
+skipped.
+
+Browser coverage verifies save/readback, mismatch recovery, and skip behavior
+across desktop, iPhone, Android, and tablet. The production build passes. Native
+first-run and Lumen guide captures were inspected at desktop size, and the Lumen
+phone capture was checked for overflow; no CSS owner changed. Live authenticated
+save behavior and a same-application matched baseline remain unverified.
+Evidence is retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-setup-defaults-20261127/`.
+
+release-note: `release-notes/lumen-guided-setup-defaults.md`
+
 ### Recover from account media-category settings failures (2026-11-27)
 
 Lumen now waits for the effective per-user media-category settings response

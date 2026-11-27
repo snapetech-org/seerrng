@@ -1827,4 +1827,33 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Director',
   'components.TvDetails.Layout.writers': 'Escritores',
   'components.MovieSummaryCard.screenplay': 'Guión',
+  'components.Setup.defaultsTitle':
+    'Establecer valores predeterminados para nuevos usuarios',
+  'components.Setup.defaultsDescription':
+    'Elige lo que las personas pueden solicitar al unirse. Las solicitudes siguen las reglas de aprobación y cuota.',
+  'components.Setup.defaultsTip':
+    'Puedes cambiar estos valores predeterminados o ajustar usuarios individuales más tarde en Configuración.',
+  'components.Setup.requestAccess':
+    'Permitir a los nuevos usuarios solicitar medios',
+  'components.Setup.requestAccessDescription':
+    'Otorga a los nuevos usuarios acceso para solicitar elementos en las categorías que habilites.',
+  'components.Setup.enable4k': 'Habilitar opciones de solicitud 4K',
+  'components.Setup.enable4kDescription':
+    'Hacer disponibles las solicitudes 4K en todo SeerrNG. Añade destinos 4K separados de Radarr o Sonarr bajo Películas y TV.',
+  'components.Setup.request4k':
+    'Permitir a los nuevos usuarios solicitar en 4K',
+  'components.Setup.request4kDescription':
+    'Este es un permiso predeterminado para los nuevos usuarios. Requiere acceso de solicitud y opciones 4K habilitadas.',
+  'components.Setup.partialRequests':
+    'Permitir solicitudes parciales de temporadas de TV',
+  'components.Setup.partialRequestsDescription':
+    'Permite a los usuarios solicitar episodios seleccionados en lugar de una temporada completa. Esto se aplica a todos.',
+  'components.Setup.defaultsLoadError':
+    'No se pudieron cargar los valores predeterminados del usuario.',
+  'components.Setup.defaultsSaveError':
+    'No se pudieron guardar los valores predeterminados del usuario. Inténtalo de nuevo.',
+  'components.Setup.skipDefaults': 'Omitir por ahora',
+  'components.Setup.saveDefaults':
+    'Guardar valores predeterminados y continuar',
+  'components.Setup.savingDefaults': 'Guardando…',
 } as const;

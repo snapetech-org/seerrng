@@ -1761,4 +1761,30 @@ export const messages = {
   'components.TvDetails.Layout.director': 'निर्देशक',
   'components.TvDetails.Layout.writers': 'लेखक',
   'components.MovieSummaryCard.screenplay': 'पटकथा',
+  'components.Setup.defaultsTitle': 'नए उपयोगकर्ताओं के लिए डिफ़ॉल्ट सेट करें',
+  'components.Setup.defaultsDescription':
+    'चुनें कि उपयोगकर्ता जुड़ने पर क्या अनुरोध कर सकते हैं। अनुरोध अभी भी आपकी स्वीकृति और कोटा नियमों का पालन करते हैं।',
+  'components.Setup.defaultsTip':
+    'आप इन डिफ़ॉल्ट को बदल सकते हैं या बाद में सेटिंग्स में व्यक्तिगत उपयोगकर्ताओं को समायोजित कर सकते हैं।',
+  'components.Setup.requestAccess':
+    'नए उपयोगकर्ताओं को मीडिया अनुरोध करने की अनुमति दें',
+  'components.Setup.requestAccessDescription':
+    'नए उपयोगकर्ताओं को उन श्रेणियों में आइटम अनुरोध करने की पहुंच दें जिन्हें आप सक्षम करते हैं।',
+  'components.Setup.enable4k': '4K अनुरोध विकल्प सक्षम करें',
+  'components.Setup.enable4kDescription':
+    'SeerrNG में 4K अनुरोध उपलब्ध कराएं। फ़िल्में और टीवी के तहत अलग 4K Radarr या Sonarr गंतव्य जोड़ें।',
+  'components.Setup.request4k':
+    'नए उपयोगकर्ताओं को 4K में अनुरोध करने की अनुमति दें',
+  'components.Setup.request4kDescription':
+    'यह नए उपयोगकर्ताओं के लिए एक डिफ़ॉल्ट अनुमतियां है। इसके लिए अनुरोध पहुंच और 4K विकल्पों को सक्षम होना आवश्यक है।',
+  'components.Setup.partialRequests': 'आंशिक टीवी सीज़न अनुरोधों की अनुमति दें',
+  'components.Setup.partialRequestsDescription':
+    'उपयोगकर्ताओं को पूरे सीज़न के बजाय चयनित एपिसोड अनुरोध करने दें। यह सभी पर लागू होता है।',
+  'components.Setup.defaultsLoadError':
+    'उपयोगकर्ता डिफ़ॉल्ट लोड नहीं किए जा सके।',
+  'components.Setup.defaultsSaveError':
+    'उपयोगकर्ता डिफ़ॉल्ट सहेजे नहीं जा सके। पुनः प्रयास करें।',
+  'components.Setup.skipDefaults': 'अभी के लिए छोड़ें',
+  'components.Setup.saveDefaults': 'डिफ़ॉल्ट सेव करें और आगे बढ़ें',
+  'components.Setup.savingDefaults': 'सेव हो रहा है…',
 } as const;

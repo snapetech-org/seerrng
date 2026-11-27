@@ -1655,4 +1655,26 @@ export const messages = {
   'components.TvDetails.Layout.director': '導演',
   'components.TvDetails.Layout.writers': '作家',
   'components.MovieSummaryCard.screenplay': '劇本',
+  'components.Setup.defaultsTitle': '為新使用者設定預設值',
+  'components.Setup.defaultsDescription':
+    '選擇新加入的使用者可以請求的內容。請求仍須遵循您的核准與配額規則。',
+  'components.Setup.defaultsTip':
+    '您可以稍後在設定中變更這些預設值或調整個別使用者。',
+  'components.Setup.requestAccess': '允許新使用者請求媒體',
+  'components.Setup.requestAccessDescription':
+    '授予新使用者請求您已啟用類別中項目的權限。',
+  'components.Setup.enable4k': '啟用 4K 請求選項',
+  'components.Setup.enable4kDescription':
+    '在 SeerrNG 中啟用 4K 請求。請在「電影與電視節目」下新增獨立的 4K Radarr 或 Sonarr 目的地。',
+  'components.Setup.request4k': '允許新使用者請求 4K 內容',
+  'components.Setup.request4kDescription':
+    '這是新使用者的預設權限。需要啟用請求權限及 4K 選項。',
+  'components.Setup.partialRequests': '允許部分電視季請求',
+  'components.Setup.partialRequestsDescription':
+    '讓使用者可以請求選定的集數，而非整季。此設定適用於所有使用者。',
+  'components.Setup.defaultsLoadError': '無法載入使用者預設值。',
+  'components.Setup.defaultsSaveError': '無法儲存使用者預設值。請再試一次。',
+  'components.Setup.skipDefaults': '暫時跳過',
+  'components.Setup.saveDefaults': '儲存預設設定並繼續',
+  'components.Setup.savingDefaults': '儲存中…',
 } as const;

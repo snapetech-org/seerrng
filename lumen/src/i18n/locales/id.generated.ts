@@ -1775,4 +1775,27 @@ export const messages = {
   'components.TvDetails.Layout.director': 'Sutradara',
   'components.TvDetails.Layout.writers': 'Penulis',
   'components.MovieSummaryCard.screenplay': 'Skenario',
+  'components.Setup.defaultsTitle': 'Atur default untuk pengguna baru',
+  'components.Setup.defaultsDescription':
+    'Pilih apa yang dapat diminta pengguna saat bergabung. Permintaan tetap mengikuti aturan persetujuan dan kuota Anda.',
+  'components.Setup.defaultsTip':
+    'Anda dapat mengubah default ini atau menyesuaikan pengguna individu nanti di Pengaturan.',
+  'components.Setup.requestAccess': 'Izinkan pengguna baru untuk meminta media',
+  'components.Setup.requestAccessDescription':
+    'Beri pengguna baru akses untuk meminta item dalam kategori yang Anda aktifkan.',
+  'components.Setup.enable4k': 'Aktifkan opsi permintaan 4K',
+  'components.Setup.enable4kDescription':
+    'Buat permintaan 4K tersedia di seluruh SeerrNG. Tambahkan tujuan 4K Radarr atau Sonarr terpisah di bawah Film & TV.',
+  'components.Setup.request4k': 'Izinkan pengguna baru untuk meminta dalam 4K',
+  'components.Setup.request4kDescription':
+    'Ini adalah izin bawaan untuk pengguna baru. Memerlukan akses permintaan dan opsi 4K diaktifkan.',
+  'components.Setup.partialRequests': 'Izinkan permintaan musim TV parsial',
+  'components.Setup.partialRequestsDescription':
+    'Izinkan pengguna untuk meminta episode tertentu alih-alih musim penuh. Ini berlaku untuk semua orang.',
+  'components.Setup.defaultsLoadError': 'Default pengguna tidak dapat dimuat.',
+  'components.Setup.defaultsSaveError':
+    'Default pengguna tidak dapat disimpan. Coba lagi.',
+  'components.Setup.skipDefaults': 'Lewati untuk sekarang',
+  'components.Setup.saveDefaults': 'Simpan bawaan dan lanjutkan',
+  'components.Setup.savingDefaults': 'Menyimpan…',
 } as const;

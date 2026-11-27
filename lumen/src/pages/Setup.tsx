@@ -12,6 +12,7 @@ import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { forget } from '../apiCache';
 import { isAdministrator, signInWithPlex, useAuth } from '../auth';
+import SetupDefaults from '../components/SetupDefaults';
 import Shell from '../components/Shell';
 import { Section } from '../components/cards';
 import { ExtraHeader, ServiceNote } from '../components/extra';
@@ -29,6 +30,7 @@ const AdminServarr = lazy(() => import('./AdminServarr'));
 const setupSteps = [
   ['libraries', 'Media Server Libraries'],
   ['categories', 'Media Categories'],
+  ['defaults', 'Defaults for New Users'],
   ['services', 'Request Services'],
   ['downloads', 'Download Clients'],
   ['indexer', 'Prowlarr'],
@@ -332,7 +334,7 @@ export default function Setup() {
   const settings = useApi<PublicSettings>('/settings/public', {
     keepDuringRefresh: true,
   });
-  const [query] = useSearchParams();
+  const [query, setQuery] = useSearchParams();
   const stepIndex = setupSteps.findIndex(([id]) => id === query.get('step'));
   const activeStep = setupSteps[stepIndex]?.[0];
   const reopening =
@@ -340,23 +342,24 @@ export default function Setup() {
   const [provider, setProvider] = useState(1);
   const [busy, setBusy] = useState(false);
   const [downloadDirty, setDownloadDirty] = useState(false);
+  const [defaultsDirty, setDefaultsDirty] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
 
   useEffect(() => {
-    if (!downloadDirty) return;
+    if (!downloadDirty && !defaultsDirty) return;
     function confirmUnload(event: BeforeUnloadEvent) {
       event.preventDefault();
       event.returnValue = true;
     }
     window.addEventListener('beforeunload', confirmUnload);
     return () => window.removeEventListener('beforeunload', confirmUnload);
-  }, [downloadDirty]);
+  }, [downloadDirty, defaultsDirty]);
 
   const stepNavigation = {
-    'aria-disabled': downloadDirty || undefined,
+    'aria-disabled': downloadDirty || defaultsDirty || undefined,
     onClick: (event: MouseEvent<HTMLAnchorElement>) => {
-      if (downloadDirty) event.preventDefault();
+      if (downloadDirty || defaultsDirty) event.preventDefault();
     },
   };
 
@@ -535,6 +538,21 @@ export default function Setup() {
             onAvailableCategoriesSaved={settings.reload}
           />
         </details>
+        <div
+          className="setup-step"
+          hidden={!!activeStep && activeStep !== 'defaults'}
+        >
+          {(!activeStep || activeStep === 'defaults') && (
+            <SetupDefaults
+              onDirtyChange={setDefaultsDirty}
+              onContinue={() => {
+                const next = new URLSearchParams(query);
+                next.set('step', 'services');
+                setQuery(next);
+              }}
+            />
+          )}
+        </div>
         <details
           className="adv"
           hidden={!!activeStep && activeStep !== 'services'}
@@ -593,7 +611,7 @@ export default function Setup() {
                 {t('lumen.setup.previousStep', 'Previous Step')}
               </Link>
             )}
-            {stepIndex < setupSteps.length - 1 && (
+            {stepIndex < setupSteps.length - 1 && activeStep !== 'defaults' && (
               <Link
                 className="btn btn-primary"
                 to={stepLink(setupSteps[stepIndex + 1][0])}
@@ -611,7 +629,7 @@ export default function Setup() {
         ) : (
           <button
             className="btn btn-primary"
-            disabled={busy || downloadDirty}
+            disabled={busy || downloadDirty || defaultsDirty}
             onClick={() => void run(finish)}
           >
             {t('lumen.setup.finishSetup', 'Finish Setup')}
