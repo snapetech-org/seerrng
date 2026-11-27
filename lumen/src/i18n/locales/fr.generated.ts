@@ -1869,6 +1869,25 @@ export const messages = {
   'components.Setup.saveDefaults':
     'Enregistrer les valeurs par défaut et continuer',
   'components.Setup.savingDefaults': 'Enregistrement…',
+  'components.Setup.enabledRequestTypes': 'Types de demandes activés',
+  'components.Setup.enabledMediaLibraries': 'Bibliothèques de médias activées',
+  'components.Setup.noneEnabled': 'Aucun activé',
+  'components.Setup.requiredSetupComplete':
+    'La configuration requise est terminée. Les connexions de services sont facultatives et peuvent être testées dans leurs formulaires ci-dessous.',
+  'components.Setup.serviceTestNote':
+    'Les résultats des tests de connexion sont affichés dans chaque formulaire de service et ne sont pas enregistrés comme statut de configuration.',
+  'components.Setup.categoryMovie': 'Films',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': 'Musique',
+  'components.Setup.categoryEbook': 'Livres',
+  'components.Setup.categoryAudiobook': 'Livres audio',
+  'components.Setup.categoryComic': 'Bandes dessinées',
+  'components.Setup.categoryMagazine': 'Revues',
+  'components.Setup.categoryAdult': 'Adulte',
+  'components.Setup.categorySports': 'Sports',
+  'components.Setup.categoryRetro': 'Jeux rétro',
+  'components.Setup.categoryModern': 'Jeux modernes',
+  'components.Setup.categoryGame': 'Jeux PC',
   'components.IssueDetails.allepisodes': 'Tous les épisodes',
   'components.Layout.Sidebar.comingSoon': 'À venir',
   'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
@@ -8691,4 +8710,5 @@ export const messages = {
     'Impossible de supprimer cette demande.',
   'lumen.bookRecommendations.seriesPart': '{series} nº {position}',
   'lumen.setup.step.defaults': 'Valeurs par défaut des nouveaux utilisateurs',
+  'lumen.setup.libraryCount': '{count} bibliothèques',
 } as const;

@@ -1677,4 +1677,23 @@ export const messages = {
   'components.Setup.skipDefaults': '暫時跳過',
   'components.Setup.saveDefaults': '儲存預設設定並繼續',
   'components.Setup.savingDefaults': '儲存中…',
+  'components.Setup.enabledRequestTypes': '已啟用的請求類型',
+  'components.Setup.enabledMediaLibraries': '已啟用的媒體庫',
+  'components.Setup.noneEnabled': '未啟用任何服務',
+  'components.Setup.requiredSetupComplete':
+    '必要設定已完成。服務連接為選填項目，可在下方的表單中進行測試。',
+  'components.Setup.serviceTestNote':
+    '連接測試結果將顯示在每個服務的表單中，不會儲存為設定狀態。',
+  'components.Setup.categoryMovie': '電影',
+  'components.Setup.categoryTv': '電視節目',
+  'components.Setup.categoryMusic': '音樂',
+  'components.Setup.categoryEbook': '書籍',
+  'components.Setup.categoryAudiobook': '有聲書',
+  'components.Setup.categoryComic': '漫畫',
+  'components.Setup.categoryMagazine': '雜誌',
+  'components.Setup.categoryAdult': '成人',
+  'components.Setup.categorySports': '體育',
+  'components.Setup.categoryRetro': '懷舊遊戲',
+  'components.Setup.categoryModern': '現代遊戲',
+  'components.Setup.categoryGame': 'PC 遊戲',
 } as const;

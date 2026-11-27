@@ -1842,4 +1842,23 @@ export const messages = {
   'components.Setup.skipDefaults': 'Pular por enquanto',
   'components.Setup.saveDefaults': 'Salvar padrões e continuar',
   'components.Setup.savingDefaults': 'Salvando…',
+  'components.Setup.enabledRequestTypes': 'Tipos de solicitação habilitados',
+  'components.Setup.enabledMediaLibraries': 'Bibliotecas de mídia habilitadas',
+  'components.Setup.noneEnabled': 'Nenhum habilitado',
+  'components.Setup.requiredSetupComplete':
+    'A configuração obrigatória está completa. As conexões de serviço são opcionais e podem ser testadas nos formulários abaixo.',
+  'components.Setup.serviceTestNote':
+    'Os resultados dos testes de conexão são exibidos em cada formulário de serviço e não são salvos como status de configuração.',
+  'components.Setup.categoryMovie': 'Filmes',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': 'Música',
+  'components.Setup.categoryEbook': 'Livros',
+  'components.Setup.categoryAudiobook': 'Audiolivros',
+  'components.Setup.categoryComic': 'Quadrinhos',
+  'components.Setup.categoryMagazine': 'Revistas',
+  'components.Setup.categoryAdult': 'Adulto',
+  'components.Setup.categorySports': 'Esportes',
+  'components.Setup.categoryRetro': 'Jogos retrô',
+  'components.Setup.categoryModern': 'Jogos modernos',
+  'components.Setup.categoryGame': 'Jogos para PC',
 } as const;

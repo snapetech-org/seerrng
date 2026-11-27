@@ -1787,4 +1787,23 @@ export const messages = {
   'components.Setup.skipDefaults': 'अभी के लिए छोड़ें',
   'components.Setup.saveDefaults': 'डिफ़ॉल्ट सेव करें और आगे बढ़ें',
   'components.Setup.savingDefaults': 'सेव हो रहा है…',
+  'components.Setup.enabledRequestTypes': 'सक्षम अनुरोध प्रकार',
+  'components.Setup.enabledMediaLibraries': 'सक्षम मीडिया लाइब्रेरी',
+  'components.Setup.noneEnabled': 'कोई भी सक्षम नहीं है',
+  'components.Setup.requiredSetupComplete':
+    'आवश्यक सेटअप पूरा हो गया है। सेवा कनेक्शन वैकल्पिक हैं और उन्हें नीचे दी गई फॉर्म में परीक्षण किया जा सकता है।',
+  'components.Setup.serviceTestNote':
+    'कनेक्शन परीक्षण परिणाम प्रत्येक सेवा फॉर्म में दिखाए जाते हैं और सेटअप स्थिति के रूप में सेव नहीं किए जाते हैं।',
+  'components.Setup.categoryMovie': 'फ़िल्में',
+  'components.Setup.categoryTv': 'टीवी',
+  'components.Setup.categoryMusic': 'संगीत',
+  'components.Setup.categoryEbook': 'पुस्तकें',
+  'components.Setup.categoryAudiobook': 'ऑडियोबुक्स',
+  'components.Setup.categoryComic': 'कॉमिक्स',
+  'components.Setup.categoryMagazine': 'पत्रिकाएँ',
+  'components.Setup.categoryAdult': 'अल्ड',
+  'components.Setup.categorySports': 'खेल',
+  'components.Setup.categoryRetro': 'रिट्रो गेम',
+  'components.Setup.categoryModern': 'आधुनिक गेम',
+  'components.Setup.categoryGame': 'PC गेम',
 } as const;

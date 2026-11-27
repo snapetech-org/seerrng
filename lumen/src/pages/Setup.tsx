@@ -1,3 +1,4 @@
+import { DEFAULT_ENABLED_MEDIA_CATEGORIES } from '@server/constants/mediaCategories';
 import {
   lazy,
   Suspense,
@@ -45,7 +46,28 @@ function mediaServerSettings(type?: number) {
   return type === 1 ? '/settings/plex' : '/settings/jellyfin';
 }
 
-function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
+const setupReviewCategories = [
+  ['movie', 'categoryMovie', 'Movies'],
+  ['tv', 'categoryTv', 'TV'],
+  ['music', 'categoryMusic', 'Music'],
+  ['ebook', 'categoryEbook', 'Books'],
+  ['audiobook', 'categoryAudiobook', 'Audiobooks'],
+  ['comic', 'categoryComic', 'Comics'],
+  ['magazine', 'categoryMagazine', 'Magazines'],
+  ['adult', 'categoryAdult', 'Adult'],
+  ['sports', 'categorySports', 'Sports'],
+  ['retro', 'categoryRetro', 'Retro games'],
+  ['modern', 'categoryModern', 'Modern games'],
+  ['game', 'categoryGame', 'PC games'],
+] as const;
+
+function SetupReview({
+  mediaServerType,
+  categories,
+}: {
+  mediaServerType?: number;
+  categories?: PublicSettings['enabledMediaCategories'];
+}) {
   const { t } = useLumenLocale();
   const connection = useApi<SetupConnection>(
     mediaServerSettings(mediaServerType)
@@ -53,6 +75,10 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
   const enabled = connection.data?.libraries?.filter(
     (library) => library.enabled
   );
+  const effectiveCategories = categories ?? DEFAULT_ENABLED_MEDIA_CATEGORIES;
+  const enabledCategoryLabels = setupReviewCategories
+    .filter(([category]) => effectiveCategories[category])
+    .map(([, message, fallback]) => t(`components.Setup.${message}`, fallback));
   const downloads = useApi<{ clients: { enabled: boolean }[] }>(
     '/settings/download-clients'
   );
@@ -71,16 +97,36 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
       />
       {enabled?.length ? (
         <>
-          <p className="note">
-            {t('lumen.setup.enabledLibraries', 'Enabled Media Libraries')}
-          </p>
-          <ul className="setlist">
-            {enabled.map(({ id, name }) => (
-              <li key={id} className="set">
-                {name}
-              </li>
-            ))}
-          </ul>
+          <dl className="setlist">
+            <div className="set">
+              <dt>
+                {t(
+                  'components.Setup.enabledRequestTypes',
+                  'Enabled request types'
+                )}
+              </dt>
+              <dd>
+                {enabledCategoryLabels.join(', ') ||
+                  t('components.Setup.noneEnabled', 'None enabled')}
+              </dd>
+            </div>
+            <div className="set">
+              <dt>
+                {t(
+                  'components.Setup.enabledMediaLibraries',
+                  'Enabled media libraries'
+                )}
+              </dt>
+              <dd>
+                {enabled.map(({ name }) => name).join(', ')}{' '}
+                <small>
+                  {t('lumen.setup.libraryCount', '{count} libraries', {
+                    count: enabled.length,
+                  })}
+                </small>
+              </dd>
+            </div>
+          </dl>
         </>
       ) : connection.data ? (
         <p className="note">
@@ -96,6 +142,22 @@ function SetupReview({ mediaServerType }: { mediaServerType?: number }) {
             'Checking saved media libraries…'
           )}
         </p>
+      ) : null}
+      {enabled?.length ? (
+        <>
+          <p className="note">
+            {t(
+              'components.Setup.requiredSetupComplete',
+              'Required setup is complete. Service connections are optional and can be tested in their forms below.'
+            )}
+          </p>
+          <p className="note">
+            {t(
+              'components.Setup.serviceTestNote',
+              'Service connection tests are live results and are not saved as setup status.'
+            )}
+          </p>
+        </>
       ) : null}
       <dl className="setlist">
         <div className="set">
@@ -594,7 +656,10 @@ export default function Setup() {
           <AdminProwlarr inSetup />
         </SetupEditor>
         {activeStep === 'review' && (
-          <SetupReview mediaServerType={settings.data.mediaServerType} />
+          <SetupReview
+            mediaServerType={settings.data.mediaServerType}
+            categories={settings.data.enabledMediaCategories}
+          />
         )}
         <ServiceNote
           error={error || null}

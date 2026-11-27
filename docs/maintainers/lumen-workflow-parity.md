@@ -24,6 +24,18 @@ save behavior and a same-application matched baseline remain unverified.
 Evidence is retained in
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-setup-defaults-20261127/`.
 
+The Lumen Review step now summarizes enabled request categories and the names
+and count of enabled media libraries, matching the native setup review. It also
+states that required setup is complete and explains that connection tests are
+live form results rather than saved setup status. Category defaults follow the
+server's effective default set when the public settings response omits the
+category object. The existing setup browser matrix checks English, French, and
+Arabic review labels and category values across desktop, iPhone, Android, and
+tablet; desktop and phone screenshots were compared with the earlier Lumen
+review baseline. The focused 36-case setup suites and production build pass.
+Live authenticated setup remains unverified. Review screenshots are retained
+alongside the setup defaults evidence above.
+
 release-note: `release-notes/lumen-guided-setup-defaults.md`
 
 ### Recover from account media-category settings failures (2026-11-27)

@@ -1856,4 +1856,23 @@ export const messages = {
   'components.Setup.saveDefaults':
     'Guardar valores predeterminados y continuar',
   'components.Setup.savingDefaults': 'Guardando…',
+  'components.Setup.enabledRequestTypes': 'Tipos de solicitud habilitados',
+  'components.Setup.enabledMediaLibraries': 'Bibliotecas de medios habilitadas',
+  'components.Setup.noneEnabled': 'Ninguno habilitado',
+  'components.Setup.requiredSetupComplete':
+    'La configuración obligatoria está completa. Las conexiones de servicios son opcionales y se pueden probar en sus formularios a continuación.',
+  'components.Setup.serviceTestNote':
+    'Los resultados de la prueba de conexión se muestran en cada formulario de servicio y no se guardan como estado de configuración.',
+  'components.Setup.categoryMovie': 'Películas',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': 'Música',
+  'components.Setup.categoryEbook': 'Libros',
+  'components.Setup.categoryAudiobook': 'Audiolibros',
+  'components.Setup.categoryComic': 'Cómics',
+  'components.Setup.categoryMagazine': 'Revistas',
+  'components.Setup.categoryAdult': 'Adulto',
+  'components.Setup.categorySports': 'Deportes',
+  'components.Setup.categoryRetro': 'Juegos retro',
+  'components.Setup.categoryModern': 'Juegos modernos',
+  'components.Setup.categoryGame': 'Juegos de PC',
 } as const;

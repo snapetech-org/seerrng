@@ -1799,4 +1799,23 @@ export const messages = {
   'components.Setup.skipDefaults': 'Bỏ qua cho bây giờ',
   'components.Setup.saveDefaults': 'Lưu mặc định và tiếp tục',
   'components.Setup.savingDefaults': 'Đang lưu…',
+  'components.Setup.enabledRequestTypes': 'Loại yêu cầu đã bật',
+  'components.Setup.enabledMediaLibraries': 'Thư viện phương tiện đã bật',
+  'components.Setup.noneEnabled': 'Chưa bật dịch vụ nào',
+  'components.Setup.requiredSetupComplete':
+    'Cài đặt bắt buộc đã hoàn tất. Kết nối dịch vụ là tùy chọn và có thể được kiểm tra trong các biểu mẫu bên dưới.',
+  'components.Setup.serviceTestNote':
+    'Kết quả kiểm tra kết nối được hiển thị trong mỗi biểu mẫu dịch vụ và không được lưu như trạng thái cài đặt.',
+  'components.Setup.categoryMovie': 'Phim',
+  'components.Setup.categoryTv': 'Truyền hình',
+  'components.Setup.categoryMusic': 'Nhạc',
+  'components.Setup.categoryEbook': 'Sách',
+  'components.Setup.categoryAudiobook': 'Sách nói',
+  'components.Setup.categoryComic': 'Truyện tranh',
+  'components.Setup.categoryMagazine': 'Tạp chí',
+  'components.Setup.categoryAdult': 'Người lớn',
+  'components.Setup.categorySports': 'Thể thao',
+  'components.Setup.categoryRetro': 'Trò chơi cổ điển',
+  'components.Setup.categoryModern': 'Trò chơi hiện đại',
+  'components.Setup.categoryGame': 'Trò chơi PC',
 } as const;

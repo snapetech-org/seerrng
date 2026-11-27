@@ -1836,4 +1836,23 @@ export const messages = {
   'components.Setup.skipDefaults': 'Jetzt überspringen',
   'components.Setup.saveDefaults': 'Standards speichern und fortfahren',
   'components.Setup.savingDefaults': 'Wird gespeichert…',
+  'components.Setup.enabledRequestTypes': 'Aktivierte Anforderungstypen',
+  'components.Setup.enabledMediaLibraries': 'Aktivierte Mediatheken',
+  'components.Setup.noneEnabled': 'Keine aktiviert',
+  'components.Setup.requiredSetupComplete':
+    'Das erforderliche Setup ist abgeschlossen. Dienstverbindungen sind optional und können in den untenstehenden Formularen getestet werden.',
+  'components.Setup.serviceTestNote':
+    'Die Ergebnisse der Verbindungstests werden in jedem Dienstformular angezeigt und nicht als Setup-Status gespeichert.',
+  'components.Setup.categoryMovie': 'Filme',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': 'Musik',
+  'components.Setup.categoryEbook': 'Bücher',
+  'components.Setup.categoryAudiobook': 'Hörbücher',
+  'components.Setup.categoryComic': 'Comics',
+  'components.Setup.categoryMagazine': 'Zeitschriften',
+  'components.Setup.categoryAdult': 'Erwachsenenmedien',
+  'components.Setup.categorySports': 'Sport',
+  'components.Setup.categoryRetro': 'Retro-Spiele',
+  'components.Setup.categoryModern': 'Moderne Spiele',
+  'components.Setup.categoryGame': 'PC-Spiele',
 } as const;

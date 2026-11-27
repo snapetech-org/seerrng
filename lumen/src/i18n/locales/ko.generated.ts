@@ -1753,4 +1753,23 @@ export const messages = {
   'components.Setup.skipDefaults': '지금은 건너뛰기',
   'components.Setup.saveDefaults': '기본값 저장 및 계속',
   'components.Setup.savingDefaults': '저장 중…',
+  'components.Setup.enabledRequestTypes': '활성화된 요청 유형',
+  'components.Setup.enabledMediaLibraries': '활성화된 미디어 라이브러리',
+  'components.Setup.noneEnabled': '활성화된 항목 없음',
+  'components.Setup.requiredSetupComplete':
+    '필수 설정이 완료되었습니다. 서비스 연결은 선택 사항이며, 아래 각 양식에서 테스트할 수 있습니다.',
+  'components.Setup.serviceTestNote':
+    '연결 테스트 결과는 각 서비스 양식에 표시되며, 설정 상태로 저장되지 않습니다.',
+  'components.Setup.categoryMovie': '영화',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': '음악',
+  'components.Setup.categoryEbook': '책',
+  'components.Setup.categoryAudiobook': '오디오북',
+  'components.Setup.categoryComic': '만화',
+  'components.Setup.categoryMagazine': '잡지',
+  'components.Setup.categoryAdult': '성인',
+  'components.Setup.categorySports': '스포츠',
+  'components.Setup.categoryRetro': '레트로 게임',
+  'components.Setup.categoryModern': '모던 게임',
+  'components.Setup.categoryGame': 'PC 게임',
 } as const;

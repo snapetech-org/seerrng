@@ -14,7 +14,9 @@ const labels = {
     allServices: 'All Request Services',
     next: 'Next Step',
     previous: 'Previous Step',
-    enabledLibraries: 'Enabled Media Libraries',
+    enabledLibraries: 'Enabled media libraries',
+    enabledRequestTypes: 'Enabled request types',
+    bookCategory: 'Books',
     libraryRequired:
       'Enable at least one media library before finishing setup.',
     downloadClients: 'Download Clients',
@@ -43,7 +45,9 @@ const labels = {
     allServices: 'Tous les services de demande',
     next: 'Étape suivante',
     previous: 'Étape précédente',
-    enabledLibraries: 'Bibliothèques multimédias activées',
+    enabledLibraries: 'Bibliothèques de médias activées',
+    enabledRequestTypes: 'Types de demandes activés',
+    bookCategory: 'Livres',
     libraryRequired:
       'Activez au moins une bibliothèque multimédia avant de terminer la configuration.',
     downloadClients: 'Clients de téléchargement',
@@ -72,6 +76,8 @@ const labels = {
     next: 'الخطوة التالية',
     previous: 'الخطوة السابقة',
     enabledLibraries: 'مكتبات الوسائط المفعّلة',
+    enabledRequestTypes: 'أنواع الطلبات المفعّلة',
+    bookCategory: 'الكتب',
     libraryRequired: 'فعّل مكتبة وسائط واحدة على الأقل قبل إنهاء الإعداد.',
     downloadClients: 'عملاء التنزيل',
     prowlarr: 'Prowlarr',
@@ -148,6 +154,12 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       page.getByRole('navigation', { name: copy.steps })
     ).toBeVisible();
     await expect(page.getByText(copy.enabledLibraries)).toBeVisible();
+    await expect(
+      page.locator('dt').filter({ hasText: copy.enabledRequestTypes })
+    ).toBeVisible();
+    await expect(
+      page.locator('dd').filter({ hasText: copy.bookCategory })
+    ).toBeVisible();
     await expect(
       page.locator('dt').filter({ hasText: copy.downloadClients })
     ).toBeVisible();

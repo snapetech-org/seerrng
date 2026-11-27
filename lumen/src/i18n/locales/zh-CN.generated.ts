@@ -1674,4 +1674,23 @@ export const messages = {
   'components.Setup.skipDefaults': '暂时跳过',
   'components.Setup.saveDefaults': '保存默认设置并继续',
   'components.Setup.savingDefaults': '正在保存…',
+  'components.Setup.enabledRequestTypes': '已启用的请求类型',
+  'components.Setup.enabledMediaLibraries': '已启用的媒体库',
+  'components.Setup.noneEnabled': '未启用任何服务',
+  'components.Setup.requiredSetupComplete':
+    '必需的设置已完成。服务连接是可选的，可以在下方的表单中测试。',
+  'components.Setup.serviceTestNote':
+    '连接测试结果显示在每个服务表单中，不会保存为设置状态。',
+  'components.Setup.categoryMovie': '电影',
+  'components.Setup.categoryTv': '电视节目',
+  'components.Setup.categoryMusic': '音乐',
+  'components.Setup.categoryEbook': '书籍',
+  'components.Setup.categoryAudiobook': '有声书',
+  'components.Setup.categoryComic': '漫画',
+  'components.Setup.categoryMagazine': '杂志',
+  'components.Setup.categoryAdult': '成人',
+  'components.Setup.categorySports': '体育',
+  'components.Setup.categoryRetro': '复古游戏',
+  'components.Setup.categoryModern': '现代游戏',
+  'components.Setup.categoryGame': 'PC 游戏',
 } as const;

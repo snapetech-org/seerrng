@@ -1805,4 +1805,23 @@ export const messages = {
   'components.Setup.skipDefaults': '今はスキップ',
   'components.Setup.saveDefaults': 'デフォルトを保存して続行',
   'components.Setup.savingDefaults': '保存中…',
+  'components.Setup.enabledRequestTypes': '有効化されたリクエストタイプ',
+  'components.Setup.enabledMediaLibraries': '有効化されたメディアライブラリ',
+  'components.Setup.noneEnabled': '有効化されていません',
+  'components.Setup.requiredSetupComplete':
+    '必須のセットアップが完了しました。サービスの接続は任意であり、以下のフォームでテストできます。',
+  'components.Setup.serviceTestNote':
+    '接続テストの結果は各サービスのフォームに表示され、セットアップ状態として保存されません。',
+  'components.Setup.categoryMovie': '映画',
+  'components.Setup.categoryTv': 'テレビ',
+  'components.Setup.categoryMusic': '音楽',
+  'components.Setup.categoryEbook': '書籍',
+  'components.Setup.categoryAudiobook': 'オーディオブック',
+  'components.Setup.categoryComic': 'コミック',
+  'components.Setup.categoryMagazine': '雑誌',
+  'components.Setup.categoryAdult': 'アダルト',
+  'components.Setup.categorySports': 'スポーツ',
+  'components.Setup.categoryRetro': 'レトロゲーム',
+  'components.Setup.categoryModern': 'モダンゲーム',
+  'components.Setup.categoryGame': 'PC ゲーム',
 } as const;

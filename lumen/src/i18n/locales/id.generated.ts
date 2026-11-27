@@ -1798,4 +1798,24 @@ export const messages = {
   'components.Setup.skipDefaults': 'Lewati untuk sekarang',
   'components.Setup.saveDefaults': 'Simpan bawaan dan lanjutkan',
   'components.Setup.savingDefaults': 'Menyimpan…',
+  'components.Setup.enabledRequestTypes': 'Jenis permintaan yang diaktifkan',
+  'components.Setup.enabledMediaLibraries':
+    'Perpustakaan media yang diaktifkan',
+  'components.Setup.noneEnabled': 'Tidak ada yang diaktifkan',
+  'components.Setup.requiredSetupComplete':
+    'Pengaturan wajib telah selesai. Koneksi layanan bersifat opsional dan dapat diuji di formulir di bawah.',
+  'components.Setup.serviceTestNote':
+    'Hasil uji koneksi ditampilkan di setiap formulir layanan dan tidak disimpan sebagai status pengaturan.',
+  'components.Setup.categoryMovie': 'Film',
+  'components.Setup.categoryTv': 'TV',
+  'components.Setup.categoryMusic': 'Musik',
+  'components.Setup.categoryEbook': 'Buku',
+  'components.Setup.categoryAudiobook': 'Buku audio',
+  'components.Setup.categoryComic': 'Komik',
+  'components.Setup.categoryMagazine': 'Majalah',
+  'components.Setup.categoryAdult': 'Dewasa',
+  'components.Setup.categorySports': 'Olahraga',
+  'components.Setup.categoryRetro': 'Game retro',
+  'components.Setup.categoryModern': 'Game modern',
+  'components.Setup.categoryGame': 'Game PC',
 } as const;
