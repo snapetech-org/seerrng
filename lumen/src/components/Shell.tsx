@@ -160,7 +160,9 @@ export default function Shell({ children }: { children: ReactNode }) {
     const serviceVisible = !format || bookFormatServiceEnabled(format);
     const categoryEnabled =
       !key ||
-      (swipeSettings.data?.enabledMediaCategories?.[key] !== false &&
+      (!!swipeSettings.data &&
+        (!user || !!personalCategories.data) &&
+        swipeSettings.data.enabledMediaCategories?.[key] !== false &&
         personalCategories.data?.enabledMediaCategories?.[key] !== false);
     return serviceVisible && categoryEnabled;
   };

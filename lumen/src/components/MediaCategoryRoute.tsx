@@ -44,8 +44,7 @@ export function MediaCategoryRoute({
   const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
     user ? `/user/${user.id}/settings/main` : null
   );
-  const userSettled =
-    user !== undefined && (!user || !!mine.data || !!mine.error);
+  const userSettled = user !== undefined && (!user || !!mine.data);
   const enabled = pub.data?.enabledMediaCategories || {};
   const personal = mine.data?.enabledMediaCategories || {};
   const visible = categories.filter(
@@ -64,6 +63,14 @@ export function MediaCategoryRoute({
       />
     ) : (
       <div className="detail-loading" aria-busy="true" />
+    );
+  if (user && !mine.data && mine.error)
+    return (
+      <ServiceNote
+        error={mine.error}
+        what={t('lumen.adminCategories.categoriesWhat', 'media categories')}
+        retry={mine.reload}
+      />
     );
   if (!userSettled) return <div className="detail-loading" aria-busy="true" />;
   if (visible.length) return <>{children}</>;

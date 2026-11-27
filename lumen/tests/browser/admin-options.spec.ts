@@ -983,6 +983,38 @@ test('disabled personal categories do not mount optional catalog pages or fetch 
   expect(catalogReads).toEqual([]);
 });
 
+test('failed personal category settings block category data until retried', async ({
+  page,
+}) => {
+  let failed = true;
+  const catalogReads: string[] = [];
+  await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill(
+      failed
+        ? { status: 503, json: { message: 'Temporary settings failure' } }
+        : { json: { enabledMediaCategories: { movie: true } } }
+    )
+  );
+  await page.route('**/api/v1/discover/movies**', (route) => {
+    catalogReads.push(route.request().url());
+    return route.fulfill({ json: paged([movie(1, 'After retry')]) });
+  });
+
+  await page.goto(testAppPath('/movies'));
+  await expect(page.getByRole('alert')).toContainText(
+    'Couldn’t load media categories'
+  );
+  expect(catalogReads).toEqual([]);
+
+  failed = false;
+  await page.getByRole('button', { name: 'Retry' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Movies', exact: true })
+  ).toBeVisible();
+  await expect.poll(() => catalogReads.length).toBeGreaterThan(0);
+});
+
 test('late category probes remain scoped to the account that started them', async ({
   page,
 }) => {

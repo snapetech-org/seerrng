@@ -199,8 +199,7 @@ export function useExtras() {
   const mine = useApi<{ enabledMediaCategories?: Record<string, boolean> }>(
     user ? `/user/${user.id}/settings/main` : null
   );
-  const userSettled =
-    user !== undefined && (!user || !!mine.data || !!mine.error);
+  const userSettled = user !== undefined && (!user || !!mine.data);
   const own = mine.data?.enabledMediaCategories;
   const global = pub?.enabledMediaCategories || {};
   // a category must be on for the whole server *and* for this account
@@ -278,8 +277,11 @@ export function useExtras() {
     ready: !!pub && userSettled,
     accountReady: userSettled,
     // SeerrNG's settings couldn't be read: the pages that wait for them offer Retry
-    error: pub ? null : settings.error,
-    retry: settings.reload,
+    error: !pub ? settings.error : user && !mine.data ? mine.error : null,
+    retry: () => {
+      if (!pub) settings.reload();
+      if (user && !mine.data) mine.reload();
+    },
     enabled,
     // raw server/account category visibility, independent of connected services
     categoryEnabled: (category: string) => on[category] !== false,
