@@ -61,6 +61,7 @@ function Editor({
       externalConsent,
       maxImageBytes,
     } = draft;
+    let writeAcknowledged = false;
     try {
       const result = await api<Settings>(path, {
         method: 'PUT',
@@ -79,6 +80,7 @@ function Editor({
               : {}),
         }),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<Settings>(path);
       if (generation !== sessionGeneration()) return;
@@ -125,8 +127,12 @@ function Editor({
     } catch (failure) {
       if (generation === sessionGeneration()) {
         setFeedback({
-          text:
-            failure instanceof ApiError
+          text: writeAcknowledged
+            ? t(
+                'lumen.adminRecognition.confirmFailure',
+                'Could not confirm the saved recognition settings.'
+              )
+            : failure instanceof ApiError
               ? failure.message
               : t(
                   'lumen.adminRecognition.saveFailure',

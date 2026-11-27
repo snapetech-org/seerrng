@@ -2860,6 +2860,8 @@ export const messages = {
   'lumen.adminRecognition.saveChanges': 'Enregistrer les modifications',
   'lumen.adminRecognition.saveFailure':
     'Impossible de mettre à jour les paramètres de reconnaissance.',
+  'lumen.adminRecognition.confirmFailure':
+    'Impossible de confirmer l’enregistrement des paramètres de reconnaissance.',
   'lumen.adminRecognition.savedCredential': 'Enregistrée',
   'lumen.adminRecognition.sectionTitle': 'Partager pour demander',
   'lumen.adminRecognition.settingsSaved':

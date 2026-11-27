@@ -2631,6 +2631,7 @@ export const messages = {
   'lumen.adminRecognition.removeSavedKey': 'إزالة مفتاح API المحفوظ',
   'lumen.adminRecognition.saveChanges': 'حفظ التغييرات',
   'lumen.adminRecognition.saveFailure': 'تعذر تحديث إعدادات التعرّف.',
+  'lumen.adminRecognition.confirmFailure': 'تعذر تأكيد حفظ إعدادات التعرّف.',
   'lumen.adminRecognition.savedCredential': 'محفوظ',
   'lumen.adminRecognition.sectionTitle': 'المشاركة لتقديم طلب',
   'lumen.adminRecognition.settingsSaved': 'تم حفظ إعدادات التعرّف.',

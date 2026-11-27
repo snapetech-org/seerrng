@@ -1,3 +1,23 @@
+### Distinguish recognition saves from failed readback (2026-11-27)
+
+Share and Image Recognition administration previously surfaced the raw API
+error when the write succeeded but the saved-settings read failed. It now uses
+a dedicated confirmation message and preserves the edited values and pending
+credential action for retry. Confirmation copy is localized in English, French,
+and Arabic.
+
+The existing recognition workflow browser test passes 24/24 across the three
+locales and desktop, iPhone, Android, and tablet projects. It simulates an
+acknowledged write followed by a 503 readback, then verifies retry, saved-key
+redaction and removal, and non-administrator access behavior. Standalone Lumen
+and full SeerrNG production builds pass. Captures show the retained draft and
+confirmation feedback at desktop and iPhone sizes; no styles changed. Fixture
+API responses do not verify live authorization or persistence. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-recognition-readback-20261127/`.
+
+release-note: `release-notes/lumen-recognition-readback-errors.md`
+
 ### Distinguish administration saves from failed readback (2026-11-27)
 
 General Settings, Connection Hosts, and Discovery Integrations previously reported

@@ -1,0 +1,1 @@
+Lumen image-recognition administration now reports when the server accepted a settings change but the follow-up read could not confirm persistence. The edited values and credential actions remain available for retry.

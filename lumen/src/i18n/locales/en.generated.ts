@@ -2668,6 +2668,8 @@ export const messages = {
   'lumen.adminRecognition.removeSavedKey': 'Remove Saved API Key',
   'lumen.adminRecognition.saveChanges': 'Save Changes',
   'lumen.adminRecognition.saveFailure': 'Could not save recognition settings.',
+  'lumen.adminRecognition.confirmFailure':
+    'Could not confirm the saved recognition settings.',
   'lumen.adminRecognition.savedCredential': 'Saved',
   'lumen.adminRecognition.sectionTitle': 'Share to Request',
   'lumen.adminRecognition.settingsSaved': 'Recognition settings saved.',

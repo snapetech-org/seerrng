@@ -24,6 +24,7 @@ const labels = {
     save: 'Save Changes',
     discard: 'Discard Changes',
     saved: 'Recognition settings saved.',
+    confirmFailure: 'Could not confirm the saved recognition settings.',
   },
   fr: {
     page: 'Partage et reconnaissance d’images',
@@ -41,6 +42,8 @@ const labels = {
     save: 'Enregistrer les modifications',
     discard: 'Annuler les modifications',
     saved: 'Paramètres de reconnaissance enregistrés.',
+    confirmFailure:
+      'Impossible de confirmer l’enregistrement des paramètres de reconnaissance.',
   },
   ar: {
     page: 'المشاركة والتعرّف على الصور',
@@ -58,6 +61,7 @@ const labels = {
     save: 'حفظ التغييرات',
     discard: 'تجاهل التغييرات',
     saved: 'تم حفظ إعدادات التعرّف.',
+    confirmFailure: 'تعذر تأكيد حفظ إعدادات التعرّف.',
   },
 } as const;
 
@@ -77,7 +81,7 @@ test('recognition settings retain edits after rejection and handle saved API key
     externalConsent: true,
     maxImageBytes: 6 * 1024 * 1024,
   };
-  let staleReadback: typeof saved | undefined;
+  let failReadback = false;
   let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -95,10 +99,9 @@ test('recognition settings retain edits after rejection and handle saved API key
       return route.fulfill({ json: { localOcr: true } });
     if (path !== settingsPath) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
-      if (staleReadback) {
-        const stale = staleReadback;
-        staleReadback = undefined;
-        return route.fulfill({ json: stale });
+      if (failReadback) {
+        failReadback = false;
+        return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
       }
       return route.fulfill({ json: saved });
     }
@@ -111,7 +114,7 @@ test('recognition settings retain edits after rejection and handle saved API key
           json: { error: 'Confirm that uploaded images may be sent.' },
         });
       }
-      if (saveCount === 0) staleReadback = saved;
+      if (saveCount === 0) failReadback = true;
       saved = { ...saved, ...change };
       if (change.clearVisionApiKey) {
         saved.visionApiKey = '';
@@ -157,7 +160,7 @@ test('recognition settings retain edits after rejection and handle saved API key
   await expect(base).toHaveValue('https://new-recognition.example.test/v1');
   await consent.check();
   await save.click();
-  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveText(text.confirmFailure);
   await expect(base).toHaveValue('https://new-recognition.example.test/v1');
   await expect(consent).toBeChecked();
   await page.getByRole('alert').scrollIntoViewIfNeeded();

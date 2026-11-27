@@ -1737,6 +1737,7 @@
   "lumen.adminRecognition.removeSavedKey",
   "lumen.adminRecognition.saveChanges",
   "lumen.adminRecognition.saveFailure",
+  "lumen.adminRecognition.confirmFailure",
   "lumen.adminRecognition.savedCredential",
   "lumen.adminRecognition.sectionTitle",
   "lumen.adminRecognition.settingsSaved",
