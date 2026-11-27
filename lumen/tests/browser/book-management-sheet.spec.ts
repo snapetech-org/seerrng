@@ -173,7 +173,7 @@ test('book manager shows requests and both formats, and confirms exact library c
   await expect(
     sheet
       .getByRole('region', { name: 'Requests' })
-      .getByText('Ebook', { exact: true })
+      .getByText('#77 · Approved · Ebook')
   ).toBeVisible();
   await expect(sheet.getByText('Downloading')).toBeVisible();
   await expect(sheet.getByText('Queued')).toBeVisible();
@@ -254,6 +254,7 @@ test('cross-media manager reviews and resolves or deletes issues with permission
   await openBookManager(page, 2);
   await page.getByRole('button', { name: 'Manage Book' }).click();
   let sheet = page.getByRole('dialog', { name: 'Manage Book' });
+  await expect(sheet.getByText('#77 · Approved · Ebook')).toBeVisible();
   const capture = process.env.LUMEN_MANAGE_ISSUE_CAPTURE;
   if (capture && ['desktop', 'iphone'].includes(test.info().project.name)) {
     await mkdir(dirname(capture), { recursive: true });

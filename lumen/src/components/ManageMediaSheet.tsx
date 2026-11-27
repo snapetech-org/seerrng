@@ -48,6 +48,26 @@ const mediaTitle = (
           : 'Manage Book'
   );
 
+function requestStatusLabel(
+  status: number,
+  t: (id: string, fallback: string) => string
+) {
+  switch (status) {
+    case 1:
+      return t('lumen.manageVideo.waitingApproval', 'Waiting for approval');
+    case 2:
+      return t('lumen.manageVideo.approved', 'Approved');
+    case 3:
+      return t('lumen.manageVideo.declined', 'Declined');
+    case 4:
+      return t('lumen.manageVideo.failed', 'Failed');
+    case 5:
+      return t('lumen.manageVideo.completed', 'Completed');
+    default:
+      return t('lumen.manageVideo.unknown', 'Unknown');
+  }
+}
+
 const safeUrl = (value?: string | null) => {
   if (!value) return undefined;
   try {
@@ -336,6 +356,9 @@ export function ManageMediaSheet({
                     <li className="set" key={request.id}>
                       <div>
                         <b>
+                          #{request.id} ·{' '}
+                          {requestStatusLabel(request.status, t)}
+                          {' · '}
                           {mediaType !== 'book'
                             ? kindLabel
                             : request.bookFormat === 'audiobook'
@@ -353,6 +376,10 @@ export function ManageMediaSheet({
                               'lumen.manageBook.unknownRequester',
                               'Unknown requester'
                             )}
+                          {request.is4k ? ' · 4K' : ''}
+                          {request.seasons?.length
+                            ? ` · ${request.seasons.map((season) => season.seasonNumber).join(', ')}`
+                            : ''}
                         </small>
                       </div>
                       <Link

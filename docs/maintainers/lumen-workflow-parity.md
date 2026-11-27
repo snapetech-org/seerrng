@@ -12369,3 +12369,19 @@ were inspected at desktop and iPhone sizes. Live authorization and database
 behavior remain unverified.
 
 release-note: `release-notes/lumen-cross-media-issue-management.md`
+
+### Cross-media request status in management sheet
+
+The Books, Music, Comics, and Magazines management sheet now shows each linked
+request's current approval/acquisition status alongside its media format, with
+4K and selected-season scope where applicable. This lets managers distinguish
+waiting, approved, declined, failed, and completed requests before opening the
+request detail or deleting its request entry. Existing request links and
+permission-checked deletion remain unchanged.
+
+The focused browser fixture checks status and format display, while the
+cross-media management sheet is exercised at desktop, iPhone, Android, and
+tablet viewports. Live request permissions and provider state remain
+unverified.
+
+release-note: `release-notes/lumen-cross-media-request-status.md`
