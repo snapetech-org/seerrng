@@ -13882,3 +13882,24 @@ owner, so layout geometry is unchanged. Browser API fixtures do not prove live
 server persistence or authorization.
 
 release-note: `release-notes/lumen-watchlist-readback.md`
+
+### Confirm shared Following changes from the server (2026-11-27)
+
+The shared Follow control verifies membership after add or removal against the
+authenticated `/follow` list using a no-cache read. It preserves its previous
+label and reports an unconfirmed change when that read is unavailable; a later
+click refreshes membership and updates the control without repeating the
+action. Malformed list entries fail closed. The single control serves people,
+genres, studios, networks, and cross-media identity surfaces; the route
+continues to enforce the existing request permission and user ownership.
+
+The Following and software-bookmarks browser suites pass 72/72 across desktop,
+iPhone, Android, and tablet. The recovery fixture verifies a rejected add,
+accepted add, accepted removal with failed readback, then a status-only retry
+that discovers the server already removed the row without issuing another
+DELETE. Existing identity, localized label, and workflow coverage remains
+green. Both standalone and bundled Lumen builds and repository localization
+checks pass. Fixtures do not establish live server persistence or auth
+behavior. No CSS changed; feedback uses the existing toast owner.
+
+release-note: `release-notes/lumen-following-readback.md`

@@ -351,6 +351,8 @@ test('following a person uses the exact identity and waits for server confirmati
   const person = { id: 77, name: 'Example Director' };
   let followed = false;
   let fail = true;
+  let failDeleteReadback = false;
+  let deletes = 0;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -371,8 +373,14 @@ test('following a person uses the exact identity and waits for server confirmati
       return route.fulfill({ status: 201, json: record });
     }
     if (path === '/follow/2' && request.method() === 'DELETE') {
+      deletes++;
       followed = false;
+      failDeleteReadback = true;
       return route.fulfill({ status: 204 });
+    }
+    if (path === '/follow' && failDeleteReadback) {
+      failDeleteReadback = false;
+      return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
     }
     return route.fulfill({
       json:
@@ -410,13 +418,24 @@ test('following a person uses the exact identity and waits for server confirmati
   await page.reload();
   await expect(following).toHaveAttribute('aria-pressed', 'true');
   await following.click();
+  await expect(page.getByRole('status')).toContainText(
+    'تعذر تأكيد تغيير المتابعة. أعد التحميل وحاول مرة أخرى.'
+  );
+  await expect(following).toHaveAttribute('aria-pressed', 'true');
+  expect(deletes).toBe(1);
+  await following.click();
+  await expect(page.getByRole('status')).toContainText(
+    'تم تحديث حالة المتابعة. راجع الإجراء الحالي.'
+  );
   await expect(follow).toHaveAttribute('aria-pressed', 'false');
+  expect(deletes).toBe(1);
 });
 
 test('filtered discovery follows the exact genre, studio, and network', async ({
   page,
 }) => {
   const posted: unknown[] = [];
+  const created: { id: number; kind: string; subjectKey: string }[] = [];
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = apiPath(request.url());
@@ -432,8 +451,16 @@ test('filtered discovery follows the exact genre, studio, and network', async ({
     if (path === '/follow' && request.method() === 'POST') {
       const subject = request.postDataJSON();
       posted.push(subject);
+      const record = {
+        id: posted.length,
+        kind: subject.kind,
+        subjectKey: subject.subjectKey,
+      };
+      created.push(record);
       return route.fulfill({ json: { ...subject, id: posted.length } });
     }
+    if (path === '/follow')
+      return route.fulfill({ json: { results: created } });
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto(mountedTestAppPath('./movies?genre=18&studio=72'));
@@ -480,6 +507,8 @@ test('book details follow the author by catalog identity', async ({ page }) => {
     subjectLabel: 'Fixture Author',
     conditions: { ref: { authorId: 'OL7A' } },
   };
+  let followed = false;
+  const record = { id: 6, kind: subject.kind, subjectKey: subject.subjectKey };
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = apiPath(request.url());
@@ -502,11 +531,16 @@ test('book details follow the author by catalog identity', async ({ page }) => {
       });
     if (path === '/follow' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual(subject);
+      followed = true;
       return route.fulfill({ json: { ...subject, id: 6 } });
     }
-    if (path === '/follow/6' && request.method() === 'DELETE')
+    if (path === '/follow/6' && request.method() === 'DELETE') {
+      followed = false;
       return route.fulfill({ status: 204 });
-    return route.fulfill({ json: { results: [] } });
+    }
+    if (path === '/follow')
+      return route.fulfill({ json: { results: followed ? [record] : [] } });
+    return route.fulfill({ json: {} });
   });
   await page.goto(mountedTestAppPath('./book/OL42W'));
   const follow = page.getByRole('button', { name: 'Follow New Releases' });
@@ -528,6 +562,8 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
     subjectKey: 'narrator:fixture reader',
     subjectLabel: 'Fixture Reader',
   };
+  let followed = false;
+  const record = { id: 7, kind: subject.kind, subjectKey: subject.subjectKey };
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = apiPath(request.url());
@@ -572,8 +608,11 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
       });
     if (path === '/follow' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual(subject);
+      followed = true;
       return route.fulfill({ json: { ...subject, id: 7 } });
     }
+    if (path === '/follow')
+      return route.fulfill({ json: { results: followed ? [record] : [] } });
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto(
@@ -616,6 +655,8 @@ test('anime continuation loads on demand and follows the novel in its language',
     conditions: { language: 'en', ref: { ranobedbId: 81 } },
   };
   const lookups: string[] = [];
+  let followed = false;
+  const record = { id: 9, kind: subject.kind, subjectKey: subject.subjectKey };
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const url = new URL(request.url());
@@ -681,8 +722,11 @@ test('anime continuation loads on demand and follows the novel in its language',
     }
     if (path === '/follow' && request.method() === 'POST') {
       expect(request.postDataJSON()).toEqual(subject);
+      followed = true;
       return route.fulfill({ json: { ...subject, id: 9 } });
     }
+    if (path === '/follow')
+      return route.fulfill({ json: { results: followed ? [record] : [] } });
     return route.fulfill({ json: { results: [] } });
   });
 
@@ -818,6 +862,7 @@ test('switching franchise titles keeps the follow identity and state separate', 
   baseURL,
 }) => {
   const subjects: unknown[] = [];
+  const created: { id: number; kind: string; subjectKey: string }[] = [];
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
     const path = apiPath(request.url());
@@ -864,8 +909,16 @@ test('switching franchise titles keeps the follow identity and state separate', 
     if (path === '/follow' && request.method() === 'POST') {
       const subject = request.postDataJSON();
       subjects.push(subject);
+      const record = {
+        id: subjects.length,
+        kind: subject.kind,
+        subjectKey: subject.subjectKey,
+      };
+      created.push(record);
       return route.fulfill({ json: { ...subject, id: subjects.length } });
     }
+    if (path === '/follow')
+      return route.fulfill({ json: { results: created } });
     return route.fulfill({ json: { results: [] } });
   });
 

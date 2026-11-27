@@ -3,6 +3,7 @@ import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
+import { sessionGeneration } from '../sessionState';
 import { useToast } from './toast';
 
 interface FollowIdentity {
@@ -23,6 +24,26 @@ interface FollowRecord {
   subjectKey: string;
 }
 
+async function readFollows(): Promise<FollowRecord[]> {
+  const response = await api<{ results?: unknown }>('/follow', {
+    cache: 'no-store',
+  });
+  if (
+    !Array.isArray(response.results) ||
+    response.results.some(
+      (record) =>
+        !record ||
+        typeof record !== 'object' ||
+        !Number.isSafeInteger((record as FollowRecord).id) ||
+        (record as FollowRecord).id <= 0 ||
+        typeof (record as FollowRecord).kind !== 'string' ||
+        typeof (record as FollowRecord).subjectKey !== 'string'
+    )
+  )
+    throw new Error('Following status could not be verified.');
+  return response.results as FollowRecord[];
+}
+
 export default function FollowButton({
   subject,
   label,
@@ -34,6 +55,7 @@ export default function FollowButton({
   const follows = useApi<{ results: FollowRecord[] }>('/follow');
   const toast = useToast();
   const pending = useRef(false);
+  const verifyBeforeToggle = useRef(false);
   const [saving, setSaving] = useState(false);
   const [confirmed, setConfirmed] = useState<FollowRecord | null>();
   const rows = Array.isArray(follows.data?.results)
@@ -52,25 +74,94 @@ export default function FollowButton({
     if (pending.current || !rows) return;
     pending.current = true;
     setSaving(true);
-    try {
-      if (match) {
-        await api('/follow/' + match.id, { method: 'DELETE' });
-        setConfirmed(null);
-      } else {
-        const created = await api<FollowRecord>('/follow', {
-          method: 'POST',
-          body: JSON.stringify(subject),
-        });
-        setConfirmed(created);
+    const session = sessionGeneration();
+    if (verifyBeforeToggle.current) {
+      try {
+        const latest = await readFollows();
+        if (sessionGeneration() !== session) return;
+        const current =
+          latest.find(
+            ({ kind, subjectKey }) =>
+              kind === subject.kind && subjectKey === subject.subjectKey
+          ) ?? null;
+        setConfirmed(current);
+        verifyBeforeToggle.current = false;
+        toast(
+          t(
+            'lumen.followButton.statusRefreshed',
+            'Following status refreshed. Review the current action.'
+          )
+        );
+      } catch {
+        if (sessionGeneration() === session)
+          toast(
+            t(
+              'lumen.followButton.confirmFailure',
+              'Could not confirm the Following change. Reload and retry.'
+            )
+          );
+      } finally {
+        pending.current = false;
+        setSaving(false);
       }
+      return;
+    }
+    const desired = !match;
+    try {
+      let writeError: unknown;
+      try {
+        if (desired) {
+          await api<FollowRecord>('/follow', {
+            method: 'POST',
+            body: JSON.stringify(subject),
+          });
+        } else if (match) {
+          await api('/follow/' + match.id, { method: 'DELETE' });
+        }
+      } catch (error) {
+        writeError = error;
+      }
+      // A lost response does not prove that the membership write failed.
+      let afterWrite: FollowRecord[];
+      try {
+        afterWrite = await readFollows();
+      } catch {
+        verifyBeforeToggle.current = true;
+        if (sessionGeneration() === session)
+          toast(
+            t(
+              'lumen.followButton.confirmFailure',
+              'Could not confirm the Following change. Reload and retry.'
+            )
+          );
+        return;
+      }
+      if (sessionGeneration() !== session) return;
+      const confirmedRecord =
+        afterWrite.find(
+          ({ kind, subjectKey }) =>
+            kind === subject.kind && subjectKey === subject.subjectKey
+        ) ?? null;
+      if (Boolean(confirmedRecord) !== desired) {
+        if (writeError) throw writeError;
+        throw new Error(
+          t(
+            'lumen.followButton.confirmFailure',
+            'Could not confirm the Following change. Reload and retry.'
+          )
+        );
+      }
+      if (sessionGeneration() !== session) return;
+      setConfirmed(confirmedRecord);
     } catch (error) {
-      toast(
-        friendlyError(
-          error,
-          t('lumen.followButton.updateFailed', 'Couldn’t update Following'),
-          t
-        )
-      );
+      if (sessionGeneration() === session)
+        toast(
+          friendlyError(
+            error,
+            t('lumen.followButton.updateFailed', 'Couldn’t update Following'),
+            t
+          )
+        );
     } finally {
       pending.current = false;
       setSaving(false);

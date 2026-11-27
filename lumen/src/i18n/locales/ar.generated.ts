@@ -3734,6 +3734,10 @@ export const messages = {
   'lumen.followButton.followNarrator': 'متابعة {name}',
   'lumen.followButton.followStoryExpansions': 'متابعة توسعات القصة',
   'lumen.followButton.following': 'تتم المتابعة',
+  'lumen.followButton.confirmFailure':
+    'تعذر تأكيد تغيير المتابعة. أعد التحميل وحاول مرة أخرى.',
+  'lumen.followButton.statusRefreshed':
+    'تم تحديث حالة المتابعة. راجع الإجراء الحالي.',
   'lumen.followButton.retryStatus': 'إعادة محاولة حالة المتابعة',
   'lumen.followButton.updateFailed': 'تعذر تحديث المتابعة',
   'lumen.following.accessRequired': 'يلزم توفر إذن الطلبات لاستخدام المتابعة.',

@@ -3801,6 +3801,10 @@ export const messages = {
   'lumen.followButton.followNarrator': 'Follow {name}',
   'lumen.followButton.followStoryExpansions': 'Follow Story Expansions',
   'lumen.followButton.following': 'Following',
+  'lumen.followButton.confirmFailure':
+    'Could not confirm the Following change. Reload and retry.',
+  'lumen.followButton.statusRefreshed':
+    'Following status refreshed. Review the current action.',
   'lumen.followButton.retryStatus': 'Retry Follow Status',
   'lumen.followButton.updateFailed': 'Couldn’t update Following',
   'lumen.following.accessRequired':

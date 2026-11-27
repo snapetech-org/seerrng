@@ -4073,6 +4073,10 @@ export const messages = {
   'lumen.followButton.followStoryExpansions':
     'Suivre les extensions scénaristiques',
   'lumen.followButton.following': 'Abonné',
+  'lumen.followButton.confirmFailure':
+    'Impossible de confirmer la modification du suivi. Rechargez et réessayez.',
+  'lumen.followButton.statusRefreshed':
+    'État du suivi actualisé. Vérifiez l’action proposée.',
   'lumen.followButton.retryStatus': 'Réessayer le suivi',
   'lumen.followButton.updateFailed': 'Impossible de modifier le suivi',
   'lumen.following.accessRequired':
