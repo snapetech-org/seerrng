@@ -7,6 +7,7 @@ const locales = {
     tv: 'Series Details',
     directors: 'Director',
     writers: 'Writers',
+    screenplay: 'Screenplay',
     sources: 'Metadata sources',
     tmdb: 'TMDB',
     tvdb: 'TheTVDB.com',
@@ -16,6 +17,7 @@ const locales = {
     tv: 'Détails de la série',
     directors: 'Réalisateur',
     writers: 'Auteurs',
+    screenplay: 'Scénario',
     sources: 'Sources des métadonnées',
     tmdb: 'TMDB',
     tvdb: 'TheTVDB.com',
@@ -25,6 +27,7 @@ const locales = {
     tv: 'تفاصيل المسلسل',
     directors: 'مخرج',
     writers: 'كاتبون',
+    screenplay: 'سيناريو',
     sources: 'مصادر البيانات',
     tmdb: 'TMDB',
     tvdb: 'TheTVDB.com',
@@ -94,7 +97,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
             productionCountries: [],
             credits: {
               cast: [],
-              crew: [{ id: 31, name: 'Fixture Crew Member', job: 'Director' }],
+              crew: [
+                { id: 31, name: 'Fixture Crew Member', job: 'Director' },
+                { id: 32, name: 'Fixture Screenplay', job: 'Screenplay' },
+              ],
             },
             keywords: [],
             mediaInfo: {},
@@ -151,6 +157,12 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       await expect(page.getByText(copy.writers, { exact: true })).toBeVisible();
       await expect(page.getByText('Fixture Director')).toBeVisible();
       await expect(page.getByText('Fixture Writer')).toBeVisible();
+      await expect(
+        page.locator('#details dt').getByText(copy.screenplay, { exact: true })
+      ).toBeVisible();
+      await expect(
+        page.getByRole('link', { name: 'Fixture Screenplay' })
+      ).toHaveAttribute('href', `${mount}/person/32`);
       const tmdbLink = page.getByRole('link', { name: copy.tmdb });
       await expect(tmdbLink).toHaveAttribute(
         'href',

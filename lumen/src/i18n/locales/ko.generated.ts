@@ -1698,4 +1698,5 @@ export const messages = {
     'Wikidata 구조 데이터는 CC0에서 공유됩니다.',
   'components.TvDetails.Layout.director': '감독',
   'components.TvDetails.Layout.writers': '작가',
+  'components.MovieSummaryCard.screenplay': '각본',
 } as const;

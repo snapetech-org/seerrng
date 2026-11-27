@@ -1740,4 +1740,5 @@ export const messages = {
     'Dữ liệu cấu trúc Wikidata được chia sẻ dưới CC0.',
   'components.TvDetails.Layout.director': 'Đạo diễn',
   'components.TvDetails.Layout.writers': 'Tác giả',
+  'components.MovieSummaryCard.screenplay': 'Kịch bản',
 } as const;

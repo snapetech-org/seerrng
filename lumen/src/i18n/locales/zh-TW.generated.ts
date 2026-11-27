@@ -1624,4 +1624,5 @@ export const messages = {
     'Wikidata 結構資料在 CC0 下共享 。',
   'components.TvDetails.Layout.director': '導演',
   'components.TvDetails.Layout.writers': '作家',
+  'components.MovieSummaryCard.screenplay': '劇本',
 } as const;

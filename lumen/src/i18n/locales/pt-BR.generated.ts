@@ -1784,4 +1784,5 @@ export const messages = {
     'Dados estruturados da Wikidata são compartilhados sob CC0.',
   'components.TvDetails.Layout.director': 'Diretor',
   'components.TvDetails.Layout.writers': 'Escritores',
+  'components.MovieSummaryCard.screenplay': 'Roteiro',
 } as const;

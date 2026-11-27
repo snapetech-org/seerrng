@@ -1749,4 +1749,5 @@ export const messages = {
     'Wikidata の構造化データは CC0 の下で共有されています。',
   'components.TvDetails.Layout.director': '監督',
   'components.TvDetails.Layout.writers': 'ライター',
+  'components.MovieSummaryCard.screenplay': '脚本',
 } as const;

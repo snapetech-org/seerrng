@@ -1808,6 +1808,7 @@ export const messages = {
     'Les données structurées de Wikidata sont partagées sous CC0.',
   'components.TvDetails.Layout.director': 'Réalisateur',
   'components.TvDetails.Layout.writers': 'Auteurs',
+  'components.MovieSummaryCard.screenplay': 'Scénario',
   'components.IssueDetails.allepisodes': 'Tous les épisodes',
   'components.Layout.Sidebar.comingSoon': 'À venir',
   'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',

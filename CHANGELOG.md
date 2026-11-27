@@ -10,6 +10,7 @@
 - **Lumen:** Watch Sessions now shows session owners and expiration dates in the session list and room, with dates and labels formatted in the selected language.
 - **Lumen:** Hardcover book recommendations now show publication years and format series membership as “Series #position,” matching native SeerrNG.
 - **Lumen:** Movie and TV details now show safe metadata source links and supplemental director and writer credits, matching native SeerrNG.
+- **Lumen:** Movie details now show the primary screenplay credit with a link to the credited person, matching native SeerrNG.
 
 ## [3.72.40](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.40) - 2026-11-20
 

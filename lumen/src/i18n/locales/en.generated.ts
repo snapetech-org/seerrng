@@ -1746,6 +1746,7 @@ export const messages = {
     'Wikidata structured data is shared under CC0.',
   'components.TvDetails.Layout.director': 'Director',
   'components.TvDetails.Layout.writers': 'Writers',
+  'components.MovieSummaryCard.screenplay': 'Screenplay',
   'lumen.account.administratorAccess': 'This account has administrator access.',
   'lumen.account.backToSettings': 'Back to Account Settings',
   'lumen.account.backToYou': 'Back to You',

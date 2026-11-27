@@ -1621,4 +1621,5 @@ export const messages = {
     'Wikidata 结构化数据依据 CC0 共享。',
   'components.TvDetails.Layout.director': '导演',
   'components.TvDetails.Layout.writers': '作家',
+  'components.MovieSummaryCard.screenplay': '剧本',
 } as const;

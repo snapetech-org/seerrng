@@ -235,6 +235,9 @@ export default function MovieDetail() {
     .filter((c) => c.job === 'Director')
     .map((c) => c.name)
     .join(', ');
+  const screenplay = (m.credits?.crew ?? []).find((credit) =>
+    ['Screenplay', 'Writer', 'Story'].includes(credit.job ?? '')
+  );
   const trailer = youtubeTrailerUrl(m.relatedVideos, pub?.youtubeUrl);
   // a 4K copy is in hand or on its way (requested, downloading, partly or fully there)
   const has4k =
@@ -631,6 +634,14 @@ export default function MovieDetail() {
                         : '',
                   ],
                   [t('lumen.movie.fact.director', 'Director'), director],
+                  [
+                    t('components.MovieSummaryCard.screenplay', 'Screenplay'),
+                    screenplay && (
+                      <Link to={`/person/${screenplay.id}`}>
+                        {screenplay.name}
+                      </Link>
+                    ),
+                  ],
                   [t('lumen.movie.fact.rated', 'Rated'), certification],
                   [
                     t('lumen.movie.fact.collection', 'Collection'),

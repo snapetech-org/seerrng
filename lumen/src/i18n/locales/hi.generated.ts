@@ -1729,4 +1729,5 @@ export const messages = {
     'Wikidata संरचित डेटा CC0 के तहत साझा किया गया है।',
   'components.TvDetails.Layout.director': 'निर्देशक',
   'components.TvDetails.Layout.writers': 'लेखक',
+  'components.MovieSummaryCard.screenplay': 'पटकथा',
 } as const;

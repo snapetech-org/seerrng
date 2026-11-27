@@ -6912,6 +6912,24 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Movie screenplay credit (2026-11-27)
+
+Lumen's movie Facts disclosure now shows the primary Screenplay, Writer, or
+Story credit from the existing movie credits response, linked to that person's
+Lumen detail page. The label reuses the native SeerrNG translation in each
+supported locale. This closes a detail-content omission; the existing detail
+Facts layout remains the sole visual owner.
+
+The movie metadata browser fixture now covers the screenplay name, localized
+label in English, French, and Arabic, and person-link destination across desktop,
+iPhone, Android, and tablet. A matched pre-change Lumen capture and candidate
+capture are recorded for desktop and iPhone; live TMDB credit availability and
+broader native-matched detail layouts remain separate checks. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-screenplay-parity-20261127/`.
+
+release-note: `release-notes/lumen-movie-screenplay-credit.md`
+
 ### Movie and TV metadata provenance (2026-11-27)
 
 Lumen movie and TV detail disclosures now show metadata-source attribution and

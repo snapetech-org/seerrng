@@ -1779,4 +1779,5 @@ export const messages = {
     'Los datos estructurados de Wikidata se comparten bajo CC0.',
   'components.TvDetails.Layout.director': 'Director',
   'components.TvDetails.Layout.writers': 'Escritores',
+  'components.MovieSummaryCard.screenplay': 'Guión',
 } as const;

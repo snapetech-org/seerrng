@@ -1743,4 +1743,5 @@ export const messages = {
     'Data Wikidata terstruktur dibagi di bawah CC0.',
   'components.TvDetails.Layout.director': 'Sutradara',
   'components.TvDetails.Layout.writers': 'Penulis',
+  'components.MovieSummaryCard.screenplay': 'Skenario',
 } as const;

@@ -6744,5 +6744,6 @@
   "components.MediaDetails.MetadataAttribution.wikidata",
   "components.MediaDetails.MetadataAttribution.wikidataTitle",
   "components.TvDetails.Layout.director",
-  "components.TvDetails.Layout.writers"
+  "components.TvDetails.Layout.writers",
+  "components.MovieSummaryCard.screenplay"
 ]

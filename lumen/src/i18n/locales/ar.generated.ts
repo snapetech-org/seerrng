@@ -1704,6 +1704,7 @@ export const messages = {
     'تُشارك البيانات المنظّمة من Wikidata بموجب ترخيص CC0.',
   'components.TvDetails.Layout.director': 'مخرج',
   'components.TvDetails.Layout.writers': 'كاتبون',
+  'components.MovieSummaryCard.screenplay': 'سيناريو',
   'components.IssueDetails.allepisodes': 'جميع الحلقات',
   'components.Layout.Sidebar.comingSoon': 'قريبًا',
   'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',
