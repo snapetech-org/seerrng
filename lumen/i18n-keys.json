@@ -2930,6 +2930,7 @@
   "lumen.games.gameVideo",
   "lumen.games.hoursValue",
   "lumen.games.mainStory",
+  "lumen.games.mainStoryEstimate",
   "lumen.games.platforms",
   "lumen.games.publisher",
   "lumen.games.quickFinish",

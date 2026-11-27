@@ -211,7 +211,7 @@ export function SoftwareBookmark() {
 
 export function Games() {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
   const x = useExtras();
   const [p, setP] = useSearchParams();
   const { key: locationKey } = useLocation();
@@ -519,6 +519,15 @@ export function Games() {
             meta={[(g.releaseDate || '').slice(0, 4), g.genres?.[0]]
               .filter(Boolean)
               .join(' · ')}
+            note={
+              cat === 'game' && g.timeToBeat?.normally != null
+                ? t('lumen.games.mainStoryEstimate', 'Main Story: {hours} h', {
+                    hours: new Intl.NumberFormat(locale, {
+                      maximumFractionDigits: 1,
+                    }).format(g.timeToBeat.normally),
+                  })
+                : undefined
+            }
           />
         ))}
       </div>

@@ -30,6 +30,7 @@ const copy = {
     genre: 'Genre',
     releaseYear: 'Release year',
     linux: 'Linux',
+    mainStory: 'Main Story: 30.5 h',
   },
   fr: {
     title: 'Jeux',
@@ -50,6 +51,7 @@ const copy = {
     genre: 'Genre',
     releaseYear: 'Année de sortie',
     linux: 'Linux',
+    mainStory: 'Histoire principale : 30,5 h',
   },
   ar: {
     title: 'الألعاب',
@@ -70,6 +72,7 @@ const copy = {
     genre: 'النوع',
     releaseYear: 'سنة الإصدار',
     linux: 'Linux',
+    mainStory: 'القصة الرئيسية: 30.5 ساعة',
   },
 }[locale];
 
@@ -135,6 +138,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
               coverUrl: null,
               releaseDate: '2025-01-01',
               genres: ['Adventure'],
+              timeToBeat: { normally: 30.5 },
             },
           ],
           nextOffset: null,
@@ -168,6 +172,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     copy.searchPc
   );
   await expect(page.getByText('Fixture Game')).toBeVisible();
+  await expect(page.getByText(copy.mainStory)).toBeVisible();
   await expect(page.getByLabel(copy.allPcPlatforms)).toBeVisible();
   await expect(page.getByLabel(copy.genre)).toBeVisible();
   await expect(page.getByLabel(copy.releaseYear)).toBeVisible();

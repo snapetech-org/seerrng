@@ -3964,6 +3964,7 @@ export const messages = {
   'lumen.games.gameVideo': 'Game video',
   'lumen.games.hoursValue': '{hours} h',
   'lumen.games.mainStory': 'Main Story',
+  'lumen.games.mainStoryEstimate': 'Main Story: {hours} h',
   'lumen.games.platforms': 'Platforms',
   'lumen.games.publisher': 'Publisher',
   'lumen.games.quickFinish': 'Quick Finish',

@@ -3897,6 +3897,7 @@ export const messages = {
   'lumen.games.gameVideo': 'فيديو اللعبة',
   'lumen.games.hoursValue': '{hours} ساعة',
   'lumen.games.mainStory': 'القصة الرئيسية',
+  'lumen.games.mainStoryEstimate': 'القصة الرئيسية: {hours} ساعة',
   'lumen.games.platforms': 'المنصات',
   'lumen.games.publisher': 'الناشر',
   'lumen.games.quickFinish': 'إنهاء سريع',

@@ -12716,3 +12716,25 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-system-parity-20261127/`.
 
 release-note: `release-notes/lumen-console-specific-game-status.md`
+
+### PC game catalog playtime estimates (2026-11-27)
+
+Native SeerrNG displays the localized `Main Story: {hours} h` estimate on PC
+game catalog cards. Lumen previously kept this value for game details but
+omitted it from the catalog. The `/games` PC catalog now renders the estimate
+through `ExtraCard`'s existing secondary metadata line when `timeToBeat.normally`
+is present. Retro and modern console cards and games without a main-story value
+are unchanged. English, French, and Arabic copy and number formatting are
+covered.
+
+The candidate and baseline `/games` catalog were captured at matching desktop
+1440x900 and iPhone 13 viewports using the same fixture. The added line uses the
+existing card style owner and introduces no CSS. The catalog localization
+workflow passed for English, French, and Arabic across desktop, iPhone, Android,
+and tablet (12 cases); adjacent catalog and game-detail workflows passed 40
+cases across all four viewports. `pnpm i18n:check` and the Lumen production
+build passed. The actual game provider and production `/lumen/` mount were not
+exercised for this display-only change. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-pc-game-playtime-cards.md`
