@@ -2949,8 +2949,16 @@ as individual selections.
 Standalone browser fixtures verify both actions with a search active at desktop,
 iPhone, Android and tablet viewport presets. The saved payload confirms a
 hidden catalog provider and an existing ID missing from the source catalog
-remain selected while a visible provider is added. Live policy effects, bundled
-behavior and native visual comparison remain open.
+remain selected while a visible provider is added. The same four cases pass
+against the compiled embedded production bundle served through
+`mountLumenFrontend` at `/lumen/`. API and provider responses are fixture-backed;
+live policy effects and native visual comparison remain open. The initial
+mounted attempt hit an already-running preview on its selected port and was
+excluded; the run on a dedicated port used the task-owned Express host and the
+fresh bundle built for this check. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-streaming-mounted-20261127/`.
+
+release-note: none
 
 ### Personal watchlist auto-request preferences increment
 
