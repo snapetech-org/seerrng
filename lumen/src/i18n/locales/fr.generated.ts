@@ -8719,4 +8719,44 @@ export const messages = {
   'lumen.bookRecommendations.seriesPart': '{series} nº {position}',
   'lumen.setup.step.defaults': 'Valeurs par défaut des nouveaux utilisateurs',
   'lumen.setup.libraryCount': '{count} bibliothèques',
+  'lumen.mediaServerSavedItem.addButton': 'Ajouter à {list} sur {server}',
+  'lumen.mediaServerSavedItem.addLabel':
+    'Ajouter {title} à {list} sur {server}',
+  'lumen.mediaServerSavedItem.added': 'Ajouté à {list} sur {server}.',
+  'lumen.mediaServerSavedItem.changeNotConfirmed':
+    'La modification n’a pas pu être confirmée.',
+  'lumen.mediaServerSavedItem.favorites': 'favoris',
+  'lumen.mediaServerSavedItem.linkAccount': 'Lier le compte {server}',
+  'lumen.mediaServerSavedItem.linkHelp':
+    'Liez votre compte {server} avant d’enregistrer cette série.',
+  'lumen.mediaServerSavedItem.loadFailed':
+    'Impossible de charger l’état enregistré de {server}.',
+  'lumen.mediaServerSavedItem.loadingButton': 'Chargement de {list}…',
+  'lumen.mediaServerSavedItem.loadingLabel':
+    'Chargement de {list} sur {server}',
+  'lumen.mediaServerSavedItem.missingHelp':
+    'Cette série ne figure pas dans le catalogue {server} auquel vous avez accès.',
+  'lumen.mediaServerSavedItem.notInCatalog':
+    'Cette série ne figure pas dans le catalogue {server} auquel vous avez accès.',
+  'lumen.mediaServerSavedItem.removeButton': 'Retirer de {list} sur {server}',
+  'lumen.mediaServerSavedItem.removeLabel':
+    'Retirer {title} de {list} sur {server}',
+  'lumen.mediaServerSavedItem.removed': 'Retiré de {list} sur {server}.',
+  'lumen.mediaServerSavedItem.retryBeforeChange':
+    'Impossible de confirmer l’état enregistré de {server}. Réessayez avant de le modifier.',
+  'lumen.mediaServerSavedItem.retryButton': 'Réessayer',
+  'lumen.mediaServerSavedItem.retryHelp':
+    'La nouvelle tentative relit l’état actuel. Elle ne répète pas l’ajout ni le retrait.',
+  'lumen.mediaServerSavedItem.retryLabel':
+    'Réessayer l’état de {list} sur {server}',
+  'lumen.mediaServerSavedItem.saveHelp':
+    'Enregistrez toute cette série dans {list} sur {server}. Cela ne modifie ni votre liste de suivi SeerrNG ni vos demandes.',
+  'lumen.mediaServerSavedItem.unavailableButton': '{list} indisponible',
+  'lumen.mediaServerSavedItem.unavailableLabel':
+    '{list} indisponible sur {server}',
+  'lumen.mediaServerSavedItem.updateFailed':
+    'Impossible de mettre à jour l’état enregistré de {server}.',
+  'lumen.mediaServerSavedItem.verifyFailed':
+    'Impossible de vérifier l’état enregistré.',
+  'lumen.mediaServerSavedItem.watchlist': 'liste de suivi',
 } as const;

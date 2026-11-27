@@ -59,8 +59,10 @@ async function show(
   settings: Record<string, unknown> = {},
   seriesSeasons: typeof seasons = seasons,
   locale?: string,
-  failRequest = false
+  failRequest = false,
+  failSavedItemRead = false
 ) {
+  let mediaServerSaved = false;
   await page.route('https://**/*', (r) => r.abort());
   await page.route('**/lumen-config.json', (r) => r.fulfill({ json: {} }));
   await page.route('**/imageproxy/tmdb/**', (r) =>
@@ -82,6 +84,32 @@ async function show(
       return r.fulfill({ json: { status: 'off', defaultEpisodeCount: 0 } });
     if (path === '/user/1/settings/tv-season-watch-gate')
       return r.fulfill({ json: { status: 'off', globallyEnabled: false } });
+    if (path === '/tv/84773/media-server-saved-item') {
+      if (failSavedItemRead)
+        return r.fulfill({
+          status: 503,
+          json: { message: 'Internal Server Error' },
+        });
+      if (r.request().method() === 'POST') {
+        mediaServerSaved = !!r.request().postDataJSON().saved;
+        return r.fulfill({
+          json: {
+            serverType: 1,
+            kind: 'watchlist',
+            available: true,
+            saved: mediaServerSaved,
+          },
+        });
+      }
+      return r.fulfill({
+        json: {
+          serverType: 1,
+          kind: 'watchlist',
+          available: true,
+          saved: mediaServerSaved,
+        },
+      });
+    }
     if (locale && path === '/user/1/settings/main')
       return r.fulfill({ json: { locale } });
     if (quota && path === '/user/1/quota')
@@ -117,6 +145,136 @@ async function show(
     return r.fulfill({ json: { results: [] } });
   });
   await page.goto(appPath('/tv/84773'));
+}
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`TV media-server save read failure is localized and retryable in ${locale}`, async ({
+    page,
+  }) => {
+    await show(
+      page,
+      { id: 2074, status: 3, requests: [], seasons: [] },
+      [],
+      32,
+      undefined,
+      { mediaServerType: 1 },
+      seasons,
+      locale,
+      false,
+      true
+    );
+    const strings = {
+      en: {
+        alert: 'The server had a problem. Try again in a moment.',
+        retry: 'Retry Plex Watchlist status',
+        button: 'Retry saved state',
+      },
+      fr: {
+        alert: 'Le serveur a rencontré un problème. Réessayez dans un instant.',
+        retry: 'Réessayer l’état de liste de suivi sur Plex',
+        button: 'Réessayer',
+      },
+      ar: {
+        alert: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
+        retry: 'إعادة التحقق من قائمة المتابعة في Plex',
+        button: 'إعادة المحاولة',
+      },
+    }[locale];
+    await page
+      .getByTestId('tv-media-server')
+      .locator('summary')
+      .first()
+      .click();
+    await expect(page.getByRole('alert')).toContainText(strings.alert);
+    const retry = page.getByRole('button', { name: strings.retry });
+    await expect(retry).toContainText(strings.button);
+    await retry.click();
+    await expect(page.getByRole('alert')).toContainText(strings.alert);
+  });
+}
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`TV media-server save control localizes its confirmed add in ${locale}`, async ({
+    page,
+  }, testInfo) => {
+    await show(
+      page,
+      { id: 2074, status: 3, requests: [], seasons: [] },
+      [],
+      32,
+      undefined,
+      { mediaServerType: 1 },
+      seasons,
+      locale
+    );
+    const strings = {
+      en: {
+        add: 'Add The Rings of Power to Plex Watchlist',
+        remove: 'Remove The Rings of Power from Plex Watchlist',
+        addButton: 'Add to Plex Watchlist',
+        removeButton: 'Remove from Plex Watchlist',
+        toast: 'Added to Plex Watchlist',
+      },
+      fr: {
+        add: 'Ajouter The Rings of Power à liste de suivi sur Plex',
+        remove: 'Retirer The Rings of Power de liste de suivi sur Plex',
+        addButton: 'Ajouter à liste de suivi sur Plex',
+        removeButton: 'Retirer de liste de suivi sur Plex',
+        toast: 'Ajouté à liste de suivi sur Plex.',
+      },
+      ar: {
+        add: 'إضافة The Rings of Power إلى قائمة المتابعة في Plex',
+        remove: 'إزالة The Rings of Power من قائمة المتابعة في Plex',
+        addButton: 'إضافة إلى قائمة المتابعة في Plex',
+        removeButton: 'إزالة من قائمة المتابعة في Plex',
+        toast: 'أُضيف إلى قائمة المتابعة في Plex.',
+      },
+    }[locale];
+    await page
+      .getByTestId('tv-media-server')
+      .locator('summary')
+      .first()
+      .click();
+    const action = page.getByRole('button', { name: strings.add });
+    await expect(action).toBeEnabled();
+    await expect(action).toContainText(strings.addButton);
+    const captureDir = process.env.LUMEN_MEDIA_SERVER_SAVED_CAPTURE_DIR;
+    if (
+      captureDir &&
+      locale === 'fr' &&
+      ['desktop', 'iphone'].includes(testInfo.project.name)
+    ) {
+      await action.evaluate((element) => {
+        element.innerHTML = element.innerHTML.replace(
+          'Ajouter à liste de suivi sur Plex',
+          'Add to Plex Watchlist'
+        );
+      });
+      await page.screenshot({
+        path: `${captureDir}/baseline-${testInfo.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+      await page.reload();
+      await page
+        .getByTestId('tv-media-server')
+        .locator('summary')
+        .first()
+        .click();
+      await expect(action).toContainText(strings.addButton);
+      await page.screenshot({
+        path: `${captureDir}/candidate-${testInfo.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+    }
+    await action.click();
+    const saved = page.getByRole('button', { name: strings.remove });
+    await expect(saved).toBeEnabled();
+    await expect(saved).toContainText(strings.removeButton);
+    await expect(saved).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByText(strings.toast, { exact: true })).toBeVisible();
+  });
 }
 
 for (const locale of ['en', 'fr', 'ar'] as const) {

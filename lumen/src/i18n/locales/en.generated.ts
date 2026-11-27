@@ -7932,4 +7932,40 @@ export const messages = {
   'lumen.bookRecommendations.seriesPart': '{series} #{position}',
   'lumen.setup.step.defaults': 'Defaults for New Users',
   'lumen.setup.libraryCount': '{count} libraries',
+  'lumen.mediaServerSavedItem.addButton': 'Add to {server} {list}',
+  'lumen.mediaServerSavedItem.addLabel': 'Add {title} to {server} {list}',
+  'lumen.mediaServerSavedItem.added': 'Added to {server} {list}',
+  'lumen.mediaServerSavedItem.changeNotConfirmed':
+    'The saved change could not be confirmed.',
+  'lumen.mediaServerSavedItem.favorites': 'Favorites',
+  'lumen.mediaServerSavedItem.linkAccount': 'Link {server} account',
+  'lumen.mediaServerSavedItem.linkHelp':
+    'Link your own {server} account before saving this series.',
+  'lumen.mediaServerSavedItem.loadFailed':
+    '{server} saved state could not load.',
+  'lumen.mediaServerSavedItem.loadingButton': 'Loading {list}…',
+  'lumen.mediaServerSavedItem.loadingLabel': 'Loading {server} {list}',
+  'lumen.mediaServerSavedItem.missingHelp':
+    'This series is not in your accessible {server} catalog.',
+  'lumen.mediaServerSavedItem.notInCatalog':
+    'Not in your accessible {server} catalog.',
+  'lumen.mediaServerSavedItem.removeButton': 'Remove from {server} {list}',
+  'lumen.mediaServerSavedItem.removeLabel':
+    'Remove {title} from {server} {list}',
+  'lumen.mediaServerSavedItem.removed': 'Removed from {server} {list}',
+  'lumen.mediaServerSavedItem.retryBeforeChange':
+    '{server} saved state could not be confirmed. Retry before changing it.',
+  'lumen.mediaServerSavedItem.retryButton': 'Retry saved state',
+  'lumen.mediaServerSavedItem.retryHelp':
+    'Retry reads the current saved state. It does not repeat an add or remove action.',
+  'lumen.mediaServerSavedItem.retryLabel': 'Retry {server} {list} status',
+  'lumen.mediaServerSavedItem.saveHelp':
+    'Save this entire series in your {server} {list}. This does not change your SeerrNG Watchlist or request state.',
+  'lumen.mediaServerSavedItem.unavailableButton': '{list} unavailable',
+  'lumen.mediaServerSavedItem.unavailableLabel': '{server} {list} unavailable',
+  'lumen.mediaServerSavedItem.updateFailed':
+    '{server} saved state could not update.',
+  'lumen.mediaServerSavedItem.verifyFailed':
+    'The saved state could not be verified.',
+  'lumen.mediaServerSavedItem.watchlist': 'Watchlist',
 } as const;

@@ -8023,4 +8023,38 @@ export const messages = {
   'lumen.bookRecommendations.seriesPart': '{series}، رقم {position}',
   'lumen.setup.step.defaults': 'الإعدادات الافتراضية للمستخدمين الجدد',
   'lumen.setup.libraryCount': '{count} مكتبات',
+  'lumen.mediaServerSavedItem.addButton': 'إضافة إلى {list} في {server}',
+  'lumen.mediaServerSavedItem.addLabel': 'إضافة {title} إلى {list} في {server}',
+  'lumen.mediaServerSavedItem.added': 'أُضيف إلى {list} في {server}.',
+  'lumen.mediaServerSavedItem.changeNotConfirmed': 'تعذّر تأكيد التغيير.',
+  'lumen.mediaServerSavedItem.favorites': 'المفضلة',
+  'lumen.mediaServerSavedItem.linkAccount': 'ربط حساب {server}',
+  'lumen.mediaServerSavedItem.linkHelp':
+    'اربط حسابك في {server} قبل حفظ هذا المسلسل.',
+  'lumen.mediaServerSavedItem.loadFailed':
+    'تعذّر تحميل الحالة المحفوظة في {server}.',
+  'lumen.mediaServerSavedItem.loadingButton': 'جارٍ تحميل {list}…',
+  'lumen.mediaServerSavedItem.loadingLabel': 'جارٍ تحميل {list} في {server}',
+  'lumen.mediaServerSavedItem.missingHelp':
+    'هذا المسلسل غير موجود في فهرس {server} المتاح لك.',
+  'lumen.mediaServerSavedItem.notInCatalog':
+    'هذا المسلسل غير موجود في فهرس {server} المتاح لك.',
+  'lumen.mediaServerSavedItem.removeButton': 'إزالة من {list} في {server}',
+  'lumen.mediaServerSavedItem.removeLabel':
+    'إزالة {title} من {list} في {server}',
+  'lumen.mediaServerSavedItem.removed': 'أُزيل من {list} في {server}.',
+  'lumen.mediaServerSavedItem.retryBeforeChange':
+    'تعذّر تأكيد الحالة المحفوظة في {server}. أعد المحاولة قبل تغييرها.',
+  'lumen.mediaServerSavedItem.retryButton': 'إعادة المحاولة',
+  'lumen.mediaServerSavedItem.retryHelp':
+    'تعيد المحاولة قراءة الحالة الحالية ولا تكرر الإضافة أو الإزالة.',
+  'lumen.mediaServerSavedItem.retryLabel': 'إعادة التحقق من {list} في {server}',
+  'lumen.mediaServerSavedItem.saveHelp':
+    'احفظ المسلسل بالكامل في {list} في {server}. لن يغيّر ذلك قائمة متابعة SeerrNG أو حالة الطلب.',
+  'lumen.mediaServerSavedItem.unavailableButton': '{list} غير متاحة',
+  'lumen.mediaServerSavedItem.unavailableLabel': '{list} غير متاحة في {server}',
+  'lumen.mediaServerSavedItem.updateFailed':
+    'تعذّر تحديث الحالة المحفوظة في {server}.',
+  'lumen.mediaServerSavedItem.verifyFailed': 'تعذّر التحقق من الحالة المحفوظة.',
+  'lumen.mediaServerSavedItem.watchlist': 'قائمة المتابعة',
 } as const;
