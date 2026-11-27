@@ -3335,6 +3335,7 @@
   "lumen.managedQuotas.category.music",
   "lumen.managedQuotas.category.software",
   "lumen.managedQuotas.category.tv",
+  "lumen.managedQuotas.confirmFailure",
   "lumen.managedQuotas.days",
   "lumen.managedQuotas.description",
   "lumen.managedQuotas.limit",

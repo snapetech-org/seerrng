@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useRef, useState } from 'react';
 import { api } from '../api';
 import { friendlyError } from '../errors';
 import { useApi } from '../hooks';
@@ -16,6 +16,9 @@ export default function ManagedQuotas({ id }: { id: number }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [failure, setFailure] = useState('');
+  const [drafts, setDrafts] = useState<
+    Partial<Record<Category, { limit: string; days: string }>>
+  >({});
   const working = useRef(false);
   const limitKey = `${category}QuotaLimit`;
   const daysKey = `${category}QuotaDays`;
@@ -43,12 +46,29 @@ export default function ManagedQuotas({ id }: { id: number }) {
       )
     : t('lumen.managedQuotas.unlimited', 'unlimited requests');
 
-  async function save(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const currentDraft = drafts[category] ?? {
+    limit: data?.[limitKey] == null ? '' : String(data[limitKey]),
+    days: data?.[daysKey] == null ? '' : String(data[daysKey]),
+  };
+
+  function updateDraft(field: 'limit' | 'days', value: string) {
+    setDrafts((current) => ({
+      ...current,
+      [category]: {
+        ...(current[category] ?? {
+          limit: data?.[limitKey] == null ? '' : String(data[limitKey]),
+          days: data?.[daysKey] == null ? '' : String(data[daysKey]),
+        }),
+        [field]: value,
+      },
+    }));
+    setFailure('');
+    setMessage('');
+  }
+
+  async function save() {
     if (working.current || !data) return;
-    const fields = new FormData(event.currentTarget);
-    const limit = fields.get('limit');
-    const days = fields.get('days');
+    const { limit, days } = currentDraft;
     if ((limit === '') !== (days === '')) {
       setFailure(
         t(
@@ -69,6 +89,28 @@ export default function ManagedQuotas({ id }: { id: number }) {
           [limitKey]: limit === '' ? null : Number(limit),
           [daysKey]: days === '' ? null : Number(days),
         }),
+      });
+      const confirmed = await api<Record<string, number | null>>(path, {
+        cache: 'no-store',
+      });
+      if (
+        (confirmed[limitKey] ?? null) !==
+          (limit === '' ? null : Number(limit)) ||
+        (confirmed[daysKey] ?? null) !== (days === '' ? null : Number(days))
+      ) {
+        setFailure(
+          t(
+            'lumen.managedQuotas.confirmFailure',
+            'Could not confirm the saved request quota. Review the current values and retry.'
+          )
+        );
+        reload();
+        return;
+      }
+      setDrafts((current) => {
+        const next = { ...current };
+        delete next[category];
+        return next;
       });
       setMessage(t('lumen.managedQuotas.saved', 'Request quota saved.'));
       reload();
@@ -149,7 +191,14 @@ export default function ManagedQuotas({ id }: { id: number }) {
               value: serverDefault,
             })}
           </small>
-          <form className="toolbar" key={category} onSubmit={save}>
+          <form
+            className="toolbar"
+            key={category}
+            onSubmit={(event) => {
+              event.preventDefault();
+              void save();
+            }}
+          >
             <label className="sel">
               <span className="lbl">
                 {t('lumen.managedQuotas.limit', 'Request Limit')}
@@ -160,8 +209,9 @@ export default function ManagedQuotas({ id }: { id: number }) {
                 name="limit"
                 min={0}
                 max={100000}
-                defaultValue={data[limitKey] ?? ''}
+                value={currentDraft.limit}
                 disabled={busy}
+                onChange={(event) => updateDraft('limit', event.target.value)}
               />
             </label>
             <label className="sel">
@@ -174,8 +224,9 @@ export default function ManagedQuotas({ id }: { id: number }) {
                 name="days"
                 min={0}
                 max={100000}
-                defaultValue={data[daysKey] ?? ''}
+                value={currentDraft.days}
                 disabled={busy}
+                onChange={(event) => updateDraft('days', event.target.value)}
               />
             </label>
             <button className="btn btn-tonal btn-sm" disabled={busy}>

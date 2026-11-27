@@ -4422,6 +4422,8 @@ export const messages = {
   'lumen.managedQuotas.category.music': 'موسيقى',
   'lumen.managedQuotas.category.software': 'برامج',
   'lumen.managedQuotas.category.tv': 'مسلسلات',
+  'lumen.managedQuotas.confirmFailure':
+    'تعذر تأكيد حفظ حصة الطلبات. راجع القيم الحالية ثم أعد المحاولة.',
   'lumen.managedQuotas.days': 'أيام الحصة',
   'lumen.managedQuotas.description':
     'اترك الحقلين فارغين لاستخدام الإعداد الافتراضي للخادم.',

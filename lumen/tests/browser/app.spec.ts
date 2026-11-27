@@ -10783,7 +10783,9 @@ test('Users sets an Episode Queue default for the selected account', async ({
   ).toBeDisabled();
 });
 
-test('Users saves and resets a selected media quota', async ({ page }) => {
+test('Users saves and resets a selected media quota', async ({
+  page,
+}, testInfo) => {
   await fixtures(page);
   await page.route(/\/api\/v1\/user\?/, (route) =>
     route.fulfill({
@@ -10794,6 +10796,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
     })
   );
   const writes: unknown[] = [];
+  let persistQuota = false;
   let quotas: Record<string, number | null> = {
     globalMusicQuotaLimit: 4,
     globalMusicQuotaDays: 7,
@@ -10804,7 +10807,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
     if (route.request().method() === 'POST') {
       const body = route.request().postDataJSON();
       writes.push(body);
-      quotas = { ...quotas, ...body };
+      if (persistQuota) quotas = { ...quotas, ...body };
     }
     return route.fulfill({ json: quotas });
   });
@@ -10825,6 +10828,29 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   await page.getByLabel('Request Limit').fill('2');
   await page.getByLabel('Quota Days').fill('14');
   await page.getByRole('button', { name: 'Save Quota' }).click();
+  await expect(
+    page
+      .getByRole('alert')
+      .filter({ hasText: 'Could not confirm the saved request quota.' })
+  ).toBeVisible();
+  await expect(page.getByLabel('Request Limit')).toHaveValue('2');
+  await expect(page.getByLabel('Quota Days')).toHaveValue('14');
+  if (
+    process.env.LUMEN_QUOTA_CAPTURE_DIR &&
+    ['desktop', 'iphone'].includes(testInfo.project.name)
+  ) {
+    const { mkdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    await mkdir(process.env.LUMEN_QUOTA_CAPTURE_DIR, { recursive: true });
+    await page.screenshot({
+      path: join(
+        process.env.LUMEN_QUOTA_CAPTURE_DIR,
+        `candidate-${testInfo.project.name}-readback-error.png`
+      ),
+    });
+  }
+  persistQuota = true;
+  await page.getByRole('button', { name: 'Save Quota' }).click();
   await expect(page.getByText('Request quota saved.')).toBeVisible();
   await expect(page.getByLabel('Request Limit')).toHaveValue('2');
   await page.getByLabel('Request Limit').fill('');
@@ -10832,6 +10858,7 @@ test('Users saves and resets a selected media quota', async ({ page }) => {
   await page.getByRole('button', { name: 'Save Quota' }).click();
   await expect(page.getByText('Request quota saved.')).toBeVisible();
   expect(writes).toEqual([
+    { musicQuotaLimit: 2, musicQuotaDays: 14 },
     { musicQuotaLimit: 2, musicQuotaDays: 14 },
     { musicQuotaLimit: null, musicQuotaDays: null },
   ]);

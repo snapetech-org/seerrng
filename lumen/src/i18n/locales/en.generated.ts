@@ -4491,6 +4491,8 @@ export const messages = {
   'lumen.managedQuotas.category.music': 'Music',
   'lumen.managedQuotas.category.software': 'Software',
   'lumen.managedQuotas.category.tv': 'Series',
+  'lumen.managedQuotas.confirmFailure':
+    'Could not confirm the saved request quota. Review the current values and retry.',
   'lumen.managedQuotas.days': 'Quota Days',
   'lumen.managedQuotas.description':
     'Leave both fields blank to use the server default.',

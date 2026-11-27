@@ -4818,6 +4818,8 @@ export const messages = {
   'lumen.managedQuotas.category.music': 'Musique',
   'lumen.managedQuotas.category.software': 'Logiciels',
   'lumen.managedQuotas.category.tv': 'Séries',
+  'lumen.managedQuotas.confirmFailure':
+    'Impossible de confirmer l’enregistrement du quota de demandes. Vérifiez les valeurs actuelles et réessayez.',
   'lumen.managedQuotas.days': 'Durée du quota en jours',
   'lumen.managedQuotas.description':
     'Laissez les deux champs vides pour utiliser la valeur par défaut du serveur.',

@@ -13400,3 +13400,26 @@ live user-category authorization or provider availability. Evidence is retained
 at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-empty-tools-20261127/`.
 
 release-note: `release-notes/lumen-follow-empty-tools.md`
+
+### Confirm delegated quota saves through settings readback (2026-11-27)
+
+Lumen's delegated per-user quota editor previously displayed a success message
+after the write response and refreshed settings in the background. It now reads
+the same user's settings with a no-store request and confirms both quota fields
+before reporting success. A stale or mismatched readback displays a retry error
+and preserves the edited values; a confirmed save clears the draft as before.
+The new confirmation message is localized in English, French, and Arabic.
+
+The focused browser regression passed 4/4 on desktop, iPhone, Android, and
+tablet. It simulates a server that accepts the write but returns stale settings,
+then persists on retry, and finally verifies clearing the override. The
+production Lumen build and i18n checks pass. Desktop and iPhone failure-state
+captures were inspected at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-quota-readback-20261127/captures/`.
+No styles or layout owners changed. A historical same-state baseline capture for
+this delegated editor was unavailable, so matched native/Lumen visual
+acceptance remains open; the local `/lumen` static harness also does not qualify
+the Express production mount. API responses are fixture-backed, not a live
+server persistence check.
+
+release-note: `release-notes/lumen-managed-quota-readback.md`
