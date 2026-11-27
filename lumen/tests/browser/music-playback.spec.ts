@@ -471,6 +471,33 @@ test('music home shows Play, preview and Get by what is in the library', async (
   await mockMusic(page, seen);
   await page.goto(testAppPath('/music'));
 
+  const share = page
+    .locator('#view')
+    .getByRole('link', { name: 'Share & Identify' });
+  const following = page
+    .locator('#view')
+    .getByRole('link', { name: 'Following' });
+  await expect(share).toHaveAttribute('href', testAppPath('/share'));
+  await expect(following).toHaveAttribute('href', testAppPath('/following'));
+  await expect(share).toBeInViewport();
+  await expect(following).toBeInViewport();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    )
+    .toBe(true);
+  const captureDirectory = process.env.LUMEN_MUSIC_TOOLS_CAPTURE_DIR;
+  if (
+    captureDirectory &&
+    ['desktop', 'iphone'].includes(test.info().project.name)
+  )
+    await page.screenshot({
+      path: `${captureDirectory}/${test.info().project.name}.png`,
+      fullPage: true,
+    });
+
   const owned = page.locator('li', { hasText: 'Owned Song' });
   const play = owned.getByRole('link', { name: /Play Owned Song in Aurral/ });
   await expect(play).toBeVisible();

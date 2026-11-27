@@ -1478,11 +1478,10 @@
   }
 }
 @media (max-width: 700px) {
-  /* phones: shortcuts scroll in one row instead of stacking */
+  /* Keep music shortcuts available without requiring horizontal scrolling. */
   .chips.music-head-chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    overflow: visible;
   }
   .chips.music-head-chips .play-opens {
     margin-left: 0;
@@ -1601,12 +1600,10 @@
 }
 .music-tabbar > .chips.music-head-chips {
   margin: 0 0 8px;
-  flex-wrap: nowrap;
-  /* never wider than the page, so on a phone the row scrolls instead of the page */
+  flex-wrap: wrap;
   min-width: 0;
   max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: visible;
 }
 /* podcasts */
 .music-pod-bar {

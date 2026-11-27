@@ -4,6 +4,8 @@ import { testAppPath } from './testAppPath';
 const copy = {
   en: {
     title: 'Trending ebooks',
+    share: 'Share & Identify',
+    following: 'Following',
     recommendations: 'Book Recommendations',
     series: 'Find a Book Series',
     format: 'Format',
@@ -22,6 +24,8 @@ const copy = {
   },
   fr: {
     title: 'Tendances livres numériques',
+    share: 'Partager & Identifier',
+    following: 'Suivis',
     recommendations: 'Recommandations de livres',
     series: 'Trouver une série de livres',
     format: 'Format',
@@ -40,6 +44,8 @@ const copy = {
   },
   ar: {
     title: 'الرائجة كتب إلكترونية',
+    share: 'مشاركة وتحديد',
+    following: 'المتابَع',
     recommendations: 'توصيات الكتب',
     series: 'العثور على سلسلة كتب',
     format: 'التنسيق',
@@ -84,6 +90,12 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     await page.goto(testAppPath('/books?sort=trending'));
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
+    await expect(
+      page.locator('#view').getByRole('link', { name: text.share })
+    ).toHaveAttribute('href', testAppPath('/share'));
+    await expect(
+      page.locator('#view').getByRole('link', { name: text.following })
+    ).toHaveAttribute('href', testAppPath('/following'));
     await expect(
       page.locator('#view').getByRole('link', { name: text.recommendations })
     ).toBeVisible();

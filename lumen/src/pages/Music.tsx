@@ -1481,10 +1481,18 @@ export function Music() {
         {t('lumen.music.importPlaylist', 'Import Playlist')}
       </Link>
       {canUseRequestAccess(user?.permissions) && (
-        <Link className="chip" to="/music/collectors">
-          <Icon name="star" size="sm" />
-          {t('lumen.music.collectorPicks', 'Collector Picks')}
-        </Link>
+        <>
+          <Link className="chip" to="/share">
+            {t('components.Layout.Sidebar.share', 'Share & Identify')}
+          </Link>
+          <Link className="chip" to="/following">
+            {t('components.Layout.Sidebar.following', 'Following')}
+          </Link>
+          <Link className="chip" to="/music/collectors">
+            <Icon name="star" size="sm" />
+            {t('lumen.music.collectorPicks', 'Collector Picks')}
+          </Link>
+        </>
       )}
       {aurralAvailable && <PlayOpensIn />}
     </div>

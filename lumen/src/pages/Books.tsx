@@ -215,9 +215,20 @@ export default function Books({ format }: { format: 'ebook' | 'audiobook' }) {
         </div>
         <div className="toolbar">
           {canUseRequestAccess(user?.permissions) && (
-            <Link className="btn btn-quiet btn-sm" to="/books/recommendations">
-              {t('lumen.books.recommendations', 'Book Recommendations')}
-            </Link>
+            <>
+              <Link className="btn btn-quiet btn-sm" to="/share">
+                {t('components.Layout.Sidebar.share', 'Share & Identify')}
+              </Link>
+              <Link className="btn btn-quiet btn-sm" to="/following">
+                {t('components.Layout.Sidebar.following', 'Following')}
+              </Link>
+              <Link
+                className="btn btn-quiet btn-sm"
+                to="/books/recommendations"
+              >
+                {t('lumen.books.recommendations', 'Book Recommendations')}
+              </Link>
+            </>
           )}
           <Link
             className="btn btn-quiet btn-sm"

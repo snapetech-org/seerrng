@@ -13357,3 +13357,24 @@ The interaction is fixture-backed; live Following data and authorization are
 not exercised by this catalog check.
 
 release-note: `release-notes/lumen-game-catalog-following.md`
+
+### Restore native related-tool entry points in Lumen Books and Music (2026-11-27)
+
+The native Books discovery filters link to Share & Identify and Following, and
+native Music discovery links to Share & Identify, Collector Picks, and
+Following. Lumen already exposed Book Recommendations and Collector Picks but
+was missing Share & Identify and Following on these two catalogs. Both now link
+to the existing Lumen routes behind the same request-access permission gate.
+The Music shortcut row now uses its existing wrapping behavior on phones so the
+additional actions remain fully visible without horizontal scrolling.
+
+The Books discovery localization fixture passes 12/12 and the Music home action
+fixture passes 4/4 across desktop, iPhone, Android, and tablet. They verify the
+localized destinations and exact route paths. The rendered Books states were
+inspected in French at desktop and Arabic on iPhone; Music was inspected at
+desktop and iPhone after correcting the initially clipped shortcut row. No
+horizontal overflow is reported. Screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-related-tools-20261127/`.
+These fixtures do not verify live Following data or route authorization.
+
+release-note: `release-notes/lumen-books-music-related-tools.md`
