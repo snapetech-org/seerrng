@@ -2946,10 +2946,11 @@ draft. The search limits both actions and hidden selections stay intact
 until changed explicitly. They use the same save and provider count limit
 as individual selections.
 
-Standalone Chrome verified both actions with a search active. The fixture
-readback confirmed the new matches and retained both a hidden provider and
-an existing ID missing from the source catalog. Mobile, bundled and native
-visual comparison remain open.
+Standalone browser fixtures verify both actions with a search active at desktop,
+iPhone, Android and tablet viewport presets. The saved payload confirms a
+hidden catalog provider and an existing ID missing from the source catalog
+remain selected while a visible provider is added. Live policy effects, bundled
+behavior and native visual comparison remain open.
 
 ### Personal watchlist auto-request preferences increment
 

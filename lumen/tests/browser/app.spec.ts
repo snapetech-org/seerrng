@@ -13753,6 +13753,70 @@ test('Streaming Subscriptions retains edits after stale persisted readback and r
   expect(writes).toBe(2);
 });
 
+test('Streaming Subscriptions bulk actions preserve hidden and uncatalogued providers', async ({
+  page,
+}) => {
+  await fixtures(page);
+  let persisted = [99, 2];
+  const writes: number[][] = [];
+  await page.route('**/api/v1/user/1/settings/main', async (route) => {
+    if (route.request().method() === 'POST') {
+      const body = route.request().postDataJSON() as {
+        streamingSubscriptionProviderIds: number[];
+      };
+      writes.push(body.streamingSubscriptionProviderIds);
+      persisted = body.streamingSubscriptionProviderIds;
+    }
+    return route.fulfill({
+      json: { streamingSubscriptionProviderIds: persisted },
+    });
+  });
+  await page.route('**/api/v1/watchproviders/movies?*', (route) =>
+    route.fulfill({
+      json: [
+        { id: 1, name: 'Alpha Stream' },
+        { id: 2, name: 'Beta Stream' },
+      ],
+    })
+  );
+  await page.route('**/api/v1/watchproviders/tv?*', (route) =>
+    route.fulfill({ json: [] })
+  );
+
+  await page.goto(testAppPath('/me/account'));
+  const section = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Streaming Subscriptions' }),
+  });
+  const search = section.getByRole('searchbox', {
+    name: 'Filter streaming services',
+  });
+  await expect(section.getByText('2 selected', { exact: true })).toBeVisible();
+  await search.fill('Alpha');
+  await section.getByRole('button', { name: 'Select Shown' }).click();
+  await expect(section.getByText('3 selected', { exact: true })).toBeVisible();
+  await section.getByRole('button', { name: 'Clear Shown' }).click();
+  await expect(section.getByText('2 selected', { exact: true })).toBeVisible();
+  await search.fill('');
+  await expect(
+    section.getByRole('checkbox', { name: 'Alpha Stream' })
+  ).not.toBeChecked();
+  await expect(
+    section.getByRole('checkbox', { name: 'Beta Stream' })
+  ).toBeChecked();
+  await search.fill('Alpha');
+  await section.getByRole('button', { name: 'Select Shown' }).click();
+  await search.fill('');
+
+  await section
+    .getByRole('button', { name: 'Save Streaming Subscriptions' })
+    .click();
+  await expect(
+    section.getByText('Streaming subscriptions saved.', { exact: true })
+  ).toBeVisible();
+  expect(writes).toEqual([[99, 2, 1]]);
+  expect(persisted).toEqual([99, 2, 1]);
+});
+
 test('Metadata Credentials retains edits after stale persisted readback and retries', async ({
   page,
 }) => {
