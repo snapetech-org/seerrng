@@ -2936,6 +2936,8 @@
   "lumen.games.released",
   "lumen.games.screenshots",
   "lumen.games.steamLibrary",
+  "lumen.games.systemAvailable",
+  "lumen.games.systemTracked",
   "lumen.games.videos",
   "lumen.games.watchVideo",
   "lumen.genrePicker.all",

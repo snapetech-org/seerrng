@@ -12694,3 +12694,25 @@ are fixture-backed; live authentication and cross-tab storage behavior were
 not exercised.
 
 release-note: none
+
+### Console-specific software request status (2026-11-27)
+
+Retro and modern game details now preserve the API's per-console
+`availableSystems` and `trackedSystems` values. The console picker remains
+available when another console is present or requested; an available selected
+console is labelled, and available or already-requested selected consoles
+cannot submit another request. Unblocked consoles remain requestable with the
+selected console slug in the existing request payload. English, French, and
+Arabic status labels are covered.
+
+The prior and candidate detail pages were captured at 1440x900 and iPhone 13
+sizes with the same fixture state. The four-viewport browser suite passes 20
+cases in the standalone production build and 20 against a production
+`/lumen/` base-path build served by Vite Preview. Fixtures verify that blocked
+consoles send no request and that eligible retro and modern consoles submit
+their exact selected slugs. This does not establish live ROMarrNG inventory or
+the real Express mount; those remain separate acceptance checks. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-system-parity-20261127/`.
+
+release-note: `release-notes/lumen-console-specific-game-status.md`

@@ -703,11 +703,26 @@ function GameDetailView({
     g.igdbId > 0
       ? g.igdbId
       : undefined;
-  const baseBlocked = !!s && selection === null;
+  const selectedSystemAvailable =
+    cat !== 'game' && g.availableSystems?.includes(sys) === true;
+  const selectedSystemTracked =
+    cat !== 'game' && g.trackedSystems?.includes(sys) === true;
+  const selectedSystemStatus = selectedSystemAvailable
+    ? t('lumen.games.systemAvailable', 'Available')
+    : selectedSystemTracked
+      ? t('lumen.games.systemTracked', 'Tracked')
+      : '';
+  const systemBlocked = selectedSystemAvailable || selectedSystemTracked;
+  const mainStatusIcon = selectedSystemAvailable
+    ? 'check'
+    : selectedSystemTracked
+      ? 'clock'
+      : s?.ico || 'clock';
+  const baseBlocked = cat === 'game' && !!s && selection === null;
   const ready =
     cat === 'game' ? !!os && !!arch && selection !== undefined : !!sys;
   const go = async () => {
-    if (!ready || baseBlocked || pending.current) return;
+    if (!ready || baseBlocked || systemBlocked || pending.current) return;
     pending.current = true;
     setBusy(true);
     try {
@@ -745,10 +760,10 @@ function GameDetailView({
     }
   };
   const main = canRequest ? (
-    baseBlocked || done ? (
+    baseBlocked || systemBlocked || done ? (
       <button className="btn btn-tonal" disabled>
-        <Icon name={s?.ico || 'clock'} />
-        {done || <StatLabel s={s} />}
+        <Icon name={mainStatusIcon} />
+        {done || selectedSystemStatus || <StatLabel s={s} />}
       </button>
     ) : (
       <button
@@ -904,6 +919,9 @@ function GameDetailView({
                     {systems.map((x) => (
                       <option key={x.slug} value={x.slug}>
                         {x.name}
+                        {selectedSystemAvailable && sys === x.slug
+                          ? ` · ${selectedSystemStatus}`
+                          : ''}
                       </option>
                     ))}
                   </select>

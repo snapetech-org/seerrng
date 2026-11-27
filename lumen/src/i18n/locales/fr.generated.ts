@@ -4246,6 +4246,8 @@ export const messages = {
   'lumen.games.released': 'Sortie',
   'lumen.games.screenshots': 'Captures d’écran',
   'lumen.games.steamLibrary': 'Bibliothèque Steam',
+  'lumen.games.systemAvailable': 'Disponible',
+  'lumen.games.systemTracked': 'Suivi',
   'lumen.games.videos': 'Vidéos',
   'lumen.games.watchVideo': 'Regarder {name}',
   'lumen.genrePicker.all': 'Tous les genres',

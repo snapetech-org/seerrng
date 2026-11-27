@@ -709,6 +709,8 @@ export interface Game {
   }[];
   availability?:
     'available' | 'owned' | 'tracked' | 'downloading' | 'missing' | 'unknown';
+  availableSystems?: string[];
+  trackedSystems?: string[];
   steamOwned?: boolean;
   rating?: number | null;
   publishers?: string[];

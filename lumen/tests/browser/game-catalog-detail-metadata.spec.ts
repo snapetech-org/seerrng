@@ -5,7 +5,16 @@ const appPath = (path: string) => `${mount}${path}`;
 const apiPath = (url: string) =>
   new URL(url).pathname.replace(/^\/lumen(?=\/)/, '').slice('/api/v1'.length);
 
-async function openGame(page: Page) {
+async function openGame(
+  page: Page,
+  options: {
+    path?: string;
+    permissions?: number;
+    locale?: string;
+    game?: Record<string, unknown>;
+  } = {}
+) {
+  const submissions: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -14,12 +23,16 @@ async function openGame(page: Page) {
     const path = apiPath(route.request().url());
     if (path === '/auth/me')
       return route.fulfill({
-        json: { id: 1, displayName: 'Player', permissions: 0 },
+        json: {
+          id: 1,
+          displayName: 'Player',
+          permissions: options.permissions ?? 0,
+        },
       });
     if (path === '/user/1/settings/main')
       return route.fulfill({
         json: {
-          locale: 'fr',
+          locale: options.locale ?? 'fr',
           enabledMediaCategories: { game: true, retro: true, modern: true },
         },
       });
@@ -58,15 +71,28 @@ async function openGame(page: Page) {
               { name: 'Unsafe', videoId: 'bad-id' },
             ],
             timeToBeat: { hastily: 2, normally: 30.5, completely: 70 },
+            ...options.game,
           },
         },
       });
+    if (path === '/request/software' && route.request().method() === 'POST') {
+      submissions.push(
+        JSON.parse(route.request().postData() ?? '{}') as Record<
+          string,
+          unknown
+        >
+      );
+      return route.fulfill({
+        json: { request: { status: 'pending', id: 10 } },
+      });
+    }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto(appPath('/game/game/42'));
+  await page.goto(appPath(options.path ?? '/game/game/42'));
   await expect(
     page.getByRole('heading', { name: 'Fixture Detail Game' })
   ).toBeVisible();
+  return submissions;
 }
 
 test('game details retain catalog playtime, Steam ownership, and safe videos', async ({
@@ -120,3 +146,131 @@ test('game details retain catalog playtime, Steam ownership, and safe videos', a
     )
   ).toBe(true);
 });
+
+test('retro and modern requests respect per-system availability and tracking', async ({
+  page,
+}, info) => {
+  const submissions = await openGame(page, {
+    path: '/game/retro/42?platform=nes',
+    permissions: 32,
+    game: {
+      catalogProvider: 'dat',
+      catalogId:
+        'dat-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      availability: 'available',
+      emulationSystems: [
+        { slug: 'nes', name: 'Nintendo Entertainment System', group: 'retro' },
+        { slug: 'snes', name: 'Super Nintendo', group: 'retro' },
+        { slug: 'gb', name: 'Game Boy', group: 'retro' },
+        { slug: 'ps5', name: 'PlayStation 5', group: 'modern' },
+        { slug: 'switch', name: 'Nintendo Switch', group: 'modern' },
+      ],
+      availableSystems: ['nes', 'ps5'],
+      trackedSystems: ['snes'],
+    },
+  });
+
+  const consolePicker = page.getByLabel('Console');
+  const request = page.getByRole('button', { name: 'Demander' });
+  const available = page.getByRole('button', { name: 'Disponible' });
+  const tracked = page.getByRole('button', { name: 'Suivi' });
+
+  if (process.env.LUMEN_GAME_SYSTEM_BASELINE === '1') {
+    const captureDir = process.env.LUMEN_GAME_DETAIL_CAPTURE_DIR;
+    if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: `${captureDir}/${info.project.name}-system.png`,
+        fullPage: true,
+      });
+    await expect(page.getByText('Dans la bibliothèque').first()).toBeVisible();
+    await expect(request).toHaveCount(0);
+    await expect(consolePicker).toHaveCount(0);
+    return;
+  }
+
+  const captureDir = process.env.LUMEN_GAME_DETAIL_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/${info.project.name}-system.png`,
+      fullPage: true,
+    });
+
+  await expect(consolePicker).toHaveValue('nes');
+  await expect(consolePicker.locator('option:checked')).toContainText(
+    'Disponible'
+  );
+  await expect(available).toBeDisabled();
+  await expect(request).toHaveCount(0);
+  expect(submissions).toEqual([]);
+
+  await consolePicker.selectOption('snes');
+  await expect(tracked).toBeDisabled();
+  await expect(request).toHaveCount(0);
+  expect(submissions).toEqual([]);
+
+  await consolePicker.selectOption('gb');
+  await expect(request).toBeEnabled();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await request.click();
+  await expect
+    .poll(() => submissions)
+    .toEqual([
+      {
+        category: 'retro',
+        catalogProvider: 'dat',
+        catalogKey:
+          'dat-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        platformSlug: 'gb',
+      },
+    ]);
+
+  await page.goto(appPath('/game/modern/42?platform=ps5'));
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Detail Game' })
+  ).toBeVisible();
+  const modernPicker = page.getByLabel('Console');
+  await expect(modernPicker).toHaveValue('ps5');
+  await expect(modernPicker.locator('option:checked')).toContainText(
+    'Disponible'
+  );
+  await expect(available).toBeDisabled();
+  await modernPicker.selectOption('switch');
+  const modernRequest = page.getByRole('button', { name: 'Demander' });
+  await expect(modernRequest).toBeEnabled();
+  await modernRequest.click();
+  await expect.poll(() => submissions).toHaveLength(2);
+  expect(submissions[1]).toMatchObject({
+    category: 'modern',
+    catalogProvider: 'dat',
+    platformSlug: 'switch',
+  });
+});
+
+for (const [locale, label] of [
+  ['en', 'Available'],
+  ['fr', 'Disponible'],
+  ['ar', 'متاح'],
+] as const) {
+  test(`per-system availability follows the ${locale} locale`, async ({
+    page,
+  }) => {
+    const submissions = await openGame(page, {
+      path: '/game/retro/42?platform=nes',
+      permissions: 32,
+      locale,
+      game: {
+        catalogProvider: 'dat',
+        emulationSystems: [
+          {
+            slug: 'nes',
+            name: 'Nintendo Entertainment System',
+            group: 'retro',
+          },
+        ],
+        availableSystems: ['nes'],
+      },
+    });
+    await expect(page.getByRole('button', { name: label })).toBeDisabled();
+    expect(submissions).toEqual([]);
+  });
+}

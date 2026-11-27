@@ -3970,6 +3970,8 @@ export const messages = {
   'lumen.games.released': 'Released',
   'lumen.games.screenshots': 'Screenshots',
   'lumen.games.steamLibrary': 'Steam Library',
+  'lumen.games.systemAvailable': 'Available',
+  'lumen.games.systemTracked': 'Tracked',
   'lumen.games.videos': 'Videos',
   'lumen.games.watchVideo': 'Watch {name}',
   'lumen.genrePicker.all': 'All genres',

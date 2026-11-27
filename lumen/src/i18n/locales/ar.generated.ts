@@ -3903,6 +3903,8 @@ export const messages = {
   'lumen.games.released': 'تاريخ الإصدار',
   'lumen.games.screenshots': 'لقطات الشاشة',
   'lumen.games.steamLibrary': 'مكتبة Steam',
+  'lumen.games.systemAvailable': 'متاح',
+  'lumen.games.systemTracked': 'تعقب',
   'lumen.games.videos': 'الفيديوهات',
   'lumen.games.watchVideo': 'مشاهدة {name}',
   'lumen.genrePicker.all': 'كل الأنواع',
