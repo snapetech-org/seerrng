@@ -2057,7 +2057,15 @@ describe('music Aurral proxy routes', () => {
     const badMbid = await request(app).get('/api/v1/music/artist/not-a-uuid');
     expect(badMbid.status).toBe(400);
 
-    getSpy.mockRejectedValueOnce(new Error('Aurral error'));
+    // with no earlier copy kept, a failing artist lookup answers 502
+    resetMusicReadCache();
+    const answer = getSpy.getMockImplementation();
+    getSpy.mockImplementation(async (endpoint, ...rest) => {
+      if (endpoint === `/api/artists/${ARTIST_MBID}`) {
+        throw new Error('Aurral error');
+      }
+      return answer?.(endpoint, ...rest);
+    });
     const failed = await request(app).get(
       `/api/v1/music/artist/${ARTIST_MBID}`
     );

@@ -71,6 +71,9 @@ patchedDependencies:
   picomatch@2.3.2:
     hash: 36238340745722e3f5c614e8d9b2a3637ccc832078f9702829e60e9de4ba7b22
     path: patches/picomatch@2.3.2.patch
+  typeorm@1.1.2:
+    hash: 8cfa23c36b5f63674be0dbad522e5c0ae2c911127c07924c8ae640292b9f4f2d
+    path: patches/typeorm@1.1.2.patch
 
 importers:
 
@@ -282,7 +285,7 @@ importers:
         version: 3.7.0
       typeorm:
         specifier: 1.1.2
-        version: 1.1.2(babel-plugin-macros@3.1.0)(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@swc/core@1.16.18(@swc/helpers@0.5.24))(@types/node@24.19.0)(typescript@6.0.3))
+        version: 1.1.2(patch_hash=8cfa23c36b5f63674be0dbad522e5c0ae2c911127c07924c8ae640292b9f4f2d)(babel-plugin-macros@3.1.0)(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@swc/core@1.16.18(@swc/helpers@0.5.24))(@types/node@24.19.0)(typescript@6.0.3))
       ua-parser-js:
         specifier: 2.0.10
         version: 2.0.10
@@ -14275,7 +14278,7 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typeorm@1.1.2(babel-plugin-macros@3.1.0)(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@swc/core@1.16.18(@swc/helpers@0.5.24))(@types/node@24.19.0)(typescript@6.0.3)):
+  typeorm@1.1.2(patch_hash=8cfa23c36b5f63674be0dbad522e5c0ae2c911127c07924c8ae640292b9f4f2d)(babel-plugin-macros@3.1.0)(better-sqlite3@13.0.3)(pg@8.23.1)(ts-node@10.9.2(@swc/core@1.16.18(@swc/helpers@0.5.24))(@types/node@24.19.0)(typescript@6.0.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.4.0

@@ -13,6 +13,7 @@ import AurralAPI, {
   type AurralNormalizedTopResult,
   type AurralNormalizedTrack,
   type AurralResolvedLink,
+  type AurralSimilarArtist,
 } from '@server/api/aurral';
 import CoverArtArchive from '@server/api/coverartarchive';
 import DeezerAPI, {
@@ -90,8 +91,10 @@ import {
   getMusicQualityStatuses,
 } from '@server/lib/musicQualityAvailability';
 import {
+  cachedArtistDetails,
   cachedMusicCover,
   cachedMusicRead,
+  cachedSimilarArtists,
   invalidateMusicReads,
   type MusicReadOptions,
 } from '@server/lib/musicReadCache';
@@ -224,6 +227,14 @@ const COVER_READ: MusicReadOptions = {
       buffer.length <= MAX_CACHED_COVER_BYTES
     );
   },
+};
+// artist details (bio, releases) change rarely: ten minutes fresh, and an older
+// copy answers when Aurral is slow or failing
+const ARTIST_DETAILS_READ: MusicReadOptions = {
+  ttlMs: 10 * 60_000,
+  revalidateMs: 24 * 60 * 60_000,
+  maxStaleMs: 7 * 24 * 60 * 60_000,
+  waitMs: 3_000,
 };
 // library pages change when a download finishes: a copy up to 5 minutes old
 // answers at once while a new one is read
@@ -2937,16 +2948,26 @@ musicRoutes.get('/artist/:mbid/similar', async (req, res, next) => {
     return res.status(400).json({ message: parsedMbid.error });
   }
 
+  const mbid = parsedMbid.value;
   try {
-    const [artists, ownedAlbums] = await Promise.all([
-      aurral.getSimilarArtists(parsedMbid.value),
-      loadOwnedAlbums(aurral),
-    ]);
-    return res
-      .status(200)
-      .json({ artists: withOwnedArtists(artists, ownedAlbums) });
+    // the same for everyone and slow to change: shared like the charts, so a
+    // busy Aurral serves the last copy instead of failing the Discover rows
+    const artists = await cachedSimilarArtists(
+      `${ownedSongServerKey()}:${mbid}`,
+      DISCOVER_READ,
+      () => aurral.getSimilarArtists(mbid)
+    ).catch(async (error: unknown) => {
+      logger.warn('Aurral similar artists lookup failed; using ListenBrainz', {
+        label: 'Music API',
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+      });
+      return listenBrainzSimilarArtists(mbid);
+    });
+    return res.status(200).json({
+      artists: withOwnedArtists(artists, await loadOwnedAlbums(aurral)),
+    });
   } catch (error) {
-    logger.warn('Aurral similar artists lookup failed', {
+    logger.warn('Similar artists lookup failed', {
       label: 'Music API',
       errorMessage: error instanceof Error ? error.message : 'Unknown error',
     });
@@ -2956,6 +2977,39 @@ musicRoutes.get('/artist/:mbid/similar', async (req, res, next) => {
     });
   }
 });
+
+// ListenBrainz's similar artists in Aurral's shape, for when Aurral is busy
+// (an artist ListenBrainz doesn't know has none)
+const MAX_FALLBACK_SIMILAR_ARTISTS = 12;
+const listenBrainzSimilarArtists = async (
+  mbid: string
+): Promise<AurralSimilarArtist[]> => {
+  const details = await new ListenBrainzAPI()
+    .getArtist(mbid)
+    .catch((error: unknown) => {
+      if (isNotFoundError(error)) return null;
+      throw error;
+    });
+  const seen = new Set<string>();
+  return [...(details?.similarArtists?.artists ?? [])]
+    .sort((a, b) => b.score - a.score)
+    .flatMap((artist): AurralSimilarArtist[] => {
+      const id = normalizeMusicBrainzId(artist.artist_mbid);
+      const name = typeof artist.name === 'string' ? artist.name.trim() : '';
+      if (
+        !id ||
+        !MUSICBRAINZ_UUID_PATTERN.test(id) ||
+        !name ||
+        id === mbid ||
+        seen.has(id)
+      ) {
+        return [];
+      }
+      seen.add(id);
+      return [{ mbid: id, name: name.slice(0, 512), image: null }];
+    })
+    .slice(0, MAX_FALLBACK_SIMILAR_ARTISTS);
+};
 
 type ArtistReleaseGroups = NonNullable<
   Awaited<ReturnType<AurralAPI['getArtistDetails']>>
@@ -3495,7 +3549,12 @@ musicRoutes.get('/artist/:mbid', async (req, res, next) => {
 
   const [detailsResult, libraryResult, ownedAlbumsResult] =
     await Promise.allSettled([
-      aurral.getArtistDetails(parsedMbid.value),
+      // shared per artist: a busy Aurral serves the last copy instead of a 502
+      cachedArtistDetails(
+        `${ownedSongServerKey()}:${parsedMbid.value}`,
+        ARTIST_DETAILS_READ,
+        () => aurral.getArtistDetails(parsedMbid.value)
+      ),
       aurral.getLibraryArtistReleaseGroups(parsedMbid.value),
       loadOwnedAlbums(aurral),
     ]);

@@ -1,4 +1,6 @@
-import ComicVineAPI from '@server/api/comicvine';
+import ComicVineAPI, {
+  type ComicVineVolumeResult,
+} from '@server/api/comicvine';
 import { getCoverArtArchiveThumbnailUrl } from '@server/api/coverartarchive/urls';
 import GoogleBooksAPI from '@server/api/googlebooks';
 import LazyLibrarianAPI from '@server/api/lazylibrarian';
@@ -4659,7 +4661,30 @@ const comicLibraryFor = (user?: User) => {
   });
 };
 
+// The western row is the same for everyone and the index changes only on a
+// scan: its volumes are kept for five minutes like the AniList rows
+const WESTERN_LANDING_TTL_MS = 5 * 60_000;
+let westernLandingVolumes:
+  { at: number; volumes: Promise<ComicVineVolumeResult[]> } | undefined;
 const westernLanding = async (): Promise<ComicWork[]> => {
+  const cached = westernLandingVolumes;
+  if (!cached || Date.now() - cached.at >= WESTERN_LANDING_TTL_MS) {
+    const entry = {
+      at: Date.now(),
+      volumes: loadWesternLandingVolumes(),
+    };
+    westernLandingVolumes = entry;
+    // a failed read isn't kept: the next view tries again
+    entry.volumes.catch(() => {
+      if (westernLandingVolumes === entry) westernLandingVolumes = undefined;
+    });
+    return westernWorksFromVolumes(await entry.volumes);
+  }
+  return westernWorksFromVolumes(await cached.volumes);
+};
+const loadWesternLandingVolumes = async (): Promise<
+  ComicVineVolumeResult[]
+> => {
   const recent = await browseComicCatalogIndex({
     publishers: MAJOR_WESTERN_PUBLISHERS,
     sinceYear: new Date().getFullYear() - 3,
@@ -4667,6 +4692,8 @@ const westernLanding = async (): Promise<ComicWork[]> => {
     sort: 'newest',
     page: 1,
     limit: 20,
+    // the landing row shows no total
+    withTotal: false,
   });
   // a first index scan reaches recent volumes last: modern long runs meanwhile
   const volumes =
@@ -4680,9 +4707,10 @@ const westernLanding = async (): Promise<ComicWork[]> => {
             sort: 'issues',
             page: 1,
             limit: 20,
+            withTotal: false,
           })
         ).results;
-  return westernWorksFromVolumes(volumes);
+  return volumes;
 };
 
 discoverRoutes.get('/comics/landing', async (req, res) => {

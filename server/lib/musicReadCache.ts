@@ -139,7 +139,17 @@ const covers = createMusicReadCache(200);
 export const cachedMusicCover = covers.read;
 
 /** Test hook. */
+// similar artists per artist page: their own entries, so browsing artists
+// never pushes the shared charts out of the main cache
+const similarArtists = createMusicReadCache(300);
+export const cachedSimilarArtists = similarArtists.read;
+// artist pages: the last copy answers while Aurral is busy
+const artistDetails = createMusicReadCache(300);
+export const cachedArtistDetails = artistDetails.read;
+
 export const resetMusicReadCache = () => {
   reads.reset();
   covers.reset();
+  similarArtists.reset();
+  artistDetails.reset();
 };

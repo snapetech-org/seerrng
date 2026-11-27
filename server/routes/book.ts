@@ -20,6 +20,10 @@ import {
   normalizeOpenLibraryWorkId,
 } from '@server/lib/externalIds';
 import { upsertMediaSearchMetadata } from '@server/lib/mediaSearchMetadata';
+import {
+  createMusicReadCache,
+  type MusicReadOptions,
+} from '@server/lib/musicReadCache';
 import { getSettings, type ReadarrSettings } from '@server/lib/settings';
 import { isUserMediaCategoryEnabled } from '@server/lib/userMediaCategories';
 import logger from '@server/logger';
@@ -67,6 +71,19 @@ const bookRateLimit = rateLimit({
 
 bookRoutes.use(bookRateLimit);
 
+// The owned list reads the whole ChaptarrNG library and matches every book
+// against the database, synchronously for the matching part. Lumen pages
+// through it (and checks it on most book pages), so one list per format and
+// user is shared for half a minute and refreshed in the background after that.
+const bookLibraryReads = createMusicReadCache(50);
+const BOOK_LIBRARY_READ: MusicReadOptions = {
+  ttlMs: 30_000,
+  revalidateMs: 5 * 60_000,
+  maxStaleMs: 30 * 60_000,
+  waitMs: 3_000,
+};
+export const resetBookLibraryCache = () => bookLibraryReads.reset();
+
 bookRoutes.get('/library', async (req, res) => {
   const format = req.query.format;
   if (format !== 'ebook' && format !== 'audiobook')
@@ -76,34 +93,11 @@ bookRoutes.get('/library', async (req, res) => {
   const page = parsePositiveInt(req.query.page, 1, 500);
   const pageSize = 50;
   try {
-    const books = await getBookshelfBookLibrary(
-      getSettings().readarr,
-      format,
-      true
+    const available = await bookLibraryReads.read(
+      `${format}:${req.user?.id ?? 'anonymous'}`,
+      BOOK_LIBRARY_READ,
+      () => listOwnedBooks(format, req.user)
     );
-    const media = await findBookMediaForBookResults(books, req.user);
-    // Several catalog records (editions, aliases, duplicate media rows) can
-    // resolve to one owned manager record; list it once per format (#625).
-    const listed = new Set<string>();
-    const ownedKey = (info: Media): string => {
-      const serviceId =
-        format === 'audiobook' ? info.audiobookServiceId : info.serviceId;
-      const externalId =
-        format === 'audiobook'
-          ? info.audiobookExternalServiceId
-          : info.externalServiceId;
-      return serviceId != null && externalId != null
-        ? `record:${serviceId}:${externalId}`
-        : `media:${info.id}`;
-    };
-    const available = books.flatMap((book) => {
-      const info = media.get(book.id);
-      if (!info || !hasAvailableBookFormat(info, format)) return [];
-      const key = ownedKey(info);
-      if (listed.has(key)) return [];
-      listed.add(key);
-      return [{ ...book, mediaInfo: info }];
-    });
     return res.json(
       filterEntityResponse(
         {
@@ -125,6 +119,40 @@ bookRoutes.get('/library', async (req, res) => {
       .json({ message: 'Book library is unavailable. Please try again.' });
   }
 });
+
+const listOwnedBooks = async (
+  format: 'ebook' | 'audiobook',
+  user: Express.Request['user']
+) => {
+  const books = await getBookshelfBookLibrary(
+    getSettings().readarr,
+    format,
+    true
+  );
+  const media = await findBookMediaForBookResults(books, user);
+  // Several catalog records (editions, aliases, duplicate media rows) can
+  // resolve to one owned manager record; list it once per format (#625).
+  const listed = new Set<string>();
+  const ownedKey = (info: Media): string => {
+    const serviceId =
+      format === 'audiobook' ? info.audiobookServiceId : info.serviceId;
+    const externalId =
+      format === 'audiobook'
+        ? info.audiobookExternalServiceId
+        : info.externalServiceId;
+    return serviceId != null && externalId != null
+      ? `record:${serviceId}:${externalId}`
+      : `media:${info.id}`;
+  };
+  return books.flatMap((book) => {
+    const info = media.get(book.id);
+    if (!info || !hasAvailableBookFormat(info, format)) return [];
+    const key = ownedKey(info);
+    if (listed.has(key)) return [];
+    listed.add(key);
+    return [{ ...book, mediaInfo: info }];
+  });
+};
 
 bookRoutes.get('/:id/series', async (req, res) => {
   const id = parseOpenLibraryWorkId(req.params.id);

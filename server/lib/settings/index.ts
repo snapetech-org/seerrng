@@ -2614,12 +2614,28 @@ class Settings {
 
 let settings: Settings | undefined;
 
+// getSettings() runs many times per request (once per loaded media row, for
+// one). Checking the file each time is several synchronous filesystem calls
+// that hold up every other request, so changes made by another process are
+// picked up at most a second later instead. Tests keep the immediate check.
+const SETTINGS_REFRESH_INTERVAL_MS = 1_000;
+let settingsCheckedAt = 0;
+
 export const getSettings = (initialSettings?: AllSettings): Settings => {
   if (!settings) {
     settings = new Settings(initialSettings);
   }
 
-  settings.refreshIfChangedSync();
+  const now = Date.now();
+  if (
+    process.env.NODE_ENV === 'test' ||
+    now - settingsCheckedAt >= SETTINGS_REFRESH_INTERVAL_MS ||
+    now < settingsCheckedAt
+  ) {
+    settings.refreshIfChangedSync();
+    // only after a successful check: a failing one is retried on every call
+    settingsCheckedAt = now;
+  }
 
   return settings;
 };

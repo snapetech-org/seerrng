@@ -8,6 +8,15 @@ import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
 
 const INDEX_ID = 'global';
+
+// Counting the matches of a browse filter reads every matching row (a few
+// hundred ms on a full index, holding up the server); the index only changes
+// when a scan writes a new generation, so a count is kept for an hour per
+// generation and filter.
+const COUNT_TTL_MS = 60 * 60_000;
+const MAX_COUNTS = 200;
+const browseCounts = new Map<string, { total: number; at: number }>();
+export const resetComicCatalogCounts = () => browseCounts.clear();
 const PAGE_SIZE = 100;
 const SCAN_INTERVAL_MS = 32_000;
 const SCAN_CLAIM_SECONDS = 25;
@@ -308,11 +317,26 @@ export const lookupComicCatalogVolumes = async (
     (id) => Number.isSafeInteger(id) && id > 0
   );
   if (!wanted.length) return [];
-  const rows = await getRepository(ComicCatalogVolume)
+  // the primary key is (generation, id): naming the generations lets SQLite
+  // use it instead of scanning the whole index
+  const scan = await getRepository(ComicCatalogScan).findOneBy({
+    id: INDEX_ID,
+  });
+  const generations = [
+    ...new Set(
+      [scan?.scanGeneration, scan?.completeGeneration].filter(
+        (generation): generation is number =>
+          typeof generation === 'number' && generation > 0
+      )
+    ),
+  ];
+  const query = getRepository(ComicCatalogVolume)
     .createQueryBuilder('volume')
-    .where('volume.id IN (:...ids)', { ids: wanted })
-    .orderBy('volume.generation', 'DESC')
-    .getMany();
+    .where('volume.id IN (:...ids)', { ids: wanted });
+  if (generations.length) {
+    query.andWhere('volume.generation IN (:...generations)', { generations });
+  }
+  const rows = await query.orderBy('volume.generation', 'DESC').getMany();
   const byId = new Map<number, ComicVineVolumeResult>();
   for (const row of rows) {
     if (!byId.has(row.id))
@@ -336,6 +360,7 @@ export const browseComicCatalogIndex = async ({
   minIssues,
   page,
   limit,
+  withTotal = true,
 }: {
   publishers?: string[];
   publisher?: string;
@@ -344,6 +369,8 @@ export const browseComicCatalogIndex = async ({
   minIssues?: number;
   page: number;
   limit: number;
+  /** false skips counting all matches (totalResults is then the page's). */
+  withTotal?: boolean;
 }): Promise<{
   results: ComicVineVolumeResult[];
   totalResults: number;
@@ -386,10 +413,34 @@ export const browseComicCatalogIndex = async ({
       .orderBy('volume.issueCount', 'DESC', 'NULLS LAST')
       .addOrderBy('volume.title', 'ASC');
   }
-  const [rows, totalResults] = await query
+  const rows = await query
+    .clone()
     .skip((page - 1) * limit)
     .take(limit)
-    .getManyAndCount();
+    .getMany();
+  let totalResults = (page - 1) * limit + rows.length;
+  if (withTotal) {
+    const countKey = JSON.stringify([
+      generation,
+      publishers?.map(normalized) ?? null,
+      publisher ? normalized(publisher) : null,
+      sinceYear ?? null,
+      minIssues ?? null,
+    ]);
+    const counted = browseCounts.get(countKey);
+    // a first scan is still adding rows: count those every time
+    if (
+      counted &&
+      scan.completeGeneration !== 0 &&
+      Date.now() - counted.at < COUNT_TTL_MS
+    ) {
+      totalResults = counted.total;
+    } else {
+      totalResults = await query.getCount();
+      if (browseCounts.size >= MAX_COUNTS) browseCounts.clear();
+      browseCounts.set(countKey, { total: totalResults, at: Date.now() });
+    }
+  }
   return {
     results: rows.map(
       (row) => JSON.parse(row.payload) as ComicVineVolumeResult
