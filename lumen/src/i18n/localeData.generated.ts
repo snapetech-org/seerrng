@@ -20437,7 +20437,7 @@ export const localeData = [
         'Could not check the book request limit. Retry before requesting.',
       'lumen.bookDetail.recheckQuota': 'Recheck quota',
       'lumen.bulkBooks.requestBibliography': 'Request Bibliography',
-      'lumen.bookDetail.viewRequestFormat': 'View {format} request',
+      'lumen.bookDetail.viewRequestFormat': 'View {format} Request',
     },
   },
   {
