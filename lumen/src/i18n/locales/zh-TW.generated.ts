@@ -1568,6 +1568,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux 中',
   'components.SoftwareCatalog.macos': 'macOS',
   'components.SoftwareCatalog.releaseYearFilter': '发布年份',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG 在相關的公共 Steam 圖書庫中找到此遊戲 。 它可能無法安裝或以 QuestarrNG 本地檔案提供 。',
   'components.SoftwareCatalog.windows': '視窗',
   'components.RequestModal.Music.requestmusic': '要求音樂',
   'components.RequestModal.Music.backendRequestFailed':

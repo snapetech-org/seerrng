@@ -1683,6 +1683,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'MaOS',
   'components.SoftwareCatalog.releaseYearFilter': 'Rilis tahun',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG menemukan game ini di perpustakaan umum Steam yang tertaut. Ini mungkin tidak diinstal atau tersedia sebagai file QuestarrNG lokal.',
   'components.SoftwareCatalog.windows': 'Jendela',
   'components.RequestModal.Music.requestmusic': 'Permintaan Musik',
   'components.RequestModal.Music.backendRequestFailed':

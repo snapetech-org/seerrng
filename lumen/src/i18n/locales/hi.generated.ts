@@ -1670,6 +1670,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'MacOS',
   'components.SoftwareCatalog.releaseYearFilter': 'रिलीज वर्ष',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG ने इस गेम को अपने लिंक्ड पब्लिक में पाया Steam पुस्तकालय इसे स्थानीय QuestarrNG फ़ाइल के रूप में स्थापित या उपलब्ध नहीं किया जा सकता है।',
   'components.SoftwareCatalog.windows': 'विंडोज',
   'components.RequestModal.Music.requestmusic': 'संगीत अनुरोध',
   'components.RequestModal.Music.backendRequestFailed':

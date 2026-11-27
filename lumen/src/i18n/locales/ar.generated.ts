@@ -1646,6 +1646,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'macOS',
   'components.SoftwareCatalog.releaseYearFilter': 'سنة الإصدار',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'وجدت QuestarrNG هذه اللعبة في مكتبة Steam العامة المرتبطة بها. قد لا يكون مثبتًا أو متاحًا كملف QuestarrNG محلي.',
   'components.SoftwareCatalog.windows': 'النوافذ',
   'components.RequestModal.Music.requestmusic': 'طلب الموسيقى',
   'components.RequestModal.Music.backendRequestFailed':

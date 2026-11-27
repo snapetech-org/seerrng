@@ -1689,6 +1689,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'マックオース',
   'components.SoftwareCatalog.releaseYearFilter': 'リリース年',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG は、リンクされたパブリック Steam ライブラリでこのゲームを見つけました。インストールされていないか、ローカルの QuestarrNG ファイルとして利用できない可能性があります。',
   'components.SoftwareCatalog.windows': 'ウィンドウズ',
   'components.RequestModal.Music.requestmusic': '音楽のリクエスト',
   'components.RequestModal.Music.backendRequestFailed':

@@ -33,6 +33,8 @@ const copy = {
     mainStory: 'Main Story: 30.5 h',
     pcSystems: 'Windows · Linux',
     steamLibrary: 'Steam Library',
+    steamLibraryDescription:
+      'QuestarrNG found this game in its linked public Steam library. It may not be installed or available as a local QuestarrNG file.',
     consoleSystems: 'Nintendo Entertainment System',
   },
   fr: {
@@ -57,6 +59,8 @@ const copy = {
     mainStory: 'Histoire principale : 30,5 h',
     pcSystems: 'Windows · Linux',
     steamLibrary: 'Bibliothèque Steam',
+    steamLibraryDescription:
+      'QuestarrNG a trouvé ce jeu dans sa bibliothèque publique liée Steam. Il ne peut pas être installé ou disponible comme fichier QuestarrNG local.',
     consoleSystems: 'Nintendo Entertainment System',
   },
   ar: {
@@ -81,6 +85,8 @@ const copy = {
     mainStory: 'القصة الرئيسية: 30.5 ساعة',
     pcSystems: 'Windows · Linux',
     steamLibrary: 'مكتبة Steam',
+    steamLibraryDescription:
+      'وجدت QuestarrNG هذه اللعبة في مكتبة Steam العامة المرتبطة بها. قد لا يكون مثبتًا أو متاحًا كملف QuestarrNG محلي.',
     consoleSystems: 'Nintendo Entertainment System',
   },
 }[locale];
@@ -196,6 +202,10 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     copy.pcSystems,
     copy.steamLibrary,
   ]);
+  await expect(page.getByText(copy.steamLibrary)).toHaveAttribute(
+    'title',
+    copy.steamLibraryDescription
+  );
   await expect(page.getByLabel(copy.allPcPlatforms)).toBeVisible();
   await expect(page.getByLabel(copy.genre)).toBeVisible();
   await expect(page.getByLabel(copy.releaseYear)).toBeVisible();

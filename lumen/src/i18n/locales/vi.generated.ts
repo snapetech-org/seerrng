@@ -1679,6 +1679,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'MacOS',
   'components.SoftwareCatalog.releaseYearFilter': 'Phát hành năm',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'Tìm thấy trò chơi này trong thư viện Steam công cộng. Có thể nó không được cài đặt hoặc có sẵn như một tập tin searcharNG cục bộ.',
   'components.SoftwareCatalog.windows': 'Cửa sổ',
   'components.RequestModal.Music.requestmusic': 'Yêu cầu âm nhạc',
   'components.RequestModal.Music.backendRequestFailed':

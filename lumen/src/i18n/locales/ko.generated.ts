@@ -1638,6 +1638,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': '맥 OS',
   'components.SoftwareCatalog.releaseYearFilter': '출시 년',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG는 링크된 공개 Steam 라이브러리에서 이 게임을 발견했습니다. 로컬 QuestarrNG 파일로 설치되지 않거나 사용 가능하지 않을 수 있습니다.',
   'components.SoftwareCatalog.windows': '윈도우',
   'components.RequestModal.Music.requestmusic': '음악 요청',
   'components.RequestModal.Music.backendRequestFailed':

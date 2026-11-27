@@ -538,6 +538,16 @@ export function Games() {
                 ? t('lumen.games.steamLibrary', 'Steam Library')
                 : undefined,
             ].filter((detail): detail is string => Boolean(detail))}
+            detailsDescriptions={
+              cat === 'game' && g.steamOwned
+                ? {
+                    [t('lumen.games.steamLibrary', 'Steam Library')]: t(
+                      'components.SoftwareCatalog.steamOwnedDescription',
+                      'QuestarrNG found this game in its linked public Steam library. It may not be installed or available as a local QuestarrNG file.'
+                    ),
+                  }
+                : undefined
+            }
           />
         ))}
       </div>

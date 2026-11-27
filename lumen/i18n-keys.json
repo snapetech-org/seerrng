@@ -5870,6 +5870,7 @@
   "components.SoftwareCatalog.linux",
   "components.SoftwareCatalog.macos",
   "components.SoftwareCatalog.releaseYearFilter",
+  "components.SoftwareCatalog.steamOwnedDescription",
   "components.SoftwareCatalog.windows",
   "lumen.account.external.title",
   "lumen.account.external.description",

@@ -1724,6 +1724,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux.',
   'components.SoftwareCatalog.macos': 'MacOS',
   'components.SoftwareCatalog.releaseYearFilter': 'Ano de lançamento',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG encontrou este jogo em sua biblioteca Steam pública ligada. Pode não estar instalado ou disponível como um arquivo local da QuestarrNG.',
   'components.SoftwareCatalog.windows': 'Janelas',
   'components.RequestModal.Music.requestmusic': 'Pedir Música',
   'components.RequestModal.Music.backendRequestFailed':

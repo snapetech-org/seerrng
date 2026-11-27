@@ -12765,7 +12765,9 @@ release-note: `release-notes/lumen-pc-game-playtime-cards.md`
 Native PC game catalog cards display a Steam Library badge when the catalog
 reports `steamOwned`. Lumen previously showed this state only on game details.
 PC catalog cards now add the existing localized Steam Library label to the
-shared secondary-details slot; retro and modern console cards do not show the
+shared secondary-details slot; its localized accessible name and hover text
+clarify that a public Steam library match does not mean the game is installed or
+available as a local file. Retro and modern console cards do not show the
 PC-only ownership state.
 
 The pre-change baseline at `c2b4703aa` and candidate use the same

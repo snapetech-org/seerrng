@@ -1719,6 +1719,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': 'macOS',
   'components.SoftwareCatalog.releaseYearFilter': 'Erscheinungsjahr',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG fand dieses Spiel in seiner verknüpften öffentlichen Steam-Bibliothek. Sie ist möglicherweise nicht als lokale QuestarrNG-Datei installiert oder verfügbar.',
   'components.SoftwareCatalog.windows': 'Windows',
   'components.RequestModal.Music.requestmusic': 'Musik anfordern',
   'components.RequestModal.Music.backendRequestFailed':

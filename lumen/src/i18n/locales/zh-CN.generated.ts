@@ -1565,6 +1565,8 @@ export const messages = {
   'components.SoftwareCatalog.linux': 'Linux',
   'components.SoftwareCatalog.macos': '马科斯',
   'components.SoftwareCatalog.releaseYearFilter': '发布年份',
+  'components.SoftwareCatalog.steamOwnedDescription':
+    'QuestarrNG在其链接的公共Steam库中发现了此游戏. 它可能不作为本地的QuestarrNG文件安装或提供.',
   'components.SoftwareCatalog.windows': '窗口',
   'components.RequestModal.Music.requestmusic': '请求音乐',
   'components.RequestModal.Music.backendRequestFailed':
