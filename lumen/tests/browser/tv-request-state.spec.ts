@@ -30,6 +30,11 @@ const req = (nums: number[], status = 2, is4k = false) => ({
 });
 type RecordedPost = { path: string; body: unknown };
 const isBaseline = process.env.LUMEN_TV_REQUEST_BASELINE === 'true';
+const shortcutLabels = {
+  en: { latest: 'Latest season only', clear: 'Clear' },
+  fr: { latest: 'Uniquement la dernière saison', clear: 'Effacer' },
+  ar: { latest: 'الموسم الأخير فقط', clear: 'مسح' },
+} as const;
 
 async function captureRequestState(
   page: Page,
@@ -145,6 +150,38 @@ async function show(
     return r.fulfill({ json: { results: [] } });
   });
   await page.goto(appPath('/tv/84773'));
+}
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`TV season selection shortcuts are localized and functional in ${locale}`, async ({
+    page,
+  }, testInfo) => {
+    const rows = page.locator('.srow');
+    await show(
+      page,
+      { status: 1, seasons: [], requests: [] },
+      [],
+      2,
+      undefined,
+      {},
+      seasons,
+      locale
+    );
+    await expect(rows).toHaveCount(3);
+    await captureRequestState(page, testInfo, `season-shortcuts-${locale}`);
+    if (isBaseline) return;
+
+    const labels = shortcutLabels[locale];
+    const shortcuts = page.locator('.shortcuts');
+    await shortcuts.getByRole('button', { name: labels.latest }).click();
+    await expect(rows.nth(0)).toHaveAttribute('aria-checked', 'false');
+    await expect(rows.nth(1)).toHaveAttribute('aria-checked', 'false');
+    await expect(rows.nth(2)).toHaveAttribute('aria-checked', 'true');
+
+    await shortcuts.getByRole('button', { name: labels.clear }).click();
+    for (let index = 0; index < 3; index++)
+      await expect(rows.nth(index)).toHaveAttribute('aria-checked', 'false');
+  });
 }
 
 for (const locale of ['en', 'fr', 'ar'] as const) {

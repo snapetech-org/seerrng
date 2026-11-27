@@ -1,5 +1,24 @@
 # Lumen workflow parity
 
+### Localize TV request selection shortcuts and account linking (2026-11-27)
+
+The TV details page now uses the existing localized catalog labels for
+“Latest season only”, “Clear”, and the playback account linking action. Selecting
+the latest season and clearing the selection retain their existing request
+behavior. No CSS owner or request payload changed.
+
+The focused browser case passes 12/12 across English, French, and Arabic on
+desktop, iPhone, Android, and tablet. Matched baseline and candidate captures
+were inspected at desktop 1280×900 and iPhone 390×844. French wraps the third
+shortcut onto a second row at desktop through the existing wrapping layout; the
+phone layout also fits without horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-shortcuts-localization-20261127/`.
+
+The API and series data are fixtures; live playback account gating and request
+provider behavior remain unverified.
+
+release-note: `release-notes/lumen-tv-season-shortcut-localization.md`
+
 ### Keep the large-series fallback list free of duplicate seasons (2026-11-27)
 
 When episode metadata fails, the request sheet already offers a full-season
