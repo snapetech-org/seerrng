@@ -1020,8 +1020,9 @@ test('native request modal allows a full-season request when episode metadata fa
   const seasonChoices = fallback.locator('input[type="checkbox"]');
   await expect(seasonChoices).toHaveCount(10);
   await expect(seasonChoices.first()).toBeChecked();
-  for (let index = 1; index < 10; index++)
+  for (let index = 1; index < 9; index++)
     await seasonChoices.nth(index).uncheck();
+  const finalSeasonChoice = seasonChoices.nth(9);
   await expect(
     dialog.getByRole('button', { name: 'Request', exact: true })
   ).toBeEnabled();
@@ -1030,17 +1031,29 @@ test('native request modal allows a full-season request when episode metadata fa
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(dialog).toBeVisible();
+  await finalSeasonChoice.scrollIntoViewIfNeeded();
+  const finalSeasonBounds = await finalSeasonChoice.boundingBox();
+  const requestButton = dialog.getByRole('button', {
+    name: 'Request',
+    exact: true,
+  });
+  const requestBounds = await requestButton.boundingBox();
+  expect(finalSeasonBounds).not.toBeNull();
+  expect(requestBounds).not.toBeNull();
+  expect(finalSeasonBounds!.y + finalSeasonBounds!.height).toBeLessThanOrEqual(
+    requestBounds!.y
+  );
   await capture(page, {
     path: `${screenshotRoot}/request-season-fallback-390.png`,
   });
-  await dialog.getByRole('button', { name: 'Request', exact: true }).click();
+  await requestButton.click();
   await expect
     .poll(() => submittedRequest)
     .toMatchObject({
       mediaId: 1396,
       mediaType: 'tv',
-      seasons: [1],
-      seasonRequests: [{ seasonNumber: 1 }],
+      seasons: [1, 10],
+      seasonRequests: [{ seasonNumber: 1 }, { seasonNumber: 10 }],
     });
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);

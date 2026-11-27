@@ -13300,3 +13300,18 @@ The browser API is fixture-backed; live ROMarrNG patch responses and a real
 acquisition round trip remain unverified.
 
 release-note: `release-notes/lumen-rom-patch-request-selection.md`
+
+### Long-series episode-metadata failure recovery (2026-11-27)
+
+Expanded the existing native and Lumen browser regressions to select both the
+first and final season when all episode metadata batches fail. At a 390×844
+phone viewport, each test scrolls the final fallback choice into view and
+asserts it ends above the sticky submit button. Both tests verify that the
+request submits exactly the two selected season numbers. The mounted Lumen
+test passed on desktop, iPhone, Android, and tablet (4/4); the native fixture
+passed at desktop and phone states (1/1). This verifies the fallback workflow
+against deterministic API fixtures; live provider timing and real requests
+remain unverified. Captures and the isolated test database are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-large-show-parity-20261127/`.
+
+release-note: none

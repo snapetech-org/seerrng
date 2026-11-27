@@ -917,9 +917,24 @@ test('requests a full season when every episode metadata batch fails', async ({
     exact: true,
   });
   await seasonChoice.check();
-  await expect(
-    sheet.getByRole('button', { name: 'Request Selected Items' })
-  ).toBeEnabled();
+  const finalSeasonChoice = sheet.getByRole('checkbox', {
+    name: 'Season 12 20 episodes',
+    exact: true,
+  });
+  await finalSeasonChoice.check();
+  await expect(sheet.getByText('Selected: 2')).toBeVisible();
+  await finalSeasonChoice.scrollIntoViewIfNeeded();
+  const finalSeasonBounds = await finalSeasonChoice.boundingBox();
+  const submitButton = sheet.getByRole('button', {
+    name: 'Request Selected Items',
+  });
+  const submitBounds = await submitButton.boundingBox();
+  expect(finalSeasonBounds).not.toBeNull();
+  expect(submitBounds).not.toBeNull();
+  expect(finalSeasonBounds!.y + finalSeasonBounds!.height).toBeLessThanOrEqual(
+    submitBounds!.y
+  );
+  await expect(submitButton).toBeEnabled();
   if (['desktop', 'iphone'].includes(info.project.name))
     await page.screenshot({
       path: info.outputPath(
@@ -927,7 +942,7 @@ test('requests a full season when every episode metadata batch fails', async ({
       ),
       fullPage: false,
     });
-  await sheet.getByRole('button', { name: 'Request Selected Items' }).click();
+  await submitButton.click();
   await expect(
     page.getByText('Episodes requested for The Rings of Power')
   ).toBeVisible();
@@ -939,8 +954,8 @@ test('requests a full season when every episode metadata batch fails', async ({
         mediaId: 84773,
         is4k: false,
         monitorFutureSeasons: true,
-        seasons: [1],
-        seasonRequests: [{ seasonNumber: 1 }],
+        seasons: [1, 12],
+        seasonRequests: [{ seasonNumber: 1 }, { seasonNumber: 12 }],
       },
     },
   ]);
