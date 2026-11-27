@@ -550,7 +550,7 @@ export interface RequestOptions {
   ignoreQuota?: boolean;
   requestQuotaApproval?: boolean;
   bypassStreamingRequestPolicy?: boolean;
-  userId?: number; // request on someone else's behalf (admins)
+  userId?: number; // request on someone else's behalf (authorized managers)
 }
 const post = <T = { id: number }>(body: object) =>
   api<T>('/request', {
@@ -605,12 +605,14 @@ export const requestBook = (
   id: string,
   format: 'ebook' | 'audiobook',
   editionId?: string,
-  policy: 'only' | 'either' | 'alongside' = 'only'
+  policy: 'only' | 'either' | 'alongside' = 'only',
+  options: RequestOptions = {}
 ) =>
   post({
     mediaType: 'book',
     mediaId: bookIdFor(id, format),
     format,
+    ...options,
     ...(editionId
       ? { preferredEditionId: editionId, editionPolicy: policy }
       : {}),

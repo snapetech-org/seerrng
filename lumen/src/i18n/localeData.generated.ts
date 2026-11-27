@@ -3371,6 +3371,7 @@ export const localeData = [
       'lumen.bulkBooks.loadingServiceOptions': 'جارٍ تحميل خيارات خدمة الكتب…',
       'lumen.bulkBooks.me': 'أنا',
       'lumen.bulkBooks.metadataProfile': 'ملف البيانات الوصفية',
+      'lumen.bulkBooks.optionsLoadFailed': 'تعذّر تحميل خيارات طلب الكتاب.',
       'lumen.bulkBooks.qualityProfile': 'ملف الجودة',
       'lumen.bulkBooks.requestAs': 'الطلب باسم',
       'lumen.bulkBooks.requestTags': 'وسوم الطلب',
@@ -15868,6 +15869,8 @@ export const localeData = [
       'lumen.bulkBooks.loadingServiceOptions': 'Loading book service options…',
       'lumen.bulkBooks.me': 'Me',
       'lumen.bulkBooks.metadataProfile': 'Metadata Profile',
+      'lumen.bulkBooks.optionsLoadFailed':
+        'Could not load book request options.',
       'lumen.bulkBooks.qualityProfile': 'Quality Profile',
       'lumen.bulkBooks.requestAs': 'Request As',
       'lumen.bulkBooks.requestTags': 'Request Tags',
@@ -29095,6 +29098,8 @@ export const localeData = [
         'Chargement des options du service de livres…',
       'lumen.bulkBooks.me': 'Moi',
       'lumen.bulkBooks.metadataProfile': 'Profil de métadonnées',
+      'lumen.bulkBooks.optionsLoadFailed':
+        'Impossible de charger les options de demande de livre.',
       'lumen.bulkBooks.qualityProfile': 'Profil de qualité',
       'lumen.bulkBooks.requestAs': 'Demander pour',
       'lumen.bulkBooks.requestTags': 'Étiquettes de demande',

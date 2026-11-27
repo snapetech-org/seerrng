@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   api,
@@ -17,9 +17,11 @@ import {
   type BookResult,
   type Edition,
   type EditionList,
+  type RequestOptions,
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
+import BookRequestOptions from '../components/BookRequestOptions';
 import { StatLabel, statusOf } from '../components/cards';
 import {
   ActionBar,
@@ -322,6 +324,17 @@ export default function BookDetail() {
   }
   const [pick, setPick] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [requestOptions, setRequestOptions] = useState<{
+    format: 'ebook' | 'audiobook';
+    options: RequestOptions;
+  }>({ format: f, options: {} });
+  const [requestOptionsReady, setRequestOptionsReady] = useState(true);
+  const onBookOptionsChange = useCallback(
+    (options: RequestOptions) => setRequestOptions({ format: f, options }),
+    [f]
+  );
+  const effectiveRequestOptions =
+    requestOptions.format === f ? requestOptions.options : {};
   // set at once, unlike busy: a double tap can't send a request twice before the re-render
   const sending = useRef(false);
   const [justAsked, setJustAsked] = useState<Set<string>>(new Set());
@@ -449,7 +462,13 @@ export default function BookDetail() {
     setBusy(true);
     try {
       // an ordinary request, so it goes through approval like any other
-      await requestBook(bookId, 'audiobook', row.id, 'alongside');
+      await requestBook(
+        bookId,
+        'audiobook',
+        row.id,
+        'alongside',
+        effectiveRequestOptions
+      );
       setJustAsked((x) => new Set(x).add(narratorKey(row.narrators)));
       setPick(null);
       toast(
@@ -490,7 +509,8 @@ export default function BookDetail() {
         bookId,
         f,
         exact || fallback,
-        exact ? 'only' : 'either'
+        exact ? 'only' : 'either',
+        effectiveRequestOptions
       );
       if (audio && showNarr && chosenRow)
         setJustAsked((x) => new Set(x).add(narratorKey(chosenRow.narrators)));
@@ -527,6 +547,13 @@ export default function BookDetail() {
           narrator: who(chosenRow, t),
         })
       : t('lumen.bookDetail.requestAudiobook', 'Request audiobook');
+  const canCustomizeRequest =
+    mayRequest &&
+    b.mediaInfo?.status !== MediaStatus.BLOCKLISTED &&
+    !pendingRequest &&
+    (audio && showNarr && anotherMode
+      ? !!chosenRow
+      : !available && !(s && s.k !== 'ok'));
   // with the admin's Audiobookshelf address this opens the book there; without one it's a plain
   // "in your library" status rather than a button that does nothing
   const inAbs = (listening: boolean) => {
@@ -576,7 +603,7 @@ export default function BookDetail() {
       chosenRow ? (
         <button
           className="btn btn-primary"
-          disabled={busy}
+          disabled={busy || !requestOptionsReady}
           onClick={requestAnother}
         >
           <Icon name="plus" />
@@ -603,7 +630,11 @@ export default function BookDetail() {
         <StatLabel s={s} />
       </button>
     ) : (
-      <button className="btn btn-primary" disabled={busy} onClick={request}>
+      <button
+        className="btn btn-primary"
+        disabled={busy || !requestOptionsReady}
+        onClick={request}
+      >
         <Icon name="plus" />
         {label}
       </button>
@@ -768,6 +799,15 @@ export default function BookDetail() {
             </p>
           )}
         </VideoDisclosure>
+        {canCustomizeRequest && (
+          <BookRequestOptions
+            key={f}
+            format={f}
+            onChange={onBookOptionsChange}
+            onReady={setRequestOptionsReady}
+            disabled={busy}
+          />
+        )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>
             {b.description && <p className="ov long">{b.description.trim()}</p>}

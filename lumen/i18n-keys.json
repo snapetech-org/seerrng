@@ -2393,6 +2393,7 @@
   "lumen.bulkBooks.loadingServiceOptions",
   "lumen.bulkBooks.me",
   "lumen.bulkBooks.metadataProfile",
+  "lumen.bulkBooks.optionsLoadFailed",
   "lumen.bulkBooks.qualityProfile",
   "lumen.bulkBooks.requestAs",
   "lumen.bulkBooks.requestTags",
