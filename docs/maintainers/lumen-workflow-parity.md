@@ -12963,3 +12963,22 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-request-status-20261127/`.
 
 release-note: `release-notes/lumen-game-library-request-status.md`
+
+### Native primary navigation destination audit (2026-11-27)
+
+Compared the native sidebar sections in
+`src/components/Layout/Sidebar/navigation.tsx` with Lumen's desktop and mobile
+navigation in `lumen/src/components/Shell.tsx`, account destinations in
+`lumen/src/pages/Me.tsx`, and route/bookmark table in `lumen/src/main.tsx`.
+Every native primary-navigation destination has a Lumen route or an explicit
+compatibility redirect. The reviewed permission and category/service gates are
+present for request, issue, blocklist, user-management, and media entries; no
+missing primary-menu destination was found in this pass.
+
+Existing browser evidence covers 288 standalone navigation cases and 404
+mounted account/navigation permission cases, each with eight viewport-specific
+skips. This audit closes primary-menu reachability only. Complete workflow
+behavior behind every route, live API authorization, and matched native/Lumen
+visual acceptance remain open in the workflow inventory.
+
+release-note: none
