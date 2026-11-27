@@ -51,6 +51,7 @@ import { ManageVideoSheet } from '../components/ManageVideoSheet';
 import ReportIssueButton from '../components/ReportIssueButton';
 import { useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
+import { videoMetadataRows } from '../components/VideoMetadataFacts';
 import VideoPlaybackButton from '../components/VideoPlaybackButton';
 import VideoRatings from '../components/VideoRatings';
 import WatchlistButton from '../components/WatchlistButton';
@@ -639,6 +640,13 @@ export default function MovieDetail() {
                       </Link>
                     ),
                   ],
+                  ...videoMetadataRows(
+                    m.metadataSources,
+                    m.supplementalMetadata,
+                    (m.credits?.crew ?? []).map(({ name }) => name),
+                    locale,
+                    t
+                  ),
                   [
                     '4K',
                     pub?.movie4kEnabled

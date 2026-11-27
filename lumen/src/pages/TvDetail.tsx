@@ -56,6 +56,7 @@ import { useOffers4k, useVideoRequestQuota } from '../components/requestSheet';
 import { useToast } from '../components/toast';
 import TvCollectionLinks from '../components/TvCollectionLinks';
 import TvEpisodeRequestSheet from '../components/TvEpisodeRequestSheet';
+import { videoMetadataRows } from '../components/VideoMetadataFacts';
 import VideoPlaybackButton from '../components/VideoPlaybackButton';
 import VideoRatings from '../components/VideoRatings';
 import WatchlistButton from '../components/WatchlistButton';
@@ -1324,6 +1325,16 @@ export default function TvDetail() {
                       ? `S${t.nextEpisodeToAir.seasonNumber} E${t.nextEpisodeToAir.episodeNumber} · ${shortDate(t.nextEpisodeToAir.airDate, true, locale)}`
                       : '',
                   ],
+                  ...videoMetadataRows(
+                    t.metadataSources,
+                    t.supplementalMetadata,
+                    [
+                      ...(t.createdBy ?? []).map(({ name }) => name),
+                      ...(t.credits?.crew ?? []).map(({ name }) => name),
+                    ],
+                    locale,
+                    translate
+                  ),
                 ]}
               />
             </VideoDisclosure>

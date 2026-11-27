@@ -1732,4 +1732,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'アーティストタイプ',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': '出身地',
+  'components.MediaDetails.MetadataAttribution.label': 'メタデータソース',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license}ライセンス情報',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'TMDB のメタデータソースを表示します。',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'メタデータの提供元はTheTVDBです。出典の明記が必要です。',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze（改変）',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'TVmaze メタデータは CC BY-SA 4.0 ライセンスの下で適応および共有されます。',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata の構造化データは CC0 の下で共有されています。',
+  'components.TvDetails.Layout.director': '監督',
+  'components.TvDetails.Layout.writers': 'ライター',
 } as const;

@@ -1723,4 +1723,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'Loại nghệ sĩ',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'Nguồn gốc',
+  'components.MediaDetails.MetadataAttribution.label': 'Nguồn siêu dữ liệu',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} thông tin giấy phép',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'Xem nguồn siêu dữ liệu trên TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'Siêu dữ liệu do TheTVDB cung cấp. Bắt buộc ghi công nguồn.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (đã biên tập)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'Siêu dữ liệu TVmaze được điều chỉnh và chia sẻ theo giấy phép CC BY-SA 4.0.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Dữ liệu cấu trúc Wikidata được chia sẻ dưới CC0.',
+  'components.TvDetails.Layout.director': 'Đạo diễn',
+  'components.TvDetails.Layout.writers': 'Tác giả',
 } as const;

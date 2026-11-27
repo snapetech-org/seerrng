@@ -6912,6 +6912,26 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Movie and TV metadata provenance (2026-11-27)
+
+Lumen movie and TV detail disclosures now show metadata-source attribution and
+supplemental director/writer credits provided by SeerrNG's existing detail APIs.
+External source and license links use the shared safe-URL validator; supplemental
+credits are deduplicated against the existing crew/creator rows and capped to
+match native rendering. Labels reuse native locale catalogs.
+
+The focused production-browser suite passed 12 cases across desktop, iPhone,
+Android, and tablet projects and English, French, and Arabic. A production
+`/lumen/` mount run passed six desktop/iPhone cases. Matched baseline/candidate
+captures were inspected at desktop and iPhone sizes in Arabic and French; the
+new facts remain within the existing responsive Facts disclosure. No CSS owner
+changed. Unsafe-link rejection, localization, and horizontal overflow are
+fixture-backed; live metadata-provider responses and independent translation
+review are not verified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-video-metadata-parity-20261127/`.
+
+release-note: `release-notes/lumen-video-metadata-provenance.md`
+
 
 
 

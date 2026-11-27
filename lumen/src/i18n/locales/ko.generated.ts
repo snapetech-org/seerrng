@@ -1681,4 +1681,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': '아티스트 유형',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': '출신',
+  'components.MediaDetails.MetadataAttribution.label': 'Metadata 소스',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} 라이센스 정보',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'TMDB의 메타데이터 소스 보기.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'TheTVDB에서 제공하는 메타데이터입니다. 저작자 표시가 필요합니다.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (각색됨)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'TVmaze metadata는 CC BY-SA 4.0 라이센스에 따라 조정 및 공유됩니다.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata 구조 데이터는 CC0에서 공유됩니다.',
+  'components.TvDetails.Layout.director': '감독',
+  'components.TvDetails.Layout.writers': '작가',
 } as const;

@@ -6732,5 +6732,17 @@
   "lumen.manageMedia.keepRequest",
   "lumen.manageMedia.requestDeleted",
   "lumen.manageMedia.requestDeleteFailed",
-  "lumen.bookRecommendations.seriesPart"
+  "lumen.bookRecommendations.seriesPart",
+  "components.MediaDetails.MetadataAttribution.label",
+  "components.MediaDetails.MetadataAttribution.licenseInformation",
+  "components.MediaDetails.MetadataAttribution.tmdb",
+  "components.MediaDetails.MetadataAttribution.tmdbTitle",
+  "components.MediaDetails.MetadataAttribution.tvdb",
+  "components.MediaDetails.MetadataAttribution.tvdbTitle",
+  "components.MediaDetails.MetadataAttribution.tvmaze",
+  "components.MediaDetails.MetadataAttribution.tvmazeTitle",
+  "components.MediaDetails.MetadataAttribution.wikidata",
+  "components.MediaDetails.MetadataAttribution.wikidataTitle",
+  "components.TvDetails.Layout.director",
+  "components.TvDetails.Layout.writers"
 ]

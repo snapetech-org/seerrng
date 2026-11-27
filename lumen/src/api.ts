@@ -981,6 +981,24 @@ export interface WatchProviderRegion {
   flatrate?: { id: number; name: string }[];
 }
 
+export type VideoMetadataSourceName = 'tmdb' | 'tvdb' | 'tvmaze' | 'wikidata';
+export interface VideoMetadataAttribution {
+  source: VideoMetadataSourceName;
+  url: string;
+  license?: string;
+  licenseUrl?: string;
+  fetchedAt: string;
+  stale: boolean;
+}
+export interface VideoMetadataSupplemental {
+  posterUrl?: string;
+  genres: string[];
+  studios: string[];
+  networks: string[];
+  directors: string[];
+  writers: string[];
+}
+
 export interface MovieDetails extends TitleResult {
   watchProviders?: WatchProviderRegion[];
   originalTitle?: string;
@@ -1008,6 +1026,8 @@ export interface MovieDetails extends TitleResult {
     }[];
   };
   collection?: { id: number; name: string };
+  metadataSources?: VideoMetadataAttribution[];
+  supplementalMetadata?: VideoMetadataSupplemental;
 }
 export interface Season {
   seasonNumber: number;
@@ -1047,6 +1067,8 @@ export interface TvDetails extends TitleResult {
   mediaInfo?: MediaInfo & {
     seasons?: { seasonNumber: number; status: number; status4k?: number }[];
   };
+  metadataSources?: VideoMetadataAttribution[];
+  supplementalMetadata?: VideoMetadataSupplemental;
 }
 
 export interface LibraryRemovalTarget {

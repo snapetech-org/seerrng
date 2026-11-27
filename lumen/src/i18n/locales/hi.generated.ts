@@ -1712,4 +1712,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'कलाकार प्रकार',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'उत्पत्ति',
+  'components.MediaDetails.MetadataAttribution.label': 'मेटाडाटा स्रोत',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} लाइसेंस जानकारी',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'TMDB पर मेटाडाटा स्रोत देखें।',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'TheTVDB द्वारा दिया गया मेटाडेटा। स्रोत का श्रेय देना आवश्यक है।',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (अनुकूलित)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'TVmaze मेटाडाटा को CC BY-SA 4.0 लाइसेंस के तहत अनुकूलित और साझा किया गया है।',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata संरचित डेटा CC0 के तहत साझा किया गया है।',
+  'components.TvDetails.Layout.director': 'निर्देशक',
+  'components.TvDetails.Layout.writers': 'लेखक',
 } as const;

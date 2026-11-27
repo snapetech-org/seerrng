@@ -1729,6 +1729,23 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'Artist Type',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'Origin',
+  'components.MediaDetails.MetadataAttribution.label': 'Metadata sources',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} license information',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'View metadata source on TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'Metadata provided by TheTVDB. Attribution required.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (adapted)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'TVmaze metadata is adapted and shared under the CC BY-SA 4.0 license.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata structured data is shared under CC0.',
+  'components.TvDetails.Layout.director': 'Director',
+  'components.TvDetails.Layout.writers': 'Writers',
   'lumen.account.administratorAccess': 'This account has administrator access.',
   'lumen.account.backToSettings': 'Back to Account Settings',
   'lumen.account.backToYou': 'Back to You',

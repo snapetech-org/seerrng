@@ -1726,4 +1726,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'Tipe Artis',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'Asal',
+  'components.MediaDetails.MetadataAttribution.label': 'Sumber metadata',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} informasi lisensi',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'Lihat sumber metadata di TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'Metadata disediakan oleh TheTVDB. Atribusi sumber wajib dicantumkan.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (diadaptasi)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'Metadata TVmaze diadaptasi dan dibagikan berdasarkan lisensi CC BY-SA 4.0.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Data Wikidata terstruktur dibagi di bawah CC0.',
+  'components.TvDetails.Layout.director': 'Sutradara',
+  'components.TvDetails.Layout.writers': 'Penulis',
 } as const;

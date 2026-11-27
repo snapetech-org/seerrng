@@ -1604,4 +1604,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': '艺人类型',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': '来源',
+  'components.MediaDetails.MetadataAttribution.label': '元数据来源',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} 许可信息',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    '在TMDB上查看元数据源.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    '元数据由 TheTVDB 提供。必须注明来源。',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze（改编）',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'TVmaze元数据在CC BY-SA 4.0许可下进行改造和共享.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata 结构化数据依据 CC0 共享。',
+  'components.TvDetails.Layout.director': '导演',
+  'components.TvDetails.Layout.writers': '作家',
 } as const;

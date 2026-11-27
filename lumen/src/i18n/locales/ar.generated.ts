@@ -1687,6 +1687,23 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'نوع الفنان',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'المنشأ',
+  'components.MediaDetails.MetadataAttribution.label': 'مصادر البيانات',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    'معلومات ترخيص {license}',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'عرض مصدر البيانات الوصفية على TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'بيانات وصفية مقدمة من TheTVDB. يجب ذكر المصدر.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (مُعدّل)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'بيانات TVmaze الوصفية معدّلة ومُشاركة بموجب ترخيص CC BY-SA 4.0.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'تُشارك البيانات المنظّمة من Wikidata بموجب ترخيص CC0.',
+  'components.TvDetails.Layout.director': 'مخرج',
+  'components.TvDetails.Layout.writers': 'كاتبون',
   'components.IssueDetails.allepisodes': 'جميع الحلقات',
   'components.Layout.Sidebar.comingSoon': 'قريبًا',
   'components.Layout.Sidebar.watchSessions': 'جلسات المشاهدة',

@@ -1778,4 +1778,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': 'Tipo de artista',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'Origen',
+  'components.MediaDetails.MetadataAttribution.label': 'Fuentes de metadatos',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    'Información de licencia {license}',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'Vea la fuente de metadatos en TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'Metadatos proporcionados por TheTVDB. Atribución necesaria.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (adaptado)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'Los metadatos de TVmaze se adaptan y comparten bajo la licencia CC BY-SA 4.0.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Los datos estructurados de Wikidata se comparten bajo CC0.',
+  'components.TvDetails.Layout.director': 'Director',
+  'components.TvDetails.Layout.writers': 'Escritores',
 } as const;

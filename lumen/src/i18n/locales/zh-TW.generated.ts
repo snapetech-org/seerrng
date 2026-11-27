@@ -1607,4 +1607,21 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': '藝人類型',
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': '起源',
+  'components.MediaDetails.MetadataAttribution.label': '中繼資料來源',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    '{license} 許可信息',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    '在 TMDB 上查看中繼資料來源 。',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    '中繼資料由 TheTVDB 提供。必須標示來源。',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze（改編）',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    '中繼資料 TVmaze 經改編，並依 CC BY-SA 4.0 授權分享。',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Wikidata 結構資料在 CC0 下共享 。',
+  'components.TvDetails.Layout.director': '導演',
+  'components.TvDetails.Layout.writers': '作家',
 } as const;

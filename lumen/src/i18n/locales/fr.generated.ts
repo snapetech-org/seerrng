@@ -1790,6 +1790,24 @@ export const messages = {
   'components.MusicDetails.Layout.artistType': "Type d'artiste",
   'components.MusicDetails.Layout.musicBrainz': 'MusicBrainz',
   'components.MusicDetails.Layout.origin': 'Origine',
+  'components.MediaDetails.MetadataAttribution.label':
+    'Sources des métadonnées',
+  'components.MediaDetails.MetadataAttribution.licenseInformation':
+    'Informations sur la licence {license}',
+  'components.MediaDetails.MetadataAttribution.tmdb': 'TMDB',
+  'components.MediaDetails.MetadataAttribution.tmdbTitle':
+    'Afficher la source des métadonnées sur TMDB.',
+  'components.MediaDetails.MetadataAttribution.tvdb': 'TheTVDB.com',
+  'components.MediaDetails.MetadataAttribution.tvdbTitle':
+    'Métadonnées fournies par TheTVDB. Attribution requise.',
+  'components.MediaDetails.MetadataAttribution.tvmaze': 'TVmaze (adapté)',
+  'components.MediaDetails.MetadataAttribution.tvmazeTitle':
+    'Les métadonnées de TVmaze sont adaptées et partagées sous la licence CC BY-SA 4.0.',
+  'components.MediaDetails.MetadataAttribution.wikidata': 'Wikidata',
+  'components.MediaDetails.MetadataAttribution.wikidataTitle':
+    'Les données structurées de Wikidata sont partagées sous CC0.',
+  'components.TvDetails.Layout.director': 'Réalisateur',
+  'components.TvDetails.Layout.writers': 'Auteurs',
   'components.IssueDetails.allepisodes': 'Tous les épisodes',
   'components.Layout.Sidebar.comingSoon': 'À venir',
   'components.Layout.Sidebar.watchSessions': 'Séances de visionnage',
