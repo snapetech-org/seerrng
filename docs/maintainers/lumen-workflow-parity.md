@@ -240,11 +240,19 @@ The Show All/Show Less controls and release-type labels are localized in
 English, French, and Arabic. Existing cards, artwork, watchlist actions, and
 authorization gates remain in place.
 
-The fixture test verifies secondary-type grouping, counts, full-group API query,
-expansion, and collapse affordance across desktop, iPhone, Android, and tablet.
-The native matched visual comparison remains unverified because the isolated
-Next test server does not provide the API data used during server-side page
-rendering; Lumen-only screenshots do not establish visual parity.
+The Lumen fixture verifies secondary-type grouping, counts, full-group API
+query, expansion, and collapse across desktop, iPhone, Android, and tablet.
+The same fixture is now rendered through the production Express `/lumen/`
+mount and native SeerrNG at matched desktop (1440 × 900) and phone (390 × 844)
+viewports. Both show the artist identity, biography, 23-release total, Album,
+Live, and Compilation groups, and the corresponding release cards without
+horizontal overflow. Their visual composition differs by design; the content
+and available release groups remain present. Native calls the main group
+“Album” and Lumen calls it “Albums.” The native baseline browser fixture passes
+at both sizes, and the Lumen behavior fixture passes all four viewport projects.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artist-parity-20261127/`.
+These fixtures do not establish live MusicBrainz/provider timing or data.
 
 ### Music album contributing artists
 
