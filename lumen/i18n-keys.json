@@ -4841,6 +4841,7 @@
   "lumen.watchSessions.openMovie",
   "lumen.watchSessions.openMovieTitle",
   "lumen.watchSessions.openSession",
+  "lumen.watchSessions.owner",
   "lumen.watchSessions.pass",
   "lumen.watchSessions.passTitle",
   "lumen.watchSessions.passed",

@@ -5966,6 +5966,7 @@ export const messages = {
   'lumen.watchSessions.openMovie': 'فتح الفيلم',
   'lumen.watchSessions.openMovieTitle': 'فتح {title}',
   'lumen.watchSessions.openSession': 'فتح {title}',
+  'lumen.watchSessions.owner': 'المالك',
   'lumen.watchSessions.pass': 'تخطي',
   'lumen.watchSessions.passTitle': 'تخطي {title}',
   'lumen.watchSessions.passed': 'تم التخطي',

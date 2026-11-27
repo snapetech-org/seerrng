@@ -6483,6 +6483,7 @@ export const messages = {
   'lumen.watchSessions.openMovie': 'Ouvrir le film',
   'lumen.watchSessions.openMovieTitle': 'Ouvrir {title}',
   'lumen.watchSessions.openSession': 'Ouvrir {title}',
+  'lumen.watchSessions.owner': 'Propriétaire',
   'lumen.watchSessions.pass': 'Passer',
   'lumen.watchSessions.passTitle': 'Passer {title}',
   'lumen.watchSessions.passed': 'Passé',

@@ -7188,10 +7188,12 @@ Arabic locale. Arabic uses RTL. Session creation and management API payloads,
 permissions, membership, and voting behavior remain unchanged.
 
 Lumen now also preserves and shows the session `expiresAt` value in both the
-session list and room, matching native SeerrNG. The date uses the saved locale
-and medium date style. Browser assertions cover both populated views, all three
-locales, and horizontal overflow at four viewport projects; 44 focused cases
-pass. The production build succeeds. Candidate captures are retained at
+session list and room, matching native SeerrNG. The list also marks sessions
+owned by the current user, as native does. Dates and owner labels use the saved
+locale; dates use the medium date style. Browser assertions cover both
+populated views, all three locales, and horizontal overflow at four viewport
+projects; 44 focused cases pass. The production build succeeds. Candidate
+captures are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-expiry-20261127/`; the
 matched native room references are the SeerrOrig desktop and phone captures in
 `/mnt/disks/scratch/task-deliverables/seerrng-theme-qa-20261106/baseline-dynamic/`.

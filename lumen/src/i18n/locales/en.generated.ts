@@ -5979,6 +5979,7 @@ export const messages = {
   'lumen.watchSessions.openMovie': 'Open Movie',
   'lumen.watchSessions.openMovieTitle': 'Open {title}',
   'lumen.watchSessions.openSession': 'Open {title}',
+  'lumen.watchSessions.owner': 'Owner',
   'lumen.watchSessions.pass': 'Pass',
   'lumen.watchSessions.passTitle': 'Pass on {title}',
   'lumen.watchSessions.passed': 'Passed',

@@ -259,6 +259,7 @@ function SessionForm({
 
 function SessionList() {
   const { locale, t } = useLumenLocale();
+  const { user } = useAuth();
   const list = useApi<{ sessions: Summary[] }>(path);
   const navigate = useNavigate();
   return (
@@ -305,6 +306,12 @@ function SessionList() {
                       {t('lumen.watchSessions.memberCount', '{count} members', {
                         count: session.memberCount,
                       })}
+                      {session.ownerId === user?.id && (
+                        <>
+                          {' · '}
+                          {t('lumen.watchSessions.owner', 'Owner')}
+                        </>
+                      )}
                     </small>
                     <small>
                       {t('lumen.watchSessions.expires', 'Expires {date}', {
