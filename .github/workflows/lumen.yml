@@ -60,7 +60,7 @@ jobs:
           retention-days: 14
       - name: Install Chromium
         working-directory: lumen
-        run: npx --no-install playwright install --with-deps chromium
+        run: npx --no-install playwright install chromium
       - name: Test Lumen in desktop, phone and tablet viewports
         working-directory: lumen
         run: npm run test:browser -- --workers=2
@@ -126,7 +126,7 @@ jobs:
       - name: Install Chromium for the pre-Comics baseline
         if: github.event_name == 'pull_request'
         working-directory: baseline-comics/lumen
-        run: npx --no-install playwright install --with-deps chromium
+        run: npx --no-install playwright install chromium
       - name: Capture the pre-Comics route at matched viewports
         if: github.event_name == 'pull_request'
         working-directory: baseline-comics/lumen
