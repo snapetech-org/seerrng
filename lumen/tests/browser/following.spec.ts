@@ -218,6 +218,133 @@ test('direct navigation without request access does not fetch follows', async ({
   expect(requested).toBe(false);
 });
 
+test('empty Following suggests the enabled native related tools', async ({
+  page,
+}, info) => {
+  const categories = {
+    ebook: true,
+    audiobook: true,
+    game: true,
+    retro: true,
+    modern: true,
+  };
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = apiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          readmeabookEnabled: true,
+          softwareEnabled: true,
+          romarrEnabled: true,
+          enabledMediaCategories: categories,
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { enabledMediaCategories: categories } });
+    if (path === '/follow/events')
+      return route.fulfill({ json: { total: 0, results: [] } });
+    if (path === '/follow/events/count')
+      return route.fulfill({ json: { unseen: 0 } });
+    if (path === '/follow') return route.fulfill({ json: { results: [] } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/following'));
+  const tools = page.getByRole('navigation', { name: 'What You Follow' });
+  await expect(
+    tools.getByRole('link', { name: 'Book Recommendations' })
+  ).toHaveAttribute('href', appPath('/books/recommendations'));
+  await expect(
+    tools.getByRole('link', { name: 'Collector Picks' })
+  ).toHaveAttribute('href', appPath('/music/collectors'));
+  await expect(
+    tools.getByRole('link', { name: 'Game Finder' })
+  ).toHaveAttribute('href', appPath('/games/discovery'));
+  await expect(
+    tools.getByRole('link', { name: 'Translations and Hacks' })
+  ).toHaveAttribute('href', appPath('/patches'));
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth
+      )
+    )
+    .toBe(true);
+  const captureDir = process.env.LUMEN_FOLLOW_SUGGESTIONS_CAPTURE_DIR;
+  if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDir}/following-empty-${info.project.name}.png`,
+      animations: 'disabled',
+    });
+});
+
+test('empty Following hides links to disabled optional catalogs', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = apiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          booksEnabled: true,
+          ebookServiceEnabled: true,
+          softwareEnabled: true,
+          romarrEnabled: true,
+          enabledMediaCategories: {
+            ebook: false,
+            audiobook: false,
+            game: false,
+            retro: false,
+            modern: false,
+          },
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: {
+            ebook: false,
+            audiobook: false,
+            game: false,
+            retro: false,
+            modern: false,
+          },
+        },
+      });
+    if (path === '/follow/events')
+      return route.fulfill({ json: { total: 0, results: [] } });
+    if (path === '/follow/events/count')
+      return route.fulfill({ json: { unseen: 0 } });
+    if (path === '/follow') return route.fulfill({ json: { results: [] } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/following'));
+  const tools = page.getByRole('navigation', { name: 'What You Follow' });
+  await expect(
+    tools.getByRole('link', { name: 'Collector Picks' })
+  ).toHaveAttribute('href', appPath('/music/collectors'));
+  await expect(
+    tools.getByRole('link', { name: 'Book Recommendations' })
+  ).toHaveCount(0);
+  await expect(tools.getByRole('link', { name: 'Game Finder' })).toHaveCount(0);
+  await expect(
+    tools.getByRole('link', { name: 'Translations and Hacks' })
+  ).toHaveCount(0);
+});
+
 test('following a person uses the exact identity and waits for server confirmation', async ({
   page,
 }, info) => {

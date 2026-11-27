@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
-import { useAuth } from '../auth';
+import { isAdministrator, useAuth } from '../auth';
 import { Section } from '../components/cards';
+import { canUseRequestAccess } from '../components/detail';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
@@ -148,6 +149,7 @@ export default function Following() {
   const { t } = useLumenLocale();
   const { user } = useAuth();
   const allowed = canViewFollowing(user?.permissions);
+  const canSuggest = canUseRequestAccess(user?.permissions);
   const [page, setPage] = useState(0);
   const [saving, setSaving] = useState(false);
   const toast = useToast();
@@ -157,9 +159,46 @@ export default function Following() {
   const subscriptions = useApi<{ results: Subscription[] }>(
     allowed ? '/follow' : null
   );
+  const hasNoSubscriptions = subscriptions.data?.results.length === 0;
+  const suggestTools = allowed && canSuggest && hasNoSubscriptions;
+  const publicSettings = useApi<{
+    booksEnabled?: boolean;
+    ebookServiceEnabled?: boolean;
+    audiobookServiceEnabled?: boolean;
+    readmeabookEnabled?: boolean;
+    softwareEnabled?: boolean;
+    romarrEnabled?: boolean;
+    enabledMediaCategories?: Record<string, boolean>;
+    defaultEnabledMediaCategories?: Record<string, boolean>;
+  }>(suggestTools ? '/settings/public' : null);
+  const personalSettings = useApi<{
+    enabledMediaCategories?: Record<string, boolean>;
+  }>(suggestTools && user ? `/user/${user.id}/settings/main` : null);
   const count = useApi<{ unseen: number }>(
     allowed ? '/follow/events/count' : null
   );
+  const suggestions = publicSettings.data;
+  const suggestionsReady = Boolean(suggestions && personalSettings.data);
+  const personalCategories = personalSettings.data?.enabledMediaCategories;
+  const categoryEnabled = (category: string) =>
+    suggestions?.enabledMediaCategories?.[category] !== false &&
+    (isAdministrator(user?.permissions) ||
+      (personalCategories?.[category] ??
+        suggestions?.defaultEnabledMediaCategories?.[category] ??
+        true));
+  const ebookEnabled =
+    Boolean(suggestions?.ebookServiceEnabled ?? suggestions?.booksEnabled) &&
+    categoryEnabled('ebook');
+  const audiobookServiceEnabled =
+    suggestions?.readmeabookEnabled || suggestions?.audiobookServiceEnabled;
+  const audiobookEnabled =
+    Boolean(audiobookServiceEnabled ?? suggestions?.booksEnabled) &&
+    categoryEnabled('audiobook');
+  const gameFinderEnabled =
+    Boolean(suggestions?.softwareEnabled) && categoryEnabled('game');
+  const patchesEnabled =
+    Boolean(suggestions?.romarrEnabled) &&
+    (categoryEnabled('retro') || categoryEnabled('modern'));
 
   async function save(path: string, method: string, body?: object) {
     if (saving) return;
@@ -344,12 +383,48 @@ export default function Following() {
               </p>
             )}
             {subscriptions.data?.results.length === 0 && (
-              <p className="note">
-                {t(
-                  'lumen.following.noSubscriptions',
-                  'You haven’t followed anything yet.'
+              <>
+                <p className="note">
+                  {t(
+                    'lumen.following.noSubscriptions',
+                    'You haven’t followed anything yet.'
+                  )}
+                </p>
+                {suggestionsReady && (
+                  <nav
+                    className="chips wrap"
+                    aria-label={t(
+                      'lumen.following.whatYouFollow',
+                      'What You Follow'
+                    )}
+                  >
+                    {(ebookEnabled || audiobookEnabled) && (
+                      <Link className="chip" to="/books/recommendations">
+                        {t(
+                          'lumen.books.recommendations',
+                          'Book Recommendations'
+                        )}
+                      </Link>
+                    )}
+                    <Link className="chip" to="/music/collectors">
+                      {t('lumen.music.collectorPicks', 'Collector Picks')}
+                    </Link>
+                    {gameFinderEnabled && (
+                      <Link className="chip" to="/games/discovery">
+                        {t('lumen.gameFinder.title', 'Game Finder')}
+                      </Link>
+                    )}
+                    {patchesEnabled && (
+                      <Link className="chip" to="/patches">
+                        {t(
+                          'lumen.games.translationsAndHacks',
+                          'Translations and Hacks'
+                        )}
+                      </Link>
+                    )}
+                  </nav>
                 )}
-              </p>
+              </>
             )}
             {!!subscriptions.data?.results.length && (
               <ul className="setlist">

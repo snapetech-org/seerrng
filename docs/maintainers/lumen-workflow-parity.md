@@ -13380,3 +13380,23 @@ catalog states remain open. Screenshots are retained at
 These fixtures do not verify live Following data or route authorization.
 
 release-note: `release-notes/lumen-books-music-related-tools.md`
+
+### Suggest native related tools from empty Lumen Following (2026-11-27)
+
+Native Following suggests Book Recommendations, Collector Picks, Game Finder,
+and Patches when the account has no subscriptions. Lumen previously only showed
+that the list was empty. Lumen now offers those existing destinations to
+request-authorized users and checks server services plus effective account
+categories before showing optional book, game, or patch tools. Settings are
+read only when an eligible empty state needs the suggestions; this does not
+probe catalog providers or change Following permissions.
+
+The focused browser cases pass 8/8 across desktop, iPhone, Android, and tablet.
+They verify the four destinations with all categories enabled, hide book/game/
+patch links when those categories are disabled, and preserve page width. The
+production Lumen build passes. Desktop and iPhone candidates were inspected;
+matched native/Lumen empty-state screenshots remain open. Fixtures do not prove
+live user-category authorization or provider availability. Evidence is retained
+at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-follow-empty-tools-20261127/`.
+
+release-note: `release-notes/lumen-follow-empty-tools.md`
