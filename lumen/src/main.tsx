@@ -250,7 +250,7 @@ function ProfileWatchlistBookmark() {
 
 function ProfileBookmark() {
   const { search } = useLocation();
-  return <Navigate to={`/me${search}`} replace />;
+  return <Navigate to={`/household/me${search}`} replace />;
 }
 
 function NativeDiscoverBookmark() {

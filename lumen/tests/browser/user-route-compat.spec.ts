@@ -191,8 +191,38 @@ test('native profile and settings bookmarks open the matching Lumen sections', a
   page,
 }) => {
   await authenticate(page, 32);
+  await page.route('**/api/v1/user/2', (route) =>
+    route.fulfill({
+      json: {
+        id: 2,
+        displayName: 'Viewer',
+        userType: 2,
+        createdAt: '2026-11-01T00:00:00.000Z',
+      },
+    })
+  );
+  await page.route('**/api/v1/user/2/requests*', (route) =>
+    route.fulfill({ json: { results: [] } })
+  );
+  await page.route('**/api/v1/user/2/watchlist', (route) =>
+    route.fulfill({ json: { results: [] } })
+  );
+  await page.route('**/api/v1/user/2/quota', (route) =>
+    route.fulfill({ json: {} })
+  );
   await page.goto(appPath('/profile?from=native'));
-  await expect(page).toHaveURL(new RegExp(`${mount}/me\\?from=native$`));
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/household/me\\?from=native$`)
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Recent Requests' })
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Watchlist' })).toBeVisible();
+  if (process.env.LUMEN_VISUAL_CAPTURE_DIR)
+    await page.screenshot({
+      path: `${process.env.LUMEN_VISUAL_CAPTURE_DIR}/profile-bookmark-${page.viewportSize()?.width}.png`,
+      fullPage: true,
+    });
 
   await page.goto(appPath('/profile/watchlist?mediaType=book&page=2'));
   await expect(page).toHaveURL(

@@ -7010,6 +7010,21 @@ comparison remains unverified.
 
 release-note: `release-notes/lumen-self-permissions-bookmark.md`
 
+### Native profile root display parity (2026-11-27)
+
+The native `/profile` bookmark now opens Lumen's `/household/me` profile
+display, preserving query parameters. Lumen's `/me` remains the account and
+preferences control page; `/household/me` contains the profile header, request
+limits, recent requests, and watchlist preview corresponding to native
+`UserProfile`. The fixture-backed browser case verifies the bookmark
+destination and loaded Recent Requests and Watchlist sections on desktop,
+iPhone, Android, and tablet (4/4 passed). CSS did not change. Candidate captures
+are retained in
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-profile-bookmark-20261127/`;
+matched native screenshot comparison remains open.
+
+release-note: `release-notes/lumen-profile-bookmark.md`
+
 ### Movie screenplay credit (2026-11-27)
 
 Lumen's movie Facts disclosure now shows the primary Screenplay, Writer, or
