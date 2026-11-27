@@ -85,7 +85,7 @@ only public presentation values belong in this file, never API keys or secrets.
 Branding uploads are bounded raster images re-encoded as PNG. The separate
 companion deployment below remains supported with its existing root paths.
 
-A request-first front end for [SeerrNG](https://github.com/snapetech-org/seerrng). It talks only to SeerrNG's API, so SeerrNG keeps doing the work (accounts, permissions, request limits, Sonarr/Radarr/ChaptarrNG and the rest) and Lumen is just the screens people use: Discover, Movies, Series, Books, Audiobooks, Search, Requests and their profile. Service and account administration remain in full SeerrNG; Lumen has its own presentation settings.
+A front end for [SeerrNG](https://github.com/snapetech-org/seerrng). It uses SeerrNG's API for accounts, permissions, request limits, and service integrations. Lumen includes discovery, requests, personal and household workflows, and a broad administrator console. The full native interface remains available for routes and workflows that have not yet moved to Lumen.
 
 ## Run it
 
@@ -152,9 +152,13 @@ Turning **narrator choice** off removes every narrator widget: audiobooks get on
 
 ## Pages
 
-- Discover, Movies, Series, Books, Audiobooks, Search (scoped to the section you came from), Requests, Coming soon and You.
-- Movie, series and book pages: season picker, narrator picker, admin request options (server, quality, folder).
-- Music (albums, artists), Comics, Magazines, Games (PC, retro and modern consoles), Sports and Adult. Each appears in the menus only when SeerrNG has the category turned on (Adult also needs SeerrNG's adult switch) **and** its catalogue answers, so a category that's on with no service behind it stays out of the way. Opening one by URL explains why it isn't there. SeerrNG still checks every call, including each person's category and adult permissions.
+- **Discover and catalogs:** Discover, Movies, Series, Books, Audiobooks, Music, Comics, Magazines, Games, Sports, Adult, Search, Following, and Coming soon. Category access still follows SeerrNG's global, service, and per-user permissions; Adult also requires SeerrNG's adult switch and maturity rules.
+- **Requests and libraries:** Requests, Watchlists, My Media, My Games, Release Calendar, Swipe, Watch Sessions, Downloads, Indexer Search, Issues, and Blocklist. Actions remain subject to SeerrNG's authorization and request rules.
+- **Accounts and household:** personal profile and account settings, linked accounts, client tokens, notifications, request preferences, and permission-aware household profiles and delegated views.
+- **Administration:** service setup and configuration, users, request defaults and overrides, categories, discovery and metadata, network and transport, jobs, logs, caches, notifications, libraries, migration, and Lumen presentation settings. Availability of individual controls depends on administrator permissions and configured services.
+- **Media details:** movie, series, book, audiobook, music, comic, magazine, game, sports, and adult details expose the actions supported by that category, including season and episode selection, audiobook narrator selection, and authorized request options such as service, quality, and folder.
+
+The native `/seerrng` interface remains available for routes and workflows not yet implemented in Lumen. Lumen's route coverage is still being audited; a link to native SeerrNG does not mean the corresponding workflow is already at parity.
 
 ## Validate
 
