@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`book-series search follows ${locale}`, async ({ page }) => {
@@ -42,7 +43,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/book-series');
+    await page.goto(testAppPath('/book-series'));
     const copy = {
       en: {
         title: 'Find a Book Series',

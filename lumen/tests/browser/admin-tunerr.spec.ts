@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [locale, labels] of [
   [
@@ -64,7 +65,7 @@ for (const [locale, labels] of [
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/tunerr');
+    await page.goto(testAppPath('/admin/tunerr'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(
       page.getByRole('heading', { name: labels.title, exact: true })
@@ -167,7 +168,7 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/admin');
+  await page.goto(testAppPath('/admin'));
   await page.getByRole('link', { name: 'Open Tunerr Settings' }).click();
   await expect(page.getByLabel('Deck Password')).toHaveValue('');
   await expect(page.getByLabel('Deck Password')).toHaveAttribute(

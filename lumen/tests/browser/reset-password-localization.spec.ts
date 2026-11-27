@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('French recovery request keeps errors translated and response private', async ({
   page,
@@ -24,7 +25,7 @@ test('French recovery request keeps errors translated and response private', asy
     });
   });
 
-  await page.goto('/resetpassword');
+  await page.goto(testAppPath('/resetpassword'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(
     page.getByRole('heading', { name: 'Réinitialiser Votre Mot de Passe' })
@@ -87,7 +88,7 @@ test('Arabic password reset validates confirmation locally and resets successful
     return route.fulfill({ json: { status: 'ok' } });
   });
 
-  await page.goto('/resetpassword/synthetic-guid');
+  await page.goto(testAppPath('/resetpassword/synthetic-guid'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.getByLabel('كلمة مرور جديدة')).toBeVisible();

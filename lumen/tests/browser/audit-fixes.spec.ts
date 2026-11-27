@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 
@@ -65,7 +66,7 @@ test('a movie page stays on screen while a new request refreshes it', async ({
       };
     }
   });
-  await page.goto('/movie/50');
+  await page.goto(mountedTestAppPath('/movie/50'));
   await expect(
     page.getByRole('heading', { name: 'Keep Me Visible' })
   ).toBeVisible();
@@ -109,7 +110,7 @@ test('unticked seasons stay unticked after a request refreshes the show', async 
       };
     }
   });
-  await page.goto('/tv/500');
+  await page.goto(mountedTestAppPath('/tv/500'));
   await expect(
     page.getByRole('heading', { name: 'Season Keeper' })
   ).toBeVisible();
@@ -143,7 +144,7 @@ test('a server error on /auth/me shows Retry, not the sign-in page', async ({
     if (path === '/auth/me' && down)
       return { status: 503, json: { message: 'Unavailable' } };
   });
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(page.getByRole('alert')).toContainText('Can’t reach the server');
   await expect(page.getByLabel('Password', { exact: true })).toHaveCount(0);
   down = false;
@@ -155,7 +156,7 @@ test('a 401 on /auth/me still shows sign-in', async ({ page }) => {
   await fixtures(page, (path) => {
     if (path === '/auth/me') return { status: 401, json: {} };
   });
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(page.getByRole('alert')).toHaveCount(0);
   await expect(page.locator('.app')).toHaveCount(0);
 });
@@ -174,7 +175,7 @@ test('a 4K-only movie links Watch to the 4K copy', async ({ page }) => {
         },
       };
   });
-  await page.goto('/movie/60');
+  await page.goto(mountedTestAppPath('/movie/60'));
   const watch = page.getByRole('link', { name: /Watch on Plex/ });
   await expect(watch).toBeVisible();
   await expect(watch).toHaveAttribute('href', url);
@@ -215,7 +216,7 @@ test('movie playback actions follow the selected locale', async ({ page }) => {
   });
   const width = page.viewportSize()?.width;
   const captureDir = process.env.LUMEN_DETAIL_MEDIA_CAPTURE_DIR;
-  await page.goto('/movie/64');
+  await page.goto(mountedTestAppPath('/movie/64'));
   const watchHd = page.getByRole('link', {
     name: baseline ? 'Watch on Plex' : names[locale].hd,
     exact: true,
@@ -223,7 +224,7 @@ test('movie playback actions follow the selected locale', async ({ page }) => {
   await expect(watchHd).toHaveAttribute('href', hd);
   if (captureDir && (width === 1440 || width === 390))
     await page.screenshot({ path: `${captureDir}/${locale}-${width}-hd.png` });
-  await page.goto('/movie/64?quality=4k');
+  await page.goto(mountedTestAppPath('/movie/64?quality=4k'));
   const watchUhd = page.getByRole('link', {
     name: baseline ? 'Watch 4K on Plex' : names[locale].uhd,
     exact: true,
@@ -286,7 +287,7 @@ test('available movie cards localize their media-server quick link', async ({
         ]),
       };
   });
-  await page.goto('/movies');
+  await page.goto(mountedTestAppPath('/movies'));
   const card = page.locator('.poster').filter({ hasText: 'Card playback' });
   await expect(card).toBeVisible();
   await card.hover();
@@ -332,15 +333,15 @@ test('a 4K movie bookmark selects the 4K playback copy', async ({ page }) => {
         },
       };
   });
-  await page.goto('/movie/60?quality=4k');
+  await page.goto(mountedTestAppPath('/movie/60?quality=4k'));
   await expect(
     page.getByRole('link', { name: 'Watch 4K on Plex' }).first()
   ).toHaveAttribute('href', uhd);
-  await page.goto('/movie/60');
+  await page.goto(mountedTestAppPath('/movie/60'));
   await expect(
     page.getByRole('link', { name: 'Watch on Plex' }).first()
   ).toHaveAttribute('href', hd);
-  await page.goto('/movie/61?quality=4k');
+  await page.goto(mountedTestAppPath('/movie/61?quality=4k'));
   await expect(page.getByText('4K playback is unavailable.')).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Watch 4K on Plex' })
@@ -372,7 +373,7 @@ test('an open 4K movie bookmark refreshes when the requested copy arrives', asyn
         },
       };
   });
-  await page.goto('/movie/62?quality=4k');
+  await page.goto(mountedTestAppPath('/movie/62?quality=4k'));
   await expect(page.getByText('4K playback is unavailable.')).toBeVisible();
   available = true;
   await page.clock.fastForward(30_100);
@@ -403,7 +404,7 @@ test('a pending 4K refresh removes the cached title when access is revoked', asy
       },
     };
   });
-  await page.goto('/movie/63?quality=4k');
+  await page.goto(mountedTestAppPath('/movie/63?quality=4k'));
   const watch = page.getByRole('link', { name: 'Watch on Plex' }).first();
   await expect(watch).toBeVisible();
   denied = true;
@@ -426,11 +427,11 @@ test('the audiobooks page is titled Audiobooks', async ({ page }) => {
   await fixtures(page, (path) => {
     if (path === '/settings/public') return undefined;
   });
-  await page.goto('/audiobooks');
+  await page.goto(mountedTestAppPath('/audiobooks'));
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Audiobooks'
   );
-  await page.goto('/books');
+  await page.goto(mountedTestAppPath('/books'));
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Books');
 });
 
@@ -458,6 +459,6 @@ test('All search looks in ebooks and audiobooks', async ({ page }) => {
     )
       formats.push(url.searchParams.get('format') || '');
   });
-  await page.goto('/search?q=dune');
+  await page.goto(mountedTestAppPath('/search?q=dune'));
   await expect.poll(() => formats.sort()).toEqual(['audiobook', 'ebook']);
 });

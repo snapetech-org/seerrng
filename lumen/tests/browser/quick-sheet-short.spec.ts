@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // On a short landscape screen the quick-request sheet's pinned Request/Cancel footer used to cover
 // the options and push Cancel off the screen. The sheet now scrolls as one piece.
@@ -55,7 +56,7 @@ for (const [width, height] of [
     test.skip(info.project.name !== 'desktop', 'sets its own viewport');
     await fixture(page);
     await page.setViewportSize({ width, height });
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
     await poster.scrollIntoViewIfNeeded();
     await poster.hover();
@@ -122,7 +123,7 @@ for (const is4k of [false, true]) {
         },
       });
     });
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
     await poster.scrollIntoViewIfNeeded();
     await poster.hover();

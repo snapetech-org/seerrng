@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -61,7 +62,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/list/12345?page=2');
+    await page.goto(testAppPath('/list/12345?page=2'));
     const text = copy[locale];
     await expect(
       page.getByRole('heading', { name: 'Public Fixture List' })

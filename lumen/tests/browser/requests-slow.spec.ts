@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // One title SeerrNG is slow to look up must not keep the whole Requests list on "Loading…"
 async function fixture(page: Page, everyone = false, mixed = false) {
@@ -73,7 +74,9 @@ for (const everyone of [false, true]) {
     page,
   }) => {
     const release = await fixture(page, everyone);
-    await page.goto(everyone ? '/requests?tab=everyone' : '/requests');
+    await page.goto(
+      testAppPath(everyone ? '/requests?tab=everyone' : '/requests')
+    );
     const rows = page.locator('.rq');
     await expect(rows).toHaveCount(2, { timeout: 3000 });
     await expect(rows.filter({ hasText: 'Quick Title' })).toBeVisible();
@@ -91,7 +94,9 @@ for (const everyone of [false, true]) {
   }, info) => {
     const release = await fixture(page, everyone, true);
     try {
-      await page.goto(everyone ? '/requests?tab=everyone' : '/requests');
+      await page.goto(
+        testAppPath(everyone ? '/requests?tab=everyone' : '/requests')
+      );
       const rows = page.locator('.rq');
       await expect(rows.filter({ hasText: 'Quick Title' })).toBeVisible({
         timeout: 3000,

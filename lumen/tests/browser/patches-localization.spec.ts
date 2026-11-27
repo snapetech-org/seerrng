@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -130,7 +131,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       return route.fulfill({ json: { results: [] } });
     });
 
-    await page.goto('/patches');
+    await page.goto(testAppPath('/patches'));
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(
       page.getByRole('searchbox', { name: text.search })
@@ -152,7 +153,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     ).toBe(true);
     await page.screenshot({ path: info.outputPath(`catalog-${locale}.png`) });
 
-    await page.goto('/patches/patch-l10n');
+    await page.goto(testAppPath('/patches/patch-l10n'));
     await expect(page.getByRole('link', { name: text.browse })).toBeVisible();
     await expect(page.getByLabel(text.version)).toHaveValue('v1');
     await expect(page.getByLabel(text.gameType)).toHaveValue('retro');

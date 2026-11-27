@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('book detail preserves edition identity with authorized requester and service options', async ({
   page,
@@ -105,7 +106,7 @@ test('book detail preserves edition identity with authorized requester and servi
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU?f=audio');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU?f=audio'));
   await expect(
     page.getByRole('button', { name: /Request · Fixture Narrator/ })
   ).toBeVisible();
@@ -177,7 +178,7 @@ test('ordinary book requester does not load or expose advanced options', async (
       unexpected.add(path);
     return route.fulfill({ json: {} });
   });
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   await expect(
     page.getByRole('button', { name: 'Request ebook' })
   ).toBeVisible();
@@ -231,7 +232,7 @@ test('book detail shows and enforces an exhausted book quota', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   await expect(
     page.getByText('Your book request limit has been reached.')
   ).toBeVisible();
@@ -279,7 +280,7 @@ test('book request stays disabled when quota cannot be checked and retries', asy
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   const action = page.getByRole('button', { name: 'Request ebook' });
   await expect(
     page.getByText('Could not check the book request limit.')

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_SPORTS_CATALOG_LOCALE ?? ''
@@ -67,7 +68,7 @@ test('Sports catalog search and empty states follow the saved locale', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/sports');
+  await page.goto(testAppPath('/sports'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   const captureDirectory = process.env.LUMEN_SPORTS_CATALOG_CAPTURE_DIR;
   if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))

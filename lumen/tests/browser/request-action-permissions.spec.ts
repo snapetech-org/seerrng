@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const cases = [
   {
@@ -151,7 +152,7 @@ for (const item of cases) {
         if (path in detail) return route.fulfill({ json: detail[path] });
         return route.fulfill({ json: { page: 1, results: [], totalPages: 1 } });
       });
-      await page.goto(item.path);
+      await page.goto(testAppPath(item.path));
       await expect(page.locator('main h1')).toBeVisible();
       const action = page.getByRole('button', {
         name: item.label,

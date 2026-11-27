@@ -1,4 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function capture(page: Page, info: TestInfo) {
   if (
@@ -64,7 +65,7 @@ test('Following translates feed controls and event reasons', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/following');
+  await page.goto(testAppPath('/following'));
   const text = (english: string, french: string, arabic: string) =>
     candidate ? (locale === 'ar' ? arabic : french) : english;
   await expect(
