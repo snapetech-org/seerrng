@@ -50,6 +50,33 @@ native-matched visual acceptance remain open in the workflow inventory.
 
 release-note: `release-notes/lumen-game-availability-status.md`
 
+### Qualify the Lumen admin, issue, and manager layouts from PR #741 (2026-11-27)
+
+PR #741's Lumen changes were checked against the immediately preceding `main`
+tree (`8baea51e4`) and the merged tree (`43a2ddf3e`). The Issues filter groups
+now wrap across a row, the Administration home columns begin on the same
+baseline, and Manage sheets use explicit group and quality-section spacing.
+Search also bounds the extra wait for slower public providers after TMDB and
+local catalogs answer.
+
+The Lumen build passes. The Issues filter, admin navigation, and Manage sheet
+browser specs pass 128/128 across desktop, iPhone, Android, and tablet. Matched
+baseline and candidate renders were inspected for `/issues`, `/admin`, and the
+movie manager sheet at desktop (1440 × 900) and iPhone (390 × 844). The filter
+groups fit in a row at desktop and wrap cleanly on iPhone; admin columns align;
+the manager sheet's headings and sections have consistent spacing without
+clipping. Screenshots are retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-parity-20261127/screenshots/pr741-baseline/`,
+and
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-parity-20261127/screenshots/pr741-candidate/`.
+
+The PR was reviewed for security and merged as `43a2ddf3e`; its updated head
+passed GitGuardian and its concurrency, search-route, and i18n checks. The
+broader native-matched visual and live provider checks in the inventory remain
+open.
+
+release-note: `release-notes/lumen-admin-issues-search.md`
+
 ### Refresh download-client health while visible (2026-11-27)
 
 Lumen now refreshes configured download-client health every 15 seconds while
