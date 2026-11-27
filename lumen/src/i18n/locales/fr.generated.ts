@@ -1737,6 +1737,20 @@ export const messages = {
   'components.Discover.DiscoverAdult.unavailable':
     "La recherche de scènes pour adultes n'est pas disponible pour le moment.",
   'components.Discover.FilterPanel.filters': 'Filtres',
+  'components.GameContent.addsNothing':
+    "Cette édition n'ajoute rien que vous n'ayez déjà.",
+  'components.GameContent.contentNotListed': 'Contenu non répertorié',
+  'components.GameContent.cosmetic': 'Cosmétique',
+  'components.GameContent.includes': 'Inclut',
+  'components.GameContent.owned': 'Dans votre bibliothèque',
+  'components.GameContent.story': 'Histoire',
+  'components.GameContent.typeBonus': 'Bonus',
+  'components.GameContent.typeCosmetic': 'Cosmétique',
+  'components.GameContent.typeDlc': 'Ajout',
+  'components.GameContent.typeExpansion': 'Extension',
+  'components.GameContent.typeSeasonPass': 'Passe de saison',
+  'components.GameContent.typeSoundtrack': 'Bande-son',
+  'components.GameContent.typeUnknown': 'Autre',
   'components.SoftwareCatalog.allPcPlatforms': 'Toutes les plateformes PC',
   'components.SoftwareCatalog.allSystems': 'Tous les systèmes',
   'components.SoftwareCatalog.genreFilter': 'Genre',
@@ -7843,6 +7857,8 @@ export const messages = {
   'lumen.gameContent.contentTypeUnknown': 'Type de contenu inconnu',
   'lumen.gameContent.itemsMissing':
     '{count} éléments manquent dans votre bibliothèque',
+  'lumen.gameContent.itemMissing':
+    'Il manque 1 élément dans votre bibliothèque.',
   'lumen.gameContent.editionContentsUnknown':
     'Le contenu de cette édition est inconnu.',
   'lumen.gameContent.baseOwned': 'Vous avez déjà le jeu de base.',

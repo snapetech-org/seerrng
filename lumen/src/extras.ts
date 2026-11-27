@@ -774,10 +774,21 @@ type Content = {
   title: string;
   owned: boolean;
   storyContent: boolean | null;
+  type?:
+    | 'expansion'
+    | 'dlc'
+    | 'cosmetic'
+    | 'season-pass'
+    | 'bonus'
+    | 'soundtrack'
+    | 'unknown';
+  releaseDate?: string;
 };
 type Edition = {
   igdbId: number;
   title: string;
+  summary?: string;
+  releaseDate?: string;
   owned: boolean;
   contentKnown: boolean;
   includes: Content[];

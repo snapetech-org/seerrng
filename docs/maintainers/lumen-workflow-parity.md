@@ -12826,3 +12826,23 @@ styles changed. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-owned-game-edition-expansions.md`
+
+### Restore game edition and add-on details (2026-11-27)
+
+Native SeerrNG shows the type, story/cosmetic classification, ownership, and
+release date for each add-on and edition item, along with edition summaries,
+included content, and a correctly pluralized missing-item count. Lumen omitted
+most of these details and rendered “1 items” for a single missing item. The
+Lumen picker now displays the same catalog facts and distinguishes zero, one,
+and multiple missing items using localized copy.
+
+The fixture exercises an owned edition containing an unowned story expansion,
+plus owned cosmetic and unowned expansion add-ons. English, French, and Arabic
+picker cases pass across desktop, iPhone, Android, and tablet (24 cases), and
+matched desktop/iPhone captures confirm the metadata is readable without
+overflow. The production build passes. Provider-backed live catalog responses
+and the production `/lumen/` mount were not exercised. No CSS was changed.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-game-content-details.md`

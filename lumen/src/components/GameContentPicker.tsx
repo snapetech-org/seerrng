@@ -40,6 +40,43 @@ export default function GameContentPicker({
   const selectedAddons = addons.filter((addon) =>
     addonIds.includes(addon.igdbId)
   );
+  const typeMessages: Record<string, [string, string]> = {
+    expansion: ['components.GameContent.typeExpansion', 'Expansion'],
+    dlc: ['components.GameContent.typeDlc', 'Add-on'],
+    cosmetic: ['components.GameContent.typeCosmetic', 'Cosmetic'],
+    'season-pass': ['components.GameContent.typeSeasonPass', 'Season Pass'],
+    bonus: ['components.GameContent.typeBonus', 'Bonus'],
+    soundtrack: ['components.GameContent.typeSoundtrack', 'Soundtrack'],
+    unknown: ['components.GameContent.typeUnknown', 'Other'],
+  };
+  const typeLabel = (type?: string) => {
+    const [key, fallback] =
+      typeMessages[type ?? 'unknown'] ?? typeMessages.unknown!;
+    return t(key, fallback);
+  };
+  const contentFacts = (item: (typeof addons)[number]) => (
+    <>
+      <div className="row">
+        <Pill k="neutral">{typeLabel(item.type)}</Pill>
+        <Pill k={item.storyContent === true ? 'ok' : 'neutral'}>
+          {item.storyContent === true
+            ? t('components.GameContent.story', 'Story')
+            : item.storyContent === false
+              ? t('components.GameContent.cosmetic', 'Cosmetic')
+              : t(
+                  'components.GameContent.contentNotListed',
+                  'Content not listed'
+                )}
+        </Pill>
+        {item.owned && (
+          <Pill k="ok">
+            {t('components.GameContent.owned', 'In Your Library')}
+          </Pill>
+        )}
+      </div>
+      {item.releaseDate && <small>{item.releaseDate}</small>}
+    </>
+  );
   const requestSummary =
     mode === 'edition' && selectedEdition
       ? t(
@@ -134,16 +171,7 @@ export default function GameContentPicker({
                 />
                 {addon.title}
               </label>
-              {addon.owned && (
-                <Pill k="ok">{t('lumen.gameContent.inLibrary')}</Pill>
-              )}
-              <small>
-                {addon.storyContent === true
-                  ? t('lumen.gameContent.storyContent')
-                  : addon.storyContent === false
-                    ? t('lumen.gameContent.nonStoryContent')
-                    : t('lumen.gameContent.contentTypeUnknown')}
-              </small>
+              {contentFacts(addon)}
             </li>
           ))}
         </ul>
@@ -173,26 +201,47 @@ export default function GameContentPicker({
               {edition.owned && (
                 <Pill k="ok">{t('lumen.gameContent.inLibrary')}</Pill>
               )}
-              {edition.contentKnown ? (
-                <div>
-                  <small>
-                    {t('lumen.gameContent.itemsMissing', undefined, {
-                      count: edition.includes.filter((item) => !item.owned)
-                        .length,
-                    })}
-                  </small>
-                  {edition.includes.map((item) => (
-                    <small key={item.igdbId}>
-                      {item.title}
-                      {item.owned
-                        ? ` · ${t('lumen.gameContent.inLibrary')}`
-                        : ''}
+              <div className="set-body">
+                {edition.summary && <small>{edition.summary}</small>}
+                {edition.releaseDate && <small>{edition.releaseDate}</small>}
+                {edition.contentKnown ? (
+                  <div>
+                    <small>
+                      {t('components.GameContent.includes', 'Includes')}
                     </small>
-                  ))}
-                </div>
-              ) : (
-                <small>{t('lumen.gameContent.editionContentsUnknown')}</small>
-              )}
+                    {edition.includes.map((item) => (
+                      <div key={item.igdbId}>
+                        <strong>{item.title}</strong>
+                        {contentFacts(item)}
+                      </div>
+                    ))}
+                    {(() => {
+                      const missing = edition.includes.filter(
+                        (item) => !item.owned
+                      ).length;
+                      return (
+                        <small>
+                          {missing === 0
+                            ? t(
+                                'components.GameContent.addsNothing',
+                                'This edition adds nothing you do not already have.'
+                              )
+                            : missing === 1
+                              ? t(
+                                  'lumen.gameContent.itemMissing',
+                                  '1 item is missing from your library.'
+                                )
+                              : t('lumen.gameContent.itemsMissing', undefined, {
+                                  count: missing,
+                                })}
+                        </small>
+                      );
+                    })()}
+                  </div>
+                ) : (
+                  <small>{t('lumen.gameContent.editionContentsUnknown')}</small>
+                )}
+              </div>
             </li>
           ))}
         </ul>
