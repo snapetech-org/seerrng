@@ -257,8 +257,11 @@ function SetupRequestServices({
   const { t } = useLumenLocale();
   const [group, setGroup] = useState('');
   const groupCategories = setupServiceGroups[group]?.categories;
+  const effectiveCategories = categories ?? DEFAULT_ENABLED_MEDIA_CATEGORIES;
   const recommended = requestServices.filter(([, , keys]) =>
-    keys.some((key) => categories?.[key] === true)
+    keys.some(
+      (key) => effectiveCategories[key as keyof typeof effectiveCategories]
+    )
   );
   return (
     <>

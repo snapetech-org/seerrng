@@ -36,6 +36,12 @@ review baseline. The focused 36-case setup suites and production build pass.
 Live authenticated setup remains unverified. Review screenshots are retained
 alongside the setup defaults evidence above.
 
+The Request Services step now also uses SeerrNG's default enabled categories
+when the public settings response omits the category object, matching the
+native service-category helper. A four-viewport browser case verifies that the
+category recommendation appears with that response shape; the production
+build passes.
+
 release-note: `release-notes/lumen-guided-setup-defaults.md`
 
 ### Recover from account media-category settings failures (2026-11-27)
