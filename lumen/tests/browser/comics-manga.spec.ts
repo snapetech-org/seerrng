@@ -1041,6 +1041,33 @@ test('hovering a card offers Request and Choose edition', async ({
   await expect(card.locator('.glyph')).toHaveAttribute('title', 'Requested');
 });
 
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`comic quick-request action is localized in ${locale}`, async ({
+    page,
+  }, info) => {
+    test.skip(!hoverable(info.project.name), 'needs a mouse');
+    const labels = { en: 'Request', fr: 'Demander', ar: 'طلب' } as const;
+    const isBaseline = process.env.LUMEN_COMICS_BASELINE === 'true';
+    const expected = isBaseline ? 'Request' : labels[locale];
+    await fixtures(page, { browse: [chainsaw()], locale });
+    await page.goto(mountedTestAppPath('/comics?type=manga'));
+    const card = page.locator('.comic-grid .poster').first();
+    await card.hover();
+    await expect(
+      card.getByRole('button', { name: expected, exact: true })
+    ).toBeVisible();
+    const captureDirectory = process.env.LUMEN_COMICS_CAPTURE;
+    if (captureDirectory && info.project.name === 'desktop') {
+      const { mkdirSync } = await import('node:fs');
+      mkdirSync(captureDirectory, { recursive: true });
+      await page.screenshot({
+        path: `${captureDirectory}/${isBaseline ? 'baseline' : 'candidate'}-${locale}-desktop.png`,
+        fullPage: true,
+      });
+    }
+  });
+}
+
 test('comic shelves localize their scroll and edition controls', async ({
   page,
 }, info) => {

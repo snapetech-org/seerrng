@@ -1,5 +1,20 @@
 # Lumen workflow parity
 
+### Localize comic-card quick requests (2026-11-27)
+
+Comic discovery cards now use Lumen's existing localized “Request” action in
+the hover quick-action row. Edition selection and request submission remain
+unchanged.
+
+The focused browser case passes in English, French, and Arabic on desktop.
+Matched baseline and candidate card captures show identical card and control
+geometry, with the French action label fitting its existing button. The fixture
+does not submit a request or verify live service authorization. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-comic-request-localization-20261127/`.
+
+release-note: `release-notes/lumen-comic-card-request-localization.md`
+
 ### Localize My Games removal controls (2026-11-27)
 
 The private game-library editor now localizes “Remove Game” and its

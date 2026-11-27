@@ -565,7 +565,7 @@ export function ComicCard({ w }: { w: ComicWork }) {
                         onClick={() => void request()}
                       >
                         <Icon name="plus" size="sm" />
-                        Request
+                        {t('lumen.common.request', 'Request')}
                       </button>
                       {choose}
                     </>
