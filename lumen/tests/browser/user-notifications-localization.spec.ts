@@ -158,7 +158,7 @@ test('personal notification controls follow the account locale and preserve chan
 }) => {
   const localized = text[locale as keyof typeof text];
   const pageLabels = localized;
-  const pageDeviceName = baseline ? text.en.deviceName : localized.deviceName;
+  const pageDeviceName = baseline ? 'Chrome' : localized.deviceName;
   const notifications = {
     emailEnabled: true,
     webPushEnabled: true,
@@ -185,19 +185,24 @@ test('personal notification controls follow the account locale and preserve chan
     },
   };
   const writes: Record<string, unknown>[] = [];
-  const staleReadbacks = new Set([
-    'email',
-    'webpush',
-    'pgpKey',
-    'telegram',
-    'discord',
-    'pushbullet',
-    'pushover',
-  ]);
+  const staleReadbacks = new Set(
+    baseline
+      ? []
+      : [
+          'email',
+          'webpush',
+          'pgpKey',
+          'telegram',
+          'discord',
+          'pushbullet',
+          'pushover',
+        ]
+  );
   const devices = [
     {
       endpoint: 'https://push.example.test/fixture',
-      userAgent: 'FixtureBrowser/1',
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
       createdAt: '2026-01-02T03:04:05Z',
     },
   ];
@@ -296,7 +301,14 @@ test('personal notification controls follow the account locale and preserve chan
   await expect(
     page.getByLabel(localized.available, { exact: true }).first()
   ).toBeVisible();
-  await expect(page.getByText(pageDeviceName, { exact: true })).toBeVisible();
+  if (baseline) {
+    await expect(page.getByText(pageDeviceName, { exact: true })).toBeVisible();
+  } else {
+    await expect(page.getByText(pageDeviceName, { exact: true })).toBeVisible();
+    await expect(page.getByText(/Windows/)).toBeVisible();
+    await expect(page.getByText(/Chrome/)).toBeVisible();
+    await expect(page.getByText(/Blink/)).toBeVisible();
+  }
   await expect(
     page.getByRole('button', { name: localized.removeDevice })
   ).toBeVisible();

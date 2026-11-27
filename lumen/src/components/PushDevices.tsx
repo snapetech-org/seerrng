@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { UAParser } from 'ua-parser-js';
 import { api } from '../api';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
@@ -20,11 +21,8 @@ interface Device {
 
 function deviceName(agent?: string | null, generic = 'Browser device') {
   if (!agent) return generic;
-  if (/Edg(?:e|A|iOS)?\//.test(agent)) return 'Microsoft Edge';
-  if (/(?:Firefox|FxiOS)\//.test(agent)) return 'Firefox';
-  if (/(?:Chrome|CriOS)\//.test(agent)) return 'Chrome';
-  if (/Safari\//.test(agent)) return 'Safari';
-  return generic;
+  const parsed = UAParser(agent);
+  return parsed.device.model || generic;
 }
 
 export function PushDevices({ id }: { id: number }) {
@@ -45,6 +43,7 @@ export function PushDevices({ id }: { id: number }) {
     'lumen.notifications.browserDeviceName',
     'Browser device'
   );
+  const unknown = n('unknown', 'Unknown');
   const { data, error, reload } = useApi<Device[]>(
     `/user/${id}/pushSubscriptions`
   );
@@ -212,44 +211,55 @@ export function PushDevices({ id }: { id: number }) {
       )}
       {!!data?.length && (
         <ul className="setlist">
-          {data.map((device) => (
-            <li className="set cfg-row" key={device.endpoint}>
-              <span>
-                <b>{deviceName(device.userAgent, genericDeviceName)}</b>
-                {device.endpoint === browserEndpoint && (
+          {data.map((device) => {
+            const parsed = UAParser(device.userAgent ?? undefined);
+            return (
+              <li className="set cfg-row" key={device.endpoint}>
+                <span>
+                  <b>{deviceName(device.userAgent, genericDeviceName)}</b>
                   <small>
-                    {n('lumen.notifications.thisBrowser', 'This browser')}
+                    {n('operatingsystem', 'Operating System')}:{' '}
+                    {parsed.os.name || unknown}
+                    {' · '}
+                    {n('browser', 'Browser')}: {parsed.browser.name || unknown}
+                    {' · '}
+                    {n('engine', 'Engine')}: {parsed.engine.name || unknown}
                   </small>
-                )}
-                {Number.isFinite(Date.parse(device.createdAt)) && (
-                  <small>
-                    {n(
-                      'lumen.notifications.registeredAt',
-                      'Registered {date}',
-                      {
-                        date: new Intl.DateTimeFormat(locale, {
-                          dateStyle: 'medium',
-                          timeStyle: 'short',
-                        }).format(new Date(device.createdAt)),
-                      }
-                    )}
-                  </small>
-                )}
-              </span>
-              <button
-                className="btn btn-quiet btn-sm"
-                disabled={busy}
-                onClick={() => setSelection(device)}
-              >
-                {device.endpoint === browserEndpoint
-                  ? n(
-                      'lumen.notifications.disableThisBrowser',
-                      'Disable This Browser'
-                    )
-                  : n('deletesubscription', 'Remove Device')}
-              </button>
-            </li>
-          ))}
+                  {device.endpoint === browserEndpoint && (
+                    <small>
+                      {n('lumen.notifications.thisBrowser', 'This browser')}
+                    </small>
+                  )}
+                  {Number.isFinite(Date.parse(device.createdAt)) && (
+                    <small>
+                      {n(
+                        'lumen.notifications.registeredAt',
+                        'Registered {date}',
+                        {
+                          date: new Intl.DateTimeFormat(locale, {
+                            dateStyle: 'medium',
+                            timeStyle: 'short',
+                          }).format(new Date(device.createdAt)),
+                        }
+                      )}
+                    </small>
+                  )}
+                </span>
+                <button
+                  className="btn btn-quiet btn-sm"
+                  disabled={busy}
+                  onClick={() => setSelection(device)}
+                >
+                  {device.endpoint === browserEndpoint
+                    ? n(
+                        'lumen.notifications.disableThisBrowser',
+                        'Disable This Browser'
+                      )
+                    : n('deletesubscription', 'Remove Device')}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
       {notice && (

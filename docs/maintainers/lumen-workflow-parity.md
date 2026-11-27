@@ -44,6 +44,31 @@ build passes.
 
 release-note: `release-notes/lumen-guided-setup-defaults.md`
 
+### Personal push-device details (2026-11-27)
+
+Native SeerrNG lists each registered browser device's operating system,
+browser, and engine. Lumen previously showed only a short browser name. Its
+device rows now use the repository's pinned `ua-parser-js` 2.0.10 dependency to
+show the same three metadata fields, while retaining the model or generic
+device label, registration date, active-browser marker, and existing removal
+action. No endpoint or credential value is rendered.
+
+The notification browser fixture now uses a Windows 10 / Chrome user-agent and
+checks OS, browser, and engine output. The standalone production build passes;
+all eight notification cases pass on desktop, iPhone, Android, and tablet in
+English, French, and Arabic (24 cases). The prior same-route Lumen baseline and
+fresh candidate captures were inspected at 1440×900 and iPhone 13 widths. The
+baseline used an unrecognized user-agent; the candidate's recognized Windows /
+Chrome state adds one wrapped metadata line within the existing row, with no
+horizontal overflow. The provider API remains fixture-backed, and
+native-matched visual acceptance for the broader Notifications route remains
+open. Candidate evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-notification-device-20261127/`;
+the baseline is at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-notification-readback-20261124/`.
+
+release-note: `release-notes/lumen-push-device-details.md`
+
 ### Recover from account media-category settings failures (2026-11-27)
 
 Lumen now waits for the effective per-user media-category settings response
