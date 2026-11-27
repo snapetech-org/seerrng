@@ -12997,9 +12997,10 @@ states. Candidate desktop and iPhone captures show the platform/system labels
 without clipping or horizontal overflow. The fixture verifies main-story plus
 PC platform details and retro-system details, with no PC-only estimate on
 console cards. English, French, and Arabic tests passed across desktop, iPhone,
-Android, and tablet (12 cases). The Lumen build passed. Exact provider data,
-live API behavior, and production `/lumen/` mount were not exercised. Evidence
-is retained at
+Android, and tablet (12 cases). The same 12 catalog cases also pass against the
+compiled production bundle through SeerrNG's actual Express
+`mountLumenFrontend` at `/lumen/`. Fixture responses are mocked; exact provider
+data and live API behavior remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
