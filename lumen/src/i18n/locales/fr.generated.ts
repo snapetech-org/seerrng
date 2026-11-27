@@ -8603,4 +8603,5 @@ export const messages = {
   'lumen.manageMedia.requestDeleted': 'La demande a été supprimée.',
   'lumen.manageMedia.requestDeleteFailed':
     'Impossible de supprimer cette demande.',
+  'lumen.bookRecommendations.seriesPart': '{series} nº {position}',
 } as const;

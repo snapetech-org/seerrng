@@ -7824,4 +7824,5 @@ export const messages = {
   'lumen.manageMedia.requestDeleted': 'Request entry deleted.',
   'lumen.manageMedia.requestDeleteFailed':
     'Unable to delete this request entry.',
+  'lumen.bookRecommendations.seriesPart': '{series} #{position}',
 } as const;

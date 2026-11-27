@@ -504,6 +504,16 @@ content in both baseline and candidate. Live Hardcover responses and
 independent linguistic review remain unverified. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-recommendations-localization-20261122/`.
 
+Book result cards now also retain and display Hardcover's publication year and
+format series membership using the native `Series #position` convention,
+including an unknown-position fallback. The author/year line and series part
+use separate existing metadata elements; the series label is localized in
+English, French, and Arabic. The focused browser fixture asserts these fields,
+the book-resolution payload, and page overflow across desktop, iPhone, Android,
+and tablet. Matched result-state baseline and candidate captures are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-book-recommendation-display-20261127/`.
+Live Hardcover metadata and independent linguistic review remain unverified.
+
 ### Comic and manga detail localization
 
 Comic and manga detail pages now localize edition selection, recommendation

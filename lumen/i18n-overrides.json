@@ -5401,7 +5401,8 @@
     "lumen.manageMedia.deleteRequestBody": "This cancels active work where possible and permanently removes the request entry and its history.",
     "lumen.manageMedia.keepRequest": "Keep Request",
     "lumen.manageMedia.requestDeleted": "Request entry deleted.",
-    "lumen.manageMedia.requestDeleteFailed": "Unable to delete this request entry."
+    "lumen.manageMedia.requestDeleteFailed": "Unable to delete this request entry.",
+    "lumen.bookRecommendations.seriesPart": "{series} #{position}"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -11092,7 +11093,8 @@
     "lumen.manageMedia.deleteRequestBody": "Cette action annule le travail actif lorsque cela est possible et supprime définitivement la demande et son historique.",
     "lumen.manageMedia.keepRequest": "Conserver la demande",
     "lumen.manageMedia.requestDeleted": "La demande a été supprimée.",
-    "lumen.manageMedia.requestDeleteFailed": "Impossible de supprimer cette demande."
+    "lumen.manageMedia.requestDeleteFailed": "Impossible de supprimer cette demande.",
+    "lumen.bookRecommendations.seriesPart": "{series} nº {position}"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16787,6 +16789,7 @@
     "lumen.manageMedia.deleteRequestBody": "سيؤدي ذلك إلى إلغاء العمل النشط حيثما أمكن، وحذف سجل الطلب وسجله نهائيًا.",
     "lumen.manageMedia.keepRequest": "الاحتفاظ بالطلب",
     "lumen.manageMedia.requestDeleted": "تم حذف سجل الطلب.",
-    "lumen.manageMedia.requestDeleteFailed": "تعذر حذف سجل الطلب."
+    "lumen.manageMedia.requestDeleteFailed": "تعذر حذف سجل الطلب.",
+    "lumen.bookRecommendations.seriesPart": "{series}، رقم {position}"
   }
 }

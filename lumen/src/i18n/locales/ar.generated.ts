@@ -7915,4 +7915,5 @@ export const messages = {
   'lumen.manageMedia.keepRequest': 'الاحتفاظ بالطلب',
   'lumen.manageMedia.requestDeleted': 'تم حذف سجل الطلب.',
   'lumen.manageMedia.requestDeleteFailed': 'تعذر حذف سجل الطلب.',
+  'lumen.bookRecommendations.seriesPart': '{series}، رقم {position}',
 } as const;

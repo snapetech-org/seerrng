@@ -21,6 +21,7 @@ type Book = {
   id: number;
   title: string;
   author?: string;
+  year?: number;
   isbn13?: string;
   imageUrl?: string;
   series?: { name: string; position?: number };
@@ -503,10 +504,20 @@ export default function BookRecommendations() {
                     <span>
                       <b>{book.title}</b>
                       <small>
-                        {[book.author, book.series?.name, book.series?.position]
-                          .filter(Boolean)
-                          .join(' · ')}
+                        {[book.author, book.year].filter(Boolean).join(' · ')}
                       </small>
+                      {book.series && (
+                        <small>
+                          {t(
+                            'lumen.bookRecommendations.seriesPart',
+                            '{series} #{position}',
+                            {
+                              series: book.series.name,
+                              position: book.series.position ?? '?',
+                            }
+                          )}
+                        </small>
+                      )}
                     </span>
                     <div className="toolbar">
                       {(['more', 'less'] as const).map((value) => (

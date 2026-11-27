@@ -19,6 +19,8 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         created: 'Recommendation feed created.',
         format: 'Format',
         open: 'Open Book',
+        year: 'Fixture Author · 2024',
+        series: 'Clockwork Stories #2',
       },
       fr: {
         title: 'Recommandations de livres',
@@ -30,6 +32,8 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         created: 'Flux de recommandations créé.',
         format: 'Format',
         open: 'Ouvrir le livre',
+        year: 'Fixture Author · 2024',
+        series: 'Clockwork Stories nº 2',
       },
       ar: {
         title: 'توصيات الكتب',
@@ -41,9 +45,13 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         created: 'تم إنشاء قائمة التوصيات.',
         format: 'التنسيق',
         open: 'فتح الكتاب',
+        year: 'Fixture Author · 2024',
+        series: 'Clockwork Stories، رقم 2',
       },
     }[baseline ? 'en' : locale];
     const captureDirectory = process.env.LUMEN_BOOK_RECOMMENDATIONS_CAPTURE_DIR;
+    const detailCaptureDirectory =
+      process.env.LUMEN_BOOK_RECOMMENDATIONS_DETAIL_CAPTURE_DIR;
     const submitted: unknown[] = [];
     let resolveBody: unknown;
     await page.route('**/lumen-config.json', (route) =>
@@ -94,7 +102,10 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
               {
                 id: 8,
                 title: 'Fixture Book',
+                author: 'Fixture Author',
                 imageUrl: 'https://assets.hardcover.app/fixture.jpg',
+                year: 2024,
+                series: { name: 'Clockwork Stories', position: 2 },
               },
             ],
           },
@@ -130,6 +141,16 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       });
     await page.getByRole('button', { name: copy.show }).click();
     await expect(page.getByText('Fixture Book')).toBeVisible();
+    await expect(page.getByText(copy.year)).toBeVisible();
+    await expect(page.getByText(copy.series)).toBeVisible();
+    if (
+      detailCaptureDirectory &&
+      ['desktop', 'iphone'].includes(info.project.name)
+    )
+      await page.screenshot({
+        path: `${detailCaptureDirectory}/${locale}-${info.project.name}.png`,
+        fullPage: true,
+      });
     await expect(page.locator('.poster.book img')).toHaveAttribute(
       'src',
       '/imageproxy/hardcover/fixture.jpg'
@@ -157,7 +178,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       page.getByRole('heading', { name: 'Matched Fixture Audiobook' })
     ).toBeVisible();
     expect(resolveBody).toMatchObject({
-      text: 'Fixture Book',
+      text: 'Fixture Book by Fixture Author',
       types: ['book'],
       formatHint: 'audiobook',
     });
