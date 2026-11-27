@@ -27,6 +27,14 @@ test('book detail preserves edition identity with authorized requester and servi
           booksEnabled: true,
         },
       });
+    if (path === '/user/1/quota')
+      return route.fulfill({
+        json: { book: { limit: 1, remaining: 1, days: 7, restricted: false } },
+      });
+    if (path === '/user/9/quota')
+      return route.fulfill({
+        json: { book: { limit: 1, remaining: 1, days: 7, restricted: false } },
+      });
     if (path === '/book/bookshelf%3A42%3AaGM6MTIzNDU')
       return route.fulfill({
         json: {
@@ -103,6 +111,10 @@ test('book detail preserves edition identity with authorized requester and servi
   ).toBeVisible();
   await page.getByText('Advanced Request Options', { exact: true }).click();
   await page.getByLabel('Request As').selectOption('9');
+  await expect(page.getByText('1 of 1 book requests remaining.')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Request · Fixture Narrator/ })
+  ).toBeEnabled();
   await page.getByLabel('Book Service').selectOption('4');
   await page.getByLabel('Quality Profile').selectOption('7');
   await page.getByLabel('Metadata Profile').selectOption('8');
