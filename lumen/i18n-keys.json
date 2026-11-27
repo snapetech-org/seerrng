@@ -5878,6 +5878,7 @@
   "components.GameContent.typeUnknown",
   "components.GameLibrary.openCatalog",
   "components.GameLibrary.requestGame",
+  "components.GameLibrary.sharedBy",
   "components.SoftwareCatalog.allPcPlatforms",
   "components.SoftwareCatalog.allSystems",
   "components.SoftwareCatalog.genreFilter",

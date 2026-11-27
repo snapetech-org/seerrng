@@ -1697,6 +1697,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'その他',
   'components.GameLibrary.openCatalog': 'カタログで開く',
   'components.GameLibrary.requestGame': 'このゲームをリクエストする',
+  'components.GameLibrary.sharedBy': '共有者: {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'すべてのPCプラットフォーム',
   'components.SoftwareCatalog.allSystems': 'すべてのシステム',
   'components.SoftwareCatalog.genreFilter': 'ジャンル',

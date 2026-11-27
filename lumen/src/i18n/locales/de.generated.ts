@@ -1727,6 +1727,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'Sonstiges',
   'components.GameLibrary.openCatalog': 'Im Katalog öffnen',
   'components.GameLibrary.requestGame': 'Fordern Sie dieses Spiel an',
+  'components.GameLibrary.sharedBy': 'Geteilt von {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'Alle PC Plattformen',
   'components.SoftwareCatalog.allSystems': 'Alle Systeme',
   'components.SoftwareCatalog.genreFilter': 'Genre',

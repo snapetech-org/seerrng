@@ -1695,6 +1695,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'Other',
   'components.GameLibrary.openCatalog': 'Open in catalog',
   'components.GameLibrary.requestGame': 'Request this game',
+  'components.GameLibrary.sharedBy': 'Shared by {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'All PC platforms',
   'components.SoftwareCatalog.allSystems': 'All systems',
   'components.SoftwareCatalog.genreFilter': 'Genre',

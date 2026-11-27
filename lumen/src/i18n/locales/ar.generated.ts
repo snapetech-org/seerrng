@@ -1654,6 +1654,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'أخرى',
   'components.GameLibrary.openCatalog': 'افتح في الكتالوج',
   'components.GameLibrary.requestGame': 'اطلب هذه اللعبة',
+  'components.GameLibrary.sharedBy': 'تمت المشاركة بواسطة {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'جميع منابر PC',
   'components.SoftwareCatalog.allSystems': 'جميع النظم',
   'components.SoftwareCatalog.genreFilter': 'النوع',

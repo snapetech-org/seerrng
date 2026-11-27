@@ -77,9 +77,24 @@ test('My Games keeps private edits separate from household results', async ({
               category: 'game',
               catalogId: 22,
               playtimeMinutes: 60,
+              ownerCount: 2,
               owners: [
-                { id: 2, displayName: 'Friend' },
-                { id: 3, displayName: 'Neighbour' },
+                {
+                  id: 2,
+                  displayName: 'Friend',
+                  status: 'playing',
+                  storeName: 'Steam',
+                  platformName: 'Windows',
+                  playtimeMinutes: 45,
+                },
+                {
+                  id: 3,
+                  displayName: 'Neighbour',
+                  status: 'completed',
+                  storeName: 'GOG',
+                  platformName: 'Linux',
+                  playtimeMinutes: 15,
+                },
               ],
             },
           ],
@@ -151,9 +166,30 @@ test('My Games exposes request and catalog actions from private and shared games
 }, testInfo) => {
   const locale = process.env.LUMEN_GAME_LIBRARY_REQUEST_LOCALE ?? 'en';
   const labels = {
-    en: { request: 'Request this game', catalog: 'Open in catalog' },
-    fr: { request: 'Demander ce jeu', catalog: 'Ouvrir dans le catalogue' },
-    ar: { request: 'اطلب هذه اللعبة', catalog: 'افتح في الكتالوج' },
+    en: {
+      request: 'Request this game',
+      catalog: 'Open in catalog',
+      ownerCount: 'Owner Count: 2',
+      sharedBy: 'Shared by Friend, Neighbour',
+      friend: 'Friend: Playing · Steam · Windows · 80 minutes played',
+      neighbour: 'Neighbour: Completed · GOG · Linux · 125 minutes played',
+    },
+    fr: {
+      request: 'Demander ce jeu',
+      catalog: 'Ouvrir dans le catalogue',
+      ownerCount: 'Nombre de propriétaires: 2',
+      sharedBy: 'Partagé par Friend, Neighbour',
+      friend: 'Friend: En cours · Steam · Windows · 80 minutes jouées',
+      neighbour: 'Neighbour: Terminé · GOG · Linux · 125 minutes jouées',
+    },
+    ar: {
+      request: 'اطلب هذه اللعبة',
+      catalog: 'افتح في الكتالوج',
+      ownerCount: 'عدد المالكين: ٢',
+      sharedBy: 'تمت المشاركة بواسطة Friend, Neighbour',
+      friend: 'Friend: قيد اللعب · Steam · Windows · ٨٠ دقيقة لعب',
+      neighbour: 'Neighbour: مكتملة · GOG · Linux · ١٢٥ دقيقة لعب',
+    },
   } as const;
   const copy = labels[locale as keyof typeof labels] ?? labels.en;
   const entries = [
@@ -193,7 +229,25 @@ test('My Games exposes request and catalog actions from private and shared games
       category: 'game',
       catalogId: 22,
       playtimeMinutes: 0,
-      owners: [{ id: 2, displayName: 'Friend' }],
+      ownerCount: 2,
+      owners: [
+        {
+          id: 2,
+          displayName: 'Friend',
+          status: 'playing',
+          storeName: 'Steam',
+          platformName: 'Windows',
+          playtimeMinutes: 80,
+        },
+        {
+          id: 3,
+          displayName: 'Neighbour',
+          status: 'completed',
+          storeName: 'GOG',
+          platformName: 'Linux',
+          playtimeMinutes: 125,
+        },
+      ],
     },
     {
       key: 'manual',
@@ -201,7 +255,17 @@ test('My Games exposes request and catalog actions from private and shared games
       category: 'game',
       catalogId: null,
       playtimeMinutes: 0,
-      owners: [{ id: 2, displayName: 'Friend' }],
+      ownerCount: 1,
+      owners: [
+        {
+          id: 2,
+          displayName: 'Friend',
+          status: 'playing',
+          storeName: '',
+          platformName: '',
+          playtimeMinutes: 0,
+        },
+      ],
     },
   ];
   await page.route('https://**/*', (route) => route.abort());
@@ -278,6 +342,10 @@ test('My Games exposes request and catalog actions from private and shared games
     .click();
   await expect(page.getByText('Shared Catalog Game')).toBeVisible();
   await expect(page.getByText('Shared Manual Game')).toBeVisible();
+  await expect(page.getByText(copy.ownerCount)).toBeVisible();
+  await expect(page.getByText(copy.sharedBy)).toBeVisible();
+  await expect(page.getByText(copy.friend)).toBeVisible();
+  await expect(page.getByText(copy.neighbour)).toBeVisible();
   await capture('shared', 'Shared Manual Game');
   const catalogActions = page.getByRole('link', { name: copy.catalog });
   await expect.soft(catalogActions).toHaveCount(1);
@@ -347,7 +415,17 @@ test('My Games keeps request actions behind request permission', async ({
               category: 'game',
               catalogId: null,
               playtimeMinutes: 0,
-              owners: [{ id: 2, displayName: 'Friend' }],
+              ownerCount: 1,
+              owners: [
+                {
+                  id: 2,
+                  displayName: 'Friend',
+                  status: 'playing',
+                  storeName: '',
+                  platformName: '',
+                  playtimeMinutes: 0,
+                },
+              ],
             },
           ],
           total: 1,

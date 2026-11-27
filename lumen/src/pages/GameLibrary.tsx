@@ -60,7 +60,15 @@ interface SharedGame {
   category: GameCategory;
   catalogId: number | null;
   playtimeMinutes: number;
-  owners: { id: number; displayName: string }[];
+  ownerCount: number;
+  owners: {
+    id: number;
+    displayName: string;
+    status: keyof typeof PROGRESS;
+    storeName: string;
+    platformName: string;
+    playtimeMinutes: number;
+  }[];
 }
 
 interface ResultPage<T> {
@@ -563,8 +571,20 @@ function SteamLibrary({
 
 export default function GameLibrary() {
   const { user } = useAuth();
-  const { t } = useLumenLocale();
+  const { locale, t } = useLumenLocale();
   const tr = (value: string) => t(messageKey(value), value);
+  const formatNumber = (value: number) =>
+    new Intl.NumberFormat(locale === 'ar' ? 'ar-u-nu-arab' : locale).format(
+      value
+    );
+  const formatMinutes = (key: string, fallback: string, minutes: number) => {
+    const number = formatNumber(minutes);
+    const marker = '__minutes__';
+    const message = t(key, fallback, { minutes: marker });
+    return message.includes(marker)
+      ? message.replace(marker, number)
+      : `${number} ${message}`;
+  };
   const mayRequest = canUseRequestAccess(user?.permissions);
   const [params, setParams] = useSearchParams();
   const [editor, setEditor] = useState<GameEntry | null | undefined>();
@@ -727,18 +747,46 @@ export default function GameLibrary() {
               <li className="set" key={game.key}>
                 <div>
                   <GameName game={game} />
+                  <small>{[tr(GAME_LABEL[game.category])].join(' · ')}</small>
                   <small>
-                    {[
-                      tr(GAME_LABEL[game.category]),
-                      ...game.owners.map((owner) => owner.displayName),
-                    ].join(' · ')}
+                    {`${tr('Owner Count')}: ${formatNumber(game.ownerCount)}`}
+                  </small>
+                  <small>
+                    {t(
+                      'components.GameLibrary.sharedBy',
+                      'Shared by {owners}',
+                      {
+                        owners: game.owners
+                          .map((owner) => owner.displayName)
+                          .join(', '),
+                      }
+                    )}
+                  </small>
+                  <small>
+                    {game.owners
+                      .map((owner) =>
+                        [
+                          `${owner.displayName}: ${tr(PROGRESS[owner.status])}`,
+                          owner.storeName,
+                          owner.platformName,
+                          owner.playtimeMinutes > 0 &&
+                            formatMinutes(
+                              'lumen.gameLibrary.minutesPlayed',
+                              '{minutes} minutes played',
+                              owner.playtimeMinutes
+                            ),
+                        ]
+                          .filter(Boolean)
+                          .join(' · ')
+                      )
+                      .join(' · ')}
                   </small>
                   {game.playtimeMinutes > 0 && (
                     <small>
-                      {t(
+                      {formatMinutes(
                         'lumen.gameLibrary.minutesPlayedTogether',
                         '{minutes} minutes played together',
-                        { minutes: game.playtimeMinutes }
+                        game.playtimeMinutes
                       )}
                     </small>
                   )}

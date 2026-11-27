@@ -1678,6 +1678,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'अन्य',
   'components.GameLibrary.openCatalog': 'कैटलॉग में खोलें',
   'components.GameLibrary.requestGame': 'इस खेल का अनुरोध करें',
+  'components.GameLibrary.sharedBy': 'इन लोगों ने साझा किया: {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'सभी पीसी प्लेटफॉर्म',
   'components.SoftwareCatalog.allSystems': 'सभी प्रणालियों',
   'components.SoftwareCatalog.genreFilter': 'शैली',

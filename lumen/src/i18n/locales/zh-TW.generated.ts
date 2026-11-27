@@ -1576,6 +1576,7 @@ export const messages = {
   'components.GameContent.typeUnknown': '其他',
   'components.GameLibrary.openCatalog': '在遊戲目錄中開啟',
   'components.GameLibrary.requestGame': '申請此遊戲',
+  'components.GameLibrary.sharedBy': '由{owners}分享',
   'components.SoftwareCatalog.allPcPlatforms': '所有PC平台',
   'components.SoftwareCatalog.allSystems': '所有系統',
   'components.SoftwareCatalog.genreFilter': '類型',

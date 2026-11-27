@@ -1687,6 +1687,7 @@ export const messages = {
   'components.GameContent.typeUnknown': 'Khác',
   'components.GameLibrary.openCatalog': 'Mở trong danh mục',
   'components.GameLibrary.requestGame': 'Yêu cầu trò chơi này',
+  'components.GameLibrary.sharedBy': 'Được chia sẻ bởi {owners}',
   'components.SoftwareCatalog.allPcPlatforms': 'Mọi nền tảng PC',
   'components.SoftwareCatalog.allSystems': 'Mọi hệ thống',
   'components.SoftwareCatalog.genreFilter': 'Thể loại',

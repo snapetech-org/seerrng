@@ -12911,3 +12911,32 @@ Live provider results and native-matched visual acceptance remain separate
 gates.
 
 release-note: `release-notes/lumen-game-library-request-actions.md`
+
+### Restore household owner details in My Games (2026-11-27)
+
+Lumen's shared My Games cards now show the server-provided owner count and
+sharing names, then each owner's progress, store, platform, and playtime. This
+brings back the household comparison details visible in native SeerrNG without
+changing the API or privacy boundary. Playtime counts use the selected locale's
+numbering system even when a translation omits the count placeholder.
+
+The fixture asserts two owners with different progress and store/platform data,
+plus a one-owner manual entry. The complete Game Library browser suite passes
+24/24 cases on standalone Vite Preview and 24/24 against the compiled production
+bundle served through SeerrNG's `/lumen/` Express mount. Localized shared-card
+cases pass in English, French, and Arabic across desktop, iPhone, Android, and
+tablet in both deployments. Matched Lumen baseline/candidate screenshots at
+1440×900 and iPhone 13 show the added details wrapping inside the existing
+cards; the Arabic mounted capture shows right-to-left layout and Arabic-Indic
+counts. No CSS changed. Live authorization/provider responses and native-matched
+visual acceptance remain open. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-shared-details-20261127/`.
+The first standalone capture attempt pointed root-relative tests at the embedded
+`/lumen/` build and rendered a blank route; it was excluded and rerun against
+the standalone root build. Arabic verification also exposed the runtime's
+Latin-digit default for `ar`; the final formatter explicitly requests the
+Arabic numbering system. A later French rerun initially targeted the already
+stopped preview and was excluded; restarting the task-owned preview produced
+the recorded 4/4 pass.
+
+release-note: `release-notes/lumen-household-game-details.md`
