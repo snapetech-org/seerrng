@@ -195,6 +195,28 @@ test('Classic self-service settings bookmarks open every matching Lumen section'
   }
 });
 
+test('root self-permissions bookmark opens the assigned-permissions summary', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const { pathname } = new URL(route.request().url());
+    if (pathname === '/api/v1/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Owner', permissions: 2, userType: 2 },
+      });
+    if (pathname === '/api/v1/user/1/settings/password')
+      return route.fulfill({ json: { hasPassword: true } });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(appPath('/users/1/settings/permissions?from=native'));
+  await expect(page).toHaveURL(
+    /\/me\/account\?from=native#account-permissions$/
+  );
+  await expect(page.locator('#account-permissions')).toBeVisible();
+});
+
 test('advanced theme controls are limited to administrator accounts', async ({
   page,
 }) => {

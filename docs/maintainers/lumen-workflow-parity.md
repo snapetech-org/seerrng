@@ -6997,6 +6997,19 @@ comparison remains unverified.
 
 release-note: `release-notes/lumen-self-password-bookmark.md`
 
+### Root self-permissions bookmark destination (2026-11-27)
+
+The root user's native `/users/1/settings/permissions` bookmark now opens
+Lumen's assigned-permissions summary instead of the Account Settings top. The
+summary is the existing Lumen permissions display and preserves query state.
+The server's `POST /user/:id/settings/permissions` explicitly rejects
+self-permission mutations, including for user 1, so Lumen does not expose a
+write control that cannot persist. Browser coverage checks the redirect and
+target section. This route behavior changed without CSS; matched native visual
+comparison remains unverified.
+
+release-note: `release-notes/lumen-self-permissions-bookmark.md`
+
 ### Movie screenplay credit (2026-11-27)
 
 Lumen's movie Facts disclosure now shows the primary Screenplay, Writer, or

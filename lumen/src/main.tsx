@@ -191,6 +191,7 @@ function UserSettingsBookmark() {
   const targetIsSelf = user?.id === Number(userId);
   const ownDestination: Record<string, string> = {
     password: '/me/account#password',
+    permissions: '/me/account#account-permissions',
     'linked-accounts': '/me/account/linked-accounts',
     'tv-request-access': '/me/account/tv-requests',
     'episode-queue': '/me/account/tv-requests#episode-queue',
