@@ -1051,6 +1051,7 @@ export interface TvDetails extends TitleResult {
   status?: string;
   credits?: Credits;
   keywords?: SubjectTag[];
+  productionCompanies?: { id: number; name: string }[];
   productionCountries?: ProductionCountry[];
   createdBy?: { id?: number; name: string }[];
   contentRatings?: { results: { iso_3166_1: string; rating: string }[] };

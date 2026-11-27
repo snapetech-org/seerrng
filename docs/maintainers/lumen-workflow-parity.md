@@ -875,6 +875,27 @@ existing scrollable detail page and sticky request bar.
 
 Visual and browser evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-facts-acceptance-20261126/`.
+
+### TV production studios (2026-11-27)
+
+Native TV details include production studios linked to Discover. Lumen's TV
+response type omitted the existing `productionCompanies` API field and its
+Series Details panel did not render studios. Lumen now shows the localized
+Production Studios fact and links only valid company IDs to the matching
+series discovery query. Invalid or absent IDs retain readable studio names
+without creating a route. The existing movie fact label and shared detail-grid
+styles are reused.
+
+The metadata-provenance browser spec passes 12 cases across English, French,
+and Arabic and desktop, iPhone, Android, and tablet presets, including exact
+mounted discovery URLs and invalid-ID fallback. TypeScript and the production
+build pass. Matching baseline and candidate Series Details screenshots at
+1440×900 and 390×844 were inspected; the added row wraps within the existing
+grid and does not cause horizontal overflow. The compiled SeerrNG server mount
+and live TMDB responses were not exercised in this visual run.
+
+Visual and browser evidence is retained under
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-studio-parity-20261127/`.
 API data and actions are fixture-backed; live TMDB, media-server, and provider
 behavior remain unverified.
 

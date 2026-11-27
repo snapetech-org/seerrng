@@ -1236,6 +1236,26 @@ export default function TvDetail() {
                     ),
                   ],
                   [
+                    translate(
+                      'lumen.movie.fact.productionStudios',
+                      'Production Studios'
+                    ),
+                    t.productionCompanies?.length
+                      ? t.productionCompanies.map(({ id, name }, index) => (
+                          <span key={`${id}:${index}`}>
+                            {index > 0 && ', '}
+                            {Number.isSafeInteger(id) &&
+                            id > 0 &&
+                            id <= 1_000_000_000 ? (
+                              <Link to={`/series?studio=${id}`}>{name}</Link>
+                            ) : (
+                              name
+                            )}
+                          </span>
+                        ))
+                      : null,
+                  ],
+                  [
                     translate('lumen.tv.fact.firstAirDate', 'First Air Date'),
                     shortDate(t.firstAirDate, true, locale),
                   ],

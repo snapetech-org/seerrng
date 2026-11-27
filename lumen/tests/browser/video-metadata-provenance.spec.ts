@@ -5,6 +5,7 @@ const locales = {
   en: {
     movie: 'Movie Details',
     tv: 'Series Details',
+    studio: 'Production Studios',
     directors: 'Director',
     writers: 'Writers',
     screenplay: 'Screenplay',
@@ -15,6 +16,7 @@ const locales = {
   fr: {
     movie: 'Détails du film',
     tv: 'Détails de la série',
+    studio: 'Sociétés de production',
     directors: 'Réalisateur',
     writers: 'Auteurs',
     screenplay: 'Scénario',
@@ -25,6 +27,7 @@ const locales = {
   ar: {
     movie: 'تفاصيل الفيلم',
     tv: 'تفاصيل المسلسل',
+    studio: 'شركات الإنتاج',
     directors: 'مخرج',
     writers: 'كاتبون',
     screenplay: 'سيناريو',
@@ -120,6 +123,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
             lastAirDate: '2022-01-01',
             originalLanguage: 'en',
             productionCountries: [],
+            productionCompanies: [
+              { id: 8, name: 'Fixture Studio' },
+              { id: 0, name: 'Unlinked Studio' },
+            ],
             genres: [
               { id: 18, name: 'Drama' },
               { id: 35, name: 'Comedy' },
@@ -195,6 +202,23 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       page.getByRole('heading', { name: 'Fixture Series' })
     ).toBeVisible();
     await page.getByText(copy.tv, { exact: true }).click();
+    const studioLabel = page
+      .locator('#details dt')
+      .getByText(copy.studio, { exact: true });
+    const fixtureStudio = page.getByRole('link', {
+      name: 'Fixture Studio',
+      exact: true,
+    });
+    if (!captureOnly) {
+      await expect(studioLabel).toBeVisible();
+      await expect(fixtureStudio).toHaveAttribute(
+        'href',
+        `${mount}/series?studio=8`
+      );
+      await expect(
+        page.getByRole('link', { name: 'Unlinked Studio', exact: true })
+      ).toHaveCount(0);
+    }
     const tvHeader = page.locator('.dtitle');
     const tvDrama = tvHeader.getByRole('link', { name: 'Drama', exact: true });
     const tvComedy = tvHeader.getByRole('link', {
