@@ -12305,3 +12305,15 @@ native-matched visual comparison and live Bookshelf/removal verification are
 still required before calling this sheet fully equivalent.
 
 release-note: `release-notes/lumen-book-management-sheet.md`
+
+### Open: contextual management sheets for music, comics, and magazines
+
+Native Album, Comic, and Magazine details also expose the shared
+ExternalMediaManageSlideOver. Lumen currently has no corresponding contextual
+sheet for these categories. Their detail pages expose separate issue,
+blocklist, download, and request entry points, but administrators lack the
+native consolidated view of non-declined requests, download client status,
+configured service links, and the existing media-specific management actions.
+Audit each backend's verified library-removal capabilities and identity rules
+before extending the Book sheet pattern; Bindery, BookOrbit, Mylar, Kapowarr,
+BackIssue, and Lidarr have distinct contracts.
