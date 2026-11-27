@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { bookDetailPath, videoDetailPath } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { canViewAllRequests, Pill } from '../components/detail';
-import { ServiceNote } from '../components/extra';
+import { CategorySettingsNote, ServiceNote } from '../components/extra';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
@@ -393,6 +393,7 @@ export default function Calendar() {
 
   return (
     <>
+      <CategorySettingsNote error={extras.error} retry={extras.retry} />
       <header className="ph">
         <h1>{t('lumen.calendar.title', 'Release Calendar')}</h1>
       </header>

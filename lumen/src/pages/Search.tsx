@@ -22,7 +22,11 @@ import {
   TitleCard,
 } from '../components/cards';
 import { ComicCard } from '../components/comics';
-import { MagazineCard, ServiceNote } from '../components/extra';
+import {
+  CategorySettingsNote,
+  MagazineCard,
+  ServiceNote,
+} from '../components/extra';
 import { friendlyError } from '../errors';
 import {
   artistOf,
@@ -688,6 +692,7 @@ function SearchResults({
 
   return (
     <>
+      <CategorySettingsNote error={extras.error} retry={extras.retry} />
       <header className="ph">
         <div className="ph-row">
           <div>

@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { api, artUrl, bookArt, tmdbImg } from '../api';
 import { useAuth } from '../auth';
 import { Cover } from '../components/cards';
-import { ServiceNote } from '../components/extra';
+import { CategorySettingsNote, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import {
   createDiscoverNavigationContextId,
@@ -492,6 +492,9 @@ export default function Watchlist({
           </div>
         )}
       </header>
+      {targetUserId === undefined && (
+        <CategorySettingsNote error={extras.error} retry={extras.retry} />
+      )}
       {filtersSupported === false && (
         <p className="note">
           {t(

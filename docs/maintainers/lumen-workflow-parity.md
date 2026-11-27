@@ -5,6 +5,26 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Recover from account media-category settings failures (2026-11-27)
+
+Lumen now waits for the effective per-user media-category settings response
+before showing category navigation, mounting category routes, or probing
+optional catalogs. A failed read keeps those requests blocked and shows the
+existing localized retry notice. Search, Calendar, My Media, and the signed-in
+user's Watchlist now show the same notice instead of appearing empty or leaving
+the category-dependent view without an explanation. A retry reloads the account
+settings and resumes the requested page after a successful response.
+
+The backend contract resolves category defaults into the per-user response, so
+a successful response with omitted flags remains compatible with existing
+defaults. Browser fixtures cover failure, no-probe behavior, retry recovery, and
+the four previously silent pages. The focused cases pass across desktop,
+iPhone, Android, and tablet, and the production Lumen build passes. The notice
+uses the existing shared error owner; matched native screenshots and live
+authenticated behavior remain unverified.
+
+release-note: `release-notes/fixed-lumen-category-settings-recovery.md`
+
 ### Per-locale catalog loading (2026-11-27)
 
 Lumen now ships locale metadata in its initial app bundle and loads the selected

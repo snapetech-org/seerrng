@@ -1015,6 +1015,27 @@ test('failed personal category settings block category data until retried', asyn
   await expect.poll(() => catalogReads.length).toBeGreaterThan(0);
 });
 
+test('category-gated pages explain failed account settings reads', async ({
+  page,
+}) => {
+  await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/main', (route) =>
+    route.fulfill({
+      status: 503,
+      json: { message: 'Temporary settings failure' },
+    })
+  );
+
+  for (const path of ['/search', '/calendar', '/library', '/watchlist']) {
+    await page.goto(testAppPath(path));
+    const notice = page
+      .getByRole('alert')
+      .filter({ hasText: 'Couldn’t load media categories' });
+    await expect(notice).toBeVisible();
+    await expect(notice.getByRole('button', { name: 'Retry' })).toBeVisible();
+  }
+});
+
 test('late category probes remain scoped to the account that started them', async ({
   page,
 }) => {

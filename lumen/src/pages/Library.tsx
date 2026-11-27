@@ -8,7 +8,7 @@ import LibraryRepair from '../components/LibraryRepair';
 import LibraryTracking from '../components/LibraryTracking';
 import PersonalIdentityPacks from '../components/PersonalIdentityPacks';
 import ProviderFailure from '../components/ProviderFailure';
-import { ServiceNote } from '../components/extra';
+import { CategorySettingsNote, ServiceNote } from '../components/extra';
 import { useExtras } from '../extras';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
@@ -205,6 +205,7 @@ function LibraryShelf({
 
   return (
     <>
+      <CategorySettingsNote error={extras.error} retry={extras.retry} />
       <div className="toolbar">
         <label className="sel">
           <span className="lbl">{t('library.shelf', 'Shelf')}</span>
@@ -486,6 +487,7 @@ function LibraryPage({
 
 export default function Library() {
   const { t } = useLumenLocale();
+  const extras = useExtras();
   const connections = useApi<Connections>(`${BASE}/accounts`);
   const [matchRevision, setMatchRevision] = useState(0);
   const [bookmark, setBookmark] = useSearchParams();
@@ -518,6 +520,7 @@ export default function Library() {
     sources.find((source) => source === bookmark.get('source')) ?? sources[0];
   return (
     <>
+      <CategorySettingsNote error={extras.error} retry={extras.retry} />
       <header className="ph">
         <h1>{t('library.title', 'My Media')}</h1>
       </header>

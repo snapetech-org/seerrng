@@ -550,3 +550,20 @@ export function ServiceNote({
     </div>
   );
 }
+
+export function CategorySettingsNote({
+  error,
+  retry,
+}: {
+  error: string | null;
+  retry: () => void;
+}) {
+  const { t } = useLumenLocale();
+  return (
+    <ServiceNote
+      error={error}
+      what={t('lumen.adminCategories.categoriesWhat', 'media categories')}
+      retry={retry}
+    />
+  );
+}
