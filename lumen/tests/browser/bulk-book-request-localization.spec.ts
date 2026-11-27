@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -103,7 +104,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/author/OL42A');
+    await page.goto(testAppPath('/author/OL42A'));
     const text = copy[locale];
     await page.getByRole('button', { name: text.title }).click();
     const sheet = page.getByRole('dialog', { name: text.title });

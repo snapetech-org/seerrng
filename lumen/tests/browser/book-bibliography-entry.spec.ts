@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('book detail starts a bibliography request with the current work and author titles', async ({
   page,
@@ -69,7 +70,7 @@ test('book detail starts a bibliography request with the current work and author
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   const bibliography = page.getByRole('button', {
     name: 'Request Bibliography',
   });
@@ -137,7 +138,7 @@ test('book bibliography request stays hidden without book request permission', a
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   await expect(
     page.getByRole('button', { name: 'Request Bibliography' })
   ).toHaveCount(0);

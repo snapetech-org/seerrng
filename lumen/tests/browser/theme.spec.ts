@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // "Device" follows the system light/dark setting, live, and so does the browser's bar.
 test('Device theme follows the system, page and browser bar', async ({
@@ -28,7 +29,7 @@ test('Device theme follows the system, page and browser bar', async ({
         ?.getAttribute('content')
     );
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(page.getByRole('button', { name: 'Device' })).toHaveAttribute(
     'aria-pressed',
     'true'

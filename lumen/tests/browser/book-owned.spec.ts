@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Shaped like SeerrNG 3.72.31: catalogues may carry server-resolved mediaInfo, while the
 // owned list carries format-specific library state.
@@ -213,7 +214,7 @@ test('audiobook cards show the books already in the library', async ({
   page,
 }, info) => {
   const calls = await fixtures(page);
-  await page.goto('/audiobooks?sort=ranked');
+  await page.goto(testAppPath('/audiobooks?sort=ranked'));
   await expect(poster(page, 'Not Owned Recording')).toHaveCount(1);
   await expectOwned(
     page,
@@ -256,7 +257,7 @@ test('ebook cards use server-resolved Open Library identity without title guesse
   page,
 }, info) => {
   await fixtures(page);
-  await page.goto('/books?sort=ranked');
+  await page.goto(testAppPath('/books?sort=ranked'));
   await expect(poster(page, 'Pride and Prejudice')).toHaveCount(1);
   await expectOwned(page, 'Throne of Glass', true);
   await expectOwned(page, 'Project Hail Mary', true);
@@ -302,7 +303,7 @@ test('ebook cards use server-resolved Open Library identity without title guesse
 
 test('Discover rows and search results mark owned books', async ({ page }) => {
   await fixtures(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('heading', { name: 'Popular audiobooks' })
   ).toBeVisible();
@@ -315,19 +316,19 @@ test('Discover rows and search results mark owned books', async ({ page }) => {
   await expectOwned(page, 'Throne of Glass', true);
   await expectOwned(page, 'Pride and Prejudice', false);
 
-  await page.goto('/search?f=audio&q=court');
+  await page.goto(testAppPath('/search?f=audio&q=court'));
   await expectOwned(
     page,
     'A Court of Thorns and Roses (10th Anniversary Recording)',
     true
   );
-  await page.goto('/search?f=ebook&q=throne');
+  await page.goto(testAppPath('/search?f=ebook&q=throne'));
   await expectOwned(page, 'Throne of Glass', true);
 });
 
 test('Not yet hides results when the library check fails', async ({ page }) => {
   await fixtures(page, { libraryStatus: 503 });
-  await page.goto('/books?show=not');
+  await page.goto(testAppPath('/books?show=not'));
 
   await expect(page.getByRole('alert')).toContainText(
     'Library Check Unavailable'
@@ -339,7 +340,7 @@ test('Not yet hides results when the library exceeds the bounded scan', async ({
   page,
 }) => {
   const calls = await fixtures(page, { libraryTotalPages: 21 });
-  await page.goto('/books?show=not');
+  await page.goto(testAppPath('/books?show=not'));
 
   await expect(page.getByRole('alert')).toContainText(
     'Library Check Incomplete'
@@ -354,7 +355,7 @@ test('Not yet hides results when library pagination is malformed', async ({
   page,
 }) => {
   await fixtures(page, { libraryTotalPages: 0 });
-  await page.goto('/books?show=not');
+  await page.goto(testAppPath('/books?show=not'));
 
   await expect(page.getByRole('alert')).toContainText(
     'Library Check Unavailable'
@@ -382,7 +383,7 @@ test('server status stays visible while Not yet hides unverified books when the 
       ]),
     })
   );
-  await page.goto('/audiobooks?sort=ranked');
+  await page.goto(testAppPath('/audiobooks?sort=ranked'));
   await expectOwned(page, 'Marked By Server', true);
   await expectOwned(page, 'Unmarked', false);
   await page.getByRole('button', { name: 'Not yet', exact: true }).click();

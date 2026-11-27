@@ -1,4 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function capture(page: Page, info: TestInfo) {
   if (
@@ -59,7 +60,7 @@ test('Blocklist localizes filters, entries, removal, and feedback', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/blocklist');
+  await page.goto(testAppPath('/blocklist'));
   const text = (english: string, french: string, arabic: string) =>
     candidate
       ? locale === 'ar'

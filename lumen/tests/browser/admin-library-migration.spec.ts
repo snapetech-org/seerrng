@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Bookshelf moves require the current preview and track the queued command', async ({
   page,
@@ -112,7 +113,7 @@ test('Bookshelf moves require the current preview and track the queued command',
     }
     return route.fulfill({ json: { command: { id: 91, status: 'queued' } } });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Library Migration' }).click();
   await expect(page.getByLabel('Media Format')).toHaveValue('audiobook');
   const destination = page.getByLabel('Destination Root Folder');

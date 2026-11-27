@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = (process.env.LUMEN_CARD_SETTINGS_LOADING_LOCALE ?? 'fr') as
   'fr' | 'ar';
@@ -41,7 +42,7 @@ test('card title settings loading state follows the saved locale', async ({
     return route.fulfill({ json: [] });
   });
 
-  await page.goto('/me/account');
+  await page.goto(testAppPath('/me/account'));
   const loading = page.getByRole('status').filter({
     hasText: loadingText[locale],
   });

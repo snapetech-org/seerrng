@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const testAppPath = (path: string) =>
   `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
@@ -78,7 +79,7 @@ test('Lumen renders saved Studios and Networks on desktop and mobile', async ({
   });
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(page.getByRole('heading', { name: 'Discover' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Studios' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Networks' })).toBeVisible();

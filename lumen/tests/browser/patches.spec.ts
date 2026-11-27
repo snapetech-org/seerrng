@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -100,7 +101,7 @@ test('Patch discovery filters, follows the exact project and pages through resul
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto('/patches');
+  await page.goto(mountedTestAppPath('/patches'));
   const searchError = page
     .getByRole('alert')
     .filter({ hasText: 'Invalid patch catalogue response.' });
@@ -131,7 +132,11 @@ test('Patch discovery filters, follows the exact project and pages through resul
   expect(searches.at(-1)?.cursor).toBe('fixture-cursor');
   await page.getByRole('button', { name: 'First Page' }).click();
   await expect(page.getByText('Fixture Translation')).toBeVisible();
-  await page.goto(`/patches?catalogKey=${key}&platform=switch&category=modern`);
+  await page.goto(
+    mountedTestAppPath(
+      `/patches?catalogKey=${key}&platform=switch&category=modern`
+    )
+  );
   await expect(page.getByRole('link', { name: 'Open Game' })).toHaveAttribute(
     'href',
     appPath(`/game/modern/${key}?dat=1&platform=switch`)
@@ -156,7 +161,9 @@ test('Patch discovery filters, follows the exact project and pages through resul
     'switch'
   );
   await page.goto(
-    '/patches/patch-1?category=modern&platform=unknown&version=missing'
+    mountedTestAppPath(
+      '/patches/patch-1?category=modern&platform=unknown&version=missing'
+    )
   );
   await expect(
     page.getByText(/This patch version is no longer listed/)
@@ -173,7 +180,9 @@ test('Patch discovery filters, follows the exact project and pages through resul
   await expect(page.getByRole('combobox', { name: 'Console' })).toHaveValue(
     'switch'
   );
-  await page.goto(`/game/modern/${key}?dat=1&platform=unsupported`);
+  await page.goto(
+    mountedTestAppPath(`/game/modern/${key}?dat=1&platform=unsupported`)
+  );
   await expect(page.getByRole('combobox', { name: 'Console' })).toHaveValue('');
   await expect(
     page
@@ -298,7 +307,7 @@ test('a Following update opens its exact patch version and submits only with a c
         return route.fulfill({ json: {} });
     }
   });
-  await page.goto('/following');
+  await page.goto(mountedTestAppPath('/following'));
   const link = page.getByRole('link', { name: 'Patch v1' });
   await expect(link).toHaveAttribute(
     'href',

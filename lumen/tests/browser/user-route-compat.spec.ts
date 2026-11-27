@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -40,13 +41,16 @@ test('native user request bookmark preserves filters and enforces the path user'
 }) => {
   await authenticate(page, 16384);
   await page.goto(
-    '/users/19/requests?filter=all&mediaType=movie&userId=99&requestedBy=7'
+    mountedTestAppPath(
+      '/users/19/requests?filter=all&mediaType=movie&userId=99&requestedBy=7'
+    )
   );
   await expect(page).toHaveURL(
     new RegExp(`^https?://[^/]+${mount}/requests\\?.*$`)
   );
+  await expect(page).toHaveURL(/show=all/);
   const url = new URL(page.url());
-  expect(url.searchParams.get('show')).toBe('all');
+  expect(url.searchParams.get('show'), url.href).toBe('all');
   expect(url.searchParams.has('filter')).toBe(false);
   expect(url.searchParams.get('mediaType')).toBe('movie');
   expect(url.searchParams.has('userId'), url.href).toBe(false);

@@ -32,7 +32,12 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
           .replace(/^\/lumen(?=\/)/, '')
           .slice('/api/v1'.length);
         if (path === '/auth/me')
-          return route.fulfill({ json: { id: 1, permissions: 32 } });
+          return route.fulfill({
+            json: {
+              id: 1,
+              permissions: 32 + (kind === 'book' ? 34359738368 : 274877906944),
+            },
+          });
         if (path === '/settings/public')
           return route.fulfill({
             json: {
@@ -131,9 +136,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         .first();
       await expect(poster).toBeVisible();
       await poster.hover();
-      const button = poster.getByRole('button', {
-        name: kind === 'book' ? /^Request/ : 'Request',
-      });
+      const button = poster.locator('.qa').getByRole('button');
       await expect(button).toBeVisible();
       const capture = process.env.LUMEN_CARD_ERROR_CAPTURE;
       if (capture)

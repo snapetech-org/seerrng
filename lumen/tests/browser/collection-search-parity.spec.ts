@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -58,7 +59,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         return route.fulfill({ json: [] });
       });
 
-      await page.goto('/search?q=Foundation');
+      await page.goto(mountedTestAppPath('/search?q=Foundation'));
       if (enabled) {
         await expect(
           page.getByRole('heading', { name: heading, exact: true })

@@ -83,7 +83,7 @@ jobs:
       - name: Prepare isolated browser fixtures
         run: pnpm cypress:prepare
       - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install chromium
       - name: Exercise production frontends under CSP and responsive layouts
         env:
           E2E_OFFLINE: true
@@ -100,7 +100,7 @@ jobs:
         run: npm run build
       - name: Install Chromium for Lumen
         working-directory: lumen
-        run: npx --no-install playwright install --with-deps chromium
+        run: npx --no-install playwright install chromium
       - name: Exercise Coming Soon tablet layout and request behavior
         working-directory: lumen
         run: >-

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_DISCOVER_LOCALE ?? ''
@@ -161,10 +162,12 @@ test('Discover shell, shelves, and recovery follow the account locale', async ({
   });
 
   await page.goto(
-    process.env.LUMEN_DISCOVER_BASELINE ||
-      process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
-      ? '/lumen/'
-      : '/'
+    testAppPath(
+      process.env.LUMEN_DISCOVER_BASELINE ||
+        process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
+        ? '/lumen/'
+        : '/'
+    )
   );
   await expect(
     page.getByRole('heading', { name: expected.title })
@@ -276,9 +279,11 @@ test('administrator Discover row controls follow the account locale', async ({
   });
 
   await page.goto(
-    process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
-      ? '/lumen/me/lumen'
-      : '/me/lumen'
+    testAppPath(
+      process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
+        ? '/lumen/me/lumen'
+        : '/me/lumen'
+    )
   );
   for (const label of expected)
     await expect(page.getByText(label).first()).toBeVisible();
@@ -388,9 +393,11 @@ test('Trending filters and recovery follow the account locale', async ({
   });
 
   await page.goto(
-    process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
-      ? '/lumen/trending'
-      : '/trending'
+    testAppPath(
+      process.env.LUMEN_DISCOVER_MOUNT === '/lumen'
+        ? '/lumen/trending'
+        : '/trending'
+    )
   );
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   await expect(page.getByRole('group', { name: copy.media })).toBeVisible();

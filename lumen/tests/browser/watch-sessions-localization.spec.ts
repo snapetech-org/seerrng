@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`Watch Session creation follows ${locale}`, async ({ page }) => {
@@ -26,7 +27,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         return route.fulfill({ json: { session: { id: 9 } } });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/watch-sessions');
+    await page.goto(testAppPath('/watch-sessions'));
     const copy = {
       en: {
         title: 'Watch Sessions',
@@ -138,7 +139,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('/watch-sessions/9');
+    await page.goto(testAppPath('/watch-sessions/9'));
     const fallback = {
       en: 'Genre 99',
       fr: 'Genre 99',

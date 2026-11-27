@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_SPORTS_WORKFLOW_LOCALE ?? ''
@@ -109,7 +110,7 @@ test('Sportarr league details and follow sheet follow the saved locale', async (
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/sportarr/fixture-league');
+  await page.goto(testAppPath('/sportarr/fixture-league'));
   await expect(
     page.getByRole('heading', { name: 'Fixture League' })
   ).toBeVisible();
