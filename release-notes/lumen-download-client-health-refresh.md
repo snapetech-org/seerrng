@@ -1,1 +1,9 @@
+---
+category: fixed
+audience: users
+area: lumen
+action: none
+breaking: false
+---
+
 Lumen now refreshes download-client health every 15 seconds while its settings page is visible. It skips polling when no download clients are configured and checks health again after settings are saved.
