@@ -4775,6 +4775,8 @@ export const messages = {
   'lumen.managedMaturity.what': 'limites de classification',
   'lumen.managedMediaCategories.accountOverrides':
     'Utilisation des paramètres personnalisés du compte.',
+  'lumen.managedMediaCategories.confirmFailure':
+    'Impossible de confirmer l’enregistrement. Vérifiez les valeurs actuelles et réessayez.',
   'lumen.managedMediaCategories.hide': 'Masquer',
   'lumen.managedMediaCategories.indexerDetails': 'Détails des indexeurs',
   'lumen.managedMediaCategories.indexerDisabled':
@@ -4787,6 +4789,7 @@ export const messages = {
     'Chargement des catégories de médias…',
   'lumen.managedMediaCategories.restore':
     'Restaurer les valeurs par défaut du serveur',
+  'lumen.managedMediaCategories.retry': 'Réessayer',
   'lumen.managedMediaCategories.save': 'Enregistrer les catégories',
   'lumen.managedMediaCategories.saveFailure':
     'Impossible d’enregistrer les catégories de médias.',

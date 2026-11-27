@@ -13423,3 +13423,29 @@ the Express production mount. API responses are fixture-backed, not a live
 server persistence check.
 
 release-note: `release-notes/lumen-managed-quota-readback.md`
+
+### Confirm managed media-setting saves and preserve mobile labels (2026-11-27)
+
+Lumen's delegated Media Categories panel previously cleared category drafts and
+reported success before confirming persistence. It now reads back account
+settings without cache and verifies either the requested category values or the
+server-default state before clearing the draft. Indexer visibility changes use
+the same confirmation; a mismatch retains the attempted selection and exposes
+a retry action. The new confirmation feedback is localized in English, French,
+and Arabic. The Indexer Details field now selects the existing stacked-mobile
+layout owner, keeping its full label separate from the selected value on phones.
+
+The focused browser suite passes 8/8 cases for delegated request quotas,
+category overrides, server-default restoration, and indexer visibility across
+desktop, iPhone, Android, and tablet. The production `/lumen/` asset build,
+standalone Lumen build, and repository i18n checks pass. Matched baseline and
+candidate captures at desktop and iPhone sizes show the same indexer readback
+failure state: desktop geometry is unchanged, and the phone field changes from
+an ellipsized inline label/value to a complete stacked label and value. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-quota-readback-20261127/baseline-captures/`
+and `.../captures/`. Browser API responses are fixtures; live authorization and
+provider persistence remain unverified. The full account-route visual matrix
+and Express-mounted failure recovery remain open.
+
+release-note: `release-notes/lumen-managed-account-settings-readback.md`

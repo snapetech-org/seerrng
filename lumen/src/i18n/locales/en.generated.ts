@@ -4455,6 +4455,8 @@ export const messages = {
   'lumen.managedMaturity.tvMaturityRatingLimit': 'Series Rating Limit',
   'lumen.managedMaturity.what': 'maturity limits',
   'lumen.managedMediaCategories.accountOverrides': 'Using account overrides.',
+  'lumen.managedMediaCategories.confirmFailure':
+    'Could not confirm the saved settings. Review the current values and retry.',
   'lumen.managedMediaCategories.hide': 'Hide',
   'lumen.managedMediaCategories.indexerDetails': 'Indexer Details',
   'lumen.managedMediaCategories.indexerDisabled':
@@ -4464,6 +4466,7 @@ export const messages = {
   'lumen.managedMediaCategories.indexerSaved': 'Indexer visibility saved.',
   'lumen.managedMediaCategories.loading': 'Loading media categories…',
   'lumen.managedMediaCategories.restore': 'Restore Server Defaults',
+  'lumen.managedMediaCategories.retry': 'Retry',
   'lumen.managedMediaCategories.save': 'Save Categories',
   'lumen.managedMediaCategories.saveFailure':
     'Could not save media categories.',

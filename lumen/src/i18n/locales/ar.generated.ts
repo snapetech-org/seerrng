@@ -4385,6 +4385,8 @@ export const messages = {
   'lumen.managedMaturity.what': 'حدود التصنيف العمري',
   'lumen.managedMediaCategories.accountOverrides':
     'يستخدم إعدادات الحساب المخصصة.',
+  'lumen.managedMediaCategories.confirmFailure':
+    'تعذر تأكيد حفظ الإعدادات. راجع القيم الحالية ثم أعد المحاولة.',
   'lumen.managedMediaCategories.hide': 'إخفاء',
   'lumen.managedMediaCategories.indexerDetails': 'تفاصيل أدوات الفهرسة',
   'lumen.managedMediaCategories.indexerDisabled':
@@ -4395,6 +4397,7 @@ export const messages = {
     'تم حفظ إعدادات ظهور أدوات الفهرسة.',
   'lumen.managedMediaCategories.loading': 'جارٍ تحميل فئات الوسائط…',
   'lumen.managedMediaCategories.restore': 'استعادة الإعدادات الافتراضية للخادم',
+  'lumen.managedMediaCategories.retry': 'إعادة المحاولة',
   'lumen.managedMediaCategories.save': 'حفظ الفئات',
   'lumen.managedMediaCategories.saveFailure': 'تعذر حفظ فئات الوسائط.',
   'lumen.managedMediaCategories.saved': 'تم حفظ فئات الوسائط.',

@@ -20,6 +20,7 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState('');
   const [notice, setNotice] = useState('');
+  const [indexerDraft, setIndexerDraft] = useState<string | null>(null);
   const working = useRef(false);
 
   async function save(
@@ -38,7 +39,35 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
         method: 'POST',
         body: JSON.stringify(change),
       });
+      const confirmed = await api<{
+        enabledMediaCategories: Record<string, boolean>;
+        usesDefaultEnabledMediaCategories: boolean;
+        showIndexerDetails?: boolean;
+        usesDefaultShowIndexerDetails?: boolean;
+      }>(path, { cache: 'no-store' });
+      const matches = categoriesChanged
+        ? change.enabledMediaCategories === null
+          ? confirmed.usesDefaultEnabledMediaCategories
+          : !confirmed.usesDefaultEnabledMediaCategories &&
+            Object.entries(change.enabledMediaCategories).every(
+              ([key, value]) => confirmed.enabledMediaCategories[key] === value
+            )
+        : change.showIndexerDetails === null
+          ? confirmed.usesDefaultShowIndexerDetails
+          : !confirmed.usesDefaultShowIndexerDetails &&
+            confirmed.showIndexerDetails === change.showIndexerDetails;
+      if (!matches) {
+        setFailure(
+          t(
+            'lumen.managedMediaCategories.confirmFailure',
+            'Could not confirm the saved settings. Review the current values and retry.'
+          )
+        );
+        reload();
+        return;
+      }
       if (categoriesChanged) setDraft({});
+      else setIndexerDraft(null);
       setNotice(
         categoriesChanged
           ? t('lumen.managedMediaCategories.saved', 'Media categories saved.')
@@ -151,7 +180,7 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
           )}
           {data.defaultShowIndexerDetails === true && (
             <div className="toolbar">
-              <label className="sel">
+              <label className="sel" data-layout="stacked-mobile">
                 <span className="lbl">
                   {t(
                     'lumen.managedMediaCategories.indexerDetails',
@@ -160,15 +189,17 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
                 </span>
                 <select
                   value={
-                    data.usesDefaultShowIndexerDetails
+                    indexerDraft ??
+                    (data.usesDefaultShowIndexerDetails
                       ? 'default'
                       : data.showIndexerDetails
                         ? 'show'
-                        : 'hide'
+                        : 'hide')
                   }
                   disabled={busy}
                   onChange={(event) => {
                     const value = event.target.value;
+                    setIndexerDraft(value);
                     void save({
                       showIndexerDetails:
                         value === 'default' ? null : value === 'show',
@@ -189,6 +220,22 @@ export default function ManagedMediaCategories({ id }: { id: number }) {
                   </option>
                 </select>
               </label>
+              {indexerDraft !== null && failure && (
+                <button
+                  className="btn btn-tonal btn-sm"
+                  disabled={busy}
+                  onClick={() =>
+                    void save({
+                      showIndexerDetails:
+                        indexerDraft === 'default'
+                          ? null
+                          : indexerDraft === 'show',
+                    })
+                  }
+                >
+                  {t('lumen.managedMediaCategories.retry', 'Retry')}
+                </button>
+              )}
             </div>
           )}
         </>
