@@ -12321,9 +12321,8 @@ removal controls.
 The sheet does not replace media-specific issue, blocklist, or cancellation
 surfaces; those remain in their current Lumen workflows. Browser fixtures cover
 the existing Book removal flow, the Magazine sheet in English, French, and
-Arabic, and the Music sheet on desktop, iPhone, Android, and tablet. The Comic
-sheet entry point is wired but needs a focused browser regression. Native-matched
-visual comparison and live provider/removal checks remain open before claiming
-full parity.
+Arabic, and the Music and Comic sheets on desktop, iPhone, Android, and tablet.
+Native-matched visual comparison and live provider/removal checks remain open
+before claiming full parity.
 
 release-note: `release-notes/lumen-cross-media-management-sheets.md`

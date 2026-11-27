@@ -194,6 +194,31 @@ const oshiVolume = {
     '<p>Cover &amp; story</p><p>Literal &amp;lt; and &lt; symbols.</p>',
 };
 
+test('comic detail management sheet is available to request managers', async ({
+  page,
+}) => {
+  await fixtures(page, {
+    permissions: 16,
+    works: {
+      'al-117195': oshi({
+        id: 42,
+        status: 0,
+        requests: [],
+        downloadStatus: [
+          { downloadId: 'comic-download', status: 'Queued', percent: 0 },
+        ],
+      }),
+    },
+  });
+  await page.goto('/comic/al-117195');
+  await page.getByRole('button', { name: 'Manage Comic' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Manage Comic' });
+  await expect(sheet.getByText('Requests', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('Comic', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('Queued', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('0%', { exact: true })).toBeVisible();
+});
+
 async function fixtures(
   page: Page,
   {
