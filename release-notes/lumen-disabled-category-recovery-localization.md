@@ -1,0 +1,1 @@
+Lumen now shows localized recovery guidance when the server disables optional music, comics, magazine, games, sports, or adult categories. Category names, administrator instructions, and recovery links are translated in English, French, and Arabic.

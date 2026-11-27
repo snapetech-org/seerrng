@@ -1,5 +1,24 @@
 # Lumen workflow parity
 
+### Localize server-disabled category recovery (2026-11-27)
+
+When the server disables an optional category, its Lumen recovery page now
+localizes the category name, disabled notice, administrator guidance, and
+Discover/full-SeerrNG links in English, French, and Arabic. The behavior is
+covered for music, comics, magazines, games, sports, and adult categories;
+provider-specific podcast availability is a separate flow and is not included.
+
+The focused browser matrix passes 12/12 across the three locales and desktop,
+iPhone, Android, and tablet projects. Matched French desktop and iPhone and
+Arabic desktop and iPhone renders were inspected; copy wraps within the existing
+recovery panel and controls remain visible. The production Lumen build passes.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-extra-gate-localization-20261127/`.
+The server settings and authenticated state are fixtures, so live server
+configuration and account behavior remain unverified.
+
+release-note: `release-notes/lumen-disabled-category-recovery-localization.md`
+
 ### Localize reader-library links (2026-11-27)
 
 Reader Delivery links on book, audiobook, comic, and magazine details now use

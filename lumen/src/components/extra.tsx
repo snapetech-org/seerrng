@@ -472,33 +472,45 @@ export function ExtraGate({ k, children }: { k: Extra; children: ReactNode }) {
       <div className="detail-loading" aria-busy="true" />
     );
   if (x.enabled(k)) return <>{children}</>;
-  const label = {
-    music: 'Music',
-    podcast: 'Podcasts',
-    comic: 'Comics/Manga',
-    magazine: 'Magazines',
-    game: 'Games',
-    sports: 'Sports',
-    adult: 'Adult',
-  }[k];
+  const categoryLabels: Record<Extra, [string, string]> = {
+    music: ['lumen.music.title', 'Music'],
+    podcast: ['lumen.nav.podcasts', 'Podcasts'],
+    comic: ['lumen.nav.comicsManga', 'Comics/Manga'],
+    magazine: ['lumen.magazines.title', 'Magazines'],
+    game: ['lumen.nav.games', 'Games'],
+    sports: ['lumen.mediaCategory.sports', 'Sports'],
+    adult: ['components.Settings.SettingsCategories.adult', 'Adult'],
+  };
+  const [labelKey, labelFallback] = categoryLabels[k];
+  const label = t(labelKey, labelFallback);
   return (
     <>
       <ExtraHeader title={label} />
       <div className="empty">
-        <b>{label} is turned off on this server</b>
-        An admin can turn it on in SeerrNG under Settings › General › Media
-        categories.{' '}
+        <b>
+          {t(
+            'lumen.category.disabledForServer',
+            '{category} is turned off on this server.',
+            {
+              category: label,
+            }
+          )}
+        </b>
+        {t(
+          'lumen.category.adminHelp',
+          'An admin can turn it on in SeerrNG under Settings › General › Media categories.'
+        )}{' '}
         <Link to="/" style={{ color: 'var(--accent)' }}>
-          Back to Discover
+          {t('lumen.category.backDiscover', 'Back to Discover')}
         </Link>{' '}
         {!lockedToLumen && (
           <>
-            or{' '}
+            {t('lumen.shell.or', 'or')}{' '}
             <a
               href={fullSeerrUrl(seerrPublicUrl)}
               style={{ color: 'var(--accent)' }}
             >
-              open full SeerrNG
+              {t('lumen.shell.openFullSeerrNG', 'open full SeerrNG')}
             </a>
           </>
         )}

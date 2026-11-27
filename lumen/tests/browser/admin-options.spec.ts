@@ -983,6 +983,99 @@ test('disabled personal categories do not mount optional catalog pages or fetch 
   expect(catalogReads).toEqual([]);
 });
 
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`server-disabled optional categories localize in ${locale}`, async ({
+    page,
+  }, info) => {
+    const isBaseline = process.env.LUMEN_EXTRA_GATE_BASELINE === 'true';
+    const categories = [
+      { path: '/music', en: 'Music', fr: 'Musique', ar: 'الموسيقى' },
+      {
+        path: '/comics',
+        en: 'Comics/Manga',
+        fr: 'BD/Manga',
+        ar: 'قصص مصورة/مانغا',
+      },
+      { path: '/magazines', en: 'Magazines', fr: 'Magazines', ar: 'المجلات' },
+      { path: '/games', en: 'Games', fr: 'Jeux', ar: 'ألعاب' },
+      { path: '/sports', en: 'Sports', fr: 'Sports', ar: 'الرياضة' },
+      { path: '/adult', en: 'Adult', fr: 'Adulte', ar: 'للبالغين' },
+    ] as const;
+    const expected = (english: string, french: string, arabic: string) =>
+      isBaseline
+        ? english
+        : locale === 'en'
+          ? english
+          : locale === 'fr'
+            ? french
+            : arabic;
+    await fixtures(page);
+    await page.route('**/api/v1/user/1/settings/main', (route) =>
+      route.fulfill({ json: { locale } })
+    );
+    for (const category of categories) {
+      await page.goto(testAppPath(category.path));
+      const name = expected(category.en, category.fr, category.ar);
+      await expect(
+        page.getByRole('heading', { name, exact: true })
+      ).toBeVisible();
+      const notice = page.locator('.empty');
+      await expect(
+        page.getByText(
+          isBaseline
+            ? `${category.en} is turned off on this server`
+            : locale === 'en'
+              ? `${category.en} is turned off on this server.`
+              : locale === 'fr'
+                ? `La catégorie ${category.fr} est désactivée sur ce serveur.`
+                : `تم إيقاف فئة ${category.ar} على هذا الخادم.`,
+          { exact: true }
+        )
+      ).toBeVisible();
+      await expect(notice).toContainText(
+        expected(
+          isBaseline
+            ? 'An admin can turn it on in SeerrNG under Settings › General › Media categories.'
+            : 'An admin can enable it in SeerrNG under Settings › General › Media categories.',
+          'Un administrateur peut l’activer dans SeerrNG sous Paramètres › Général › Catégories de médias.',
+          'يمكن للمسؤول تفعيلها في SeerrNG ضمن الإعدادات › عام › فئات الوسائط.'
+        )
+      );
+      await expect(
+        page.getByRole('link', {
+          name: expected(
+            'Back to Discover',
+            'Retour à Découvrir',
+            'العودة إلى الاستكشاف'
+          ),
+          exact: true,
+        })
+      ).toBeVisible();
+      await expect(
+        page.getByRole('link', {
+          name: expected(
+            'open full SeerrNG',
+            'ouvrir SeerrNG en entier',
+            'فتح واجهة SeerrNG كاملة'
+          ),
+          exact: true,
+        })
+      ).toBeVisible();
+      if (
+        category.path === '/music' &&
+        ['desktop', 'iphone'].includes(info.project.name)
+      ) {
+        await page.screenshot({
+          path: info.outputPath(
+            `disabled-music-${isBaseline ? 'baseline' : 'candidate'}.png`
+          ),
+          fullPage: true,
+        });
+      }
+    }
+  });
+}
+
 test('failed personal category settings block category data until retried', async ({
   page,
 }) => {

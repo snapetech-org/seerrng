@@ -7968,4 +7968,11 @@ export const messages = {
   'lumen.mediaServerSavedItem.verifyFailed':
     'The saved state could not be verified.',
   'lumen.mediaServerSavedItem.watchlist': 'Watchlist',
+  'lumen.readerDelivery.browseIn': 'Browse {library} in {service}',
+  'lumen.readerDelivery.ebooks': 'Ebooks',
+  'lumen.readerDelivery.audiobooks': 'Audiobooks',
+  'lumen.readerDelivery.comics': 'Comics',
+  'lumen.readerDelivery.magazinePdfs': 'Magazine PDFs',
+  'lumen.category.disabledForServer':
+    '{category} is turned off on this server.',
 } as const;

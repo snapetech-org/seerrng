@@ -8759,4 +8759,11 @@ export const messages = {
   'lumen.mediaServerSavedItem.verifyFailed':
     'Impossible de vérifier l’état enregistré.',
   'lumen.mediaServerSavedItem.watchlist': 'liste de suivi',
+  'lumen.readerDelivery.browseIn': 'Parcourir {library} sur {service}',
+  'lumen.readerDelivery.ebooks': 'Livres numériques',
+  'lumen.readerDelivery.audiobooks': 'Livres audio',
+  'lumen.readerDelivery.comics': 'Bandes dessinées',
+  'lumen.readerDelivery.magazinePdfs': 'PDF de magazines',
+  'lumen.category.disabledForServer':
+    'La catégorie {category} est désactivée sur ce serveur.',
 } as const;

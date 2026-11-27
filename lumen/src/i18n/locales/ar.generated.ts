@@ -8057,4 +8057,10 @@ export const messages = {
     'تعذّر تحديث الحالة المحفوظة في {server}.',
   'lumen.mediaServerSavedItem.verifyFailed': 'تعذّر التحقق من الحالة المحفوظة.',
   'lumen.mediaServerSavedItem.watchlist': 'قائمة المتابعة',
+  'lumen.readerDelivery.browseIn': 'تصفح {library} في {service}',
+  'lumen.readerDelivery.ebooks': 'الكتب الإلكترونية',
+  'lumen.readerDelivery.audiobooks': 'الكتب الصوتية',
+  'lumen.readerDelivery.comics': 'القصص المصورة',
+  'lumen.readerDelivery.magazinePdfs': 'ملفات المجلات PDF',
+  'lumen.category.disabledForServer': 'تم إيقاف فئة {category} على هذا الخادم.',
 } as const;
