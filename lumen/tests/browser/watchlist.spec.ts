@@ -498,6 +498,7 @@ test('video Watchlist action confirms the current title and server response', as
 }) => {
   let saved = false;
   let writes = 0;
+  let failDeleteReadback = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -516,7 +517,12 @@ test('video Watchlist action confirms the current title and server response', as
       expect(url.searchParams.get('mediaType')).toBe('movie');
       writes++;
       saved = false;
+      failDeleteReadback = true;
       return route.fulfill({ status: 204 });
+    }
+    if (path === '/movie/20' && failDeleteReadback) {
+      failDeleteReadback = false;
+      return route.fulfill({ status: 503, json: { message: 'Unavailable' } });
     }
     return route.fulfill({
       json:
@@ -544,10 +550,15 @@ test('video Watchlist action confirms the current title and server response', as
   ).toHaveCount(1);
   expect(writes).toBe(1);
   await page.reload();
-  await page
+  const remove = page
     .getByRole('button', { name: 'Remove Example Movie from your Watchlist' })
-    .first()
-    .click();
+    .first();
+  await remove.click();
+  await expect(
+    page.getByText('Couldn’t confirm the Watchlist change.')
+  ).toBeVisible();
+  await expect(remove).toBeVisible();
+  await remove.click();
   await expect(
     page.getByRole('button', { name: 'Add Example Movie to your Watchlist' })
   ).toHaveCount(3);

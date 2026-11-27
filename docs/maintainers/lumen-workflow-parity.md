@@ -13863,3 +13863,22 @@ already covered by matched desktop and phone screenshots in the preceding
 admin readback milestone. Fixtures do not verify live server persistence.
 
 release-note: `release-notes/lumen-recovery-readbacks.md`
+
+### Verify Watchlist removals after uncertain responses (2026-11-27)
+
+Watchlist removal now reads the title again with a no-cache request before it
+publishes the removed state. If DELETE may have succeeded but the readback fails,
+Lumen keeps the existing action state and shows the Watchlist confirmation
+message; the next activation checks current server state first and does not
+repeat a deletion already completed. This preserves the existing identity,
+permission, and action paths. Collection submission already reports server-side
+uncertainty without automatically retrying; its behavior was left unchanged.
+
+The Watchlist and collection Playwright suites pass 80/80 across desktop,
+iPhone, Android, and tablet. Coverage includes accepted deletion followed by a
+503 readback and recovery through a fresh preflight. Standalone Lumen build and
+bundled `/lumen/` build pass. No CSS changed; feedback uses the existing toast
+owner, so layout geometry is unchanged. Browser API fixtures do not prove live
+server persistence or authorization.
+
+release-note: `release-notes/lumen-watchlist-readback.md`

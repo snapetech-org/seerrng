@@ -153,9 +153,53 @@ export default function WatchlistButton({
             return;
           }
         } else {
-          await api(`/watchlist/${encodedId}?mediaType=${mediaType}`, {
-            method: 'DELETE',
-          });
+          let deleteError: unknown;
+          try {
+            await api(`/watchlist/${encodedId}?mediaType=${mediaType}`, {
+              method: 'DELETE',
+            });
+          } catch (error) {
+            // The server may have committed the deletion before the response
+            // was lost. Read the title state before reporting failure.
+            deleteError = error;
+          }
+          let readback: WatchlistTitle;
+          try {
+            readback = await api<WatchlistTitle>(detailPath, {
+              cache: 'no-store',
+            });
+          } catch {
+            toast(
+              t(
+                'lumen.watchlist.actionConfirmFailure',
+                'Couldn’t confirm the Watchlist change.'
+              )
+            );
+            return;
+          }
+          if (
+            sessionGeneration() !== session ||
+            canonicalMediaId(mediaType, readback.id) !== id ||
+            typeof readback.onUserWatchlist !== 'boolean'
+          ) {
+            toast(
+              t(
+                'lumen.watchlist.actionConfirmFailure',
+                'Couldn’t confirm the Watchlist change.'
+              )
+            );
+            return;
+          }
+          if (readback.onUserWatchlist !== desired) {
+            if (deleteError) throw deleteError;
+            toast(
+              t(
+                'lumen.watchlist.actionConfirmFailure',
+                'Couldn’t confirm the Watchlist change.'
+              )
+            );
+            return;
+          }
         }
       }
       if (sessionGeneration() !== session) return;
