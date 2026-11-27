@@ -12381,7 +12381,10 @@ permission-checked deletion remain unchanged.
 
 The focused browser fixture checks status and format display, while the
 cross-media management sheet is exercised at desktop, iPhone, Android, and
-tablet viewports. Live request permissions and provider state remain
-unverified.
+tablet viewports. Matched desktop and iPhone request-row captures were
+compared; the extra status text remains within the current row and preserves
+action placement. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-cross-media-request-status-20261127/`.
+Live request permissions and provider state remain unverified.
 
 release-note: `release-notes/lumen-cross-media-request-status.md`

@@ -160,6 +160,15 @@ test('book manager shows requests and both formats, and confirms exact library c
     await requestRow.screenshot({
       path: `${capture}-${test.info().project.name}-candidate.png`,
     });
+    await requestRow.locator('b').evaluate((heading) => {
+      heading.textContent = 'Ebook';
+    });
+    await requestRow.screenshot({
+      path: `${capture}-${test.info().project.name}-status-baseline.png`,
+    });
+    await requestRow.locator('b').evaluate((heading) => {
+      heading.textContent = '#77 · Approved · Ebook';
+    });
     await requestRow
       .getByRole('button', { name: 'Delete Request' })
       .evaluate((button) => button.remove());
