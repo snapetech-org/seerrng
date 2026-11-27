@@ -1652,6 +1652,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'تذكرة الموسم',
   'components.GameContent.typeSoundtrack': 'موسيقى تصويرية',
   'components.GameContent.typeUnknown': 'أخرى',
+  'components.GameLibrary.openCatalog': 'افتح في الكتالوج',
+  'components.GameLibrary.requestGame': 'اطلب هذه اللعبة',
   'components.SoftwareCatalog.allPcPlatforms': 'جميع منابر PC',
   'components.SoftwareCatalog.allSystems': 'جميع النظم',
   'components.SoftwareCatalog.genreFilter': 'النوع',

@@ -1570,6 +1570,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': '季票',
   'components.GameContent.typeSoundtrack': '原声带',
   'components.GameContent.typeUnknown': '其他',
+  'components.GameLibrary.openCatalog': '在游戏目录中打开',
+  'components.GameLibrary.requestGame': '请求此游戏',
   'components.SoftwareCatalog.allPcPlatforms': '所有个人电脑平台',
   'components.SoftwareCatalog.allSystems': '所有系统',
   'components.SoftwareCatalog.genreFilter': '类型',

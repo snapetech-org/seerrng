@@ -1689,6 +1689,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'Tiket Musim',
   'components.GameContent.typeSoundtrack': 'Soundtrack',
   'components.GameContent.typeUnknown': 'Lainnya',
+  'components.GameLibrary.openCatalog': 'Buka dalam katalog',
+  'components.GameLibrary.requestGame': 'Minta game ini',
   'components.SoftwareCatalog.allPcPlatforms': 'Semua platform PC',
   'components.SoftwareCatalog.allSystems': 'Semua sistem',
   'components.SoftwareCatalog.genreFilter': 'Genre',

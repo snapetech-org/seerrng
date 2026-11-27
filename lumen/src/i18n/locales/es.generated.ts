@@ -1741,6 +1741,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'Pase de temporada',
   'components.GameContent.typeSoundtrack': 'Banda sonora',
   'components.GameContent.typeUnknown': 'Otro',
+  'components.GameLibrary.openCatalog': 'Abrir en catálogo',
+  'components.GameLibrary.requestGame': 'Solicita este juego',
   'components.SoftwareCatalog.allPcPlatforms': 'Todas las plataformas PC',
   'components.SoftwareCatalog.allSystems': 'Todos los sistemas',
   'components.SoftwareCatalog.genreFilter': 'Género',

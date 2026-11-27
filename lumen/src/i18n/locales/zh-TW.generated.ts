@@ -1574,6 +1574,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': '季票',
   'components.GameContent.typeSoundtrack': '原聲帶',
   'components.GameContent.typeUnknown': '其他',
+  'components.GameLibrary.openCatalog': '在遊戲目錄中開啟',
+  'components.GameLibrary.requestGame': '申請此遊戲',
   'components.SoftwareCatalog.allPcPlatforms': '所有PC平台',
   'components.SoftwareCatalog.allSystems': '所有系統',
   'components.SoftwareCatalog.genreFilter': '類型',

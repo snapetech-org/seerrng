@@ -1693,6 +1693,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'Season Pass',
   'components.GameContent.typeSoundtrack': 'Soundtrack',
   'components.GameContent.typeUnknown': 'Other',
+  'components.GameLibrary.openCatalog': 'Open in catalog',
+  'components.GameLibrary.requestGame': 'Request this game',
   'components.SoftwareCatalog.allPcPlatforms': 'All PC platforms',
   'components.SoftwareCatalog.allSystems': 'All systems',
   'components.SoftwareCatalog.genreFilter': 'Genre',

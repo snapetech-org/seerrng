@@ -5876,6 +5876,8 @@
   "components.GameContent.typeSeasonPass",
   "components.GameContent.typeSoundtrack",
   "components.GameContent.typeUnknown",
+  "components.GameLibrary.openCatalog",
+  "components.GameLibrary.requestGame",
   "components.SoftwareCatalog.allPcPlatforms",
   "components.SoftwareCatalog.allSystems",
   "components.SoftwareCatalog.genreFilter",

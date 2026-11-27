@@ -1695,6 +1695,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'シーズンパス',
   'components.GameContent.typeSoundtrack': 'サウンドトラック',
   'components.GameContent.typeUnknown': 'その他',
+  'components.GameLibrary.openCatalog': 'カタログで開く',
+  'components.GameLibrary.requestGame': 'このゲームをリクエストする',
   'components.SoftwareCatalog.allPcPlatforms': 'すべてのPCプラットフォーム',
   'components.SoftwareCatalog.allSystems': 'すべてのシステム',
   'components.SoftwareCatalog.genreFilter': 'ジャンル',

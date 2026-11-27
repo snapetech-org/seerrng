@@ -1644,6 +1644,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': '시즌 패스',
   'components.GameContent.typeSoundtrack': '사운드트랙',
   'components.GameContent.typeUnknown': '기타',
+  'components.GameLibrary.openCatalog': '카탈로그에서 열기',
+  'components.GameLibrary.requestGame': '이 게임 요청하기',
   'components.SoftwareCatalog.allPcPlatforms': '모든 PC 플랫폼',
   'components.SoftwareCatalog.allSystems': '모든 시스템',
   'components.SoftwareCatalog.genreFilter': '장르',

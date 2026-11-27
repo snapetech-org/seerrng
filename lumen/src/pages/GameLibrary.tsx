@@ -1,6 +1,8 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
+import { useAuth } from '../auth';
+import { canUseRequestAccess } from '../components/detail';
 import { ExtraHeader, ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
@@ -17,6 +19,15 @@ const PROGRESS = {
   dropped: 'Dropped',
 };
 const PAGE_SIZE = 48;
+
+const gameCatalogPath = (game: {
+  category: GameCategory;
+  catalogId: number | null;
+  title: string;
+}) =>
+  game.catalogId !== null
+    ? `/game/${game.category}/${game.catalogId}`
+    : `/games?${new URLSearchParams({ c: 'game', q: game.title })}`;
 
 const messageKey = (value: string) =>
   `lumen.gameLibrary.${value
@@ -551,8 +562,10 @@ function SteamLibrary({
 }
 
 export default function GameLibrary() {
+  const { user } = useAuth();
   const { t } = useLumenLocale();
   const tr = (value: string) => t(messageKey(value), value);
+  const mayRequest = canUseRequestAccess(user?.permissions);
   const [params, setParams] = useSearchParams();
   const [editor, setEditor] = useState<GameEntry | null | undefined>();
   const shared = params.get('view') === 'shared';
@@ -729,6 +742,20 @@ export default function GameLibrary() {
                       )}
                     </small>
                   )}
+                  <Link
+                    className="btn btn-tonal btn-sm"
+                    to={gameCatalogPath(game)}
+                  >
+                    {game.catalogId === null && mayRequest
+                      ? t(
+                          'components.GameLibrary.requestGame',
+                          'Request this game'
+                        )
+                      : t(
+                          'components.GameLibrary.openCatalog',
+                          'Open in catalog'
+                        )}
+                  </Link>
                 </div>
               </li>
             ))
@@ -765,6 +792,17 @@ export default function GameLibrary() {
                       to={`/requests?softwareRequestId=${game.request.id}`}
                     >
                       {tr('Request History')}
+                    </Link>
+                  )}
+                  {mayRequest && (
+                    <Link
+                      className="btn btn-tonal btn-sm"
+                      to={gameCatalogPath(game)}
+                    >
+                      {t(
+                        'components.GameLibrary.requestGame',
+                        'Request this game'
+                      )}
                     </Link>
                   )}
                 </div>

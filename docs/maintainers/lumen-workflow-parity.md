@@ -12883,3 +12883,31 @@ Browser output is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-mounted-parity-20261127/`.
 
 release-note: none
+
+### Request games from My Games entries (2026-11-27)
+
+Lumen now exposes the native My Games request entry points from private and
+household game entries. Linked titles open their existing category-specific
+Lumen detail route. Unmatched manual titles open the PC game catalog with the
+title prefilled, preserving the native fallback for entries that have not yet
+been linked to a catalog record. Private request actions appear only for
+accounts with the existing request or administrator permission; shared entries
+retain their catalog action and show the request label only when the account
+can request. No request API, authorization rule, or provider behavior changed.
+
+The Game Library browser suite passes 24/24 cases across desktop, iPhone,
+Android, and tablet on both standalone Vite Preview and the compiled production
+bundle served by SeerrNG's Express `/lumen/` mount. Focused cases assert linked
+and manual catalog destinations, actual route navigation, and the request-view
+permission boundary. English, French, and Arabic action labels pass all four
+viewport projects in both deployments. Matched standalone English
+baseline/candidate captures at 1440×900 and iPhone 13 show the new actions inside
+their existing card surfaces; French and Arabic candidate captures were also
+inspected at desktop and phone sizes. No CSS owner changed. Visual evidence and
+run logs are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-request-action-20261127/`.
+
+Live provider results and native-matched visual acceptance remain separate
+gates.
+
+release-note: `release-notes/lumen-game-library-request-actions.md`

@@ -1676,6 +1676,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'सीज़न पास',
   'components.GameContent.typeSoundtrack': 'साउंडट्रैक',
   'components.GameContent.typeUnknown': 'अन्य',
+  'components.GameLibrary.openCatalog': 'कैटलॉग में खोलें',
+  'components.GameLibrary.requestGame': 'इस खेल का अनुरोध करें',
   'components.SoftwareCatalog.allPcPlatforms': 'सभी पीसी प्लेटफॉर्म',
   'components.SoftwareCatalog.allSystems': 'सभी प्रणालियों',
   'components.SoftwareCatalog.genreFilter': 'शैली',

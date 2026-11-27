@@ -1685,6 +1685,8 @@ export const messages = {
   'components.GameContent.typeSeasonPass': 'Season Pass',
   'components.GameContent.typeSoundtrack': 'Nhạc nền',
   'components.GameContent.typeUnknown': 'Khác',
+  'components.GameLibrary.openCatalog': 'Mở trong danh mục',
+  'components.GameLibrary.requestGame': 'Yêu cầu trò chơi này',
   'components.SoftwareCatalog.allPcPlatforms': 'Mọi nền tảng PC',
   'components.SoftwareCatalog.allSystems': 'Mọi hệ thống',
   'components.SoftwareCatalog.genreFilter': 'Thể loại',
