@@ -10857,6 +10857,8 @@ test('Users saves and resets a selected media quota', async ({
   await page.getByLabel('Quota Days').fill('');
   await page.getByRole('button', { name: 'Save Quota' }).click();
   await expect(page.getByText('Request quota saved.')).toBeVisible();
+  await expect(page.getByLabel('Request Limit')).toHaveValue('');
+  await expect(page.getByLabel('Quota Days')).toHaveValue('');
   expect(writes).toEqual([
     { musicQuotaLimit: 2, musicQuotaDays: 14 },
     { musicQuotaLimit: 2, musicQuotaDays: 14 },

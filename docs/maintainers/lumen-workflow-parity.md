@@ -13437,7 +13437,8 @@ layout owner, keeping its full label separate from the selected value on phones.
 
 The focused browser suite passes 8/8 cases for delegated request quotas,
 category overrides, server-default restoration, and indexer visibility across
-desktop, iPhone, Android, and tablet. The production `/lumen/` asset build,
+desktop, iPhone, Android, and tablet. The quota cases verify the confirmed
+reset returns both editor fields to blank. The production `/lumen/` asset build,
 standalone Lumen build, and repository i18n checks pass. Matched baseline and
 candidate captures at desktop and iPhone sizes show the same indexer readback
 failure state: desktop geometry is unchanged, and the phone field changes from
