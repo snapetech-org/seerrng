@@ -94,6 +94,9 @@ export function ManageMediaSheet({
   const [removing, setRemoving] = useState(false);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string>();
+  const [requestToDelete, setRequestToDelete] = useState<number>();
+  const [deletingRequest, setDeletingRequest] = useState(false);
+  const [requestFailure, setRequestFailure] = useState<string>();
   const requests = (media?.requests ?? []).filter(
     (request) => request.status !== 3
   );
@@ -176,6 +179,36 @@ export function ManageMediaSheet({
       onUpdated();
     } finally {
       setBusy(false);
+    }
+  };
+
+  const deleteRequest = async () => {
+    if (
+      !requestToDelete ||
+      deletingRequest ||
+      !canManageRequests(user?.permissions)
+    )
+      return;
+    setDeletingRequest(true);
+    setRequestFailure(undefined);
+    try {
+      await api(
+        `/request/${requestToDelete}/status`,
+        { method: 'DELETE' },
+        'empty'
+      );
+      setRequestToDelete(undefined);
+      toast(t('lumen.manageMedia.requestDeleted', 'Request entry deleted.'));
+      onUpdated();
+    } catch {
+      setRequestFailure(
+        t(
+          'lumen.manageMedia.requestDeleteFailed',
+          'Unable to delete this request entry.'
+        )
+      );
+    } finally {
+      setDeletingRequest(false);
     }
   };
 
@@ -264,6 +297,16 @@ export function ManageMediaSheet({
                       >
                         {t('lumen.manageBook.viewRequest', 'View Request')}
                       </Link>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        type="button"
+                        onClick={() => {
+                          setRequestFailure(undefined);
+                          setRequestToDelete(request.id);
+                        }}
+                      >
+                        {t('lumen.manageMedia.deleteRequest', 'Delete Request')}
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -389,6 +432,34 @@ export function ManageMediaSheet({
           </div>
         </div>
       </section>
+      {requestToDelete !== undefined && (
+        <ConfirmSheet
+          title={t(
+            'lumen.manageMedia.deleteRequestTitle',
+            'Delete Request Entry?'
+          )}
+          body={t(
+            'lumen.manageMedia.deleteRequestBody',
+            'This cancels active work where possible and permanently removes the request entry and its history.'
+          )}
+          confirm={t('lumen.manageMedia.deleteRequest', 'Delete Request')}
+          cancel={t('lumen.manageMedia.keepRequest', 'Keep Request')}
+          busy={deletingRequest}
+          onClose={() => {
+            if (!deletingRequest) {
+              setRequestToDelete(undefined);
+              setRequestFailure(undefined);
+            }
+          }}
+          onConfirm={deleteRequest}
+        >
+          {requestFailure && (
+            <p className="note" role="alert">
+              {requestFailure}
+            </p>
+          )}
+        </ConfirmSheet>
+      )}
     </div>
   );
 }

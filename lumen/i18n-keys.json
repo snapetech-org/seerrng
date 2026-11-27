@@ -6719,5 +6719,11 @@
   "lumen.manageMedia.removeFailed",
   "lumen.manageMedia.noCopies",
   "lumen.manageMedia.checking",
-  "lumen.manageMedia.close"
+  "lumen.manageMedia.close",
+  "lumen.manageMedia.deleteRequest",
+  "lumen.manageMedia.deleteRequestTitle",
+  "lumen.manageMedia.deleteRequestBody",
+  "lumen.manageMedia.keepRequest",
+  "lumen.manageMedia.requestDeleted",
+  "lumen.manageMedia.requestDeleteFailed"
 ]

@@ -1,8 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import { dirname } from 'node:path';
 
 async function openBookManager(page: Page, permissions: number) {
   const deletes: { path: string; body: unknown }[] = [];
   const libraryReads: string[] = [];
+  let requestDeleteAttempts = 0;
+  let requestDeleted = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -43,23 +47,35 @@ async function openBookManager(page: Page, permissions: number) {
             audiobookDownloadStatus: [
               { downloadId: 'audio-1', status: 'Queued', percent: 0 },
             ],
-            requests: [
-              {
-                id: 77,
-                status: 2,
-                bookFormat: 'ebook',
-                requestedBy: { id: 1, displayName: 'reader' },
-              },
-              {
-                id: 78,
-                status: 3,
-                bookFormat: 'audiobook',
-                requestedBy: { id: 1, displayName: 'reader' },
-              },
-            ],
+            requests: requestDeleted
+              ? []
+              : [
+                  {
+                    id: 77,
+                    status: 2,
+                    bookFormat: 'ebook',
+                    requestedBy: { id: 1, displayName: 'reader' },
+                  },
+                  {
+                    id: 78,
+                    status: 3,
+                    bookFormat: 'audiobook',
+                    requestedBy: { id: 1, displayName: 'reader' },
+                  },
+                ],
           },
         },
       });
+    if (path === '/request/77/status' && request.method() === 'DELETE') {
+      requestDeleteAttempts++;
+      if (requestDeleteAttempts === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary request service failure' },
+        });
+      requestDeleted = true;
+      return route.fulfill({ status: 204, body: '' });
+    }
     if (path === '/media/42/library') {
       libraryReads.push(request.method());
       if (request.method() === 'DELETE') {
@@ -106,6 +122,23 @@ test('book manager shows requests and both formats, and confirms exact library c
   await page.getByRole('button', { name: 'Manage Book' }).click();
   const sheet = page.getByRole('dialog', { name: 'Manage Book' });
   await expect(sheet.getByText('Requests')).toBeVisible();
+  const capture = process.env.LUMEN_MANAGE_REQUEST_CAPTURE;
+  if (capture && ['desktop', 'iphone'].includes(test.info().project.name)) {
+    await mkdir(dirname(capture), { recursive: true });
+    const requestRow = sheet.locator('li.set').first();
+    await requestRow.screenshot({
+      path: `${capture}-${test.info().project.name}-candidate.png`,
+    });
+    await requestRow
+      .getByRole('button', { name: 'Delete Request' })
+      .evaluate((button) => button.remove());
+    await requestRow.screenshot({
+      path: `${capture}-${test.info().project.name}-baseline.png`,
+    });
+    await page.reload();
+    await page.getByRole('button', { name: 'Manage Book' }).click();
+    await expect(sheet).toBeVisible();
+  }
   await expect(
     sheet
       .getByRole('region', { name: 'Requests' })
@@ -125,6 +158,26 @@ test('book manager shows requests and both formats, and confirms exact library c
   await expect(sheet.getByRole('link', { name: 'View Request' })).toHaveCount(
     1
   );
+  await sheet.getByRole('button', { name: 'Delete Request' }).click();
+  const requestConfirm = page.getByRole('alertdialog', {
+    name: 'Delete Request Entry?',
+  });
+  await requestConfirm.getByRole('button', { name: 'Delete Request' }).click();
+  await expect(requestConfirm.getByRole('alert')).toHaveText(
+    'Unable to delete this request entry.'
+  );
+  if (capture && ['desktop', 'iphone'].includes(test.info().project.name)) {
+    await page.screenshot({
+      path: `${capture}-${test.info().project.name}-retry-error.png`,
+      fullPage: false,
+    });
+  }
+  await expect(sheet.getByRole('link', { name: 'View Request' })).toHaveCount(
+    1
+  );
+  await requestConfirm.getByRole('button', { name: 'Delete Request' }).click();
+  await expect(requestConfirm).toHaveCount(0);
+  await expect(sheet.getByText('No active requests.')).toBeVisible();
   await expect(sheet.getByText('Bookshelf (Book)')).toBeVisible();
   await expect(sheet.getByText('Bookshelf (Audiobook)')).toBeVisible();
   await expect(libraryReads).toEqual(['GET']);

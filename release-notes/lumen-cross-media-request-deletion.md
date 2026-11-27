@@ -1,0 +1,1 @@
+Lumen request managers can now delete a request entry from the contextual management sheet for Books, Music, Comics, and Magazines. A separate confirmation explains that this permanently removes the request history and may cancel active work. Failed requests remain available for retry; successful deletion refreshes the media detail.

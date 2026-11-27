@@ -8113,6 +8113,13 @@ export const localeData = [
       'lumen.manageMedia.noCopies': 'لم يتم العثور على نسخ مؤكدة في الخدمات.',
       'lumen.manageMedia.checking': 'جارٍ التحقق من خدمات الوسائط المُعدة…',
       'lumen.manageMedia.close': 'إغلاق',
+      'lumen.manageMedia.deleteRequest': 'حذف الطلب',
+      'lumen.manageMedia.deleteRequestTitle': 'حذف سجل الطلب؟',
+      'lumen.manageMedia.deleteRequestBody':
+        'سيؤدي ذلك إلى إلغاء العمل النشط حيثما أمكن، وحذف سجل الطلب وسجله نهائيًا.',
+      'lumen.manageMedia.keepRequest': 'الاحتفاظ بالطلب',
+      'lumen.manageMedia.requestDeleted': 'تم حذف سجل الطلب.',
+      'lumen.manageMedia.requestDeleteFailed': 'تعذر حذف سجل الطلب.',
     },
   },
   {
@@ -20536,6 +20543,14 @@ export const localeData = [
       'lumen.manageMedia.noCopies': 'No verified service copies were found.',
       'lumen.manageMedia.checking': 'Checking configured media services…',
       'lumen.manageMedia.close': 'Close',
+      'lumen.manageMedia.deleteRequest': 'Delete Request',
+      'lumen.manageMedia.deleteRequestTitle': 'Delete Request Entry?',
+      'lumen.manageMedia.deleteRequestBody':
+        'This cancels active work where possible and permanently removes the request entry and its history.',
+      'lumen.manageMedia.keepRequest': 'Keep Request',
+      'lumen.manageMedia.requestDeleted': 'Request entry deleted.',
+      'lumen.manageMedia.requestDeleteFailed':
+        'Unable to delete this request entry.',
     },
   },
   {
@@ -34388,6 +34403,14 @@ export const localeData = [
       'lumen.manageMedia.checking':
         'Vérification des services multimédias configurés…',
       'lumen.manageMedia.close': 'Fermer',
+      'lumen.manageMedia.deleteRequest': 'Supprimer la demande',
+      'lumen.manageMedia.deleteRequestTitle': 'Supprimer cette demande ?',
+      'lumen.manageMedia.deleteRequestBody':
+        'Cette action annule le travail actif lorsque cela est possible et supprime définitivement la demande et son historique.',
+      'lumen.manageMedia.keepRequest': 'Conserver la demande',
+      'lumen.manageMedia.requestDeleted': 'La demande a été supprimée.',
+      'lumen.manageMedia.requestDeleteFailed':
+        'Impossible de supprimer cette demande.',
     },
   },
   {

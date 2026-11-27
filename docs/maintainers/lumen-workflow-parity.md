@@ -12319,10 +12319,31 @@ preserved. Managers without administrator access do not read or see library
 removal controls.
 
 The sheet does not replace media-specific issue, blocklist, or cancellation
-surfaces; those remain in their current Lumen workflows. Browser fixtures cover
+surfaces; those remain in their current Lumen workflows. Request managers can
+also delete a request entry directly from the sheet after reviewing a separate
+confirmation. Failed deletion keeps that confirmation open with retry feedback;
+success refreshes the detail and removes the request row. A fixture forces a
+503 followed by success and verifies the same request remains visible until the
+server accepts deletion. Desktop, iPhone, Android, and tablet browser cases pass.
+The English request row was compared before/after at desktop and iPhone widths;
+the candidate keeps the shared row geometry and wraps the additional action
+within the existing list item. The retry error was inspected at both sizes.
+No CSS owner changed. Live endpoint authorization and provider work cancellation
+remain unverified. Browser fixtures cover
 the existing Book removal flow, the Magazine sheet in English, French, and
 Arabic, and the Music and Comic sheets on desktop, iPhone, Android, and tablet.
 Native-matched visual comparison and live provider/removal checks remain open
 before claiming full parity.
 
 release-note: `release-notes/lumen-cross-media-management-sheets.md`
+
+### Cross-media request deletion
+
+Lumen request managers can delete a request entry from the Book, Music, Comic,
+and Magazine contextual management sheet. A separate confirmation explains the
+permanent history removal and possible active-work cancellation. A failed API
+call leaves the confirmation open with retry feedback; success refreshes the
+detail so the removed request no longer appears. The existing server permission
+check and `DELETE /request/:id/status` operation remain authoritative.
+
+release-note: `release-notes/lumen-cross-media-request-deletion.md`
