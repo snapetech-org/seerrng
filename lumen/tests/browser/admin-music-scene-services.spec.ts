@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [provider, name, port] of [
   ['lidarr', 'Lidarr', 8686],
@@ -37,7 +38,7 @@ for (const [provider, name, port] of [
       services = [result];
       return route.fulfill({ json: result });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page.getByRole('link', { name: `Open ${name} Services` }).click();
     await page.getByRole('button', { name: `Add ${name}` }).click();
     await expect(page.getByLabel('Port', { exact: true })).toHaveValue(

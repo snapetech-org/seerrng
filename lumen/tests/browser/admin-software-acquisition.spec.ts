@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [locale, labels] of [
   [
@@ -64,7 +65,7 @@ for (const [locale, labels] of [
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/software-acquisition');
+    await page.goto(testAppPath('/admin/software-acquisition'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(
       page.getByRole('heading', { name: labels.title, exact: true })
@@ -181,7 +182,7 @@ test('software acquisition tests a saved connection, preserves keys and saves sy
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/admin');
+  await page.goto(testAppPath('/admin'));
   await page.getByRole('link', { name: 'Open Software Acquisition' }).click();
   await expect(
     page.getByLabel('ROMarrNG API Key', { exact: true })

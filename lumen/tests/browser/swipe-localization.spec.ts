@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(process.env.LUMEN_SWIPE_LOCALE ?? '')
   ? (process.env.LUMEN_SWIPE_LOCALE as 'en' | 'fr' | 'ar')
@@ -81,7 +82,7 @@ test('Swipe deck and preferences follow the saved locale', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/swipe');
+  await page.goto(testAppPath('/swipe'));
   await expect(page.getByRole('heading', { name: 'Swipe' })).toBeVisible();
   const baseline = process.env.LUMEN_SWIPE_BASELINE === '1';
   await expect(
