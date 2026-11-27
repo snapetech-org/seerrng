@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Jellyfin/Emby households: sign-in, Quick Connect and the media-server wording.
 const movie = {
@@ -97,7 +98,7 @@ async function fixtures(
 
 test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
   const { calls, errors } = await fixtures(page, { serverType: 2 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByText('Use the same account you use for Jellyfin.')
   ).toBeVisible();
@@ -122,7 +123,7 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
   });
   expect(calls.some((c) => c.path === '/auth/plex')).toBe(false);
 
-  await page.goto('/movie/101');
+  await page.goto(testAppPath('/movie/101'));
   const watch = page
     .getByRole('link', { name: 'Watch on Jellyfin', exact: true })
     .filter({ visible: true })
@@ -130,7 +131,7 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
   await expect(watch).toHaveAttribute('href', jellyfinUrl);
   await expect(page.getByText(/Plex/)).toHaveCount(0);
 
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(
     page.getByRole('button', { name: 'On Jellyfin', exact: true })
   ).toBeVisible();
@@ -138,7 +139,7 @@ test('Jellyfin password sign-in and Jellyfin wording', async ({ page }) => {
     page.getByRole('button', { name: 'Not on Jellyfin', exact: true })
   ).toBeVisible();
 
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await expect(page.getByText('Media server: Jellyfin')).toBeVisible();
   await expect(page.getByText('New on Jellyfin')).toBeVisible();
   expect(errors).toEqual([]);
@@ -148,7 +149,7 @@ test('the next sign-in opens the way this device last signed in', async ({
   page,
 }) => {
   await fixtures(page, { serverType: 2 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('secret');
@@ -159,7 +160,7 @@ test('the next sign-in opens the way this device last signed in', async ({
 
   // signed out again (fresh fixtures): straight to the Jellyfin boxes, other ways still there
   await fixtures(page, { serverType: 2 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.getByLabel('Jellyfin Username')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
@@ -176,7 +177,7 @@ test('the next sign-in opens the way this device last signed in', async ({
 
   // now email it is, with a way back to Jellyfin
   await fixtures(page, { serverType: 2 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.getByLabel('Email')).toBeVisible();
   await page
     .getByRole('button', { name: 'Use your Jellyfin account instead' })
@@ -191,13 +192,13 @@ test('a failed sign-in is not remembered', async ({ page }) => {
   await page.route('**/api/v1/auth/jellyfin', (route) =>
     route.fulfill({ status: 401, json: { message: 'INVALID_CREDENTIALS' } })
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await page.getByLabel('Jellyfin Username').fill('alice');
   await page.getByLabel('Password').fill('wrong');
   await page.getByRole('button', { name: 'Sign In with Jellyfin' }).click();
   await expect(page.getByRole('alert')).toContainText('isn’t right');
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible();
@@ -209,7 +210,7 @@ test('Jellyfin Quick Connect sign-in', async ({ page }) => {
     serverType: 2,
     quickConnectOnly: true,
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   // password sign-in is off, so the main button goes straight to Quick Connect
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await expect(page.locator('.login-code')).toHaveText('123456');
@@ -225,7 +226,7 @@ test('Jellyfin Quick Connect sign-in', async ({ page }) => {
 
 test('cancelling Quick Connect stops polling', async ({ page }) => {
   const { calls } = await fixtures(page, { serverType: 2 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await page.getByRole('button', { name: 'Use Quick Connect instead' }).click();
   await expect(page.locator('.login-code')).toHaveText('123456');
@@ -244,7 +245,7 @@ test('admin can pin the media server in lumen-config.json', async ({
   page,
 }) => {
   await fixtures(page, { serverType: 1, config: { mediaServer: 'jellyfin' } });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible();
@@ -252,7 +253,7 @@ test('admin can pin the media server in lumen-config.json', async ({
 
 test('Emby uses its own name and has no Quick Connect', async ({ page }) => {
   await fixtures(page, { serverType: 3 });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByRole('button', { name: 'Continue with Emby' }).click();
   await expect(page.getByLabel('Emby Username')).toBeVisible();
   await expect(
@@ -278,7 +279,7 @@ for (const method of ['server', 'local'] as const) {
     );
     for (const colorScheme of ['light', 'dark'] as const) {
       await page.emulateMedia({ colorScheme });
-      await page.goto('/');
+      await page.goto(testAppPath('/'));
       await expect(
         page.getByLabel(method === 'server' ? 'Jellyfin Username' : 'Email')
       ).toBeVisible();
@@ -298,7 +299,7 @@ test('administrator form style wins over the remembered local method', async ({
   await page.addInitScript(() =>
     localStorage.setItem('lumen-last-sign-in', 'local')
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.getByLabel('Username', { exact: true })).toBeVisible();
   await expect(page.getByLabel('Email')).toHaveCount(0);
 });
@@ -313,7 +314,7 @@ test('a remembered Quick Connect method never requests an unsolicited code', asy
   await page.addInitScript(() =>
     localStorage.setItem('lumen-last-sign-in', 'quick')
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible();
@@ -332,7 +333,7 @@ test('invalid or blocked remembered-method storage cannot prevent sign-in', asyn
       return original.call(this, key, value);
     };
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(
     page.getByRole('button', { name: 'Continue with Jellyfin' })
   ).toBeVisible();

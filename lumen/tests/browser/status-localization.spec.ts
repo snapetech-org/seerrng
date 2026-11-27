@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_STATUS_LOCALE ?? ''
@@ -107,7 +108,7 @@ test('poster status labels use the account locale', async ({ page }, info) => {
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const card = page.locator('.poster', { hasText: 'Fixture Available Movie' });
   await expect(card.locator('.glyph')).toHaveAttribute(
     'title',

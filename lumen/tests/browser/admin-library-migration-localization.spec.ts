@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`Library Migration follows the saved ${locale} locale`, async ({
@@ -30,7 +31,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/library-migration');
+    await page.goto(testAppPath('/admin/library-migration'));
     const copy = {
       en: {
         title: 'Bookshelf Library Path Migration',

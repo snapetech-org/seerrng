@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
+import { testAppPath } from './testAppPath';
 
 test('capture the pre-Comics/Manga route at matching responsive viewports', async ({
   page,
@@ -70,7 +71,7 @@ test('capture the pre-Comics/Manga route at matching responsive viewports', asyn
   const widths = [360, 768, 1280];
   for (const width of widths) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto('/comics');
+    await page.goto(testAppPath('/comics'));
     await expect(
       page.getByRole('heading', { name: 'Comics/Manga' })
     ).toBeVisible();

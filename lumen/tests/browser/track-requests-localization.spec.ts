@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -99,7 +100,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/track-requests');
+    await page.goto(testAppPath('/track-requests'));
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(page.getByRole('link', { name: text.back })).toBeVisible();

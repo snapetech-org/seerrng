@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const testAppPath = (path: string) =>
   `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
@@ -56,7 +57,7 @@ test('manager records do not mark missing book files available', async ({
       ]),
     })
   );
-  await page.goto('/books?sort=ranked');
+  await page.goto(mountedTestAppPath('/books?sort=ranked'));
   for (const title of ['Manager only', 'Audio only', 'Plex audiobook'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
@@ -64,7 +65,7 @@ test('manager records do not mark missing book files available', async ({
   await expect(
     page.locator('.poster', { hasText: 'Imported ebook' }).locator('.glyph.ok')
   ).toHaveCount(1);
-  await page.goto('/audiobooks?sort=ranked');
+  await page.goto(mountedTestAppPath('/audiobooks?sort=ranked'));
   for (const title of ['Manager only', 'Imported ebook'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.glyph.ok')
@@ -83,7 +84,7 @@ test('personal overlay color applies to the genre picker', async ({ page }) => {
     })
   );
   const open = async () => {
-    await page.goto('./books');
+    await page.goto(mountedTestAppPath('./books'));
     await page.getByRole('button', { name: /^Genres:/ }).click();
     const overlay = page.locator('.gp-pop, .gp-sheet');
     await expect(overlay).toBeVisible();
@@ -104,7 +105,7 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
   const requests = await fixtures(page);
   const feed = () =>
     requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
-  await page.goto('/books');
+  await page.goto(mountedTestAppPath('/books'));
   for (const name of [
     'In your library',
     'Trending',
@@ -152,7 +153,7 @@ test('Books and Audiobooks open on rows, one per sort', async ({ page }) => {
     libraryRow.getByRole('link', { name: 'See all' })
   ).toHaveAttribute('href', testAppPath('/books?show=have'));
 
-  await page.goto('/audiobooks');
+  await page.goto(mountedTestAppPath('/audiobooks'));
   await expect(
     page.getByRole('heading', { name: 'Top rated', exact: true })
   ).toBeVisible();
@@ -170,7 +171,7 @@ test('See all opens the full list with that sort, and Overview or Back returns t
   const requests = await fixtures(page);
   const feed = () =>
     requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
-  await page.goto('/books');
+  await page.goto(mountedTestAppPath('/books'));
   const row = (name: string) =>
     page
       .locator('section')
@@ -231,7 +232,7 @@ test('a row that fails does not take the others with it', async ({ page }) => {
       ? route.fulfill({ status: 503, json: { message: 'Feed unavailable' } })
       : route.fallback()
   );
-  await page.goto('/audiobooks');
+  await page.goto(mountedTestAppPath('/audiobooks'));
   const row = (name: string) =>
     page
       .locator('section')
@@ -257,7 +258,7 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
   const requests = await fixtures(page);
   const feed = () =>
     requests.filter((r) => r.path === '/discover/books').map((r) => r.query);
-  await page.goto('/books?sort=ranked');
+  await page.goto(mountedTestAppPath('/books?sort=ranked'));
   const sort = page.getByLabel('Sort');
   await expect(sort).toHaveValue('ranked');
   await expect(
@@ -279,7 +280,7 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
   await page.getByRole('button', { name: 'In library' }).click();
   await expect(page.getByLabel('Sort')).toHaveCount(0);
 
-  await page.goto('/audiobooks?sort=rating.desc');
+  await page.goto(mountedTestAppPath('/audiobooks?sort=rating.desc'));
   await expect(page.getByLabel('Sort')).toHaveValue('rating.desc');
   await expect(
     page.getByRole('heading', { name: 'Top rated audiobooks' })
@@ -291,7 +292,7 @@ test('Books and Audiobooks can be sorted like the SeerrNG web app', async ({
     );
 
   // an unknown sort in the address falls back to Popular
-  await page.goto('/books?sort=bogus');
+  await page.goto(mountedTestAppPath('/books?sort=bogus'));
   await expect(page.getByLabel('Sort')).toHaveValue('ranked');
 });
 test('a genre or a sort from the landing fills the page with that list, and Back returns to the rows', async ({
@@ -307,7 +308,7 @@ test('a genre or a sort from the landing fills the page with that list, and Back
   const chip = (name: string) =>
     genres.getByRole('button', { name, exact: true });
   const phone = page.viewportSize()!.width < 700;
-  await page.goto('/books');
+  await page.goto(mountedTestAppPath('/books'));
   await expect(
     page.getByRole('heading', { name: 'Trending', exact: true })
   ).toBeVisible();
@@ -435,7 +436,9 @@ test('a genre or a sort from the landing fills the page with that list, and Back
   ).toBeVisible();
 
   // a shared address opens the same list; audiobooks too
-  await page.goto('/audiobooks?genre=young%20adult&sort=rating.desc');
+  await page.goto(
+    mountedTestAppPath('/audiobooks?genre=young%20adult&sort=rating.desc')
+  );
   await expect(
     page.getByRole('heading', { name: 'Top rated young adult audiobooks' })
   ).toBeVisible();
@@ -445,7 +448,9 @@ test('a genre or a sort from the landing fills the page with that list, and Back
       '?format=audiobook&sortBy=rating.desc&subject=%22young%20adult%22&page=1'
     );
   // repeated genre= in a shared address are several genres too
-  await page.goto('/audiobooks?genre=fantasy&genre=Romance');
+  await page.goto(
+    mountedTestAppPath('/audiobooks?genre=fantasy&genre=Romance')
+  );
   await expect(
     page.getByRole('heading', { name: 'Popular fantasy & romance audiobooks' })
   ).toBeVisible();
@@ -476,7 +481,7 @@ test('the full list keeps loading until it fills a tall screen', async ({
       },
     });
   });
-  await page.goto('/books?genre=fantasy');
+  await page.goto(mountedTestAppPath('/books?genre=fantasy'));
   await expect(
     page.locator('.grid .poster', { hasText: 'Fill 1.1' })
   ).toHaveCount(1);
@@ -507,7 +512,7 @@ test('Not yet lists books that are neither owned nor requested', async ({
       ]),
     })
   );
-  await page.goto('/audiobooks?show=not');
+  await page.goto(mountedTestAppPath('/audiobooks?show=not'));
   await expect(
     page.locator('.grid .poster', { hasText: 'Never requested' })
   ).toHaveCount(1);
@@ -665,7 +670,7 @@ test('Book Details metadata matches native book facts when providers supply them
       json: { source: 'openlibrary', count: 0, workId: 'OL789W' },
     })
   );
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await page.locator('summary', { hasText: 'Book Details' }).click();
   const facts = page.locator('.facts2');
   for (const fact of [
@@ -679,7 +684,7 @@ test('Book Details metadata matches native book facts when providers supply them
     await expect(facts).toContainText(fact);
   await expect(
     facts.getByRole('link', { name: 'Fixture Author' })
-  ).toHaveAttribute('href', '/author/OL123A');
+  ).toHaveAttribute('href', testAppPath('/author/OL123A'));
   await expect(facts.getByRole('link', { name: 'OL789W' })).toHaveAttribute(
     'href',
     'https://openlibrary.org/works/OL789W'
@@ -712,7 +717,7 @@ test('Book Details never turns Bookshelf IDs or untrusted rating IDs into Open L
       },
     })
   );
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await page.locator('summary', { hasText: 'Book Details' }).click();
   const facts = page.locator('.facts2');
   await expect(facts).toContainText('Not Available');
@@ -727,7 +732,9 @@ for (const format of ['ebook', 'audiobook'] as const) {
   }, info) => {
     const requests = await fixtures(page);
     await page.goto(
-      format === 'ebook' ? '/books?sort=ranked' : '/audiobooks?sort=ranked'
+      mountedTestAppPath(
+        format === 'ebook' ? '/books?sort=ranked' : '/audiobooks?sort=ranked'
+      )
     );
     const native = page.getByRole('link', {
       name: `Native ${format}`,
@@ -767,7 +774,7 @@ test('native ebook search works without a companion and retains its service-owne
   page,
 }) => {
   const requests = await fixtures(page);
-  await page.goto('/search?f=ebook&q=rare');
+  await page.goto(mountedTestAppPath('/search?f=ebook&q=rare'));
   const native = page.getByRole('link', { name: 'Native ebook', exact: true });
   await expect(native).toBeVisible();
   await expect(native).toHaveAttribute(
@@ -807,7 +814,9 @@ test('an owned audiobook opens in Audiobookshelf when the admin set its address'
     ownedAudiobook: true,
     config: { audiobookshelfUrl: 'https://books.example.com/' },
   });
-  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(ownedId)}?f=audio`)
+  );
   await expect(
     page.getByRole('link', { name: 'Listen in Audiobookshelf' })
   ).toHaveAttribute('href', 'https://books.example.com/item/abs-owned');
@@ -820,7 +829,9 @@ test('without an Audiobookshelf address an owned book shows its status, not a de
     ownedAudiobook: true,
     config: { audiobookshelfUrl: 'javascript:alert(1)' },
   });
-  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(ownedId)}?f=audio`)
+  );
   await expect(
     page.getByRole('button', { name: 'In your library' })
   ).toBeDisabled();
@@ -831,7 +842,9 @@ test('an audiobook page lists narrations from SeerrNG editions', async ({
   page,
 }) => {
   const requests = await fixtures(page);
-  await page.goto(`/book/${encodeURIComponent(audioId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(audioId)}?f=audio`)
+  );
   await expect(page.getByText('Fixture Narrator').first()).toBeVisible();
   expect(
     requests.some(
@@ -853,7 +866,7 @@ test('a passing book lookup failure offers Retry instead of “no ebook”', asy
       : route.fulfill({ status, json: { message: 'Too many requests' } })
   );
   // a real "not found" points to the audiobook
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(page.getByText('No ebook edition found')).toBeVisible();
 
   status = 429;
@@ -898,7 +911,7 @@ test('a failed movie page can be retried', async ({ page }) => {
   await page.route('**/api/v1/movie/77/similar', (route) =>
     route.fulfill({ json: paged([]) })
   );
-  await page.goto('/movie/77');
+  await page.goto(mountedTestAppPath('/movie/77'));
   const alert = page.getByRole('alert');
   await expect(alert).toContainText('Couldn’t load this movie');
   fail = false;
@@ -916,7 +929,9 @@ test('Audiobookshelf links retain a path prefix and omit query tokens and fragme
         'https://books.example.com/abs/?token=must-not-forward#shelf',
     },
   });
-  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(ownedId)}?f=audio`)
+  );
   await expect(
     page.getByRole('link', { name: 'Listen in Audiobookshelf' })
   ).toHaveAttribute('href', 'https://books.example.com/abs/item/abs-owned');
@@ -928,7 +943,9 @@ test('Audiobookshelf credentials never become a public owned-book link', async (
     ownedAudiobook: true,
     config: { audiobookshelfUrl: 'https://user:secret@books.example.com/' },
   });
-  await page.goto(`/book/${encodeURIComponent(ownedId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(ownedId)}?f=audio`)
+  );
   await expect(
     page.getByRole('button', { name: 'In your library' })
   ).toBeDisabled();
@@ -952,7 +969,7 @@ test('owning the audiobook still offers the ebook', async ({ page }) => {
       },
     })
   );
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(
     page.getByRole('button', { name: 'Request ebook' })
   ).toBeVisible();
@@ -978,7 +995,7 @@ test('a book page shows a requested format as requested, not as Request again', 
       },
     })
   );
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(page.locator('h1')).toContainText('Requested ebook');
   await expect(page.getByRole('button', { name: 'Request ebook' })).toHaveCount(
     0
@@ -1000,7 +1017,7 @@ test('requesting the audiobook does not mark the ebook as requested', async ({
       },
     })
   );
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(
     page.getByRole('button', { name: 'Request ebook' })
   ).toBeVisible();
@@ -1049,7 +1066,7 @@ for (const [label, request, requested] of [
         },
       })
     );
-    await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+    await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
     await expect(page.locator('h1')).toContainText('Request state fixture');
     await expect(
       page.getByRole('button', { name: 'Request ebook' })
@@ -1101,7 +1118,7 @@ test('audiobook search offers books the audiobook catalogue has not seen yet', a
       ]),
     })
   );
-  await page.goto('/search?q=brand%20new&f=audio');
+  await page.goto(mountedTestAppPath('/search?q=brand%20new&f=audio'));
   const card = page.locator('.poster', { hasText: 'Brand New Book' });
   await expect(card).toHaveCount(1);
   await expect(
@@ -1132,7 +1149,7 @@ test('cards without art get a drawn cover, and the title opens the book', async 
       ]),
     })
   );
-  await page.goto('/books?sort=ranked');
+  await page.goto(mountedTestAppPath('/books?sort=ranked'));
   for (const title of ['Book Without Art', 'Broken Art'])
     await expect(
       page.locator('.poster', { hasText: title }).locator('.nocover')
@@ -1165,7 +1182,7 @@ for (const status of [403, 429, 503]) {
         json: paged([book('OL123W', 'ebook', 'Fallback work')]),
       });
     });
-    await page.goto('/search?q=fallback&f=audio');
+    await page.goto(mountedTestAppPath('/search?q=fallback&f=audio'));
     if (status === 503)
       await expect(
         page.locator('.poster', { hasText: 'Fallback work' })
@@ -1190,7 +1207,7 @@ test('a failed uncatalogued audiobook metadata lookup remains retryable', async 
       json: { message: 'Metadata fixture unavailable' },
     })
   );
-  await page.goto('/search?q=unseen&f=audio');
+  await page.goto(mountedTestAppPath('/search?q=unseen&f=audio'));
   await expect(page.getByRole('alert')).toContainText(
     'Metadata fixture unavailable'
   );
@@ -1210,7 +1227,7 @@ test('catalogued audiobook results do not trigger an extra metadata search', asy
     fallbackCalls++;
     return route.fulfill({ json: paged([]) });
   });
-  await page.goto('/search?q=known&f=audio');
+  await page.goto(mountedTestAppPath('/search?q=known&f=audio'));
   await expect(page.locator('.poster', { hasText: 'Known audio' })).toHaveCount(
     1
   );
@@ -1225,7 +1242,7 @@ test('a card title keeps the existing keyboard target and cannot render title ma
   await page.route('**/api/v1/discover/books?**', (route) =>
     route.fulfill({ json: paged([book('OL123W', 'ebook', title)]) })
   );
-  await page.goto('/books?sort=ranked');
+  await page.goto(mountedTestAppPath('/books?sort=ranked'));
   const card = page.locator('.poster');
   await expect(card.locator('.nocover')).toHaveAttribute('data-title', title);
   await expect(page.locator('#injected-cover')).toHaveCount(0);
@@ -1282,7 +1299,7 @@ test('book covers load through the SeerrNG image cache, medium on cards and larg
       },
     })
   );
-  await page.goto('/books?sort=ranked');
+  await page.goto(mountedTestAppPath('/books?sort=ranked'));
   const img = page.locator('.grid .poster img');
   await expect(img).toHaveAttribute(
     'src',
@@ -1294,7 +1311,7 @@ test('book covers load through the SeerrNG image cache, medium on cards and larg
     .poll(() => images)
     .toContain('/imageproxy/openlibrarycovers/b/id/8231856-M.jpg');
 
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(page.locator('.dposter img')).toHaveAttribute(
     'src',
     '/imageproxy/openlibrarycovers/b/id/8231856-L.jpg'
@@ -1329,7 +1346,7 @@ test('an audiobook with no art takes the cover from its book page; one with art 
       },
     });
   });
-  await page.goto('/audiobooks?sort=ranked');
+  await page.goto(mountedTestAppPath('/audiobooks?sort=ranked'));
   const cover = (title: string) =>
     page.locator('.grid .poster', { hasText: title }).locator('img');
   await expect(cover('No art recording')).toHaveAttribute(
@@ -1348,7 +1365,7 @@ test('an audiobook whose book page has no art keeps its drawn cover', async ({
   page,
 }) => {
   const requests = await fixtures(page);
-  await page.goto('/audiobooks?sort=ranked');
+  await page.goto(mountedTestAppPath('/audiobooks?sort=ranked'));
   const card = page.locator('.grid .poster', { hasText: 'Native audiobook' });
   await expect(card.locator('.nocover')).toHaveAttribute(
     'data-title',
@@ -1377,7 +1394,7 @@ test('a cover that fails to load shows the drawn cover, on cards and the book pa
       json: { ...book(ebookId, 'ebook', 'Broken cover'), posterPath: olCover },
     })
   );
-  await page.goto('/books');
+  await page.goto(mountedTestAppPath('/books'));
   const card = page
     .locator('section')
     .filter({
@@ -1390,7 +1407,7 @@ test('a cover that fails to load shows the drawn cover, on cards and the book pa
   );
   await expect(card.locator('img')).toHaveCount(0);
 
-  await page.goto(`/book/${encodeURIComponent(ebookId)}`);
+  await page.goto(mountedTestAppPath(`/book/${encodeURIComponent(ebookId)}`));
   await expect(page.locator('h1')).toContainText('Broken cover');
   await expect(page.locator('.dposter img')).toHaveCount(0);
   await expect(page.locator('.dhero img')).toHaveCount(0);

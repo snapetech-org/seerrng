@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // A ready request's "Watch on Plex" button must stay inside its card on narrow cards (two columns on
 // a folded phone, a 360px-wide short phone).
@@ -55,7 +56,7 @@ test('the Watch on Plex button stays inside a narrow request card', async ({
     [360, 288],
   ]) {
     await page.setViewportSize({ width, height });
-    await page.goto('/requests?tab=all');
+    await page.goto(testAppPath('/requests?tab=all'));
     const card = page.locator('.rq').filter({ hasText: 'Ready movie' });
     const btn = card.locator('.rqa a.btn');
     await expect(btn).toBeVisible();

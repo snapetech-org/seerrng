@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appUrl = (path: string, baseURL: string | undefined) =>
@@ -42,7 +43,7 @@ test('failed unlink stays in the confirmation sheet for retry', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   await page.getByRole('button', { name: 'Unlink Fixture Identity' }).click();
   const confirmation = page.getByRole('alertdialog');
   await confirmation.getByRole('button', { name: 'Unlink Account' }).click();
@@ -101,7 +102,7 @@ test('Plex links the signed-in user without calling Plex sign-in', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   await page.bringToFront();
   const popupOpened = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Authorize Plex' }).click();
@@ -153,7 +154,7 @@ test('Quick Connect links the signed-in account without calling login', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   await page.getByRole('button', { name: 'Start Quick Connect' }).click();
   await expect(page.getByText('123456')).toBeVisible();
   await expect(page.getByText('Account linked.')).toBeVisible();
@@ -234,7 +235,7 @@ test('OIDC linking validates the round trip and consumes the callback once', asy
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   await page
     .getByRole('button', { name: 'Link Fixture Identity', exact: true })
     .click();
@@ -286,7 +287,7 @@ test('tracking accounts read back write preferences and confirm disconnect', asy
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   const writes = page.getByRole('checkbox', { name: 'Allow writes to Trakt' });
   await writes.check({ trial: true });
   await writes.click();
@@ -357,7 +358,7 @@ test('AniList connects through a code submitted in the request body', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   const connect = page.getByRole('button', {
     name: 'Connect AniList',
     exact: true,
@@ -441,7 +442,7 @@ test('Simkl stops polling on cancel and links after provider approval', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account/linked-accounts');
+  await page.goto(mountedTestAppPath('./me/account/linked-accounts'));
   const connect = page.getByRole('button', {
     name: 'Connect Simkl',
     exact: true,
@@ -527,7 +528,9 @@ test('Trakt returns to Linked Accounts and completes once', async ({
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('./me/account/linked-accounts?traktComplete=1');
+  await page.goto(
+    mountedTestAppPath('./me/account/linked-accounts?traktComplete=1')
+  );
   await expect(page).toHaveURL(/linked-accounts$/);
   expect(completions).toBe(0);
   await page

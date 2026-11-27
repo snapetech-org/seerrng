@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function fixtures(
   page: Page,
@@ -89,7 +90,7 @@ for (const [type, name] of [
     page,
   }, info) => {
     const fixture = await fixtures(page, { mediaServerType: type });
-    await page.goto('/login');
+    await page.goto(testAppPath('/login'));
     if (process.env.LUMEN_MEDIA_BASELINE === 'true') {
       await expect(
         page.getByRole('button', { name: 'Continue with Plex' })
@@ -126,7 +127,7 @@ for (const [type, name] of [
       password: 'fixture-password',
       email: 'viewer',
     });
-    await page.goto('/movie/101');
+    await page.goto(testAppPath('/movie/101'));
     const watch = page.getByRole('link', {
       name: `Watch on ${name}`,
       exact: true,
@@ -164,7 +165,7 @@ test('Jellyfin Quick Connect-only respects cancellation during an approved in-fl
     await held;
     await route.fulfill({ json: { authenticated: true } }).catch(() => {});
   });
-  await page.goto('/login');
+  await page.goto(testAppPath('/login'));
   await expect(page.getByLabel('Password', { exact: true })).toHaveCount(0);
   await expect(
     page.getByRole('button', { name: 'Use an email and password instead' })
@@ -194,7 +195,7 @@ test('approved Jellyfin Quick Connect signs in through SeerrNG', async ({
   page,
 }) => {
   const fixture = await fixtures(page, { jellyfinQuickConnectOnly: true });
-  await page.goto('/login');
+  await page.goto(testAppPath('/login'));
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await expect(page).not.toHaveURL(/\/login/);
   expect(fixture.posts.filter((p) => p.path.endsWith('/authenticate'))).toEqual(
@@ -226,7 +227,7 @@ test('Quick Connect cancellation releases a stalled initiation immediately', asy
       .fulfill({ json: { code: '123456', secret: 'late-fixture-secret' } })
       .catch(() => {});
   });
-  await page.goto('/login');
+  await page.goto(testAppPath('/login'));
   await page.getByRole('button', { name: 'Continue with Jellyfin' }).click();
   await initiating;
   try {
@@ -248,7 +249,7 @@ test('disabled sign-in methods stay disabled', async ({ page }) => {
     mediaServerLogin: false,
     localLogin: false,
   });
-  await page.goto('/login');
+  await page.goto(testAppPath('/login'));
   await expect(page.locator('.login').getByRole('status')).toHaveText(
     'Sign-in is disabled. Contact your administrator.'
   );
@@ -264,7 +265,7 @@ test('failed public settings shows retry without guessing enabled login methods'
   await page.route('**/settings/public', (route) =>
     route.fulfill({ status: 503, json: {} })
   );
-  await page.goto('/login');
+  await page.goto(testAppPath('/login'));
   await expect(page.getByRole('alert')).toHaveText(
     'Couldn’t load sign-in options.'
   );
@@ -279,7 +280,7 @@ test('a one-time sign-in link requires confirmation and keeps the requested page
 }, info) => {
   const fixture = await fixtures(page, {});
   const token = 'A'.repeat(43);
-  await page.goto(`/movie/101#loginToken=${token}`);
+  await page.goto(testAppPath(`/movie/101#loginToken=${token}`));
   const confirm = page.getByRole('button', {
     name: 'Continue with sign-in link',
   });
@@ -302,7 +303,9 @@ test('opening a one-time link while signed in leaves the session and other fragm
   page,
 }) => {
   const fixture = await fixtures(page, {}, true);
-  await page.goto(`/movie/101#loginToken=${'A'.repeat(43)}&section=details`);
+  await page.goto(
+    testAppPath(`/movie/101#loginToken=${'A'.repeat(43)}&section=details`)
+  );
   await expect(
     page.getByRole('heading', { name: 'Jellyfin fixture' })
   ).toBeVisible();

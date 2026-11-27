@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locales = {
   en: {
@@ -92,7 +93,7 @@ for (const [locale, copy] of Object.entries(locales)) {
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('admin/media-libraries');
+    await page.goto(testAppPath('admin/media-libraries'));
     await expect(page.getByRole('heading', { name: copy.page })).toBeVisible();
     await expect(
       page.getByRole('heading', { name: copy.connection })

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 // 1x1 PNG for every proxied cover
 const PNG = Buffer.from(
@@ -210,7 +211,7 @@ test('comic detail management sheet is available to request managers', async ({
       }),
     },
   });
-  await page.goto('/comic/al-117195');
+  await page.goto(mountedTestAppPath('/comic/al-117195'));
   await page.getByRole('button', { name: 'Manage Comic' }).click();
   const sheet = page.getByRole('dialog', { name: 'Manage Comic' });
   await expect(sheet.getByText('Requests', { exact: true })).toBeVisible();
@@ -426,7 +427,7 @@ test('comic detail links to the selected ComicVine volume when the URL is truste
       siteDetailUrl: 'https://comicvine.gamespot.com/oshi-no-ko/4050-12345/',
     },
   });
-  await page.goto('/comic/al-117195');
+  await page.goto(mountedTestAppPath('/comic/al-117195'));
   await expect(
     page.getByRole('link', { name: 'View on ComicVine' })
   ).toHaveAttribute(
@@ -454,7 +455,7 @@ for (const [label, siteDetailUrl] of [
 ] as const) {
   test(`comic detail hides a ComicVine URL with ${label}`, async ({ page }) => {
     await fixtures(page, { comicDetail: { ...oshiVolume, siteDetailUrl } });
-    await page.goto('/comic/al-117195');
+    await page.goto(mountedTestAppPath('/comic/al-117195'));
     await expect(
       page.getByRole('link', { name: 'View on ComicVine' })
     ).toHaveCount(0);
@@ -493,7 +494,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         request: 'اطلب «Time»',
       },
     }[baseline ? 'en' : locale];
-    await page.goto('/magazines');
+    await page.goto(mountedTestAppPath('/magazines'));
     await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
     const captureDirectory = process.env.LUMEN_MAGAZINES_CAPTURE_DIR;
     if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))
@@ -523,7 +524,7 @@ test('authorized comic requests can choose a Kapowarr destination and root folde
     permissions: 32 | 8192,
     requestOptions: true,
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await page.getByRole('button', { name: 'Request · Viz, English' }).click();
   const sheet = page.getByRole('alertdialog', {
     name: 'Comic request options',
@@ -555,7 +556,7 @@ test('comic request options honor the saved Kapowarr root folder', async ({
     requestOptions: true,
     rootFolderPreference: { 'comic-kapowarr:2': '/Comics/DC' },
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await page.getByRole('button', { name: 'Request · Viz, English' }).click();
   const sheet = page.getByRole('alertdialog', {
     name: 'Comic request options',
@@ -580,7 +581,7 @@ test('an explicitly selected default comic service is sent in the request', asyn
     permissions: 32 | 8192,
     requestOptions: true,
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await page.getByRole('button', { name: 'Request · Viz, English' }).click();
   const sheet = page.getByRole('alertdialog', {
     name: 'Comic request options',
@@ -602,7 +603,7 @@ test('comic request options stay hidden without advanced request permission', as
     permissions: 32,
     requestOptions: true,
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await page.getByRole('button', { name: 'Request · Viz, English' }).click();
   await expect.poll(() => requested.length).toBe(1);
   await expect(page.getByRole('alertdialog')).toHaveCount(0);
@@ -617,7 +618,7 @@ test('comic request options block submission when no service is configured', asy
     requestOptions: true,
     noComicService: true,
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await page.getByRole('button', { name: 'Request · Viz, English' }).click();
   const sheet = page.getByRole('alertdialog', {
     name: 'Comic request options',
@@ -644,7 +645,7 @@ test('restricted comic quota is visible and blocks detail requests', async ({
       restricted: true,
     },
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   await expect(
     page.getByText('You have reached your comic request limit.')
   ).toBeVisible();
@@ -678,7 +679,7 @@ test('restricted comic quota blocks poster quick requests in its confirmation sh
       restricted: true,
     },
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   if (hoverable(info.project.name)) await card.hover();
   await card
@@ -728,7 +729,7 @@ for (const locale of ['fr', 'ar'] as const) {
       permissions: 32 | 8192,
       requestOptions: true,
     });
-    await page.goto('/comic/al-105778');
+    await page.goto(mountedTestAppPath('/comic/al-105778'));
     await page.getByRole('button', { name: copy.request }).click();
     const sheet = page.getByRole('alertdialog', { name: copy.title });
     await sheet.getByLabel(copy.service).selectOption('2');
@@ -744,7 +745,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     page,
   }, info) => {
     await fixtures(page, { locale });
-    await page.goto('/comics');
+    await page.goto(mountedTestAppPath('/comics'));
     const copy = {
       en: {
         title: 'Comics/Manga',
@@ -791,7 +792,7 @@ test('the Comics page opens populated, with no search box of its own', async ({
   page,
 }) => {
   await fixtures(page, { library: [oshi(downloading)] });
-  await page.goto('/comics');
+  await page.goto(mountedTestAppPath('/comics'));
   await expect(page.locator('h1')).toHaveText('Comics/Manga');
   for (const title of [
     'Your comics & manga',
@@ -824,7 +825,7 @@ test('the side menu calls it Comics/Manga and the top search is scoped to it', a
 }, info) => {
   test.skip(info.project.name !== 'desktop', 'the side menu is desktop-only');
   const { searched } = await fixtures(page);
-  await page.goto('/comics');
+  await page.goto(mountedTestAppPath('/comics'));
   await expect(
     page.locator('nav.side').getByRole('link', { name: 'Comics/Manga' })
   ).toBeVisible();
@@ -840,7 +841,7 @@ test('the side menu calls it Comics/Manga and the top search is scoped to it', a
 
 test('global search shows one card per work', async ({ page }) => {
   await fixtures(page);
-  await page.goto('/search?q=chainsaw');
+  await page.goto(mountedTestAppPath('/search?q=chainsaw'));
   const section = page.locator('section', { hasText: 'Comics & manga' });
   await expect(section.locator('.poster')).toHaveCount(2);
   await expect(section.locator('.poster').first()).toContainText(
@@ -858,7 +859,7 @@ test('the edition picker defaults to the recommended English edition', async ({
   page,
 }) => {
   const { requested } = await fixtures(page);
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   const rows = page
     .getByRole('radiogroup', { name: 'Editions' })
     .getByRole('radio');
@@ -914,7 +915,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       locale,
       requestStatus: 4,
     });
-    await page.goto('/comic/al-105778');
+    await page.goto(mountedTestAppPath('/comic/al-105778'));
     const request = page.getByRole('button', { name: copy.button });
     await request.click();
     await expect(page.getByRole('status')).toContainText(copy.failure);
@@ -959,7 +960,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     page,
   }, info) => {
     await fixtures(page, { locale });
-    await page.goto('/comic/al-105778');
+    await page.goto(mountedTestAppPath('/comic/al-105778'));
     await expect(
       page.getByRole('button', { name: copy.readerShelf })
     ).toBeVisible();
@@ -1004,7 +1005,7 @@ test('an edition already in the library shows on the work and in the picker', as
   await fixtures(page, {
     works: { 'al-105778': chainsaw(partial, '155485') },
   });
-  await page.goto('/comic/al-105778');
+  await page.goto(mountedTestAppPath('/comic/al-105778'));
   const rows = page
     .getByRole('radiogroup', { name: 'Editions' })
     .getByRole('radio');
@@ -1019,7 +1020,7 @@ test('hovering a card offers Request and Choose edition', async ({
 }, info) => {
   test.skip(!hoverable(info.project.name), 'needs a mouse');
   const { requested } = await fixtures(page, { browse: [chainsaw()] });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   await card.hover();
   const go = card.getByRole('button', { name: 'Request', exact: true });
@@ -1047,7 +1048,7 @@ test('comic shelves localize their scroll and edition controls', async ({
     locale: 'fr',
     trending: [{ ...chainsaw(), editions: [], editionsResolved: true }],
   });
-  await page.goto('/comics');
+  await page.goto(mountedTestAppPath('/comics'));
   const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
   await expect(page.locator('.rail-btn.next').first()).toHaveAttribute(
     'aria-label',
@@ -1082,7 +1083,7 @@ test('a manga whose editions are not looked up yet is requested in one click', a
 }, info) => {
   test.skip(!hoverable(info.project.name), 'needs a mouse');
   const { requested } = await fixtures(page, { browse: [onePiece()] });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   await card.hover();
   await card.getByRole('button', { name: 'Request', exact: true }).click();
@@ -1096,7 +1097,7 @@ test('a manga whose editions are not looked up yet is requested in one click', a
 test('touch screens get the round request button', async ({ page }, info) => {
   test.skip(hoverable(info.project.name), 'touch only');
   const { requested } = await fixtures(page, { browse: [chainsaw()] });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   const plus = card.getByRole('button', {
     name: 'Request Chainsaw Man (Viz, English)',
@@ -1118,7 +1119,7 @@ test('comic poster quick request offers authorized service options', async ({
     permissions: 32 | 8192,
     requestOptions: true,
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   if (hoverable(info.project.name)) await card.hover();
   const quick = card.getByRole('button', {
@@ -1155,7 +1156,7 @@ test('cards show requested, downloading, part-owned and complete', async ({
     ],
     library: [],
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const cards = page.locator('.comic-grid .poster');
   await expect(cards).toHaveCount(4);
   await expect(cards.nth(0).locator('.glyph')).toHaveAttribute(
@@ -1189,7 +1190,7 @@ test('Not yet hides owned series and keeps the browse filters', async ({
     ],
     library: [],
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const cards = page.locator('.comic-grid .poster');
   await expect(cards).toHaveCount(4);
   const library = page.getByRole('group', { name: 'Library' });
@@ -1218,7 +1219,7 @@ test('Not yet hides owned series and keeps the browse filters', async ({
 
 test('filters and sort ask for the matching list', async ({ page }) => {
   const { browsed } = await fixtures(page);
-  await page.goto('/comics');
+  await page.goto(mountedTestAppPath('/comics'));
   await expect(page.locator('.comic-grid .poster')).toHaveCount(3);
   // a genre narrows to manga
   const picker = page.getByRole('button', { name: /^Genres:/ });
@@ -1313,7 +1314,7 @@ test('requests list a manga with its cover, progress and volumes in', async ({
       comicRequest(3, complete, { stage: 'available', percent: null }),
     ],
   });
-  await page.goto('/requests?tab=active');
+  await page.goto(mountedTestAppPath('/requests?tab=active'));
   const rows = page.locator('.rq');
   await expect(rows.first()).toBeVisible();
   const downloadingRow = rows.filter({ hasText: 'Downloading 62%' });
@@ -1350,7 +1351,7 @@ test('a ComicVine link from Requests opens the work page', async ({
       },
     })
   );
-  await page.goto('/comic/147500');
+  await page.goto(mountedTestAppPath('/comic/147500'));
   await expect(page.locator('article.detail h1')).toHaveText('[Oshi no Ko]');
   await expect(page.getByText('Manga, édition English')).toBeVisible();
   await expect(page.locator('.h2', { hasText: 'Volumes' })).toBeVisible();
@@ -1370,14 +1371,14 @@ for (const width of [360, 768, 1280]) {
     test.skip(info.project.name !== 'desktop', 'sets its own viewport');
     await page.setViewportSize({ width, height: 800 });
     await fixtures(page, { library: [oshi(downloading), saga(partial)] });
-    await page.goto('/series');
+    await page.goto(mountedTestAppPath('/series'));
     await expect(page.locator('h1')).toHaveText('Series');
     await page.waitForLoadState('networkidle');
     await page.screenshot({
       path: info.outputPath(`series-reference-${width}.png`),
       fullPage: true,
     });
-    await page.goto('/comics');
+    await page.goto(mountedTestAppPath('/comics'));
     await expect(page.locator('.comic-grid .poster')).toHaveCount(3);
     await page.screenshot({
       path: info.outputPath(`comics-candidate-${width}.png`),
@@ -1392,7 +1393,7 @@ for (const width of [360, 768, 1280]) {
       expect(box!.x).toBeGreaterThanOrEqual(0);
       expect(box!.x + box!.width).toBeLessThanOrEqual(width);
     }
-    await page.goto('/comic/al-105778');
+    await page.goto(mountedTestAppPath('/comic/al-105778'));
     await expect(
       page.getByRole('radiogroup', { name: 'Editions' }).getByRole('radio')
     ).toHaveCount(8);
@@ -1435,7 +1436,7 @@ test('a user without the comic category has no Comics/Manga anywhere', async ({
     permissions: 32,
     mine: { comic: false, movie: true, tv: true },
   });
-  await page.goto('/search?q=chainsaw');
+  await page.goto(mountedTestAppPath('/search?q=chainsaw'));
   await page.waitForLoadState('networkidle');
   await expect(page.getByRole('button', { name: 'Comics/Manga' })).toHaveCount(
     0
@@ -1448,7 +1449,7 @@ test('a user without the comic category has no Comics/Manga anywhere', async ({
     await expect(
       page.locator('nav.side').getByRole('link', { name: 'Comics/Manga' })
     ).toHaveCount(0);
-  await page.goto('/comics');
+  await page.goto(mountedTestAppPath('/comics'));
   await expect(page.getByText('Comics/Manga is turned off')).toBeVisible();
 });
 
@@ -1456,7 +1457,7 @@ test('a user with the comic category sees Comics/Manga, and so does an admin', a
   page,
 }, info) => {
   await fixtures(page, { permissions: 32, mine: { comic: true } });
-  await page.goto('/search?q=chainsaw');
+  await page.goto(mountedTestAppPath('/search?q=chainsaw'));
   await expect(
     page.getByRole('button', { name: 'Comics/Manga' })
   ).toBeVisible();
@@ -1479,7 +1480,7 @@ test('a complete series opens in Kavita from its main button', async ({
   page,
 }) => {
   await fixtures(page, { works: { 'al-117195': oshi(reading(complete)) } });
-  await page.goto('/comic/al-117195');
+  await page.goto(mountedTestAppPath('/comic/al-117195'));
   const read = readLink(page);
   await expect(read).toHaveCount(1);
   await expect(read).toHaveAttribute('href', KAVITA);
@@ -1494,7 +1495,7 @@ test('a part-owned series keeps its state and adds a Kavita link', async ({
   page,
 }) => {
   await fixtures(page, { works: { '46568': saga(reading(partial)) } });
-  await page.goto('/comic/46568');
+  await page.goto(mountedTestAppPath('/comic/46568'));
   await expect(
     page
       .getByRole('button', { name: '9 of 16 in library' })
@@ -1508,7 +1509,7 @@ test('a part-owned series keeps its state and adds a Kavita link', async ({
 
 test('without a Kavita link there is no read button', async ({ page }) => {
   await fixtures(page, { works: { 'al-117195': oshi(complete) } });
-  await page.goto('/comic/al-117195');
+  await page.goto(mountedTestAppPath('/comic/al-117195'));
   await expect(
     page.getByRole('button', { name: 'Complete' }).filter({ visible: true })
   ).toHaveCount(1);
@@ -1522,7 +1523,7 @@ test("Lumen's Kavita address replaces SeerrNG's", async ({ page }) => {
     works: { 'al-117195': oshi(reading(complete)) },
     config: { kavitaUrl: 'https://read.example.org/kavita/' },
   });
-  await page.goto('/comic/al-117195');
+  await page.goto(mountedTestAppPath('/comic/al-117195'));
   await expect(readLink(page)).toHaveAttribute(
     'href',
     'https://read.example.org/kavita/library/2/series/41'
@@ -1540,7 +1541,7 @@ test('hovering a complete card reads it in Kavita, a part-owned one offers it to
       chainsaw(complete, '130799'),
     ],
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const cards = page.locator('.comic-grid .poster');
   await cards.nth(0).hover();
   await expect(
@@ -1569,7 +1570,7 @@ test('comic cards localize their Kavita reading action', async ({
     browse: [oshi(reading(complete))],
   });
   const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(
     page.locator('nav.side').getByRole('link', { name: 'Découvrir' })
@@ -1601,7 +1602,7 @@ for (const width of [360, 768]) {
       ['46568', saga(reading(partial))],
     ] as const) {
       await fixtures(page, { works: { [id]: work } });
-      await page.goto(`/comic/${id}`);
+      await page.goto(mountedTestAppPath(`/comic/${id}`));
       const read = readLink(page);
       await expect(read).toHaveCount(1);
       const box = await read.boundingBox();

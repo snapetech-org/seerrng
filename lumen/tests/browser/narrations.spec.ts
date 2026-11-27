@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Narration lists built from SeerrNG's audiobook editions. SeerrNG also lists catalogue copies
 // it can't pin a request to; those come with an empty id ("requestable": false), several per
@@ -120,7 +121,7 @@ test('another narrator: one selection at a time, and the click moves it', async 
     { editions: libraryEditions, source: 'library', supportsAlongside: true },
     inLibrary
   );
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   await expect(row(page, 'Edoardo Ballerini')).toContainText('In your library');
   await expect(row(page, 'Susannah Harker')).toContainText('Requested');
   // nothing picked yet: no row looks selected
@@ -192,7 +193,7 @@ test('another narrator is not offered when the service cannot keep two copies', 
     { editions: libraryEditions, source: 'library', supportsAlongside: false },
     inLibrary
   );
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   await expect(row(page, 'Edoardo Ballerini')).toContainText('In your library');
   await expect(row(page, 'Amanda Sayle')).toHaveAttribute(
     'aria-disabled',
@@ -207,7 +208,7 @@ test('the ebook page counts narrations from SeerrNG alone', async ({
   page,
 }) => {
   await fixtures(page, woolEditions);
-  await page.goto(`/book/${encodeURIComponent(woolId)}`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}`));
   await expect(page.locator('.fmt a').nth(1)).toContainText(/\d+ narrations?/);
 });
 
@@ -217,7 +218,7 @@ test('first request: rows SeerrNG can pin are selectable and send their edition 
   // nothing in the library yet (book not in the library): every row with an edition id is requestable
   const editions = woolEditions.map((e) => ({ ...e, owned: false }));
   const sent = await fixtures(page, editions);
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   await expect(
     page.getByRole('heading', { name: 'Choose a narrator' })
   ).toBeVisible();
@@ -278,7 +279,7 @@ test('a full cast listed without an edition id does not share a selection with a
     ed('32063555', ['Jim Dale'], { durationSeconds: 29880 }),
   ];
   const sent = await fixtures(page, editions);
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   const castRow = row(page, 'Full cast');
   await castRow.click();
   await expect(castRow).toHaveAttribute('aria-checked', 'true');
@@ -309,7 +310,7 @@ test('"Any English narrator" still names an edition SeerrNG can pin', async ({
     ed('33383711', ['Amanda Sayle']),
   ];
   const sent = await fixtures(page, editions);
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   await row(page, 'Any English narrator').click();
   await expect(row(page, 'Any English narrator')).toHaveAttribute(
     'aria-checked',
@@ -338,7 +339,7 @@ test('a recommended recording SeerrNG can only list without an id is not offered
   const sent = await fixtures(page, [
     ed('', cast, { selected: true, durationSeconds: 5880 }),
   ]);
-  await page.goto(`/book/${encodeURIComponent(woolId)}?f=audio`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(woolId)}?f=audio`));
   const castRow = row(page, 'Full cast');
   await expect(castRow).toHaveAttribute('aria-disabled', 'true');
   await expect(castRow).toContainText('Can’t be requested yet');
