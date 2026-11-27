@@ -562,13 +562,15 @@ async function openConsoleGame(
   page: Page,
   category: 'retro' | 'modern',
   systems: { slug: string; name: string; group: 'retro' | 'modern' }[]
-) {
+): Promise<Record<string, unknown>[]> {
+  const requests: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
   );
-  await page.route('**/api/v1/**', (route) => {
-    const path = new URL(route.request().url()).pathname
+  await page.route('**/api/v1/**', async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
       .replace(/^\/lumen(?=\/)/, '')
       .slice('/api/v1'.length);
     if (path === '/auth/me')
@@ -600,18 +602,54 @@ async function openConsoleGame(
           },
         },
       });
+    if (path === '/patches/search')
+      return route.fulfill({
+        json: {
+          available: true,
+          results: [
+            {
+              id: 'fixture-translation',
+              name: 'Fixture Translation',
+              kind: 'translation',
+              language: 'fr',
+              status: 'complete',
+              latestVersionId: 'v2',
+              versions: [
+                {
+                  id: 'v1',
+                  version: '1.0',
+                  base: { available: false, region: 'US', revision: '1' },
+                },
+                {
+                  id: 'v2',
+                  version: '2.0',
+                  releasedAt: '2026-01-02',
+                  base: { available: true, region: 'US', revision: '1' },
+                },
+              ],
+            },
+          ],
+        },
+      });
+    if (path === '/request/software' && request.method() === 'POST') {
+      requests.push(request.postDataJSON() as Record<string, unknown>);
+      return route.fulfill({
+        json: { request: { id: 44, status: 'requested' } },
+      });
+    }
     return route.fulfill({ json: { results: [] } });
   });
   await page.goto(mountedTestAppPath(`/game/${category}/42`));
   await expect(
     page.getByRole('heading', { name: 'Fixture Console Game' })
   ).toBeVisible();
+  return requests;
 }
 
 test('Console game request controls follow the saved locale', async ({
   page,
 }) => {
-  await openConsoleGame(page, 'retro', [
+  const requests = await openConsoleGame(page, 'retro', [
     { slug: 'snes', name: 'Super Nintendo', group: 'retro' },
   ]);
   await expect(page.getByLabel(consoleCopy.label)).toBeVisible();
@@ -621,6 +659,44 @@ test('Console game request controls follow the saved locale', async ({
   await expect(
     page.getByRole('button', { name: detailCopy.request })
   ).toBeVisible();
+  const capture = async () => {
+    const directory = process.env.LUMEN_PATCH_REQUEST_CAPTURE_DIR;
+    if (directory && ['desktop', 'iphone'].includes(test.info().project.name))
+      await page.screenshot({
+        path: `${directory}/${test.info().project.name}.png`,
+        fullPage: true,
+      });
+  };
+  if (process.env.LUMEN_PATCH_REQUEST_BASELINE === '1') {
+    await capture();
+    return;
+  }
+  const patchChoice = page.getByRole('radio', { name: /Fixture Translation/ });
+  await expect(patchChoice).toBeVisible();
+  await capture();
+  await patchChoice.check();
+  await expect(page.getByText(/Fixture Translation 2\.0/)).toBeVisible();
+  const patchVersion = page.getByRole('radiogroup').getByRole('combobox');
+  await patchVersion.selectOption('v1');
+  await expect(
+    page.getByRole('button', { name: detailCopy.request })
+  ).toBeDisabled();
+  await patchVersion.selectOption('v2');
+  await expect(
+    page.getByRole('button', { name: detailCopy.request })
+  ).toBeEnabled();
+  await page.getByRole('button', { name: detailCopy.request }).click();
+  await expect.poll(() => requests.length).toBe(1);
+  expect(requests[0]).toMatchObject({
+    category: 'retro',
+    platformSlug: 'snes',
+    selection: {
+      kind: 'patch',
+      projectId: 'fixture-translation',
+      versionId: 'v2',
+      keepOriginal: true,
+    },
+  });
 });
 
 test('Unsupported console state follows the saved locale', async ({ page }) => {

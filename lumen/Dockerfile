@@ -15,6 +15,9 @@ COPY src/utils/advancedThemePresets.ts \
      src/utils/safeUrl.ts \
      /app/src/utils/
 COPY server/constants/issue.ts /app/server/constants/issue.ts
+COPY server/constants/mediaCategories.ts /app/server/constants/mediaCategories.ts
+COPY server/lib/permissions.ts /app/server/lib/permissions.ts
+COPY src/components/Setup/setupDefaultsLogic.ts /app/src/components/Setup/setupDefaultsLogic.ts
 COPY server/utils/advancedThemeOverrides.ts /app/server/utils/advancedThemeOverrides.ts
 RUN npm run build
 

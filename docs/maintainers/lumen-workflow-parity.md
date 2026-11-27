@@ -13230,3 +13230,38 @@ behavior behind every route, live API authorization, and matched native/Lumen
 visual acceptance remain open in the workflow inventory.
 
 release-note: none
+
+### Select ROM patches inside Lumen game requests (2026-11-27)
+
+Compared native `src/components/SoftwareCatalog/index.tsx` and its
+`PatchProjects` picker with Lumen's `/game/:category/:id` request flow. Native
+users can choose the original game or a translation/hack, select an exact
+version, retain the unmodified game, and follow a project without leaving the
+request. Lumen previously linked to Patches but had no equivalent in-request
+selection. It now uses the existing `/patches/search` read and
+`/request/software` write contracts, with service/category/request permission
+checks unchanged. Changing consoles resets the patch selection; a version that
+requires an unavailable base game disables submission. No CSS owner or server
+authorization behavior changed.
+
+The localized game-catalog browser suite passed 20/20 in English, French, and
+Arabic across desktop, iPhone, Android, and tablet. The fixture asserts the
+exact `kind: patch`, project, version, console, and `keepOriginal` request
+payload, and verifies that an unavailable base version cannot be submitted.
+Matched baseline and candidate captures use `/game/retro/42` at 1440×900 and
+iPhone 13; the baseline showed only the Patches link, while the candidate shows
+the inline original and patch choices after the console selector. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-parity-20261127/screenshots/patch-request-baseline/`
+and `.../screenshots/patch-request-candidate/`.
+
+While running the Lumen node suite, the production image build also exposed
+three omitted root source dependencies for the setup screens. `lumen/Dockerfile`
+now copies the existing setup-defaults helper, permission enum, and enabled
+media-category constants into the build context. The nginx proxy/image suite
+passes 10/10, including the built unprivileged image and its routes.
+
+The browser API is fixture-backed; live ROMarrNG patch responses and a real
+acquisition round trip remain unverified.
+
+release-note: `release-notes/lumen-rom-patch-request-selection.md`

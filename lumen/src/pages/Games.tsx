@@ -32,6 +32,7 @@ import {
 import FollowButton from '../components/FollowButton';
 import GameContentPicker from '../components/GameContentPicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import PatchRequestPicker from '../components/PatchRequestPicker';
 import { useToast } from '../components/toast';
 import { friendlyError } from '../errors';
 import {
@@ -46,6 +47,7 @@ import {
   type GameCategory,
   type GameContentSelection,
   type GamePage,
+  type PatchSelection,
 } from '../extras';
 import { canViewFollowing } from '../followPermissions';
 import { useApi } from '../hooks';
@@ -633,8 +635,8 @@ function GameDetailView({
   const [libraryError, setLibraryError] = useState('');
   const libraryPending = useRef(false);
   const [selection, setSelection] = useState<
-    GameContentSelection | null | undefined
-  >(null);
+    GameContentSelection | PatchSelection | null | undefined
+  >(() => (cat === 'game' ? null : undefined));
   const libraryCatalogId =
     g?.catalogProvider === 'igdb' &&
     typeof g.igdbId === 'number' &&
@@ -757,7 +759,9 @@ function GameDetailView({
       : s?.ico || 'clock';
   const baseBlocked = cat === 'game' && !!s && selection === null;
   const ready =
-    cat === 'game' ? !!os && !!arch && selection !== undefined : !!sys;
+    cat === 'game'
+      ? !!os && !!arch && selection !== undefined
+      : !!sys && selection !== undefined;
   const go = async () => {
     if (!ready || baseBlocked || systemBlocked || pending.current) return;
     pending.current = true;
@@ -946,7 +950,10 @@ function GameDetailView({
                   </span>
                   <select
                     value={sys}
-                    onChange={(e) => setSystem(e.target.value)}
+                    onChange={(e) => {
+                      setSelection(undefined);
+                      setSystem(e.target.value);
+                    }}
                   >
                     {!sys && (
                       <option value="">
@@ -977,6 +984,15 @@ function GameDetailView({
                 </p>
               )}
             </div>
+          )}
+          {patchSearch && sys && canUseRequestAccess(user?.permissions) && (
+            <PatchRequestPicker
+              key={sys}
+              catalogKey={g.catalogId || id}
+              platform={sys}
+              disabled={busy || !!done}
+              onChange={setSelection}
+            />
           )}
           {!!quotaStatus?.limit && (
             <p className="note" role={quotaRestricted ? 'status' : undefined}>
