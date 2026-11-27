@@ -517,11 +517,13 @@ function NetworkForm({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const result = await api<Settings>(path, {
         method: 'POST',
         body: JSON.stringify(patch),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<Settings>(path);
       if (generation !== sessionGeneration()) return;
@@ -550,7 +552,14 @@ function NetworkForm({
       );
     } catch (error) {
       if (generation === sessionGeneration()) {
-        setFailure(formatNetworkSaveError(error, t));
+        setFailure(
+          writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+              )
+            : formatNetworkSaveError(error, t)
+        );
       }
     } finally {
       pending.current = false;

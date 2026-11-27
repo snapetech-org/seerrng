@@ -47,8 +47,11 @@ async function mockSetup(
     if (path === '/settings/main') {
       if (options?.failLoad)
         return route.fulfill({ status: 503, json: { message: 'offline' } });
-      if (options?.failReadback && postCount > 0)
-        return route.fulfill({ json: { ...saved, defaultPermissions: 0 } });
+      if (options?.failReadback && postCount === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
       return route.fulfill({ json: saved });
     }
     return route.fulfill({ json: {} });
@@ -102,7 +105,7 @@ test('guided setup saves request defaults and verifies the saved values', async 
   });
 });
 
-test('guided setup stays on defaults when save readback does not match', async ({
+test('guided setup stays on defaults when saved readback fails', async ({
   page,
 }) => {
   const state = await mockSetup(page, { failReadback: true });
@@ -114,13 +117,18 @@ test('guided setup stays on defaults when save readback does not match', async (
     .getByRole('button', { name: 'Save defaults and continue' })
     .click();
   await expect(page.getByRole('alert')).toContainText(
-    'User defaults could not be saved'
+    'The server accepted the change, but Lumen could not confirm the saved state.'
   );
   await expect(page).toHaveURL(/step=defaults/);
   await expect(
     page.getByRole('checkbox', { name: 'Allow new users to request media' })
   ).toBeChecked();
   expect(state().postCount).toBe(1);
+  await page
+    .getByRole('button', { name: 'Save defaults and continue' })
+    .click();
+  await expect(page).toHaveURL(/step=services/);
+  expect(state().postCount).toBe(2);
 });
 
 test('guided setup can skip defaults without saving', async ({ page }) => {

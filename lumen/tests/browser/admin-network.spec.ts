@@ -13,6 +13,7 @@ async function fixtures(
   const patches: unknown[] = [];
   let persistWrites = true;
   let failed = !failFirstWrite;
+  let failReadback = false;
   const settings = {
     apiRequestTimeout: 10000,
     dnsCache: { enabled: true, forceMinTtl: 0, forceMaxTtl: -1 },
@@ -47,7 +48,16 @@ async function fixtures(
     if (path === '/status/tls')
       return route.fulfill({ json: { environmentOverrides: overrides } });
     if (path !== '/settings/network') return route.fulfill({ json: {} });
-    if (request.method() === 'GET') return route.fulfill({ json: settings });
+    if (request.method() === 'GET') {
+      if (failReadback) {
+        failReadback = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
+      }
+      return route.fulfill({ json: settings });
+    }
     const patch = request.postDataJSON();
     patches.push(patch);
     if (!failed) {
@@ -63,6 +73,7 @@ async function fixtures(
       dnsCache: { ...settings.dnsCache, ...patch.dnsCache },
       tls: { ...settings.tls, ...patch.tls },
     };
+    if (!persistWrites) failReadback = true;
     if (persistWrites) Object.assign(settings, result);
     return route.fulfill({ json: result });
   });
@@ -136,7 +147,7 @@ test('network settings keep drafts when a save response fails persisted readback
   const save = page.getByRole('button', { name: 'Save Network Settings' });
   await save.click();
   await expect(page.getByRole('alert')).toContainText(
-    'Could not confirm the saved network settings.'
+    'The server accepted the change, but Lumen could not confirm the saved state.'
   );
   await expect(page.getByLabel('DNS Cache Minimum TTL')).toHaveValue('60');
   await expect(save).toBeEnabled();

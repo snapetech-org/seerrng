@@ -29,12 +29,14 @@ export default function ManagedMaturity({ id }: { id: number }) {
     setBusy(true);
     setFailure('');
     setNotice('');
+    let writeAcknowledged = false;
     try {
       const changes = Object.keys(draft) as (keyof Policy)[];
       const saved = await api<Policy>(path, {
         method: 'POST',
         body: JSON.stringify(draft),
       });
+      writeAcknowledged = true;
       const readback = await api<Policy>(path);
       if (
         changes.some(
@@ -43,25 +45,31 @@ export default function ManagedMaturity({ id }: { id: number }) {
       ) {
         setFailure(
           t(
-            'lumen.managedMaturity.saveFailure',
-            'Could not save maturity limits.'
+            'lumen.settings.confirmFailed',
+            'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
           )
         );
         return;
       }
+      writeAcknowledged = false;
       setDraft({});
       setNotice(t('lumen.managedMaturity.saved', 'Maturity limits saved.'));
       await reload();
     } catch (error) {
       setFailure(
-        friendlyError(
-          error,
-          t(
-            'lumen.managedMaturity.saveFailure',
-            'Could not save maturity limits.'
-          ),
-          t
-        )
+        writeAcknowledged
+          ? t(
+              'lumen.settings.confirmFailed',
+              'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+            )
+          : friendlyError(
+              error,
+              t(
+                'lumen.managedMaturity.saveFailure',
+                'Could not save maturity limits.'
+              ),
+              t
+            )
       );
     } finally {
       setBusy(false);

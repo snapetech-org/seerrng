@@ -82,11 +82,13 @@ export default function SetupDefaults({
     setSaving(true);
     setError('');
     const next = buildSetupDefaultsSettings(settings.data, selection);
+    let writeAcknowledged = false;
     try {
       const result = await api<SetupDefaultsSettings>(path, {
         method: 'POST',
         body: JSON.stringify(next),
       });
+      writeAcknowledged = true;
       const readback = await api<SetupDefaultsSettings>(path, {
         cache: 'no-store',
       });
@@ -114,12 +116,17 @@ export default function SetupDefaults({
       onContinue();
     } catch (failure) {
       setError(
-        failure instanceof Error
-          ? failure.message
-          : t(
-              'components.Setup.defaultsSaveError',
-              'User defaults could not be saved. Try again.'
+        writeAcknowledged
+          ? t(
+              'lumen.settings.confirmFailed',
+              'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
             )
+          : failure instanceof Error
+            ? failure.message
+            : t(
+                'components.Setup.defaultsSaveError',
+                'User defaults could not be saved. Try again.'
+              )
       );
     } finally {
       setSaving(false);

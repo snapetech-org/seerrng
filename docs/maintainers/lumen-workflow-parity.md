@@ -13845,3 +13845,21 @@ API persistence and authorization use browser fixtures, not a live SeerrNG
 server. No styles changed.
 
 release-note: `release-notes/lumen-admin-readback.md`
+
+### Confirm network, setup-default, and maturity readbacks after accepted writes (2026-11-27)
+
+Three additional editors had the same ambiguous exception path: network
+settings, first-run user defaults, and managed-user maturity limits. They now
+retain edits and report the shared uncertain-save message when a write is
+accepted but the following settings read fails. Maturity mismatches use that
+message too. Setup can retry the saved defaults and continue after readback
+recovers.
+
+Focused Playwright coverage passes 28/28 across desktop, iPhone, Android, and
+tablet, including 503 readbacks and successful retries for network settings,
+guided setup defaults, and managed maturity controls. Standalone Lumen and
+bundled `/lumen/` builds pass. No CSS changed; the shared error display is
+already covered by matched desktop and phone screenshots in the preceding
+admin readback milestone. Fixtures do not verify live server persistence.
+
+release-note: `release-notes/lumen-recovery-readbacks.md`

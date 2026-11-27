@@ -264,7 +264,7 @@ test('user managers can open and confirm their own maturity controls', async ({
     movieMaturityRatingLimit: null as string | null,
     tvMaturityRatingLimit: null as string | null,
   };
-  let staleReadback = false;
+  let failReadback = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const request = route.request();
@@ -287,10 +287,13 @@ test('user managers can open and confirm their own maturity controls', async ({
         policy = { ...policy, ...request.postDataJSON() };
         return route.fulfill({ json: policy });
       }
-      if (staleReadback)
+      if (failReadback) {
+        failReadback = false;
         return route.fulfill({
-          json: { ...policy, movieMaturityRatingLimit: null },
+          status: 503,
+          json: { message: 'Temporary failure' },
         });
+      }
       return route.fulfill({ json: policy });
     }
     return route.fulfill({ json: {} });
@@ -306,15 +309,15 @@ test('user managers can open and confirm their own maturity controls', async ({
     });
   await expect(page.getByLabel('Series Rating Limit')).toBeVisible();
   await page.getByLabel('Movie Rating Limit').selectOption('PG-13');
-  staleReadback = true;
+  failReadback = true;
   await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
   await expect(
-    page
-      .getByRole('alert')
-      .filter({ hasText: 'Could not save maturity limits' })
+    page.getByRole('alert').filter({
+      hasText:
+        'The server accepted the change, but Lumen could not confirm the saved state.',
+    })
   ).toBeVisible();
   await expect(page.getByLabel('Movie Rating Limit')).toHaveValue('PG-13');
-  staleReadback = false;
   await page.getByRole('button', { name: 'Save Maturity Limits' }).click();
   await expect(
     page.getByText('Maturity limits saved.', { exact: true })
