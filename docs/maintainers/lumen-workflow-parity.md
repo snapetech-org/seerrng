@@ -1,5 +1,25 @@
 # Lumen workflow parity
 
+### Cover Soulseek and ReadMeABook administration workflows (2026-11-27)
+
+Added browser acceptance for the previously untested Lumen request-service
+administration pages. The Soulseek case verifies that testing draft credentials
+does not save them, that save persists the API key without exposing it in the
+readback, and that the saved state is confirmed. The ReadMeABook case simulates
+an approval whose first status read is stale, then verifies that the explicit
+status retry confirms the update without submitting a second approval.
+
+Both cases pass across desktop, iPhone, Android, and tablet in standalone Lumen
+and against the compiled production assets served through SeerrNG's
+`mountLumenFrontend` Express middleware at `/lumen/` (8/8 per deployment).
+These tests use fixture API responses; live Soulseek and ReadMeABook operations
+remain unverified. No runtime UI behavior changed.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-request-services-20261127/`.
+
+release-note: none (test coverage only)
+
 ### Verify release-calendar destinations across media types (2026-11-27)
 
 Expanded the release-calendar browser fixture to assert direct detail links for
