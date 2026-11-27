@@ -335,6 +335,9 @@ export function Games() {
                   {t('lumen.gameFinder.title', 'Game Finder')}
                 </Link>
               )}
+              <Link className="chip" to="/following">
+                {t('components.Layout.Sidebar.following', 'Following')}
+              </Link>
             </>
           )}
           <Link className="chip" to="/game-library">

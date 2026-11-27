@@ -13336,3 +13336,24 @@ retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-native-series-route-20261127/`.
 
 release-note: `release-notes/lumen-native-book-series-route.md`
+
+### Add Following to the Lumen game catalog tools (2026-11-27)
+
+Native Software Catalog includes Following in its related tools. Lumen's game
+catalog already linked Game Finder, patches, and My Games but omitted Following.
+The catalog now exposes the existing Following route in the same request-access
+gated action row and reuses its localized navigation label and existing chip
+styles. The destination retains its own permission checks; this adds no follow
+or notification behavior.
+
+The focused catalog browser fixture passes 12/12 across English, French, and
+Arabic on desktop, iPhone, Android, and tablet. It verifies the localized link
+and exact `/following` destination. The candidate was inspected at desktop and
+phone sizes against the existing game-catalog baseline; the phone toolbar wraps
+to a second row and the browser checks confirm there is no horizontal overflow.
+Screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-following-catalog-20261127/screenshots/`.
+The interaction is fixture-backed; live Following data and authorization are
+not exercised by this catalog check.
+
+release-note: `release-notes/lumen-game-catalog-following.md`

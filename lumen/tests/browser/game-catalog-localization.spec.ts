@@ -15,6 +15,7 @@ const copy = {
     title: 'Games',
     pcHint: 'PC games. Pick your system when you request.',
     finder: 'Game Finder',
+    following: 'Following',
     hacks: 'Translations and Hacks',
     myGames: 'My Games',
     platform: 'Platform',
@@ -44,6 +45,7 @@ const copy = {
     title: 'Jeux',
     pcHint: 'Jeux PC. Choisissez votre système lors de la demande.',
     finder: 'Recherche de jeux',
+    following: 'Suivis',
     hacks: 'Traductions et modifications',
     myGames: 'Mes jeux',
     platform: 'Plateforme',
@@ -73,6 +75,7 @@ const copy = {
     title: 'الألعاب',
     pcHint: 'ألعاب الكمبيوتر. اختر نظام التشغيل عند تقديم الطلب.',
     finder: 'مستكشف الألعاب',
+    following: 'المتابَع',
     hacks: 'الترجمات والتعديلات',
     myGames: 'ألعابي',
     platform: 'المنصة',
@@ -236,6 +239,9 @@ test('Games catalog controls and empty state follow the saved locale', async ({
   await expect(
     page.locator('#view').getByRole('link', { name: copy.hacks })
   ).toHaveAttribute('href', appPath('/patches'));
+  await expect(
+    page.locator('#view').getByRole('link', { name: copy.following })
+  ).toHaveAttribute('href', appPath('/following'));
   await expect(
     page.locator('#view').getByRole('link', { name: copy.myGames })
   ).toHaveAttribute('href', appPath('/game-library'));
