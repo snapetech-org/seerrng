@@ -84,6 +84,52 @@ for (const permissions of [2, 32]) {
                 available: false,
                 startsAt: '2026-01-12T00:00:00.000Z',
               },
+              {
+                id: 'lidarr:1:12',
+                title: 'Fixture Album',
+                mbId: '00112233-4455-6677-8899-aabbccddeeff',
+                mediaType: 'music',
+                dateType: 'album',
+                allDay: true,
+                available: false,
+                is4k: false,
+                startsAt: '2026-01-13T00:00:00.000Z',
+              },
+              {
+                id: 'mylar:1:13',
+                title: 'Fixture Comic',
+                comicId: 'comic:1:issue-13',
+                mediaType: 'comic',
+                dateType: 'issue',
+                allDay: true,
+                available: false,
+                is4k: false,
+                startsAt: '2026-01-14T00:00:00.000Z',
+              },
+              {
+                id: 'kapowarr:1:14',
+                title: 'Fixture Magazine',
+                magazineTitle: 'World & Science',
+                mediaType: 'magazine',
+                dateType: 'issue',
+                allDay: true,
+                available: false,
+                is4k: false,
+                startsAt: '2026-01-15T00:00:00.000Z',
+              },
+              {
+                id: 'questarr:1:15',
+                title: 'Fixture Retro Game',
+                igdbId: 44,
+                softwareCategory: 'retro',
+                platformName: 'SNES',
+                mediaType: 'software',
+                dateType: 'game',
+                allDay: true,
+                available: false,
+                is4k: false,
+                startsAt: '2026-01-16T00:00:00.000Z',
+              },
             ],
           },
         });
@@ -137,6 +183,21 @@ for (const permissions of [2, 32]) {
         '/book/bookshelf%3A1%3Afixture?f=audio&lookupTitle=Local+Audiobook'
       )
     );
+    await expect(
+      page.getByRole('link', { name: 'Fixture Album' })
+    ).toHaveAttribute(
+      'href',
+      testAppPath('/music/00112233-4455-6677-8899-aabbccddeeff')
+    );
+    await expect(
+      page.getByRole('link', { name: 'Fixture Comic' })
+    ).toHaveAttribute('href', testAppPath('/comic/comic%3A1%3Aissue-13'));
+    await expect(
+      page.getByRole('link', { name: 'Fixture Magazine' })
+    ).toHaveAttribute('href', testAppPath('/magazine/World%20%26%20Science'));
+    await expect(
+      page.getByRole('link', { name: 'Fixture Retro Game' })
+    ).toHaveAttribute('href', testAppPath('/game/retro/44'));
     await expect(
       page.getByText('Some release sources could not be reached.', {
         exact: false,

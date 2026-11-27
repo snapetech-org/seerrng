@@ -1,5 +1,21 @@
 # Lumen workflow parity
 
+### Verify release-calendar destinations across media types (2026-11-27)
+
+Expanded the release-calendar browser fixture to assert direct detail links for
+music albums, comics, magazines, and retro games alongside its existing movie,
+series, and audiobook cases. The calendar already supported these sources; this
+closes a regression-coverage gap without changing runtime behavior.
+
+The selected-interval, permission-scope, failure-retry, and detail-destination
+cases pass 8/8 across desktop, iPhone, Android, and tablet. The fixture verifies
+encoded comic and magazine identifiers plus the correct software category
+route. It does not make live release-provider calls or change the rendered UI.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-calendar-route-audit-20261127/`.
+
+release-note: none (test coverage only)
+
 ### Retry podcast service-status recovery (2026-11-27)
 
 When the podcast service-status endpoint failed before returning configuration,
