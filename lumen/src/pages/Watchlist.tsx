@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { api } from '../api';
+import { api, artUrl, bookArt, tmdbImg } from '../api';
 import { useAuth } from '../auth';
+import { Cover } from '../components/cards';
 import { ServiceNote } from '../components/extra';
 import { useToast } from '../components/toast';
 import {
@@ -58,6 +59,178 @@ export function itemId(item: WatchlistItem) {
   return id && id !== '.' && id !== '..' ? id : undefined;
 }
 
+type WatchlistMetadata = {
+  title?: string;
+  name?: string;
+  posterPath?: string | null;
+  releaseDate?: string;
+  firstAirDate?: string;
+  firstPublishYear?: number;
+  startYear?: string;
+  author?: string;
+  publisher?: string;
+  latestIssue?: string;
+  type?: string;
+  artist?: { name?: string };
+};
+
+function watchlistDetailPath(item: WatchlistItem, id: string) {
+  const encoded = encodeURIComponent(id);
+  switch (item.mediaType) {
+    case 'movie':
+    case 'tv':
+      return `/${item.mediaType}/${encoded}`;
+    case 'music':
+      return `/music/${encoded}`;
+    case 'book':
+      return `/book/${encoded}`;
+    case 'comic':
+      return `/comic/${encoded}`;
+    case 'magazine':
+      return `/magazine/${encoded}`;
+  }
+}
+
+function WatchlistPoster({
+  item,
+  id,
+  discoverContextId,
+  discoverItems,
+  canRemove,
+  removing,
+  remove,
+}: {
+  item: WatchlistItem;
+  id?: string;
+  discoverContextId: string;
+  discoverItems: DiscoverNavigationItem[];
+  canRemove: boolean;
+  removing?: string;
+  remove: (item: WatchlistItem, id: string) => void;
+}) {
+  const { t } = useLumenLocale();
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+  const detailPath = id ? watchlistDetailPath(item, id) : null;
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || near) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNear(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '100% 0px' }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [near]);
+  const { data } = useApi<WatchlistMetadata>(near ? detailPath : null);
+  const title = data?.title || data?.name || item.title;
+  const image =
+    item.mediaType === 'movie' || item.mediaType === 'tv'
+      ? tmdbImg(data?.posterPath)
+      : item.mediaType === 'book'
+        ? bookArt(data?.posterPath)
+        : artUrl(data?.posterPath);
+  const year =
+    data?.releaseDate?.slice(0, 4) ||
+    data?.firstAirDate?.slice(0, 4) ||
+    data?.startYear ||
+    (data?.firstPublishYear ? String(data.firstPublishYear) : '');
+  const subtitle = [
+    item.mediaType === 'book' ? data?.author : '',
+    item.mediaType === 'music' ? data?.artist?.name : '',
+    item.mediaType === 'comic' || item.mediaType === 'magazine'
+      ? data?.publisher
+      : '',
+    item.mediaType === 'magazine' && data?.latestIssue
+      ? `#${data.latestIssue}`
+      : year,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+  const category = t(
+    MEDIA_LABELS[item.mediaType][0],
+    MEDIA_LABELS[item.mediaType][1]
+  );
+  const icon =
+    item.mediaType === 'movie'
+      ? 'film'
+      : item.mediaType === 'tv'
+        ? 'tv'
+        : item.mediaType === 'music'
+          ? 'music'
+          : item.mediaType === 'book'
+            ? 'book'
+            : item.mediaType === 'comic'
+              ? 'comic'
+              : 'magazine';
+  const href =
+    detailPath && (item.mediaType === 'movie' || item.mediaType === 'tv')
+      ? `${detailPath}?discoverContext=${encodeURIComponent(discoverContextId)}`
+      : detailPath;
+  const open = () => {
+    if (id && (item.mediaType === 'movie' || item.mediaType === 'tv'))
+      storeDiscoverNavigationContext(discoverContextId, discoverItems, {
+        id: Number(id),
+        mediaType: item.mediaType,
+      });
+  };
+
+  return (
+    <div
+      className={`poster ${item.mediaType === 'book' ? 'book' : item.mediaType === 'music' ? 'sq' : ''}`}
+      ref={ref}
+      role="listitem"
+    >
+      <div className="art">
+        <Cover src={image} title={title} sub={subtitle} icon={icon} />
+        {href ? (
+          <Link className="hit" to={href} aria-label={title} onClick={open} />
+        ) : null}
+      </div>
+      {href ? (
+        <Link
+          className="t"
+          to={href}
+          onClick={open}
+          tabIndex={-1}
+          aria-hidden="true"
+        >
+          {title}
+        </Link>
+      ) : (
+        <div className="t">{title}</div>
+      )}
+      <div className="m">
+        <span className="card-meta">
+          {[category, subtitle].filter(Boolean).join(' · ')}
+        </span>
+      </div>
+      {id && canRemove && (
+        <button
+          className="btn btn-quiet btn-sm"
+          type="button"
+          aria-label={t(
+            'lumen.watchlist.removeTitle',
+            'Remove {title} from Watchlist',
+            { title: item.title }
+          )}
+          disabled={Boolean(removing)}
+          onClick={() => remove(item, id)}
+        >
+          {removing === `${item.mediaType}:${id}`
+            ? t('lumen.watchlist.removing', 'Removing…')
+            : t('lumen.watchlist.remove', 'Remove')}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function WatchlistPage({
   path,
   label,
@@ -96,7 +269,7 @@ function WatchlistPage({
     return (
       canRemove &&
       (item.source === 'local' ||
-        (item.source === undefined && data?.filtersSupported))
+        (item.source === undefined && data?.filtersSupported === true))
     );
   }
 
@@ -153,65 +326,23 @@ function WatchlistPage({
         </p>
       )}
       {!!rows?.length && (
-        <ul className="setlist">
+        <div className="grid" role="list" aria-label={label}>
           {rows.map((item) => {
             const id = itemId(item);
             return (
-              <li className="set" key={`${item.mediaType}:${item.ratingKey}`}>
-                <div>
-                  {id ? (
-                    <Link
-                      className="go"
-                      to={
-                        item.mediaType === 'movie' || item.mediaType === 'tv'
-                          ? `/${item.mediaType}/${encodeURIComponent(id)}?discoverContext=${encodeURIComponent(discoverContextId)}`
-                          : `/${item.mediaType}/${encodeURIComponent(id)}`
-                      }
-                      onClick={() => {
-                        if (
-                          item.mediaType === 'movie' ||
-                          item.mediaType === 'tv'
-                        )
-                          storeDiscoverNavigationContext(
-                            discoverContextId,
-                            discoverItems,
-                            { id: Number(id), mediaType: item.mediaType }
-                          );
-                      }}
-                    >
-                      {item.title}
-                    </Link>
-                  ) : (
-                    <b>{item.title}</b>
-                  )}
-                  <small>
-                    {t(
-                      MEDIA_LABELS[item.mediaType][0],
-                      MEDIA_LABELS[item.mediaType][1]
-                    )}
-                  </small>
-                </div>
-                {id && canRemoveItem(item) && (
-                  <button
-                    className="btn btn-quiet btn-sm"
-                    type="button"
-                    aria-label={t(
-                      'lumen.watchlist.removeTitle',
-                      'Remove {title} from Watchlist',
-                      { title: item.title }
-                    )}
-                    disabled={Boolean(removing)}
-                    onClick={() => void remove(item, id)}
-                  >
-                    {removing === `${item.mediaType}:${id}`
-                      ? t('lumen.watchlist.removing', 'Removing…')
-                      : t('lumen.watchlist.remove', 'Remove')}
-                  </button>
-                )}
-              </li>
+              <WatchlistPoster
+                key={`${item.mediaType}:${item.ratingKey}`}
+                item={item}
+                id={id}
+                discoverContextId={discoverContextId}
+                discoverItems={discoverItems}
+                canRemove={canRemoveItem(item)}
+                removing={removing}
+                remove={(target, targetId) => void remove(target, targetId)}
+              />
             );
           })}
-        </ul>
+        </div>
       )}
       {(page > 1 || (data?.totalPages ?? 0) > 1) && (
         <nav

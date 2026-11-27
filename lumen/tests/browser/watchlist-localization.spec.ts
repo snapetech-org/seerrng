@@ -95,6 +95,16 @@ test('watchlist controls follow the saved account locale', async ({
       return route.fulfill({
         json: { applicationTitle: 'SeerrNG', mediaServerType: 1 },
       });
+    if (path === '/movie/51')
+      return route.fulfill({
+        json: {
+          id: 51,
+          title: 'Fixture Movie',
+          mediaType: 'movie',
+          posterPath: '/watchlist-fixture.svg',
+          releaseDate: '2024-01-01',
+        },
+      });
     if (path === '/watchlist/51' && route.request().method() === 'DELETE')
       return route.fulfill({ status: 503, json: {} });
     if (path === '/user/1/watchlist')
@@ -115,6 +125,12 @@ test('watchlist controls follow the saved account locale', async ({
       });
     return route.fulfill({ json: {} });
   });
+  await page.route('**/imageproxy/tmdb/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><rect width="2" height="3" fill="#6270d9"/></svg>',
+    })
+  );
 
   await page.goto('/watchlist');
   const expected = copy[baseline ? 'en' : (locale as keyof typeof copy)];
@@ -127,6 +143,11 @@ test('watchlist controls follow the saved account locale', async ({
   await expect(
     page.getByRole('searchbox', { name: expected.search })
   ).toHaveAttribute('placeholder', expected.searchPlaceholder);
+  await expect(page.locator('.poster .art img')).toBeVisible();
+  await expect(page.locator('.poster .art img')).toHaveAttribute(
+    'src',
+    /imageproxy\/tmdb/
+  );
   await expect(
     page.getByText(expected.mediaType, { exact: true })
   ).toBeVisible();
@@ -143,7 +164,7 @@ test('watchlist controls follow the saved account locale', async ({
   await expect(
     page.getByRole('button', { name: expected.clear })
   ).toBeVisible();
-  await expect(page.locator('.setlist .set small')).toHaveText(expected.movie);
+  await expect(page.locator('.poster .m')).toContainText(expected.movie);
   await expect(
     page.getByRole('option', { name: expected.recentlyAdded })
   ).toBeAttached();

@@ -12408,3 +12408,26 @@ creation or downstream service authentication. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-hardcover-metadata-links-20261127/`.
 
 release-note: `release-notes/lumen-hardcover-metadata-guidance.md`
+
+### Cross-media Watchlist poster cards (2026-11-27)
+
+Personal and delegated Lumen Watchlists now render saved movie, series, album,
+book, comic, and magazine entries as responsive poster cards with artwork,
+title, category, available author/artist/publisher/year details, and a direct
+detail link. Detail metadata loads lazily as cards approach the viewport and
+uses the existing category detail APIs; the watchlist's stored title remains a
+readable fallback when metadata is unavailable. Movie and series links retain
+the current Watchlist navigation context. Existing filters, pagination,
+cross-media identifiers, Plex ordering behavior, and remove permissions remain
+unchanged.
+
+The focused Watchlist browser suite passes 48 cases across desktop, iPhone,
+Android, and tablet. Fixtures verify each of the six detail routes, poster
+rendering, navigation, delegated-view permissions, filter/paging behavior,
+removal recovery, and horizontal overflow. Matched desktop and iPhone
+baseline/candidate captures show the change from a text row to the existing
+poster-card system; no CSS owner changed. The fixtures do not verify live
+provider responses or metadata service availability. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-watchlist-posters-20261127/`.
+
+release-note: `release-notes/lumen-watchlist-poster-cards.md`

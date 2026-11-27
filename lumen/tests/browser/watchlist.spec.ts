@@ -11,6 +11,146 @@ async function expectRouteLink(link: Locator, path: string) {
   expect(new URL(href!, 'http://lumen.local').pathname).toBe(testAppPath(path));
 }
 
+test('Watchlist renders linked poster cards for every supported media category', async ({
+  page,
+}) => {
+  const detailRequests = new Set<string>();
+  const items: {
+    id: number;
+    tmdbId?: number;
+    mbId?: string;
+    externalId?: string;
+    mediaType: 'movie' | 'tv' | 'music' | 'book' | 'comic' | 'magazine';
+    title: string;
+  }[] = [
+    { id: 51, tmdbId: 51, mediaType: 'movie', title: 'Fixture Movie' },
+    { id: 52, tmdbId: 52, mediaType: 'tv', title: 'Fixture Series' },
+    {
+      id: 53,
+      mbId: 'mb-53',
+      mediaType: 'music',
+      title: 'Fixture Album',
+    },
+    {
+      id: 54,
+      externalId: 'book-54',
+      mediaType: 'book',
+      title: 'Fixture Book',
+    },
+    {
+      id: 55,
+      externalId: 'comic-55',
+      mediaType: 'comic',
+      title: 'Fixture Comic',
+    },
+    {
+      id: 56,
+      externalId: 'mag-56',
+      mediaType: 'magazine',
+      title: 'Fixture Magazine',
+    },
+  ];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const path = testApiPath(route.request().url());
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 32 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({
+        json: {
+          enabledMediaCategories: {
+            movie: true,
+            tv: true,
+            music: true,
+            ebook: true,
+            audiobook: true,
+            comic: true,
+            magazine: true,
+          },
+        },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          applicationTitle: 'SeerrNG',
+          enabledMediaCategories: {
+            movie: true,
+            tv: true,
+            music: true,
+            ebook: true,
+            audiobook: true,
+            comic: true,
+            magazine: true,
+          },
+        },
+      });
+    if (path === '/user/1/watchlist')
+      return route.fulfill({
+        json: { filtersSupported: true, totalPages: 1, results: items },
+      });
+    if (
+      items.some(
+        (item) =>
+          path ===
+          `/${item.mediaType}/${item.tmdbId ?? item.mbId ?? item.externalId}`
+      )
+    ) {
+      detailRequests.add(path);
+      const item = items.find(
+        (candidate) =>
+          path ===
+          `/${candidate.mediaType}/${candidate.tmdbId ?? candidate.mbId ?? candidate.externalId}`
+      )!;
+      return route.fulfill({
+        json: {
+          id: item.tmdbId ?? item.mbId ?? item.externalId,
+          title: item.title,
+          name: item.title,
+          posterPath:
+            item.mediaType === 'movie' || item.mediaType === 'tv'
+              ? '/watchlist-fixture.svg'
+              : '/imageproxy/fixtures/poster.svg',
+          releaseDate: '2025-01-01',
+          firstAirDate: '2025-01-01',
+          author: 'Fixture Author',
+          publisher: 'Fixture Publisher',
+          artist: { name: 'Fixture Artist' },
+        },
+      });
+    }
+    return route.fulfill({ json: {} });
+  });
+  await page.route('**/imageproxy/**', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 3"><rect width="2" height="3" fill="#6270d9"/></svg>',
+    })
+  );
+
+  await page.goto(testAppPath('/watchlist'));
+  const cards = page.getByRole('list', { name: 'Watchlist' });
+  await expect(cards.getByRole('listitem')).toHaveCount(items.length);
+  for (const [index, item] of items.entries()) {
+    const card = cards.getByRole('listitem').nth(index);
+    await expect(card.getByRole('link', { name: item.title })).toBeVisible();
+    const id = item.tmdbId ?? item.mbId ?? item.externalId;
+    await expectRouteLink(
+      card.getByRole('link', { name: item.title }),
+      `/${item.mediaType}/${id}`
+    );
+    await card.scrollIntoViewIfNeeded();
+    await expect(card.locator('.art img')).toBeVisible();
+    await expect
+      .poll(() => detailRequests.has(`/${item.mediaType}/${id}`))
+      .toBe(true);
+  }
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
+
 test('directory Watchlist and Requests links scope reads to the selected user', async ({
   page,
 }) => {
@@ -18,7 +158,6 @@ test('directory Watchlist and Requests links scope reads to the selected user', 
   let scopedRequests = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
     const path = testApiPath(route.request().url());
     switch (path) {
       case '/auth/me':
@@ -489,7 +628,6 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
   const paths: string[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
-    const url = new URL(route.request().url());
     const path = testApiPath(route.request().url());
     if (path.endsWith('/watchlist')) {
       paths.push(path + url.search);
