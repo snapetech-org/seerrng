@@ -5926,6 +5926,7 @@ export const messages = {
   'lumen.watchSessions.editSettings': 'Edit Session Settings',
   'lumen.watchSessions.endPrompt': 'End this session for everyone?',
   'lumen.watchSessions.endSession': 'End Session',
+  'lumen.watchSessions.expires': 'Expires {date}',
   'lumen.watchSessions.fromYear': 'From Year',
   'lumen.watchSessions.genresCount': 'Genres ({count} of 5)',
   'lumen.watchSessions.genresLoadFailed': 'Could not load movie genres',

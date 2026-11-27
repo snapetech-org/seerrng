@@ -16,6 +16,7 @@ test('a household can create a watch session and opt in to watchlist contributio
     filters: {},
     ownerId: 1,
     memberCount: 1,
+    expiresAt: '2030-01-15T12:00:00.000Z',
     members: [{ id: 1, displayName: 'Host User', isOwner: true }],
     ownPreferences: { includeWatchlistContributions: false },
   };
@@ -94,9 +95,23 @@ test('a household can create a watch session and opt in to watchlist contributio
   await expect(
     page.getByRole('heading', { name: 'Movie Night' })
   ).toBeVisible();
+  await expect(page.getByText('Expires Jan 15, 2030')).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Start Session' })
   ).toBeDisabled();
+  await page.getByRole('link', { name: 'Back to Watch Sessions' }).click();
+  await expect(page.getByText('Expires Jan 15, 2030')).toBeVisible();
+  await page.screenshot({
+    path: info.outputPath('watch-sessions-populated.png'),
+    fullPage: true,
+  });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth
+    )
+  ).toBe(true);
+  await page.getByRole('link', { name: 'Open Movie Night' }).click();
+  await expect(page.getByText('Expires Jan 15, 2030')).toBeVisible();
   await page.getByLabel('Contribute My Watchlist').click();
   await expect(page.getByLabel('Contribute My Watchlist')).toBeChecked();
   await page.screenshot({
@@ -212,6 +227,7 @@ test('active watch sessions save and revise ballots and show matches', async ({
             status: 'active',
             ownerId: 1,
             memberCount: 2,
+            expiresAt: '2030-01-15T12:00:00.000Z',
             members: [
               { id: 1, displayName: 'Host', isOwner: true },
               { id: 2, displayName: 'Guest' },
@@ -241,6 +257,7 @@ test('active watch sessions save and revise ballots and show matches', async ({
     return route.fulfill({ json: {} });
   });
   await page.goto(testAppPath('/watch-sessions/9'));
+  await expect(page.getByText('Expires Jan 15, 2030')).toBeVisible();
   await page
     .getByRole('button', { name: 'Want to Watch Fixture Match' })
     .click();
@@ -309,6 +326,7 @@ for (const action of [
               status: 'draft',
               ownerId: 1,
               memberCount: 2,
+              expiresAt: '2030-01-15T12:00:00.000Z',
               members: [
                 { id: 1, displayName: 'Host', isOwner: true },
                 { id: 2, displayName: 'Guest' },

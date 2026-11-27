@@ -6420,6 +6420,7 @@ export const messages = {
   'lumen.watchSessions.endPrompt':
     'Terminer cette session pour tout le monde ?',
   'lumen.watchSessions.endSession': 'Terminer la session',
+  'lumen.watchSessions.expires': 'Expire le {date}',
   'lumen.watchSessions.fromYear': 'À partir de l’année',
   'lumen.watchSessions.genresCount': 'Genres ({count} sur 5)',
   'lumen.watchSessions.genresLoadFailed':

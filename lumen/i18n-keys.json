@@ -4791,6 +4791,7 @@
   "lumen.watchSessions.editSettings",
   "lumen.watchSessions.endPrompt",
   "lumen.watchSessions.endSession",
+  "lumen.watchSessions.expires",
   "lumen.watchSessions.fromYear",
   "lumen.watchSessions.genresCount",
   "lumen.watchSessions.genresLoadFailed",

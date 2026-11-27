@@ -5912,6 +5912,7 @@ export const messages = {
   'lumen.watchSessions.editSettings': 'تعديل إعدادات الجلسة',
   'lumen.watchSessions.endPrompt': 'هل تريد إنهاء هذه الجلسة للجميع؟',
   'lumen.watchSessions.endSession': 'إنهاء الجلسة',
+  'lumen.watchSessions.expires': 'تنتهي في {date}',
   'lumen.watchSessions.fromYear': 'من سنة',
   'lumen.watchSessions.genresCount': 'الأنواع ({count} من 5)',
   'lumen.watchSessions.genresLoadFailed': 'تعذر تحميل أنواع الأفلام',
