@@ -104,6 +104,7 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   for (const [path, id] of [
     ['./me/account#password', 'password'],
     ['./me/account/tv-requests#episode-queue', 'episode-queue'],
+    ['./users/2/settings/password?from=native', 'password'],
     ['./profile/settings/episode-queue?from=native', 'episode-queue'],
     ['./users/2/settings/episode-queue?from=native', 'episode-queue'],
   ]) {
@@ -181,6 +182,10 @@ test('Classic self-service settings bookmarks open every matching Lumen section'
     [
       '/users/2/settings/episode-queue?from=native',
       '/me/account/tv-requests?from=native#episode-queue',
+    ],
+    [
+      '/users/2/settings/password?from=native',
+      '/me/account?from=native#password',
     ],
   ] as const) {
     await page.goto(appPath(bookmark));

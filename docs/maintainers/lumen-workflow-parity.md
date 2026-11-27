@@ -6987,6 +6987,16 @@ manager bookmarks continue to open the delegated administrator panel.
 
 release-note: `release-notes/lumen-episode-queue-bookmarks.md`
 
+### Self-user password bookmark parity (2026-11-27)
+
+The native `/users/:id/settings/password` self-user bookmark now opens Lumen's
+existing password section and preserves query parameters. Browser coverage
+checks the redirect and loaded-section scroll at desktop, iPhone, Android, and
+tablet widths. The route fix changes no CSS or layout; native-matched screenshot
+comparison remains unverified.
+
+release-note: `release-notes/lumen-self-password-bookmark.md`
+
 ### Movie screenplay credit (2026-11-27)
 
 Lumen's movie Facts disclosure now shows the primary Screenplay, Writer, or
