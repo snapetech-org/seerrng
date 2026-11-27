@@ -12865,3 +12865,21 @@ exercised. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-picker-loading-20261127/`.
 
 release-note: `release-notes/lumen-game-content-loading.md`
+
+### Mounted household and delegated user workflows (2026-11-27)
+
+The account route matrix now also passes against the compiled production Lumen
+bundle served through SeerrNG's Express `mountLumenFrontend` middleware at
+`/lumen/`. The focused browser run passed 48/48 cases across desktop, iPhone,
+Android, and tablet. It covers administrator and delegated-manager navigation,
+regular-user menu restrictions, household preview permissions, independently
+recoverable preview failures, local-account avatar upload retry, and
+administrator user-directory creation with retained drafts after a failed
+submit.
+
+The API responses are fixture-backed. This does not verify live household
+authorization, provider persistence, or native-matched visual acceptance.
+Browser output is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-mounted-parity-20261127/`.
+
+release-note: none
