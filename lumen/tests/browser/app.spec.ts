@@ -2719,6 +2719,9 @@ test('music album Details and Artists remember scoped pins', async ({
   await page.route('**/api/v1/user/1/settings/main', (route) =>
     route.fulfill({ json: { enabledMediaCategories: { music: true } } })
   );
+  await page.route('**/api/v1/service/lidarr**', (route) =>
+    route.fulfill({ json: [] })
+  );
   await page.route(`**/api/v1/music/${album}`, (route) =>
     route.fulfill({
       json: {
@@ -2739,7 +2742,21 @@ test('music album Details and Artists remember scoped pins', async ({
           ],
         },
         'artist-credit': [{ name: 'Fixture Artist', artist: { id: artist } }],
-        tracks: [],
+        tracks: [
+          {
+            position: 1,
+            name: 'Fixture Track',
+            length: 180000,
+            recordingMbid: 'fixture-recording-1',
+            artists: [
+              { mbid: artist, name: 'Fixture Artist' },
+              {
+                mbid: 'fixture-featured-artist',
+                name: 'Featured Artist',
+              },
+            ],
+          },
+        ],
       },
     })
   );
@@ -2780,6 +2797,16 @@ test('music album Details and Artists remember scoped pins', async ({
   await expect(
     artists.getByRole('link', { name: 'Fixture Artist · Album Artist' })
   ).toHaveAttribute('href', testAppPath(`/artist/${artist}`));
+  await expect(
+    artists.getByRole('link', { name: 'Featured Artist · Track Artist' })
+  ).toHaveAttribute('href', testAppPath('/artist/fixture-featured-artist'));
+  const artistCapture = process.env.LUMEN_MUSIC_ARTISTS_PARITY_CAPTURE;
+  if (artistCapture) {
+    await page.screenshot({
+      path: `${artistCapture}-open-${test.info().project.name}.png`,
+      fullPage: true,
+    });
+  }
   const artistsPin = artists.getByRole('button', {
     name: 'Keep View Artists Open',
   });

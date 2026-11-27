@@ -265,12 +265,17 @@ French, and Arabic.
 
 Fixture coverage checks default-collapsed behavior, primary and track artist
 links, duplicate removal, and all three locales. The disclosure reuses the
-existing `adv`, `toolbar`, and `chip` styles; a native matched visual comparison
-for the wider album detail remains unverified. The standalone fixture passes 12
-cases across desktop, iPhone, Android, and tablet in English, French, and
-Arabic. The bundled production mount passes at desktop and phone sizes. Open and
-closed Lumen captures were inspected at desktop and phone sizes and are retained
-at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-artists-20261123/`.
+existing `adv`, `toolbar`, and `chip` styles. A native matched comparison now
+confirms both interfaces expose the album artist and distinct track
+contributors as profile links. Native uses its “Full Artist List” disclosure
+and artist cards; Lumen uses a “View Artists” disclosure and role-labelled
+chips. Lumen's wider album page retains its own request and detail layout. The
+native browser fixture passes at desktop and phone sizes; the bundled production
+mount passes all four desktop, tablet, Android, and iPhone viewport projects.
+The rendered comparison was inspected at desktop and phone sizes with no
+horizontal overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-music-album-parity-20261127/`.
+Provider-backed ratings, artwork, and similar-artist data remain fixture-excluded.
 
 ### Lumen French and Arabic catalog completion
 
