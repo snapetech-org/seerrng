@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Sonarr saves separate series and anime request defaults', async ({
   page,
@@ -39,7 +40,7 @@ test('Sonarr saves separate series and anime request defaults', async ({
     services = [result];
     return route.fulfill({ json: result });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Sonarr Services' }).click();
   await page.getByRole('button', { name: 'Add Sonarr' }).click();
   await expect(page.getByLabel('Port', { exact: true })).toHaveValue('8989');

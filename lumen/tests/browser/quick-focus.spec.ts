@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // On desktop the poster's Request button lives in a hover/focus overlay. When the quick-request
 // sheet closes (Escape or Cancel) keyboard focus has to come back to that button.
@@ -64,7 +65,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       ar: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
     }[locale];
     await fixture(page, 32, locale);
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
     await poster.scrollIntoViewIfNeeded();
     await poster.hover();
@@ -95,7 +96,7 @@ for (const how of ['Escape', 'Cancel'] as const) {
       'the hover overlay is desktop only'
     );
     await fixture(page);
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const poster = page.locator('.poster', { hasText: 'Fresh Pick' }).first();
     await poster.scrollIntoViewIfNeeded();
     const trigger = poster.locator('.qbtn.go');

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const paged = (results: unknown[]) => ({
   page: 1,
@@ -162,7 +163,7 @@ test('All search shows People and opens an internal Lumen person page', async ({
       externalImageRequests.push(request.url());
   });
   await fixtures(page, false, { includePeople: () => includePeople });
-  await page.goto('/search?q=Jane');
+  await page.goto(testAppPath('/search?q=Jane'));
   await expect(page.getByRole('heading', { name: 'Movies' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'People' })).toHaveCount(0);
   await page.screenshot({
@@ -221,7 +222,7 @@ test('All search refetches person visibility after a category policy change', as
   await fixtures(page, false, {
     includePeople: () => personCategoryEnabled,
   });
-  await page.goto('/search?q=Jane');
+  await page.goto(testAppPath('/search?q=Jane'));
   await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
   await expect.poll(() => searchRequests).toBe(1);
 
@@ -246,7 +247,7 @@ test('person credits refetch after a category or maturity policy tightens', asyn
   await fixtures(page, false, {
     includeMovieCredit: () => movieCreditAllowed,
   });
-  await page.goto('/person/77');
+  await page.goto(testAppPath('/person/77'));
   await expect(
     page.getByRole('heading', { name: 'Jane Example' })
   ).toBeVisible();
@@ -256,8 +257,8 @@ test('person credits refetch after a category or maturity policy tightens', asyn
   await page.waitForTimeout(500);
 
   movieCreditAllowed = false;
-  await page.goto('/search?q=Jane');
-  await page.goto('/person/77');
+  await page.goto(testAppPath('/search?q=Jane'));
+  await page.goto(testAppPath('/person/77'));
 
   await expect(
     page.getByRole('heading', { name: 'Jane Example' })
@@ -279,7 +280,7 @@ test('search result TheAudioDB portraits load through the same-origin proxy', as
     });
   });
   await fixtures(page, true);
-  await page.goto('/search?q=Jane');
+  await page.goto(testAppPath('/search?q=Jane'));
 
   const artistCard = page
     .locator('.results .poster')
@@ -311,7 +312,7 @@ test('unsafe TheAudioDB traversal and fragment paths never reach the image proxy
       imageProxyRequests.push(request.url());
   });
   await fixtures(page);
-  await page.goto('/search?q=Unsafe');
+  await page.goto(testAppPath('/search?q=Unsafe'));
 
   for (const name of [
     'Literal traversal',
@@ -331,7 +332,7 @@ test('long search navigation starts at the top after scrolling to a person', asy
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/search?q=Long');
+  await page.goto(testAppPath('/search?q=Long'));
 
   const lastPerson = page.getByRole('link', { name: 'Long Person 79' });
   await lastPerson.scrollIntoViewIfNeeded();
@@ -354,7 +355,7 @@ test('allowlisted TheAudioDB portraits use SeerrNG image proxy on detail pages',
     if (host === 'r2.theaudiodb.com') externalImageRequests.push(request.url());
   });
   await fixtures(page);
-  await page.goto('/person/78');
+  await page.goto(testAppPath('/person/78'));
 
   await expect(
     page.getByRole('heading', { name: 'Artist Example' })
@@ -368,7 +369,7 @@ test('allowlisted TheAudioDB portraits use SeerrNG image proxy on detail pages',
 
 test('Movie-scoped Lumen search does not show People', async ({ page }) => {
   await fixtures(page);
-  await page.goto('/search?q=Jane&f=movie');
+  await page.goto(testAppPath('/search?q=Jane&f=movie'));
   await expect(page.getByRole('heading', { name: 'Movies' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'People' })).toHaveCount(0);
 });

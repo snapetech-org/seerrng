@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const name of ['Audiobookshelf', 'Kavita']) {
   test(`${name} tests and saves the reader connection`, async ({
@@ -54,7 +55,7 @@ for (const name of ['Audiobookshelf', 'Kavita']) {
       if (writes.length === 2) staleReadback = previous;
       return route.fulfill({ json: saved });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page.getByRole('link', { name: `Open ${name} Settings` }).click();
     await page.getByLabel('Hostname').fill('reader.internal');
     await page.getByLabel('API Key').fill('fixture-key');

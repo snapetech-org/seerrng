@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 type Quota = {
   adult?: {
@@ -71,7 +72,7 @@ async function openAdultDetail(
     }
     return route.fulfill({ json: [] });
   });
-  await page.goto('/adult/42');
+  await page.goto(testAppPath('/adult/42'));
   await expect(
     page.getByRole('heading', { name: 'Fixture Scene' })
   ).toBeVisible();

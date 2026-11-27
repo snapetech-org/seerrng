@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [locale, labels] of [
   [
@@ -47,7 +48,7 @@ for (const [locale, labels] of [
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/soulseek');
+    await page.goto(testAppPath('/admin/soulseek'));
     await expect(
       page.getByRole('heading', { name: labels.title })
     ).toBeVisible();
@@ -123,7 +124,7 @@ test('Soulseek tests with the stored key and explicitly removes it when disabled
     saveAttempts += 1;
     return route.fulfill({ json: currentSettings });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Soulseek Settings' }).click();
   await page.getByRole('button', { name: 'Test Connection' }).click();
   await expect(page.getByText('SongID unavailable.')).toBeVisible();

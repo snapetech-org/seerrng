@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('email tests keep saved credentials and Web Push saves independently', async ({
   page,
@@ -95,7 +96,7 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     }
     return route.fulfill({ json: body });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Instance Notifications' }).click();
   await page.getByRole('link', { name: 'Open Email' }).click();
   await expect(page.getByLabel('SMTP Host', { exact: true })).toHaveValue('');
@@ -218,7 +219,7 @@ test('notification settings load failures use localized recovery and retry', asy
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/admin/notifications/email');
+  await page.goto(testAppPath('/admin/notifications/email'));
   const error = page.getByRole('alert');
   await expect(error.getByText(copy.title, { exact: true })).toBeVisible();
   await expect(error.getByText(copy.error, { exact: true })).toBeVisible();
@@ -353,7 +354,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
     if (!path.endsWith('/test')) persistedAgents[channel] = body;
     return route.fulfill({ json: body });
   });
-  await page.goto('/admin/notifications/telegram');
+  await page.goto(testAppPath('/admin/notifications/telegram'));
   const telegram = page.locator('#telegram');
   await expect(
     telegram.getByLabel(controlLabels.botToken, { exact: true })
@@ -380,7 +381,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await telegram.screenshot({ path: info.outputPath('telegram.png') });
 
-  await page.goto('/admin/notifications/pushbullet');
+  await page.goto(testAppPath('/admin/notifications/pushbullet'));
   const pushbullet = page.locator('#pushbullet');
   await pushbullet.getByLabel(controlLabels.channelTag).fill('household');
   await pushbullet.getByLabel(eventLabels.available, { exact: true }).check();
@@ -397,7 +398,7 @@ test('messaging channels preserve credentials and independent event masks', asyn
     )
   ).toBeVisible();
 
-  await page.goto('/admin/notifications/pushover');
+  await page.goto(testAppPath('/admin/notifications/pushover'));
   const pushover = page.locator('#pushover');
   await pushover.getByLabel(controlLabels.sound).selectOption('bell');
   await pushover
@@ -512,7 +513,7 @@ test('server notification channels save and test with their own options', async 
     return route.fulfill({ json: body });
   });
 
-  await page.goto('/admin/notifications/gotify');
+  await page.goto(testAppPath('/admin/notifications/gotify'));
   const gotify = page.locator('#gotify');
   await expect(
     gotify.getByLabel('Application Token', { exact: true })
@@ -523,7 +524,7 @@ test('server notification channels save and test with their own options', async 
     gotify.getByText('Gotify notification settings saved successfully!')
   ).toBeVisible();
 
-  await page.goto('/admin/notifications/ntfy');
+  await page.goto(testAppPath('/admin/notifications/ntfy'));
   const ntfy = page.locator('#ntfy');
   await ntfy.getByLabel('Authentication').selectOption('token');
   await expect(ntfy.getByLabel('Token', { exact: true })).toHaveValue('');
@@ -533,7 +534,7 @@ test('server notification channels save and test with their own options', async 
   if (process.env.LUMEN_CAPTURE_NOTIFICATIONS)
     await ntfy.screenshot({ path: info.outputPath('ntfy.png') });
 
-  await page.goto('/admin/notifications/apprise');
+  await page.goto(testAppPath('/admin/notifications/apprise'));
   const apprise = page.locator('#apprise');
   await apprise.getByLabel('Configuration Key').fill('bad key');
   await expect(
@@ -622,7 +623,7 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
     persistedAgents[channel] = body;
     return route.fulfill({ json: body });
   });
-  await page.goto('/admin/notifications/discord');
+  await page.goto(testAppPath('/admin/notifications/discord'));
   const discord = page.locator('#discord');
   await expect(discord.getByLabel('Webhook URL', { exact: true })).toHaveValue(
     ''
@@ -637,7 +638,7 @@ test('Discord thread and Slack approval settings preserve saved secrets', async 
     discord.getByText('Discord notification settings saved successfully!')
   ).toBeVisible();
 
-  await page.goto('/admin/notifications/slack');
+  await page.goto(testAppPath('/admin/notifications/slack'));
   const slack = page.locator('#slack');
   await slack.getByLabel('Enable request approval actions').check();
   const save = slack.getByRole('button', { name: 'Save Slack' });
@@ -739,7 +740,7 @@ test('webhook edits validate JSON and preserve redacted header values', async ({
       json: response,
     });
   });
-  await page.goto('/admin/notifications/webhook');
+  await page.goto(testAppPath('/admin/notifications/webhook'));
   const section = page.locator('#webhook');
   const payload = section.getByLabel('JSON Payload');
   const save = section.getByRole('button', { name: 'Save Webhook' });
@@ -810,7 +811,7 @@ test('a channel link loads only that channel settings', async ({
       },
     });
   });
-  await page.goto('/admin/notifications/webhook');
+  await page.goto(testAppPath('/admin/notifications/webhook'));
   const nav = page.getByRole('navigation', { name: 'Notification Channels' });
   await expect(
     nav.getByRole('link', { name: 'Webhook', exact: true })

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // The server says stage "library" for a finished request pinned to one edition when another
 // edition of the book is what the library has. That never settles, so it must not read as
@@ -67,7 +68,7 @@ test('a pinned edition that is not the one on disk reads as ready', async ({
   page,
 }) => {
   await fixture(page, 'hardcover:98765');
-  await page.goto('/requests?tab=ready');
+  await page.goto(testAppPath('/requests?tab=ready'));
   const row = page.locator('.rq').filter({ hasText: 'Pinned book' });
   await expect(row).toBeVisible();
   await expect(row.locator('.st')).toContainText(
@@ -89,7 +90,7 @@ for (const [name, pin] of [
 ] as const) {
   test(`${name} request still says checking library`, async ({ page }) => {
     await fixture(page, pin);
-    await page.goto('/requests?tab=active');
+    await page.goto(testAppPath('/requests?tab=active'));
     const row = page.locator('.rq').filter({ hasText: 'Pinned book' });
     await expect(row.locator('.st')).toContainText('Checking library');
   });

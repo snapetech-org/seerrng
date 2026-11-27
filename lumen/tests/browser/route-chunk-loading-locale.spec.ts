@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = (process.env.LUMEN_ROUTE_LOADING_LOCALE ?? 'fr') as 'fr' | 'ar';
 const loadingText = {
@@ -54,7 +55,7 @@ test('lazy route chunk loading follows the saved locale', async ({
     return route.fulfill({ json: [] });
   });
 
-  await page.goto('/games/discovery');
+  await page.goto(testAppPath('/games/discovery'));
   await chunkRequested;
   const loading = page.getByRole('status').filter({
     hasText: loadingText[locale],

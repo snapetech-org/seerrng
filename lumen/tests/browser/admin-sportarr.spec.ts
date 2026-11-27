@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Sportarr saves the quality profile without requiring a root folder', async ({
   page,
@@ -24,7 +25,7 @@ test('Sportarr saves the quality profile without requiring a root folder', async
     saved = { ...request.postDataJSON(), id: 0, apiKey: '[REDACTED]' };
     return route.fulfill({ json: saved });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Sportarr Services' }).click();
   await page.getByRole('button', { name: 'Add Sportarr' }).click();
   await expect(page.getByLabel('Port')).toHaveValue('1867');

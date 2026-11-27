@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -72,7 +73,7 @@ test('the detail page names the year of a release that is not this year', async 
   page,
 }) => {
   await fixture(page);
-  await page.goto('/movie/402');
+  await page.goto(mountedTestAppPath('/movie/402'));
   await expect(page.locator('.dtitle h1')).toHaveText('Next Year Film');
   await expect(page.getByText(`In theaters Mar 11, ${nextYear}`)).toBeVisible();
 });
@@ -81,7 +82,7 @@ test('Coming soon on Discover names the year and links to the full page', async 
   page,
 }) => {
   await fixture(page);
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   const row = page.locator('section', {
     has: page.getByRole('heading', { name: 'Coming soon' }),
   });
@@ -103,7 +104,7 @@ test('Coming soon cards use the saved locale for release dates', async ({
   await page.route('**/api/v1/user/1/settings/main', (route) =>
     route.fulfill({ json: { locale: 'fr' } })
   );
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(
     page.locator('.poster').filter({ hasText: 'Next Year Film' }).locator('.m')
   ).toContainText(`11 mars ${nextYear}`);
@@ -140,7 +141,7 @@ test('series cards localize their type and upcoming quick details', async ({
       ]),
     })
   );
-  await page.goto('/series');
+  await page.goto(mountedTestAppPath('/series'));
   const card = page.locator('.poster').filter({ hasText: 'Next Year Series' });
   await expect(card.locator('.m')).toContainText(
     `11 mars ${nextYear} · Séries`
@@ -161,7 +162,7 @@ test('the phone request bar keeps its button on screen and the title readable', 
 }, info) => {
   test.skip(info.project.name !== 'iphone', 'phone layout');
   await fixture(page);
-  await page.goto('/movie/402');
+  await page.goto(mountedTestAppPath('/movie/402'));
   const bar = page.locator('.actionbar');
   await expect(bar).toBeVisible();
   const button = bar.getByRole('button', { name: /Request/ });

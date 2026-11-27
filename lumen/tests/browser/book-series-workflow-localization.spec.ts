@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const messages = {
   en: {
@@ -78,7 +79,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         return route.fulfill({ json: { status: 'active' } });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/book-series/requests');
+    await page.goto(testAppPath('/book-series/requests'));
     const copy = messages[locale];
     await expect(
       page.getByRole('heading', { name: copy.requests })
@@ -136,7 +137,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       return route.fulfill({ json: {} });
     });
     await page.goto(
-      '/book-series/catalog?serverId=0&scope=main&providerId=hc%3A42'
+      testAppPath(
+        '/book-series/catalog?serverId=0&scope=main&providerId=hc%3A42'
+      )
     );
     const copy = messages[locale];
     await expect(

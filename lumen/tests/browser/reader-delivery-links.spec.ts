@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const title = 'Fixture Title';
 const serviceEndpoint = '/service/reader-delivery';
@@ -54,7 +55,7 @@ for (const { path, label, provider } of cases) {
       serviceUrl: `https://${provider}.example.test/library/api/v1/opds/`,
       grimmoryUrl: 'https://grimmory.example.test/library/komga/api',
     });
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     const link = page.getByRole('link', { name: `Browse ${label} in ${name}` });
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute(
@@ -80,7 +81,7 @@ for (const { path, label, provider } of cases) {
     const response = page.waitForResponse((response) =>
       new URL(response.url()).pathname.endsWith(serviceEndpoint)
     );
-    await page.goto(path);
+    await page.goto(testAppPath(path));
     await response;
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
     await expect(

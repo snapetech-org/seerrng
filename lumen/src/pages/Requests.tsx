@@ -1548,6 +1548,12 @@ export default function Requests() {
   const toast = useToast();
   const [params, setP] = useSearchParams();
   const p = normalizeClassicRequestFilters(params);
+  const currentSearch = params.toString();
+  const normalizedSearch = p.toString();
+  useEffect(() => {
+    if (currentSearch !== normalizedSearch)
+      setP(new URLSearchParams(normalizedSearch), { replace: true });
+  }, [currentSearch, normalizedSearch, setP]);
   const requestKey = p.has('softwareRequestId')
     ? 'softwareRequestId'
     : 'requestId';

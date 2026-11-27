@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -98,9 +99,9 @@ test('music discovery opens trusted collector picks and follows the matched arti
   });
   const captureDirectory = process.env.LUMEN_COLLECTOR_CAPTURE_DIR;
   if (captureDirectory) {
-    await page.goto('/music/collectors');
+    await page.goto(mountedTestAppPath('/music/collectors'));
   } else {
-    await page.goto('/music');
+    await page.goto(mountedTestAppPath('/music'));
     await page
       .locator('#view')
       .getByRole('link', { name: 'Collector Picks' })
@@ -192,7 +193,7 @@ test('Collector Picks guides administrators to configure unavailable slskdN', as
       return route.fulfill({ json: { available: false, results: [] } });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/music/collectors');
+  await page.goto(mountedTestAppPath('/music/collectors'));
   await expect(
     page.getByRole('link', { name: 'Open Soulseek Settings' })
   ).toHaveAttribute('href', appPath('/admin/soulseek'));
@@ -220,7 +221,7 @@ test('Collector Picks keeps Soulseek settings out of non-admin accounts', async 
       return route.fulfill({ json: { available: false, results: [] } });
     return route.fulfill({ json: {} });
   });
-  await page.goto('/music/collectors');
+  await page.goto(mountedTestAppPath('/music/collectors'));
   await expect(
     page.getByRole('link', { name: 'Open Soulseek Settings' })
   ).toHaveCount(0);

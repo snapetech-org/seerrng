@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const labels = {
   en: {
@@ -86,7 +87,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       tablet: { width: 834, height: 1194 },
     }[info.project.name] ?? { width: 390, height: 844 };
     await page.setViewportSize(viewport);
-    await page.goto('/author/OL42A');
+    await page.goto(testAppPath('/author/OL42A'));
     await expect(
       page.getByRole('heading', { name: labels[locale].bibliography })
     ).toBeVisible();
@@ -95,7 +96,9 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
     ).toBeVisible();
     await page.screenshot({ path: info.outputPath(`author-${locale}.png`) });
 
-    await page.goto('/book-series/bookshelf-series%3A1%3ARml4dHVyZQ');
+    await page.goto(
+      testAppPath('/book-series/bookshelf-series%3A1%3ARml4dHVyZQ')
+    );
     await expect(
       page.getByRole('group', { name: labels[locale].filters })
     ).toBeVisible();
