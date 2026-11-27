@@ -222,15 +222,20 @@ test('software bookmarks open catalog titles by provider and preserve search', a
   expect(reads).toHaveLength(3);
 });
 
-for (const mode of ['edition', 'missing-selected'] as const) {
+for (const mode of ['edition', 'owned-edition', 'missing-selected'] as const) {
   test(`an owned PC game can request ${mode} and show the selection in history`, async ({
     page,
   }) => {
     const submitted: unknown[] = [];
     const requested =
-      mode === 'edition'
-        ? { kind: 'game-content', mode, editionId: 51, addonIds: [] }
-        : { kind: 'game-content', mode, addonIds: [53] };
+      mode === 'missing-selected'
+        ? { kind: 'game-content', mode, addonIds: [53] }
+        : {
+            kind: 'game-content',
+            mode: 'edition',
+            editionId: mode === 'owned-edition' ? 54 : 51,
+            addonIds: [],
+          };
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/api/v1/**', (route) => {
       const request = route.request();
@@ -267,6 +272,20 @@ for (const mode of ['edition', 'missing-selected'] as const) {
                 title: 'Deluxe Edition',
                 owned: false,
                 contentKnown: false,
+              },
+              {
+                igdbId: 54,
+                title: 'Owned Complete Edition',
+                owned: true,
+                contentKnown: true,
+                includes: [
+                  {
+                    igdbId: 55,
+                    title: 'Unowned Story Expansion',
+                    owned: false,
+                    storyContent: true,
+                  },
+                ],
               },
             ],
             addons: [
@@ -313,7 +332,14 @@ for (const mode of ['edition', 'missing-selected'] as const) {
     const content = page.getByRole('combobox', { name: 'Content to Request' });
     await content.selectOption('edition');
     await expect(page.getByText('Edition contents are unknown.')).toBeVisible();
-    await page.getByRole('radio', { name: 'Deluxe Edition' }).check();
+    await page
+      .getByRole('radio', {
+        name:
+          mode === 'owned-edition'
+            ? 'Owned Complete Edition'
+            : 'Deluxe Edition',
+      })
+      .check();
     if (mode === 'missing-selected') {
       await content.selectOption(mode);
       await expect(
@@ -337,9 +363,11 @@ for (const mode of ['edition', 'missing-selected'] as const) {
       page
         .getByRole('dialog', { name: 'History' })
         .getByText(
-          mode === 'edition'
-            ? 'Complete Edition · Deluxe Edition'
-            : '1 Add-on · New Expansion'
+          mode === 'missing-selected'
+            ? '1 Add-on · New Expansion'
+            : mode === 'owned-edition'
+              ? 'Complete Edition · Owned Complete Edition'
+              : 'Complete Edition · Deluxe Edition'
         )
     ).toBeVisible();
     expect(submitted).toEqual([

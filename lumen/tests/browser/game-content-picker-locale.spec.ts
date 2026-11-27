@@ -52,6 +52,20 @@ for (const locale of ['en', 'fr', 'ar'])
                   owned: false,
                   contentKnown: false,
                 },
+                {
+                  igdbId: 54,
+                  title: 'Owned Complete Edition',
+                  owned: true,
+                  contentKnown: true,
+                  includes: [
+                    {
+                      igdbId: 55,
+                      title: 'Unowned Story Expansion',
+                      owned: false,
+                      storyContent: true,
+                    },
+                  ],
+                },
               ],
               addons: [
                 {
@@ -81,6 +95,8 @@ for (const locale of ['en', 'fr', 'ar'])
           baseSummary: 'Request the base game.',
           summary: 'What this request gets',
           editionSummary: 'Request Deluxe Edition and its missing content.',
+          ownedEditionSummary:
+            'Request Owned Complete Edition and its missing content.',
           addonSummary: 'Request the base game if needed, plus: New Expansion.',
         },
         fr: {
@@ -92,6 +108,8 @@ for (const locale of ['en', 'fr', 'ar'])
           baseSummary: 'Demander le jeu de base.',
           summary: 'Contenu de cette demande',
           editionSummary: 'Demander Deluxe Edition et son contenu manquant.',
+          ownedEditionSummary:
+            'Demander Owned Complete Edition et son contenu manquant.',
           addonSummary:
             'Demander le jeu de base si nécessaire, ainsi que : New Expansion.',
         },
@@ -103,6 +121,8 @@ for (const locale of ['en', 'fr', 'ar'])
           baseSummary: 'طلب اللعبة الأساسية.',
           summary: 'محتوى هذا الطلب',
           editionSummary: 'طلب Deluxe Edition والمحتوى الذي ينقصك منه.',
+          ownedEditionSummary:
+            'طلب Owned Complete Edition والمحتوى الذي ينقصك منه.',
           addonSummary:
             'طلب اللعبة الأساسية عند الحاجة، بالإضافة إلى: New Expansion.',
         },
@@ -116,9 +136,21 @@ for (const locale of ['en', 'fr', 'ar'])
       await content.selectOption('edition');
       await expect(page.getByText(labels.unknown)).toBeVisible();
       await expect(page.getByText(labels.summary)).toBeVisible();
+      const ownedEdition = page.getByRole('radio', {
+        name: /Owned Complete Edition/,
+      });
+      await expect(ownedEdition).toBeEnabled();
       if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
         await page.screenshot({
-          path: `${captureDir}/${locale}/game-content-${ownership}-edition-unselected-${info.project.name}.png`,
+          path: `${captureDir}/${locale}/game-content-${ownership}-owned-edition-${info.project.name}.png`,
+          fullPage: true,
+          animations: 'disabled',
+        });
+      await ownedEdition.check();
+      await expect(page.getByText(labels.ownedEditionSummary)).toBeVisible();
+      if (captureDir && ['desktop', 'iphone'].includes(info.project.name))
+        await page.screenshot({
+          path: `${captureDir}/${locale}/game-content-${ownership}-owned-edition-selected-${info.project.name}.png`,
           fullPage: true,
           animations: 'disabled',
         });

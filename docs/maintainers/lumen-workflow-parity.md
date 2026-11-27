@@ -12762,6 +12762,7 @@ together without a layout change. Real provider behavior and production
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
 
+
 ### Steam library ownership on PC game cards (2026-11-27)
 
 Native PC game catalog cards display a Steam Library badge when the catalog
@@ -12806,3 +12807,22 @@ is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
+
+### Request missing content from an owned game edition (2026-11-27)
+
+Native SeerrNG permits selecting an owned edition when its catalog details show
+content the user does not own. Lumen previously disabled that edition, which
+prevented requesting its missing expansions. The Lumen picker now keeps the
+edition selectable and passes the chosen edition ID through the existing
+request and request-history flow.
+
+The browser fixture covers an owned edition with an unowned story expansion.
+The English, French, and Arabic picker suite passes 24 cases across desktop,
+iPhone, Android, and tablet; request submission and history pass 12 cases
+across those viewports, including an assertion that edition ID 54 is submitted
+and displayed in history. Matched desktop and iPhone baseline/candidate
+captures confirm the option becomes available without a layout change. No
+styles changed. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-owned-game-edition-expansions.md`

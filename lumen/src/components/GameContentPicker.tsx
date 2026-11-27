@@ -157,7 +157,7 @@ export default function GameContentPicker({
                   type="radio"
                   name="pc-game-edition"
                   checked={editionId === edition.igdbId}
-                  disabled={disabled || edition.owned}
+                  disabled={disabled}
                   onChange={() => {
                     setEditionId(edition.igdbId);
                     onChange({
