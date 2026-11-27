@@ -920,6 +920,27 @@ Evidence is retained at
 
 release-note: `release-notes/lumen-tv-episode-count.md`
 
+### TV season count (2026-11-27)
+
+Native TV details count regular seasons that contain episodes; the number is
+independent of whether special episodes are enabled. Lumen's title line and
+sticky action bar counted every season selected for the request, which could
+include specials and empty seasons. Both metadata displays now use the native
+counting rule, while the season list, selection, and request behavior continue
+to use the existing requestable season set. A missing regular season count is
+omitted instead of displaying zero.
+
+The production build and 12 browser cases pass across English, French, and
+Arabic and desktop, iPhone, Android, and tablet presets. Fixtures enable
+specials and include an empty regular season to distinguish the metadata count
+from the requestable season set. Baseline and candidate captures at 1440×900
+and 390×844 were inspected; the count is the same in the title and action bar,
+with no layout changes. The local static mount does not exercise SeerrNG's
+compiled Express middleware or live TV metadata. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-season-count-20261127/`.
+
+release-note: `release-notes/lumen-tv-season-count.md`
+
 These optional desktop links and Discover chips now use locale message IDs
 instead of the English labels stored in the catalog metadata. English, French,
 and Arabic fixtures verify all six translated labels and their destinations at

@@ -307,6 +307,10 @@ export default function TvDetail() {
     );
   if (!t) return <div className="detail-loading" aria-busy="true" />;
 
+  const detailSeasonCount = t.seasons.filter(
+    (season) => season.seasonNumber !== 0 && season.episodeCount !== 0
+  ).length;
+
   const n = sel.size;
   const requireApproval =
     !!n &&
@@ -648,11 +652,13 @@ export default function TvDetail() {
         line={[
           years.join('–'),
           rating && <span className="cert">{rating}</span>,
-          seasons.length === 1
+          detailSeasonCount === 1
             ? translate('lumen.tv.oneSeason', '{count} season', { count: 1 })
-            : translate('lumen.tv.seasonCount', '{count} seasons', {
-                count: seasons.length,
-              }),
+            : detailSeasonCount > 1
+              ? translate('lumen.tv.seasonCount', '{count} seasons', {
+                  count: detailSeasonCount,
+                })
+              : '',
           t.episodeRunTime?.[0]
             ? translate('lumen.tv.episodesDuration', '{duration} episodes', {
                 duration: fmtRun(t.episodeRunTime[0]),
@@ -1428,9 +1434,13 @@ export default function TvDetail() {
         title={t.name || ''}
         meta={
           statusLine ||
-          translate('lumen.tv.seasonCount', '{count} seasons', {
-            count: seasons.length,
-          })
+          (detailSeasonCount === 1
+            ? translate('lumen.tv.oneSeason', '{count} season', { count: 1 })
+            : detailSeasonCount > 1
+              ? translate('lumen.tv.seasonCount', '{count} seasons', {
+                  count: detailSeasonCount,
+                })
+              : '')
         }
       >
         {t.mediaInfo?.id && canManageRequests(user?.permissions) && (

@@ -14,6 +14,7 @@
 - **Lumen:** Movie and series genres on detail pages now link to the matching filtered browse results, matching native SeerrNG.
 - **Lumen:** TV details now show production studios and link identified studios to matching series results, matching native SeerrNG.
 - **Lumen:** TV details now show the total episode count when available, matching native SeerrNG.
+- **Lumen:** TV season counts now exclude specials and seasons without episodes, matching native SeerrNG.
 - **Lumen:** Issue and matching-request links in movie and series management sheets now stay inside the `/lumen/` deployment instead of escaping to SeerrNG's root route.
 
 ## [3.72.40](https://github.com/snapetech-org/seerrng/compare/v3.72.38..v3.72.40) - 2026-11-20

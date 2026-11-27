@@ -7,6 +7,7 @@ const locales = {
     tv: 'Series Details',
     studio: 'Production Studios',
     episodes: 'Episodes',
+    seasonCount: '2 seasons',
     directors: 'Director',
     writers: 'Writers',
     screenplay: 'Screenplay',
@@ -19,6 +20,7 @@ const locales = {
     tv: 'Détails de la série',
     studio: 'Sociétés de production',
     episodes: 'Épisodes',
+    seasonCount: '2 saisons',
     directors: 'Réalisateur',
     writers: 'Auteurs',
     screenplay: 'Scénario',
@@ -31,6 +33,7 @@ const locales = {
     tv: 'تفاصيل المسلسل',
     studio: 'شركات الإنتاج',
     episodes: 'عدد الحلقات',
+    seasonCount: '2 مواسم',
     directors: 'مخرج',
     writers: 'كاتبون',
     screenplay: 'سيناريو',
@@ -87,7 +90,9 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
           json: { id: 17, displayName: 'Viewer', permissions: 0 },
         });
       if (path === '/settings/public')
-        return route.fulfill({ json: { initialized: true } });
+        return route.fulfill({
+          json: { initialized: true, enableSpecialEpisodes: true },
+        });
       if (path === '/user/17/settings/main')
         return route.fulfill({ json: { locale } });
       if (path === '/movie/550')
@@ -135,7 +140,12 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
               { id: 35, name: 'Comedy' },
             ],
             networks: [],
-            seasons: [],
+            seasons: [
+              { seasonNumber: 0, episodeCount: 12, name: 'Specials' },
+              { seasonNumber: 1, episodeCount: 5, name: 'Season One' },
+              { seasonNumber: 2, episodeCount: 0, name: 'Empty Season' },
+              { seasonNumber: 3, episodeCount: 3, name: 'Season Three' },
+            ],
             numberOfSeasons: 1,
             numberOfEpisodes: 8,
             episodeRunTime: [42],
@@ -228,6 +238,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       await expect(episodesLabel.locator('..').locator('dd')).toHaveText('8');
     }
     const tvHeader = page.locator('.dtitle');
+    if (!captureOnly) {
+      await expect(tvHeader).toContainText(copy.seasonCount);
+      await expect(page.locator('.actionbar')).toContainText(copy.seasonCount);
+    }
     const tvDrama = tvHeader.getByRole('link', { name: 'Drama', exact: true });
     const tvComedy = tvHeader.getByRole('link', {
       name: 'Comedy',
