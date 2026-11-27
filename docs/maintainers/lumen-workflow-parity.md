@@ -8,7 +8,9 @@ series, and audiobook cases. The calendar already supported these sources; this
 closes a regression-coverage gap without changing runtime behavior.
 
 The selected-interval, permission-scope, failure-retry, and detail-destination
-cases pass 8/8 across desktop, iPhone, Android, and tablet. The fixture verifies
+cases pass 8/8 across desktop, iPhone, Android, and tablet in standalone
+preview, and 8/8 against the production bundle through SeerrNG's compiled
+`mountLumenFrontend` Express middleware at `/lumen/`. The fixture verifies
 encoded comic and magazine identifiers plus the correct software category
 route. It does not make live release-provider calls or change the rendered UI.
 Evidence is retained at
@@ -25,10 +27,12 @@ configuration and account permissions remain unchanged.
 
 The focused browser regression passes 4/4 on desktop, iPhone, Android, and
 tablet. It reproduces a temporary 503, retries, and verifies the configured
-podcast sections return. The production Lumen build passes. Matched baseline
-and candidate error-state renders were inspected at desktop and iPhone sizes;
-the action sits below the error text and stays within the existing panel.
-Evidence is retained at
+podcast sections return. The production Lumen build passes. The full
+podcast-focused suite passes 32/32 against the production bundle through
+SeerrNG's compiled `mountLumenFrontend` Express middleware at `/lumen/`. Matched
+baseline and candidate error-state renders were inspected at desktop and iPhone
+sizes; the action sits below the error text and stays within the existing
+panel. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-podcast-status-recovery-20261127/`.
 The endpoint is fixture-backed; live Audiobookshelf availability remains
 unverified.
