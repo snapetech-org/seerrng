@@ -9,8 +9,10 @@ during migration. A link into full SeerrNG does not establish Lumen parity.
 
 Native Series Details continues to show the series-level `lastAirDate` when
 TMDB omits `lastEpisodeToAir`. Lumen previously left its Last aired fact empty
-in that case. It now uses the localized series-level date as a fallback and
-keeps the season/episode detail when episode metadata is present.
+in that case. It now uses the localized series-level date as a fallback when
+it differs from the first air date, matching native duplicate-date handling,
+and keeps the season/episode detail when episode metadata is present. The
+fixture also verifies that a duplicate first/last date is omitted.
 
 The existing metadata browser fixture verifies the fallback in English,
 French, and Arabic across desktop, iPhone, Android, and tablet (12 passes).

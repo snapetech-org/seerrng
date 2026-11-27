@@ -1361,7 +1361,9 @@ export default function TvDetail() {
                     translate('lumen.tv.fact.lastAired', 'Last aired'),
                     t.lastEpisodeToAir
                       ? `S${t.lastEpisodeToAir.seasonNumber} E${t.lastEpisodeToAir.episodeNumber} · ${shortDate(t.lastEpisodeToAir.airDate, true, locale)}`
-                      : shortDate(t.lastAirDate, true, locale),
+                      : t.lastAirDate !== t.firstAirDate
+                        ? shortDate(t.lastAirDate, true, locale)
+                        : '',
                   ],
                   [
                     translate('lumen.tv.fact.nextEpisode', 'Next episode'),

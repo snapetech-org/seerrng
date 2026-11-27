@@ -78,7 +78,6 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
         writers: ['Fixture Writer'],
       },
     };
-
     await page.route('https://**/*', (route) => route.abort());
     await page.route('**/lumen-config.json', (route) =>
       route.fulfill({ json: {} })
@@ -124,14 +123,14 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
             ...metadata,
           },
         });
-      if (path === '/tv/42')
+      if (path === '/tv/42' || path === '/tv/43')
         return route.fulfill({
           json: {
-            id: 42,
+            id: path === '/tv/43' ? 43 : 42,
             name: 'Fixture Series',
             overview: 'A series fixture.',
             firstAirDate: '2020-01-01',
-            lastAirDate: '2022-01-01',
+            lastAirDate: path === '/tv/43' ? '2020-01-01' : '2022-01-01',
             originalLanguage: 'en',
             productionCountries: [],
             productionCompanies: [
@@ -288,6 +287,15 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
           () => document.documentElement.scrollWidth <= window.innerWidth
         )
       ).toBe(true);
+
+      await page.goto(`${mount}/tv/43`);
+      await expect(
+        page.getByRole('heading', { name: 'Fixture Series' })
+      ).toBeVisible();
+      await page.getByText(copy.tv, { exact: true }).click();
+      await expect(
+        page.locator('#details dt').getByText(copy.lastAired, { exact: true })
+      ).toHaveCount(0);
     }
   });
 }
