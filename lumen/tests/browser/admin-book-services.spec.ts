@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const backend of ['readarr', 'bindery', 'bookorbit'] as const) {
   test(`book services save ${backend} with the correct request defaults`, async ({
@@ -60,7 +61,7 @@ for (const backend of ['readarr', 'bindery', 'bookorbit'] as const) {
       services = [result];
       return route.fulfill({ json: result });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page
       .getByRole('link', { name: 'Open Book and Audiobook Services' })
       .click();

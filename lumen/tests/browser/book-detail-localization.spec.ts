@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const labels = {
   en: {
@@ -98,7 +99,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+    await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.locator('html')).toHaveAttribute(
       'dir',
@@ -123,7 +124,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       page.getByRole('button', { name: labels[locale].follow })
     ).toBeVisible();
 
-    await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU?f=audio');
+    await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU?f=audio'));
     await expect(
       page.getByRole('heading', { name: labels[locale].narrator })
     ).toBeVisible();

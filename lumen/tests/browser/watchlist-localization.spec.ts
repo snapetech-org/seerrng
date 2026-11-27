@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(
   process.env.LUMEN_WATCHLIST_LOCALE ?? ''
@@ -132,7 +133,7 @@ test('watchlist controls follow the saved account locale', async ({
     })
   );
 
-  await page.goto('/watchlist');
+  await page.goto(testAppPath('/watchlist'));
   const expected = copy[baseline ? 'en' : (locale as keyof typeof copy)];
   await expect(
     page.getByRole('heading', { name: expected.title })
