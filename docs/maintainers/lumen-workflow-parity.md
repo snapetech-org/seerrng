@@ -1,5 +1,22 @@
 ### Distinguish download-client saves from failed readback (2026-11-27)
 
+Lumen's download-client settings editor treats an acknowledged PUT followed by
+a failed settings read as an uncertain save. It keeps the edited polling
+interval available, shows the localized confirmation error, and allows a
+subsequent save to confirm and clear the draft. The existing API-key behavior
+also remains intact: saving a client with an already configured password does
+not send a replacement secret unless one was entered.
+
+The focused download-client browser suite passes 16/16 across desktop, iPhone,
+Android, and tablet. It covers the failed readback and successful retry in
+English, French, and Arabic, plus rTorrent username persistence, periodic
+health refresh, and the no-client state. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-download-client-readback-20261127/`.
+These browser fixtures do not verify live settings persistence or download
+client connectivity. No UI or styling changes were needed.
+
+release-note: `release-notes/lumen-download-client-readback.md`
+
 Download Client Settings previously used the ordinary save-failure feedback
 when an acknowledged update could not be confirmed by readback. It now reports
 that confirmation is unavailable and keeps the edited interval and client fields
