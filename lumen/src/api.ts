@@ -189,6 +189,7 @@ export interface MediaInfo {
   status?: number;
   status4k?: number;
   serviceUrl?: string | null;
+  audiobookServiceUrl?: string | null;
   serviceUrl4k?: string | null;
   tautulliUrl?: string | null;
   tautulliUrl4k?: string | null;

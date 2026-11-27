@@ -12286,14 +12286,22 @@ Matched native visuals and live request authorization remain open.
 
 release-note: `release-notes/lumen-book-detail-request-link.md`
 
-### Open: contextual Book management sheet
+### Book contextual management sheet (2026-11-27)
 
-Native Book Details offers a Manage Book sheet to users with request
-management access when SeerrNG has a known media record. It summarizes book
-availability, shows ebook and audiobook downloads and non-declined requests,
-links administrators to both configured Bookshelf services, and exposes the
-existing administrative blocklist, request, issue, and library-management
-actions. Lumen currently has separate request, issue, and blocklist entry
-points, but no equivalent consolidated contextual sheet. This remains an open
-feature-parity gap; the native API's destructive library actions and service
-identity checks need to be mapped before implementing it.
+Lumen Book Detail now offers Manage Book to request managers when a linked
+media record is known. The sheet lists non-declined requests and links each to
+the existing permission-checked Request Center, displays ebook and audiobook
+download status, and provides administrators safe links to configured
+Bookshelf services. Administrators can inspect the server-verified library
+removal plan and delete copies only after reviewing the exact services and
+confirming; the submitted plan token is the one returned by the API. Users
+without management access neither see the entry nor read the admin-only plan.
+
+Fixture browser tests cover both formats, declined-request exclusion, safe
+service URLs, exact-plan confirmation, successful removal payload, and the
+no-permission path. The Lumen production build passes. Issue management stays
+on its existing issue surfaces and request changes open the Request Center;
+native-matched visual comparison and live Bookshelf/removal verification are
+still required before calling this sheet fully equivalent.
+
+release-note: `release-notes/lumen-book-management-sheet.md`
