@@ -7225,6 +7225,7 @@ export const messages = {
   'lumen.gameContent.contentTypeUnknown': 'نوع المحتوى غير معروف',
   'lumen.gameContent.itemsMissing': 'ينقص مكتبتك {count} من العناصر',
   'lumen.gameContent.itemMissing': 'ينقص مكتبتك عنصر واحد.',
+  'lumen.gameContent.loading': 'جارٍ التحقق من إصدارات اللعبة…',
   'lumen.gameContent.editionContentsUnknown': 'محتوى هذا الإصدار غير معروف.',
   'lumen.gameContent.baseOwned': 'لديك اللعبة الأساسية بالفعل.',
   'lumen.gameContent.baseNotOwned': 'اللعبة الأساسية غير موجودة في مكتبتك بعد.',

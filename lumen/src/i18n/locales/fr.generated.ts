@@ -7859,6 +7859,7 @@ export const messages = {
     '{count} éléments manquent dans votre bibliothèque',
   'lumen.gameContent.itemMissing':
     'Il manque 1 élément dans votre bibliothèque.',
+  'lumen.gameContent.loading': 'Vérification des éditions…',
   'lumen.gameContent.editionContentsUnknown':
     'Le contenu de cette édition est inconnu.',
   'lumen.gameContent.baseOwned': 'Vous avez déjà le jeu de base.',

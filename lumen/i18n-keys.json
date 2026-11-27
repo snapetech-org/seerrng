@@ -6074,6 +6074,7 @@
   "lumen.gameContent.contentTypeUnknown",
   "lumen.gameContent.itemsMissing",
   "lumen.gameContent.itemMissing",
+  "lumen.gameContent.loading",
   "lumen.gameContent.editionContentsUnknown",
   "lumen.gameContent.baseOwned",
   "lumen.gameContent.baseNotOwned",

@@ -29,6 +29,12 @@ export default function GameContentPicker({
         retry={catalog.reload}
       />
     );
+  if (catalog.data === null)
+    return (
+      <p className="note" role="status">
+        {t('lumen.gameContent.loading', 'Checking editions…')}
+      </p>
+    );
   if (catalog.data?.available !== true) return null;
   const editions = Array.isArray(catalog.data.editions)
     ? catalog.data.editions

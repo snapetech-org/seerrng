@@ -7268,6 +7268,7 @@ export const messages = {
   'lumen.gameContent.contentTypeUnknown': 'Content type unknown',
   'lumen.gameContent.itemsMissing': '{count} items missing from your library',
   'lumen.gameContent.itemMissing': '1 item is missing from your library.',
+  'lumen.gameContent.loading': 'Checking editions…',
   'lumen.gameContent.editionContentsUnknown': 'Edition contents are unknown.',
   'lumen.gameContent.baseOwned': 'You already have the base game.',
   'lumen.gameContent.baseNotOwned': 'The base game is not in your library yet.',

@@ -12846,3 +12846,22 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-game-content-details.md`
+
+### Announce game edition catalog loading (2026-11-27)
+
+Native SeerrNG tells the user when edition and add-on information is being
+checked. Lumen previously rendered no picker content or status while the
+`/game-content/:id/editions` request was pending. The game detail now shows an
+accessible, localized loading status and replaces it with the picker once the
+catalog responds.
+
+The pending-request fixture covers English, French, and Arabic across desktop,
+iPhone, Android, and tablet (12 cases), confirms the picker appears after the
+response, and asserts no horizontal overflow. Matched baseline/candidate
+captures were inspected at 1440 × 900 and 390 × 844. The baseline showed the
+empty gap; the candidate shows “Checking editions…” in the existing note role.
+No CSS changed. Live provider timing and the production `/lumen/` mount were not
+exercised. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-picker-loading-20261127/`.
+
+release-note: `release-notes/lumen-game-content-loading.md`
