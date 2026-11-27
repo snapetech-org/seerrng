@@ -39,6 +39,7 @@ export default function DefaultUserPermissions({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const result = await api<{ defaultPermissions?: number }>(
         '/settings/main',
@@ -47,8 +48,23 @@ export default function DefaultUserPermissions({
           body: JSON.stringify({ defaultPermissions: Number(draft) }),
         }
       );
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       if (result.defaultPermissions !== Number(draft)) {
+        setFailure(
+          t(
+            'lumen.adminGeneral.permissions.confirmFailure',
+            'Could not confirm the saved default permissions.'
+          )
+        );
+        return;
+      }
+      const readback = await api<{ defaultPermissions?: number }>(
+        '/settings/main',
+        { cache: 'no-store' }
+      );
+      if (generation !== sessionGeneration()) return;
+      if (readback.defaultPermissions !== Number(draft)) {
         setFailure(
           t(
             'lumen.adminGeneral.permissions.confirmFailure',
@@ -64,13 +80,18 @@ export default function DefaultUserPermissions({
     } catch (error) {
       if (generation === sessionGeneration()) {
         setFailure(
-          friendlyError(
-            error,
-            t(
-              'lumen.adminGeneral.permissions.saveFailure',
-              'Could not save default permissions.'
-            )
-          )
+          writeAcknowledged
+            ? t(
+                'lumen.adminGeneral.permissions.confirmFailure',
+                'Could not confirm the saved default permissions.'
+              )
+            : friendlyError(
+                error,
+                t(
+                  'lumen.adminGeneral.permissions.saveFailure',
+                  'Could not save default permissions.'
+                )
+              )
         );
       }
     } finally {

@@ -64,6 +64,7 @@ export default function DefaultRequestQuotas({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const result = await api<{ defaultQuotas?: DefaultQuotas }>(
         '/settings/main',
@@ -78,8 +79,27 @@ export default function DefaultRequestQuotas({
           }),
         }
       );
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
-      const confirmed = result.defaultQuotas?.[category];
+      const mutationResult = result.defaultQuotas?.[category];
+      if (
+        !mutationResult ||
+        changed.some(([key, value]) => mutationResult[key] !== Number(value))
+      ) {
+        setFailure(
+          t(
+            'lumen.adminGeneral.quotas.confirmFailure',
+            'Could not confirm the saved default quota.'
+          )
+        );
+        return;
+      }
+      const readback = await api<{ defaultQuotas?: DefaultQuotas }>(
+        '/settings/main',
+        { cache: 'no-store' }
+      );
+      if (generation !== sessionGeneration()) return;
+      const confirmed = readback.defaultQuotas?.[category];
       if (
         !confirmed ||
         changed.some(([key, value]) => confirmed[key] !== Number(value))
@@ -87,7 +107,7 @@ export default function DefaultRequestQuotas({
         setFailure(
           t(
             'lumen.adminGeneral.quotas.confirmFailure',
-            'Could not confirm the saved default quota.'
+            'Could not confirm the saved default quota. Try again.'
           )
         );
         return;
@@ -100,13 +120,18 @@ export default function DefaultRequestQuotas({
     } catch (error) {
       if (generation === sessionGeneration()) {
         setFailure(
-          friendlyError(
-            error,
-            t(
-              'lumen.adminGeneral.quotas.saveFailure',
-              'Could not save the default quota.'
-            )
-          )
+          writeAcknowledged
+            ? t(
+                'lumen.adminGeneral.quotas.confirmFailure',
+                'Could not confirm the saved default quota. Try again.'
+              )
+            : friendlyError(
+                error,
+                t(
+                  'lumen.adminGeneral.quotas.saveFailure',
+                  'Could not save the default quota.'
+                )
+              )
         );
       }
     } finally {
@@ -129,7 +154,12 @@ export default function DefaultRequestQuotas({
       ]}
       action={
         showPermissionsLink ? (
-          <Link to="#default-user-permissions">{t('lumen.adminGeneral.quotas.permissionsLink', 'Default User Permissions')}</Link>
+          <Link to="#default-user-permissions">
+            {t(
+              'lumen.adminGeneral.quotas.permissionsLink',
+              'Default User Permissions'
+            )}
+          </Link>
         ) : undefined
       }
     >

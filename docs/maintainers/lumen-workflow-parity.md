@@ -1,5 +1,30 @@
 # Lumen workflow parity
 
+### Confirm default request quotas and permissions from saved settings (2026-11-27)
+
+Default request quotas and new-user permissions previously treated the settings
+POST response as proof of persistence. Both flows now make a no-store read of
+the saved settings and report success only when the edited values match the
+readback. A stale or unavailable readback keeps the quota draft or permission
+selection available for retry and reports that persistence could not be
+confirmed.
+
+The focused browser cases pass 8/8 across desktop, iPhone, Android, and tablet
+through SeerrNG's compiled `mountLumenFrontend` Express middleware at `/lumen/`.
+Existing quota, default-permission, and instance-policy regression cases pass
+12/12 through the same production mount. The Lumen production build passes.
+Matched desktop and iPhone captures show the existing form geometry and
+placement unchanged: confirmed saves retain the success message, while stale
+readbacks retain the draft and show the existing confirmation error. Fixtures
+simulate a server that acknowledges a write before it persists; live server
+storage and administrator authorization remain unverified. No layout or styles
+changed.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-defaults-readback-20261127/`.
+
+release-note: `release-notes/lumen-confirm-request-defaults.md`
+
 ### Cover Soulseek and ReadMeABook administration workflows (2026-11-27)
 
 Added browser acceptance for the previously untested Lumen request-service
