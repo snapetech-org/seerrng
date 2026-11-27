@@ -14,11 +14,14 @@ it differs from the first air date, matching native duplicate-date handling,
 and keeps the season/episode detail when episode metadata is present. The
 fixture also verifies that a duplicate first/last date is omitted.
 
-The existing metadata browser fixture verifies the fallback in English,
-French, and Arabic across desktop, iPhone, Android, and tablet (12 passes).
-Matched baseline and candidate captures were rendered at desktop and iPhone
-sizes; the added value fits the existing facts grid without horizontal
-overflow. Evidence is retained at
+The production Lumen build passes, and the metadata browser fixture passes
+12/12 across English, French, and Arabic on desktop, iPhone, Android, and
+tablet in both standalone preview and the compiled production bundle through
+SeerrNG's Express `mountLumenFrontend` at `/lumen/`. A preliminary attempt
+against Vite Preview at `/lumen/` was excluded because it did not exercise the
+SeerrNG mount. Matched baseline and candidate captures were rendered at desktop
+and iPhone sizes; the added value fits the existing facts grid without
+horizontal overflow. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-last-air-date-20261127/`.
 
 release-note: `release-notes/lumen-tv-last-air-date.md`
