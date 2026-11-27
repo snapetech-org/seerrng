@@ -159,6 +159,7 @@ test('directory Watchlist and Requests links scope reads to the selected user', 
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = testApiPath(route.request().url());
+    const url = new URL(route.request().url());
     switch (path) {
       case '/auth/me':
         return route.fulfill({
@@ -629,6 +630,7 @@ test('Discover Watchlist uses the discovery endpoint and configured media catego
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/api/v1/**', (route) => {
     const path = testApiPath(route.request().url());
+    const url = new URL(route.request().url());
     if (path.endsWith('/watchlist')) {
       paths.push(path + url.search);
       return route.fulfill({

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Narrow phones: the four Requests tabs must all be on screen without scrolling the tab bar, and a
 // long status pill must stay inside its row.
@@ -68,7 +69,7 @@ test('a long status pill stays inside its Requests row on narrow screens', async
   test.skip(info.project.name !== 'desktop', 'sets its own viewport');
   await fixture(page);
   await page.setViewportSize({ width: 360, height: 800 });
-  await page.goto('/requests?tab=all');
+  await page.goto(testAppPath('/requests?tab=all'));
   const row = page.locator('.rq').filter({ hasText: 'Pinned book' });
   await expect(row.locator('.st .pill')).toBeVisible();
   for (const width of [360, 375, 390, 430, 768]) {

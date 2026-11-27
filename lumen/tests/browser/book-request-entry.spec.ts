@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function bookFixture(
   page: Page,
@@ -70,7 +71,7 @@ test('book details link an authorized viewer to their active format request', as
   page,
 }) => {
   const statusReads = await bookFixture(page, 32, 1);
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   const link = page.getByRole('link', { name: 'View Ebook request' });
   await expect(link).toBeVisible();
   await link.click();
@@ -82,7 +83,7 @@ test('book details do not reveal another requester’s active request to an ordi
   page,
 }) => {
   const statusReads = await bookFixture(page, 0, 2);
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   await expect(
     page.getByRole('link', { name: 'View Ebook request' })
   ).toHaveCount(0);

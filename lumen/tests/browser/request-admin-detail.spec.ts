@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const bookId = 'bookshelf:42:aGM6MTIzNDU';
 
@@ -51,7 +52,7 @@ test('request managers see the pending count and can approve a book in place', a
     return route.fulfill({ json: { page: 1, totalPages: 1, results: [] } });
   });
 
-  await page.goto('/requests');
+  await page.goto(testAppPath('/requests'));
   await expect(
     page.locator('[aria-label="Pending requests: 1"]:visible')
   ).toHaveCount(1);
@@ -60,7 +61,7 @@ test('request managers see the pending count and can approve a book in place', a
       path: `${process.env.UI_EVIDENCE_DIR}/${testInfo.project.name}-requests.png`,
       fullPage: true,
     });
-  await page.goto(`/book/${encodeURIComponent(bookId)}`);
+  await page.goto(testAppPath(`/book/${encodeURIComponent(bookId)}`));
   await expect(
     page.getByRole('button', { name: 'Approve request' })
   ).toBeVisible();

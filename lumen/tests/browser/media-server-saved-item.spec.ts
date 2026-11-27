@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const testAppPath = (path: string) =>
   `${process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : ''}${path}`;
@@ -137,7 +138,7 @@ for (const [serverType, name] of [
     page,
   }, info) => {
     const { reads, writes } = await fixture(page, serverType);
-    await page.goto('/tv/202');
+    await page.goto(mountedTestAppPath('/tv/202'));
     await openMediaServerActions(page);
     const add = page.getByRole('button', {
       name: `Add Saved Item Fixture to ${name}`,
@@ -173,7 +174,7 @@ for (const [serverType, name] of [
 
 test('4K saved state uses the selected quality', async ({ page }) => {
   const { reads, writes } = await fixture(page, 2, { fourK: true });
-  await page.goto('/tv/202?quality=4k');
+  await page.goto(mountedTestAppPath('/tv/202?quality=4k'));
   await openMediaServerActions(page);
   await expect(
     page.getByRole('button', {
@@ -198,7 +199,7 @@ test('read retry only reads and does not repeat a saved action', async ({
   page,
 }) => {
   const { reads, writes } = await fixture(page, 1, { failInitialRead: true });
-  await page.goto('/tv/202');
+  await page.goto(mountedTestAppPath('/tv/202'));
   await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Retry Plex Watchlist status' })
@@ -219,7 +220,7 @@ test('unconfigured media servers do not show or query a saved action', async ({
   page,
 }) => {
   const { reads, writes } = await fixture(page, 4);
-  await page.goto('/tv/202');
+  await page.goto(mountedTestAppPath('/tv/202'));
   await expect(
     page.getByRole('heading', { name: 'Saved Item Fixture' })
   ).toBeVisible();
@@ -236,7 +237,7 @@ test('an unlinked account offers recovery without attempting a write', async ({
   const { writes } = await fixture(page, 1, {
     unavailableReason: 'account-not-linked',
   });
-  await page.goto('/tv/202');
+  await page.goto(mountedTestAppPath('/tv/202'));
   await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Plex Watchlist unavailable' })
@@ -263,7 +264,7 @@ test('a series absent from the viewer catalog has a disabled explained action', 
   const { writes } = await fixture(page, 2, {
     unavailableReason: 'series-not-found',
   });
-  await page.goto('/tv/202');
+  await page.goto(mountedTestAppPath('/tv/202'));
   await openMediaServerActions(page);
   await expect(
     page.getByRole('button', { name: 'Jellyfin Favorites unavailable' })

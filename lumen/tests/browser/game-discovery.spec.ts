@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 
@@ -133,7 +134,7 @@ test('Game Finder pages with the submitted filters and saves, runs and deletes s
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('./games/discovery');
+  await page.goto(mountedTestAppPath('./games/discovery'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.dir)).toBe(
     locale === 'ar' ? 'rtl' : 'ltr'

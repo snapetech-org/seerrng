@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Follow-ups to the audit pass: sideways phones, search tap target, settings checkbox, and
 // one request per page load for the public settings and the signed-in user.
@@ -50,7 +51,7 @@ for (const [width, height] of [
     });
     const page = await context.newPage();
     await fixtures(page);
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     const tabs = page.getByRole('navigation', { name: 'Tabs' });
     const chips = page.locator('.navchips');
     await expect(chips).toBeVisible();
@@ -82,7 +83,7 @@ test('the search field fills its bar so a tap anywhere in it types', async ({
 }) => {
   test.skip(page.viewportSize()!.width >= 1040, 'phone and tablet search box');
   await fixtures(page);
-  await page.goto('/search');
+  await page.goto(testAppPath('/search'));
   const bar = (await page.locator('#sq-label').boundingBox())!;
   const field = (await page.locator('#sq').boundingBox())!;
   expect(bar.height).toBeGreaterThanOrEqual(44);
@@ -98,7 +99,7 @@ test('the slash shortcut focuses search without interrupting editing or dialogs'
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   const search = page.locator('#tq');
   await expect(page.locator('#view')).toBeVisible();
 
@@ -183,7 +184,7 @@ test('the Lumen settings checkbox has a 44px touch target and stays keyboard fri
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   const lock = page.locator('.cfg-lock').first();
   await expect(lock).toBeVisible();
   const input = lock.locator('input');
@@ -213,7 +214,7 @@ test('a cold load asks for the public settings and the signed-in user once each'
 }) => {
   const counts: Record<string, number> = {};
   await fixtures(page, counts);
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await expect(page.locator('.navchips')).toBeVisible();
   // let late rows and rechecks settle before counting
   await page.waitForTimeout(1500);
@@ -250,7 +251,7 @@ test('signing in does not ask for the public settings again', async ({
     signedIn = true;
     return route.fulfill({ json: { id: 1, displayName: 'fam' } });
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByLabel('Username', { exact: true }).fill('fam');
   await page.getByLabel('Password').fill('secret');
   await page.getByRole('button', { name: 'Sign In', exact: true }).click();

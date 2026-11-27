@@ -1,4 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function capture(page: Page, info: TestInfo) {
   if (
@@ -67,7 +68,7 @@ test('issue reporting sheet localizes controls and preserves its submission', as
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/movie/20');
+  await page.goto(testAppPath('/movie/20'));
   const text = (english: string, french: string, arabic: string) =>
     candidate
       ? locale === 'ar'

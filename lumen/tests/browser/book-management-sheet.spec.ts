@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+import { testAppPath } from './testAppPath';
 
 async function openBookManager(page: Page, permissions: number) {
   const deletes: { path: string; body: unknown }[] = [];
@@ -142,7 +143,7 @@ async function openBookManager(page: Page, permissions: number) {
     }
     return route.fulfill({ json: {} });
   });
-  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await page.goto(testAppPath('/book/bookshelf%3A42%3AaGM6MTIzNDU'));
   return { deletes, libraryReads };
 }
 
@@ -194,7 +195,7 @@ test('book manager shows requests and both formats, and confirms exact library c
   ).toHaveAttribute('href', 'https://books.example/audiobook/12');
   await expect(
     sheet.getByRole('link', { name: 'View Request' })
-  ).toHaveAttribute('href', '/requests?requestId=77');
+  ).toHaveAttribute('href', testAppPath('/requests?requestId=77'));
   await expect(sheet.getByRole('link', { name: 'View Request' })).toHaveCount(
     1
   );
@@ -288,7 +289,7 @@ test('cross-media manager reviews and resolves or deletes issues with permission
   const issues = sheet.getByRole('region', { name: /Issues/ });
   await expect(
     issues.getByRole('link', { name: 'Issue #91 · Open' })
-  ).toHaveAttribute('href', '/issues/91');
+  ).toHaveAttribute('href', testAppPath('/issues/91'));
   await issues.getByText('View Details').click();
   await expect(
     issues.getByText('Missing pages in this edition.')

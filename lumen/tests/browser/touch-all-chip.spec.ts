@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // The short "All" filter button on Movies/Series/Books/Audiobooks must still be a 44px touch target.
 test('the All availability button is at least 44px wide on touch screens', async ({
@@ -23,7 +24,7 @@ test('the All availability button is at least 44px wide on touch screens', async
       json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
     });
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const all = page
     .getByRole('group', { name: 'Availability' })
     .getByRole('button', {
