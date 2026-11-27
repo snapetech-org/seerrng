@@ -13800,3 +13800,24 @@ rendered UI or CSS changed. Evidence and traces are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-users-mount-20261127/`.
 
 release-note: none
+
+### Report acknowledged metadata writes with failed readback (2026-11-27)
+
+Metadata settings already retain drafts and show a localized confirmation error
+when the server returns stale values. The save path now uses that same
+confirmation feedback when the write succeeds but the subsequent no-cache GET
+fails, instead of reporting that the write itself failed. Rejected writes and
+provider tests keep their existing error handling. The browser fixture covers
+an acknowledged write followed by a 503 readback and a successful retry.
+
+The full metadata browser suite passes 16/16 across desktop, iPhone, Android,
+and tablet, including French and Arabic coverage. The standalone Lumen build
+passes. Baseline and candidate desktop captures show the same existing message
+and layout; no styles changed. The fixture does not prove live server
+authorization or persistence. The production `/lumen/` build and repository
+i18n check are part of this change's final validation.
+
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-metadata-readback-20261127/`.
+
+release-note: `release-notes/lumen-metadata-readback.md`

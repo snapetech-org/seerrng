@@ -151,6 +151,7 @@ function MetadataForm({
     setFailure('');
     setNotice('');
     if (test || video) setStatuses({});
+    let writeAcknowledged = false;
     try {
       const body = test
         ? Object.fromEntries(
@@ -167,6 +168,7 @@ function MetadataForm({
           body: JSON.stringify(body),
         }
       );
+      writeAcknowledged = !test;
       if (generation !== sessionGeneration()) return;
       if (test || video) setStatuses(statusValues(response.tests, providers));
       if (!test) {
@@ -200,18 +202,23 @@ function MetadataForm({
       if (error instanceof ApiError && (test || video))
         setStatuses(statusValues(error.testResults, providers));
       setFailure(
-        friendlyError(
-          error,
-          test
-            ? t(
-                'lumen.metadata.testFailed',
-                'Could not test metadata providers.'
-              )
-            : t(
-                'lumen.metadata.saveFailed',
-                'Could not save metadata settings.'
-              )
-        )
+        writeAcknowledged
+          ? t(
+              'lumen.metadata.confirmFailed',
+              'Could not confirm the saved metadata settings.'
+            )
+          : friendlyError(
+              error,
+              test
+                ? t(
+                    'lumen.metadata.testFailed',
+                    'Could not test metadata providers.'
+                  )
+                : t(
+                    'lumen.metadata.saveFailed',
+                    'Could not save metadata settings.'
+                  )
+            )
       );
     } finally {
       pending.current = false;

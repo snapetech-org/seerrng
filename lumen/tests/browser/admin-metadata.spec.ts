@@ -212,6 +212,8 @@ test('metadata sections save independently and expose failed provider checks', a
   };
   let persistWrites = false;
   let failWriteOnce = true;
+  let failReadbackOnce = false;
+  let readbackFailureQueued = false;
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
     route.fulfill({ json: {} })
@@ -225,6 +227,13 @@ test('metadata sections save independently and expose failed provider checks', a
       return route.fulfill({ json: { id: 1, permissions: 2 } });
     if (!path.startsWith(base)) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
+      if (failReadbackOnce) {
+        failReadbackOnce = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Metadata settings are temporarily unavailable.' },
+        });
+      }
       return route.fulfill({ json: settings[path] });
     }
     const body = request.postDataJSON();
@@ -241,6 +250,10 @@ test('metadata sections save independently and expose failed provider checks', a
         status: 503,
         json: { message: 'Metadata service unavailable.' },
       });
+    }
+    if (!persistWrites && !readbackFailureQueued) {
+      failReadbackOnce = true;
+      readbackFailureQueued = true;
     }
     if (persistWrites) Object.assign(settings[path], body);
     return route.fulfill({ json: settings[path] });
