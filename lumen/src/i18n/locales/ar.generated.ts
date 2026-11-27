@@ -2504,6 +2504,8 @@ export const messages = {
   'lumen.adminNotifications.retry': 'إعادة المحاولة',
   'lumen.adminNotifications.saveChannel': 'حفظ {channel}',
   'lumen.adminNotifications.savedValue': 'قيمة محفوظة',
+  'lumen.adminNotifications.confirmFailure':
+    'تعذر تأكيد حفظ إعدادات الإشعارات. حاول مرة أخرى.',
   'lumen.adminNotifications.sendTest': 'إرسال اختبار {channel}',
   'lumen.adminNotifications.testDeliveryWebPush':
     'يتطلب اختبار التسليم اشتراك هذا الحساب في إشعارات Web Push عبر متصفح.',

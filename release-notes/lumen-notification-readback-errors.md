@@ -1,0 +1,1 @@
+Lumen notification administration now distinguishes an acknowledged settings update from a failed confirmation read. When the update succeeds but saved settings cannot be read back, it reports that confirmation failed and leaves the form available for retry.

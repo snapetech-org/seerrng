@@ -1,3 +1,20 @@
+### Distinguish notification saves from failed readback (2026-11-27)
+
+Instance notification settings previously displayed the ordinary save-failure
+message when a channel accepted a settings update but the follow-up read failed.
+They now report that persistence could not be confirmed and preserve the draft
+for retry. Confirmation feedback is localized in English, French, and Arabic.
+
+The full notification administration browser suite passes 28/28 across desktop,
+iPhone, Android, and tablet. The email workflow verifies rejected writes remain
+distinct from an acknowledged write followed by a 503, then retries and confirms
+the saved state; existing channel, redacted-secret, test-send, and navigation
+checks also pass. The standalone Lumen production build passes. API responses
+are fixtures; live notification delivery and persistence remain unverified. No
+layout or styles changed.
+
+release-note: `release-notes/lumen-notification-readback-errors.md`
+
 ### Distinguish recognition saves from failed readback (2026-11-27)
 
 Share and Image Recognition administration previously surfaced the raw API

@@ -67,7 +67,10 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
     if (request.method() === 'GET') {
       if (path.endsWith('/email') && staleEmailReadback) {
         staleEmailReadback = false;
-        return route.fulfill({ json: email });
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Unavailable' },
+        });
       }
       return route.fulfill({
         json: persistedChannels.get(path.slice(prefix.length)) ?? {
@@ -129,7 +132,7 @@ test('email tests keep saved credentials and Web Push saves independently', asyn
   ).toBeChecked();
   await save.click();
   await expect(page.getByRole('alert')).toHaveText(
-    'Email notification settings failed to save.'
+    'Could not confirm the saved notification settings. Try again.'
   );
   await expect(
     page.getByLabel('Use public Seerr logo instead of instance logo')

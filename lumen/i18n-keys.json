@@ -1625,6 +1625,7 @@
   "lumen.adminNotifications.retry",
   "lumen.adminNotifications.saveChannel",
   "lumen.adminNotifications.savedValue",
+  "lumen.adminNotifications.confirmFailure",
   "lumen.adminNotifications.sendTest",
   "lumen.adminNotifications.testDeliveryWebPush",
   "lumen.adminNotifications.title",

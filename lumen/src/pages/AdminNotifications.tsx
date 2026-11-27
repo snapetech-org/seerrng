@@ -449,6 +449,7 @@ function AgentForm({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const request: RequestInit = {
         method: 'POST',
@@ -483,6 +484,7 @@ function AgentForm({
       } else {
         const submitted = JSON.parse(String(request.body)) as Configuration;
         const updated = await api<Configuration>(endpoint, request);
+        writeAcknowledged = true;
         if (generation !== sessionGeneration()) return;
         const readback = await api<Configuration>(endpoint);
         if (generation !== sessionGeneration()) return;
@@ -573,15 +575,22 @@ function AgentForm({
     } catch {
       if (generation === sessionGeneration())
         setFailure(
-          n(
-            notificationMessageKey(
-              channel,
-              test ? testFailedMessage[channel] : settingsFailedMessage[channel]
-            ),
-            test
-              ? 'Could not send the test notification. Check the settings and try again.'
-              : 'Could not save notification settings. Try again.'
-          )
+          writeAcknowledged
+            ? n(
+                'lumen.adminNotifications.confirmFailure',
+                'Could not confirm the saved notification settings. Try again.'
+              )
+            : n(
+                notificationMessageKey(
+                  channel,
+                  test
+                    ? testFailedMessage[channel]
+                    : settingsFailedMessage[channel]
+                ),
+                test
+                  ? 'Could not send the test notification. Check the settings and try again.'
+                  : 'Could not save notification settings. Try again.'
+              )
         );
     } finally {
       pending.current = false;

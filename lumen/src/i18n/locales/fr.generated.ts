@@ -2720,6 +2720,8 @@ export const messages = {
   'lumen.adminNotifications.retry': 'Réessayer',
   'lumen.adminNotifications.saveChannel': 'Enregistrer {channel}',
   'lumen.adminNotifications.savedValue': 'Valeur enregistrée',
+  'lumen.adminNotifications.confirmFailure':
+    'Impossible de confirmer l’enregistrement des paramètres de notification. Réessayez.',
   'lumen.adminNotifications.sendTest': 'Envoyer un test {channel}',
   'lumen.adminNotifications.testDeliveryWebPush':
     'Pour tester la livraison, votre compte doit être abonné aux notifications Web Push sur un navigateur.',

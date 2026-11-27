@@ -2539,6 +2539,8 @@ export const messages = {
   'lumen.adminNotifications.retry': 'Retry',
   'lumen.adminNotifications.saveChannel': 'Save {channel}',
   'lumen.adminNotifications.savedValue': 'Saved value',
+  'lumen.adminNotifications.confirmFailure':
+    'Could not confirm the saved notification settings. Try again.',
   'lumen.adminNotifications.sendTest': 'Send {channel} Test',
   'lumen.adminNotifications.testDeliveryWebPush':
     'Test delivery requires a browser subscribed to Web Push on your account.',
