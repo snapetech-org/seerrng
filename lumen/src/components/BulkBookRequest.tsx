@@ -558,10 +558,12 @@ export default function BulkBookRequest({
   source,
   onComplete,
   fixedFormat,
+  buttonLabel,
 }: {
   source: Source;
   onComplete: () => void;
   fixedFormat?: Format;
+  buttonLabel?: string;
 }) {
   const { t } = useLumenLocale();
   const { user } = useAuth();
@@ -602,7 +604,7 @@ export default function BulkBookRequest({
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
-        {t('lumen.bulkBooks.title', 'Request Books')}
+        {buttonLabel || t('lumen.bulkBooks.title', 'Request Books')}
       </button>
       {open && (
         <RequestSheet

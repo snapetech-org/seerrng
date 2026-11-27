@@ -12249,3 +12249,24 @@ over-quota approval flow for books; native BookRequestModal also blocks a
 restricted book quota.
 
 release-note: `release-notes/lumen-book-detail-quota.md`
+
+### Book detail bibliography request entry (2026-11-27)
+
+Native Book Details offers “Request Bibliography” directly when the book has an
+author identity and the signed-in user can request books. Lumen previously made
+bulk author requests available only after opening the author page. Book Detail
+now launches the existing permission- and category-gated `BulkBookRequest`
+sheet with the current book preloaded and the author's remaining works loaded
+on demand. The request still uses the existing bulk request API, eligibility
+rules, destination options, and selected format; unauthorized users receive no
+entry point.
+
+Fixture-backed browser checks verify the current book keeps its provider,
+author, ISBN, and edition identity, additional author works load from the
+existing paginated endpoint, and the submitted bulk payload contains only the
+selected works. A permission case confirms the action and bibliography reads
+are absent for users without book-request access. Standalone browser and
+production-build results, native-matched visuals, and provider-backed request
+acceptance remain pending.
+
+release-note: `release-notes/lumen-book-detail-bibliography.md`

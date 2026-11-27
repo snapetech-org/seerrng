@@ -22,6 +22,7 @@ import {
 import { isAdministrator, useAuth } from '../auth';
 import BlocklistButton from '../components/BlocklistButton';
 import BookRequestOptions from '../components/BookRequestOptions';
+import BulkBookRequest from '../components/BulkBookRequest';
 import { StatLabel, statusOf } from '../components/cards';
 import {
   ActionBar,
@@ -758,6 +759,16 @@ export default function BookDetail() {
           />
           <ReaderDeliveryLink target={f} />
           <ReaderDownloads mediaId={b.mediaInfo?.id} type="book" format={f} />
+          {b.authorId && (
+            <BulkBookRequest
+              source={{ id: b.authorId, books: [b], nextOffset: 1 }}
+              onComplete={first.refresh}
+              buttonLabel={t(
+                'lumen.bulkBooks.requestBibliography',
+                'Request Bibliography'
+              )}
+            />
+          )}
           <ReportIssueButton type="book" title={b.title} media={b.mediaInfo} />
           {canViewFollowing(user?.permissions) && b.authorId && b.author && (
             <FollowButton

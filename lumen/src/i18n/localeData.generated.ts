@@ -8062,6 +8062,7 @@ export const localeData = [
       'lumen.bookDetail.quotaLoadFailure':
         'تعذر التحقق من حد طلبات الكتب. أعد المحاولة قبل تقديم الطلب.',
       'lumen.bookDetail.recheckQuota': 'إعادة التحقق من الحصة',
+      'lumen.bulkBooks.requestBibliography': 'طلب قائمة الأعمال',
     },
   },
   {
@@ -20434,6 +20435,7 @@ export const localeData = [
       'lumen.bookDetail.quotaLoadFailure':
         'Could not check the book request limit. Retry before requesting.',
       'lumen.bookDetail.recheckQuota': 'Recheck quota',
+      'lumen.bulkBooks.requestBibliography': 'Request Bibliography',
     },
   },
   {
@@ -34229,6 +34231,7 @@ export const localeData = [
       'lumen.bookDetail.quotaLoadFailure':
         'Impossible de vérifier la limite de demandes de livres. Réessayez avant de faire une demande.',
       'lumen.bookDetail.recheckQuota': 'Revérifier le quota',
+      'lumen.bulkBooks.requestBibliography': 'Demander la bibliographie',
     },
   },
   {

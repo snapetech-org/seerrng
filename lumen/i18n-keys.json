@@ -6672,5 +6672,6 @@
   "lumen.bookDetail.quotaRemaining",
   "lumen.bookDetail.quotaPeriod",
   "lumen.bookDetail.quotaLoadFailure",
-  "lumen.bookDetail.recheckQuota"
+  "lumen.bookDetail.recheckQuota",
+  "lumen.bulkBooks.requestBibliography"
 ]

@@ -5346,7 +5346,8 @@
     "lumen.bookDetail.quotaRemaining": "{remaining} of {limit} book requests remaining.",
     "lumen.bookDetail.quotaPeriod": "Quota period: {days} days.",
     "lumen.bookDetail.quotaLoadFailure": "Could not check the book request limit. Retry before requesting.",
-    "lumen.bookDetail.recheckQuota": "Recheck quota"
+    "lumen.bookDetail.recheckQuota": "Recheck quota",
+    "lumen.bulkBooks.requestBibliography": "Request Bibliography"
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -10982,7 +10983,8 @@
     "lumen.bookDetail.quotaRemaining": "Il vous reste {remaining} demande(s) de livre sur {limit}.",
     "lumen.bookDetail.quotaPeriod": "Période de quota : {days} jours.",
     "lumen.bookDetail.quotaLoadFailure": "Impossible de vérifier la limite de demandes de livres. Réessayez avant de faire une demande.",
-    "lumen.bookDetail.recheckQuota": "Revérifier le quota"
+    "lumen.bookDetail.recheckQuota": "Revérifier le quota",
+    "lumen.bulkBooks.requestBibliography": "Demander la bibliographie"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -16622,6 +16624,7 @@
     "lumen.bookDetail.quotaRemaining": "المتبقي {remaining} من أصل {limit} طلبات كتب.",
     "lumen.bookDetail.quotaPeriod": "فترة الحصة: {days} يومًا.",
     "lumen.bookDetail.quotaLoadFailure": "تعذر التحقق من حد طلبات الكتب. أعد المحاولة قبل تقديم الطلب.",
-    "lumen.bookDetail.recheckQuota": "إعادة التحقق من الحصة"
+    "lumen.bookDetail.recheckQuota": "إعادة التحقق من الحصة",
+    "lumen.bulkBooks.requestBibliography": "طلب قائمة الأعمال"
   }
 }
