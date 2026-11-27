@@ -82424,7 +82424,7 @@
     },
     {
       "path": "server/lib/viewerRequestCoverage.ts",
-      "line": 50,
+      "line": 57,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "value !== null &&\n  qualifiedRequestStatuses.includes(Number(value) as MediaRequestStatus)",
@@ -82433,7 +82433,7 @@
     },
     {
       "path": "server/lib/viewerRequestCoverage.ts",
-      "line": 54,
+      "line": 61,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "value === MediaStatus.AVAILABLE || value === MediaStatus.PARTIALLY_AVAILABLE",
@@ -82442,7 +82442,7 @@
     },
     {
       "path": "server/lib/viewerRequestCoverage.ts",
-      "line": 54,
+      "line": 61,
       "kind": "message-helper-expression",
       "field": "message",
       "expression": "value === MediaStatus.AVAILABLE || value === MediaStatus.PARTIALLY_AVAILABLE",
@@ -82451,7 +82451,7 @@
     },
     {
       "path": "server/lib/viewerRequestCoverage.ts",
-      "line": 210,
+      "line": 269,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",
@@ -82460,7 +82460,7 @@
     },
     {
       "path": "server/lib/viewerRequestCoverage.ts",
-      "line": 210,
+      "line": 269,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "error instanceof Error ? error.message : String(error)",

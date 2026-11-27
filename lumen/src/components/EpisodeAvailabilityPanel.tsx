@@ -4,7 +4,7 @@ import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import {
-  isSharedVideoSeason,
+  isSharedVideoEpisode,
   useVideoAvailability,
 } from '../videoAvailability';
 import { Facts } from './detail';
@@ -44,8 +44,6 @@ function EpisodeFiles({
   const { t } = useLumenLocale();
   const episodes = data?.episodes ?? [];
   const mode = useVideoAvailability();
-  const sharedHd = isSharedVideoSeason(coverage, season, false, mode);
-  const shared4k = isSharedVideoSeason(coverage, season, true, mode);
   return (
     <>
       <ServiceNote
@@ -71,6 +69,20 @@ function EpisodeFiles({
       {!!episodes.length && (
         <Facts
           rows={episodes.map((episode) => {
+            const sharedHd = isSharedVideoEpisode(
+              coverage,
+              season,
+              episode.episodeNumber,
+              false,
+              mode
+            );
+            const shared4k = isSharedVideoEpisode(
+              coverage,
+              season,
+              episode.episodeNumber,
+              true,
+              mode
+            );
             const reported =
               episode.availabilitySources ??
               (episode.sonarrAvailability

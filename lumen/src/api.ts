@@ -137,7 +137,12 @@ export interface MediaInfo {
   viewerRequestCoverage?: {
     standard?: boolean;
     fourK?: boolean;
-    seasons?: { seasonNumber: number; standard: boolean; fourK: boolean }[];
+    seasons?: {
+      seasonNumber: number;
+      standard: boolean;
+      fourK: boolean;
+      episodes?: { episodeNumber: number; standard: boolean; fourK: boolean }[];
+    }[];
   };
   id?: number;
   requests?: {

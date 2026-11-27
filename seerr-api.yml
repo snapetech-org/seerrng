@@ -7412,6 +7412,23 @@ components:
                     type: boolean
                   fourK:
                     type: boolean
+                  episodes:
+                    type: array
+                    description: Per-episode request coverage for the authenticated viewer.
+                    items:
+                      type: object
+                      required:
+                        - episodeNumber
+                        - standard
+                        - fourK
+                      properties:
+                        episodeNumber:
+                          type: integer
+                          minimum: 1
+                        standard:
+                          type: boolean
+                        fourK:
+                          type: boolean
         requests:
           type: array
           readOnly: true

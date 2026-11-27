@@ -38,6 +38,29 @@ export function isSharedVideoSeason(
   );
 }
 
+export function isSharedVideoEpisode(
+  coverage: MediaInfo['viewerRequestCoverage'],
+  seasonNumber: number,
+  episodeNumber: number,
+  is4k: boolean,
+  mode: AvailabilityMode
+) {
+  if (mode !== 'hide' && mode !== 'distinguish') return false;
+  const quality = is4k ? 'fourK' : 'standard';
+  if (coverage?.[quality]) return false;
+  const season = coverage?.seasons?.find(
+    (item) => item.seasonNumber === seasonNumber
+  );
+  if (season?.[quality]) return false;
+  if (Array.isArray(season?.episodes)) {
+    return !season.episodes.some(
+      (episode) => episode.episodeNumber === episodeNumber && episode[quality]
+    );
+  }
+  // Older servers only report whole-series and whole-season request coverage.
+  return isSharedVideoSeason(coverage, seasonNumber, is4k, mode);
+}
+
 export function isSharedVideoCopy(
   media: MediaInfo | undefined,
   is4k: boolean,

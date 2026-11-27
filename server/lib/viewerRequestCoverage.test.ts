@@ -70,7 +70,7 @@ describe('attachViewerRequestCoverage', () => {
     );
   });
 
-  it('counts full-season requests per quality but ignores episode-only requests', async () => {
+  it('returns viewer episode request coverage without exposing other viewers', async () => {
     const [viewer, otherUser] = await Promise.all([
       getRepository(User).findOneByOrFail({ email: 'admin@seerr.dev' }),
       getRepository(User).findOneByOrFail({ email: 'friend@seerr.dev' }),
@@ -118,10 +118,25 @@ describe('attachViewerRequestCoverage', () => {
           episodeNumbers: [1, 2],
         }),
       ]),
+      saveRequest(series, viewer, MediaRequestStatus.COMPLETED, true, [
+        new SeasonRequest({
+          seasonNumber: 2,
+          status: MediaRequestStatus.COMPLETED,
+          episodeNumbers: [2],
+        }),
+      ]),
       saveRequest(series, otherUser, MediaRequestStatus.COMPLETED, true, [
         new SeasonRequest({
           seasonNumber: 2,
           status: MediaRequestStatus.COMPLETED,
+          episodeNumbers: [3],
+        }),
+      ]),
+      saveRequest(series, viewer, MediaRequestStatus.PENDING, true, [
+        new SeasonRequest({
+          seasonNumber: 2,
+          status: MediaRequestStatus.PENDING,
+          episodeNumbers: [4],
         }),
       ]),
     ]);
@@ -132,8 +147,16 @@ describe('attachViewerRequestCoverage', () => {
       standard: false,
       fourK: false,
       seasons: [
-        { seasonNumber: 1, standard: true, fourK: true },
-        { seasonNumber: 2, standard: false, fourK: false },
+        { seasonNumber: 1, standard: true, fourK: true, episodes: [] },
+        {
+          seasonNumber: 2,
+          standard: false,
+          fourK: false,
+          episodes: [
+            { episodeNumber: 1, standard: true, fourK: false },
+            { episodeNumber: 2, standard: true, fourK: true },
+          ],
+        },
       ],
     });
   });
@@ -165,7 +188,9 @@ describe('attachViewerRequestCoverage', () => {
     assert.deepStrictEqual(series.viewerRequestCoverage, {
       standard: false,
       fourK: true,
-      seasons: [{ seasonNumber: 1, standard: false, fourK: true }],
+      seasons: [
+        { seasonNumber: 1, standard: false, fourK: true, episodes: [] },
+      ],
     });
   });
 

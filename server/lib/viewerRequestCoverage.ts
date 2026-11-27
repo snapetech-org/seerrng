@@ -14,6 +14,13 @@ export interface ViewerSeasonRequestCoverage {
   seasonNumber: number;
   standard: boolean;
   fourK: boolean;
+  episodes: ViewerEpisodeRequestCoverage[];
+}
+
+export interface ViewerEpisodeRequestCoverage {
+  episodeNumber: number;
+  standard: boolean;
+  fourK: boolean;
 }
 
 /**
@@ -55,6 +62,26 @@ const isAvailableStatus = (value: MediaStatus): boolean =>
 
 const is4kRequest = (value: boolean | number | string): boolean =>
   value === true || value === 1 || value === '1';
+
+const parseEpisodeNumbers = (value: string | number[] | null): number[] => {
+  let numbers: unknown = value;
+  if (typeof value === 'string') {
+    try {
+      numbers = JSON.parse(value);
+    } catch {
+      return [];
+    }
+  }
+  if (!Array.isArray(numbers)) return [];
+  return [
+    ...new Set(
+      numbers.filter(
+        (number): number is number =>
+          Number.isSafeInteger(number) && number > 0 && number <= 10_000
+      )
+    ),
+  ];
+};
 
 /**
  * Adds per-viewer request coverage to movie and TV media without attaching
@@ -136,20 +163,32 @@ export const attachViewerRequestCoverage = async (
         standard: new Set<number>(),
         fourK: new Set<number>(),
       };
+      const ownEpisodes = new Map<
+        number,
+        { standard: Set<number>; fourK: Set<number> }
+      >();
 
       for (const row of mediaRows) {
-        if (
-          row.seasonNumber !== null &&
-          (!isQualifiedStatus(row.seasonStatus) || row.episodeNumbers !== null)
-        ) {
-          continue;
-        }
-
         const quality = is4kRequest(row.is4k) ? 'fourK' : 'standard';
         if (row.seasonNumber === null) {
           ownWholeSeries[quality] = true;
+          continue;
+        }
+
+        if (!isQualifiedStatus(row.seasonStatus)) continue;
+        const seasonNumber = Number(row.seasonNumber);
+        if (row.episodeNumbers !== null) {
+          const episodeNumbers = parseEpisodeNumbers(row.episodeNumbers);
+          if (!episodeNumbers.length) continue;
+          const seasonEpisodes = ownEpisodes.get(seasonNumber) ?? {
+            standard: new Set<number>(),
+            fourK: new Set<number>(),
+          };
+          for (const episodeNumber of episodeNumbers)
+            seasonEpisodes[quality].add(episodeNumber);
+          ownEpisodes.set(seasonNumber, seasonEpisodes);
         } else {
-          ownSeasons[quality].add(Number(row.seasonNumber));
+          ownSeasons[quality].add(seasonNumber);
         }
       }
 
@@ -166,12 +205,32 @@ export const attachViewerRequestCoverage = async (
         ...availableSeasons.map((season) => Number(season.seasonNumber)),
         ...ownSeasons.standard,
         ...ownSeasons.fourK,
+        ...ownEpisodes.keys(),
       ]);
       const seasons = [...seasonNumbers].map((seasonNumber) => ({
         seasonNumber,
         standard:
           ownWholeSeries.standard || ownSeasons.standard.has(seasonNumber),
         fourK: ownWholeSeries.fourK || ownSeasons.fourK.has(seasonNumber),
+        episodes: [...(ownEpisodes.get(seasonNumber)?.standard ?? [])]
+          .concat([...(ownEpisodes.get(seasonNumber)?.fourK ?? [])])
+          .filter(
+            (episodeNumber, index, all) => all.indexOf(episodeNumber) === index
+          )
+          .sort((left, right) => left - right)
+          .map((episodeNumber) => ({
+            episodeNumber,
+            standard:
+              ownWholeSeries.standard ||
+              ownSeasons.standard.has(seasonNumber) ||
+              (ownEpisodes.get(seasonNumber)?.standard.has(episodeNumber) ??
+                false),
+            fourK:
+              ownWholeSeries.fourK ||
+              ownSeasons.fourK.has(seasonNumber) ||
+              (ownEpisodes.get(seasonNumber)?.fourK.has(episodeNumber) ??
+                false),
+          })),
       }));
       const getSeriesCoverage = (
         quality: 'standard' | 'fourK',

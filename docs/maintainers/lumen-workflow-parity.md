@@ -1,3 +1,26 @@
+### Show viewer-owned TV availability per episode (2026-11-27)
+
+Lumen previously applied a viewer's season-level request coverage to every
+episode in that season. A request for selected episodes could therefore make
+unrequested episodes look like the viewer's own media, and hide mode could
+suppress the viewer's own episode. The authenticated media response now carries
+per-episode request coverage by quality for approved or completed requests
+belonging to that viewer. Lumen uses that narrow coverage for episode labels;
+whole-series and whole-season requests still cover their matching episodes.
+Requester identity is not returned, and request coverage does not claim to
+describe media-server access. Older servers without episode coverage keep the
+season-level fallback.
+
+The focused server coverage test passes 4/4. The Lumen detail workflow passes
+4/4 across desktop, iPhone, Android, and tablet. Matched baseline/candidate
+captures at desktop and iPhone were inspected in both shared-availability
+modes; only the episode labels change. The standalone Lumen production build
+passes. Fixture browser responses do not verify a live household media server.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-episode-coverage-20261127/`.
+
+release-note: `release-notes/lumen-episode-ownership-availability.md`
+
 Download Client Settings previously used the ordinary save-failure feedback
 when an acknowledged update could not be confirmed by readback. It now reports
 that confirmation is unavailable and keeps the edited interval and client fields

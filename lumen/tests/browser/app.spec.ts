@@ -1821,7 +1821,7 @@ test('movie and series language and country facts follow the saved locale', asyn
 
 test('series details hide or mark shared seasons without reopening requests', async ({
   page,
-}) => {
+}, info) => {
   await fixtures(page);
   await page.clock.install();
   let mode = 'distinguish';
@@ -1853,7 +1853,12 @@ test('series details hide or mark shared seasons without reopening requests', as
             standard: false,
             seasons: [
               { seasonNumber: 1, standard: true, fourK: false },
-              { seasonNumber: 2, standard: false, fourK: true },
+              {
+                seasonNumber: 2,
+                standard: false,
+                fourK: false,
+                episodes: [{ episodeNumber: 1, standard: true, fourK: false }],
+              },
             ],
           },
         },
@@ -1870,6 +1875,13 @@ test('series details hide or mark shared seasons without reopening requests', as
             availabilitySources: [
               { sourceType: 'plex', hd: true, fourK: true },
               { sourceType: 'sonarr', hd: true, fourK: false },
+            ],
+          },
+          {
+            episodeNumber: 2,
+            name: 'Unrequested Episode',
+            availabilitySources: [
+              { sourceType: 'plex', hd: true, fourK: false },
             ],
           },
         ],
@@ -1891,8 +1903,14 @@ test('series details hide or mark shared seasons without reopening requests', as
   await panel.click();
   await page.getByLabel('Availability Season').selectOption('2');
   await expect(
-    page.getByText('Plex 4K · Shared HD', { exact: true })
+    page.getByText('Plex HD · Sonarr HD · Shared 4K', { exact: true })
   ).toBeVisible();
+  await expect(page.getByText('Shared HD', { exact: true })).toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('episode-availability-distinguish.png'),
+      fullPage: true,
+    });
   mode = 'hide';
   await page.clock.fastForward(181_000);
   await page.reload();
@@ -1902,8 +1920,22 @@ test('series details hide or mark shared seasons without reopening requests', as
   await expect(missing).toBeEnabled();
   await panel.click();
   await page.getByLabel('Availability Season').selectOption('2');
-  await expect(page.getByText('Plex 4K', { exact: true })).toBeVisible();
-  await expect(page.getByText(/Shared HD|Plex HD|Sonarr HD/)).toHaveCount(0);
+  await expect(
+    page.getByText('Plex HD · Sonarr HD', { exact: true })
+  ).toBeVisible();
+  const episodeFacts = page.locator('dl.facts2').filter({
+    hasText: 'E1 Fixture Episode',
+  });
+  await expect(episodeFacts).toContainText('Plex HD · Sonarr HD');
+  await expect(episodeFacts).not.toContainText('Shared HD');
+  await expect(
+    page.getByText('No visible file reported', { exact: true })
+  ).toBeVisible();
+  if (['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('episode-availability-hide.png'),
+      fullPage: true,
+    });
 });
 
 test('featured video cards distinguish and hide shared availability', async ({
