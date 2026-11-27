@@ -6948,6 +6948,23 @@ retained at
 
 release-note: `release-notes/lumen-movie-genre-navigation.md`
 
+### Management-sheet issue links under `/lumen/` (2026-11-27)
+
+Issue links in the movie and TV management sheet used raw root-relative anchors,
+so bundled deployments escaped from `/lumen/` to the native SeerrNG issue route.
+The links now use React Router and retain the Lumen mount prefix. The mounted
+browser fixture verifies both issue destinations and follows an open issue into
+Lumen's issue page.
+
+The production-built frontend served by Vite Preview under `/lumen/` passes eight
+cases across desktop, iPhone, Android, and tablet. Before/after manager-sheet
+captures at desktop and iPhone sizes were inspected; link semantics changed but
+the visible row layout did not. This verifies the frontend base path, not the
+compiled Express mount or live issue API. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-mounted-issue-links-20261127/`.
+
+release-note: `release-notes/fixed-lumen-mounted-issue-links.md`
+
 ### Movie and TV metadata provenance (2026-11-27)
 
 Lumen movie and TV detail disclosures now show metadata-source attribution and

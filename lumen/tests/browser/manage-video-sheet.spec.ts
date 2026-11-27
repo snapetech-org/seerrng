@@ -229,6 +229,18 @@ async function setup(
       calls.push({ method: request.method(), path });
       return route.fulfill({ status: 204, body: '' });
     }
+    if (path === '/issue/71' && request.method() === 'GET')
+      return route.fulfill({
+        json: {
+          id: 71,
+          status: 1,
+          issueType: 1,
+          createdAt: '2026-11-27T12:00:00.000Z',
+          createdBy: { id: 5, displayName: 'Reporter' },
+          media: { mediaType: 'movie', tmdbId: 42, title: 'Fixture Movie' },
+          comments: [],
+        },
+      });
     if (path === '/issue/71' && request.method() === 'DELETE') {
       calls.push({ method: request.method(), path });
       if (failIssueDelete) return route.fulfill({ status: 500 });
@@ -740,10 +752,10 @@ test('title manager exposes permission-scoped blocklist and issue actions', asyn
   const dialog = page.getByRole('dialog', { name: 'Manage Fixture Movie' });
   await expect(
     dialog.getByRole('link', { name: 'Issue #71 · Open' })
-  ).toHaveAttribute('href', '/issues/71');
+  ).toHaveAttribute('href', `${mount}/issues/71`);
   await expect(
     dialog.getByRole('link', { name: 'Issue #72 · Resolved' })
-  ).toHaveAttribute('href', '/issues/72');
+  ).toHaveAttribute('href', `${mount}/issues/72`);
   const issueDetails = dialog
     .locator('details.adv')
     .filter({ hasText: 'Playback stops after the opening scene.' });
@@ -810,6 +822,20 @@ test('title manager exposes permission-scoped blocklist and issue actions', asyn
   await expect
     .poll(() => state.calls.find((call) => call.path === '/blocklist')?.body)
     .toEqual({ mediaType: 'movie', title: 'Fixture Movie', tmdbId: 42 });
+});
+
+test('manager issue link stays inside the mounted Lumen route', async ({
+  page,
+}) => {
+  await setup(page, 2 | 1048576 | 7340032 | 268435456);
+  await page.getByRole('button', { name: 'Manage', exact: true }).click();
+  const issueLink = page
+    .getByRole('dialog', { name: 'Manage Fixture Movie' })
+    .getByRole('link', { name: 'Issue #71 · Open' });
+  await expect(issueLink).toHaveAttribute('href', `${mount}/issues/71`);
+  await issueLink.click();
+  await expect(page).toHaveURL(new RegExp(`${mount}/issues/71$`));
+  await expect(page.getByRole('heading', { name: 'Issue #71' })).toBeVisible();
 });
 
 test('issue action failure stops the batch, closes stale confirmation, and refreshes', async ({
