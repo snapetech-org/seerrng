@@ -5,6 +5,22 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Localize the redacted TV requester fallback (2026-11-27)
+
+When the API omits a requester's identity for privacy, the TV detail row now
+uses Lumen's existing localized `Unknown user` label instead of the literal
+English `someone`. The requester name remains redacted; this only changes its
+display fallback.
+
+The browser regression passes 12/12 across English, French, and Arabic on
+desktop, iPhone, Android, and tablet. Matched French baseline and candidate
+captures at 1280×900 and 390×844 show the same row placement; the longer phone
+label wraps without horizontal overflow or covering the sticky request action.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-redacted-requester-20261127/`.
+
+release-note: `release-notes/lumen-localize-redacted-tv-requester.md`
+
 ### Localize the pending movie 4K status (2026-11-27)
 
 Movie Details previously hard-coded `4K requested` when the 4K request was

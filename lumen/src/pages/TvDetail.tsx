@@ -854,7 +854,12 @@ export default function TvDetail() {
                   )}
                   {' · '}
                   {translate('lumen.tv.requestedBy', 'requested by {name}', {
-                    name: r.requestedBy?.displayName || 'someone',
+                    name:
+                      r.requestedBy?.displayName ||
+                      translate(
+                        'lumen.manageVideo.unknownUser',
+                        'Unknown user'
+                      ),
                   })}
                   {r.createdAt
                     ? ' · ' +

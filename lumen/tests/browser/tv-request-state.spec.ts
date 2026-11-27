@@ -431,19 +431,57 @@ test('a 4K request does not lock standard seasons', async ({ page }) => {
   await expect(page.locator('.srow').first()).not.toHaveClass(/locked/);
 });
 
-test('a redacted foreign request uses a non-identifying requester label', async ({
-  page,
-}) => {
-  const foreign = req([1]);
-  delete (foreign as { requestedBy?: unknown }).requestedBy;
-  await show(
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`a redacted foreign request uses a non-identifying ${locale} requester label`, async ({
     page,
-    { id: 2074, status: 3, requests: [foreign], seasons: [] },
-    [],
-    32
-  );
-  await expect(page.locator('.rinfo')).toContainText('requested by someone');
-});
+  }, testInfo) => {
+    const foreign = req([1]);
+    delete (foreign as { requestedBy?: unknown }).requestedBy;
+    await show(
+      page,
+      { id: 2074, status: 3, requests: [foreign], seasons: [] },
+      [],
+      32,
+      undefined,
+      {},
+      seasons,
+      locale
+    );
+    const expected = {
+      en: 'requested by Unknown user',
+      fr: 'demandé par Utilisateur inconnu',
+      ar: 'طُلب بواسطة مستخدم غير معروف',
+    }[locale];
+    const row = page.locator('.rinfo li');
+    await expect(row).toContainText(expected);
+    const captureDir = process.env.LUMEN_TV_REDACTED_CAPTURE_DIR;
+    if (
+      captureDir &&
+      locale === 'fr' &&
+      ['desktop', 'iphone'].includes(testInfo.project.name)
+    ) {
+      const previous = 'demandé par someone';
+      await row.evaluate((element, replacement) => {
+        element.innerHTML = element.innerHTML.replace(
+          'demandé par Utilisateur inconnu',
+          replacement
+        );
+      }, previous);
+      await page.screenshot({
+        path: `${captureDir}/baseline-${testInfo.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+      await page.reload();
+      await expect(page.locator('.rinfo li')).toContainText(expected);
+      await page.screenshot({
+        path: `${captureDir}/candidate-${testInfo.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+    }
+  });
+}
 
 test('a fully available series says so and offers no request', async ({
   page,
