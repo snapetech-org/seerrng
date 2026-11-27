@@ -6930,6 +6930,22 @@ retained at
 
 release-note: `release-notes/lumen-movie-screenplay-credit.md`
 
+### Movie detail genre navigation (2026-11-27)
+
+Movie genre names in the Lumen detail header now link to the matching filtered
+movie browse route, equivalent to native SeerrNG's Discover genre links. Only
+positive integer IDs within the supported route range are rendered; the
+existing three-genre display cap and header separators are preserved.
+
+The production-mounted browser fixture verifies both genre destinations across
+desktop, iPhone, Android, and tablet at English, French, and Arabic locales.
+Horizontal overflow is checked at all four viewports. Matched baseline and
+candidate captures were inspected at desktop and iPhone sizes. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-genre-navigation-20261127/`.
+
+release-note: `release-notes/lumen-movie-genre-navigation.md`
+
 ### Movie and TV metadata provenance (2026-11-27)
 
 Lumen movie and TV detail disclosures now show metadata-source attribution and

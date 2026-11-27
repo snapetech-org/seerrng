@@ -92,7 +92,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
             overview: 'A film fixture.',
             releaseDate: '2020-01-01',
             originalLanguage: 'en',
-            genres: [],
+            genres: [
+              { id: 18, name: 'Drama' },
+              { id: 35, name: 'Comedy' },
+            ],
             productionCompanies: [],
             productionCountries: [],
             credits: {
@@ -143,6 +146,12 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       page.getByRole('heading', { name: 'Fixture Film' })
     ).toBeVisible();
     await page.getByText(copy.movie, { exact: true }).click();
+    const drama = page.getByRole('link', { name: 'Drama', exact: true });
+    const comedy = page.getByRole('link', { name: 'Comedy', exact: true });
+    if (!captureOnly) {
+      await expect(drama).toHaveAttribute('href', `${mount}/movies?genre=18`);
+      await expect(comedy).toHaveAttribute('href', `${mount}/movies?genre=35`);
+    }
     if (capture && ['desktop', 'iphone'].includes(info.project.name))
       await page.screenshot({
         path: `${capture}/${locale}-movie-${info.project.name}.png`,

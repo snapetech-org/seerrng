@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   ApiError,
@@ -383,10 +383,16 @@ export default function MovieDetail() {
           certification && <span className="cert">{certification}</span>,
           fmtRun(m.runtime),
           m.genres
-            .filter((g) => g.id)
+            .filter(
+              (g) => Number.isInteger(g.id) && g.id > 0 && g.id <= 1_000_000_000
+            )
             .slice(0, 3)
-            .map((g) => g.name)
-            .join(', '),
+            .map((g, index) => (
+              <Fragment key={g.id}>
+                {index > 0 ? ', ' : null}
+                <Link to={`/movies?genre=${g.id}`}>{g.name}</Link>
+              </Fragment>
+            )),
         ]}
       />
       <div className="dbody">
