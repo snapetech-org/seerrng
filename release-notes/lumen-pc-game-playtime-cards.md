@@ -1,1 +1,1 @@
-Lumen now shows a localized main story playtime estimate and the supported PC platforms on PC game catalog cards. Retro and modern console cards show their emulation systems. Long system names wrap inside the existing card layout.
+Lumen now shows a localized main story playtime estimate and the supported PC platforms on PC game catalog cards. Retro and modern console cards show their emulation systems. Cards preserve the full release date, using up to two genres only when no date is available. Long system names wrap inside the existing card layout.

@@ -516,9 +516,7 @@ export function Games() {
             title={g.title}
             icon="game"
             stat={statOf(g, t)}
-            meta={[(g.releaseDate || '').slice(0, 4), g.genres?.[0]]
-              .filter(Boolean)
-              .join(' · ')}
+            meta={g.releaseDate || g.genres?.slice(0, 2).join(' · ')}
             details={[
               cat === 'game' && g.timeToBeat?.normally != null
                 ? t('lumen.games.mainStoryEstimate', 'Main Story: {hours} h', {

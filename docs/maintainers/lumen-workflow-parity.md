@@ -12739,6 +12739,27 @@ exercised for this display-only change. Evidence is retained at
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
 
+### Game catalog release-date metadata (2026-11-27)
+
+Native game cards show the full release date and fall back to up to two genres
+when no date is available. Lumen previously reduced dates to the year and
+showed only one genre. The `/games` catalog now preserves the full date string
+and uses the same two-genre fallback.
+
+The baseline and candidate use the same game fixture at desktop 1440x900 and
+iPhone 13 sizes. Candidate screenshots show `2025-01-01` in place of
+`2025 · Adventure`, with the existing playtime, supported platforms, and Steam
+ownership lines intact and no card layout change. The English, French, and
+Arabic catalog workflow passed on desktop, iPhone, Android, and tablet (12
+cases); adjacent catalog and detail workflows passed 20 cases across desktop,
+iPhone, Android, and tablet. The production build passed. Missing-date genre
+fallback is represented in the implementation
+but is not yet covered by a dedicated visual fixture; real provider behavior
+and production `/lumen/` routing were not exercised. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-pc-game-playtime-cards.md`
+
 ### Steam library ownership on PC game cards (2026-11-27)
 
 Native PC game catalog cards display a Steam Library badge when the catalog

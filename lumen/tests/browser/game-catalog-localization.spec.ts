@@ -190,6 +190,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     copy.searchPc
   );
   await expect(page.getByText('Fixture Game')).toBeVisible();
+  await expect(page.locator('.grid .poster .m')).toHaveText('2025-01-01');
   await expect(page.locator('.grid .poster .m2')).toHaveText([
     copy.mainStory,
     copy.pcSystems,
