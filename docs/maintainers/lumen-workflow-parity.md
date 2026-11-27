@@ -13349,9 +13349,10 @@ or notification behavior.
 The focused catalog browser fixture passes 12/12 across English, French, and
 Arabic on desktop, iPhone, Android, and tablet. It verifies the localized link
 and exact `/following` destination. The candidate was inspected at desktop and
-phone sizes against the existing game-catalog baseline; the phone toolbar wraps
-to a second row and the browser checks confirm there is no horizontal overflow.
-Screenshots are retained at
+phone sizes and compared with the existing game-catalog baseline; that baseline
+uses different catalog fixtures, so matched native/Lumen visual acceptance
+remains open. The phone toolbar wraps to a second row and the browser checks
+confirm there is no horizontal overflow. Screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-following-catalog-20261127/screenshots/`.
 The interaction is fixture-backed; live Following data and authorization are
 not exercised by this catalog check.
@@ -13370,10 +13371,11 @@ additional actions remain fully visible without horizontal scrolling.
 
 The Books discovery localization fixture passes 12/12 and the Music home action
 fixture passes 4/4 across desktop, iPhone, Android, and tablet. They verify the
-localized destinations and exact route paths. The rendered Books states were
+localized destinations and exact route paths. The candidate Books states were
 inspected in French at desktop and Arabic on iPhone; Music was inspected at
 desktop and iPhone after correcting the initially clipped shortcut row. No
-horizontal overflow is reported. Screenshots are retained at
+horizontal overflow is reported. Matching native/Lumen screenshots for these
+catalog states remain open. Screenshots are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-related-tools-20261127/`.
 These fixtures do not verify live Following data or route authorization.
 
