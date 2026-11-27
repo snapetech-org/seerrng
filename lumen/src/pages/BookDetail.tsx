@@ -453,6 +453,30 @@ export default function BookDetail() {
             request.bookFormat === 'both')
       )
     : undefined;
+  const visibleRequest = (() => {
+    const active = (b?.mediaInfo?.requests ?? []).filter((request) => {
+      const matchesFormat =
+        (request.bookFormat ?? 'ebook') === f || request.bookFormat === 'both';
+      if (!matchesFormat) return false;
+      if (request.status === 1 || request.status === 2) return true;
+      return (
+        request.status === 5 &&
+        (request.serviceTargets ?? []).some(
+          (target) =>
+            target.serviceType === 'readarr' &&
+            (target.format === f || target.format === 'both') &&
+            (target.status === MediaStatus.PENDING ||
+              target.status === MediaStatus.PROCESSING)
+        )
+      );
+    });
+    return (
+      active.find((request) => request.requestedBy?.id === user?.id) ??
+      (canManageRequests(user?.permissions) && active.length === 1
+        ? active[0]
+        : undefined)
+    );
+  })();
   const mayRequest = canRequestBook(user?.permissions);
   const approve = async () => {
     if (!pendingRequest || busy) return;
@@ -744,6 +768,23 @@ export default function BookDetail() {
             <Pill k={s.k} icon={s.ico}>
               <StatLabel s={s} />
             </Pill>
+          )}
+          {visibleRequest && (
+            <Link
+              className="chip"
+              to={`/requests?requestId=${visibleRequest.id}`}
+            >
+              {t(
+                'lumen.bookDetail.viewRequestFormat',
+                'View {format} request',
+                {
+                  format:
+                    visibleRequest.bookFormat === 'audiobook'
+                      ? t('lumen.bookDetail.audiobook', 'Audiobook')
+                      : t('lumen.bookDetail.ebook', 'Ebook'),
+                }
+              )}
+            </Link>
           )}
           <IndexerSearchLink
             category={audio ? 'audiobook' : 'ebook'}

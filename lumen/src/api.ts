@@ -150,6 +150,7 @@ export interface MediaInfo {
     requestedBy?: { id?: number; displayName?: string };
     serviceTargets?: {
       serviceType?: string;
+      format?: string;
       serverId?: number;
       status?: number;
     }[];

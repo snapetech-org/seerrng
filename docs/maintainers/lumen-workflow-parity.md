@@ -12270,3 +12270,30 @@ production-build results, native-matched visuals, and provider-backed request
 acceptance remain pending.
 
 release-note: `release-notes/lumen-book-detail-bibliography.md`
+
+### Book detail active-request entry (2026-11-27)
+
+Native Book Details provides a direct View Request action for the signed-in
+requester, and for a manager when exactly one active request matches the
+selected format. Lumen now links to the existing request-history route under
+those same visibility conditions. Another user's request ID is not linked for
+an ordinary viewer. The native request list remains authoritative for access
+and management actions.
+
+Browser fixtures verify an authorized requester opens the exact request
+history and an ordinary viewer sees no link and makes no request-history read.
+Matched native visuals and live request authorization remain open.
+
+release-note: `release-notes/lumen-book-detail-request-link.md`
+
+### Open: contextual Book management sheet
+
+Native Book Details offers a Manage Book sheet to users with request
+management access when SeerrNG has a known media record. It summarizes book
+availability, shows ebook and audiobook downloads and non-declined requests,
+links administrators to both configured Bookshelf services, and exposes the
+existing administrative blocklist, request, issue, and library-management
+actions. Lumen currently has separate request, issue, and blocklist entry
+points, but no equivalent consolidated contextual sheet. This remains an open
+feature-parity gap; the native API's destructive library actions and service
+identity checks need to be mapped before implementing it.
