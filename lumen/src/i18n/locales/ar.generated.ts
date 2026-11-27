@@ -7173,7 +7173,7 @@ export const messages = {
     'يتجاوز هذا الطلب حصتك. يمكنك طلب موافقة أحد مديري الطلبات عليه.',
   'lumen.quickRequest.requestAnyway': 'طلب على أي حال',
   'lumen.quickRequest.requestApprovalAnyway': 'طلب الموافقة على أي حال',
-  'lumen.quickRequest.title': 'طلب ⁨{title}⁩',
+  'lumen.quickRequest.title': 'طلب \u2068{title}\u2069',
   'lumen.gameContent.title': 'محتوى اللعبة',
   'lumen.gameContent.contentToRequest': 'المحتوى المطلوب',
   'lumen.gameContent.baseGame': 'اللعبة الأساسية',
