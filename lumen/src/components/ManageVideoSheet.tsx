@@ -665,15 +665,15 @@ export function ManageVideoSheet({
                   </ul>
                 )}
                 <div className="toolbar">
-                  <a
+                  <Link
                     className="btn btn-tonal btn-sm"
-                    href={`/requests?mediaType=${kind}&search=${encodeURIComponent(title)}`}
+                    to={`/requests?mediaType=${kind}&search=${encodeURIComponent(title)}`}
                   >
                     {t(
                       'lumen.manageVideo.openRequests',
                       'Open matching requests'
                     )}
-                  </a>
+                  </Link>
                 </div>
               </section>
 

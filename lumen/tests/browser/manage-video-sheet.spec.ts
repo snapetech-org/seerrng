@@ -585,13 +585,20 @@ test('request managers can open the panel without administrator library actions'
   ).toHaveCount(0);
   await expect(
     dialog.getByRole('link', { name: 'Open matching requests' })
-  ).toHaveAttribute('href', '/requests?mediaType=movie&search=Fixture%20Movie');
+  ).toHaveAttribute(
+    'href',
+    `${mount}/requests?mediaType=movie&search=Fixture%20Movie`
+  );
   await expect(dialog.getByText('Client: qBittorrent')).toBeVisible();
   await expect(dialog.locator('time')).toContainText('2026');
   await expect(
     dialog.getByRole('heading', { name: 'Verified library' })
   ).toHaveCount(0);
   expect(state.libraryReads).toBe(0);
+  await dialog.getByRole('link', { name: 'Open matching requests' }).click();
+  await expect(page).toHaveURL(
+    new RegExp(`${mount}/requests\\?mediaType=movie&search=Fixture%20Movie$`)
+  );
 });
 
 test('manager downloads show safe live progress and client details', async ({
