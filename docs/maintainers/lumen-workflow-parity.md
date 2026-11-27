@@ -6883,6 +6883,8 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+
+
 ### Avoid denied Adult catalog probes (2026-11-26)
 
 Lumen previously probed `/adult/search` to discover whether the Adult catalog
@@ -12448,5 +12450,22 @@ This qualifies the standalone self-account settings route only. It does not
 close the other account-route role and recovery matrix, production `/lumen/`
 mount behavior, live authorization or provider persistence, or native-matched
 visual acceptance.
+
+release-note: none
+
+### Standalone navigation and menu permission audit (2026-11-27)
+
+Ten Lumen navigation suites passed 288 browser cases with eight
+viewport-specific skips across desktop, iPhone, Android, and tablet. Coverage
+includes native Discover destinations, administration and delegated user
+management links, category and service availability, Adult maturity and
+permission gates, Game Finder and My Games, request-only menu entries, and
+mobile navigation behavior. French, Arabic, and narrow-phone screenshots are
+retained with the run artifacts at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-navigation-audit-20261127/`.
+
+This confirms the exercised standalone menu and responsive entry points. It
+does not qualify every Lumen route, the production `/lumen/` mount, native
+matched visual parity, or live provider behavior.
 
 release-note: none
