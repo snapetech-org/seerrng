@@ -17,7 +17,7 @@ jobs:
     name: Build, proxy security and browser tests
     runs-on: ubuntu-24.04
     # The full browser suite runs every case in four viewports after the image checks.
-    timeout-minutes: 75
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -63,7 +63,7 @@ jobs:
         run: npx --no-install playwright install chromium
       - name: Test Lumen in desktop, phone and tablet viewports
         working-directory: lumen
-        run: npm run test:browser -- --workers=2
+        run: npm run test:browser -- --workers=4
         env:
           LUMEN_CAPTURE_MODE: candidate
       - name: Check out the pre-request TV UI baseline
