@@ -192,7 +192,7 @@ function UserSettingsBookmark() {
   const ownDestination: Record<string, string> = {
     'linked-accounts': '/me/account/linked-accounts',
     'tv-request-access': '/me/account/tv-requests',
-    'episode-queue': '/me/account/tv-requests',
+    'episode-queue': '/me/account/tv-requests#episode-queue',
     maturity: '/me/account#maturity-controls',
     notifications: '/me/account/notifications',
     'client-tokens': '/me/account/client-tokens',
@@ -347,7 +347,7 @@ function ProfileSettingsBookmark() {
     permissions: '/me/account#account-permissions',
     'linked-accounts': '/me/account/linked-accounts',
     'client-tokens': '/me/account/client-tokens',
-    'episode-queue': '/me/account/tv-requests',
+    'episode-queue': '/me/account/tv-requests#episode-queue',
     'tv-request-access': '/me/account/tv-requests',
     maturity: '/me/account#maturity-controls',
   };

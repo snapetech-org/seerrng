@@ -104,6 +104,8 @@ test('password and Episode Queue bookmarks scroll to the selected section after 
   for (const [path, id] of [
     ['./me/account#password', 'password'],
     ['./me/account/tv-requests#episode-queue', 'episode-queue'],
+    ['./profile/settings/episode-queue?from=native', 'episode-queue'],
+    ['./users/2/settings/episode-queue?from=native', 'episode-queue'],
   ]) {
     await page.goto(appPath(path));
     await expect(page.locator(`section#${id}`)).toHaveAttribute(
@@ -170,6 +172,14 @@ test('Classic self-service settings bookmarks open every matching Lumen section'
     ],
     [
       '/settings/episode-queue?from=native',
+      '/me/account/tv-requests?from=native#episode-queue',
+    ],
+    [
+      '/profile/settings/episode-queue?from=native',
+      '/me/account/tv-requests?from=native#episode-queue',
+    ],
+    [
+      '/users/2/settings/episode-queue?from=native',
       '/me/account/tv-requests?from=native#episode-queue',
     ],
   ] as const) {

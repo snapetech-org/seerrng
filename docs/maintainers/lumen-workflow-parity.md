@@ -6973,6 +6973,20 @@ credential persistence, and independent linguistic review remain unverified;
 this UI milestone is incomplete until those checks pass.
 release-note: none
 
+### Episode Queue bookmark section parity (2026-11-27)
+
+The native profile settings and self-user settings Episode Queue bookmarks now
+redirect to Lumen's account TV-request settings with the `#episode-queue`
+anchor. This uses the existing loaded-section scroll behavior and preserves
+bookmark query parameters. Browser coverage checks the native settings route,
+both legacy profile aliases, query preservation, and scrolling to the actual
+Episode Queue section on desktop, iPhone, Android, and tablet (8/8 passed).
+The production bundle builds successfully. No style or layout values changed;
+a matched native screenshot comparison was not performed. Other-account
+manager bookmarks continue to open the delegated administrator panel.
+
+release-note: `release-notes/lumen-episode-queue-bookmarks.md`
+
 ### Movie screenplay credit (2026-11-27)
 
 Lumen's movie Facts disclosure now shows the primary Screenplay, Writer, or
