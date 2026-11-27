@@ -25,7 +25,15 @@ export const mapWithConcurrency = async <Input, Output>(
 
 export const settlePromisesWithin = async <Result>(
   promises: readonly Promise<Result>[],
-  timeoutMs: number
+  timeoutMs: number,
+  /**
+   * Once the promises at `primary` have settled, wait at most `graceMs` more
+   * for the rest (still bounded by `timeoutMs`).
+   */
+  {
+    primary = [],
+    graceMs,
+  }: { primary?: readonly number[]; graceMs?: number } = {}
 ): Promise<{
   results: PromiseSettledResult<Result>[];
   timedOut: boolean;
@@ -51,11 +59,35 @@ export const settlePromisesWithin = async <Result>(
     }, timeoutMs);
   });
 
+  let graceHandle: ReturnType<typeof setTimeout> | undefined;
+  let settled = false;
+  const primaryPromises = primary
+    .filter((index) => index >= 0 && index < trackedPromises.length)
+    .map((index) => trackedPromises[index]);
+  const grace =
+    graceMs !== undefined && primaryPromises.length > 0
+      ? Promise.all(primaryPromises).then(
+          () =>
+            new Promise<void>((resolve) => {
+              // everything may have settled already: no timer to leave behind
+              if (settled) return resolve();
+              graceHandle = setTimeout(() => {
+                timedOut = completed.size < promises.length;
+                resolve();
+              }, graceMs);
+            })
+        )
+      : new Promise<void>(() => undefined);
+
   try {
-    await Promise.race([Promise.all(trackedPromises), timeout]);
+    await Promise.race([Promise.all(trackedPromises), timeout, grace]);
   } finally {
+    settled = true;
     if (timeoutHandle) {
       clearTimeout(timeoutHandle);
+    }
+    if (graceHandle) {
+      clearTimeout(graceHandle);
     }
   }
 

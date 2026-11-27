@@ -616,6 +616,7 @@ function IssueList() {
   return (
     <>
       <form
+        className="issue-filters"
         onSubmit={(event) => {
           event.preventDefault();
           const form = new FormData(event.currentTarget);

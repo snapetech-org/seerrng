@@ -70,6 +70,55 @@ describe('settlePromisesWithin', () => {
   });
 });
 
+describe('settlePromisesWithin grace period', () => {
+  const later = <T>(ms: number, value: T) =>
+    new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
+
+  it('stops waiting for the rest a grace period after the primary promises', async () => {
+    const started = Date.now();
+    const result = await settlePromisesWithin(
+      [later(5, 'primary'), later(2_000, 'slow')],
+      5_000,
+      { primary: [0], graceMs: 30 }
+    );
+
+    assert.ok(Date.now() - started < 1_000);
+    assert.strictEqual(result.timedOut, true);
+    assert.deepStrictEqual(result.results, [
+      { status: 'fulfilled', value: 'primary' },
+    ]);
+  });
+
+  it('keeps answers that arrive within the grace period', async () => {
+    const result = await settlePromisesWithin(
+      [later(5, 'primary'), later(15, 'quick')],
+      5_000,
+      { primary: [0], graceMs: 200 }
+    );
+
+    assert.strictEqual(result.timedOut, false);
+    assert.deepStrictEqual(
+      result.results.map(
+        (entry) => entry.status === 'fulfilled' && entry.value
+      ),
+      ['primary', 'quick']
+    );
+  });
+
+  it('still honors the overall deadline while a primary promise is pending', async () => {
+    const result = await settlePromisesWithin(
+      [new Promise<string>(() => undefined), later(5, 'other')],
+      30,
+      { primary: [0], graceMs: 10 }
+    );
+
+    assert.strictEqual(result.timedOut, true);
+    assert.deepStrictEqual(result.results, [
+      { status: 'fulfilled', value: 'other' },
+    ]);
+  });
+});
+
 describe('BoundedTaskQueue', () => {
   it('bounds active work and rejects tasks beyond queue capacity', async () => {
     const queue = new BoundedTaskQueue(2, 1);
