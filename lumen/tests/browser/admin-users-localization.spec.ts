@@ -24,7 +24,7 @@ const labels = {
     creating: 'Creating…',
     cancel: 'Cancel',
     role: 'Member',
-    requestCount: '3 requests',
+    requestCount: '1 request',
     serverProblem: 'The server had a problem. Try again in a moment.',
     created: 'Created New User.',
     episodesAhead: 'Episodes Ahead',
@@ -102,7 +102,7 @@ const labels = {
     creating: 'Création…',
     cancel: 'Annuler',
     role: 'Membre',
-    requestCount: '3 demandes',
+    requestCount: '1 demande',
     serverProblem:
       'Le serveur a rencontré un problème. Réessayez dans un instant.',
     created: 'New User a été créé.',
@@ -186,7 +186,7 @@ const labels = {
     creating: 'جارٍ الإنشاء…',
     cancel: 'إلغاء',
     role: 'عضو',
-    requestCount: '3 من الطلبات',
+    requestCount: '1 طلب',
     serverProblem: 'حدثت مشكلة في الخادم. حاول مجددًا بعد قليل.',
     created: 'تم إنشاء New User.',
     episodesAhead: 'الحلقات مقدمًا',
@@ -281,10 +281,14 @@ async function expectTabbarDoesNotCoverActions(page: Page) {
 
 test('user directory and local-account creation use the saved locale and retain a failed submit', async ({
   page,
-}) => {
+}, info) => {
   const translated = labels[locale as keyof typeof labels] ?? english;
   const copy =
-    process.env.LUMEN_ADMIN_USERS_BASELINE === 'true' ? english : translated;
+    process.env.LUMEN_ISSUE742_BASELINE === 'true'
+      ? { ...english, requestCount: '1 requests' }
+      : process.env.LUMEN_ADMIN_USERS_BASELINE === 'true'
+        ? english
+        : translated;
   let failOnce = true;
   let passwordFailOnce = true;
   let importFailOnce = true;
@@ -333,7 +337,7 @@ test('user directory and local-account creation use the saved locale and retain 
               displayName: 'Demo User',
               email: 'demo@example.test',
               permissions: 0,
-              requestCount: 3,
+              requestCount: 1,
               userType: 1,
               jellyfinUserId: 'jellyfin-2',
               jellyfinUsername: 'demo-jellyfin',
@@ -489,8 +493,13 @@ test('user directory and local-account creation use the saved locale and retain 
   await expect(page.getByLabel(copy.sortDirection)).toHaveValue('asc');
   await expect(page.getByText(copy.role, { exact: true })).toBeVisible();
   await expect(
-    page.getByText(copy.requestCount, { exact: true })
-  ).toBeVisible();
+    page.getByRole('listitem').filter({ hasText: 'Demo User' })
+  ).toContainText(copy.requestCount);
+  if (locale === 'en' && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('user-request-count.png'),
+      animations: 'disabled',
+    });
   await expect(page.getByText(copy.manage, { exact: true })).toBeVisible();
   await expect(
     page.getByRole('link', { name: copy.manageUser, exact: true })

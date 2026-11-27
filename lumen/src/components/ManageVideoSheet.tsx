@@ -20,7 +20,7 @@ import {
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
-import { useLumenLocale } from '../i18n';
+import { pluralMessage, useLumenLocale } from '../i18n';
 import { canManageIssues, canReadIssues } from '../issuePermissions';
 import {
   downloadSubscriptionId,
@@ -985,12 +985,13 @@ export function ManageVideoSheet({
                             <li>
                               {t('lumen.manageVideo.past7Days', 'Past 7 days')}
                               {' · '}
-                              {t(
+                              {pluralMessage(
+                                t,
+                                locale,
                                 'lumen.manageVideo.playCount',
-                                '{count} plays',
-                                {
-                                  count: counts.playCount7Days,
-                                }
+                                counts.playCount7Days,
+                                '{count} play',
+                                '{count} plays'
                               )}
                             </li>
                             <li>
@@ -999,23 +1000,25 @@ export function ManageVideoSheet({
                                 'Past 30 days'
                               )}
                               {' · '}
-                              {t(
+                              {pluralMessage(
+                                t,
+                                locale,
                                 'lumen.manageVideo.playCount',
-                                '{count} plays',
-                                {
-                                  count: counts.playCount30Days,
-                                }
+                                counts.playCount30Days,
+                                '{count} play',
+                                '{count} plays'
                               )}
                             </li>
                             <li>
                               {t('lumen.manageVideo.allTime', 'All time')}
                               {' · '}
-                              {t(
+                              {pluralMessage(
+                                t,
+                                locale,
                                 'lumen.manageVideo.playCount',
-                                '{count} plays',
-                                {
-                                  count: counts.playCount,
-                                }
+                                counts.playCount,
+                                '{count} play',
+                                '{count} plays'
                               )}
                             </li>
                           </ul>
@@ -1081,9 +1084,14 @@ export function ManageVideoSheet({
                     )}
                   </h4>
                   <p className="note">
-                    {t('lumen.manageVideo.playCount', '{count} plays', {
-                      count: jellystat.data.plays,
-                    })}
+                    {pluralMessage(
+                      t,
+                      locale,
+                      'lumen.manageVideo.playCount',
+                      jellystat.data.plays,
+                      '{count} play',
+                      '{count} plays'
+                    )}
                     {' · '}
                     {t(
                       'lumen.manageVideo.playbackHours',

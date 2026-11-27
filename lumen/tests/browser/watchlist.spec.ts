@@ -11,6 +11,71 @@ async function expectRouteLink(link: Locator, path: string) {
   expect(new URL(href!, 'http://lumen.local').pathname).toBe(testAppPath(path));
 }
 
+test('empty Watchlist distinguishes the first page from an empty later page', async ({
+  page,
+}, info) => {
+  const requestedLocale = process.env.LUMEN_ISSUE742_LOCALE;
+  const locale =
+    requestedLocale === 'fr' || requestedLocale === 'ar'
+      ? requestedLocale
+      : 'en';
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/api/v1/**', (route) => {
+    const url = new URL(route.request().url());
+    const path = url.pathname.replace(/^\/lumen(?=\/)/, '').slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Administrator', permissions: 2 },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale } });
+    if (path === '/user/2/watchlist')
+      return route.fulfill({
+        json: {
+          filtersSupported: true,
+          totalPages: url.searchParams.get('page') === '2' ? 2 : 1,
+          results: [],
+        },
+      });
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto(testAppPath('/watchlist/user/2'));
+  await expect(
+    page.getByText(
+      process.env.LUMEN_ISSUE742_BASELINE === 'true'
+        ? {
+            en: 'No titles on this page.',
+            fr: 'Aucun titre sur cette page.',
+            ar: 'لا توجد عناوين في هذه الصفحة.',
+          }[locale]
+        : {
+            en: 'Your Watchlist is empty.',
+            fr: 'Votre liste de suivi est vide.',
+            ar: 'قائمة المشاهدة فارغة.',
+          }[locale],
+      { exact: true }
+    )
+  ).toBeVisible();
+  if (locale === 'en' && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('watchlist-empty.png'),
+      animations: 'disabled',
+    });
+
+  await page.goto(testAppPath('/watchlist/user/2?page=2'));
+  await expect(
+    page.getByText(
+      {
+        en: 'No titles on this page.',
+        fr: 'Aucun titre sur cette page.',
+        ar: 'لا توجد عناوين في هذه الصفحة.',
+      }[locale],
+      { exact: true }
+    )
+  ).toBeVisible();
+});
+
 test('Watchlist renders linked poster cards for every supported media category', async ({
   page,
 }) => {

@@ -2394,6 +2394,72 @@ test('Music play totals use the saved locale compact number format', async ({
   }
 });
 
+for (const [locale, singular] of [
+  ['en', '1 listen'],
+  ['fr', '1 écoute'],
+  ['ar', '1 استماع'],
+] as const) {
+  test(`Music uses the singular listen label in ${locale}`, async ({
+    page,
+  }, info) => {
+    await mockMusic(page, { previews: [], saved: [] }, locale);
+    await page.route(`**/api/v1/music/${ALBUM_MBID}`, (route) =>
+      route.fulfill({
+        json: {
+          id: ALBUM_MBID,
+          title: 'Fixture Album',
+          type: 'Album',
+          artist: { id: 'artist-1', name: 'Fixture Artist' },
+          tracks: [
+            {
+              position: 1,
+              name: 'Fixture Song',
+              length: 180000,
+              recordingMbid: 'recording-1',
+              totalListenCount: 1,
+            },
+          ],
+          stats: { totalListenCount: 1 },
+          trackAvailability: { mp3: [], flac: [], elsewhere: [] },
+        },
+      })
+    );
+    await page.goto(testAppPath(`/music/${ALBUM_MBID}`));
+    await expect(
+      page.locator('.trow', { hasText: 'Fixture Song' }).locator('small')
+    ).toHaveText(
+      process.env.LUMEN_ISSUE742_BASELINE === 'true'
+        ? locale === 'fr'
+          ? '1 écoutes'
+          : locale === 'ar'
+            ? '1 استماع'
+            : '1 plays'
+        : singular
+    );
+    await expect(
+      page
+        .getByText(
+          process.env.LUMEN_ISSUE742_BASELINE === 'true'
+            ? locale === 'fr'
+              ? '1 écoutes'
+              : locale === 'ar'
+                ? '1 استماع'
+                : '1 plays'
+            : singular,
+          { exact: true }
+        )
+        .first()
+    ).toBeVisible();
+    if (['desktop', 'iphone'].includes(info.project.name)) {
+      await page.screenshot({
+        path: info.outputPath(`music-${locale}.png`),
+        fullPage: false,
+        animations: 'disabled',
+      });
+    }
+  });
+}
+
 test('an album with every song owned somewhere shows the owned state', async ({
   page,
 }) => {

@@ -25,7 +25,7 @@ import ManagedQuotas from '../components/ManagedQuotas';
 import ManagedTvAccess from '../components/ManagedTvAccess';
 import { friendlyError } from '../errors';
 import { useApi, usePublicSettings } from '../hooks';
-import { useLumenLocale } from '../i18n';
+import { pluralMessage, useLumenLocale } from '../i18n';
 import { canViewUserWatchlist } from './Watchlist';
 
 const UserNotifications = lazy(() =>
@@ -772,9 +772,14 @@ export default function AdminUsers() {
                   </small>
                   {user.requestCount !== undefined && (
                     <small>
-                      {t('lumen.adminUsers.requestCount', '{count} requests', {
-                        count: user.requestCount.toLocaleString(locale),
-                      })}
+                      {pluralMessage(
+                        t,
+                        locale,
+                        'lumen.adminUsers.requestCount',
+                        user.requestCount,
+                        '{count} request',
+                        '{count} requests'
+                      )}
                     </small>
                   )}
                 </div>

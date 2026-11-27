@@ -198,7 +198,7 @@ async function setup(
           data: {
             users: [{ id: 8, displayName: 'Plex Viewer' }],
             playCount: 14,
-            playCount7Days: 4,
+            playCount7Days: 1,
             playCount30Days: 9,
           },
           data4k: {
@@ -363,7 +363,15 @@ for (const kind of ['movie', 'tv'] as const) {
         fullPage: false,
       });
     }
-    await expect(dialog.getByText('Past 7 days · 4 plays')).toBeVisible();
+    await expect(
+      dialog
+        .getByText(
+          process.env.LUMEN_ISSUE742_BASELINE === 'true'
+            ? 'Past 7 days · 1 plays'
+            : 'Past 7 days · 1 play'
+        )
+        .first()
+    ).toBeVisible();
     await expect(dialog.getByText('Past 30 days · 9 plays')).toBeVisible();
     await expect(dialog.getByText('All time · 14 plays')).toBeVisible();
     await expect(dialog.getByText('Plex Viewer')).toBeVisible();

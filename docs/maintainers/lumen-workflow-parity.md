@@ -13903,3 +13903,15 @@ checks pass. Fixtures do not establish live server persistence or auth
 behavior. No CSS changed; feedback uses the existing toast owner.
 
 release-note: `release-notes/lumen-following-readback.md`
+
+### Correct count and empty-state copy and requalify browser cases (2026-11-27)
+
+Closed the user-visible gaps reported in [SeerrNG issue #742](https://github.com/snapetech-org/seerrng/issues/742), filed by [@ncbudd](https://github.com/ncbudd): user request counts, Music listens, and playback history now use singular/plural messages; empty first pages in Watchlist and Following have clear empty-state copy, while later empty pages keep their page-specific message. English, French, and Arabic messages use locale plural rules, and large Music counts retain compact number formatting.
+
+The two reported request browser checks also exposed stale test setup. Their shared fixture now returns the signed-in user’s media-category settings, and the hover-driven quick-request helper waits for finite visual transitions before clicking. On the rebuilt current-main baseline the focused request checks pass 12/12 with `--repeat-each=4`; the candidate passes 12/12 as well. The reported French iPhone metadata overflow was not reproducible: the 390 × 844 iPhone project passes the existing document-width assertion on both the baseline and candidate, so no layout change was made.
+
+Validation: Lumen production build passes; `npm test` passes 82/82; the focused count and empty-state browser suite passes 16/16 on desktop and iPhone; French and Arabic empty-state and user-count checks pass 12/12; French iPhone metadata passes 1/1; the existing compact Music count check passes 2/2; and Prettier checks pass. Matched baseline/candidate renders at 1440 × 900 and iPhone 13 (390 × 844) show copy changes only, with controls and geometry unchanged. Evidence is retained at `/mnt/disks/scratch/task-deliverables/seerrng-lumen-issue742-20261127/`. These browser runs use fixture APIs; live service data was not part of this UI correction.
+
+release-note: `release-notes/lumen-counts-and-empty-states.md`
+
+### Distinguish download-client saves from failed readback (2026-11-27)

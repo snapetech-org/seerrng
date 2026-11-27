@@ -221,6 +221,11 @@ test('direct navigation without request access does not fetch follows', async ({
 test('empty Following suggests the enabled native related tools', async ({
   page,
 }, info) => {
+  const requestedLocale = process.env.LUMEN_ISSUE742_LOCALE;
+  const locale =
+    requestedLocale === 'fr' || requestedLocale === 'ar'
+      ? requestedLocale
+      : 'en';
   const categories = {
     ebook: true,
     audiobook: true,
@@ -247,7 +252,9 @@ test('empty Following suggests the enabled native related tools', async ({
         },
       });
     if (path === '/user/1/settings/main')
-      return route.fulfill({ json: { enabledMediaCategories: categories } });
+      return route.fulfill({
+        json: { enabledMediaCategories: categories, locale },
+      });
     if (path === '/follow/events')
       return route.fulfill({ json: { total: 0, results: [] } });
     if (path === '/follow/events/count')
@@ -257,19 +264,42 @@ test('empty Following suggests the enabled native related tools', async ({
   });
 
   await page.goto(appPath('/following'));
+  await expect(
+    page.getByText(
+      process.env.LUMEN_ISSUE742_BASELINE === 'true'
+        ? {
+            en: 'No updates on this page.',
+            fr: 'Aucune mise à jour sur cette page.',
+            ar: 'لا توجد تحديثات في هذه الصفحة.',
+          }[locale]
+        : {
+            en: 'No updates from what you follow yet.',
+            fr: 'Aucune actualité des éléments que vous suivez pour le moment.',
+            ar: 'لا توجد تحديثات مما تتابعه بعد.',
+          }[locale],
+      { exact: true }
+    )
+  ).toBeVisible();
+  if (locale === 'en' && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: info.outputPath('following-empty.png'),
+      animations: 'disabled',
+    });
   const tools = page.getByRole('navigation', { name: 'What You Follow' });
-  await expect(
-    tools.getByRole('link', { name: 'Book Recommendations' })
-  ).toHaveAttribute('href', appPath('/books/recommendations'));
-  await expect(
-    tools.getByRole('link', { name: 'Collector Picks' })
-  ).toHaveAttribute('href', appPath('/music/collectors'));
-  await expect(
-    tools.getByRole('link', { name: 'Game Finder' })
-  ).toHaveAttribute('href', appPath('/games/discovery'));
-  await expect(
-    tools.getByRole('link', { name: 'Translations and Hacks' })
-  ).toHaveAttribute('href', appPath('/patches'));
+  if (locale === 'en') {
+    await expect(
+      tools.getByRole('link', { name: 'Book Recommendations' })
+    ).toHaveAttribute('href', appPath('/books/recommendations'));
+    await expect(
+      tools.getByRole('link', { name: 'Collector Picks' })
+    ).toHaveAttribute('href', appPath('/music/collectors'));
+    await expect(
+      tools.getByRole('link', { name: 'Game Finder' })
+    ).toHaveAttribute('href', appPath('/games/discovery'));
+    await expect(
+      tools.getByRole('link', { name: 'Translations and Hacks' })
+    ).toHaveAttribute('href', appPath('/patches'));
+  }
   await expect
     .poll(() =>
       page.evaluate(

@@ -64,6 +64,21 @@ export function useLumenLocale() {
   return useContext(LocaleContext);
 }
 
+export function pluralMessage(
+  t: LocaleContextValue['t'],
+  locale: string,
+  id: string,
+  count: number,
+  singular: string,
+  plural: string,
+  displayCount?: string | number
+) {
+  const category = new Intl.PluralRules(locale).select(count);
+  return t(`${id}.${category}`, category === 'one' ? singular : plural, {
+    count: displayCount ?? new Intl.NumberFormat(locale).format(count),
+  });
+}
+
 export function LumenLocaleProvider({
   userId,
   children,

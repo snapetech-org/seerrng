@@ -282,7 +282,12 @@ export default function Following() {
             )}
             {rows?.length === 0 && (
               <p className="note">
-                {t('lumen.following.noUpdates', 'No updates on this page.')}
+                {page === 0 && (events.data?.total ?? 0) === 0
+                  ? t(
+                      'lumen.following.empty',
+                      'No updates from what you follow yet.'
+                    )
+                  : t('lumen.following.noUpdates', 'No updates on this page.')}
               </p>
             )}
             {!!rows?.length && (

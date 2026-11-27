@@ -322,7 +322,9 @@ function WatchlistPage({
       )}
       {rows?.length === 0 && (
         <p className="note">
-          {t('lumen.watchlist.noTitles', 'No titles on this page.')}
+          {page === 1 && (data?.totalPages ?? 0) <= 1
+            ? t('lumen.watchlist.empty', 'Your Watchlist is empty.')
+            : t('lumen.watchlist.noTitles', 'No titles on this page.')}
         </p>
       )}
       {!!rows?.length && (

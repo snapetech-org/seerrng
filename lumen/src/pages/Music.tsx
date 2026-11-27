@@ -116,7 +116,7 @@ import {
   type TrackRequestStatus,
 } from '../extras';
 import { useApi, usePaged, usePublicSettings } from '../hooks';
-import { useLumenLocale } from '../i18n';
+import { pluralMessage, useLumenLocale } from '../i18n';
 import { Icon } from '../icons';
 import { openPlayer } from '../musicPlayback';
 import {
@@ -2630,9 +2630,15 @@ function AlbumDetailPage() {
                 })
               : '',
             a.stats?.totalListenCount
-              ? t('lumen.music.playCount', '{count} plays', {
-                  count: big(a.stats.totalListenCount, locale),
-                })
+              ? pluralMessage(
+                  t,
+                  locale,
+                  'lumen.music.playCount',
+                  a.stats.totalListenCount,
+                  '{count} listen',
+                  '{count} listens',
+                  big(a.stats.totalListenCount, locale)
+                )
               : '',
             tags.join(', '),
           ]}
@@ -2887,9 +2893,15 @@ function AlbumDetailPage() {
                             <b>{track.name}</b>
                             {!!track.totalListenCount && (
                               <small>
-                                {t('lumen.music.playCount', '{count} plays', {
-                                  count: big(track.totalListenCount, locale),
-                                })}
+                                {pluralMessage(
+                                  t,
+                                  locale,
+                                  'lumen.music.playCount',
+                                  track.totalListenCount,
+                                  '{count} listen',
+                                  '{count} listens',
+                                  big(track.totalListenCount, locale)
+                                )}
                               </small>
                             )}
                           </span>

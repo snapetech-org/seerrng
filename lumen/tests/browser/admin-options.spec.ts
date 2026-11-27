@@ -102,6 +102,8 @@ async function fixtures(
     else if (path === '/request')
       json = { pageInfo: { pages: 1, results: 0 }, results: [] };
     else if (path === '/request/count') json = { total: 0 };
+    else if (/^\/user\/\d+\/settings\/main$/.test(path))
+      json = { enabledMediaCategories: {} };
     else if (/^\/user\/\d+\/quota$/.test(path)) json = {};
     else if (!path.startsWith('/auth/')) {
       status = 404;
@@ -116,6 +118,7 @@ async function quickRequest(page: Page, title: string) {
   const poster = page.locator('.poster', { hasText: title }).first();
   await poster.scrollIntoViewIfNeeded();
   await poster.hover();
+  await settleVisuals(page);
   await poster
     .getByRole('button', { name: /^Request/ })
     .filter({ visible: true })
