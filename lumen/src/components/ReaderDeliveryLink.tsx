@@ -1,5 +1,6 @@
 import { readerServiceUrl } from '../api';
 import { useApi } from '../hooks';
+import { useLumenLocale } from '../i18n';
 
 type Target = 'ebook' | 'audiobook' | 'comic' | 'magazine';
 interface ReaderService {
@@ -8,14 +9,15 @@ interface ReaderService {
   grimmoryUrl?: string | null;
 }
 
-const libraries: Record<Target, string> = {
-  ebook: 'Ebooks',
-  audiobook: 'Audiobooks',
-  comic: 'Comics',
-  magazine: 'Magazine PDFs',
+const libraries: Record<Target, [string, string]> = {
+  ebook: ['lumen.readerDelivery.ebooks', 'Ebooks'],
+  audiobook: ['lumen.readerDelivery.audiobooks', 'Audiobooks'],
+  comic: ['lumen.readerDelivery.comics', 'Comics'],
+  magazine: ['lumen.readerDelivery.magazinePdfs', 'Magazine PDFs'],
 };
 
 export default function ReaderDeliveryLink({ target }: { target: Target }) {
+  const { t } = useLumenLocale();
   const { data } = useApi<ReaderService>('/service/reader-delivery');
   if (data?.provider !== 'grimmory' && data?.provider !== 'bookorbit')
     return null;
@@ -37,7 +39,10 @@ export default function ReaderDeliveryLink({ target }: { target: Target }) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      Browse {libraries[target]} in {service}
+      {t('lumen.readerDelivery.browseIn', 'Browse {library} in {service}', {
+        library: t(...libraries[target]),
+        service,
+      })}
     </a>
   );
 }

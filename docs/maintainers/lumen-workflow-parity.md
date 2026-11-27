@@ -1,5 +1,21 @@
 # Lumen workflow parity
 
+### Localize reader-library links (2026-11-27)
+
+Reader Delivery links on book, audiobook, comic, and magazine details now use
+localized library names and action copy in English, French, and Arabic. The
+configured Grimmory or BookOrbit hostname, safe-URL checks, and external-link
+attributes are unchanged.
+
+The focused browser matrix passes 96/96 across the four media targets, three
+locales, and desktop, iPhone, Android, and tablet projects. It verifies both
+the safe destination and omission of credential-bearing reader URLs. The
+production Lumen build passes. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-reader-link-localization-20261127/`.
+Provider settings and live reader behavior are fixture-backed.
+
+release-note: `release-notes/lumen-reader-library-link-localization.md`
+
 ### Localize comic-card quick requests (2026-11-27)
 
 Comic discovery cards now use Lumen's existing localized “Request” action in

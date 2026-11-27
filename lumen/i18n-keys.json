@@ -6846,5 +6846,10 @@
   "lumen.mediaServerSavedItem.unavailableLabel",
   "lumen.mediaServerSavedItem.updateFailed",
   "lumen.mediaServerSavedItem.verifyFailed",
-  "lumen.mediaServerSavedItem.watchlist"
+  "lumen.mediaServerSavedItem.watchlist",
+  "lumen.readerDelivery.browseIn",
+  "lumen.readerDelivery.ebooks",
+  "lumen.readerDelivery.audiobooks",
+  "lumen.readerDelivery.comics",
+  "lumen.readerDelivery.magazinePdfs"
 ]
