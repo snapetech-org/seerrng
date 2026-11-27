@@ -32,6 +32,7 @@ const copy = {
     linux: 'Linux',
     mainStory: 'Main Story: 30.5 h',
     pcSystems: 'Windows · Linux',
+    steamLibrary: 'Steam Library',
     consoleSystems: 'Nintendo Entertainment System',
   },
   fr: {
@@ -55,6 +56,7 @@ const copy = {
     linux: 'Linux',
     mainStory: 'Histoire principale : 30,5 h',
     pcSystems: 'Windows · Linux',
+    steamLibrary: 'Bibliothèque Steam',
     consoleSystems: 'Nintendo Entertainment System',
   },
   ar: {
@@ -78,6 +80,7 @@ const copy = {
     linux: 'Linux',
     mainStory: 'القصة الرئيسية: 30.5 ساعة',
     pcSystems: 'Windows · Linux',
+    steamLibrary: 'مكتبة Steam',
     consoleSystems: 'Nintendo Entertainment System',
   },
 }[locale];
@@ -152,6 +155,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
                   group: 'retro',
                 },
               ],
+              steamOwned: true,
               timeToBeat: { normally: 30.5 },
             },
           ],
@@ -189,6 +193,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
   await expect(page.locator('.grid .poster .m2')).toHaveText([
     copy.mainStory,
     copy.pcSystems,
+    copy.steamLibrary,
   ]);
   await expect(page.getByLabel(copy.allPcPlatforms)).toBeVisible();
   await expect(page.getByLabel(copy.genre)).toBeVisible();

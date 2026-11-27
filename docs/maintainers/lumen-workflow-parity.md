@@ -12739,6 +12739,26 @@ exercised for this display-only change. Evidence is retained at
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
 
+### Steam library ownership on PC game cards (2026-11-27)
+
+Native PC game catalog cards display a Steam Library badge when the catalog
+reports `steamOwned`. Lumen previously showed this state only on game details.
+PC catalog cards now add the existing localized Steam Library label to the
+shared secondary-details slot; retro and modern console cards do not show the
+PC-only ownership state.
+
+The pre-change baseline at `c2b4703aa` and candidate use the same
+`steamOwned: true` fixture on `/games`, captured at 1440x900 and iPhone 13
+sizes for PC and retro catalog states. The PC candidate adds the ownership
+label while preserving card geometry; the retro card does not show it. English,
+French, and Arabic catalog cases pass on desktop, iPhone, Android, and tablet
+(12 cases), and the adjacent game catalog/detail suite passes 40/40. The Lumen
+production build passes. Steam API refresh and live account ownership remain
+outside this fixture verification. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-steam-library-catalog-cards.md`
+
 ### Game catalog platform and system metadata (2026-11-27)
 
 Native game cards show the first two supported PC platforms (Windows, Linux,

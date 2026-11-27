@@ -536,6 +536,9 @@ export function Games() {
                     ?.map((system) => system.name)
                     .slice(0, 2)
                     .join(' · '),
+              cat === 'game' && g.steamOwned
+                ? t('lumen.games.steamLibrary', 'Steam Library')
+                : undefined,
             ].filter((detail): detail is string => Boolean(detail))}
           />
         ))}
