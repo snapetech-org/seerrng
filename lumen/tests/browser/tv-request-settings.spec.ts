@@ -1,4 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function captureSettings(page: Page, info: TestInfo, locale: string) {
   if (
@@ -41,7 +42,7 @@ for (const { locale, expected } of [
       return route.fulfill({ json: {} });
     });
 
-    await page.goto('/me/account/tv-requests');
+    await page.goto(testAppPath('/me/account/tv-requests'));
     const loading = page.getByRole('status').filter({ hasText: expected });
     await expect(loading).toBeVisible();
     if (locale === 'ar')
@@ -79,7 +80,7 @@ test('TV request settings localize the policy and keep viewer controls read-only
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/tv-requests');
+  await page.goto(testAppPath('/me/account/tv-requests'));
   await expect(
     page.getByRole('heading', { name: 'Paramètres des demandes TV' })
   ).toBeVisible();
@@ -131,7 +132,7 @@ test('Arabic TV request settings use RTL and native Arabic plural forms', async 
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/tv-requests');
+  await page.goto(testAppPath('/me/account/tv-requests'));
   await expect(page.getByText('2 episodes ahead')).toBeVisible();
   await captureSettings(page, info, 'ar-en-baseline');
 
@@ -216,7 +217,7 @@ test('user managers can review access and save the account Episode Queue default
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/tv-requests');
+  await page.goto(testAppPath('/me/account/tv-requests'));
   await expect(
     page.getByRole('heading', { name: 'Previous-season watch requests' })
   ).toBeVisible();
@@ -331,7 +332,7 @@ test('TV request account controls follow the viewer permission matrix', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/tv-requests');
+  await page.goto(testAppPath('/me/account/tv-requests'));
   for (const role of roles) {
     currentRole = role;
     await page.reload();
@@ -406,7 +407,7 @@ test('Episode Queue options use Arabic and French plural forms', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me/account/tv-requests');
+  await page.goto(testAppPath('/me/account/tv-requests'));
   const queueSelect = page.getByRole('combobox', {
     name: 'Episodes to keep requested',
   });
@@ -486,7 +487,7 @@ test('TV request confirmation dismissals follow the selected locale', async ({
     ['ar', 'حفظ الافتراضي', 'إلغاء'],
   ] as const) {
     locale = tag;
-    await page.goto('/me/account/tv-requests');
+    await page.goto(testAppPath('/me/account/tv-requests'));
     await page.getByRole('combobox').selectOption('3');
     await page.getByRole('button', { name: save }).click();
     const dialog = page.getByRole('alertdialog');

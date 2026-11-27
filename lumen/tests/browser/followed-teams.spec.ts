@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('team follows are reachable from sports and added and removed by exact identity', async ({
   page,
@@ -65,7 +66,7 @@ test('team follows are reachable from sports and added and removed by exact iden
       },
     });
   });
-  await page.goto('/sports');
+  await page.goto(testAppPath('/sports'));
   await page.getByRole('link', { name: 'Team Follows and Recordings' }).click();
   await expect(
     page.getByRole('heading', { name: 'Followed Teams' })

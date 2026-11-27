@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const messages = {
   en: {
@@ -129,7 +130,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
   }, info) => {
     const writes = await setup(page, locale);
     const copy = messages[locale];
-    await page.goto('/magazine/Fixture%20Magazine');
+    await page.goto(testAppPath('/magazine/Fixture%20Magazine'));
     await page.getByRole('button', { name: copy.requestButton }).click();
     const sheet = page.getByRole('alertdialog', { name: copy.title });
     for (const label of [copy.latest, copy.status, copy.service, copy.approval])
@@ -176,7 +177,7 @@ test('magazine requests stay disabled when no service is configured', async ({
   await page.route('**/api/v1/service/magazine', (route) =>
     route.fulfill({ json: [] })
   );
-  await page.goto('/magazine/Fixture%20Magazine');
+  await page.goto(testAppPath('/magazine/Fixture%20Magazine'));
   await page.getByRole('button', { name: 'Request magazine' }).click();
   const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
   await expect(sheet.getByRole('status')).toContainText(
@@ -203,7 +204,7 @@ test('magazine backend processing failure keeps the request retryable', async ({
     });
   });
 
-  await page.goto('/magazine/Fixture%20Magazine');
+  await page.goto(testAppPath('/magazine/Fixture%20Magazine'));
   await page.getByRole('button', { name: 'Request magazine' }).click();
   const sheet = page.getByRole('alertdialog', { name: 'Request Magazine' });
   const send = sheet.getByRole('button', { name: 'Send Request' });
@@ -225,7 +226,7 @@ test('magazine backend processing failure keeps the request retryable', async ({
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`magazine management sheet follows ${locale}`, async ({ page }) => {
     await setup(page, locale, 16);
-    await page.goto('/magazine/Fixture%20Magazine');
+    await page.goto(testAppPath('/magazine/Fixture%20Magazine'));
     const manage = messages[locale].manage;
     await page.getByRole('button', { name: manage }).click();
     const sheet = page.getByRole('dialog', { name: manage });

@@ -183,7 +183,7 @@ async function fixture(
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto(route);
+  await page.goto(appPath(route));
   await expect(
     page.getByRole('heading', {
       name: route.startsWith('/artist/') ? 'Fixture Artist' : 'Fixture Album',

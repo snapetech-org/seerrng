@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 declare global {
   interface Window {
@@ -26,7 +27,7 @@ test('Plex completion route closes only after the completion marker', async ({
   page,
 }) => {
   await recordPopupClose(page);
-  await page.goto('/login/plex/loading?complete=1');
+  await page.goto(testAppPath('/login/plex/loading?complete=1'));
 
   await expect(page.locator('main[role="status"]')).toBeVisible();
   if (process.env.LUMEN_CAPTURE_DIR)
@@ -40,7 +41,7 @@ test('Plex loading route stays open without the completion marker', async ({
   page,
 }) => {
   await recordPopupClose(page);
-  await page.goto('/login/plex/loading');
+  await page.goto(testAppPath('/login/plex/loading'));
 
   await expect(page.locator('main[role="status"]')).toBeVisible();
   if (process.env.LUMEN_CAPTURE_DIR)

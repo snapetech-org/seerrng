@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 async function settleVisuals(page: Page) {
   await page.evaluate(async () => {
@@ -91,7 +92,7 @@ for (const mediaType of ['movie', 'tv'] as const) {
           });
         return route.fulfill({ json: { results: [] } });
       });
-      await page.goto(`/${mediaType}/42`);
+      await page.goto(testAppPath(`/${mediaType}/42`));
       const copy = {
         en: {
           open: 'Find Live TV Airings',
