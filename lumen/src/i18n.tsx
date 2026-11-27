@@ -72,7 +72,7 @@ export function LumenLocaleProvider({
   children: ReactNode;
 }) {
   const [requestedLocale, setRequestedLocale] = useState<string | null>(null);
-  const [locale, setActiveLocale] = useState<LumenLocale>(browserLocale);
+  const [locale, setActiveLocale] = useState<LumenLocale>('en');
   const [messages, setMessages] =
     useState<Record<string, string>>(englishMessages);
   const localeLoadGeneration = useRef(0);
@@ -80,7 +80,6 @@ export function LumenLocaleProvider({
   const activateLocale = useCallback((requested: string | null) => {
     const next = matchLocale(requested) ?? browserLocale();
     const generation = ++localeLoadGeneration.current;
-    setActiveLocale(next);
     const catalog =
       next === 'en'
         ? Promise.resolve({ messages: englishMessages })
@@ -89,6 +88,7 @@ export function LumenLocaleProvider({
       .then(({ messages: loaded }) => {
         if (localeLoadGeneration.current === generation) {
           setMessages(loaded as Record<string, string>);
+          setActiveLocale(next);
         }
       })
       .catch(() => {
