@@ -12940,3 +12940,26 @@ stopped preview and was excluded; restarting the task-owned preview produced
 the recorded 4/4 pass.
 
 release-note: `release-notes/lumen-household-game-details.md`
+
+### Show request status in My Games (2026-11-27)
+
+Private game entries with a linked request now show its current native status
+beside the existing Request History link. Lumen maps pending, approved,
+searching, downloading, importing, available, failed, cancelled, declined, and
+withdrawn through the shared SeerrNG translations; unexpected values use the
+existing “In progress” fallback. Request History and Request this game share
+the wrapping toolbar so both remain readable on phones.
+
+The localized fixture checks a downloading request in English, French, and
+Arabic and verifies that the two action links do not overlap. The complete Game
+Library browser suite passes 24/24 cases on standalone Vite Preview and 24/24
+against the compiled production bundle served through SeerrNG's `/lumen/`
+Express mount. The focused request/status case passes all four viewport
+projects in all three locales on both deployments. Same-state 1440×900 and
+iPhone captures show the new status and the corrected action spacing; the
+before capture showed the two actions colliding on phone, while the candidate
+wraps cleanly. No CSS changed. Live request-state responses remain unverified.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-library-request-status-20261127/`.
+
+release-note: `release-notes/lumen-game-library-request-status.md`

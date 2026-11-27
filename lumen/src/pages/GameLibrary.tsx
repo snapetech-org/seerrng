@@ -19,6 +19,18 @@ const PROGRESS = {
   dropped: 'Dropped',
 };
 const PAGE_SIZE = 48;
+const REQUEST_STATUS: Record<string, [string, string]> = {
+  pending: ['components.GameLibrary.requestPending', 'Pending approval'],
+  approved: ['components.GameLibrary.requestApproved', 'Approved'],
+  searching: ['components.GameLibrary.requestSearching', 'Searching'],
+  downloading: ['components.GameLibrary.requestDownloading', 'Downloading'],
+  importing: ['components.GameLibrary.requestImporting', 'Importing'],
+  available: ['components.GameLibrary.requestAvailable', 'Available'],
+  failed: ['components.GameLibrary.requestFailed', 'Failed'],
+  cancelled: ['components.GameLibrary.requestCancelled', 'Cancelled'],
+  declined: ['components.GameLibrary.requestDeclined', 'Declined'],
+  withdrawn: ['components.GameLibrary.requestWithdrawn', 'Withdrawn'],
+};
 
 const gameCatalogPath = (game: {
   category: GameCategory;
@@ -585,6 +597,13 @@ export default function GameLibrary() {
       ? message.replace(marker, number)
       : `${number} ${message}`;
   };
+  const formatRequestStatus = (status: string) => {
+    const [key, fallback] = REQUEST_STATUS[status] ?? [
+      'components.GameLibrary.requestUnknown',
+      'In progress',
+    ];
+    return t(key, fallback);
+  };
   const mayRequest = canUseRequestAccess(user?.permissions);
   const [params, setParams] = useSearchParams();
   const [editor, setEditor] = useState<GameEntry | null | undefined>();
@@ -835,23 +854,36 @@ export default function GameLibrary() {
                       ` · ${t('lumen.gameLibrary.minutesPlayed', '{minutes} minutes played', { minutes: game.playtimeMinutes })}`}
                   </small>
                   {game.request && (
-                    <Link
-                      className="go"
-                      to={`/requests?softwareRequestId=${game.request.id}`}
-                    >
-                      {tr('Request History')}
-                    </Link>
-                  )}
-                  {mayRequest && (
-                    <Link
-                      className="btn btn-tonal btn-sm"
-                      to={gameCatalogPath(game)}
-                    >
+                    <small>
                       {t(
-                        'components.GameLibrary.requestGame',
-                        'Request this game'
+                        'components.GameLibrary.requestStatus',
+                        'Request: {status}',
+                        { status: formatRequestStatus(game.request.status) }
                       )}
-                    </Link>
+                    </small>
+                  )}
+                  {(game.request || mayRequest) && (
+                    <div className="toolbar">
+                      {game.request && (
+                        <Link
+                          className="go"
+                          to={`/requests?softwareRequestId=${game.request.id}`}
+                        >
+                          {tr('Request History')}
+                        </Link>
+                      )}
+                      {mayRequest && (
+                        <Link
+                          className="btn btn-tonal btn-sm"
+                          to={gameCatalogPath(game)}
+                        >
+                          {t(
+                            'components.GameLibrary.requestGame',
+                            'Request this game'
+                          )}
+                        </Link>
+                      )}
+                    </div>
                   )}
                 </div>
                 <button

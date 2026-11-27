@@ -171,6 +171,8 @@ test('My Games exposes request and catalog actions from private and shared games
       catalog: 'Open in catalog',
       ownerCount: 'Owner Count: 2',
       sharedBy: 'Shared by Friend, Neighbour',
+      requestStatus: 'Request: Downloading',
+      requestHistory: 'Request History',
       friend: 'Friend: Playing · Steam · Windows · 80 minutes played',
       neighbour: 'Neighbour: Completed · GOG · Linux · 125 minutes played',
     },
@@ -179,6 +181,8 @@ test('My Games exposes request and catalog actions from private and shared games
       catalog: 'Ouvrir dans le catalogue',
       ownerCount: 'Nombre de propriétaires: 2',
       sharedBy: 'Partagé par Friend, Neighbour',
+      requestStatus: 'Demande: Téléchargement en cours',
+      requestHistory: 'Historique des demandes',
       friend: 'Friend: En cours · Steam · Windows · 80 minutes jouées',
       neighbour: 'Neighbour: Terminé · GOG · Linux · 125 minutes jouées',
     },
@@ -187,6 +191,8 @@ test('My Games exposes request and catalog actions from private and shared games
       catalog: 'افتح في الكتالوج',
       ownerCount: 'عدد المالكين: ٢',
       sharedBy: 'تمت المشاركة بواسطة Friend, Neighbour',
+      requestStatus: 'الطلب: جارٍ التنزيل',
+      requestHistory: 'سجل الطلبات',
       friend: 'Friend: قيد اللعب · Steam · Windows · ٨٠ دقيقة لعب',
       neighbour: 'Neighbour: مكتملة · GOG · Linux · ١٢٥ دقيقة لعب',
     },
@@ -205,7 +211,7 @@ test('My Games exposes request and catalog actions from private and shared games
       storeName: '',
       platformName: '',
       playtimeMinutes: 0,
-      request: null,
+      request: { id: 41, status: 'downloading' },
     },
     {
       id: 42,
@@ -306,6 +312,7 @@ test('My Games exposes request and catalog actions from private and shared games
   await page.goto(appPath('/game-library'));
   await expect(page.getByText('Catalog Game')).toBeVisible();
   await expect(page.getByText('Manual Game')).toBeVisible();
+  await expect(page.getByText(copy.requestStatus)).toBeVisible();
   const captureDirectory = process.env.LUMEN_GAME_LIBRARY_REQUEST_CAPTURE_DIR;
   const capture = async (state: string, gameTitle: string) => {
     await page
@@ -336,6 +343,18 @@ test('My Games exposes request and catalog actions from private and shared games
   await expect
     .soft(requestActions.nth(1))
     .toHaveAttribute('href', appPath('/games?c=game&q=Manual+Game'));
+  const historyAction = page.getByRole('link', { name: copy.requestHistory });
+  await expect(historyAction).toBeVisible();
+  const historyBox = await historyAction.boundingBox();
+  const requestBox = await requestActions.first().boundingBox();
+  expect(historyBox).not.toBeNull();
+  expect(requestBox).not.toBeNull();
+  expect(
+    historyBox!.x + historyBox!.width <= requestBox!.x ||
+      requestBox!.x + requestBox!.width <= historyBox!.x ||
+      historyBox!.y + historyBox!.height <= requestBox!.y ||
+      requestBox!.y + requestBox!.height <= historyBox!.y
+  ).toBe(true);
 
   await page
     .locator(`a[href="${appPath('/game-library?view=shared')}"]`)
