@@ -25,6 +25,7 @@ async function fixture(
     albumId?: string;
     artistType?: string;
     artistArea?: string;
+    mediaInfo?: unknown;
   } = {},
   route = '/music/42'
 ) {
@@ -145,7 +146,7 @@ async function fixture(
           availableServices: options.availableServices ?? [
             { serverId: 1, quality: 'MP3' },
           ],
-          mediaInfo: { status: 1, requests },
+          mediaInfo: options.mediaInfo ?? { status: 1, requests },
         },
       });
     if (path === '/artist/fixture-artist')
@@ -190,6 +191,28 @@ async function fixture(
   ).toBeVisible();
   return writes;
 }
+
+test('music album management sheet is available to request managers', async ({
+  page,
+}) => {
+  await fixture(page, {
+    permissions: 16,
+    mediaInfo: {
+      id: 42,
+      status: 0,
+      requests: [],
+      downloadStatus: [
+        { downloadId: 'album-download', status: 'Downloading', percent: 45 },
+      ],
+    },
+  });
+  await page.getByRole('button', { name: 'Manage Music' }).click();
+  const sheet = page.getByRole('dialog', { name: 'Manage Music' });
+  await expect(sheet.getByText('Requests', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('Music', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('Downloading', { exact: true })).toBeVisible();
+  await expect(sheet.getByText('45%', { exact: true })).toBeVisible();
+});
 
 test('music album details show the MusicBrainz identity and artist facts', async ({
   page,
