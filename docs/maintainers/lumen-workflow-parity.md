@@ -12752,10 +12752,12 @@ iPhone 13 sizes. Candidate screenshots show `2025-01-01` in place of
 ownership lines intact and no card layout change. The English, French, and
 Arabic catalog workflow passed on desktop, iPhone, Android, and tablet (12
 cases); adjacent catalog and detail workflows passed 20 cases across desktop,
-iPhone, Android, and tablet. The production build passed. Missing-date genre
-fallback is represented in the implementation
-but is not yet covered by a dedicated visual fixture; real provider behavior
-and production `/lumen/` routing were not exercised. Evidence is retained at
+iPhone, Android, and tablet. The production build passed. The catalog browser
+fixture also renders an undated game with three genres and asserts that only
+the first two appear in the card metadata. The focused four-viewport catalog
+suite passes 20/20; desktop and iPhone captures show the date and genre states
+together without a layout change. Real provider behavior and production
+`/lumen/` routing were not exercised. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`

@@ -164,6 +164,17 @@ test('Games catalog controls and empty state follow the saved locale', async ({
               steamOwned: true,
               timeToBeat: { normally: 30.5 },
             },
+            {
+              id: 'fixture-game-missing-date',
+              title: 'Fixture Game Without Release Date',
+              catalogId: '43',
+              catalogProvider: 'igdb',
+              igdbId: 43,
+              coverUrl: null,
+              releaseDate: null,
+              genres: ['Strategy', 'Simulation', 'Adventure'],
+              platforms: ['Windows'],
+            },
           ],
           nextOffset: null,
         },
@@ -195,17 +206,25 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     'placeholder',
     copy.searchPc
   );
-  await expect(page.getByText('Fixture Game')).toBeVisible();
-  await expect(page.locator('.grid .poster .m')).toHaveText('2025-01-01');
-  await expect(page.locator('.grid .poster .m2')).toHaveText([
+  await expect(page.getByText('Fixture Game', { exact: true })).toBeVisible();
+  const datedGame = page
+    .locator('.grid .poster')
+    .filter({ hasText: 'Fixture Game' })
+    .first();
+  await expect(datedGame.locator('.m')).toHaveText('2025-01-01');
+  await expect(datedGame.locator('.m2')).toHaveText([
     copy.mainStory,
     copy.pcSystems,
     copy.steamLibrary,
   ]);
-  await expect(page.getByText(copy.steamLibrary)).toHaveAttribute(
+  await expect(datedGame.getByText(copy.steamLibrary)).toHaveAttribute(
     'title',
     copy.steamLibraryDescription
   );
+  const undatedGame = page
+    .locator('.grid .poster')
+    .filter({ hasText: 'Fixture Game Without Release Date' });
+  await expect(undatedGame.locator('.m')).toHaveText('Strategy · Simulation');
   await expect(page.getByLabel(copy.allPcPlatforms)).toBeVisible();
   await expect(page.getByLabel(copy.genre)).toBeVisible();
   await expect(page.getByLabel(copy.releaseYear)).toBeVisible();
