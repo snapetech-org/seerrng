@@ -6885,6 +6885,8 @@ release-note: none
 
 
 
+
+
 ### Avoid denied Adult catalog probes (2026-11-26)
 
 Lumen previously probed `/adult/search` to discover whether the Adult catalog
@@ -12467,5 +12469,24 @@ retained with the run artifacts at
 This confirms the exercised standalone menu and responsive entry points. It
 does not qualify every Lumen route, the production `/lumen/` mount, native
 matched visual parity, or live provider behavior.
+
+release-note: none
+
+### Mounted account and navigation permission matrix (2026-11-27)
+
+Rebuilt the production Lumen bundle with the `/lumen/` base and served it
+through SeerrNG's compiled `mountLumenFrontend` middleware. The account,
+administration-access, and navigation browser matrix passed 404 cases with
+eight viewport-specific skips across desktop, iPhone, Android, and tablet.
+The first run exposed that `request-entry-navigation.spec.ts` navigated to
+root-relative routes, so those cases never loaded the mounted app. Its route
+helper now applies `/lumen` when `LUMEN_TEST_MOUNT=/lumen`; all 60 request-entry
+permission cases pass in both the mounted and standalone builds.
+
+This verifies these fixture-backed client workflows and the actual compiled
+frontend mount. It does not verify the full SeerrNG server startup, live API
+authorization or provider persistence, or native-matched visual acceptance.
+Browser output is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-mounted-account-navigation-20261127/`.
 
 release-note: none
