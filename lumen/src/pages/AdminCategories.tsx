@@ -48,11 +48,13 @@ function CategoryForm({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const result = await api<CategorySettings>(path, {
         method: 'POST',
         body: JSON.stringify({ [field]: draft }),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<CategorySettings>(path);
       if (generation !== sessionGeneration()) return;
@@ -92,14 +94,19 @@ function CategoryForm({
     } catch (error) {
       if (generation === sessionGeneration()) {
         setFailure(
-          friendlyError(
-            error,
-            t(
-              'components.Settings.SettingsCategories.saveFailure',
-              'Could not save category settings.'
-            ),
-            t
-          )
+          writeAcknowledged
+            ? t(
+                'lumen.adminCategories.confirmFailure',
+                'Could not confirm the saved categories.'
+              )
+            : friendlyError(
+                error,
+                t(
+                  'components.Settings.SettingsCategories.saveFailure',
+                  'Could not save category settings.'
+                ),
+                t
+              )
         );
       }
     } finally {
