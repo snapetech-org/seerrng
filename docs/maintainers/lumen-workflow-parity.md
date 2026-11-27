@@ -12431,3 +12431,22 @@ provider responses or metadata service availability. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-watchlist-posters-20261127/`.
 
 release-note: `release-notes/lumen-watchlist-poster-cards.md`
+
+### Standalone Account Settings role and recovery audit (2026-11-27)
+
+The production Lumen Account Settings browser suite passed 112/112 cases on
+the standalone Vite preview across desktop, iPhone, Android, and tablet. The
+run covered profile and password load failures, retained drafts after failed
+saves, bookmark routing, administrator and user-manager controls, maturity
+and watchlist permission states, locale behavior, and the existing theme,
+streaming subscription, request-folder, external-list, and book-home-section
+workflows. French and Arabic streaming-provider selector captures are retained
+with the run artifacts at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-account-audit-20261127/`.
+
+This qualifies the standalone self-account settings route only. It does not
+close the other account-route role and recovery matrix, production `/lumen/`
+mount behavior, live authorization or provider persistence, or native-matched
+visual acceptance.
+
+release-note: none
