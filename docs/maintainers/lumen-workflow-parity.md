@@ -12681,3 +12681,16 @@ Browser output is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-mounted-account-navigation-20261127/`.
 
 release-note: none
+
+### Subject-tag visibility persistence (2026-11-27)
+
+Movie and Series details store the subject-tag visibility preference per
+signed-in user. The browser workflow now reloads the detail page after hiding
+tags and verifies the hidden state is restored, then switches to Series and
+confirms the same preference remains in effect before opening the filtered
+results. Four browser cases pass across desktop, iPhone, Android, and tablet
+against both standalone Vite and a production `/lumen/` build. API responses
+are fixture-backed; live authentication and cross-tab storage behavior were
+not exercised.
+
+release-note: none

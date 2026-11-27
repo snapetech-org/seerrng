@@ -2670,6 +2670,9 @@ test('subject tags share browser visibility and open filtered video discovery', 
   await expect(tag).toBeVisible();
   await toggle.click();
   await expect(tag).toBeHidden();
+  await page.reload();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(tag).toBeHidden();
   await page.goto(testAppPath('/tv/202'));
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await toggle.click();
