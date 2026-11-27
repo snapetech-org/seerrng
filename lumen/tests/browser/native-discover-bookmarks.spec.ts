@@ -161,6 +161,52 @@ test('native Coming Soon bookmark opens Lumen Coming Soon and keeps URL state', 
   );
 });
 
+test('native book-series detail bookmark opens the Lumen series workflow and keeps URL state', async ({
+  page,
+}) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .replace(/^\/api\/v1/, '');
+    if (path === '/lumen/configuration') return route.fulfill({ json: {} });
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, displayName: 'Reader', permissions: 2, userType: 2 },
+      });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: {
+          initialized: true,
+          enabledMediaCategories: { ebook: true, audiobook: true },
+        },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { enabledMediaCategories: {} } });
+    if (path === '/series/42')
+      return route.fulfill({
+        json: { id: '42', title: 'Fixture Book Series', books: [] },
+      });
+    return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
+  });
+
+  await page.goto(`${mount}/series/42?format=audiobook#books`);
+  await page.waitForFunction(
+    (expected) =>
+      window.location.pathname.replace('/lumen', '') +
+        window.location.search +
+        window.location.hash ===
+      expected,
+    '/book-series/detail/42?format=audiobook#books'
+  );
+  await expect(
+    page.getByRole('heading', { name: 'Fixture Book Series' })
+  ).toBeVisible();
+});
+
 for (const scenario of [
   { name: 'a user manager', permissions: 2, expected: '/admin/users' },
   { name: 'a standard user', permissions: 0, expected: '/me' },

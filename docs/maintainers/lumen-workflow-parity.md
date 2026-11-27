@@ -2879,6 +2879,7 @@ Live request data and authorization remain outside this fixture check.
 
 release-note: none
 
+
 ### Focused request progress increment
 
 Request History shows the current service, download percentage and size,
@@ -13315,3 +13316,23 @@ remain unverified. Captures and the isolated test database are retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-large-show-parity-20261127/`.
 
 release-note: none
+
+### Preserve native book-series detail links in Lumen (2026-11-27)
+
+The native Book Series detail route is `/series/:seriesId`; Lumen had no
+matching route, so those bookmarks reached its not-found screen. Lumen now
+redirects them to a dedicated `/book-series/detail/:id` route and preserves
+the query string and fragment. The explicit detail route is important for
+numeric IDs: Lumen's existing `/book-series/:id` route interprets numeric IDs
+as reader-catalog entries. The native alias now loads the series record from
+the existing `/series/:id` API and renders the existing Book Series detail
+workflow without changing catalog routing.
+
+The browser fixture verifies the series title, preserved query and fragment,
+and route behavior on standalone Lumen and the compiled Express `/lumen/`
+mount, across desktop, iPhone, Android, and tablet (4/4 per deployment).
+Provider data and reader-service mutations remain fixture-backed. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-native-series-route-20261127/`.
+
+release-note: `release-notes/lumen-native-book-series-route.md`

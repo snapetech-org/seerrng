@@ -270,6 +270,17 @@ function NativeUsersBookmark() {
   return <Navigate to={`/admin/users${search}${hash}`} replace />;
 }
 
+function NativeBookSeriesBookmark() {
+  const { id = '' } = useParams();
+  const { search, hash } = useLocation();
+  return (
+    <Navigate
+      to={`/book-series/detail/${encodeURIComponent(id)}${search}${hash}`}
+      replace
+    />
+  );
+}
+
 function NativeSettingsBookmark() {
   const { pathname, search, hash } = useLocation();
   const parts = pathname.split('/').filter(Boolean).slice(1);
@@ -503,6 +514,10 @@ function App() {
           />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Discover />} />
+          <Route
+            path="/series/:id"
+            element={<NativeBookSeriesBookmark />}
+          />
           <Route path="/providers" element={<ProviderDiscovery />} />
           <Route path="/share" element={<Share />} />
           <Route
@@ -575,6 +590,18 @@ function App() {
               >
                 <MediaCategoryRoute categories={['ebook', 'audiobook']}>
                   <BookSeriesCatalog />
+                </MediaCategoryRoute>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/book-series/detail/:id"
+            element={
+              <Suspense
+                fallback={<div className="detail-loading" aria-busy="true" />}
+              >
+                <MediaCategoryRoute categories={['ebook', 'audiobook']}>
+                  <BookGrouping kind="series-detail" />
                 </MediaCategoryRoute>
               </Suspense>
             }

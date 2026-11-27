@@ -445,11 +445,15 @@ function SeriesDetail({ id }: { id: string }) {
   );
 }
 
-export default function BookGrouping({ kind }: { kind: 'author' | 'series' }) {
+export default function BookGrouping({
+  kind,
+}: {
+  kind: 'author' | 'series' | 'series-detail';
+}) {
   const { id = '' } = useParams();
-  return kind === 'author' ? (
-    <AuthorDetail key={id} id={id} />
-  ) : /^[1-9]\d*$/.test(id) ? (
+  if (kind === 'author') return <AuthorDetail key={id} id={id} />;
+  if (kind === 'series-detail') return <SeriesDetail key={id} id={id} />;
+  return /^[1-9]\d*$/.test(id) ? (
     <BookSeriesCatalog key={id} />
   ) : (
     <SeriesDetail key={id} id={id} />
