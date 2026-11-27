@@ -5,6 +5,25 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Per-locale catalog loading (2026-11-27)
+
+Lumen now ships locale metadata in its initial app bundle and loads the selected
+message catalog as a separate chunk. The generated catalogs still cover every
+active SeerrNG locale; English remains the synchronous fallback, and switching
+the saved display language loads its catalog before translated content settles.
+The initial minified JavaScript entry fell from 4,659.92 kB (1,046.02 kB gzip)
+to 1,667.00 kB (454.36 kB gzip). French and Arabic add 104.24 kB and 109.83 kB
+gzip respectively when selected. The saved-language account browser case passed
+on desktop, iPhone, Android, and tablet; Lumen unit tests passed 82/82 and its
+production build passed. `pnpm i18n:check` remains blocked by the pre-existing
+API message source-catalog drift in `config/i18n/api-message-sources.json` and
+`src/i18n/apiMessages.ts`; this change does not modify those files.
+
+This performance milestone does not complete the remaining workflow, provider,
+role/recovery, or native-matched visual acceptance work listed in this ledger.
+
+release-note: `release-notes/lumen-lazy-locale-catalogs.md`
+
 > The inventory below comes from the native route tree and navigation model
 > and Lumen's route table, sidebar, mobile tabs, and API consumers. A route
 > match is evidence of reachability only. Compare the behaviors inside it.
