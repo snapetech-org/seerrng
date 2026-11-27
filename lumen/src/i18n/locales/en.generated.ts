@@ -5816,6 +5816,7 @@ export const messages = {
     'Everything you don’t have yet is ticked.',
   'lumen.tv.fact.createdBy': 'Created by',
   'lumen.tv.fact.episodeLength': 'Episode length',
+  'lumen.tv.fact.episodes': 'Episodes',
   'lumen.tv.fact.firstAirDate': 'First Air Date',
   'lumen.tv.fact.genres': 'Genres',
   'lumen.tv.fact.lastAired': 'Last aired',

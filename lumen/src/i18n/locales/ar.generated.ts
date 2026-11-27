@@ -5799,6 +5799,7 @@ export const messages = {
   'lumen.tv.everythingMissingTicked': 'تم تحديد كل ما ينقصك.',
   'lumen.tv.fact.createdBy': 'أنشأه',
   'lumen.tv.fact.episodeLength': 'مدة الحلقة',
+  'lumen.tv.fact.episodes': 'عدد الحلقات',
   'lumen.tv.fact.firstAirDate': 'تاريخ العرض الأول',
   'lumen.tv.fact.genres': 'الأنواع',
   'lumen.tv.fact.lastAired': 'آخر عرض',

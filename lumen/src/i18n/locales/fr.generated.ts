@@ -6305,6 +6305,7 @@ export const messages = {
     'Toutes les saisons manquantes sont cochées.',
   'lumen.tv.fact.createdBy': 'Créé par',
   'lumen.tv.fact.episodeLength': 'Durée d’un épisode',
+  'lumen.tv.fact.episodes': 'Épisodes',
   'lumen.tv.fact.firstAirDate': 'Date de première diffusion',
   'lumen.tv.fact.genres': 'Genres',
   'lumen.tv.fact.lastAired': 'Dernière diffusion',

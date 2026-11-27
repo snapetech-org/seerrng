@@ -1332,6 +1332,10 @@ export default function TvDetail() {
                     fmtRun(t.episodeRunTime?.[0]),
                   ],
                   [
+                    translate('lumen.tv.fact.episodes', 'Episodes'),
+                    t.numberOfEpisodes > 0 ? t.numberOfEpisodes : null,
+                  ],
+                  [
                     translate('lumen.tv.fact.createdBy', 'Created by'),
                     t.createdBy?.map(({ id, name }, index) => (
                       <span key={`${id ?? name}:${index}`}>

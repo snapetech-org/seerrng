@@ -875,6 +875,10 @@ existing scrollable detail page and sticky request bar.
 
 Visual and browser evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-facts-acceptance-20261126/`.
+API data and actions are fixture-backed; live TMDB, media-server, and provider
+behavior remain unverified.
+
+release-note: `release-notes/lumen-tv-detail-facts.md`
 
 ### TV production studios (2026-11-27)
 
@@ -896,10 +900,25 @@ and live TMDB responses were not exercised in this visual run.
 
 Visual and browser evidence is retained under
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-studio-parity-20261127/`.
-API data and actions are fixture-backed; live TMDB, media-server, and provider
-behavior remain unverified.
 
-release-note: `release-notes/lumen-tv-detail-facts.md`
+### TV episode count (2026-11-27)
+
+Native TV details include the total episode count. The SeerrNG TV API already
+provides `numberOfEpisodes`, but Lumen's response type and Series Details panel
+did not expose it. Lumen now shows positive episode counts in the existing
+fact grid with English, French, and Arabic labels; zero or missing counts stay
+hidden. The shared detail layout and styles remain unchanged.
+
+The production build and 12 metadata browser cases pass across English, French,
+and Arabic and desktop, iPhone, Android, and tablet presets. Fixtures verify
+the exact episode count and translated labels under the `/lumen/` route.
+Baseline and candidate captures at 1440×900 and 390×844 were inspected; the
+row fits the existing grid without horizontal overflow. The local static mount
+does not exercise SeerrNG's compiled Express middleware or live API responses.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-episode-count-20261127/`.
+
+release-note: `release-notes/lumen-tv-episode-count.md`
 
 These optional desktop links and Discover chips now use locale message IDs
 instead of the English labels stored in the catalog metadata. English, French,

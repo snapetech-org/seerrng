@@ -6,6 +6,7 @@ const locales = {
     movie: 'Movie Details',
     tv: 'Series Details',
     studio: 'Production Studios',
+    episodes: 'Episodes',
     directors: 'Director',
     writers: 'Writers',
     screenplay: 'Screenplay',
@@ -17,6 +18,7 @@ const locales = {
     movie: 'Détails du film',
     tv: 'Détails de la série',
     studio: 'Sociétés de production',
+    episodes: 'Épisodes',
     directors: 'Réalisateur',
     writers: 'Auteurs',
     screenplay: 'Scénario',
@@ -28,6 +30,7 @@ const locales = {
     movie: 'تفاصيل الفيلم',
     tv: 'تفاصيل المسلسل',
     studio: 'شركات الإنتاج',
+    episodes: 'عدد الحلقات',
     directors: 'مخرج',
     writers: 'كاتبون',
     screenplay: 'سيناريو',
@@ -209,6 +212,9 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       name: 'Fixture Studio',
       exact: true,
     });
+    const episodesLabel = page
+      .locator('#details dt')
+      .getByText(copy.episodes, { exact: true });
     if (!captureOnly) {
       await expect(studioLabel).toBeVisible();
       await expect(fixtureStudio).toHaveAttribute(
@@ -218,6 +224,8 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       await expect(
         page.getByRole('link', { name: 'Unlinked Studio', exact: true })
       ).toHaveCount(0);
+      await expect(episodesLabel).toBeVisible();
+      await expect(episodesLabel.locator('..').locator('dd')).toHaveText('8');
     }
     const tvHeader = page.locator('.dtitle');
     const tvDrama = tvHeader.getByRole('link', { name: 'Drama', exact: true });
