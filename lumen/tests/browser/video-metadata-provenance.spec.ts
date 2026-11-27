@@ -7,6 +7,7 @@ const locales = {
     tv: 'Series Details',
     studio: 'Production Studios',
     episodes: 'Episodes',
+    lastAired: 'Last aired',
     seasonCount: '2 seasons',
     directors: 'Director',
     writers: 'Writers',
@@ -20,6 +21,7 @@ const locales = {
     tv: 'Détails de la série',
     studio: 'Sociétés de production',
     episodes: 'Épisodes',
+    lastAired: 'Dernière diffusion',
     seasonCount: '2 saisons',
     directors: 'Réalisateur',
     writers: 'Auteurs',
@@ -33,6 +35,7 @@ const locales = {
     tv: 'تفاصيل المسلسل',
     studio: 'شركات الإنتاج',
     episodes: 'عدد الحلقات',
+    lastAired: 'آخر عرض',
     seasonCount: '2 مواسم',
     directors: 'مخرج',
     writers: 'كاتبون',
@@ -268,6 +271,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       await expect(page.getByText(copy.writers, { exact: true })).toBeVisible();
       await expect(page.getByText('Fixture Director')).toBeVisible();
       await expect(page.getByText('Fixture Writer')).toBeVisible();
+      const lastAired = page
+        .locator('#details dt')
+        .getByText(copy.lastAired, { exact: true });
+      await expect(lastAired.locator('..').locator('dd')).not.toBeEmpty();
       const tmdbLink = page.getByRole('link', { name: copy.tmdb });
       await expect(tmdbLink).toHaveAttribute(
         'href',

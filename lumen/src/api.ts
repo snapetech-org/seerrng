@@ -1061,6 +1061,7 @@ export interface TvDetails extends TitleResult {
     seasonNumber: number;
     episodeNumber: number;
   };
+  lastAirDate?: string;
   nextEpisodeToAir?: {
     airDate: string;
     seasonNumber: number;

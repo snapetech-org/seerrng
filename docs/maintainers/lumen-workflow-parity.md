@@ -5,6 +5,22 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Preserve the TV last air date when episode metadata is missing (2026-11-27)
+
+Native Series Details continues to show the series-level `lastAirDate` when
+TMDB omits `lastEpisodeToAir`. Lumen previously left its Last aired fact empty
+in that case. It now uses the localized series-level date as a fallback and
+keeps the season/episode detail when episode metadata is present.
+
+The existing metadata browser fixture verifies the fallback in English,
+French, and Arabic across desktop, iPhone, Android, and tablet (12 passes).
+Matched baseline and candidate captures were rendered at desktop and iPhone
+sizes; the added value fits the existing facts grid without horizontal
+overflow. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-tv-last-air-date-20261127/`.
+
+release-note: `release-notes/lumen-tv-last-air-date.md`
+
 ### Refresh download-client health while visible (2026-11-27)
 
 Lumen now refreshes configured download-client health every 15 seconds while
