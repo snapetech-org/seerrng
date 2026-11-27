@@ -555,6 +555,96 @@ describe('Podcast API routes', () => {
     assert.strictEqual(queue.mock.callCount(), 1);
   });
 
+  it('fails closed when Audiobookshelf cannot resolve the viewer account', async (t) => {
+    configureAbs(t);
+    mockPodcastLibrary();
+    mock.method(AudiobookshelfPodcastsAPI.prototype, 'getUsers', async () => {
+      throw new Error('Audiobookshelf user lookup failed');
+    });
+    const item = {
+      id: 'private-show',
+      libraryId: 'pod-lib',
+      mediaType: 'podcast',
+      title: 'Private Show',
+      author: null,
+      description: null,
+      genres: [],
+      feedUrl: 'https://feeds.example.test/private.xml',
+      itunesId: null,
+      explicit: false,
+      language: null,
+      numEpisodes: 1,
+      autoDownloadEpisodes: true,
+      addedAt: null,
+      tags: ['follower:another-user'],
+      episodes: [],
+    };
+    mock.method(
+      AudiobookshelfPodcastsAPI.prototype,
+      'getPodcastItem',
+      async () => item
+    );
+    mock.method(
+      AudiobookshelfPodcastsAPI.prototype,
+      'getPodcastLibraryItems',
+      async () => ({
+        total: 1,
+        limit: 500,
+        page: 0,
+        results: [
+          {
+            id: item.id,
+            title: item.title,
+            tags: item.tags,
+            feedUrl: item.feedUrl,
+          },
+        ],
+      })
+    );
+    mock.method(
+      AudiobookshelfPodcastsAPI.prototype,
+      'searchPodcasts',
+      async () => [
+        {
+          id: item.id,
+          title: item.title,
+          author: null,
+          description: null,
+          genres: [],
+          feedUrl: item.feedUrl,
+          itunesId: null,
+          explicit: false,
+          imageUrl: null,
+          episodeCount: item.numEpisodes,
+        },
+      ]
+    );
+    mock.method(ApplePodcastsAPI.prototype, 'getTopPodcasts', async () => []);
+
+    const viewer = await getRepository(User).findOneByOrFail({
+      email: 'friend@seerr.dev',
+    });
+    const agent = await login(viewer.email);
+    const paths = [
+      '/podcast/library',
+      '/podcast/library/private-show',
+      '/podcast/cover/private-show',
+      '/podcast/search?q=private',
+      '/podcast/discover',
+      '/podcast/latest',
+      '/podcast/activity',
+    ];
+
+    for (const path of paths) {
+      const response = await agent.get(path);
+      assert.strictEqual(response.status, 502, path);
+      assert.doesNotMatch(
+        JSON.stringify(response.body),
+        /Private Show|private-show/
+      );
+    }
+  });
+
   it('proxies image covers with private Cache-Control and returns 404 when absent', async (t) => {
     configureAbs(t);
     mockPodcastLibrary();

@@ -4,17 +4,18 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
 import { api } from './api';
-import { localeData } from './i18n/localeData.generated';
+import { localeLoaders, localeMetadata } from './i18n/localeData.generated';
+import { messages as englishMessages } from './i18n/locales/en.generated';
 
-const english = localeData.find(({ tag }) => tag === 'en')!;
-const byTag = new Map(localeData.map((entry) => [entry.tag, entry]));
+const byTag = new Map(localeMetadata.map((entry) => [entry.tag, entry]));
 
-export type LumenLocale = (typeof localeData)[number]['tag'];
-export const lumenLocales = localeData.map(({ tag, nativeName }) => ({
+export type LumenLocale = (typeof localeMetadata)[number]['tag'];
+export const lumenLocales = localeMetadata.map(({ tag, nativeName }) => ({
   tag,
   nativeName,
 }));
@@ -23,12 +24,12 @@ function matchLocale(
   value: string | null | undefined
 ): LumenLocale | undefined {
   if (!value) return undefined;
-  const exact = localeData.find(
+  const exact = localeMetadata.find(
     ({ tag }) => tag.toLowerCase() === value.toLowerCase()
   );
   if (exact) return exact.tag;
   const base = value.split(/[-_]/, 1)[0].toLowerCase();
-  return localeData.find(({ tag }) => tag.toLowerCase() === base)?.tag;
+  return localeMetadata.find(({ tag }) => tag.toLowerCase() === base)?.tag;
 }
 
 function browserLocale(): LumenLocale {
@@ -71,12 +72,37 @@ export function LumenLocaleProvider({
   children: ReactNode;
 }) {
   const [requestedLocale, setRequestedLocale] = useState<string | null>(null);
-  const [locale, setActiveLocale] = useState<LumenLocale>(browserLocale);
+  const [locale, setActiveLocale] = useState<LumenLocale>('en');
+  const [messages, setMessages] =
+    useState<Record<string, string>>(englishMessages);
+  const localeLoadGeneration = useRef(0);
+
+  const activateLocale = useCallback((requested: string | null) => {
+    const next = matchLocale(requested) ?? browserLocale();
+    const generation = ++localeLoadGeneration.current;
+    const catalog =
+      next === 'en'
+        ? Promise.resolve({ messages: englishMessages })
+        : localeLoaders[next]();
+    void catalog
+      .then(({ messages: loaded }) => {
+        if (localeLoadGeneration.current === generation) {
+          setMessages(loaded as Record<string, string>);
+          setActiveLocale(next);
+        }
+      })
+      .catch(() => {
+        if (localeLoadGeneration.current === generation) {
+          setActiveLocale('en');
+          setMessages(englishMessages);
+        }
+      });
+  }, []);
 
   useEffect(() => {
     if (userId == null) {
       setRequestedLocale(null);
-      setActiveLocale(browserLocale());
+      activateLocale(null);
       return;
     }
     let live = true;
@@ -85,40 +111,41 @@ export function LumenLocaleProvider({
         if (!live) return;
         const requested = typeof saved === 'string' ? saved : null;
         setRequestedLocale(requested);
-        setActiveLocale(matchLocale(requested) ?? browserLocale());
+        activateLocale(requested);
       })
       .catch(() => {
         if (live) {
           setRequestedLocale(null);
-          setActiveLocale(browserLocale());
+          activateLocale(null);
         }
       });
     return () => {
       live = false;
     };
-  }, [userId]);
+  }, [activateLocale, userId]);
 
   useEffect(() => {
-    const metadata = byTag.get(locale) ?? english;
+    const metadata = byTag.get(locale) ?? byTag.get('en')!;
     document.documentElement.lang = locale;
     document.documentElement.dir = metadata.direction;
   }, [locale]);
 
-  const setLocale = useCallback((requested: string | null) => {
-    setRequestedLocale(requested);
-    setActiveLocale(matchLocale(requested) ?? browserLocale());
-  }, []);
+  const setLocale = useCallback(
+    (requested: string | null) => {
+      setRequestedLocale(requested);
+      activateLocale(requested);
+    },
+    [activateLocale]
+  );
   const t = useCallback(
     (
       id: string,
       fallback?: string,
       values?: Record<string, string | number>
     ) => {
-      const active = byTag.get(locale)?.messages as
-        Record<string, string> | undefined;
       const message =
-        active?.[id] ??
-        (english.messages as Record<string, string>)[id] ??
+        messages[id] ??
+        englishMessages[id as keyof typeof englishMessages] ??
         fallback ??
         id;
       return values
@@ -129,7 +156,7 @@ export function LumenLocaleProvider({
           )
         : message;
     },
-    [locale]
+    [locale, messages]
   );
   const value = useMemo(
     () => ({ locale, requestedLocale, setLocale, t }),
