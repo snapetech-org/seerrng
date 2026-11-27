@@ -2729,6 +2729,51 @@ async function mockPodcasts(
   });
 }
 
+test('podcast service status can recover after a temporary error', async ({
+  page,
+}, info) => {
+  const baseline = process.env.LUMEN_PODCAST_STATUS_BASELINE === '1';
+  let statusReads = 0;
+  await mockMusic(page, { previews: [], saved: [] });
+  await mockPodcasts(page, { subscribed: [], downloads: [], auto: [] });
+  await page.route('**/api/v1/podcast/status', (route) => {
+    statusReads += 1;
+    if (statusReads === 1) {
+      return route.fulfill({
+        status: 503,
+        json: { message: 'Temporary service outage' },
+      });
+    }
+    return route.fulfill({
+      json: {
+        configured: true,
+        libraryName: 'Podcasts',
+        canManage: true,
+      },
+    });
+  });
+  await page.goto(testAppPath('/podcasts'));
+  await expect(page.getByText('Podcasts could not load')).toBeVisible();
+  const retry = page.getByRole('button', { name: 'Try again' });
+  if (baseline) {
+    await expect(retry).toHaveCount(0);
+  } else {
+    await expect(retry).toBeVisible();
+  }
+  if (['desktop', 'iphone'].includes(info.project.name)) {
+    await page.screenshot({
+      path: info.outputPath(
+        `podcast-status-error-${baseline ? 'baseline' : 'candidate'}.png`
+      ),
+      fullPage: true,
+    });
+  }
+  if (baseline) return;
+  await retry.click();
+  await expect(page.getByRole('tab', { name: 'Discover' })).toBeVisible();
+  expect(statusReads).toBeGreaterThan(1);
+});
+
 test('Podcasts is its own section with Discover, search, your shows and activity', async ({
   page,
 }) => {

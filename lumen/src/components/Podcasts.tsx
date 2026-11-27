@@ -929,7 +929,14 @@ export function PodcastsHome() {
       {status.error && !status.data ? (
         <div className="empty">
           <b>{t('lumen.podcasts.unavailable', 'Podcasts could not load')}</b>
-          {status.error}
+          <div>{status.error}</div>
+          <button
+            type="button"
+            className="btn btn-tonal btn-sm"
+            onClick={() => status.reload()}
+          >
+            {t('lumen.common.tryAgain', 'Try again')}
+          </button>
         </div>
       ) : !status.data ? (
         <Loading />

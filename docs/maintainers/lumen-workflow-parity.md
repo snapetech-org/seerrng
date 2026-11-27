@@ -1,5 +1,24 @@
 # Lumen workflow parity
 
+### Retry podcast service-status recovery (2026-11-27)
+
+When the podcast service-status endpoint failed before returning configuration,
+Lumen displayed the error without a way to retry. The status error now includes
+the shared localized Retry action and reloads the same status check; podcast
+configuration and account permissions remain unchanged.
+
+The focused browser regression passes 4/4 on desktop, iPhone, Android, and
+tablet. It reproduces a temporary 503, retries, and verifies the configured
+podcast sections return. The production Lumen build passes. Matched baseline
+and candidate error-state renders were inspected at desktop and iPhone sizes;
+the action sits below the error text and stays within the existing panel.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-podcast-status-recovery-20261127/`.
+The endpoint is fixture-backed; live Audiobookshelf availability remains
+unverified.
+
+release-note: `release-notes/lumen-podcast-status-retry.md`
+
 ### Localize server-disabled category recovery (2026-11-27)
 
 When the server disables an optional category, its Lumen recovery page now
