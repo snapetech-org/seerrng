@@ -296,6 +296,15 @@ test('user directory and local-account creation use the saved locale and retain 
     status: 'active' | 'revoked';
   }[] = [];
   const creates: Record<string, unknown>[] = [];
+  let managedSettings = {
+    enabledMediaCategories: { movie: true, tv: true },
+    usesDefaultEnabledMediaCategories: false,
+    showIndexerDetails: true,
+    defaultShowIndexerDetails: true,
+    usesDefaultShowIndexerDetails: true,
+    globalMovieQuotaLimit: 5,
+    globalMovieQuotaDays: 7,
+  };
   let maturityPolicy = {
     movieMaturityRatingLimit: null as string | null,
     tvMaturityRatingLimit: null as string | null,
@@ -393,19 +402,40 @@ test('user directory and local-account creation use the saved locale and retain 
     if (path === '/user/2/settings/password' && request.method() === 'GET')
       return route.fulfill({ json: { hasPassword: true } });
     if (path === '/user/2/settings/main') {
-      if (request.method() === 'POST')
+      if (request.method() === 'POST') {
+        const changes = request.postDataJSON() as Record<string, unknown>;
+        if ('enabledMediaCategories' in changes) {
+          const categories = changes.enabledMediaCategories;
+          if (categories === null) {
+            managedSettings = {
+              ...managedSettings,
+              enabledMediaCategories: { movie: true, tv: true },
+              usesDefaultEnabledMediaCategories: true,
+            };
+          } else if (categories && typeof categories === 'object') {
+            managedSettings = {
+              ...managedSettings,
+              enabledMediaCategories: {
+                ...managedSettings.enabledMediaCategories,
+                ...(categories as Record<string, boolean>),
+              },
+              usesDefaultEnabledMediaCategories: false,
+            };
+          }
+        }
+        if ('movieQuotaLimit' in changes || 'movieQuotaDays' in changes) {
+          managedSettings = { ...managedSettings, ...changes };
+        }
+        if ('showIndexerDetails' in changes) {
+          managedSettings = {
+            ...managedSettings,
+            showIndexerDetails: Boolean(changes.showIndexerDetails),
+            usesDefaultShowIndexerDetails: changes.showIndexerDetails === null,
+          };
+        }
         return route.fulfill({ status: 204, body: '' });
-      return route.fulfill({
-        json: {
-          enabledMediaCategories: { movie: true, tv: true },
-          usesDefaultEnabledMediaCategories: false,
-          showIndexerDetails: true,
-          defaultShowIndexerDetails: true,
-          usesDefaultShowIndexerDetails: true,
-          globalMovieQuotaLimit: 5,
-          globalMovieQuotaDays: 7,
-        },
-      });
+      }
+      return route.fulfill({ json: managedSettings });
     }
     if (path === '/user/2/settings/maturity') {
       if (request.method() === 'POST') {
@@ -558,6 +588,9 @@ test('user directory and local-account creation use the saved locale and retain 
   await expect(
     page.getByText(copy.categoriesSaved, { exact: true })
   ).toBeVisible();
+  await expect(
+    page.getByRole('checkbox', { name: translated.categoryMovie, exact: true })
+  ).not.toBeChecked();
 
   await page
     .getByRole('button', { name: copy.maturityLimits, exact: true })

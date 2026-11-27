@@ -13450,3 +13450,21 @@ provider persistence remain unverified. The full account-route visual matrix
 and Express-mounted failure recovery remain open.
 
 release-note: `release-notes/lumen-managed-account-settings-readback.md`
+
+### Keep managed account readback fixtures stateful (2026-11-27)
+
+The administrator-managed user browser fixture now applies media-category and
+request-quota writes to its settings state before serving the no-store readback.
+Previously it returned the initial values after accepting a write, which made
+the correct Lumen confirmation flow report a stale-settings error. A visible
+checkbox assertion now confirms the saved category after readback.
+
+The focused admin-user workflow passes 12/12 across English, French, and Arabic
+on desktop, iPhone, Android, and tablet against the compiled production bundle
+served through SeerrNG's `mountLumenFrontend` Express middleware at `/lumen/`.
+This harness fixture intercepts API calls; it does not verify live
+authorization, persistence, provider behavior, or matched native visuals. No
+rendered UI or CSS changed. Evidence and traces are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-users-mount-20261127/`.
+
+release-note: none
