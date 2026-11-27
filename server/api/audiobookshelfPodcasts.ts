@@ -1350,20 +1350,30 @@ export default class AudiobookshelfPodcastsAPI {
   public async getUsers(): Promise<AbsUserSummary[]> {
     const response = await this.request<unknown>('GET', '/users');
     const data = response.data;
-    const users =
-      isPlainObject(data) && Array.isArray(data.users) ? data.users : [];
-    return users.flatMap((entry): AbsUserSummary[] => {
-      if (!isPlainObject(entry)) return [];
+    if (!isPlainObject(data) || !Array.isArray(data.users)) {
+      throw new Error('Audiobookshelf returned an invalid user list.');
+    }
+    return data.users.map((entry): AbsUserSummary => {
+      if (!isPlainObject(entry)) {
+        throw new Error('Audiobookshelf returned an invalid user record.');
+      }
       const id = boundedString(entry.id, 256);
-      if (!id) return [];
-      return [
-        {
-          id,
-          username: boundedString(entry.username, 256),
-          email: boundedString(entry.email, 320),
-          type: boundedString(entry.type, 32),
-        },
-      ];
+      if (!id) {
+        throw new Error('Audiobookshelf returned a user without an ID.');
+      }
+      const optionalString = (value: unknown, maxLength: number) => {
+        if (value === null || value === undefined) return null;
+        if (typeof value !== 'string') {
+          throw new Error('Audiobookshelf returned an invalid user record.');
+        }
+        return boundedString(value, maxLength);
+      };
+      return {
+        id,
+        username: optionalString(entry.username, 256),
+        email: optionalString(entry.email, 320),
+        type: optionalString(entry.type, 32),
+      };
     });
   }
 

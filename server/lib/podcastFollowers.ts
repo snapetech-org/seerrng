@@ -72,20 +72,33 @@ export const absUserIdFor = async (
   if (!user) return null;
   const stored = getSettings().podcastFollowers.links[String(user.id)];
   if (isAbsUserId(stored)) return stored;
-  let users: AbsUserSummary[];
-  try {
-    users = await loadAbsUsers(api);
-  } catch {
-    return null;
-  }
+  const users = await loadAbsUsers(api);
   const email = user.email?.trim().toLowerCase();
-  const byEmail = email
-    ? users.find((entry) => entry.email?.trim().toLowerCase() === email)
-    : undefined;
-  if (byEmail && isAbsUserId(byEmail.id)) return byEmail.id;
+  const emailMatches = email
+    ? users.filter((entry) => entry.email?.trim().toLowerCase() === email)
+    : [];
+  if (emailMatches.length > 1) {
+    throw new Error('Audiobookshelf user email is ambiguous.');
+  }
+  const byEmail = emailMatches[0];
+  if (byEmail) {
+    if (!isAbsUserId(byEmail.id)) {
+      throw new Error('Audiobookshelf returned an unsupported user ID.');
+    }
+    return byEmail.id;
+  }
   if (user.id === 1) {
-    const root = users.find((entry) => entry.type === 'root');
-    if (root && isAbsUserId(root.id)) return root.id;
+    const roots = users.filter((entry) => entry.type === 'root');
+    if (roots.length > 1) {
+      throw new Error('Audiobookshelf root user is ambiguous.');
+    }
+    const root = roots[0];
+    if (root) {
+      if (!isAbsUserId(root.id)) {
+        throw new Error('Audiobookshelf returned an unsupported user ID.');
+      }
+      return root.id;
+    }
   }
   return null;
 };

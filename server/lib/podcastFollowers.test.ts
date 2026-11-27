@@ -89,6 +89,63 @@ describe('podcast followers', () => {
     assert.equal(await absUserIdFor(api, { id: 7, email: null }), 'chosen-id');
   });
 
+  it('does not treat a failed Audiobookshelf identity lookup as an unlinked user', async () => {
+    const { api } = fakeAbs({});
+    const unavailable = {
+      ...api,
+      getUsers: async () => {
+        throw new Error('Audiobookshelf users unavailable');
+      },
+    } as unknown as AudiobookshelfPodcastsAPI;
+
+    await assert.rejects(
+      absUserIdFor(unavailable, {
+        id: 2,
+        email: 'gayle.cunningham@example.com',
+      }),
+      /Audiobookshelf users unavailable/
+    );
+  });
+
+  it('rejects ambiguous email and root identity matches', async () => {
+    const { api } = fakeAbs({});
+    const duplicateEmails = {
+      ...api,
+      cacheKey: () => 'abs-test-duplicate-emails',
+      getUsers: async () => [
+        {
+          id: 'first',
+          username: null,
+          email: 'same@example.com',
+          type: 'user',
+        },
+        {
+          id: 'second',
+          username: null,
+          email: 'same@example.com',
+          type: 'user',
+        },
+      ],
+    } as unknown as AudiobookshelfPodcastsAPI;
+    const duplicateRoots = {
+      ...api,
+      cacheKey: () => 'abs-test-duplicate-roots',
+      getUsers: async () => [
+        { id: 'first', username: null, email: null, type: 'root' },
+        { id: 'second', username: null, email: null, type: 'root' },
+      ],
+    } as unknown as AudiobookshelfPodcastsAPI;
+
+    await assert.rejects(
+      absUserIdFor(duplicateEmails, { id: 2, email: 'same@example.com' }),
+      /email is ambiguous/
+    );
+    await assert.rejects(
+      absUserIdFor(duplicateRoots, { id: 1, email: 'owner@example.com' }),
+      /root user is ambiguous/
+    );
+  });
+
   it('shows a linked person their shows and the unclaimed ones', () => {
     assert.equal(showVisibleTo([], 'me'), true);
     assert.equal(showVisibleTo(['follower:me', 'follower:you'], 'me'), true);

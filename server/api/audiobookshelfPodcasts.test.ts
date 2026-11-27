@@ -294,6 +294,49 @@ describe('AudiobookshelfPodcastsAPI', () => {
     }
   });
 
+  it('rejects incomplete Audiobookshelf user lists instead of mapping them as empty', async () => {
+    let body: unknown = {};
+    const server = createServer((_req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(body));
+    });
+    server.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    const addr = server.address();
+    assert.ok(addr && typeof addr !== 'string');
+
+    try {
+      const api = new AudiobookshelfPodcastsAPI(makeSettings(addr.port));
+      await assert.rejects(api.getUsers(), /invalid user list/);
+
+      body = { users: [{ id: 'u1', email: 12, type: 'user' }] };
+      await assert.rejects(api.getUsers(), /invalid user record/);
+
+      body = {
+        users: [
+          {
+            id: 'u1',
+            username: 'listener',
+            email: 'listener@example.test',
+            type: 'user',
+          },
+        ],
+      };
+      assert.deepStrictEqual(await api.getUsers(), [
+        {
+          id: 'u1',
+          username: 'listener',
+          email: 'listener@example.test',
+          type: 'user',
+        },
+      ]);
+    } finally {
+      server.closeAllConnections();
+      server.close();
+      await once(server, 'close');
+    }
+  });
+
   it('supports search, feed preview, create, auto toggle, download episodes, and both download queue formats', async () => {
     const bodies: Record<string, unknown> = {};
     const server = createServer(async (req, res) => {

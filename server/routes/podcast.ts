@@ -954,7 +954,7 @@ podcastRoutes.get('/search', async (req, res) => {
         context.fingerprint,
         context.library.id
       ),
-      absUserIdFor(context.api, req.user).catch(() => null),
+      absUserIdFor(context.api, req.user),
     ]);
 
     return res.status(200).json({
@@ -1809,7 +1809,7 @@ podcastRoutes.get('/discover', async (req, res) => {
             }),
       loadOptionalLibraryIndex(),
       configured
-        ? absUserIdFor(configured.api, req.user).catch(() => null)
+        ? absUserIdFor(configured.api, req.user)
         : Promise.resolve(null),
     ]);
   } catch (error) {
