@@ -2,16 +2,49 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   api,
-  type BookDetails,
   type DownloadItem,
   type LibraryRemovalPlan,
+  type MediaInfo,
 } from '../api';
 import { isAdministrator, useAuth } from '../auth';
 import { useApi } from '../hooks';
 import { useLumenLocale } from '../i18n';
 import { ConfirmSheet } from './ConfirmSheet';
+import { canManageRequests } from './detail';
 import { ServiceNote } from './extra';
 import { useToast } from './toast';
+
+export type ManageableMediaType = 'book' | 'music' | 'comic' | 'magazine';
+
+const mediaKindLabel = (
+  mediaType: ManageableMediaType,
+  t: (id: string, fallback: string) => string
+) =>
+  t(
+    `lumen.manageMedia.type.${mediaType}`,
+    mediaType === 'music'
+      ? 'Music'
+      : mediaType === 'comic'
+        ? 'Comic'
+        : mediaType === 'magazine'
+          ? 'Magazine'
+          : 'Book'
+  );
+
+const mediaTitle = (
+  mediaType: ManageableMediaType,
+  t: (id: string, fallback: string) => string
+) =>
+  t(
+    `lumen.manageMedia.title.${mediaType}`,
+    mediaType === 'music'
+      ? 'Manage Music'
+      : mediaType === 'comic'
+        ? 'Manage Comic'
+        : mediaType === 'magazine'
+          ? 'Manage Magazine'
+          : 'Manage Book'
+  );
 
 const safeUrl = (value?: string | null) => {
   if (!value) return undefined;
@@ -27,10 +60,7 @@ const safeUrl = (value?: string | null) => {
   }
 };
 
-function downloadRows(
-  rows: DownloadItem[] | undefined,
-  format: 'ebook' | 'audiobook'
-) {
+function downloadRows(rows: DownloadItem[] | undefined, format: string) {
   return (rows ?? []).map((item, index) => ({
     ...item,
     format,
@@ -38,12 +68,16 @@ function downloadRows(
   }));
 }
 
-export function ManageBookSheet({
-  book,
+export function ManageMediaSheet({
+  mediaType,
+  title,
+  media,
   onClose,
   onUpdated,
 }: {
-  book: BookDetails;
+  mediaType: ManageableMediaType;
+  title: string;
+  media?: MediaInfo;
   onClose: () => void;
   onUpdated: () => void;
 }) {
@@ -51,7 +85,8 @@ export function ManageBookSheet({
   const { user } = useAuth();
   const toast = useToast();
   const admin = isAdministrator(user?.permissions);
-  const media = book.mediaInfo;
+  const kindLabel = mediaKindLabel(mediaType, t);
+  const titleLabel = mediaTitle(mediaType, t);
   const library = useApi<LibraryRemovalPlan>(
     admin && media?.id ? `/media/${media.id}/library` : null,
     { keepDuringRefresh: true }
@@ -62,25 +97,44 @@ export function ManageBookSheet({
   const requests = (media?.requests ?? []).filter(
     (request) => request.status !== 3
   );
-  const downloads = [
-    ...downloadRows(media?.downloadStatus, 'ebook'),
-    ...downloadRows(media?.audiobookDownloadStatus, 'audiobook'),
-  ];
-  const serviceLinks = [
-    {
-      label: t('lumen.manageBook.openEbookService', 'Open Ebook in Bookshelf'),
-      href: safeUrl(media?.serviceUrl),
-      key: 'ebook',
-    },
-    {
-      label: t(
-        'lumen.manageBook.openAudiobookService',
-        'Open Audiobook in Bookshelf'
-      ),
-      href: safeUrl(media?.audiobookServiceUrl),
-      key: 'audiobook',
-    },
-  ].filter((link): link is typeof link & { href: string } => !!link.href);
+  const downloads =
+    mediaType === 'book'
+      ? [
+          ...downloadRows(media?.downloadStatus, 'ebook'),
+          ...downloadRows(media?.audiobookDownloadStatus, 'audiobook'),
+        ]
+      : downloadRows(media?.downloadStatus, mediaType);
+  const serviceLinks = (
+    mediaType === 'book'
+      ? [
+          {
+            label: t(
+              'lumen.manageBook.openEbookService',
+              'Open Ebook in Bookshelf'
+            ),
+            href: safeUrl(media?.serviceUrl),
+            key: 'ebook',
+          },
+          {
+            label: t(
+              'lumen.manageBook.openAudiobookService',
+              'Open Audiobook in Bookshelf'
+            ),
+            href: safeUrl(media?.audiobookServiceUrl),
+            key: 'audiobook',
+          },
+        ]
+      : [
+          {
+            label: t(
+              'lumen.manageMedia.openService',
+              'Open configured service'
+            ),
+            href: safeUrl(media?.serviceUrl),
+            key: mediaType,
+          },
+        ]
+  ).filter((link): link is typeof link & { href: string } => !!link.href);
 
   const removeLibrary = async () => {
     if (
@@ -103,14 +157,19 @@ export function ManageBookSheet({
         'empty'
       );
       setRemoving(false);
-      toast(t('lumen.manageBook.removed', 'Verified book copies removed.'));
+      toast(
+        t('lumen.manageMedia.removed', 'Verified {media} copies removed.', {
+          media: kindLabel,
+        })
+      );
       onUpdated();
       onClose();
     } catch {
       setFailure(
         t(
-          'lumen.manageBook.removeFailed',
-          'Could not remove the verified book copies. Refresh the plan and retry.'
+          'lumen.manageMedia.removeFailed',
+          'Could not remove the verified {media} copies. Refresh the plan and retry.',
+          { media: kindLabel }
         )
       );
       library.revalidate();
@@ -123,13 +182,16 @@ export function ManageBookSheet({
   if (removing)
     return (
       <ConfirmSheet
-        title={t('lumen.manageBook.confirmRemove', 'Delete Book Copies?')}
+        title={t('lumen.manageMedia.confirmRemove', 'Delete {media} Copies?', {
+          media: kindLabel,
+        })}
         body={t(
-          'lumen.manageBook.confirmRemoveBody',
-          'This permanently removes the verified book copies and their files. This cannot be undone.'
+          'lumen.manageMedia.confirmRemoveBody',
+          'This permanently removes the verified {media} copies and their files. This cannot be undone.',
+          { media: kindLabel }
         )}
-        confirm={t('lumen.manageBook.remove', 'Delete From Library')}
-        cancel={t('lumen.manageBook.keep', 'Keep Copies')}
+        confirm={t('lumen.manageMedia.remove', 'Delete From Library')}
+        cancel={t('lumen.manageMedia.keep', 'Keep Copies')}
         busy={busy}
         onConfirm={() => void removeLibrary()}
         onClose={() => setRemoving(false)}
@@ -157,17 +219,17 @@ export function ManageBookSheet({
         className="sheet"
         role="dialog"
         aria-modal="true"
-        aria-label={t('lumen.manageBook.title', 'Manage Book')}
+        aria-label={titleLabel}
       >
         <div className="grab" />
         <div className="pk">
           <header>
-            <h3>{t('lumen.manageBook.title', 'Manage Book')}</h3>
-            <span className="sub">{book.title}</span>
+            <h3>{titleLabel}</h3>
+            <span className="sub">{title}</span>
           </header>
           {media?.requests && (
-            <section className="card" aria-labelledby="manage-book-requests">
-              <h4 id="manage-book-requests">
+            <section className="card" aria-labelledby="manage-media-requests">
+              <h4 id="manage-media-requests">
                 {t('lumen.manageBook.requests', 'Requests')}
               </h4>
               {requests.length ? (
@@ -176,14 +238,16 @@ export function ManageBookSheet({
                     <li className="set" key={request.id}>
                       <div>
                         <b>
-                          {request.bookFormat === 'audiobook'
-                            ? t('lumen.bookDetail.audiobook', 'Audiobook')
-                            : request.bookFormat === 'both'
-                              ? t(
-                                  'lumen.manageBook.bothFormats',
-                                  'Ebook and Audiobook'
-                                )
-                              : t('lumen.bookDetail.ebook', 'Ebook')}
+                          {mediaType !== 'book'
+                            ? kindLabel
+                            : request.bookFormat === 'audiobook'
+                              ? t('lumen.bookDetail.audiobook', 'Audiobook')
+                              : request.bookFormat === 'both'
+                                ? t(
+                                    'lumen.manageBook.bothFormats',
+                                    'Ebook and Audiobook'
+                                  )
+                                : t('lumen.bookDetail.ebook', 'Ebook')}
                         </b>
                         <small>
                           {request.requestedBy?.displayName ??
@@ -210,8 +274,8 @@ export function ManageBookSheet({
               )}
             </section>
           )}
-          <section className="card" aria-labelledby="manage-book-downloads">
-            <h4 id="manage-book-downloads">
+          <section className="card" aria-labelledby="manage-media-downloads">
+            <h4 id="manage-media-downloads">
               {t('lumen.manageBook.downloads', 'Downloads')}
             </h4>
             {downloads.length ? (
@@ -220,9 +284,11 @@ export function ManageBookSheet({
                   <li className="set" key={item.key}>
                     <div>
                       <b>
-                        {item.format === 'audiobook'
-                          ? t('lumen.bookDetail.audiobook', 'Audiobook')
-                          : t('lumen.bookDetail.ebook', 'Ebook')}
+                        {mediaType !== 'book'
+                          ? kindLabel
+                          : item.format === 'audiobook'
+                            ? t('lumen.bookDetail.audiobook', 'Audiobook')
+                            : t('lumen.bookDetail.ebook', 'Ebook')}
                       </b>
                       <small>
                         {item.status ||
@@ -242,8 +308,8 @@ export function ManageBookSheet({
             )}
           </section>
           {admin && serviceLinks.length > 0 && (
-            <section className="card" aria-labelledby="manage-book-services">
-              <h4 id="manage-book-services">
+            <section className="card" aria-labelledby="manage-media-services">
+              <h4 id="manage-media-services">
                 {t('lumen.manageBook.services', 'Services')}
               </h4>
               <div className="toolbar">
@@ -262,19 +328,19 @@ export function ManageBookSheet({
             </section>
           )}
           {admin && media?.id && (
-            <section className="card" aria-labelledby="manage-book-library">
-              <h4 id="manage-book-library">
+            <section className="card" aria-labelledby="manage-media-library">
+              <h4 id="manage-media-library">
                 {t('lumen.manageBook.library', 'Verified Library')}
               </h4>
               <ServiceNote
                 error={library.error}
                 what={t(
-                  'lumen.manageBook.libraryPlan',
+                  'lumen.manageMedia.libraryPlan',
                   'verified library plan'
                 )}
                 title={t(
-                  'lumen.manageBook.libraryFailed',
-                  'Could not verify the book copies'
+                  'lumen.manageMedia.libraryFailed',
+                  'Could not verify the media copies'
                 )}
                 retryLabel={t('lumen.manageBook.retry', 'Check Again')}
                 retry={library.reload}
@@ -294,13 +360,13 @@ export function ManageBookSheet({
                     type="button"
                     onClick={() => setRemoving(true)}
                   >
-                    {t('lumen.manageBook.remove', 'Delete From Library')}
+                    {t('lumen.manageMedia.remove', 'Delete From Library')}
                   </button>
                 </>
               ) : library.data ? (
                 <p className="note">
                   {t(
-                    'lumen.manageBook.noCopies',
+                    'lumen.manageMedia.noCopies',
                     'No verified service copies were found.'
                   )}
                 </p>
@@ -308,8 +374,8 @@ export function ManageBookSheet({
                 !library.error && (
                   <p className="note" role="status">
                     {t(
-                      'lumen.manageBook.checking',
-                      'Checking configured book services…'
+                      'lumen.manageMedia.checking',
+                      'Checking configured media services…'
                     )}
                   </p>
                 )
@@ -318,11 +384,49 @@ export function ManageBookSheet({
           )}
           <div className="pk-foot">
             <button className="btn btn-tonal" type="button" onClick={onClose}>
-              {t('lumen.manageBook.close', 'Close')}
+              {t('lumen.manageMedia.close', 'Close')}
             </button>
           </div>
         </div>
       </section>
     </div>
+  );
+}
+
+export function ManageMediaAction({
+  mediaType,
+  title,
+  media,
+  onUpdated,
+}: {
+  mediaType: ManageableMediaType;
+  title: string;
+  media?: MediaInfo;
+  onUpdated: () => void;
+}) {
+  const { user } = useAuth();
+  const { t } = useLumenLocale();
+  const [open, setOpen] = useState(false);
+  if (!canManageRequests(user?.permissions) || !media || media.status === 1)
+    return null;
+  return (
+    <>
+      <button
+        className="btn btn-tonal btn-sm"
+        type="button"
+        onClick={() => setOpen(true)}
+      >
+        {mediaTitle(mediaType, t)}
+      </button>
+      {open && (
+        <ManageMediaSheet
+          mediaType={mediaType}
+          title={title}
+          media={media}
+          onClose={() => setOpen(false)}
+          onUpdated={onUpdated}
+        />
+      )}
+    </>
   );
 }

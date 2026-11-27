@@ -57,6 +57,7 @@ import {
 import FollowButton from '../components/FollowButton';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import { ManageMediaAction } from '../components/ManageMediaSheet';
 import MusicEditionCompare from '../components/MusicEditionCompare';
 import {
   ActivityTab,
@@ -2665,6 +2666,12 @@ function AlbumDetailPage() {
             />
           )}
           <div className="dstatus">
+            <ManageMediaAction
+              mediaType="music"
+              title={a.title}
+              media={a.mediaInfo}
+              onUpdated={refresh}
+            />
             {(ownedCount > 0 || s?.k === 'ok') && (
               <PlayButton
                 target={albumTarget}

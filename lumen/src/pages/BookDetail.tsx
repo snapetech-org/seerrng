@@ -37,7 +37,7 @@ import {
 import { ServiceNote } from '../components/extra';
 import FollowButton from '../components/FollowButton';
 import IndexerSearchLink from '../components/IndexerSearchLink';
-import { ManageBookSheet } from '../components/ManageBookSheet';
+import { ManageMediaAction } from '../components/ManageMediaSheet';
 import OpenIssueReports from '../components/OpenIssueReports';
 import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReportIssueButton from '../components/ReportIssueButton';
@@ -326,7 +326,6 @@ export default function BookDetail() {
   }
   const [pick, setPick] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [manageOpen, setManageOpen] = useState(false);
   const [requestOptions, setRequestOptions] = useState<{
     format: 'ebook' | 'audiobook';
     options: RequestOptions;
@@ -689,16 +688,6 @@ export default function BookDetail() {
 
   return (
     <article className="detail">
-      {manageOpen && b?.mediaInfo && (
-        <ManageBookSheet
-          book={b}
-          onClose={() => setManageOpen(false)}
-          onUpdated={() => {
-            dropBookStates();
-            first.refresh();
-          }}
-        />
-      )}
       <DetailTop
         status={s}
         poster={bookArt(b.posterPath, 'L')}
@@ -798,17 +787,15 @@ export default function BookDetail() {
               )}
             </Link>
           )}
-          {canManageRequests(user?.permissions) &&
-            b.mediaInfo &&
-            b.mediaInfo.status !== MediaStatus.UNKNOWN && (
-              <button
-                className="btn btn-tonal btn-sm"
-                type="button"
-                onClick={() => setManageOpen(true)}
-              >
-                {t('lumen.manageBook.title', 'Manage Book')}
-              </button>
-            )}
+          <ManageMediaAction
+            mediaType="book"
+            title={b.title}
+            media={b.mediaInfo}
+            onUpdated={() => {
+              dropBookStates();
+              first.refresh();
+            }}
+          />
           <IndexerSearchLink
             category={audio ? 'audiobook' : 'ebook'}
             title={b.title}

@@ -15,6 +15,9 @@ const messages = {
     approvalValue: 'Approval Required',
     quota: '3 of 5 magazine requests remaining.',
     cancel: 'Cancel',
+    manage: 'Manage Magazine',
+    managerRequests: 'Requests',
+    noDownloads: 'No active downloads.',
   },
   fr: {
     title: 'Demander un magazine',
@@ -30,6 +33,9 @@ const messages = {
     approvalValue: 'Approbation requise',
     quota: '3 demande(s) de magazine restante(s) sur 5.',
     cancel: 'Annuler',
+    manage: 'Gérer le magazine',
+    managerRequests: 'Demandes',
+    noDownloads: 'Aucun téléchargement actif.',
   },
   ar: {
     title: 'طلب مجلة',
@@ -45,10 +51,13 @@ const messages = {
     approvalValue: 'الموافقة مطلوبة',
     quota: 'المتبقي 3 من أصل 5 من طلبات المجلات.',
     cancel: 'إلغاء',
+    manage: 'إدارة المجلة',
+    managerRequests: 'الطلبات',
+    noDownloads: 'لا توجد تنزيلات نشطة.',
   },
 } as const;
 
-async function setup(page: Page, locale: string) {
+async function setup(page: Page, locale: string, permissions = 32 + 8192) {
   const writes: unknown[] = [];
   await page.route('https://**/*', (route) => route.abort());
   await page.route('**/lumen-config.json', (route) =>
@@ -61,7 +70,7 @@ async function setup(page: Page, locale: string) {
     );
     if (path === '/auth/me')
       return route.fulfill({
-        json: { id: 1, displayName: 'Fixture User', permissions: 32 + 8192 },
+        json: { id: 1, displayName: 'Fixture User', permissions },
       });
     if (path === '/user/1/settings/main')
       return route.fulfill({ json: { locale } });
@@ -106,6 +115,7 @@ async function setup(page: Page, locale: string) {
           latestIssue: 'Issue 42',
           issueCount: 42,
           requestable: true,
+          mediaInfo: { id: 42, status: 0, requests: [], downloadStatus: [] },
         },
       });
     return route.fulfill({ json: {} });
@@ -211,3 +221,19 @@ test('magazine backend processing failure keeps the request retryable', async ({
     { mediaType: 'magazine', mediaId: 'Fixture Magazine' },
   ]);
 });
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`magazine management sheet follows ${locale}`, async ({ page }) => {
+    await setup(page, locale, 16);
+    await page.goto('/magazine/Fixture%20Magazine');
+    const manage = messages[locale].manage;
+    await page.getByRole('button', { name: manage }).click();
+    const sheet = page.getByRole('dialog', { name: manage });
+    await expect(
+      sheet.getByText(messages[locale].managerRequests, { exact: true })
+    ).toBeVisible();
+    await expect(
+      sheet.getByText(messages[locale].noDownloads, { exact: true })
+    ).toBeVisible();
+  });
+}

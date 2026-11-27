@@ -41,6 +41,7 @@ import {
 } from '../components/extra';
 import { GenrePicker } from '../components/GenrePicker';
 import IndexerSearchLink from '../components/IndexerSearchLink';
+import { ManageMediaAction } from '../components/ManageMediaSheet';
 import OpenIssueReports from '../components/OpenIssueReports';
 import ReaderDeliveryLink from '../components/ReaderDeliveryLink';
 import ReaderShelf from '../components/ReaderShelf';
@@ -995,6 +996,15 @@ export function ComicDetail() {
         />
         <div className="dbody">
           <div className="dstatus">
+            <ManageMediaAction
+              mediaType="comic"
+              title={c?.title || chosen?.title || work.title}
+              media={shown}
+              onUpdated={() => {
+                refreshEdition();
+                reload();
+              }}
+            />
             <StatPill s={s} />
             {cs.detail && <span className="dnote">{cs.detail}</span>}
             {(work.genres || []).slice(0, 4).map((g) => (
@@ -1867,6 +1877,12 @@ export function MagazineDetail() {
         />
         <div className="dbody">
           <div className="dstatus">
+            <ManageMediaAction
+              mediaType="magazine"
+              title={m.title}
+              media={m.mediaInfo}
+              onUpdated={refresh}
+            />
             <StatPill s={s} />
             {have > 0 && (
               <Pill k="ok" icon="check">

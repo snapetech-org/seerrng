@@ -12306,14 +12306,23 @@ still required before calling this sheet fully equivalent.
 
 release-note: `release-notes/lumen-book-management-sheet.md`
 
-### Open: contextual management sheets for music, comics, and magazines
+### Cross-media contextual management sheet (2026-11-27)
 
-Native Album, Comic, and Magazine details also expose the shared
-ExternalMediaManageSlideOver. Lumen currently has no corresponding contextual
-sheet for these categories. Their detail pages expose separate issue,
-blocklist, download, and request entry points, but administrators lack the
-native consolidated view of non-declined requests, download client status,
-configured service links, and the existing media-specific management actions.
-Audit each backend's verified library-removal capabilities and identity rules
-before extending the Book sheet pattern; Bindery, BookOrbit, Mylar, Kapowarr,
-BackIssue, and Lidarr have distinct contracts.
+Book, Album, Comic, and Magazine details now use the same contextual Lumen
+management sheet. It lists non-declined requests with links to Request Center,
+shows the category's download status, and gives administrators safe links to
+configured services. The admin-only library plan and removal path use the
+existing server resolver, which selects a provider by media type and verified
+comic backend identity; removal still requires the fresh plan token and explicit
+confirmation. Book-specific ebook and audiobook statuses and service links are
+preserved. Managers without administrator access do not read or see library
+removal controls.
+
+The sheet does not replace media-specific issue, blocklist, or cancellation
+surfaces; those remain in their current Lumen workflows. Browser fixtures cover
+the existing Book removal flow and Magazine sheet in English, French, and
+Arabic. Music and Comic sheet entry points are wired but need focused browser
+regressions. Native-matched visual comparison and live provider/removal checks
+remain open before claiming full parity.
+
+release-note: `release-notes/lumen-cross-media-management-sheets.md`
