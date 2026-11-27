@@ -516,6 +516,13 @@ body.is-detail .tabbar {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.poster .m2.extra-card-detail {
+  display: -webkit-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 /* the title under a card opens the same page as the art; the art link stays the one
    keyboard and screen-reader target */
 .poster a.t {

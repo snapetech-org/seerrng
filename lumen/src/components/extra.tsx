@@ -140,6 +140,7 @@ export function ExtraCard({
   quick,
   metaHref,
   statusBadges,
+  details,
 }: {
   href: string;
   // the meta line (an album's artist) opens its own page
@@ -157,6 +158,7 @@ export function ExtraCard({
   // a one-tap request on the cover (Get album), shown while nothing is owned or asked for
   quick?: { label: string; action: string; run: () => Promise<unknown> };
   statusBadges?: QualityStatus[];
+  details?: string[];
 }) {
   const titleMode = useCardTitleMode(titleKind);
   const safeImage = artUrl(img);
@@ -304,6 +306,11 @@ export function ExtraCard({
           <div className="m">{meta}</div>
         ))}
       {note && <div className="m2">{note}</div>}
+      {details?.map((detail, index) => (
+        <div className="m2 extra-card-detail" key={`${detail}-${index}`}>
+          {detail}
+        </div>
+      ))}
     </div>
   );
 }

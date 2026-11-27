@@ -12738,3 +12738,26 @@ exercised for this display-only change. Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
 
 release-note: `release-notes/lumen-pc-game-playtime-cards.md`
+
+### Game catalog platform and system metadata (2026-11-27)
+
+Native game cards show the first two supported PC platforms (Windows, Linux,
+macOS) or the first two emulation systems for retro and modern games. Lumen
+previously omitted both. Game catalog cards now display those category-specific
+details alongside the main-story estimate for PC titles, using the shared
+`ExtraCard` secondary-details slot. A dedicated card-detail modifier wraps up
+to two lines within the poster width; it avoids the generic `.detail` selector,
+which owns full-page detail layout. Existing `note` consumers are unchanged.
+
+The pre-change baseline at `a9a3c9cab` and candidate were captured on the same
+`/games` fixture at 1440x900 and iPhone 13 sizes, for PC and retro catalog
+states. Candidate desktop and iPhone captures show the platform/system labels
+without clipping or horizontal overflow. The fixture verifies main-story plus
+PC platform details and retro-system details, with no PC-only estimate on
+console cards. English, French, and Arabic tests passed across desktop, iPhone,
+Android, and tablet (12 cases). The Lumen build passed. Exact provider data,
+live API behavior, and production `/lumen/` mount were not exercised. Evidence
+is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-catalog-playtime-20261127/`.
+
+release-note: `release-notes/lumen-pc-game-playtime-cards.md`

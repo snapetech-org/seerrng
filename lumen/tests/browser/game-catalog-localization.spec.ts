@@ -31,6 +31,8 @@ const copy = {
     releaseYear: 'Release year',
     linux: 'Linux',
     mainStory: 'Main Story: 30.5 h',
+    pcSystems: 'Windows · Linux',
+    consoleSystems: 'Nintendo Entertainment System',
   },
   fr: {
     title: 'Jeux',
@@ -52,6 +54,8 @@ const copy = {
     releaseYear: 'Année de sortie',
     linux: 'Linux',
     mainStory: 'Histoire principale : 30,5 h',
+    pcSystems: 'Windows · Linux',
+    consoleSystems: 'Nintendo Entertainment System',
   },
   ar: {
     title: 'الألعاب',
@@ -73,6 +77,8 @@ const copy = {
     releaseYear: 'سنة الإصدار',
     linux: 'Linux',
     mainStory: 'القصة الرئيسية: 30.5 ساعة',
+    pcSystems: 'Windows · Linux',
+    consoleSystems: 'Nintendo Entertainment System',
   },
 }[locale];
 
@@ -138,6 +144,14 @@ test('Games catalog controls and empty state follow the saved locale', async ({
               coverUrl: null,
               releaseDate: '2025-01-01',
               genres: ['Adventure'],
+              platforms: ['Windows', 'Linux', 'Nintendo Switch'],
+              emulationSystems: [
+                {
+                  slug: 'nes',
+                  name: 'Nintendo Entertainment System',
+                  group: 'retro',
+                },
+              ],
               timeToBeat: { normally: 30.5 },
             },
           ],
@@ -172,7 +186,10 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     copy.searchPc
   );
   await expect(page.getByText('Fixture Game')).toBeVisible();
-  await expect(page.getByText(copy.mainStory)).toBeVisible();
+  await expect(page.locator('.grid .poster .m2')).toHaveText([
+    copy.mainStory,
+    copy.pcSystems,
+  ]);
   await expect(page.getByLabel(copy.allPcPlatforms)).toBeVisible();
   await expect(page.getByLabel(copy.genre)).toBeVisible();
   await expect(page.getByLabel(copy.releaseYear)).toBeVisible();
@@ -228,6 +245,14 @@ test('Games catalog controls and empty state follow the saved locale', async ({
       )
     )
     .toBe(true);
+  await expect(page.locator('.grid .poster .m2')).toHaveText([
+    copy.consoleSystems,
+  ]);
+  if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))
+    await page.screenshot({
+      path: `${captureDirectory}/${locale}-${info.project.name}-retro.png`,
+      fullPage: true,
+    });
   await expect(page.getByPlaceholder(copy.searchRetro)).toBeVisible();
   await expect(page.getByPlaceholder(copy.searchRetro)).toHaveAttribute(
     'placeholder',

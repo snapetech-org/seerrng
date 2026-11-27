@@ -519,15 +519,24 @@ export function Games() {
             meta={[(g.releaseDate || '').slice(0, 4), g.genres?.[0]]
               .filter(Boolean)
               .join(' · ')}
-            note={
+            details={[
               cat === 'game' && g.timeToBeat?.normally != null
                 ? t('lumen.games.mainStoryEstimate', 'Main Story: {hours} h', {
                     hours: new Intl.NumberFormat(locale, {
                       maximumFractionDigits: 1,
                     }).format(g.timeToBeat.normally),
                   })
-                : undefined
-            }
+                : undefined,
+              cat === 'game'
+                ? g.platforms
+                    ?.filter((platform) => /windows|linux|mac/i.test(platform))
+                    .slice(0, 2)
+                    .join(' · ')
+                : g.emulationSystems
+                    ?.map((system) => system.name)
+                    .slice(0, 2)
+                    .join(' · '),
+            ].filter((detail): detail is string => Boolean(detail))}
           />
         ))}
       </div>
