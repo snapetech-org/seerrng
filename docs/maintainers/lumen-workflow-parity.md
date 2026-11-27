@@ -12388,3 +12388,23 @@ action placement. Evidence is retained at
 Live request permissions and provider state remain unverified.
 
 release-note: `release-notes/lumen-cross-media-request-status.md`
+
+### Bookshelf metadata credential guidance
+
+Lumen's Bookshelf Catalog metadata section now points administrators to the
+Hardcover API token page and to connected Bookshelf service settings. The copy
+explains that credentials belong to the configured Bookshelf-compatible service
+and that a shared hosted endpoint manages its own upstream access. This keeps
+the token ownership boundary visible without making SeerrNG collect or persist
+the Hardcover credential. Existing native SeerrNG translations are reused and
+registered in Lumen's locale catalog.
+
+The metadata browser fixture checks the destination, safe external-link
+attributes, and French and Arabic labels on desktop, iPhone, Android, and tablet.
+Same-state baseline/candidate captures are made at desktop and iPhone widths
+with the Bookshelf Catalog section in view; no CSS or shared visual owner
+changed. Fixtures establish rendered links and copy, not live Hardcover token
+creation or downstream service authentication. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-hardcover-metadata-links-20261127/`.
+
+release-note: `release-notes/lumen-hardcover-metadata-guidance.md`

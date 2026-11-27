@@ -994,6 +994,13 @@ export const localeData = [
         'استجاب مزوّد الذكاء الاصطناعي لطلب الاختبار.',
       'components.Settings.SettingsSwipe.testing': 'جارٍ الاختبار…',
       'components.Settings.SettingsSwipe.title': 'اكتشاف Swipe',
+      'components.Settings.bookshelfServicesLink':
+        'إدارة خدمات Bookshelf المتصلة',
+      'components.Settings.hardcoverTokenLink': 'أنشئ رمز API لـ Hardcover.',
+      'components.Settings.hardcoverTokenReminder':
+        'لا يتضمن SeerrNG رمزًا مميزًا لخدمة Hardcover. تستخدم خدمة BookshelfNG أو rreading-glasses المستضافة ذاتيًا الرمز المُعدّ لها مع جميع المتصلين بها. تدير نقطة الاستضافة المشتركة، مثل hardcover.bookinfo.pro، وصولها إلى الخدمة المصدر بنفسها، ولا يمكنك استبداله من إعدادات BookshelfNG. لاستخدام رمزك الخاص، أعدّ Hardcover الأصلي من إعدادات BookshelfNG > البيانات الوصفية، أو اضبط متغير البيئة الذي يستبدله (BOOKSHELF_HARDCOVER_AUTH للوضع الأصلي المُدار، وHARDCOVER_AUTH لوضع التوافق).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'استخدم الرمز المميز Hardcover API الخاص بك',
       'components.Settings.notificationsettings': 'اعدادات التنبيهات',
       'components.SettingsProwlarr.addDetectedMatches': 'تطابق مكتشف{count})',
       'components.SettingsProwlarr.address': 'اسم المضيف',
@@ -11729,6 +11736,14 @@ export const localeData = [
         'Der KI-Anbieter beantwortete die Testanfrage.',
       'components.Settings.SettingsSwipe.testing': 'Testen…',
       'components.Settings.SettingsSwipe.title': 'Entdecken per Wischgeste',
+      'components.Settings.bookshelfServicesLink':
+        'Verbundene Bookshelf-Dienste verwalten',
+      'components.Settings.hardcoverTokenLink':
+        'Erstellen Sie einen Hardcover API-Token',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG enthält kein Hardcover-Token. Ein selbst gehosteter BookshelfNG- oder rreading-glasses-Dienst verwendet das dort konfigurierte Token für alle Nutzer dieses Dienstes. Ein gemeinsam genutzter gehosteter Endpunkt wie hardcover.bookinfo.pro verwaltet seinen eigenen Zugriff auf den vorgelagerten Dienst; dieser lässt sich nicht in den BookshelfNG-Einstellungen ersetzen. Wenn du dein eigenes Token verwenden möchtest, richte natives Hardcover unter BookshelfNG-Einstellungen > Metadaten ein oder setze die überschreibende Umgebungsvariable (BOOKSHELF_HARDCOVER_AUTH für den verwalteten nativen Modus, HARDCOVER_AUTH für den Kompatibilitätsmodus).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Verwenden Sie Ihren eigenen Hardcover API-Token',
       'components.Settings.notificationsettings':
         'Benachrichtigungseinstellungen',
       'components.SettingsProwlarr.addDetectedMatches':
@@ -13524,6 +13539,13 @@ export const localeData = [
         'The AI provider answered the test request.',
       'components.Settings.SettingsSwipe.testing': 'Testing…',
       'components.Settings.SettingsSwipe.title': 'Swipe Discovery',
+      'components.Settings.bookshelfServicesLink':
+        'Manage connected Bookshelf services',
+      'components.Settings.hardcoverTokenLink': 'Create a Hardcover API token',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG does not bundle a Hardcover token. A self-hosted BookshelfNG or rreading-glasses service uses its configured token for everyone connected to that service. A shared hosted endpoint such as hardcover.bookinfo.pro manages its own upstream access, which you cannot replace from BookshelfNG settings. To use your own token, configure native Hardcover in BookshelfNG Settings > Metadata or set the environment variable that overrides it (BOOKSHELF_HARDCOVER_AUTH for managed native mode, HARDCOVER_AUTH for compatibility mode).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Use your own Hardcover API token',
       'components.Settings.notificationsettings': 'Notification Settings',
       'components.SettingsProwlarr.addDetectedMatches':
         'Add detected matches ({count})',
@@ -22075,6 +22097,14 @@ export const localeData = [
       'components.Settings.SettingsSwipe.testing': 'Probando…',
       'components.Settings.SettingsSwipe.title':
         'Descubrimiento de deslizamiento',
+      'components.Settings.bookshelfServicesLink':
+        'Gestionar los servicios de Bookshelf conectados',
+      'components.Settings.hardcoverTokenLink':
+        'Crear un token de API de tapa dura',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG no incluye un token de Hardcover. Un servicio autoalojado de BookshelfNG o rreading-glasses usa el token configurado para todas las personas conectadas a ese servicio. Un punto de acceso compartido y alojado, como hardcover.bookinfo.pro, administra su propio acceso al servicio upstream, que no puedes sustituir desde la configuración de BookshelfNG. Para usar tu propio token, configura Hardcover nativo en BookshelfNG, en Configuración > Metadatos, o establece la variable de entorno que lo sobrescribe (BOOKSHELF_HARDCOVER_AUTH para el modo nativo administrado y HARDCOVER_AUTH para el modo de compatibilidad).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Usa tu propio token de API de Hardcover',
       'components.Settings.notificationsettings':
         'Configuración de notificaciones',
       'components.SettingsProwlarr.addDetectedMatches':
@@ -23891,6 +23921,14 @@ export const localeData = [
         'El proveedor de AI respondió la solicitud de prueba.',
       'components.Settings.SettingsSwipe.testing': 'Probando…',
       'components.Settings.SettingsSwipe.title': 'Deslizar descubrimiento',
+      'components.Settings.bookshelfServicesLink':
+        'Administrar los servicios de Bookshelf conectados',
+      'components.Settings.hardcoverTokenLink':
+        'Crear un token de API de tapa dura',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG no incluye un token de Hardcover. Un servicio autoalojado de BookshelfNG o rreading-glasses usa el token configurado para todas las personas conectadas a ese servicio. Un punto de acceso compartido y alojado, como hardcover.bookinfo.pro, administra su propio acceso al servicio upstream, que no puedes sustituir desde la configuración de BookshelfNG. Para usar tu propio token, configura Hardcover nativo en BookshelfNG, en Configuración > Metadatos, o establece la variable de entorno que lo sobrescribe (BOOKSHELF_HARDCOVER_AUTH para el modo nativo administrado y HARDCOVER_AUTH para el modo de compatibilidad).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Usa tu propio token de API de Hardcover',
       'components.Settings.notificationsettings':
         'Configuración de notificaciones',
       'components.SettingsProwlarr.addDetectedMatches':
@@ -26632,6 +26670,14 @@ export const localeData = [
         'Le fournisseur d’IA a répondu à la demande de test.',
       'components.Settings.SettingsSwipe.testing': 'Test en cours…',
       'components.Settings.SettingsSwipe.title': 'Découverte Swipe',
+      'components.Settings.bookshelfServicesLink':
+        'Gérer les services Bookshelf connectés',
+      'components.Settings.hardcoverTokenLink':
+        "Créer un jeton d'API de couverture rigide",
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG ne fournit pas de jeton Hardcover. Un service BookshelfNG ou rreading-glasses auto-hébergé utilise le jeton configuré pour toutes les personnes qui y sont connectées. Un point d’accès hébergé et partagé, comme hardcover.bookinfo.pro, gère son propre accès au service amont, que vous ne pouvez pas remplacer dans les paramètres de BookshelfNG. Pour utiliser votre propre jeton, configurez Hardcover natif dans BookshelfNG > Paramètres > Métadonnées, ou définissez la variable d’environnement qui le remplace (BOOKSHELF_HARDCOVER_AUTH pour le mode natif géré et HARDCOVER_AUTH pour le mode de compatibilité).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        "Utilisez votre propre jeton d'API Couverture rigide",
       'components.Settings.notificationsettings': 'Paramètres de notification',
       'components.SettingsProwlarr.addDetectedMatches':
         'Ajouter les correspondances détectées ({count})',
@@ -36136,6 +36182,13 @@ export const localeData = [
         'एआई प्रदाता ने परीक्षण अनुरोध का जवाब दिया।',
       'components.Settings.SettingsSwipe.testing': 'जांच की जा रही है…',
       'components.Settings.SettingsSwipe.title': 'Swipe डिस्कवरी',
+      'components.Settings.bookshelfServicesLink':
+        'कनेक्ट की गई Bookshelf सेवाओं को प्रबंधित करें',
+      'components.Settings.hardcoverTokenLink': 'एक हार्डकवर बनाएँ API टोकन',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG में Hardcover टोकन शामिल नहीं है। स्वयं होस्ट की गई BookshelfNG या rreading-glasses सेवा उस सेवा से जुड़े सभी लोगों के लिए अपना कॉन्फ़िगर किया हुआ टोकन इस्तेमाल करती है। hardcover.bookinfo.pro जैसा साझा होस्टेड एंडपॉइंट अपनी अपस्ट्रीम पहुँच खुद प्रबंधित करता है, जिसे BookshelfNG सेटिंग्स से बदला नहीं जा सकता। अपना टोकन इस्तेमाल करने के लिए BookshelfNG Settings > Metadata में native Hardcover कॉन्फ़िगर करें या उसे ओवरराइड करने वाला environment variable सेट करें (managed native mode के लिए BOOKSHELF_HARDCOVER_AUTH, compatibility mode के लिए HARDCOVER_AUTH)।',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'अपना खुद का उपयोग करें हार्डकवर API टोकन',
       'components.Settings.notificationsettings': 'अधिसूचना सेटिंग',
       'components.SettingsProwlarr.addDetectedMatches':
         'मैचों का पता चला{count})',
@@ -38585,6 +38638,13 @@ export const localeData = [
         'Operator AI menjawab permintaan tes.',
       'components.Settings.SettingsSwipe.testing': 'Menguji…',
       'components.Settings.SettingsSwipe.title': 'Gesek Penemuan',
+      'components.Settings.bookshelfServicesLink':
+        'Kelola layanan Bookshelf yang terhubung',
+      'components.Settings.hardcoverTokenLink': 'Buat token API Hardcover',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG tidak menyertakan token Hardcover. Layanan BookshelfNG atau rreading-glasses yang dihosting sendiri menggunakan token yang dikonfigurasikan untuk semua orang yang terhubung ke layanan tersebut. Endpoint bersama yang dihosting seperti hardcover.bookinfo.pro mengelola akses upstream-nya sendiri dan tidak dapat diganti dari pengaturan BookshelfNG. Untuk menggunakan token Anda sendiri, konfigurasi Hardcover native di BookshelfNG > Pengaturan > Metadata atau atur variabel lingkungan yang menimpanya (BOOKSHELF_HARDCOVER_AUTH untuk mode native terkelola, HARDCOVER_AUTH untuk mode kompatibilitas).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Gunakan token API Hardcover Anda sendiri',
       'components.Settings.notificationsettings': 'Pengaturan Pemberitahuan',
       'components.SettingsProwlarr.addDetectedMatches':
         'Tambah kecocokan yang terdeteksi ({count})',
@@ -41032,6 +41092,14 @@ export const localeData = [
         'AIプロバイダは、試験依頼に答えました。',
       'components.Settings.SettingsSwipe.testing': 'テスト中…',
       'components.Settings.SettingsSwipe.title': 'スワイプディスカバリー',
+      'components.Settings.bookshelfServicesLink':
+        '接続済みの Bookshelf サービスを管理',
+      'components.Settings.hardcoverTokenLink':
+        'Hardcover APIトークンを作成する',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG には Hardcover トークンは同梱されていません。セルフホストの BookshelfNG または rreading-glasses サービスでは、そのサービスに接続するすべての利用者に設定済みトークンが使われます。hardcover.bookinfo.pro のような共有ホスト型エンドポイントは独自に上流サービスへのアクセスを管理するため、BookshelfNG の設定から置き換えることはできません。自分のトークンを使うには、BookshelfNG の設定 > メタデータでネイティブ Hardcover を設定するか、上書き用の環境変数を設定します（管理対象のネイティブモードは BOOKSHELF_HARDCOVER_AUTH、互換モードは HARDCOVER_AUTH）。',
+      'components.Settings.hardcoverTokenReminderTitle':
+        '独自のハードカバーAPIトークンを使用する',
       'components.Settings.notificationsettings': '通知設定',
       'components.SettingsProwlarr.addDetectedMatches':
         '検出されたマッチを追加 ({count})',
@@ -42775,6 +42843,13 @@ export const localeData = [
         'AI 공급자는 시험 요구에 대답했습니다.',
       'components.Settings.SettingsSwipe.testing': '테스트 중…',
       'components.Settings.SettingsSwipe.title': 'Swipe 디스커버리',
+      'components.Settings.bookshelfServicesLink':
+        '연결된 Bookshelf 서비스 관리',
+      'components.Settings.hardcoverTokenLink': 'Hardcover API 토큰 만들기',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG에는 Hardcover 토큰이 포함되어 있지 않습니다. 자체 호스팅한 BookshelfNG 또는 rreading-glasses 서비스는 해당 서비스에 연결된 모든 사용자에게 설정된 토큰을 사용합니다. hardcover.bookinfo.pro와 같은 공유 호스팅 엔드포인트는 자체 업스트림 액세스를 관리하므로 BookshelfNG 설정에서 이를 대체할 수 없습니다. 자체 토큰을 사용하려면 BookshelfNG 설정 > 메타데이터에서 네이티브 Hardcover를 구성하거나 이를 덮어쓰는 환경 변수를 설정하세요(관리형 네이티브 모드는 BOOKSHELF_HARDCOVER_AUTH, 호환 모드는 HARDCOVER_AUTH).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        '자신의 하드 커버 API 토큰을 사용',
       'components.Settings.notificationsettings': '알림 설정',
       'components.SettingsProwlarr.addDetectedMatches':
         '발견된 일치를 추가하십시오 ({count})',
@@ -46530,6 +46605,14 @@ export const localeData = [
         'O fornecedor de IA respondeu ao pedido de teste.',
       'components.Settings.SettingsSwipe.testing': 'Testando…',
       'components.Settings.SettingsSwipe.title': 'Descoberta de Swipe',
+      'components.Settings.bookshelfServicesLink':
+        'Gerenciar os serviços conectados do Bookshelf',
+      'components.Settings.hardcoverTokenLink':
+        'Crie um token de API Hardcover',
+      'components.Settings.hardcoverTokenReminder':
+        'O SeerrNG não inclui um token do Hardcover. Um serviço autohospedado do BookshelfNG ou rreading-glasses usa o token configurado para todas as pessoas conectadas a ele. Um endpoint hospedado e compartilhado, como hardcover.bookinfo.pro, gerencia o próprio acesso ao serviço upstream, que não pode ser substituído nas configurações do BookshelfNG. Para usar seu próprio token, configure o Hardcover nativo em BookshelfNG > Configurações > Metadados ou defina a variável de ambiente que o substitui (BOOKSHELF_HARDCOVER_AUTH para o modo nativo gerenciado e HARDCOVER_AUTH para o modo de compatibilidade).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Use seu próprio token de API Hardcover',
       'components.Settings.notificationsettings':
         'Configurações de Notificação',
       'components.SettingsProwlarr.addDetectedMatches':
@@ -52499,6 +52582,13 @@ export const localeData = [
         'AI供应商回应测试请求.',
       'components.Settings.SettingsSwipe.testing': '测试中…',
       'components.Settings.SettingsSwipe.title': '刷新发现',
+      'components.Settings.bookshelfServicesLink':
+        '管理已连接的 Bookshelf 服务',
+      'components.Settings.hardcoverTokenLink': '创建硬封面 API 令牌',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG 不会捆绑 Hardcover 令牌。自托管的 BookshelfNG 或 rreading-glasses 服务会对所有连接到该服务的用户使用其配置的令牌。像 hardcover.bookinfo.pro 这样的共享托管端点自行管理其上游访问权限，无法在 BookshelfNG 设置中替换。若要使用自己的令牌，请在 BookshelfNG 的“设置 > 元数据”中配置原生 Hardcover，或设置覆盖该值的环境变量（托管原生模式使用 BOOKSHELF_HARDCOVER_AUTH，兼容模式使用 HARDCOVER_AUTH）。',
+      'components.Settings.hardcoverTokenReminderTitle':
+        '使用自己的硬封面 API 令牌',
       'components.Settings.notificationsettings': '通知设置',
       'components.SettingsProwlarr.addDetectedMatches':
         '添加检测到的匹配( E){count})',
@@ -54156,6 +54246,13 @@ export const localeData = [
         'AI提供商回應了測試要求。',
       'components.Settings.SettingsSwipe.testing': '測試中…',
       'components.Settings.SettingsSwipe.title': '刷新發現',
+      'components.Settings.bookshelfServicesLink':
+        '管理已連線的 Bookshelf 服務',
+      'components.Settings.hardcoverTokenLink': '建立硬封面 API 令牌',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG 不會附帶 Hardcover 權杖。自架的 BookshelfNG 或 rreading-glasses 服務會為所有連線至該服務的使用者使用其設定的權杖。hardcover.bookinfo.pro 等共用託管端點會自行管理上游存取權，無法在 BookshelfNG 設定中替換。若要使用自己的權杖，請在 BookshelfNG 設定 > 中繼資料設定原生 Hardcover，或設定覆寫它的環境變數（受管理的原生模式使用 BOOKSHELF_HARDCOVER_AUTH，相容模式使用 HARDCOVER_AUTH）。',
+      'components.Settings.hardcoverTokenReminderTitle':
+        '使用您的硬封面 API 令牌',
       'components.Settings.notificationsettings': '通知設定',
       'components.SettingsProwlarr.addDetectedMatches':
         '新增檢測到的匹配( E){count})',
@@ -55884,6 +55981,14 @@ export const localeData = [
         'Nhà cung cấp AI đã đáp ứng yêu cầu thử nghiệm.',
       'components.Settings.SettingsSwipe.testing': 'Đang kiểm tra…',
       'components.Settings.SettingsSwipe.title': 'Khám pháName',
+      'components.Settings.bookshelfServicesLink':
+        'Quản lý các dịch vụ Bookshelf đã kết nối',
+      'components.Settings.hardcoverTokenLink':
+        'Tạo mã thông báo API Hardcover',
+      'components.Settings.hardcoverTokenReminder':
+        'SeerrNG không đóng gói mã thông báo Hardcover. Dịch vụ BookshelfNG hoặc rreading-glasses tự lưu trữ sử dụng mã thông báo đã cấu hình cho tất cả người kết nối với dịch vụ đó. Điểm cuối dùng chung như hardcover.bookinfo.pro tự quản lý quyền truy cập vào dịch vụ upstream và bạn không thể thay thế quyền đó trong cài đặt BookshelfNG. Để dùng mã thông báo riêng, hãy cấu hình Hardcover gốc trong BookshelfNG > Cài đặt > Siêu dữ liệu hoặc đặt biến môi trường ghi đè nó (BOOKSHELF_HARDCOVER_AUTH cho chế độ gốc được quản lý, HARDCOVER_AUTH cho chế độ tương thích).',
+      'components.Settings.hardcoverTokenReminderTitle':
+        'Sử dụng mã thông báo API Hardcover của riêng bạn',
       'components.Settings.notificationsettings': 'Thiết lập thông báo',
       'components.SettingsProwlarr.addDetectedMatches':
         'Thêm các khớp phát hiện ({count})',

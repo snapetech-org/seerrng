@@ -384,6 +384,37 @@ export default function AdminMetadata() {
             'Hardcover access is configured on the connected BookshelfNG or rreading-glasses server. Shared hosted endpoints manage their own upstream credentials.'
           )}
         </p>
+        <h3>
+          {t(
+            'components.Settings.hardcoverTokenReminderTitle',
+            'Use your own Hardcover API token'
+          )}
+        </h3>
+        <p className="note">
+          {t(
+            'components.Settings.hardcoverTokenReminder',
+            'SeerrNG does not bundle a Hardcover token. Self-hosted Bookshelf services use their configured token; shared hosted services manage their own access. Configure a personal token in the connected service or its supported environment setting.'
+          )}
+        </p>
+        <div className="toolbar">
+          <a
+            className="btn btn-quiet btn-sm"
+            href="https://hardcover.app/account/api"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t(
+              'components.Settings.hardcoverTokenLink',
+              'Create a Hardcover API token'
+            )}
+          </a>
+          <Link className="btn btn-quiet btn-sm" to="/admin/readarr">
+            {t(
+              'components.Settings.bookshelfServicesLink',
+              'Manage connected Bookshelf services'
+            )}
+          </Link>
+        </div>
       </Section>
     </>
   );

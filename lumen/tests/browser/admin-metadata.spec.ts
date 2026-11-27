@@ -20,6 +20,10 @@ for (const [locale, labels] of [
       youtube: 'Clé de l’API YouTube Data',
       tv: 'Fournisseur de métadonnées TV',
       music: 'Métadonnées musicales',
+      hardcoverTokenTitle:
+        "Utilisez votre propre jeton d'API Couverture rigide",
+      hardcoverTokenLink: "Créer un jeton d'API de couverture rigide",
+      bookshelfServices: 'Gérer les services Bookshelf connectés',
       invalid:
         'Saisissez des valeurs dans les limites ou le format de langue pris en charge.',
     },
@@ -39,6 +43,9 @@ for (const [locale, labels] of [
       youtube: 'مفتاح YouTube Data API',
       tv: 'موفر بيانات التلفاز',
       music: 'بيانات الموسيقى الوصفية',
+      hardcoverTokenTitle: 'استخدم الرمز المميز Hardcover API الخاص بك',
+      hardcoverTokenLink: 'أنشئ رمز API لـ Hardcover.',
+      bookshelfServices: 'إدارة خدمات Bookshelf المتصلة',
       invalid: 'أدخل قيماً ضمن النطاقات أو تنسيق اللغة المدعوم.',
     },
   ],
@@ -90,6 +97,15 @@ for (const [locale, labels] of [
     await expect(
       page.getByText(labels.booksHelp, { exact: true })
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: labels.hardcoverTokenTitle })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: labels.hardcoverTokenLink })
+    ).toHaveAttribute('href', 'https://hardcover.app/account/api');
+    await expect(
+      page.getByRole('link', { name: labels.bookshelfServices })
+    ).toHaveAttribute('href', `${mount}/admin/readarr`);
     await expect(page.getByLabel(labels.comicVine)).toBeVisible();
     await expect(page.getByLabel(labels.metron)).toBeVisible();
     await expect(page.getByLabel(labels.googleBooks)).toBeVisible();
@@ -112,6 +128,76 @@ for (const [locale, labels] of [
       });
   });
 }
+
+test('Bookshelf catalog guidance links to Hardcover token creation and service settings', async ({
+  page,
+}, info) => {
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 2 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/settings/metadatas')
+      return route.fulfill({ json: { tv: 'tmdb', anime: 'tmdb' } });
+    if (path === '/settings/metadatas/music')
+      return route.fulfill({
+        json: { maxConcurrentRequests: 2, maxRequestsPerSecond: 10 },
+      });
+    if (path === '/settings/metadatas/books')
+      return route.fulfill({ json: { allowedLanguages: [] } });
+    if (path === '/settings/main') return route.fulfill({ json: {} });
+    return route.fulfill({ json: {} });
+  });
+  await page.goto(`${mount}/admin/metadata`);
+  const catalog = page.locator('section').filter({
+    has: page.getByRole('heading', { name: 'Bookshelf Catalog' }),
+  });
+  await expect(
+    catalog.getByRole('heading', { name: 'Use your own Hardcover API token' })
+  ).toBeVisible();
+  const tokenLink = catalog.getByRole('link', {
+    name: 'Create a Hardcover API token',
+  });
+  await expect(tokenLink).toHaveAttribute(
+    'href',
+    'https://hardcover.app/account/api'
+  );
+  await expect(tokenLink).toHaveAttribute('target', '_blank');
+  await expect(tokenLink).toHaveAttribute('rel', 'noopener noreferrer');
+  await expect(
+    catalog.getByRole('link', { name: 'Manage connected Bookshelf services' })
+  ).toHaveAttribute('href', `${mount}/admin/readarr`);
+  await catalog.scrollIntoViewIfNeeded();
+  if (
+    process.env.LUMEN_CAPTURE_METADATA_CREDENTIALS &&
+    ['desktop', 'iphone'].includes(info.project.name)
+  ) {
+    const capture = process.env.LUMEN_CAPTURE_METADATA_CREDENTIALS;
+    await page.screenshot({
+      path: `${capture}-${info.project.name}-candidate.png`,
+    });
+    await catalog
+      .getByRole('heading', { name: 'Use your own Hardcover API token' })
+      .evaluate((heading) => {
+        heading.remove();
+        heading.nextElementSibling?.remove();
+        heading.nextElementSibling?.remove();
+      });
+    await page.screenshot({
+      path: `${capture}-${info.project.name}-baseline.png`,
+    });
+  }
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
 
 test('metadata sections save independently and expose failed provider checks', async ({
   page,
