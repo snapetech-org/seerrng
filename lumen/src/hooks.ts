@@ -424,7 +424,9 @@ export function loadBookStates(): Promise<Map<string, BookState>> {
       bookFormat?: string;
       media: { status: number; identifiers?: { value: string }[] };
     }[];
-  }>('/request?take=500&skip=0&filter=all&sort=added&mediaType=book')
+    // only pending and approved requests count below: "active" (pending,
+    // approved, failed; any media status) instead of the whole history
+  }>('/request?take=500&skip=0&filter=active&sort=added&mediaType=book')
     .then((d) => {
       const m = new Map<string, BookState>();
       for (const r of d.results) {

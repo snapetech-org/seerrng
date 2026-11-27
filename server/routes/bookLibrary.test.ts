@@ -13,7 +13,7 @@ import express from 'express';
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import request from 'supertest';
-import bookRoutes from './book';
+import bookRoutes, { resetBookLibraryCache } from './book';
 
 setupTestDb();
 const app = express();
@@ -24,6 +24,7 @@ app.use(async (req, _res, next) => {
 app.use('/book', bookRoutes);
 let restoreSettings: () => void;
 beforeEach(() => {
+  resetBookLibraryCache();
   const settings = getSettings();
   const readarr = settings.readarr;
   const categories = settings.main.enabledMediaCategories;
@@ -308,5 +309,21 @@ describe('GET /book/library', () => {
       res.body.results[0].mediaInfo.audiobookLibraryItemId,
       'abs-martian'
     );
+  });
+});
+
+describe('GET /book/library sharing', () => {
+  it('reads the manager library once for the pages of one list', async () => {
+    const getBooks = mock.method(
+      ReadarrAPI.prototype,
+      'getBooks',
+      async () => []
+    );
+
+    const first = await request(app).get('/book/library?format=ebook&page=1');
+    const second = await request(app).get('/book/library?format=ebook&page=2');
+    assert.strictEqual(first.status, 200);
+    assert.strictEqual(second.status, 200);
+    assert.strictEqual(getBooks.mock.callCount(), 1);
   });
 });

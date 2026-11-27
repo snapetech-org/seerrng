@@ -1,0 +1,146 @@
+diff --git a/query-builder/RelationIdLoader.js b/query-builder/RelationIdLoader.js
+index 9cda5fde653255342297148d329778877f89451b..ac37caefa48167e8a134bf8139964accb7fbbdae 100644
+--- a/query-builder/RelationIdLoader.js
++++ b/query-builder/RelationIdLoader.js
+@@ -99,40 +99,118 @@ class RelationIdLoader {
+         }
+         else {
+         }
++        // SeerrNG patch: group through key maps instead of comparing every
++        // entity with every relation id (O(n*m), which blocked the event loop
++        // for loads of a few hundred rows). Candidates are still confirmed with
++        // compareEntityValue, so results and their order are unchanged.
++        const driver = this.dataSource.driver;
++        const inverseAlias = (column) => DriverUtils_1.DriverUtils.buildAlias(driver, undefined, column.entityMetadata.name + "_" + column.propertyAliasName);
++        const columnAlias = (column) => DriverUtils_1.DriverUtils.buildAlias(driver, undefined, column.entityMetadata.name +
++            "_" +
++            relation.propertyPath.replace(".", "_") +
++            "_" +
++            column.propertyPath.replace(".", "_"));
++        const keyPart = (value) => {
++            if (value === null || value === undefined)
++                return String(value);
++            const type = typeof value;
++            if (type === "string" || type === "number" || type === "bigint" || type === "boolean")
++                return type + ":" + String(value);
++            return undefined;
++        };
++        const keyOf = (columnList, read) => {
++            const parts = [];
++            for (const column of columnList) {
++                const part = keyPart(read(column));
++                if (part === undefined)
++                    return undefined;
++                parts.push(part);
++            }
++            return parts.join("\u0000");
++        };
++        const inverseAliases = inverseColumns.map(inverseAlias);
++        const columnAliases = columns.map(columnAlias);
++        let indexed = true;
++        const idsByOwner = new Map();
++        relationIds.forEach((relationId, index) => {
++            if (!indexed)
++                return;
++            const key = keyOf(inverseColumns, (column) => relationId[inverseAliases[inverseColumns.indexOf(column)]]);
++            if (key === undefined) {
++                indexed = false;
++                return;
++            }
++            const list = idsByOwner.get(key);
++            if (list)
++                list.push(index);
++            else
++                idsByOwner.set(key, [index]);
++        });
++        const relatedByKey = new Map();
++        if (indexed) {
++            relatedEntities.forEach((relatedEntity, index) => {
++                if (!indexed)
++                    return;
++                const key = keyOf(columns, (column) => column.getEntityValue(relatedEntity));
++                if (key === undefined) {
++                    indexed = false;
++                    return;
++                }
++                const list = relatedByKey.get(key);
++                if (list)
++                    list.push(index);
++                else
++                    relatedByKey.set(key, [index]);
++            });
++        }
+         return entities.map((entity) => {
+             const group = {
+                 entity: entity,
+                 related: isMany ? [] : undefined,
+             };
+-            const entityRelationIds = relationIds.filter((relationId) => {
+-                return inverseColumns.every((column) => {
+-                    return column.compareEntityValue(entity, relationId[DriverUtils_1.DriverUtils.buildAlias(this.dataSource.driver, undefined, column.entityMetadata.name +
+-                        "_" +
+-                        column.propertyAliasName)]);
++            const ownerKey = indexed
++                ? keyOf(inverseColumns, (column) => column.getEntityValue(entity))
++                : undefined;
++            const candidateIds = ownerKey !== undefined
++                ? (idsByOwner.get(ownerKey) || []).map((index) => relationIds[index])
++                : relationIds;
++            const entityRelationIds = candidateIds.filter((relationId) => {
++                return inverseColumns.every((column, i) => {
++                    return column.compareEntityValue(entity, relationId[inverseAliases[i]]);
+                 });
+             });
+             if (!entityRelationIds.length)
+                 return group;
+-            relatedEntities.forEach((relatedEntity) => {
+-                entityRelationIds.forEach((relationId) => {
+-                    const relatedEntityMatched = columns.every((column) => {
+-                        return column.compareEntityValue(relatedEntity, relationId[DriverUtils_1.DriverUtils.buildAlias(this.dataSource.driver, undefined, column.entityMetadata.name +
+-                            "_" +
+-                            relation.propertyPath.replace(".", "_") +
+-                            "_" +
+-                            column.propertyPath.replace(".", "_"))]);
++            // matching (related entity, relation id) pairs in the original
++            // order: related entities first, then relation ids
++            const pairs = [];
++            entityRelationIds.forEach((relationId, idIndex) => {
++                const relationKey = ownerKey !== undefined
++                    ? keyOf(columns, (column) => relationId[columnAliases[columns.indexOf(column)]])
++                    : undefined;
++                const candidates = relationKey !== undefined
++                    ? relatedByKey.get(relationKey) || []
++                    : relatedEntities.map((_, index) => index);
++                for (const relatedIndex of candidates) {
++                    const relatedEntity = relatedEntities[relatedIndex];
++                    const matched = columns.every((column, i) => {
++                        return column.compareEntityValue(relatedEntity, relationId[columnAliases[i]]);
+                     });
+-                    if (relatedEntityMatched) {
+-                        if (isMany) {
+-                            ;
+-                            group.related.push(relatedEntity);
+-                        }
+-                        else {
+-                            group.related = relatedEntity;
+-                        }
+-                    }
+-                });
++                    if (matched)
++                        pairs.push([relatedIndex, idIndex]);
++                }
+             });
++            pairs.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
++            for (const [relatedIndex] of pairs) {
++                const relatedEntity = relatedEntities[relatedIndex];
++                if (isMany) {
++                    ;
++                    group.related.push(relatedEntity);
++                }
++                else {
++                    group.related = relatedEntity;
++                }
++            }
+             return group;
+         });
+     }

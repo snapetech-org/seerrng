@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { afterEach, describe, it } from 'node:test';
+import { afterEach, describe, it, mock } from 'node:test';
 
 import fs from 'node:fs/promises';
 import os from 'node:os';
@@ -7,6 +7,7 @@ import path from 'node:path';
 import Settings, {
   assertSettingsFileSize,
   defaultReaderDeliverySettings,
+  getSettings,
   MAX_SETTINGS_FILE_BYTES,
   type ReadarrSettings,
 } from '.';
@@ -19,6 +20,44 @@ afterEach(async () => {
       .splice(0)
       .map((directory) => fs.rm(directory, { force: true, recursive: true }))
   );
+});
+
+describe('getSettings file check', () => {
+  it('checks the settings file at most once a second outside tests', (t) => {
+    // NODE_ENV is typed read-only; the test switches it through a plain view
+    const env = process.env as Record<string, string | undefined>;
+    const previous = env.NODE_ENV;
+    t.after(() => {
+      env.NODE_ENV = previous;
+    });
+    env.NODE_ENV = 'production';
+    let now = 10_000_000;
+    mock.method(Date, 'now', () => now);
+    const refresh = mock.method(
+      Settings.prototype,
+      'refreshIfChangedSync',
+      () => undefined
+    );
+
+    getSettings();
+    getSettings();
+    getSettings();
+    assert.strictEqual(refresh.mock.callCount(), 1);
+
+    now += 999;
+    getSettings();
+    assert.strictEqual(refresh.mock.callCount(), 1);
+
+    now += 2;
+    getSettings();
+    assert.strictEqual(refresh.mock.callCount(), 2);
+
+    env.NODE_ENV = 'test';
+    getSettings();
+    getSettings();
+    assert.strictEqual(refresh.mock.callCount(), 4);
+    mock.restoreAll();
+  });
 });
 
 describe('assertSettingsFileSize', () => {

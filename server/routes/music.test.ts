@@ -1329,6 +1329,55 @@ describe('Aurral music endpoints', () => {
     assert.strictEqual(res.body.incomplete, true);
   });
 
+  it('serves the last artist copy on GET /music/artist/:mbid while Aurral fails', async (t) => {
+    configureAurral(t);
+    resetMusicReadCache();
+    const artistMbid = '12121212-1212-4121-8121-121212121212';
+    let fail = false;
+    const details = mock.method(
+      AurralAPI.prototype,
+      'getArtistDetails',
+      async () => {
+        if (fail) throw new Error('timeout of 6000ms exceeded');
+        return {
+          mbid: artistMbid,
+          name: 'Kept Artist',
+          type: null,
+          country: null,
+          beginYear: null,
+          endYear: null,
+          genres: [],
+          bio: null,
+          // a release keeps the route from looking for a same-name artist
+          releaseGroups: [
+            {
+              id: '13131313-1313-4131-8131-131313131313',
+              title: 'Kept Album',
+              primaryType: 'Album',
+              secondaryTypes: [],
+              firstReleaseDate: '2020-01-01',
+            },
+          ],
+        };
+      }
+    );
+    mock.method(
+      AurralAPI.prototype,
+      'getLibraryArtistReleaseGroups',
+      async () => ({ owned: new Set<string>(), partial: new Set<string>() })
+    );
+
+    const agent = await login();
+    const first = await agent.get(`/music/artist/${artistMbid}`);
+    fail = true;
+    const second = await agent.get(`/music/artist/${artistMbid}`);
+    assert.strictEqual(first.status, 200);
+    assert.strictEqual(second.status, 200);
+    assert.strictEqual(second.body.name, 'Kept Artist');
+    // the fresh copy answered: Aurral wasn't asked again
+    assert.strictEqual(details.mock.callCount(), 1);
+  });
+
   it('separates fully owned, partial, and unowned release groups on GET /music/artist/:mbid', async (t) => {
     configureAurral(t);
     const artistMbid = '11111111-1111-4111-8111-111111111111';
@@ -1582,6 +1631,7 @@ describe('Aurral music endpoints', () => {
       cacheManager.getCache('aurral').flush();
       cacheManager.getCache('deezer').flush();
       cacheManager.getCache('musicbrainz').flush();
+      resetMusicReadCache();
     });
 
     it('returns degraded: true without caching when Aurral status is not ok, and preserves library results', async (t) => {
@@ -2281,6 +2331,78 @@ describe('Aurral music endpoints', () => {
         '22222222-2222-4222-8222-222222222222'
       );
       assert.strictEqual(ok.body.artists[1].mbid, null);
+    });
+
+    it('shares similar artists and falls back to ListenBrainz when Aurral fails', async (t) => {
+      configureAurral(t);
+      const artistMbid = '33333333-3333-4333-8333-333333333333';
+      const otherMbid = '44444444-4444-4444-8444-444444444444';
+      let aurralFails = false;
+      const aurralSimilar = mock.method(
+        AurralAPI.prototype,
+        'getSimilarArtists',
+        async () => {
+          if (aurralFails) throw new Error('timeout of 3000ms exceeded');
+          return [{ mbid: null, name: 'From Aurral', image: null }];
+        }
+      );
+      const lbArtist = mock.method(
+        ListenBrainzAPI.prototype,
+        'getArtist',
+        async () => ({
+          similarArtists: {
+            artists: [
+              { artist_mbid: 'bad', name: 'Bad id', score: 9 },
+              {
+                artist_mbid: '55555555-5555-4555-8555-555555555555',
+                name: 'Low',
+                score: 1,
+              },
+              {
+                artist_mbid: '66666666-6666-4666-8666-666666666666',
+                name: ' High ',
+                score: 5,
+              },
+              { artist_mbid: otherMbid, name: 'Self', score: 7 },
+            ],
+          },
+        })
+      );
+
+      const agent = await login();
+      const first = await agent.get(`/music/artist/${artistMbid}/similar`);
+      const second = await agent.get(`/music/artist/${artistMbid}/similar`);
+      assert.strictEqual(first.status, 200);
+      assert.strictEqual(second.body.artists[0].name, 'From Aurral');
+      // one Aurral call for both views
+      assert.strictEqual(aurralSimilar.mock.callCount(), 1);
+
+      aurralFails = true;
+      const fallback = await agent.get(`/music/artist/${otherMbid}/similar`);
+      assert.strictEqual(fallback.status, 200);
+      assert.deepStrictEqual(
+        fallback.body.artists.map((a: { name: string }) => a.name),
+        ['High', 'Low']
+      );
+      assert.strictEqual(fallback.body.artists[0].image, null);
+      assert.strictEqual(lbArtist.mock.callCount(), 1);
+    });
+
+    it('answers an empty similar row when Aurral fails and ListenBrainz has no artist', async (t) => {
+      configureAurral(t);
+      mock.method(AurralAPI.prototype, 'getSimilarArtists', async () => {
+        throw new Error('timeout of 3000ms exceeded');
+      });
+      mock.method(ListenBrainzAPI.prototype, 'getArtist', async () => {
+        throw new Error('Request failed with status code 404');
+      });
+
+      const agent = await login();
+      const res = await agent.get(
+        '/music/artist/77777777-7777-4777-8777-777777777777/similar'
+      );
+      assert.strictEqual(res.status, 200);
+      assert.deepStrictEqual(res.body.artists, []);
     });
 
     it('filters unrelated library hits in GET /music/search using filterLibraryHits', async (t) => {

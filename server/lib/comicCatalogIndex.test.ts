@@ -8,6 +8,9 @@ import { ComicCatalogVolume } from '@server/entity/ComicCatalogVolume';
 import { getSettings } from '@server/lib/settings';
 import { setupTestDb } from '@server/test/db';
 import {
+  browseComicCatalogIndex,
+  lookupComicCatalogVolumes,
+  resetComicCatalogCounts,
   scanComicCatalogIndexPage,
   searchComicCatalogIndex,
 } from './comicCatalogIndex';
@@ -18,6 +21,76 @@ describe('comic catalog index', () => {
   afterEach(() => {
     mock.restoreAll();
     getSettings().main.comicVineApiKey = '';
+    resetComicCatalogCounts();
+  });
+
+  const indexVolumes = async (count: number) => {
+    await getRepository(ComicCatalogScan).save({
+      id: 'global',
+      scanGeneration: 2,
+      completeGeneration: 2,
+    });
+    await getRepository(ComicCatalogVolume).save(
+      Array.from({ length: count }, (_, index) => ({
+        generation: 2,
+        id: index + 1,
+        title: `Volume ${index + 1}`,
+        searchText: `volume ${index + 1}`,
+        publisherKey: 'marvel',
+        startYear: 2020,
+        issueCount: 10 + index,
+        payload: JSON.stringify({ id: index + 1, name: `Volume ${index + 1}` }),
+      }))
+    );
+  };
+
+  it('counts a browse filter once per generation and skips it when asked', async () => {
+    await indexVolumes(5);
+    const count = mock.method(
+      Object.getPrototypeOf(
+        getRepository(ComicCatalogVolume).createQueryBuilder('volume')
+      ),
+      'getCount'
+    );
+    const browse = (page: number, withTotal?: boolean) =>
+      browseComicCatalogIndex({
+        publishers: ['Marvel'],
+        page,
+        limit: 2,
+        withTotal,
+      });
+
+    const first = await browse(1);
+    const second = await browse(2);
+    assert.strictEqual(first.totalResults, 5);
+    assert.strictEqual(second.totalResults, 5);
+    assert.deepStrictEqual(
+      second.results.map((volume) => volume.id),
+      [3, 2]
+    );
+    assert.strictEqual(count.mock.callCount(), 1);
+
+    const uncounted = await browse(1, false);
+    assert.strictEqual(uncounted.results.length, 2);
+    assert.strictEqual(uncounted.totalResults, 2);
+    assert.strictEqual(count.mock.callCount(), 1);
+  });
+
+  it('looks volumes up within the indexed generations', async () => {
+    await indexVolumes(3);
+    // a row left from an older generation is not returned
+    await getRepository(ComicCatalogVolume).save({
+      generation: 1,
+      id: 99,
+      title: 'Old',
+      searchText: 'old',
+      publisherKey: 'marvel',
+      startYear: 1990,
+      issueCount: 1,
+      payload: JSON.stringify({ id: 99, name: 'Old' }),
+    });
+    const found = await lookupComicCatalogVolumes([2, 99, 3]);
+    assert.deepStrictEqual(found.map((volume) => volume.id).sort(), [2, 3]);
   });
 
   it('resumes pages and promotes only a completed generation', async () => {
