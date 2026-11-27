@@ -5985,7 +5985,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 875,
+          "line": 888,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'LazyLibrarian, the service used for magazine searches, is unavailable. Please try again.'",
@@ -9764,7 +9764,7 @@
       "callsites": [
         {
           "path": "server/utils/concurrency.ts",
-          "line": 90,
+          "line": 122,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Task queue capacity must be a non-negative integer.'",
@@ -12399,7 +12399,7 @@
         },
         {
           "path": "server/routes/search.ts",
-          "line": 1482,
+          "line": 1495,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -13168,7 +13168,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 255,
+          "line": 262,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Magazine search timed out.'",
@@ -13699,7 +13699,7 @@
       "callsites": [
         {
           "path": "server/utils/concurrency.ts",
-          "line": 87,
+          "line": 119,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Task queue concurrency must be a positive integer.'",
@@ -24213,7 +24213,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1515,
+          "line": 1528,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve keyword search results.'",
@@ -24855,7 +24855,7 @@
         },
         {
           "path": "server/routes/search.ts",
-          "line": 657,
+          "line": 664,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'OK'",
@@ -24863,7 +24863,7 @@
         },
         {
           "path": "server/routes/search.ts",
-          "line": 994,
+          "line": 1007,
           "kind": "authored-message-field",
           "field": "error",
           "expression": "'OK'",
@@ -25917,7 +25917,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 831,
+          "line": 844,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "bookFormat === 'audiobook'\n              ? 'The configured audiobook catalog is unavailable. Please try again.'\n              : 'Open Library and configured book catalogs are unavailable. Please try again.'",
@@ -27031,7 +27031,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 801,
+          "line": 814,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'MusicBrainz, the service used for music searches, timed out or is unavailable. Please try again.'",
@@ -27136,7 +27136,7 @@
         },
         {
           "path": "server/routes/search.ts",
-          "line": 861,
+          "line": 874,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'ComicVine, the service used for comic searches, timed out or is unavailable. Please try again.'",
@@ -43321,7 +43321,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 848,
+          "line": 861,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'The author catalogs timed out or are unavailable. Please try again.'",
@@ -44118,7 +44118,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1543,
+          "line": 1556,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve company search results.'",
@@ -47999,7 +47999,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 373,
+          "line": 380,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Music filters require the Music media type.'",
@@ -48840,7 +48840,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 758,
+          "line": 771,
           "kind": "authored-message-field",
           "field": "errorMessage",
           "expression": "'Provider did not finish before the global search deadline.'",
@@ -49002,7 +49002,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 831,
+          "line": 844,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "bookFormat === 'audiobook'\n              ? 'The configured audiobook catalog is unavailable. Please try again.'\n              : 'Open Library and configured book catalogs are unavailable. Please try again.'",
@@ -54277,7 +54277,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 1487,
+          "line": 1500,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Unable to retrieve search results.'",
@@ -55099,7 +55099,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 402,
+          "line": 409,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Format can only be used with book searches.'",
@@ -56774,7 +56774,7 @@
       "callsites": [
         {
           "path": "server/routes/search.ts",
-          "line": 792,
+          "line": 805,
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'Artist search is temporarily unavailable. Please try again.'",
@@ -90038,7 +90038,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 338,
+      "line": 345,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -90047,7 +90047,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 348,
+      "line": 355,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedLanguage.error",
@@ -90056,7 +90056,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 360,
+      "line": 367,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedType.error",
@@ -90065,7 +90065,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 367,
+      "line": 374,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedMusicFilters.error",
@@ -90074,7 +90074,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 385,
+      "line": 392,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedResultFilter.error",
@@ -90083,7 +90083,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 396,
+      "line": 403,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedFormat.error",
@@ -90092,7 +90092,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1482,
+      "line": 1495,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e instanceof Error ? e.message : 'Unknown error'",
@@ -90101,7 +90101,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1495,
+      "line": 1508,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -90110,7 +90110,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1510,
+      "line": 1523,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",
@@ -90119,7 +90119,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1523,
+      "line": 1536,
       "kind": "authored-message-field",
       "field": "message",
       "expression": "parsedQuery.error",
@@ -90128,7 +90128,7 @@
     },
     {
       "path": "server/routes/search.ts",
-      "line": 1538,
+      "line": 1551,
       "kind": "authored-message-field",
       "field": "errorMessage",
       "expression": "e.message",

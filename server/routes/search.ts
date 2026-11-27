@@ -133,6 +133,13 @@ export const MAX_SEARCH_RESULTS_PER_PROVIDER = 20;
 export const MAX_COMBINED_SEARCH_RESULTS = 100;
 export const SEARCH_PROVIDER_TIMEOUT_MS = 5_000;
 export const BOOK_SEARCH_PROVIDER_TIMEOUT_MS = 15_000;
+// "All" search: once TMDB and the local catalogs have answered, the public
+// catalogs (MusicBrainz, Open Library, ComicVine) get this much longer instead
+// of holding every search to the full deadline when one of them is slow. A
+// late answer still lands in the provider cache for the next search.
+export const ALL_SEARCH_GRACE_MS = 1_500;
+// TMDB, Bookshelf books, Bookshelf authors, LazyLibrarian, TMDB collections
+const ALL_SEARCH_PRIMARY_PROVIDERS = [0, 4, 6, 8, 9];
 const searchRateLimit = rateLimit({
   ...SEARCH_RATE_LIMIT,
   standardHeaders: true,
@@ -729,7 +736,13 @@ searchRoutes.get('/', async (req, res, next) => {
           ),
           typeFilter === 'book'
             ? BOOK_SEARCH_PROVIDER_TIMEOUT_MS
-            : SEARCH_PROVIDER_TIMEOUT_MS
+            : SEARCH_PROVIDER_TIMEOUT_MS,
+          typeFilter
+            ? {}
+            : {
+                primary: ALL_SEARCH_PRIMARY_PROVIDERS,
+                graceMs: ALL_SEARCH_GRACE_MS,
+              }
         );
       const providerResults = new Map(
         providerResponses.results

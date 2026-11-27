@@ -3029,7 +3029,10 @@ section section,
   gap: 28px 24px;
   align-items: start;
 }
-.admin-groups > section {
+/* Grid items take no stacking margin. The generic section gap
+   (`:not(.view) > :is(...) + :is(section, details.adv)`, specificity 0,3,2)
+   otherwise pushed the second column's first group 28px down. */
+main .admin-groups.admin-groups > section:is(section, details.adv) {
   margin: 0;
 }
 /* Long pick lists (streaming services, categories): a compact grid of checkboxes
@@ -3518,4 +3521,39 @@ details:not(.adv)[open] > * + * {
   .manager-summary-poster {
     width: 80px;
   }
+}
+
+/* Manage sheets: the grouped sections (section.card) and per-quality blocks
+   (div.card) had only browser defaults, so headings carried ~20px margins on
+   both sides and the gaps between groups ran to ~50px */
+.sheet section.card > h4 {
+  margin: 0 0 10px;
+}
+.sheet section.card + section.card {
+  margin-top: 24px;
+}
+.sheet .card-list {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.sheet div.card + div.card {
+  margin-top: 14px;
+}
+.sheet div.card > .note {
+  margin: 6px 0 0;
+}
+
+/* Issues: the filter groups sit in one wrapping row; an opened group takes the
+   full width so its controls get room */
+form.issue-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+form.issue-filters > details[open] {
+  flex: 1 1 100%;
+}
+form.issue-filters > :not(details) {
+  flex: 1 1 100%;
 }
