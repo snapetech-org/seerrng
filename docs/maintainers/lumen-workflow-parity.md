@@ -11588,6 +11588,19 @@ allow `seerr-host`; no live provider logs were available. The screenshot report
 therefore remains unverified against the running provider. Do not claim the
 reported large-show failure is fixed or closed based on the fixture tests.
 
+### Live deployed source receipt (2026-11-27)
+
+The unauthenticated `GET https://seerr.home/api/v1/status` now provides the
+exact running source tag: version `3.72.40`, `commitTag`
+`26ad743ac6b697603e43ec192e901a8026ef447b`, `updateAvailable: false`. The
+recovery commit `88edcc83a51f133adc6bff88d07a7cb890b21f76` is an ancestor of
+current `main` (`fe187e49f`), but is not part of the running `3.72.40` source.
+The deployed instance therefore predates the verified source fix; the report
+can persist there without contradicting the current-main fixture results. This
+identifies the stale deployed version as the immediate release gap, but it does
+not prove the fixed code against a live provider. A replacement release and
+post-upgrade check are still required before closing the report.
+
 release-note: none
 
 ### Mobile page headings clear the floating Back control (2026-11-26)
