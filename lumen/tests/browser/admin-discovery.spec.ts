@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('discovery credentials remain write-only and save retries until persisted state is confirmed', async ({
   page,
@@ -42,7 +43,7 @@ test('discovery credentials remain write-only and save retries until persisted s
     return route.fulfill({ json: updated });
   });
 
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Discovery Integrations' }).click();
   const secret = page.getByLabel('Client Secret');
   await expect(secret).toHaveValue('');
@@ -136,7 +137,7 @@ test('shared pack replacement requires acknowledgement and deletion requires con
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/admin/discovery');
+  await page.goto(testAppPath('/admin/discovery'));
   await expect(page.getByText('Test Pack', { exact: true })).toBeVisible();
   const downloaded = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download Pack' }).click();
@@ -217,7 +218,7 @@ test('automatic blocklist settings preserve stored genres and save only changed 
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/admin/discovery');
+  await page.goto(testAppPath('/admin/discovery'));
   const movies = page.getByRole('group', { name: 'Blocklisted Movie Genres' });
   const storedGenre = movies.getByRole('checkbox', { name: 'Genre #99' });
   await expect(storedGenre).toHaveCount(1);

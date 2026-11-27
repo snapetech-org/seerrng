@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const cancelled of [true, false]) {
   test(`${cancelled ? 'closed' : 'approved'} Plex popup during an in-flight poll`, async ({
@@ -36,7 +37,7 @@ for (const cancelled of [true, false]) {
       await held;
       await route.fulfill({ json: { authToken: 'fixture-token' } });
     });
-    await page.goto('/');
+    await page.goto(testAppPath('/'));
     await expect(
       page.getByRole('button', { name: 'Continue with Plex' })
     ).toBeVisible();

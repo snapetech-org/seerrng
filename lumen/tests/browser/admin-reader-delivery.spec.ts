@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('reader delivery saves preferences, tests a saved connection, and removes a managed shelf', async ({
   page,
@@ -118,7 +119,7 @@ test('reader delivery saves preferences, tests a saved connection, and removes a
     }
     return route.fulfill({ json: saved });
   });
-  await page.goto('/admin');
+  await page.goto(testAppPath('/admin'));
   await page.getByRole('link', { name: 'Open Reader Delivery' }).click();
   await expect(page.getByLabel('Grimmory Password')).toHaveValue('');
   await expect(page.getByLabel('Grimmory OPDS Catalog')).toHaveValue(

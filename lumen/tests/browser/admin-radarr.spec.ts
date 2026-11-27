@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Radarr creation tests credentials and assigns a request destination', async ({
   page,
@@ -60,7 +61,7 @@ test('Radarr creation tests credentials and assigns a request destination', asyn
     services = [result];
     return route.fulfill({ json: result });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Radarr Services' }).click();
   await page.getByRole('button', { name: 'Add Radarr' }).click();
   await page.getByLabel('Service Name').fill('Home Radarr');

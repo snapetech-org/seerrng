@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 // Review fixes: admin settings never save over a config they couldn't read, settings
 // controls keep focus, a 4K-only request leaves HD requestable, Back to a long list
@@ -102,7 +103,7 @@ test('a config that fails to load keeps Save and Upload off', async ({
         : r.fulfill({ status: 500, body: 'upstream down' }),
   });
   const puts = await writableStorage(page);
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect(page.getByRole('alert')).toContainText(
     'Couldn’t load the current settings'
   );
@@ -157,7 +158,7 @@ test('changes made while the config is still loading are saved on top of it', as
     },
   });
   const puts = await writableStorage(page);
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   // the settings are read again after sign-in; should that share the failed read, retry
   const retry = page.getByRole('button', { name: 'Try again' });
   const loading = page.getByText('Loading the current settings…');
@@ -185,7 +186,7 @@ test('changes made while the config is still loading are saved on top of it', as
 test('settings controls keep focus while they change', async ({ page }) => {
   await fixtures(page);
   await writableStorage(page);
-  await page.goto('/me/lumen');
+  await page.goto(testAppPath('/me/lumen'));
   await expect(
     page.getByRole('button', { name: 'Save for everyone' })
   ).toBeEnabled();
@@ -224,7 +225,7 @@ test('a 4K-only request leaves the HD request open on posters', async ({
           ])
         : undefined,
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   const poster = page.locator('.poster', { hasText: 'Pending In 4K' });
   // the corner glyph still says something is on its way
   await expect(poster.locator('.glyph')).toHaveAttribute(
@@ -269,7 +270,7 @@ test('Back to a long list after a request re-reads only a few pages', async ({
       };
     },
   });
-  await page.goto('/movies');
+  await page.goto(testAppPath('/movies'));
   await expect(page.getByRole('link', { name: 'Popular 1-0' })).toBeVisible();
   // scroll until at least six pages are in (a tall screen may pull in more at once)
   await expect
@@ -371,7 +372,7 @@ test('cover addresses: known hosts go through the proxy, unsafe ones are dropped
     'assets.hardcover.app.evil.example',
   ])
     await page.route(`https://${host}/**`, (r) => r.fulfill(svg));
-  await page.goto('/books?sort=ranked');
+  await page.goto(testAppPath('/books?sort=ranked'));
   const src = (n: number) =>
     page
       .locator('.poster', {
@@ -423,7 +424,7 @@ test('a blocked Plex window fails at once instead of waiting on plex.tv', async 
     plexCalls.push(r.request().url());
     return r.fulfill({ json: { id: 1, code: 'x' } });
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   await page.getByRole('button', { name: 'Continue with Plex' }).click();
   await expect(page.getByRole('alert')).toContainText(
     'blocked the Plex sign-in window'
@@ -462,7 +463,7 @@ test('Plex sign-in rides out a couple of failed checks', async ({
       ? r.fulfill({ status: 502, body: 'bad gateway' })
       : r.fulfill({ json: { authToken: 'token' } })
   );
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   const popup = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Continue with Plex' }).click();
   await popup;

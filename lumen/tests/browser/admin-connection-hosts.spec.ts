@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('a saved connection host can populate a service form', async ({
   page,
@@ -35,7 +36,7 @@ test('a saved connection host can populate a service form', async ({
       });
     return route.fulfill({ json: url.endsWith('/settings/radarr') ? [] : {} });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Connection Hosts' }).click();
   await page.getByRole('button', { name: 'Add Host' }).click();
   await page.getByLabel('Name', { exact: true }).fill('Media Host');
@@ -62,7 +63,7 @@ test('a saved connection host can populate a service form', async ({
     ['prowlarr', 'Hostname'],
     ['readmeabook', 'Hostname or IP Address'],
   ]) {
-    await page.goto(`/admin/${route}`);
+    await page.goto(testAppPath(`/admin/${route}`));
     await page
       .getByRole('combobox', { name: 'Saved Connection Host' })
       .selectOption('media.internal');

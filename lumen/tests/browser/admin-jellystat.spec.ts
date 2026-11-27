@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Jellystat can connect, reuse a saved password, and disconnect', async ({
   page,
@@ -31,7 +32,7 @@ test('Jellystat can connect, reuse a saved password, and disconnect', async ({
     }
     return route.fulfill({ status: 405 });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open Jellystat Settings' }).click();
   await page.getByLabel('Server URL').fill('https://music.internal');
   await page.getByLabel('API Key').fill('fixture-password');

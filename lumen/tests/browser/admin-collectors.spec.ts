@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [name, key, port] of [
   ['LazyLibrarian', 'lazylibrarian', '5299'],
@@ -28,7 +29,7 @@ for (const [name, key, port] of [
       saved = { ...request.postDataJSON(), id: 0, apiKey: '[REDACTED]' };
       return route.fulfill({ json: saved });
     });
-    await page.goto('/me');
+    await page.goto(testAppPath('/me'));
     await page.getByRole('link', { name: `Open ${name} Services` }).click();
     await page.getByRole('button', { name: `Add ${name}` }).click();
     await expect(page.getByLabel('Port')).toHaveValue(port);

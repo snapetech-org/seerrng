@@ -922,6 +922,9 @@ test('series details use the Android series route and retain iOS and desktop lin
   page,
 }, info) => {
   const fixture = await fixtures(page);
+  await page.route('**/api/v1/user/1/settings/tv-season-watch-gate', (route) =>
+    route.fulfill({ json: { status: 'disabled' } })
+  );
   await page.goto(testAppPath('/tv/202'));
   await expect(
     page.getByRole('heading', { name: 'The Test Series', exact: true })
@@ -1795,9 +1798,12 @@ test('movie and series language and country facts follow the saved locale', asyn
       });
       await expect(language).toHaveAttribute(
         'href',
-        `${mediaPath}?language=ja`
+        testAppPath(`${mediaPath}?language=ja`)
       );
-      await expect(country).toHaveAttribute('href', `${mediaPath}?country=US`);
+      await expect(country).toHaveAttribute(
+        'href',
+        testAppPath(`${mediaPath}?country=US`)
+      );
       await expect(page.getByText('Provider Country Name')).toHaveCount(0);
       await expect(
         path.startsWith('/movie')
@@ -3325,6 +3331,9 @@ test('series watch rule keeps the rejected selection and links playback accounts
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { tvSeasonWatchGateEnabled: true } })
+  );
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({
       json: {
@@ -3558,6 +3567,9 @@ test('featured series can retry a watch-rule rejection and confirm accepted seas
   page,
 }) => {
   await fixtures(page);
+  await page.route('**/api/v1/settings/public', (route) =>
+    route.fulfill({ json: { tvSeasonWatchGateEnabled: true } })
+  );
   await page.route('**/api/v1/auth/me', (route) =>
     route.fulfill({ json: { id: 3, displayName: 'Viewer', permissions: 32 } })
   );
@@ -3595,7 +3607,7 @@ test('featured series can retry a watch-rule rejection and confirm accepted seas
   await page.goto(testAppPath('/'));
   const card = page.locator('.feat').filter({ hasText: 'Featured Series' });
   const request = card.getByRole('button', {
-    name: 'Request series',
+    name: 'Request Series',
     exact: true,
   });
   await request.click();
@@ -6149,7 +6161,7 @@ test('Music album and artist details localize their controls and metadata', asyn
       request: 'Request FLAC',
       discography: 'View Discography',
       tracks: 'Tracks',
-      plays: '1K plays',
+      plays: '1.2K plays',
       trackCount: '1 song',
       artist: 'Artist',
       released: 'Released',
