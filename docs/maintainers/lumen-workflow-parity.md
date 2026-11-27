@@ -15,9 +15,9 @@ The initial minified JavaScript entry fell from 4,659.92 kB (1,046.02 kB gzip)
 to 1,667.00 kB (454.36 kB gzip). French and Arabic add 104.24 kB and 109.83 kB
 gzip respectively when selected. The saved-language account browser case passed
 on desktop, iPhone, Android, and tablet; Lumen unit tests passed 82/82 and its
-production build passed. `pnpm i18n:check` remains blocked by the pre-existing
-API message source-catalog drift in `config/i18n/api-message-sources.json` and
-`src/i18n/apiMessages.ts`; this change does not modify those files.
+production build passed. The related podcast identity hardening adds generated
+API error messages; their source manifest, English catalog, locale snapshot,
+French/Arabic translations, and checks are synchronized.
 
 This performance milestone does not complete the remaining workflow, provider,
 role/recovery, or native-matched visual acceptance work listed in this ledger.

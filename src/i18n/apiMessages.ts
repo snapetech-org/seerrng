@@ -1465,6 +1465,7 @@ export const apiMessages: Record<
   m62a2fed3d6e08c44835f: 'pending',
   m62a842870b21247f9f35:
     '[ListenBrainz] Failed to fetch album details: Unknown error',
+  m62c02b52018383634bc6: 'Audiobookshelf returned a user without an ID.',
   m62c2c1f7e909d8485bf8: '[TMDB] Failed to fetch TV watch providers: {value0}',
   m62defb7c691a42e59461: 'Image cache file exceeds the in-memory read limit.',
   m62f1485cc8bea99ec9fd:
@@ -2121,6 +2122,7 @@ export const apiMessages: Record<
   m8d8db8cb8ab61eec2f1e: 'Unable to retrieve TMDB list.',
   m8db19233006fab58c997:
     'Tunerr URL reachable from Sportarr must be an HTTP or HTTPS base address without credentials, query strings, or fragments.',
+  m8dbb603c9bf77dca84ed: 'Audiobookshelf returned an unsupported user ID.',
   m8dbfb9251804c3b6acf8: 'Bindery returned an invalid download queue.',
   m8df070edee7d4e3129bb: '[TMDB] Failed to search companies: {value0}',
   m8df210b7748d934ff783: 'Unexpected symlink in log directory: {value0}',
@@ -2327,6 +2329,7 @@ export const apiMessages: Record<
   m9e7d3e200013419f1374: 'Saved host names must be unique.',
   m9ea80542f810298fe65e: 'mediaId must be a string.',
   m9eb8d6165a5ace9b19d6: 'unstable-order',
+  m9ecd06e1b7531868760b: 'Audiobookshelf user email is ambiguous.',
   m9edd303623d4f8d31390: 'Unable to retrieve company search results.',
   m9f00c13afd6499f7f636: 'You can follow up to 20 teams.',
   m9f08505e203b9deab85d: 'This media category is not available.',
@@ -2965,6 +2968,7 @@ export const apiMessages: Record<
   mc964ed7000645259bac1: 'Unable to retrieve popular series.',
   mc98df4650b60def585d9: 'import failure is not classified',
   mc99d34e17f4ce903f4ae: 'Media server configuration changed during setup.',
+  mc99d6cab8661e8f25804: 'Audiobookshelf root user is ambiguous.',
   mc9b79fa83fa2ee28b196: 'rTorrent returned HTTP {value0}.',
   mc9baca6f40a50ff286f0: 'A valid Sonarr series ID is required.',
   mc9c2b54f59af29f69e0b:
@@ -3079,6 +3083,7 @@ export const apiMessages: Record<
   md0815bffa95b8e50bb00: 'Audiobookshelf returned an invalid podcast item.',
   md08586e487e2872b7b82: 'SQLite database directory must not be a symlink',
   md085df01585390732d5c: 'You do not have permission to import users',
+  md0954c2eaf0aab7d01e1: 'Audiobookshelf returned an invalid user record.',
   md098155960619c803c39: 'Music media data not found or missing mbId',
   md09cd1ad2a4d904abf42: 'Studio not found.',
   md0ed1f7e63c96b168fff: 'Invalid MDBList list reference: {value0}',

@@ -28391,6 +28391,25 @@
       ]
     },
     {
+      "key": "m62c02b52018383634bc6",
+      "id": "utils.ApiMessage.m62c02b52018383634bc6",
+      "source": "Audiobookshelf returned a user without an ID.",
+      "defaultMessage": "Audiobookshelf returned a user without an ID.",
+      "sourceHash": "62c02b52018383634bc6ca618a6363fcc6b9323d9d015870d762ee1d43a6e7bf",
+      "parts": ["Audiobookshelf returned a user without an ID."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/audiobookshelfPodcasts.ts",
+          "line": 1362,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned a user without an ID.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m62c2c1f7e909d8485bf8",
       "id": "utils.ApiMessage.m62c2c1f7e909d8485bf8",
       "source": "[TMDB] Failed to fetch TV watch providers: {value0}",
@@ -40408,6 +40427,33 @@
       ]
     },
     {
+      "key": "m8dbb603c9bf77dca84ed",
+      "id": "utils.ApiMessage.m8dbb603c9bf77dca84ed",
+      "source": "Audiobookshelf returned an unsupported user ID.",
+      "defaultMessage": "Audiobookshelf returned an unsupported user ID.",
+      "sourceHash": "8dbb603c9bf77dca84ed1556728f917e86a6cc1efb09fba55a301116f8ebb515",
+      "parts": ["Audiobookshelf returned an unsupported user ID."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/podcastFollowers.ts",
+          "line": 86,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned an unsupported user ID.'",
+          "captured": []
+        },
+        {
+          "path": "server/lib/podcastFollowers.ts",
+          "line": 98,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned an unsupported user ID.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "m8dbfb9251804c3b6acf8",
       "id": "utils.ApiMessage.m8dbfb9251804c3b6acf8",
       "source": "Bindery returned an invalid download queue.",
@@ -42752,7 +42798,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelfPodcasts.ts",
-          "line": 1509,
+          "line": 1519,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid recent episodes list.'",
@@ -44030,6 +44076,25 @@
           "kind": "authored-message-field",
           "field": "lastError",
           "expression": "'unstable-order'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "m9ecd06e1b7531868760b",
+      "id": "utils.ApiMessage.m9ecd06e1b7531868760b",
+      "source": "Audiobookshelf user email is ambiguous.",
+      "defaultMessage": "Audiobookshelf user email is ambiguous.",
+      "sourceHash": "9ecd06e1b7531868760b5b24c5a2dbcbe3d98355fea20fbaeba589dd2148f48d",
+      "parts": ["Audiobookshelf user email is ambiguous."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/podcastFollowers.ts",
+          "line": 81,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf user email is ambiguous.'",
           "captured": []
         }
       ]
@@ -52949,6 +53014,14 @@
           "field": "message",
           "expression": "'Audiobookshelf returned an invalid user list.'",
           "captured": []
+        },
+        {
+          "path": "server/api/audiobookshelfPodcasts.ts",
+          "line": 1354,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned an invalid user list.'",
+          "captured": []
         }
       ]
     },
@@ -55533,6 +55606,25 @@
       ]
     },
     {
+      "key": "mc99d6cab8661e8f25804",
+      "id": "utils.ApiMessage.mc99d6cab8661e8f25804",
+      "source": "Audiobookshelf root user is ambiguous.",
+      "defaultMessage": "Audiobookshelf root user is ambiguous.",
+      "sourceHash": "c99d6cab8661e8f258045f96ddccc28cbc765e05e615ccd5ef24a441441da340",
+      "parts": ["Audiobookshelf root user is ambiguous."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/lib/podcastFollowers.ts",
+          "line": 93,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf root user is ambiguous.'",
+          "captured": []
+        }
+      ]
+    },
+    {
       "key": "mc9b79fa83fa2ee28b196",
       "id": "utils.ApiMessage.mc9b79fa83fa2ee28b196",
       "source": "rTorrent returned HTTP {value0}.",
@@ -57436,6 +57528,33 @@
           "kind": "authored-message-field",
           "field": "message",
           "expression": "'You do not have permission to import users'",
+          "captured": []
+        }
+      ]
+    },
+    {
+      "key": "md0954c2eaf0aab7d01e1",
+      "id": "utils.ApiMessage.md0954c2eaf0aab7d01e1",
+      "source": "Audiobookshelf returned an invalid user record.",
+      "defaultMessage": "Audiobookshelf returned an invalid user record.",
+      "sourceHash": "d0954c2eaf0aab7d01e1a6da42353ebd05e8c00adb5290211f2b836e66036ed5",
+      "parts": ["Audiobookshelf returned an invalid user record."],
+      "parameterCount": 0,
+      "callsites": [
+        {
+          "path": "server/api/audiobookshelfPodcasts.ts",
+          "line": 1358,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned an invalid user record.'",
+          "captured": []
+        },
+        {
+          "path": "server/api/audiobookshelfPodcasts.ts",
+          "line": 1367,
+          "kind": "app-error-candidate",
+          "field": "message",
+          "expression": "'Audiobookshelf returned an invalid user record.'",
           "captured": []
         }
       ]
@@ -59346,7 +59465,7 @@
       "callsites": [
         {
           "path": "server/api/audiobookshelfPodcasts.ts",
-          "line": 1497,
+          "line": 1507,
           "kind": "app-error-candidate",
           "field": "message",
           "expression": "'Audiobookshelf recent episodes request is invalid.'",
@@ -79489,7 +79608,7 @@
     },
     {
       "path": "server/lib/podcastFollowers.ts",
-      "line": 128,
+      "line": 141,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "typeof status === 'number' ? status : undefined",
@@ -79498,7 +79617,7 @@
     },
     {
       "path": "server/lib/podcastFollowers.ts",
-      "line": 128,
+      "line": 141,
       "kind": "message-helper-return",
       "field": "message",
       "expression": "typeof status === 'number' ? status : undefined",
