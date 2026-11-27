@@ -1,5 +1,21 @@
 # Lumen workflow parity
 
+### Localize My Games removal controls (2026-11-27)
+
+The private game-library editor now localizes “Remove Game” and its
+confirmation action through the existing English, French, and Arabic catalog
+entries. The confirmation remains an explicit second step; this change does not
+alter deletion behavior.
+
+The focused browser case passes 12/12 across the three locales and four
+viewport projects. Matched baseline and candidate captures at desktop and
+iPhone sizes show the same editor and confirmation state with only the action
+label translated. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-game-removal-localization-20261127/`.
+The fixture does not submit a deletion or verify live library persistence.
+
+release-note: `release-notes/lumen-game-library-removal-localization.md`
+
 ### Localize TV request selection shortcuts and account linking (2026-11-27)
 
 The TV details page now uses the existing localized catalog labels for

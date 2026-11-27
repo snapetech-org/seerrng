@@ -382,7 +382,7 @@ function EntryEditor({
                 type="button"
                 onClick={() => setConfirmRemoval(true)}
               >
-                Remove Game
+                {t('lumen.gameLibrary.removeGame', 'Remove Game')}
               </button>
             )}
             {confirmRemoval && (
@@ -391,7 +391,7 @@ function EntryEditor({
                 type="button"
                 onClick={() => void save()}
               >
-                Confirm Removal
+                {t('lumen.gameLibrary.confirmRemoval', 'Confirm Removal')}
               </button>
             )}
           </div>

@@ -807,3 +807,83 @@ test('My Games follows the selected Lumen locale', async ({
     });
   }
 });
+
+for (const locale of ['en', 'fr', 'ar'] as const) {
+  test(`game removal actions follow the account locale in ${locale}`, async ({
+    page,
+  }, testInfo) => {
+    const labels = {
+      en: {
+        edit: 'Edit Parity Fixture',
+        remove: 'Remove Game',
+        confirm: 'Confirm Removal',
+      },
+      fr: {
+        edit: 'Modifier Parity Fixture',
+        remove: 'Supprimer le jeu',
+        confirm: 'Confirmer la suppression',
+      },
+      ar: {
+        edit: 'تعديل Parity Fixture',
+        remove: 'إزالة اللعبة',
+        confirm: 'تأكيد الإزالة',
+      },
+    } as const;
+    const entry = {
+      id: 5,
+      title: 'Parity Fixture',
+      status: 'backlog',
+      category: 'game',
+      catalogId: null,
+      storeName: '',
+      platformName: '',
+      isOwned: false,
+      steamOwned: false,
+      shareWithHousehold: false,
+      playtimeMinutes: 0,
+      request: null,
+    };
+    const isBaseline = process.env.LUMEN_GAME_LIBRARY_BASELINE === 'true';
+    const expected = isBaseline
+      ? { remove: 'Remove Game', confirm: 'Confirm Removal' }
+      : labels[locale];
+    await page.route('https://**/*', (route) => route.abort());
+    await page.route('**/api/v1/**', (route) => {
+      const path = apiPath(new URL(route.request().url()).pathname);
+      return route.fulfill({
+        json:
+          path === '/auth/me'
+            ? { id: 1, displayName: 'Player', permissions: 32 }
+            : path === '/settings/public'
+              ? {
+                  softwareEnabled: true,
+                  enabledMediaCategories: { game: true },
+                }
+              : path === '/user/1/settings/main'
+                ? { locale, enabledMediaCategories: { game: true } }
+                : path === '/game-library'
+                  ? { results: [entry], total: 1, nextOffset: null }
+                  : {},
+      });
+    });
+    await page.goto(appPath('/game-library'));
+    await page.getByRole('button', { name: labels[locale].edit }).click();
+    await page.getByRole('button', { name: expected.remove }).click();
+    await expect(
+      page.getByRole('button', { name: expected.confirm })
+    ).toBeVisible();
+
+    const captureDirectory = process.env.LUMEN_GAME_LIBRARY_REMOVE_CAPTURE;
+    if (
+      captureDirectory &&
+      ['desktop', 'iphone'].includes(testInfo.project.name)
+    ) {
+      const { mkdirSync } = await import('node:fs');
+      mkdirSync(captureDirectory, { recursive: true });
+      await page.screenshot({
+        path: `${captureDirectory}/${isBaseline ? 'baseline' : 'candidate'}-${locale}-${testInfo.project.name}.png`,
+        fullPage: true,
+      });
+    }
+  });
+}
