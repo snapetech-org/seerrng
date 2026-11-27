@@ -335,6 +335,26 @@ export default function BookDetail() {
   );
   const effectiveRequestOptions =
     requestOptions.format === f ? requestOptions.options : {};
+  const quotaUserId = effectiveRequestOptions.userId ?? user?.id;
+  const quota = useApi<{
+    book?: {
+      limit?: number;
+      remaining?: number;
+      days?: number;
+      restricted?: boolean;
+    };
+  }>(quotaUserId ? `/user/${quotaUserId}/quota` : null, {
+    currentPathOnly: true,
+  });
+  const bookQuota = quota.data?.book;
+  const quotaReady = !!quota.data || !!quota.error;
+  const quotaBlocked = bookQuota?.restricted === true;
+  const requestDisabled =
+    busy ||
+    !requestOptionsReady ||
+    !quotaReady ||
+    !!quota.error ||
+    quotaBlocked;
   // set at once, unlike busy: a double tap can't send a request twice before the re-render
   const sending = useRef(false);
   const [justAsked, setJustAsked] = useState<Set<string>>(new Set());
@@ -603,7 +623,7 @@ export default function BookDetail() {
       chosenRow ? (
         <button
           className="btn btn-primary"
-          disabled={busy || !requestOptionsReady}
+          disabled={requestDisabled}
           onClick={requestAnother}
         >
           <Icon name="plus" />
@@ -632,7 +652,7 @@ export default function BookDetail() {
     ) : (
       <button
         className="btn btn-primary"
-        disabled={busy || !requestOptionsReady}
+        disabled={requestDisabled}
         onClick={request}
       >
         <Icon name="plus" />
@@ -807,6 +827,41 @@ export default function BookDetail() {
             onReady={setRequestOptionsReady}
             disabled={busy}
           />
+        )}
+        {(bookQuota?.limit ?? 0) > 0 && (
+          <p className="note" role={quotaBlocked ? 'status' : undefined}>
+            {quotaBlocked
+              ? t(
+                  'lumen.bookDetail.quotaReached',
+                  'Your book request limit has been reached.'
+                )
+              : t(
+                  'lumen.bookDetail.quotaRemaining',
+                  '{remaining} of {limit} book requests remaining.',
+                  {
+                    remaining: bookQuota?.remaining ?? 0,
+                    limit: bookQuota?.limit ?? 0,
+                  }
+                )}
+            {!!bookQuota?.days &&
+              ` ${t('lumen.bookDetail.quotaPeriod', 'Quota period: {days} days.', { days: bookQuota.days })}`}
+          </p>
+        )}
+        {quota.error && (
+          <p className="note" role="alert">
+            {t(
+              'lumen.bookDetail.quotaLoadFailure',
+              'Could not check the book request limit. Retry before requesting.'
+            )}{' '}
+            <button className="chip" type="button" onClick={quota.reload}>
+              {t('lumen.bookDetail.recheckQuota', 'Recheck quota')}
+            </button>
+          </p>
+        )}
+        {!quotaReady && (
+          <p className="note" aria-busy="true">
+            {t('lumen.bookDetail.quotaLoading', 'Checking book request limit…')}
+          </p>
         )}
         <div className="dcols">
           <div style={{ display: 'grid', gap: 22 }}>

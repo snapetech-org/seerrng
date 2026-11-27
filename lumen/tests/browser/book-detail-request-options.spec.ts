@@ -174,3 +174,106 @@ test('ordinary book requester does not load or expose advanced options', async (
   ).toHaveCount(0);
   expect([...unexpected]).toEqual([]);
 });
+
+test('book detail shows and enforces an exhausted book quota', async ({
+  page,
+}) => {
+  const writes: Record<string, unknown>[] = [];
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname
+      .replace(/^\/lumen/, '')
+      .slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({
+        json: { id: 1, permissions: 2, settings: { narratorChoice: true } },
+      });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { ebookServiceEnabled: true, booksEnabled: true },
+      });
+    if (path === '/book/bookshelf%3A42%3AaGM6MTIzNDU')
+      return route.fulfill({
+        json: {
+          id: 'bookshelf:42:aGM6MTIzNDU',
+          mediaType: 'book',
+          title: 'Fixture Book',
+          author: 'Fixture Author',
+          provider: 'bookshelf',
+        },
+      });
+    if (path === '/user/1/quota')
+      return route.fulfill({
+        json: { book: { limit: 1, remaining: 0, days: 7, restricted: true } },
+      });
+    if (path === '/request' && request.method() === 'POST') {
+      writes.push(request.postDataJSON());
+      return route.fulfill({ json: { id: 71 } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  await expect(
+    page.getByText('Your book request limit has been reached.')
+  ).toBeVisible();
+  const action = page.getByRole('button', { name: 'Request ebook' });
+  await expect(action).toBeDisabled();
+  expect(writes).toEqual([]);
+});
+
+test('book request stays disabled when quota cannot be checked and retries', async ({
+  page,
+}) => {
+  let quotaReads = 0;
+  await page.route('https://**/*', (route) => route.abort());
+  await page.route('**/lumen-config.json', (route) =>
+    route.fulfill({ json: {} })
+  );
+  await page.route('**/api/v1/**', (route) => {
+    const path = new URL(route.request().url()).pathname
+      .replace(/^\/lumen/, '')
+      .slice(7);
+    if (path === '/auth/me')
+      return route.fulfill({ json: { id: 1, permissions: 34359738368 } });
+    if (path === '/user/1/settings/main')
+      return route.fulfill({ json: { locale: 'en' } });
+    if (path === '/settings/public')
+      return route.fulfill({
+        json: { ebookServiceEnabled: true, booksEnabled: true },
+      });
+    if (path === '/book/bookshelf%3A42%3AaGM6MTIzNDU')
+      return route.fulfill({
+        json: {
+          id: 'bookshelf:42:aGM6MTIzNDU',
+          mediaType: 'book',
+          title: 'Fixture Book',
+          author: 'Fixture Author',
+          provider: 'bookshelf',
+        },
+      });
+    if (path === '/user/1/quota') {
+      quotaReads++;
+      return quotaReads === 1
+        ? route.fulfill({ status: 503, json: { message: 'Unavailable' } })
+        : route.fulfill({ json: { book: { limit: 0, restricted: false } } });
+    }
+    return route.fulfill({ json: {} });
+  });
+
+  await page.goto('/book/bookshelf%3A42%3AaGM6MTIzNDU');
+  const action = page.getByRole('button', { name: 'Request ebook' });
+  await expect(
+    page.getByText('Could not check the book request limit.')
+  ).toBeVisible();
+  await expect(action).toBeDisabled();
+  await page.getByRole('button', { name: 'Recheck quota' }).click();
+  await expect(action).toBeEnabled();
+  expect(quotaReads).toBe(2);
+});

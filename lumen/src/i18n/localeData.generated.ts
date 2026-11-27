@@ -8054,6 +8054,14 @@ export const localeData = [
       'lumen.tv.monitorFutureSeasons': 'الحصول على المواسم الجديدة تلقائيًا',
       'lumen.tv.monitorFutureSeasonsHelp':
         'مراقبة المواسم القادمة في Sonarr بعد هذا الطلب.',
+      'lumen.bookDetail.quotaLoading': 'جارٍ التحقق من حد طلبات الكتب…',
+      'lumen.bookDetail.quotaReached': 'لقد وصلت إلى حد طلبات الكتب.',
+      'lumen.bookDetail.quotaRemaining':
+        'المتبقي {remaining} من أصل {limit} طلبات كتب.',
+      'lumen.bookDetail.quotaPeriod': 'فترة الحصة: {days} يومًا.',
+      'lumen.bookDetail.quotaLoadFailure':
+        'تعذر التحقق من حد طلبات الكتب. أعد المحاولة قبل تقديم الطلب.',
+      'lumen.bookDetail.recheckQuota': 'إعادة التحقق من الحصة',
     },
   },
   {
@@ -20417,6 +20425,15 @@ export const localeData = [
       'lumen.tv.monitorFutureSeasons': 'Get new seasons automatically',
       'lumen.tv.monitorFutureSeasonsHelp':
         'Monitor future seasons in Sonarr after this request.',
+      'lumen.bookDetail.quotaLoading': 'Checking book request limit…',
+      'lumen.bookDetail.quotaReached':
+        'Your book request limit has been reached.',
+      'lumen.bookDetail.quotaRemaining':
+        '{remaining} of {limit} book requests remaining.',
+      'lumen.bookDetail.quotaPeriod': 'Quota period: {days} days.',
+      'lumen.bookDetail.quotaLoadFailure':
+        'Could not check the book request limit. Retry before requesting.',
+      'lumen.bookDetail.recheckQuota': 'Recheck quota',
     },
   },
   {
@@ -34202,6 +34219,16 @@ export const localeData = [
         'Obtenir automatiquement les nouvelles saisons',
       'lumen.tv.monitorFutureSeasonsHelp':
         'Surveiller les prochaines saisons dans Sonarr après cette demande.',
+      'lumen.bookDetail.quotaLoading':
+        'Vérification de la limite de demandes de livres…',
+      'lumen.bookDetail.quotaReached':
+        'Votre limite de demandes de livres est atteinte.',
+      'lumen.bookDetail.quotaRemaining':
+        'Il vous reste {remaining} demande(s) de livre sur {limit}.',
+      'lumen.bookDetail.quotaPeriod': 'Période de quota : {days} jours.',
+      'lumen.bookDetail.quotaLoadFailure':
+        'Impossible de vérifier la limite de demandes de livres. Réessayez avant de faire une demande.',
+      'lumen.bookDetail.recheckQuota': 'Revérifier le quota',
     },
   },
   {

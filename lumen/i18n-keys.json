@@ -6666,5 +6666,11 @@
   "lumen.admin.home.softwareGames",
   "lumen.admin.home.system",
   "lumen.tv.monitorFutureSeasons",
-  "lumen.tv.monitorFutureSeasonsHelp"
+  "lumen.tv.monitorFutureSeasonsHelp",
+  "lumen.bookDetail.quotaLoading",
+  "lumen.bookDetail.quotaReached",
+  "lumen.bookDetail.quotaRemaining",
+  "lumen.bookDetail.quotaPeriod",
+  "lumen.bookDetail.quotaLoadFailure",
+  "lumen.bookDetail.recheckQuota"
 ]

@@ -12232,3 +12232,20 @@ request modal and live service authorization/persistence remain open; these
 fixtures do not prove provider handoff.
 
 release-note: `release-notes/feat-lumen-book-detail-request-options.md`
+
+### Book-detail quota visibility and enforcement (2026-11-26)
+
+The Lumen single-book detail request now reads the selected requester's book
+quota, shows remaining requests and the quota period, and disables ebook and
+audiobook submissions while the quota is exhausted. A failed quota read keeps
+the request disabled and offers a retry. Authorized “request as” selection
+uses that selected user's quota endpoint; ordinary requesters still use their
+own. Focused browser fixtures cover an exhausted quota and fail-closed retry.
+
+The production build and desktop request-option browser suite pass. Native
+matched visuals, the selected-requester quota transition, and provider-backed
+authorization remain open acceptance items. This change does not add an
+over-quota approval flow for books; native BookRequestModal also blocks a
+restricted book quota.
+
+release-note: `release-notes/lumen-book-detail-quota.md`
