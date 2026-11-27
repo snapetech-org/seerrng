@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 
@@ -63,7 +64,7 @@ for (const override of [false, true]) {
       }
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto('/share');
+    await page.goto(mountedTestAppPath('/share'));
     await page
       .getByLabel('Titles, links, or ISBNs')
       .fill('Fixture Series\nFixture Movie');
@@ -160,7 +161,7 @@ for (const permissions of [32, 2]) {
       return route.fulfill({ json: { results: [] } });
     });
 
-    await page.goto('/');
+    await page.goto(mountedTestAppPath('/'));
     const discoverShortcut = page.locator('#view').getByRole('link', {
       name: 'Share & Identify',
       exact: true,
@@ -170,7 +171,7 @@ for (const permissions of [32, 2]) {
     await page.screenshot({ path: info.outputPath('discover-share.png') });
     await discoverShortcut.click();
     await expect(page).toHaveURL(/\/share$/);
-    await page.goto('/');
+    await page.goto(mountedTestAppPath('/'));
     const desktop = (page.viewportSize()?.width ?? 0) >= 1040;
     if (desktop) {
       const main = page.getByRole('navigation', {
@@ -229,7 +230,7 @@ test('Share & Identify navigation stays hidden without request access', async ({
       return route.fulfill({ json: [] });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(
     page.getByRole('link', { name: 'Share', exact: true })
   ).toHaveCount(0);
@@ -242,7 +243,7 @@ test('Share & Identify navigation stays hidden without request access', async ({
         exact: true,
       })
   ).toHaveCount(0);
-  await page.goto('/me');
+  await page.goto(mountedTestAppPath('/me'));
   await expect(
     page.getByRole('link', {
       name: 'Open Share & Identify',

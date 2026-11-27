@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const allowOverride of [false, true]) {
   test(`movie detail respects streaming override eligibility (${allowOverride})`, async ({
@@ -32,7 +33,7 @@ for (const allowOverride of [false, true]) {
       }
       return route.fulfill({ json: { results: [] } });
     });
-    await page.goto('/movie/20');
+    await page.goto(testAppPath('/movie/20'));
     const request = page.getByRole('button', { name: 'Request', exact: true });
     const confirm = page.getByRole('alertdialog', {
       name: 'Streaming Request Policy',

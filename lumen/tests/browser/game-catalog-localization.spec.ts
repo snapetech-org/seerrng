@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -145,7 +146,7 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/games');
+  await page.goto(mountedTestAppPath('/games'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   await expect(page.getByText(copy.pcHint)).toBeVisible();
   await expect(
@@ -281,7 +282,7 @@ test('DAT game catalogs filter by emulation system without unsupported metadata 
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/games');
+  await page.goto(mountedTestAppPath('/games'));
   await expect(page.getByRole('heading', { name: copy.title })).toBeVisible();
   await page.getByLabel(copy.releaseYear).fill('1949');
   await expect(page.getByRole('alert')).toBeVisible();
@@ -375,7 +376,7 @@ test('Game detail request controls follow the saved locale', async ({
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('/game/game/42');
+  await page.goto(mountedTestAppPath('/game/game/42'));
   await expect(
     page.getByRole('heading', { name: 'Fixture Detail Game' })
   ).toBeVisible();
@@ -468,7 +469,7 @@ async function openConsoleGame(
       });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto(`/game/${category}/42`);
+  await page.goto(mountedTestAppPath(`/game/${category}/42`));
   await expect(
     page.getByRole('heading', { name: 'Fixture Console Game' })
   ).toBeVisible();

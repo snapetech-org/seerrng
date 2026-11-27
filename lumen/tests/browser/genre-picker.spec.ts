@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -48,7 +49,7 @@ test('genre directory tiles localize their accessible browse names', async ({
   page,
 }, info) => {
   await fixtures(page, 'fr');
-  await page.goto('/movies/genres');
+  await page.goto(mountedTestAppPath('/movies/genres'));
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   const baseline = process.env.LUMEN_A11Y_BASELINE === '1';
   const genre = page.getByRole('link', {
@@ -70,7 +71,7 @@ test('Movies: All genres by default; ticking genres updates the address and the 
   page,
 }) => {
   const feed = await fixtures(page);
-  await page.goto('/movies');
+  await page.goto(mountedTestAppPath('/movies'));
   await expect(
     page.getByRole('button', { name: 'Genres: All genres' })
   ).toBeVisible();
@@ -160,7 +161,7 @@ test('Series: a shared address shows its genres on the button; a click outside c
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/series?genre=18,27,14');
+  await page.goto(mountedTestAppPath('/series?genre=18,27,14'));
   const picker = page.getByRole('button', { name: /^Genres:/ });
   await expect(picker).toHaveText('Drama + 2');
   await picker.click();
@@ -179,7 +180,7 @@ test('desktop: the popover is keyboard friendly and stays on screen', async ({
 }, info) => {
   test.skip(info.project.name !== 'desktop', 'popover on wide screens');
   await fixtures(page);
-  await page.goto('/movies');
+  await page.goto(mountedTestAppPath('/movies'));
   const picker = page.getByRole('button', { name: /^Genres:/ });
   await picker.focus();
   await page.keyboard.press('Enter');
@@ -211,7 +212,7 @@ test('phones: the genres open in a bottom sheet', async ({ page }, info) => {
     'phones only'
   );
   const feed = await fixtures(page);
-  await page.goto('/movies');
+  await page.goto(mountedTestAppPath('/movies'));
   const picker = page.getByRole('button', { name: /^Genres:/ });
   expect((await picker.boundingBox())!.height).toBeGreaterThanOrEqual(43.5);
   await picker.click();

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const locale of ['en', 'fr', 'ar'] as const) {
   test(`Bookshelf service administration follows ${locale}`, async ({
@@ -25,7 +26,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       if (path === '/settings/readarr') return route.fulfill({ json: [] });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/readarr');
+    await page.goto(testAppPath('/admin/readarr'));
     const copy = {
       en: {
         title: 'Book and Audiobook Services',

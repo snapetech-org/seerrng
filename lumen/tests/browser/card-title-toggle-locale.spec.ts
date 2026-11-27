@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = (process.env.LUMEN_CARD_TITLE_LOCALE ?? 'en') as
   'en' | 'fr' | 'ar';
@@ -36,7 +37,7 @@ test('account title-view switch explains its shared preference in the saved loca
     return route.fulfill({ json: [] });
   });
 
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   const expected = description[locale];
   const toggle = page.getByRole('switch').filter({ hasText: expected });
   await expect(toggle).toHaveAttribute('aria-checked', 'true');

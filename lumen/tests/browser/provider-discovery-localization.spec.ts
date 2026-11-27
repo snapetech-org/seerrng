@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -85,7 +86,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
       }
       return route.fulfill({ json: {} });
     });
-    await page.goto('/providers?unmatched=1');
+    await page.goto(testAppPath('/providers?unmatched=1'));
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     const feed = page.getByRole('combobox', { name: text.feed });

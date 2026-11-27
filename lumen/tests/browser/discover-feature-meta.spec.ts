@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen';
 
@@ -65,7 +66,7 @@ test('disabled Discover rows do not fetch catalog data', async ({
     return route.fulfill({ json: path === '/settings/discover' ? [] : {} });
   });
 
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(page.getByRole('heading', { name: 'Discover' })).toBeVisible();
   for (const title of [
     'Popular right now',
@@ -119,7 +120,7 @@ test('Discover feature card meta is not cut off on narrow screens', async ({
     [701, 685],
   ]) {
     await page.setViewportSize({ width, height });
-    await page.goto('/');
+    await page.goto(mountedTestAppPath('/'));
     const card = page.locator('.feat').first();
     await expect(card.locator('.mm')).toBeVisible();
     const r = await card.evaluate((el) => {
@@ -175,7 +176,7 @@ test('Discover feature card localizes its series type', async ({ page }) => {
       return route.fulfill({ json: { locale: 'fr' } });
     return route.fulfill({ json: paged([]) });
   });
-  await page.goto('/');
+  await page.goto(mountedTestAppPath('/'));
   await expect(page.locator('.feat .mm').first()).toContainText('Séries');
   await expect(page.locator('.feat .btn.go').first()).toHaveText(
     'Demander la série'
@@ -223,7 +224,7 @@ test('movie and series genre directories open the matching filtered browse', asy
     ['movies', 'Movie Genres', 'Action', 28],
     ['series', 'Series Genres', 'Drama', 18],
   ] as const) {
-    await page.goto(`./${path}`);
+    await page.goto(mountedTestAppPath(`./${path}`));
     await openMoreFilters(page);
     await page.getByRole('link', { name: 'Browse Genres' }).click();
     await expect(page.getByRole('heading', { name: title })).toBeVisible();
