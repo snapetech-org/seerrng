@@ -294,6 +294,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
     setBusy(true);
     setFailure('');
     setNotice('');
+    let writeAcknowledged = false;
     try {
       const payload = {
         hostname: draft.hostname,
@@ -344,6 +345,7 @@ function ConnectionForm({ initial }: { initial: Settings }) {
         );
       } else {
         const updated = await api<Settings>(path, { method: 'PUT', body });
+        writeAcknowledged = true;
         if (generation !== sessionGeneration()) return;
         const readback = await api<Settings>(path);
         if (generation !== sessionGeneration()) return;
@@ -419,15 +421,20 @@ function ConnectionForm({ initial }: { initial: Settings }) {
       if (generation === sessionGeneration()) {
         setResult(undefined);
         setFailure(
-          test
+          writeAcknowledged
             ? t(
-                'components.SettingsProwlarr.testFailed',
-                'Prowlarr connection failed. Check the address and API key.'
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
               )
-            : t(
-                'components.SettingsProwlarr.saveFailed',
-                'Prowlarr settings could not be saved.'
-              )
+            : test
+              ? t(
+                  'components.SettingsProwlarr.testFailed',
+                  'Prowlarr connection failed. Check the address and API key.'
+                )
+              : t(
+                  'components.SettingsProwlarr.saveFailed',
+                  'Prowlarr settings could not be saved.'
+                )
         );
       }
     } finally {

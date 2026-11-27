@@ -79,7 +79,7 @@ test('Swipe settings test the provider and save enablement without resending its
     aiEffort: 'low',
     aiApiKeyConfigured: true,
   };
-  let staleReadback: typeof saved | undefined;
+  let failReadback = false;
   let saveCount = 0;
   const writes: Record<string, unknown>[] = [];
   await page.route('https://**/*', (route) => route.abort());
@@ -99,17 +99,19 @@ test('Swipe settings test the provider and save enablement without resending its
     }
     if (url !== path) return route.fulfill({ json: {} });
     if (request.method() === 'GET') {
-      if (staleReadback) {
-        const stale = staleReadback;
-        staleReadback = undefined;
-        return route.fulfill({ json: stale });
+      if (failReadback) {
+        failReadback = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
       }
       return route.fulfill({ json: saved });
     }
     if (request.method() === 'PUT') {
       const body = request.postDataJSON();
       writes.push(body);
-      if (saveCount === 0) staleReadback = saved;
+      if (saveCount === 0) failReadback = true;
       saved = { ...saved, ...body };
       saveCount++;
     }
@@ -133,7 +135,7 @@ test('Swipe settings test the provider and save enablement without resending its
     page.getByText('Swipe settings saved.', { exact: true })
   ).toHaveCount(0);
   await expect(page.getByRole('alert')).toContainText(
-    'Swipe settings could not be saved.'
+    'The server accepted the change, but Lumen could not confirm the saved state.'
   );
   await expect(page.getByLabel('Enable Swipe')).toBeChecked();
   await page.getByRole('alert').scrollIntoViewIfNeeded();

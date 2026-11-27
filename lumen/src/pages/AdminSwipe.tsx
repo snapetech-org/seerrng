@@ -55,11 +55,13 @@ function Editor({ initial }: { initial: Settings }) {
       clearAiApiKey: clear,
       ...(key ? { aiApiKey: key } : {}),
     });
+    let writeAcknowledged = false;
     try {
       if (test) {
         await api(path + '/test', { method: 'POST', body });
       } else {
         const result = await api<Settings>(path, { method: 'PUT', body });
+        writeAcknowledged = true;
         if (generation !== sessionGeneration()) return;
         const readback = await api<Settings>(path);
         if (generation !== sessionGeneration()) return;
@@ -113,8 +115,12 @@ function Editor({ initial }: { initial: Settings }) {
     } catch (failure) {
       if (generation === sessionGeneration())
         setFeedback({
-          text:
-            test && failure instanceof ApiError
+          text: writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+              )
+            : test && failure instanceof ApiError
               ? failure.message
               : friendlyError(
                   failure,

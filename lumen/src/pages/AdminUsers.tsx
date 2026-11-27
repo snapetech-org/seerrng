@@ -294,11 +294,13 @@ function EditProfile({
     setBusy(true);
     setError('');
     setNotice('');
+    let writeAcknowledged = false;
     try {
       const saved = await api<{ username?: string; email?: string }>(path, {
         method: 'POST',
         body: JSON.stringify(update),
       });
+      writeAcknowledged = true;
       const readback = await api<{ username?: string; email?: string }>(path);
       if (
         (update.username !== undefined &&
@@ -319,14 +321,19 @@ function EditProfile({
       onSaved();
     } catch (failure) {
       setError(
-        friendlyError(
-          failure,
-          t(
-            'lumen.adminUsers.profileSaveFailure',
-            'Could not save the profile.'
-          ),
-          t
-        )
+        writeAcknowledged
+          ? t(
+              'lumen.settings.confirmFailed',
+              'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+            )
+          : friendlyError(
+              failure,
+              t(
+                'lumen.adminUsers.profileSaveFailure',
+                'Could not save the profile.'
+              ),
+              t
+            )
       );
     } finally {
       working.current = false;

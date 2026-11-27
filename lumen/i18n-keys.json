@@ -6856,5 +6856,6 @@
   "lumen.readerDelivery.audiobooks",
   "lumen.readerDelivery.comics",
   "lumen.readerDelivery.magazinePdfs",
-  "lumen.category.disabledForServer"
+  "lumen.category.disabledForServer",
+  "lumen.settings.confirmFailed"
 ]

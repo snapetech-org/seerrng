@@ -8774,4 +8774,6 @@ export const messages = {
   'lumen.readerDelivery.magazinePdfs': 'PDF de magazines',
   'lumen.category.disabledForServer':
     'La catégorie {category} est désactivée sur ce serveur.',
+  'lumen.settings.confirmFailed':
+    'Le serveur a accepté la modification, mais Lumen n’a pas pu confirmer l’enregistrement. Gardez ce formulaire ouvert et réessayez.',
 } as const;

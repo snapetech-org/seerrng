@@ -11484,9 +11484,7 @@ test('Users edits a username without writing other profile settings', async ({
   await expect(page.getByLabel('Username')).toHaveValue('Renamed Viewer');
 });
 
-test('Users keep profile edits when a successful save response does not match', async ({
-  page,
-}) => {
+test('Users keep profile edits when saved readback fails', async ({ page }) => {
   await fixtures(page);
   await page.route(/\/api\/v1\/user\?/, (route) =>
     route.fulfill({
@@ -11498,14 +11496,23 @@ test('Users keep profile edits when a successful save response does not match', 
   );
   let saves = 0;
   let persistedUsername = 'Existing Viewer';
+  let failReadbackOnce = false;
   await page.route('**/api/v1/user/19/settings/main', (route) => {
     if (route.request().method() !== 'POST') {
+      if (failReadbackOnce) {
+        failReadbackOnce = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
+      }
       return route.fulfill({ json: { username: persistedUsername } });
     }
     expect(route.request().postDataJSON()).toEqual({
       username: 'Renamed Viewer',
     });
     saves++;
+    if (saves === 1) failReadbackOnce = true;
     if (saves > 1) persistedUsername = 'Renamed Viewer';
     return route.fulfill({
       json: { username: 'Renamed Viewer' },
@@ -11520,7 +11527,7 @@ test('Users keep profile edits when a successful save response does not match', 
   const save = page.getByRole('button', { name: 'Save Profile' });
   await save.click();
   await expect(page.getByRole('alert')).toContainText(
-    'Could not save the profile.'
+    'The server accepted the change, but Lumen could not confirm the saved state.'
   );
   await expect(username).toHaveValue('Renamed Viewer');
   await expect(page.getByText('Profile saved.')).toHaveCount(0);

@@ -108,7 +108,6 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
     passwordConfigured: true,
     password: '[REDACTED]',
   };
-  const initialSettings = { ...settings };
   let saveAttempts = 0;
   let linked = false;
   const actions: { path: string; body: Record<string, unknown> }[] = [];
@@ -159,11 +158,13 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
         saveAttempts += 1;
         settings = { ...settings, ...body };
       }
+      if (request.method() === 'GET' && saveAttempts === 1)
+        return route.fulfill({
+          status: 503,
+          json: { message: 'Temporary failure' },
+        });
       return route.fulfill({
-        json:
-          request.method() === 'GET' && saveAttempts === 1
-            ? initialSettings
-            : settings,
+        json: settings,
       });
     }
     return route.fulfill({ json: {} });
@@ -191,7 +192,7 @@ test('Tunerr settings test partial connectivity, preserve saved passwords, and l
   const save = page.getByRole('button', { name: 'Save Changes' });
   await save.click();
   await expect(page.getByRole('alert')).toHaveText(
-    'Could not save Tunerr settings.'
+    'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
   );
   const captureDir = process.env.LUMEN_TUNERR_CAPTURE_DIR;
   if (captureDir)

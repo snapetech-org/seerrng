@@ -13821,3 +13821,27 @@ Evidence is retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-metadata-readback-20261127/`.
 
 release-note: `release-notes/lumen-metadata-readback.md`
+
+### Distinguish accepted admin writes from failed readback (2026-11-27)
+
+Several settings editors already compare the write response with a no-cache
+readback and keep the draft on mismatch, but their exception paths described a
+failed save when the write had already been accepted. Tunerr, Swipe, software
+acquisition, request-service, Prowlarr, reader delivery, reader connections,
+URL connections, and managed-user profile saves now show shared localized
+uncertain-save feedback after an acknowledged write fails verification. Saved
+fields remain intact for a retry. URL and reader disconnections also retain an
+explicit unconfirmed state if their delete succeeded but readback failed.
+
+The four-page focused browser suite passes 56/56 on desktop, iPhone, Android,
+and tablet. Dedicated Swipe and Tunerr fixtures simulate accepted PUTs followed
+by HTTP 503 readbacks, verify the draft stays available, and retry successfully;
+managed-user profile readback recovery passes 4/4 viewports. Lumen standalone
+and bundled production builds, and repository i18n checks pass. Matched Swipe
+failure captures at desktop and iPhone show stable control geometry; the longer
+localized message wraps without clipping. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-readback-20261127/`.
+API persistence and authorization use browser fixtures, not a live SeerrNG
+server. No styles changed.
+
+release-note: `release-notes/lumen-admin-readback.md`

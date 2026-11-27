@@ -8070,4 +8070,6 @@ export const messages = {
   'lumen.readerDelivery.comics': 'القصص المصورة',
   'lumen.readerDelivery.magazinePdfs': 'ملفات المجلات PDF',
   'lumen.category.disabledForServer': 'تم إيقاف فئة {category} على هذا الخادم.',
+  'lumen.settings.confirmFailed':
+    'قبل الخادم التغيير، لكن تعذّر على Lumen تأكيد الحالة المحفوظة. أبقِ هذا النموذج مفتوحًا وأعد المحاولة.',
 } as const;

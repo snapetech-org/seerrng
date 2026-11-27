@@ -98,6 +98,7 @@ function Connection({
     setError('');
     setNotice('');
     const generation = sessionGeneration();
+    let writeAcknowledged = false;
     const body = JSON.stringify({
       ...draft,
       hostname: draft.hostname.trim(),
@@ -123,6 +124,7 @@ function Connection({
             method: 'PUT',
             body,
           });
+          writeAcknowledged = true;
           const readback = await api<Settings | null>(endpoint);
           if (
             !readback ||
@@ -149,6 +151,7 @@ function Connection({
           next = readback;
         } else {
           await api(endpoint, { method: 'DELETE' }, 'empty');
+          writeAcknowledged = true;
           const readback = await api<Settings | null>(endpoint);
           if (readback !== null) {
             setError(
@@ -191,13 +194,18 @@ function Connection({
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
-          failure instanceof ApiError
-            ? failure.message
-            : t(
-                'lumen.adminReaders.actionFailed',
-                'Could not complete the {service} action.',
-                { service: name }
+          writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
               )
+            : failure instanceof ApiError
+              ? failure.message
+              : t(
+                  'lumen.adminReaders.actionFailed',
+                  'Could not complete the {service} action.',
+                  { service: name }
+                )
         );
     } finally {
       pending.current = false;

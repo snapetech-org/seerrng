@@ -152,6 +152,7 @@ function Editor({ initial }: { initial: Settings }) {
     pending.current = true;
     setBusy(true);
     setNotice(undefined);
+    let writeAcknowledged = false;
     try {
       if (provider) {
         const tested = await api<{
@@ -202,6 +203,7 @@ function Editor({ initial }: { initial: Settings }) {
           method: 'PUT',
           body: JSON.stringify(payload),
         });
+        writeAcknowledged = true;
         const readback = await api<Settings>(path);
         const expected = {
           romarr: {
@@ -282,13 +284,18 @@ function Editor({ initial }: { initial: Settings }) {
     } catch (failure) {
       setNotice({
         provider,
-        text: friendlyError(
-          failure,
-          t(
-            'lumen.software.operationFailed',
-            'Software acquisition operation failed.'
-          )
-        ),
+        text: writeAcknowledged
+          ? t(
+              'lumen.settings.confirmFailed',
+              'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+            )
+          : friendlyError(
+              failure,
+              t(
+                'lumen.software.operationFailed',
+                'Software acquisition operation failed.'
+              )
+            ),
         error: true,
       });
     } finally {

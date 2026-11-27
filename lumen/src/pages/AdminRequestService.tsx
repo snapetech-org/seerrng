@@ -331,6 +331,7 @@ function Connection({
       clearApiKey,
       ...(apiKey ? { apiKey } : {}),
     });
+    let writeAcknowledged = false;
     try {
       if (test) {
         const response = await api<TestResult>(endpoint + '/test', {
@@ -340,6 +341,7 @@ function Connection({
         if (generation === sessionGeneration()) setResult(response);
       } else {
         const response = await api<Settings>(endpoint, { method: 'PUT', body });
+        writeAcknowledged = true;
         if (generation !== sessionGeneration()) return;
         const readback = await api<Settings>(endpoint);
         if (generation !== sessionGeneration()) return;
@@ -382,19 +384,24 @@ function Connection({
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
-          failure instanceof ApiError
-            ? failure.message
-            : test
-              ? t(
-                  'lumen.requestService.testFailed',
-                  'Could not test the {name} connection.',
-                  { name }
-                )
-              : t(
-                  'lumen.requestService.saveFailed',
-                  'Could not save {name} settings.',
-                  { name }
-                )
+          writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+              )
+            : failure instanceof ApiError
+              ? failure.message
+              : test
+                ? t(
+                    'lumen.requestService.testFailed',
+                    'Could not test the {name} connection.',
+                    { name }
+                  )
+                : t(
+                    'lumen.requestService.saveFailed',
+                    'Could not save {name} settings.',
+                    { name }
+                  )
         );
     } finally {
       pending.current = false;

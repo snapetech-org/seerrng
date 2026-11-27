@@ -82,6 +82,7 @@ function Connection({
         ? { username: draft.username?.trim(), syncEnabled: draft.syncEnabled }
         : {}),
     });
+    let writeAcknowledged = false;
     try {
       if (action === 'test') {
         await api(endpoint + '/test', { method: 'POST', body }, 'empty');
@@ -92,6 +93,7 @@ function Connection({
             method: 'PUT',
             body,
           });
+          writeAcknowledged = true;
           if (generation !== sessionGeneration()) return;
           const readback = await api<Settings>(endpoint);
           if (generation !== sessionGeneration()) return;
@@ -123,6 +125,7 @@ function Connection({
           next = readback;
         } else {
           await api(endpoint, { method: 'DELETE' }, 'empty');
+          writeAcknowledged = true;
           if (generation !== sessionGeneration()) return;
           next = await api<Settings | null>(endpoint);
           if (generation !== sessionGeneration()) return;
@@ -166,13 +169,18 @@ function Connection({
     } catch (failure) {
       if (generation === sessionGeneration())
         setError(
-          failure instanceof ApiError
-            ? failure.message
-            : t(
-                'lumen.adminUrlConnection.actionFailure',
-                'Could not complete the {provider} action.',
-                { provider: name }
+          writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
               )
+            : failure instanceof ApiError
+              ? failure.message
+              : t(
+                  'lumen.adminUrlConnection.actionFailure',
+                  'Could not complete the {provider} action.',
+                  { provider: name }
+                )
         );
     } finally {
       pending.current = false;

@@ -5484,7 +5484,8 @@
     "lumen.readerDelivery.audiobooks": "Audiobooks",
     "lumen.readerDelivery.comics": "Comics",
     "lumen.readerDelivery.magazinePdfs": "Magazine PDFs",
-    "lumen.category.disabledForServer": "{category} is turned off on this server."
+    "lumen.category.disabledForServer": "{category} is turned off on this server.",
+    "lumen.settings.confirmFailed": "The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry."
   },
   "fr": {
     "components.IssueDetails.allepisodes": "Tous les épisodes",
@@ -11258,7 +11259,8 @@
     "lumen.readerDelivery.audiobooks": "Livres audio",
     "lumen.readerDelivery.comics": "Bandes dessinées",
     "lumen.readerDelivery.magazinePdfs": "PDF de magazines",
-    "lumen.category.disabledForServer": "La catégorie {category} est désactivée sur ce serveur."
+    "lumen.category.disabledForServer": "La catégorie {category} est désactivée sur ce serveur.",
+    "lumen.settings.confirmFailed": "Le serveur a accepté la modification, mais Lumen n’a pas pu confirmer l’enregistrement. Gardez ce formulaire ouvert et réessayez."
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -17036,6 +17038,7 @@
     "lumen.readerDelivery.audiobooks": "الكتب الصوتية",
     "lumen.readerDelivery.comics": "القصص المصورة",
     "lumen.readerDelivery.magazinePdfs": "ملفات المجلات PDF",
-    "lumen.category.disabledForServer": "تم إيقاف فئة {category} على هذا الخادم."
+    "lumen.category.disabledForServer": "تم إيقاف فئة {category} على هذا الخادم.",
+    "lumen.settings.confirmFailed": "قبل الخادم التغيير، لكن تعذّر على Lumen تأكيد الحالة المحفوظة. أبقِ هذا النموذج مفتوحًا وأعد المحاولة."
   }
 }

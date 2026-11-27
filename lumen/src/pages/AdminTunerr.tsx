@@ -134,6 +134,7 @@ function Editor({ initial }: { initial: Settings }) {
       guideHours: Number(draft.guideHours),
       ...(clear ? { clearPassword: true } : password ? { password } : {}),
     });
+    let writeAcknowledged = false;
     try {
       if (action === 'test') {
         setDiagnostics(
@@ -146,6 +147,7 @@ function Editor({ initial }: { initial: Settings }) {
         });
       } else {
         const result = await api<Settings>(path, { method: 'PUT', body });
+        writeAcknowledged = true;
         const readback = await api<Settings>(path);
         const expected = {
           ...draft,
@@ -199,10 +201,15 @@ function Editor({ initial }: { initial: Settings }) {
         setDiagnostics(failure.testResults as Diagnostics);
       } else {
         setNotice({
-          text: friendlyError(
-            failure,
-            t('lumen.tunerr.operationFailed', 'Tunerr operation failed.')
-          ),
+          text: writeAcknowledged
+            ? t(
+                'lumen.settings.confirmFailed',
+                'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+              )
+            : friendlyError(
+                failure,
+                t('lumen.tunerr.operationFailed', 'Tunerr operation failed.')
+              ),
           error: true,
         });
       }

@@ -61,6 +61,7 @@ function Connections({ initial }: { initial: Settings }) {
     pending.current = true;
     setBusy(true);
     setNotice(undefined);
+    let writeAcknowledged = false;
     try {
       if (provider) {
         const result = await api<{ existingGroupingCount: number }>(
@@ -96,6 +97,7 @@ function Connections({ initial }: { initial: Settings }) {
             clearBookorbitCredentials: clear.bookorbit,
           }),
         });
+        writeAcknowledged = true;
         const readback = await api<Settings>(path);
         const expected = {
           grimmoryUrl: serviceUrl(draft.grimmoryUrl),
@@ -143,7 +145,12 @@ function Connections({ initial }: { initial: Settings }) {
       }
     } catch (error) {
       setNotice({
-        text: friendlyError(error, 'Reader service operation failed.', t),
+        text: writeAcknowledged
+          ? t(
+              'lumen.settings.confirmFailed',
+              'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.'
+            )
+          : friendlyError(error, 'Reader service operation failed.', t),
         error: true,
       });
     } finally {

@@ -7983,4 +7983,6 @@ export const messages = {
   'lumen.readerDelivery.magazinePdfs': 'Magazine PDFs',
   'lumen.category.disabledForServer':
     '{category} is turned off on this server.',
+  'lumen.settings.confirmFailed':
+    'The server accepted the change, but Lumen could not confirm the saved state. Keep this form open and retry.',
 } as const;
