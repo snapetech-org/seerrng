@@ -54,11 +54,13 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
     pending.current = true;
     setBusy(true);
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const updated = await api<Configuration>(path, {
         method: 'PUT',
         body: JSON.stringify(changes),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<Configuration>(path);
       if (generation !== sessionGeneration()) return;
@@ -106,15 +108,20 @@ function DiscoveryForm({ initial }: { initial: Configuration }) {
     } catch (error) {
       if (generation !== sessionGeneration()) return;
       setFailure(
-        error instanceof ApiError && error.status === 403
+        writeAcknowledged
           ? t(
-              'lumen.adminDiscovery.forbidden',
-              'You do not have permission to change integration credentials.'
+              'lumen.adminDiscovery.confirmFailure',
+              'Could not confirm the saved discovery credentials. Try again.'
             )
-          : t(
-              'lumen.adminDiscovery.saveFailure',
-              'Could not save discovery credentials. Try again.'
-            )
+          : error instanceof ApiError && error.status === 403
+            ? t(
+                'lumen.adminDiscovery.forbidden',
+                'You do not have permission to change integration credentials.'
+              )
+            : t(
+                'lumen.adminDiscovery.saveFailure',
+                'Could not save discovery credentials. Try again.'
+              )
       );
     } finally {
       pending.current = false;

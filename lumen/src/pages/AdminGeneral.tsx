@@ -146,6 +146,7 @@ function ApplicationForm({
     setBusy(true);
     setNotice('');
     setFailure('');
+    let writeAcknowledged = false;
     try {
       const result = await api<ApplicationSettings>(path, {
         method: 'POST',
@@ -153,6 +154,7 @@ function ApplicationForm({
           Object.fromEntries(changed.map((key) => [key, values[key]]))
         ),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<ApplicationSettings>(path);
       if (generation !== sessionGeneration()) return;
@@ -177,14 +179,19 @@ function ApplicationForm({
     } catch (error) {
       if (generation === sessionGeneration())
         setFailure(
-          friendlyError(
-            error,
-            n(
-              'lumen.adminGeneral.saveFailure',
-              'Could not save application settings.'
-            ),
-            (id, fallback) => n(id, fallback)
-          )
+          writeAcknowledged
+            ? n(
+                'lumen.adminGeneral.confirmFailure',
+                'Could not confirm the saved application settings.'
+              )
+            : friendlyError(
+                error,
+                n(
+                  'lumen.adminGeneral.saveFailure',
+                  'Could not save application settings.'
+                ),
+                (id, fallback) => n(id, fallback)
+              )
         );
     } finally {
       pending.current = false;

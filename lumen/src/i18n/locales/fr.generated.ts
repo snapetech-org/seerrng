@@ -2299,6 +2299,8 @@ export const messages = {
   'lumen.adminDiscovery.provider.simkl': 'Simkl',
   'lumen.adminDiscovery.provider.trakt': 'Trakt',
   'lumen.adminDiscovery.save': 'Enregistrer les identifiants de découverte',
+  'lumen.adminDiscovery.confirmFailure':
+    'Impossible de confirmer l’enregistrement des identifiants de découverte. Réessayez.',
   'lumen.adminDiscovery.saveFailure':
     'Impossible d’enregistrer les identifiants de découverte. Réessayez.',
   'lumen.adminDiscovery.saved':

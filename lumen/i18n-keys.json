@@ -1324,6 +1324,7 @@
   "lumen.adminDiscovery.provider.simkl",
   "lumen.adminDiscovery.provider.trakt",
   "lumen.adminDiscovery.save",
+  "lumen.adminDiscovery.confirmFailure",
   "lumen.adminDiscovery.saveFailure",
   "lumen.adminDiscovery.saved",
   "lumen.adminDiscovery.saving",

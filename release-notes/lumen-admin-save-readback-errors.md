@@ -1,0 +1,1 @@
+Lumen administration now distinguishes a saved write from a failed confirmation read in General Settings, Connection Hosts, and Discovery Integrations. When the server accepts a change but the follow-up read fails, the form reports that it could not confirm persistence and keeps the draft available for retry.

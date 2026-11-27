@@ -1,3 +1,22 @@
+### Distinguish administration saves from failed readback (2026-11-27)
+
+General Settings, Connection Hosts, and Discovery Integrations previously reported
+a save failure when the server acknowledged the write but the follow-up settings
+read failed. They now report that persistence could not be confirmed, preserve
+the edited values, and allow a retry. Discovery Integrations has localized
+confirmation feedback in English, French, and Arabic.
+
+The focused browser suite passes 12/12 in standalone Lumen and 12/12 through
+the production Express `/lumen/` mount across desktop, iPhone, Android, and
+tablet. It simulates an acknowledged write followed by a 503 readback, then
+verifies that retry confirms the saved value. Matched baseline/candidate captures
+at desktop and iPhone sizes show the feedback change without shifting the
+controls. API responses are fixtures; live administrator authorization and
+persistence remain unverified. Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-admin-save-readback-20261127/`.
+
+release-note: `release-notes/lumen-admin-save-readback-errors.md`
+
 # Lumen workflow parity
 
 ### Distinguish category save from readback failure (2026-11-27)

@@ -2163,6 +2163,8 @@ export const messages = {
   'lumen.adminDiscovery.provider.simkl': 'Simkl',
   'lumen.adminDiscovery.provider.trakt': 'Trakt',
   'lumen.adminDiscovery.save': 'Save Discovery Credentials',
+  'lumen.adminDiscovery.confirmFailure':
+    'Could not confirm the saved discovery credentials. Try again.',
   'lumen.adminDiscovery.saveFailure':
     'Could not save discovery credentials. Try again.',
   'lumen.adminDiscovery.saved': 'Discovery credentials saved.',

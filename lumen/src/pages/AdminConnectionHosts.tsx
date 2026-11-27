@@ -90,11 +90,13 @@ function HostEditor({
     setMessage('');
     setError('');
     const generation = sessionGeneration();
+    let writeAcknowledged = false;
     try {
       const result = await api<Host[]>(connectionHostsPath, {
         method: 'PUT',
         body: JSON.stringify({ hosts }),
       });
+      writeAcknowledged = true;
       if (generation !== sessionGeneration()) return;
       const readback = await api<Host[]>(connectionHostsPath);
       if (generation !== sessionGeneration()) return;
@@ -118,7 +120,14 @@ function HostEditor({
       );
     } catch (failure) {
       if (generation === sessionGeneration())
-        setError(formatSaveError(failure, t));
+        setError(
+          writeAcknowledged
+            ? t(
+                'lumen.adminConnectionHosts.confirmFailure',
+                'Could not confirm the saved connection hosts.'
+              )
+            : formatSaveError(failure, t)
+        );
     } finally {
       pending.current = false;
       setBusy(false);

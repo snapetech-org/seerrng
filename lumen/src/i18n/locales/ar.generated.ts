@@ -2139,6 +2139,8 @@ export const messages = {
   'lumen.adminDiscovery.provider.simkl': 'Simkl',
   'lumen.adminDiscovery.provider.trakt': 'Trakt',
   'lumen.adminDiscovery.save': 'حفظ بيانات اعتماد الاستكشاف',
+  'lumen.adminDiscovery.confirmFailure':
+    'تعذر تأكيد حفظ بيانات اعتماد الاستكشاف. حاول مرة أخرى.',
   'lumen.adminDiscovery.saveFailure':
     'تعذر حفظ بيانات اعتماد الاستكشاف. حاول مرة أخرى.',
   'lumen.adminDiscovery.saved': 'تم حفظ بيانات اعتماد الاستكشاف.',
