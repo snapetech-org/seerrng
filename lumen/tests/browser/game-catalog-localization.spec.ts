@@ -35,6 +35,9 @@ const copy = {
     steamLibrary: 'Steam Library',
     steamLibraryDescription:
       'QuestarrNG found this game in its linked public Steam library. It may not be installed or available as a local QuestarrNG file.',
+    availabilityUnknown: 'Availability unknown',
+    ownedInQuestarr: 'Owned in QuestarrNG',
+    tracked: 'Tracked',
     consoleSystems: 'Nintendo Entertainment System',
   },
   fr: {
@@ -61,6 +64,9 @@ const copy = {
     steamLibrary: 'Bibliothèque Steam',
     steamLibraryDescription:
       'QuestarrNG a trouvé ce jeu dans sa bibliothèque publique liée Steam. Il ne peut pas être installé ou disponible comme fichier QuestarrNG local.',
+    availabilityUnknown: 'Disponibilité inconnue',
+    ownedInQuestarr: 'Possédé dans QuestarrNG',
+    tracked: 'Suivi',
     consoleSystems: 'Nintendo Entertainment System',
   },
   ar: {
@@ -87,6 +93,9 @@ const copy = {
     steamLibrary: 'مكتبة Steam',
     steamLibraryDescription:
       'وجدت QuestarrNG هذه اللعبة في مكتبة Steam العامة المرتبطة بها. قد لا يكون مثبتًا أو متاحًا كملف QuestarrNG محلي.',
+    availabilityUnknown: 'التوفر غير معروف',
+    ownedInQuestarr: 'مملوكة في QuestarrNG',
+    tracked: 'متتبعة',
     consoleSystems: 'Nintendo Entertainment System',
   },
 }[locale];
@@ -175,6 +184,39 @@ test('Games catalog controls and empty state follow the saved locale', async ({
               genres: ['Strategy', 'Simulation', 'Adventure'],
               platforms: ['Windows'],
             },
+            {
+              id: 'fixture-game-unknown',
+              title: 'Fixture Game Unknown Availability',
+              catalogId: '44',
+              catalogProvider: 'igdb',
+              igdbId: 44,
+              coverUrl: null,
+              releaseDate: null,
+              platforms: ['Windows'],
+              availability: 'unknown',
+            },
+            {
+              id: 'fixture-game-owned',
+              title: 'Fixture Game Owned',
+              catalogId: '45',
+              catalogProvider: 'igdb',
+              igdbId: 45,
+              coverUrl: null,
+              releaseDate: null,
+              platforms: ['Windows'],
+              availability: 'owned',
+            },
+            {
+              id: 'fixture-game-tracked',
+              title: 'Fixture Game Tracked',
+              catalogId: '46',
+              catalogProvider: 'igdb',
+              igdbId: 46,
+              coverUrl: null,
+              releaseDate: null,
+              platforms: ['Windows'],
+              availability: 'tracked',
+            },
           ],
           nextOffset: null,
         },
@@ -207,6 +249,33 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     copy.searchPc
   );
   await expect(page.getByText('Fixture Game', { exact: true })).toBeVisible();
+  const captureDirectory = process.env.LUMEN_GAME_CATALOG_CAPTURE_DIR;
+  if (captureDirectory)
+    await page.screenshot({
+      path: `${captureDirectory}/${locale}-${info.project.name}-availability-baseline.png`,
+      fullPage: true,
+    });
+  const unknownGame = page
+    .locator('.grid .poster')
+    .filter({ hasText: 'Fixture Game Unknown Availability' });
+  await expect(unknownGame.locator('.glyph.neutral')).toHaveAttribute(
+    'title',
+    copy.availabilityUnknown
+  );
+  const ownedGame = page
+    .locator('.grid .poster')
+    .filter({ hasText: 'Fixture Game Owned' });
+  await expect(ownedGame.locator('.glyph.ok')).toHaveAttribute(
+    'title',
+    copy.ownedInQuestarr
+  );
+  const trackedGame = page
+    .locator('.grid .poster')
+    .filter({ hasText: 'Fixture Game Tracked' });
+  await expect(trackedGame.locator('.glyph.wait')).toHaveAttribute(
+    'title',
+    copy.tracked
+  );
   const datedGame = page
     .locator('.grid .poster')
     .filter({ hasText: 'Fixture Game' })
@@ -237,7 +306,6 @@ test('Games catalog controls and empty state follow the saved locale', async ({
     )
   ).toBe(true);
 
-  const captureDirectory = process.env.LUMEN_GAME_CATALOG_CAPTURE_DIR;
   if (captureDirectory)
     await page.screenshot({
       path: `${captureDirectory}/${locale}-${info.project.name}.png`,

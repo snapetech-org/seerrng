@@ -107,7 +107,7 @@ export function Cover({
 
 // one status vocabulary everywhere (same as the mockup)
 export type Stat = {
-  k: 'ok' | 'dl' | 'wait';
+  k: 'ok' | 'dl' | 'wait' | 'neutral';
   word: string;
   ico: IconName;
 } | null;
@@ -263,6 +263,11 @@ export function statusLabel(
   if (!s) return '';
   if (s.word === 'Blocklisted') return t('lumen.status.blocklisted', s.word);
   if (s.word === 'In library') return t('lumen.status.inLibrary', s.word);
+  if (s.word === 'Owned in QuestarrNG')
+    return t('lumen.games.ownedInQuestarr', s.word);
+  if (s.word === 'Tracked') return t('lumen.games.tracked', s.word);
+  if (s.word === 'Availability unknown')
+    return t('lumen.games.availabilityUnknown', s.word);
   if (s.word === 'Requested') return t('lumen.status.requested', s.word);
   if (s.word === 'Processing') return t('lumen.status.processing', s.word);
   if (s.word === 'Waiting for approval')

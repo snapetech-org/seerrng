@@ -449,6 +449,10 @@ h3 {
   background: var(--accent);
   color: var(--accent-ink);
 }
+.glyph.neutral {
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
 
 /* ---------- Poster card ---------- */
 .poster {

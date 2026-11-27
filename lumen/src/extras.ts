@@ -839,13 +839,17 @@ export const requestGame = (
   });
 // a game's state in plain words, from the catalogue's availability field
 export const gameState = (g: Game) =>
-  g.availability === 'available' || g.availability === 'owned'
+  g.availability === 'available'
     ? 'In library'
-    : g.availability === 'downloading'
-      ? 'Downloading'
-      : g.availability === 'tracked'
-        ? 'Requested'
-        : '';
+    : g.availability === 'owned'
+      ? 'Owned in QuestarrNG'
+      : g.availability === 'downloading'
+        ? 'Downloading'
+        : g.availability === 'tracked'
+          ? 'Tracked'
+          : g.availability === 'unknown'
+            ? 'Availability unknown'
+            : '';
 
 export interface SoftwareRequest {
   request: {

@@ -26,6 +26,30 @@ horizontal overflow. Evidence is retained at
 
 release-note: `release-notes/lumen-tv-last-air-date.md`
 
+### Preserve native game availability labels in Lumen (2026-11-27)
+
+Native Software Catalog distinguishes games already available in the media
+library, owned in QuestarrNG, tracked, downloading, and with unknown
+availability. Lumen now presents those same states on catalog and detail status
+surfaces; an explicitly missing game remains unbadged, matching native. The
+unknown state uses the shared neutral glyph palette, and the three additional
+labels are translated in English, French, and Arabic.
+
+The focused game catalog browser fixture and detail availability cases pass
+24/24 across English, French, and Arabic on desktop, iPhone, Android, and
+tablet. Baseline and candidate captures use the
+same mocked catalog data and route at desktop and iPhone sizes. Unknown
+availability is visibly absent in the baseline and shown with the neutral info
+glyph in the candidate; the owned and tracked labels now match native wording.
+Evidence is retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-availability-parity-20261127/`.
+
+This closes a catalog status-display gap only. Live QuestarrNG acquisition,
+imports, remaining catalog actions, provider-backed behavior, and full
+native-matched visual acceptance remain open in the workflow inventory.
+
+release-note: `release-notes/lumen-game-availability-status.md`
+
 ### Refresh download-client health while visible (2026-11-27)
 
 Lumen now refreshes configured download-client health every 15 seconds while

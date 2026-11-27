@@ -69,9 +69,17 @@ const statOf = (g: Game, t: Translate): Stat => {
     ? null
     : w === 'In library'
       ? { k: 'ok', word: t('lumen.status.inLibrary', w), ico: 'check' }
-      : w === 'Downloading'
-        ? { k: 'dl', word: t('lumen.status.downloading', w), ico: 'down' }
-        : { k: 'wait', word: t('lumen.status.requested', w), ico: 'clock' };
+      : w === 'Owned in QuestarrNG'
+        ? { k: 'ok', word: t('lumen.games.ownedInQuestarr', w), ico: 'check' }
+        : w === 'Downloading'
+          ? { k: 'dl', word: t('lumen.status.downloading', w), ico: 'down' }
+          : w === 'Tracked'
+            ? { k: 'wait', word: t('lumen.games.tracked', w), ico: 'clock' }
+            : {
+                k: 'neutral',
+                word: t('lumen.games.availabilityUnknown', w),
+                ico: 'info',
+              };
 };
 
 type CatalogFilters = {

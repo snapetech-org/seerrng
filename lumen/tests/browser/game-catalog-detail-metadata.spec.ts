@@ -147,6 +147,36 @@ test('game details retain catalog playtime, Steam ownership, and safe videos', a
   ).toBe(true);
 });
 
+for (const status of [
+  {
+    availability: 'unknown',
+    label: 'Availability unknown',
+    className: 'neutral',
+  },
+  {
+    availability: 'owned',
+    label: 'Owned in QuestarrNG',
+    className: 'ok',
+  },
+  {
+    availability: 'tracked',
+    label: 'Tracked',
+    className: 'wait',
+  },
+]) {
+  test(`game detail labels ${status.availability} catalog availability`, async ({
+    page,
+  }) => {
+    await openGame(page, {
+      locale: 'en',
+      game: { availability: status.availability },
+    });
+    const statusPill = page.locator('.dstatus .pill').first();
+    await expect(statusPill).toContainText(status.label);
+    await expect(statusPill).toHaveClass(new RegExp(status.className));
+  });
+}
+
 test('retro and modern requests respect per-system availability and tracking', async ({
   page,
 }, info) => {
