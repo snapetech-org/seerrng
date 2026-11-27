@@ -443,7 +443,7 @@ export default function MovieDetail() {
                   4K · <StatLabel s={progress4k} />
                 </>
               ) : (
-                '4K requested'
+                <>4K · {t('lumen.movie.fact.requested', 'Requested')}</>
               )}
             </Pill>
           )}

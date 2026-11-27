@@ -5,6 +5,22 @@ authorized to use. The bundled `/lumen/` frontend and the independent companion
 both need working entry points. Native routes remain the behavioral reference
 during migration. A link into full SeerrNG does not establish Lumen parity.
 
+### Localize the pending movie 4K status (2026-11-27)
+
+Movie Details previously hard-coded `4K requested` when the 4K request was
+pending but had no live progress details, even though Lumen has a localized
+Requested label. It now uses that existing account-locale label and keeps the
+4K marker and status badge behavior intact.
+
+The browser regression passes 12/12 across English, French, and Arabic on
+desktop, iPhone, Android, and tablet. The production Lumen build passes.
+Matched baseline and candidate captures at 1440×900 and iPhone 390×844 show the
+same badge placement and geometry, with only its text localized. Evidence is
+retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-4k-status-20261127/`.
+
+release-note: `release-notes/lumen-localize-4k-request-status.md`
+
 ### Preserve the TV last air date when episode metadata is missing (2026-11-27)
 
 Native Series Details continues to show the series-level `lastAirDate` when
