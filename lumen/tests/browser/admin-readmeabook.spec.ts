@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 for (const [locale, labels] of [
   [
@@ -52,7 +53,7 @@ for (const [locale, labels] of [
         });
       return route.fulfill({ json: {} });
     });
-    await page.goto('/admin/readmeabook');
+    await page.goto(testAppPath('/admin/readmeabook'));
     await expect(
       page.getByRole('heading', { name: labels.title })
     ).toBeVisible();
@@ -160,7 +161,7 @@ test('ReadMeABook tests with the stored key and explicitly removes it when disab
     saveAttempts += 1;
     return route.fulfill({ json: currentSettings });
   });
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open ReadMeABook Settings' }).click();
   await page.getByRole('button', { name: 'Test Connection' }).click();
   await expect(page.getByText('Connected to ReadMeABook.')).toBeVisible();
@@ -271,7 +272,7 @@ test('ReadMeABook approval retries confirm status without repeating the decision
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/me');
+  await page.goto(testAppPath('/me'));
   await page.getByRole('link', { name: 'Open ReadMeABook Settings' }).click();
   await page
     .getByRole('button', { name: 'Approve Slow Readback Book' })

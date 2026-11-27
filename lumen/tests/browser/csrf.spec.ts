@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 test('Lumen sends the current SeerrNG CSRF cookie on sign-in', async ({
   page,
@@ -34,7 +35,7 @@ test('Lumen sends the current SeerrNG CSRF cookie on sign-in', async ({
       json: { results: [], totalResults: 0, totalPages: 1, page: 1 },
     });
   });
-  await page.goto('/');
+  await page.goto(testAppPath('/'));
   const email = page.getByLabel('Email', { exact: true });
   const alternate = page.getByRole('button', {
     name: 'Use an email and password instead',

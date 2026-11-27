@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const testMount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 
@@ -92,7 +93,7 @@ test('Request 4K Series without request management can pick 4K on the series pag
     pub: { series4kEnabled: true, partialRequestsEnabled: true },
     handle: (path) => (path === '/tv/84773' ? { json: show } : undefined),
   });
-  await page.goto('/tv/84773');
+  await page.goto(mountedTestAppPath('/tv/84773'));
   const quality = page.getByRole('group', { name: 'Quality' });
   await expect(quality).toBeVisible();
   await expect(page.getByText('Advanced Request Options')).toHaveCount(0);
@@ -111,7 +112,13 @@ test('Request 4K Series without request management can pick 4K on the series pag
   await expect.poll(() => posts.length).toBe(1);
   expect(posts[0]).toEqual({
     path: '/request',
-    body: { mediaType: 'tv', mediaId: 84773, seasons: 'all', is4k: true },
+    body: {
+      mediaType: 'tv',
+      mediaId: 84773,
+      seasons: 'all',
+      is4k: true,
+      monitorFutureSeasons: false,
+    },
   });
 });
 
@@ -123,7 +130,7 @@ test('no 4K choice without the permission or with series 4K off', async ({
     pub: { series4kEnabled: true },
     handle: (path) => (path === '/tv/84773' ? { json: show } : undefined),
   });
-  await page.goto('/tv/84773');
+  await page.goto(mountedTestAppPath('/tv/84773'));
   await expect(page.getByRole('heading', { name: 'Seasons' })).toBeVisible();
   await expect(page.getByRole('group', { name: 'Quality' })).toHaveCount(0);
 });
@@ -200,7 +207,9 @@ for (const everyone of [false, true]) {
       },
     });
     await page.goto(
-      everyone ? '/requests?tab=everyone' : '/requests?tab=active'
+      mountedTestAppPath(
+        everyone ? '/requests?tab=everyone' : '/requests?tab=active'
+      )
     );
     await expect(page.getByText('Downloading 40%').first()).toBeVisible();
     // let the first load (and its title lookups) settle, then count only what one tick asks for
@@ -219,7 +228,7 @@ test('a confirmation focuses Keep it, not the action that cannot be undone', asy
   page,
 }) => {
   await fixtures(page);
-  await page.goto('/me');
+  await page.goto(mountedTestAppPath('/me'));
   await page.getByRole('button', { name: 'Reset to defaults' }).click();
   const ask = page.getByRole('alertdialog', { name: 'Reset to defaults?' });
   await expect(ask.getByRole('button', { name: 'Keep it' })).toBeFocused();
@@ -228,7 +237,7 @@ test('a confirmation focuses Keep it, not the action that cannot be undone', asy
 // ---- D: toasts are announced while a sheet makes the app inert ----
 test('the toast live region sits outside #root', async ({ page }) => {
   await fixtures(page);
-  await page.goto('/me');
+  await page.goto(mountedTestAppPath('/me'));
   const toast = page.locator('.toast[role="status"]');
   await expect(toast).toHaveCount(1);
   expect(await toast.evaluate((e) => !!e.closest('#root'))).toBe(false);
@@ -272,13 +281,13 @@ test.describe('in the evening west of Greenwich', () => {
           };
       },
     });
-    await page.goto('/movie/55');
+    await page.goto(mountedTestAppPath('/movie/55'));
     await expect(
       page
         .getByRole('button', { name: 'Request · downloads on release' })
         .filter({ visible: true })
     ).toBeVisible();
-    await page.goto('/tv/56');
+    await page.goto(mountedTestAppPath('/tv/56'));
     await expect(page.locator('.srow').nth(1)).toContainText(
       'Premieres Nov 14'
     );
@@ -322,7 +331,7 @@ test('Games shows placeholders while the catalogues are checked, then an error w
       };
     },
   });
-  await page.goto('/games');
+  await page.goto(mountedTestAppPath('/games'));
   await expect(page.getByRole('heading', { name: 'Games' })).toBeVisible();
   await expect(
     page.locator('[aria-busy="true"][aria-label="Loading"]')
@@ -356,7 +365,7 @@ test('Games gives its loading placeholder a localized accessible name', async ({
       return undefined;
     },
   });
-  await page.goto('/games');
+  await page.goto(mountedTestAppPath('/games'));
   await expect(
     page.locator('[aria-busy="true"][aria-label="Chargement"]')
   ).toBeVisible();
@@ -399,7 +408,9 @@ test('an owned audiobook without the companion shows the library, not Request', 
         return { json: { editions: [edition('hc:1', ['Jane Reader'])] } };
     },
   });
-  await page.goto(`/book/${encodeURIComponent(bookId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(bookId)}?f=audio`)
+  );
   await expect(page.locator('.nrow').first()).toContainText('Jane Reader');
   await expect(
     page
@@ -431,7 +442,9 @@ test('Any English narrator never pins a recording that cannot be pinned', async 
         return { status: 201, json: { id: 1 } };
     },
   });
-  await page.goto(`/book/${encodeURIComponent(bookId)}?f=audio`);
+  await page.goto(
+    mountedTestAppPath(`/book/${encodeURIComponent(bookId)}?f=audio`)
+  );
   await page.getByRole('radio', { name: /Any English narrator/ }).click();
   await page
     .getByRole('button', { name: 'Request audiobook' })
@@ -454,7 +467,7 @@ test('two quick taps on Request send one book request', async ({ page }) => {
       }
     },
   });
-  await page.goto('/book/OL7W');
+  await page.goto(mountedTestAppPath('/book/OL7W'));
   const button = page
     .getByRole('button', { name: 'Request ebook' })
     .filter({ visible: true });
@@ -477,7 +490,7 @@ test('a book id with a literal % opens instead of crashing', async ({
         ? { json: book({ id: 'OL%W', title: 'Percent Book' }) }
         : undefined,
   });
-  await page.goto('/book/OL%25W');
+  await page.goto(mountedTestAppPath('/book/OL%25W'));
   await expect(
     page.getByRole('heading', { name: 'Percent Book' })
   ).toBeVisible();
@@ -519,7 +532,9 @@ test.describe('phones', () => {
     await page.route('**/api/v1/lumen/configuration', (r) =>
       r.fulfill({ json: { audiobookshelfUrl: 'https://abs.example.org' } })
     );
-    await page.goto(`/book/${encodeURIComponent(bookId)}?f=audio`);
+    await page.goto(
+      mountedTestAppPath(`/book/${encodeURIComponent(bookId)}?f=audio`)
+    );
     await page.getByRole('radio', { name: /Ann Voice/ }).click();
     await expect(
       page
@@ -600,7 +615,7 @@ test('Kavita links require a series route', async ({ page }, info) => {
   const read = page
     .getByRole('link', { name: 'Read in Kavita' })
     .filter({ visible: true });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   await expect(read).toHaveAttribute(
     'href',
     'https://manga.example.com/kavita/library/2/series/41'
@@ -609,7 +624,7 @@ test('Kavita links require a series route', async ({ page }, info) => {
     path: info.outputPath('kavita-series-link.png'),
     animations: 'disabled',
   });
-  await page.goto('/comic/al-2');
+  await page.goto(mountedTestAppPath('/comic/al-2'));
   await expect(page.getByRole('heading', { name: 'Blade Saga' })).toBeVisible();
   await expect(read).toHaveCount(0);
   await page.screenshot({
@@ -629,7 +644,7 @@ test('an edition not in the library shows its own state, not the owned one', asy
       if (path.startsWith('/comic/')) return { json: {} };
     },
   });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   const read = page
     .getByRole('link', { name: 'Read in Kavita' })
     .filter({ visible: true });
@@ -673,7 +688,7 @@ test('comic download progress combines percentage and byte-based queue items', a
       if (path.startsWith('/comic/')) return { json: {} };
     },
   });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   await expect(page.locator('.dstatus')).toContainText('Downloading');
   await page.screenshot({
     path: info.outputPath('comic-progress.png'),
@@ -724,7 +739,7 @@ test('comic pages that fail offer Retry, volumes included', async ({
       if (path.startsWith('/comic/')) return { json: {} };
     },
   });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   await expect(page.getByText('Couldn’t load this comic')).toBeVisible();
   workFails = false;
   await page.getByRole('button', { name: 'Retry' }).click();
@@ -765,7 +780,7 @@ test('two quick taps on a comic Request send one request', async ({ page }) => {
       if (path.startsWith('/comic/')) return { json: {} };
     },
   });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   const button = page
     .getByRole('button', { name: 'Request manga' })
     .filter({ visible: true });
@@ -820,7 +835,7 @@ test('a card quick request checks the looked-up edition first', async ({
         };
     },
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   await card.hover();
   await card.getByRole('button', { name: 'Request', exact: true }).click();
@@ -846,12 +861,12 @@ test('a card that goes away during its lookup does not navigate', async ({
       }
     },
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const card = page.locator('.comic-grid .poster').first();
   await card.hover();
   await card.getByRole('button', { name: 'Request', exact: true }).click();
   await expect.poll(() => !!release).toBe(true);
-  await page.goto('/me');
+  await page.goto(mountedTestAppPath('/me'));
   await expect(page).toHaveURL(/\/me$/);
   release!();
   await page.waitForTimeout(300);
@@ -876,7 +891,7 @@ test('a library card’s duplicate page link stays out of Tab order', async ({
       if (path === '/discover/comics/landing') return { json: {} };
     },
   });
-  await page.goto('/comics?type=manga');
+  await page.goto(mountedTestAppPath('/comics?type=manga'));
   const dup = page.locator('.comic-grid .qa a.qbtn.okb');
   await expect(dup).toHaveCount(1);
   await expect(dup).toHaveAttribute('tabindex', '-1');
@@ -924,7 +939,7 @@ test('Not yet asks before reading page after page of owned books', async ({
       if (path === '/book/library') return { json: paged([]) };
     },
   });
-  await page.goto('/books?show=not');
+  await page.goto(mountedTestAppPath('/books?show=not'));
   const more = page.getByRole('button', { name: 'Load more books' });
   await expect(more).toBeVisible();
   await page.waitForTimeout(500);
@@ -942,7 +957,7 @@ test('the magazine search box follows ?q= on Back and Forward', async ({
   await fixtures(page, {
     pub: { enabledMediaCategories: { magazine: true } },
   });
-  await page.goto('/magazines?q=time');
+  await page.goto(mountedTestAppPath('/magazines?q=time'));
   const box = page.getByPlaceholder('Search magazines…');
   await expect(box).toHaveValue('time');
   const newsPath = `${testMount}/magazines?q=news`;
@@ -994,7 +1009,7 @@ test('comic reader shelves preview the selected edition and require empty shelf 
       if (url.startsWith('/comic/')) return { json: {} };
     },
   });
-  await page.goto('/comic/al-1');
+  await page.goto(mountedTestAppPath('/comic/al-1'));
   await page.getByRole('radio', { name: /French/ }).click();
   await page.getByRole('button', { name: 'Manage Reader Shelf' }).click();
   const dialog = page.getByRole('dialog', { name: 'Reader Shelf' });

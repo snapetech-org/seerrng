@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const copy = {
   en: {
@@ -80,7 +81,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
       return route.fulfill({ json: { results: [], page: 1, totalPages: 1 } });
     });
-    await page.goto('/books?sort=trending');
+    await page.goto(testAppPath('/books?sort=trending'));
     const text = copy[locale];
     await expect(page.getByRole('heading', { name: text.title })).toBeVisible();
     await expect(
@@ -136,7 +137,7 @@ for (const locale of ['en', 'fr', 'ar'] as const) {
         fullPage: true,
       });
     }
-    await page.goto('/audiobooks');
+    await page.goto(testAppPath('/audiobooks'));
     await expect(
       page.getByRole('heading', { name: text.audioTitle })
     ).toBeVisible();
@@ -219,7 +220,7 @@ test('book cards localize format and request actions', async ({
       json: { page: 1, totalPages: 1, totalResults: 0, results: [] },
     });
   });
-  await page.goto('/books?sort=trending');
+  await page.goto(testAppPath('/books?sort=trending'));
   const card = page.locator('.poster.book').filter({ hasText: 'Card Format' });
   await expect(card.locator('.m')).toContainText('livre numérique');
   const unknown = page

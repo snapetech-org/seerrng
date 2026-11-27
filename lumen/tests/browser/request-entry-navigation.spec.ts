@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
 
+const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
+const appPath = (path: string) => `${mount}${path}`;
+
 const pages = [
   { path: '/books', label: 'Book Recommendations' },
   { path: '/music', label: 'Collector Picks' },
@@ -81,7 +84,7 @@ for (const permissions of [0, 32, 2]) {
           });
         return route.fulfill({ json: { page: 1, results: [], totalPages: 1 } });
       });
-      await page.goto(entry.path);
+      await page.goto(appPath(entry.path));
       await expect(page.locator('main h1')).toBeVisible();
       const link = page.locator('.side').getByRole('link', {
         name: entry.menuLabel ?? entry.label,

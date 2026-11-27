@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath } from './testAppPath';
 
 const locale = ['en', 'fr', 'ar'].includes(process.env.LUMEN_ADULT_LOCALE ?? '')
   ? (process.env.LUMEN_ADULT_LOCALE as 'en' | 'fr' | 'ar')
@@ -90,7 +91,7 @@ test('Adult catalog follows the saved locale and preserves service filters', asy
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('/adult');
+  await page.goto(testAppPath('/adult'));
   const baseline = process.env.LUMEN_ADULT_BASELINE === '1';
   await expect(
     page.getByRole('heading', { name: baseline ? 'Adult' : copy.title })

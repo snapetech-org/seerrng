@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -121,7 +122,7 @@ test('household users can open Following and manage their own updates', async ({
     return route.fulfill({ json: {} });
   });
 
-  await page.goto('./me');
+  await page.goto(mountedTestAppPath('./me'));
   await page.getByRole('link', { name: 'Open Following', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Following', exact: true })
@@ -210,7 +211,7 @@ test('direct navigation without request access does not fetch follows', async ({
           : {},
     });
   });
-  await page.goto('./following');
+  await page.goto(mountedTestAppPath('./following'));
   await expect(
     page.getByText('Request access is required to use Following.')
   ).toBeVisible();
@@ -257,7 +258,7 @@ test('following a person uses the exact identity and waits for server confirmati
               : {},
     });
   });
-  await page.goto('./person/77');
+  await page.goto(mountedTestAppPath('./person/77'));
   const follow = page.getByRole('button', {
     name: baseline ? 'Follow' : 'متابعة',
     exact: true,
@@ -308,7 +309,7 @@ test('filtered discovery follows the exact genre, studio, and network', async ({
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('./movies?genre=18&studio=72');
+  await page.goto(mountedTestAppPath('./movies?genre=18&studio=72'));
   await page.getByRole('button', { name: 'Follow Drama', exact: true }).click();
   await page
     .getByRole('button', { name: 'Follow Fixture Studio', exact: true })
@@ -316,7 +317,7 @@ test('filtered discovery follows the exact genre, studio, and network', async ({
   await expect(
     page.getByRole('button', { name: 'Following', exact: true })
   ).toHaveCount(2);
-  await page.goto('./series?network=900009');
+  await page.goto(mountedTestAppPath('./series?network=900009'));
   await page
     .getByRole('button', { name: 'Follow Fixture Network', exact: true })
     .click();
@@ -380,7 +381,7 @@ test('book details follow the author by catalog identity', async ({ page }) => {
       return route.fulfill({ status: 204 });
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('./book/OL42W');
+  await page.goto(mountedTestAppPath('./book/OL42W'));
   const follow = page.getByRole('button', { name: 'Follow New Releases' });
   await follow.click();
   const following = page.getByRole('button', {
@@ -448,7 +449,9 @@ test('an audiobook can follow a solo narrator without selecting an edition', asy
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('./book/bookshelf:1:aGM6MjYwNDY4?f=audio');
+  await page.goto(
+    mountedTestAppPath('./book/bookshelf:1:aGM6MjYwNDY4?f=audio')
+  );
   const narrations = page.getByRole('radiogroup', { name: 'Narrations' });
   await expect(narrations).toBeVisible();
   await expect(
@@ -556,7 +559,7 @@ test('anime continuation loads on demand and follows the novel in its language',
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('./tv/92');
+  await page.goto(mountedTestAppPath('./tv/92'));
   const titleLabel = baseline
     ? 'Manga and Novel Continuations'
     : arabic
@@ -739,7 +742,7 @@ test('switching franchise titles keeps the follow identity and state separate', 
     return route.fulfill({ json: { results: [] } });
   });
 
-  await page.goto('./franchise/anime/10');
+  await page.goto(mountedTestAppPath('./franchise/anime/10'));
   await expect(
     page.getByRole('link', { name: 'Fixture Novel' })
   ).toHaveAttribute(
@@ -833,7 +836,7 @@ for (const [type, catalogId, href] of [
       return route.fulfill({ json: { results: [] } });
     });
 
-    await page.goto('./franchise/anime/10');
+    await page.goto(mountedTestAppPath('./franchise/anime/10'));
     await page
       .getByRole('button', { name: 'Add Relationship', exact: true })
       .click();
@@ -902,7 +905,7 @@ test('unmatched AniList discovery titles can open the exact franchise', async ({
     }
     return route.fulfill({ json: { results: [] } });
   });
-  await page.goto('./providers?unmatched=1');
+  await page.goto(mountedTestAppPath('./providers?unmatched=1'));
   const cover = page.locator('img[src="/imageproxy/anilist/file/fixture.jpg"]');
   await expect(cover).toBeVisible();
   await expect

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { testAppPath as mountedTestAppPath } from './testAppPath';
 
 const mount = process.env.LUMEN_TEST_MOUNT === '/lumen' ? '/lumen' : '';
 const appPath = (path: string) => `${mount}${path}`;
@@ -156,7 +157,7 @@ for (const {
       locale,
       true
     );
-    await page.goto('/recordings');
+    await page.goto(mountedTestAppPath('/recordings'));
     await recordingsStarted;
     await expect(
       page.getByRole('status').filter({ hasText: loading })
@@ -222,7 +223,7 @@ for (const { locale, recordingsError, statusError } of [
   }, info) => {
     test.skip(info.project.name !== 'desktop');
     await fixture(page, 32, true, locale, false, 'status');
-    await page.goto('/recordings');
+    await page.goto(mountedTestAppPath('/recordings'));
     await expect(page.getByRole('alert')).toContainText(statusError);
 
     const recordingsPage = await page.context().newPage();
@@ -239,7 +240,7 @@ test('recording managers can review all users and approve an airing', async ({
   page,
 }, info) => {
   const { writes, reads } = await fixture(page, 2);
-  await page.goto('/me');
+  await page.goto(mountedTestAppPath('/me'));
   await page.getByRole('link', { name: 'Open Recordings' }).click();
   await expect(page.getByText('Fixture Airing')).toBeVisible();
   await page.getByRole('combobox', { name: 'Scope' }).selectOption('all');
@@ -270,7 +271,7 @@ test('a member can cancel their own request and see it in history', async ({
     undefined,
     true
   );
-  await page.goto('/recordings');
+  await page.goto(mountedTestAppPath('/recordings'));
   await expect(page.getByText('Fixture Airing')).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Scope' })).toHaveCount(0);
   await expect(
@@ -307,7 +308,7 @@ test('unconfigured recordings show a setup state without fetching the list', asy
   page,
 }) => {
   const { reads } = await fixture(page, 32, false);
-  await page.goto('/recordings');
+  await page.goto(mountedTestAppPath('/recordings'));
   await expect(
     page.getByText(
       'Live TV recording is not set up. An administrator can connect IPTV Tunerr in Settings → Services.'
