@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   ApiError,
@@ -652,10 +659,17 @@ export default function TvDetail() {
               })
             : '',
           t.genres
-            .filter((g) => g.id)
+            .filter(
+              (g) =>
+                Number.isSafeInteger(g.id) && g.id > 0 && g.id <= 1_000_000_000
+            )
             .slice(0, 3)
-            .map((g) => g.name)
-            .join(', '),
+            .map((g, index) => (
+              <Fragment key={g.id}>
+                {index > 0 ? ', ' : null}
+                <Link to={`/series?genre=${g.id}`}>{g.name}</Link>
+              </Fragment>
+            )),
         ]}
       />
       <div className="dbody">

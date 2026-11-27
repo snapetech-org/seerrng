@@ -6930,17 +6930,19 @@ retained at
 
 release-note: `release-notes/lumen-movie-screenplay-credit.md`
 
-### Movie detail genre navigation (2026-11-27)
+### Movie and TV detail genre navigation (2026-11-27)
 
-Movie genre names in the Lumen detail header now link to the matching filtered
-movie browse route, equivalent to native SeerrNG's Discover genre links. Only
-positive integer IDs within the supported route range are rendered; the
-existing three-genre display cap and header separators are preserved.
+Movie and TV genre names in the Lumen detail header now link to the matching
+filtered browse route, equivalent to native SeerrNG's Discover genre links.
+Only positive integer IDs within the supported route range are rendered; the
+existing three-genre display cap and header separators are preserved. TV already
+linked genres inside its expandable Facts panel; this adds the corresponding
+header navigation, while the earlier movie change fills both locations.
 
-The production-mounted browser fixture verifies both genre destinations across
-desktop, iPhone, Android, and tablet at English, French, and Arabic locales.
-Horizontal overflow is checked at all four viewports. Matched baseline and
-candidate captures were inspected at desktop and iPhone sizes. Evidence is
+The production-mounted browser fixture verifies movie and TV genre destinations
+across desktop, iPhone, Android, and tablet at English, French, and Arabic
+locales. Horizontal overflow is checked at all four viewports. Matched baseline
+and candidate captures were inspected at desktop and iPhone sizes. Evidence is
 retained at
 `/mnt/disks/scratch/task-deliverables/seerrng-lumen-movie-genre-navigation-20261127/`.
 

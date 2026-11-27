@@ -120,7 +120,10 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
             lastAirDate: '2022-01-01',
             originalLanguage: 'en',
             productionCountries: [],
-            genres: [],
+            genres: [
+              { id: 18, name: 'Drama' },
+              { id: 35, name: 'Comedy' },
+            ],
             networks: [],
             seasons: [],
             numberOfSeasons: 1,
@@ -192,6 +195,19 @@ for (const locale of Object.keys(locales) as (keyof typeof locales)[]) {
       page.getByRole('heading', { name: 'Fixture Series' })
     ).toBeVisible();
     await page.getByText(copy.tv, { exact: true }).click();
+    const tvHeader = page.locator('.dtitle');
+    const tvDrama = tvHeader.getByRole('link', { name: 'Drama', exact: true });
+    const tvComedy = tvHeader.getByRole('link', {
+      name: 'Comedy',
+      exact: true,
+    });
+    if (!captureOnly) {
+      await expect(tvDrama).toHaveAttribute('href', `${mount}/series?genre=18`);
+      await expect(tvComedy).toHaveAttribute(
+        'href',
+        `${mount}/series?genre=35`
+      );
+    }
     if (capture && ['desktop', 'iphone'].includes(info.project.name))
       await page.screenshot({
         path: `${capture}/${locale}-tv-${info.project.name}.png`,
