@@ -11280,7 +11280,12 @@
     "lumen.readerDelivery.comics": "Bandes dessinées",
     "lumen.readerDelivery.magazinePdfs": "PDF de magazines",
     "lumen.category.disabledForServer": "La catégorie {category} est désactivée sur ce serveur.",
-    "lumen.settings.confirmFailed": "Le serveur a accepté la modification, mais Lumen n’a pas pu confirmer l’enregistrement. Gardez ce formulaire ouvert et réessayez."
+    "lumen.settings.confirmFailed": "Le serveur a accepté la modification, mais Lumen n’a pas pu confirmer l’enregistrement. Gardez ce formulaire ouvert et réessayez.",
+    "components.Common.available": "Disponible",
+    "components.Discover.DiscoverComics.indexing": "Créer l’index des bandes dessinées",
+    "components.Discover.DiscoverComics.indexingRetry": "L’indexation reprend après la réponse du fournisseur. Les volumes déjà indexés sont conservés.",
+    "components.Discover.DiscoverComics.noComicVineKey": "L’exploration des bandes dessinées nécessite une clé API ComicVine configurée dans les paramètres.",
+    "components.Discover.DiscoverComics.searchComics": "Rechercher des BD"
   },
   "ar": {
     "components.IssueDetails.allepisodes": "جميع الحلقات",
@@ -17081,6 +17086,12 @@
     "lumen.readerDelivery.comics": "القصص المصورة",
     "lumen.readerDelivery.magazinePdfs": "ملفات المجلات PDF",
     "lumen.category.disabledForServer": "تم إيقاف فئة {category} على هذا الخادم.",
-    "lumen.settings.confirmFailed": "قبل الخادم التغيير، لكن تعذّر على Lumen تأكيد الحالة المحفوظة. أبقِ هذا النموذج مفتوحًا وأعد المحاولة."
+    "lumen.settings.confirmFailed": "قبل الخادم التغيير، لكن تعذّر على Lumen تأكيد الحالة المحفوظة. أبقِ هذا النموذج مفتوحًا وأعد المحاولة.",
+    "components.Common.available": "متاح",
+    "components.Discover.DiscoverComics.applyFilters": "تطبيق عوامل التصفية",
+    "components.Discover.DiscoverComics.indexing": "جارٍ إنشاء فهرس القصص المصوّرة",
+    "components.Discover.DiscoverComics.indexingRetry": "تُعاد محاولة الفهرسة بعد استجابة المزوّد. تم حفظ المجلدات المفهرسة بالفعل.",
+    "components.Discover.DiscoverComics.noComicVineKey": "يتطلب استكشاف القصص المصوّرة إعداد مفتاح ComicVine API في الإعدادات.",
+    "components.Discover.DiscoverComics.searchComics": "البحث عن القصص المصوّرة"
   }
 }

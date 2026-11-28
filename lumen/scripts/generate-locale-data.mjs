@@ -1,4 +1,4 @@
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import prettier from 'prettier';
@@ -25,6 +25,36 @@ const keys = JSON.parse(await readFile(keyPath, 'utf8'));
 const overrides = JSON.parse(await readFile(overridesPath, 'utf8'));
 const readCatalog = async (file) =>
   JSON.parse(await readFile(path.join(repo, 'src/i18n/locale', file), 'utf8'));
+
+async function listTypeScriptFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const groups = await Promise.all(
+    entries.map((entry) => {
+      const file = path.join(directory, entry.name);
+      return entry.isDirectory()
+        ? listTypeScriptFiles(file)
+        : /\.tsx?$/.test(entry.name)
+          ? [file]
+          : [];
+    })
+  );
+  return groups.flat();
+}
+
+const staticKeys = new Set(keys);
+const missingStaticKeys = [];
+for (const file of await listTypeScriptFiles(path.join(lumen, 'src'))) {
+  const source = await readFile(file, 'utf8');
+  for (const match of source.matchAll(/\bt\s*\(\s*(['"])([^'"]+)\1/g)) {
+    if (!staticKeys.has(match[2]))
+      missingStaticKeys.push(`${path.relative(repo, file)}: ${match[2]}`);
+  }
+}
+if (missingStaticKeys.length)
+  throw new Error(
+    `Static Lumen translation keys are missing from lumen/i18n-keys.json:\n${missingStaticKeys.join('\n')}`
+  );
+
 const english = await readCatalog(
   config.locales.find(({ tag }) => tag === config.baseLocale).clientFile
 );

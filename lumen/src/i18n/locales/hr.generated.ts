@@ -441,4 +441,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Datum rođenja {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Poznat/a i kao: {names}',
+  'components.Discover.upcomingtv': 'Nadolazeće Serije',
+  'i18n.loading': 'Učitavanje …',
+  'i18n.saving': 'Spremanje …',
 } as const;

@@ -631,4 +631,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Sündinud {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Tuntud ka kui: {names}',
+  'components.Discover.upcomingtv': 'Tulevased sarjad',
+  'i18n.loading': 'Laadimine…',
+  'i18n.saving': 'Salvestamine…',
 } as const;

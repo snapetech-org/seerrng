@@ -242,4 +242,6 @@ export const messages = {
   'components.PersonDetails.birthdate': 'נולד/ה ב-{birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'גם ידוע בתור: {names}',
+  'components.Discover.upcomingtv': 'סדרות שיצאו בקרוב',
+  'i18n.saving': 'שומר…',
 } as const;

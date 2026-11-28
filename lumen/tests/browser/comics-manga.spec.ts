@@ -1642,3 +1642,86 @@ for (const width of [360, 768]) {
     }
   });
 }
+
+for (const locale of [
+  {
+    tag: 'en',
+    comics: 'Comics',
+    publisher: 'Publisher',
+    startYear: 'Start year',
+    minIssues: 'Min issues',
+    maxIssues: 'Max issues',
+    apply: 'Apply filters',
+    search: 'Search Comics',
+  },
+  {
+    tag: 'fr',
+    comics: 'BD',
+    publisher: 'Éditeur',
+    startYear: 'Année de début',
+    minIssues: 'Nombre min. de numéros',
+    maxIssues: 'Nombre max. de numéros',
+    apply: 'Appliquer des filtres',
+    search: 'Rechercher des BD',
+  },
+  {
+    tag: 'ar',
+    comics: 'قصص مصورة',
+    publisher: 'الناشر',
+    startYear: 'سنة البدء',
+    minIssues: 'الحد الأدنى للأعداد',
+    maxIssues: 'الحد الأقصى للأعداد',
+    apply: 'تطبيق عوامل التصفية',
+    search: 'البحث عن القصص المصوّرة',
+  },
+]) {
+  test(`comic discovery filters use the ${locale.tag} catalog`, async ({
+    page,
+  }, info) => {
+    await fixtures(page, { locale: locale.tag });
+    await page.goto(mountedTestAppPath('/comics?catalog=1'));
+
+    await expect(page.locator('html')).toHaveAttribute('lang', locale.tag);
+    await expect(page.getByLabel(locale.publisher)).toBeVisible();
+    await expect(page.getByLabel(locale.startYear)).toBeVisible();
+    await expect(page.getByLabel(locale.minIssues)).toBeVisible();
+    await expect(page.getByLabel(locale.maxIssues)).toBeVisible();
+    await expect(page.getByText(locale.apply, { exact: true })).toBeVisible();
+    await expect(page.getByText(locale.search, { exact: true })).toBeVisible();
+
+    const geometry = await page.locator('.range-filter').evaluate((form) => {
+      const bounds = (element: Element) => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left, right: rect.right, width: rect.width };
+      };
+      return {
+        viewport: window.innerWidth,
+        document: document.documentElement.scrollWidth,
+        form: bounds(form),
+        fields: Array.from(form.querySelectorAll('.sel'), bounds),
+      };
+    });
+    expect(geometry.document).toBeLessThanOrEqual(geometry.viewport);
+    expect(geometry.fields.every((field) => field.width > 0)).toBe(true);
+    expect(
+      geometry.fields.every(
+        (field) =>
+          field.left >= geometry.form.left - 1 &&
+          field.right <= geometry.form.right + 1
+      )
+    ).toBe(true);
+
+    const captureDirectory = process.env.LUMEN_PARITY_CAPTURE_DIR;
+    if (captureDirectory && ['desktop', 'iphone'].includes(info.project.name))
+      await page.screenshot({
+        path: `${captureDirectory}/${locale.tag}-${info.project.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+
+    await page.goto(mountedTestAppPath('/comics'));
+    await expect(
+      page.getByRole('button', { name: locale.comics, exact: true })
+    ).toBeVisible();
+  });
+}

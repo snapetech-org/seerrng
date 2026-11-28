@@ -606,4 +606,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Народжений {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Також відомий(а) як: {names}',
+  'components.Discover.upcomingtv': 'Майбутні серіали',
+  'i18n.loading': 'Завантаження…',
+  'i18n.saving': 'Збереження…',
 } as const;

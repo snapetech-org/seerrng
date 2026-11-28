@@ -163,4 +163,7 @@ export const messages = {
   'i18n.request4k': 'Zahtevaj u 4K',
   'i18n.requesting': 'Zahteva se…',
   'components.PersonDetails.birthdate': 'Rođen {birthdate}',
+  'components.Discover.upcomingtv': 'Predstojeće serije',
+  'i18n.loading': 'Učitavanje…',
+  'i18n.saving': 'Čuvanje…',
 } as const;

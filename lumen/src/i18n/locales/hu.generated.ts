@@ -650,4 +650,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Született {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Úgy is ismert mint : {names}',
+  'components.Discover.upcomingtv': 'Hamarosan megjelenő sorozatok',
+  'i18n.loading': 'Betöltés…',
+  'i18n.saving': 'Mentés…',
 } as const;

@@ -441,4 +441,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Γεννήθηκε {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Επίσης Γνωστός/ή ως: {names}',
+  'components.Discover.upcomingtv': 'Επερχόμενες Σειρές',
+  'i18n.loading': 'Φόρτωση…',
+  'i18n.saving': 'Αποθηκεύεται…',
 } as const;

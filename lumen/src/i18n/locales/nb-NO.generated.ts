@@ -420,4 +420,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Født {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Også kjent som: {names}',
+  'components.Discover.upcomingtv': 'Kommende TV-serier',
+  'i18n.loading': 'Laster…',
+  'i18n.saving': 'Lagerer…',
 } as const;

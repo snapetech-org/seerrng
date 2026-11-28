@@ -336,4 +336,6 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Născut {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Cunoscut și ca: {names}',
+  'components.Discover.upcomingtv': 'Seriale Viitoare',
+  'i18n.saving': 'Se salvează…',
 } as const;

@@ -409,4 +409,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Lindur {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Njohur edhe si: {names}',
+  'components.Discover.upcomingtv': 'Serialet që vijnë së shpejti',
+  'i18n.loading': 'Po ngarkohet…',
+  'i18n.saving': 'Duke ruajtur…',
 } as const;

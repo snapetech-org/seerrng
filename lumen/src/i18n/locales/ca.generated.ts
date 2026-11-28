@@ -533,4 +533,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Nascut/da {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'També conegut com: {names}',
+  'components.Discover.upcomingtv': 'Pròximes sèries',
+  'i18n.loading': "S'està carregant…",
+  'i18n.saving': "S'està desant…",
 } as const;

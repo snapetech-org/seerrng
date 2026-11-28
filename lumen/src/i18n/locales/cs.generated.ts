@@ -641,4 +641,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Narozen {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Známý také jako: {names}',
+  'components.Discover.upcomingtv': 'Nadcházející seriály',
+  'i18n.loading': 'Načítání…',
+  'i18n.saving': 'Ukládání…',
 } as const;

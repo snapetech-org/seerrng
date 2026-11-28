@@ -99,6 +99,32 @@ release-note: `release-notes/lumen-admin-save-readback-errors.md`
 
 # Lumen workflow parity
 
+### Restore missing static translations in Lumen catalogs (2026-11-27)
+
+A source scan of 4,637 static Lumen translation calls found 37 keys missing
+from both the French and Arabic generated catalogs. Most already had translated
+values in SeerrNG's locale sources, but were omitted from
+`lumen/i18n-keys.json`, so Lumen silently displayed its English fallback. The
+keys are now included in Lumen's generated catalogs. French and Arabic
+translations were added for the one availability label missing from those
+source catalogs, and Lumen overrides improve the Comics discovery indexing,
+ComicVine setup, and search copy.
+
+The Lumen catalog generator now rejects static `t('key', ...)` calls missing
+from `lumen/i18n-keys.json`. The focused Comics browser cases pass 12/12 in
+standalone Lumen and another 12/12 against the compiled bundle served through
+SeerrNG's `mountLumenFrontend` Express middleware at `/lumen/`. Both runs cover
+English, French, and Arabic on desktop, iPhone, Android, and tablet and verify
+the catalog filters, search action, localized comic-type control, and absence
+of document-width overflow. English, French, and Arabic candidates were
+captured at desktop and iPhone sizes; controls remain within the existing card
+and the saved locale does not change layout owners. Screenshots are retained at
+`/mnt/disks/scratch/task-deliverables/seerrng-lumen-localization-catalog-20261127/screenshots/`.
+Standalone and bundled production builds pass. Fixture responses do not
+exercise live catalog data.
+
+release-note: `release-notes/lumen-static-translation-coverage.md`
+
 ### Distinguish category save from readback failure (2026-11-27)
 
 Instance-wide and default-user category forms already verified successful

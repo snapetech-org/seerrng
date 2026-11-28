@@ -149,4 +149,7 @@ export const messages = {
   'components.PersonDetails.birthdate': 'Gimtadienis {birthdate}',
   'components.PersonDetails.lifespan': '{birthdate} – {deathdate}',
   'components.PersonDetails.alsoknownas': 'Žinomas kaip: {names}',
+  'components.Discover.upcomingtv': 'Greit pasirodysiantys serialai',
+  'i18n.loading': 'Kraunasi…',
+  'i18n.saving': 'Saugoma…',
 } as const;
